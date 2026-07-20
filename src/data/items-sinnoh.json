@@ -1,0 +1,21 @@
+{
+  "jubilife-city": [
+    { "itemSlug": "vs-recorder", "name": "Vs. Recorder", "note": "Given in the city — Looker", "pocket": "KEY" },
+    { "itemSlug": "old-rod", "name": "Old Rod", "note": "Fisherman — Route 218 gate", "pocket": "KEY" }
+  ],
+  "floaroma-town": [
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Flower shop — daily free berry", "pocket": "BERRIES" }
+  ],
+  "eterna-city": [
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Cynthia — at the Galactic building", "pocket": "HM" }
+  ],
+  "hearthome-city": [
+    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Man in the south house", "pocket": "KEY" }
+  ],
+  "celestic-town": [
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "note": "Town elder — after Galactic", "pocket": "HM" }
+  ],
+  "wayward-cave": [
+    { "itemSlug": "tm-ground", "name": "TM26 — Earthquake", "note": "Dark basement — bike jumps", "pocket": "TM" }
+  ]
+}

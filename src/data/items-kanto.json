@@ -1,0 +1,70 @@
+{
+  "pallet-town": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Player's PC — withdrawn at start", "pocket": "ITEMS" }
+  ],
+  "kanto-route-1": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Free sample — Poké Mart clerk", "pocket": "ITEMS" }
+  ],
+  "viridian-city": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Poké Mart — after Oak's parcel", "pocket": "BALLS" }
+  ],
+  "kanto-route-2": [
+    { "itemSlug": "hm-normal", "name": "HM05 — Flash", "note": "Oak's aide — gate 2F (10 caught)", "pocket": "HM" }
+  ],
+  "viridian-forest": [
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Northwest clearing", "pocket": "ITEMS" }
+  ],
+  "pewter-city": [
+    { "itemSlug": "old-amber", "name": "Old Amber", "note": "Museum of Science — back room (Cut)", "pocket": "KEY" }
+  ],
+  "kanto-route-4": [
+    { "itemSlug": "tm-normal", "name": "TM04 — Whirlwind", "note": "Ledge east of Mt. Moon exit", "pocket": "TM" }
+  ],
+  "mt-moon": [
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "B2F — crater room ×2", "pocket": "ITEMS" },
+    { "itemSlug": "tm-normal", "name": "TM01 — Mega Punch", "note": "1F — east ledge", "pocket": "TM" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — B2F rock", "pocket": "ITEMS", "hidden": true }
+  ],
+  "cerulean-city": [
+    { "itemSlug": "tm-ground", "name": "TM28 — Dig", "note": "Burgled house — defeat the Rocket", "pocket": "TM" }
+  ],
+  "kanto-route-24": [
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Nugget Bridge — grunt's bribe", "pocket": "ITEMS" }
+  ],
+  "vermilion-city": [
+    { "itemSlug": "old-rod", "name": "Old Rod", "note": "Fishing Guru — west house", "pocket": "KEY" },
+    { "itemSlug": "bike-voucher", "name": "Bike Voucher", "note": "Pokémon Fan Club chairman", "pocket": "KEY" },
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "S.S. Anne — seasick captain", "pocket": "HM" }
+  ],
+  "kanto-route-11": [
+    { "itemSlug": "dowsing-machine", "name": "Itemfinder", "note": "Oak's aide — gate 2F (30 caught)", "pocket": "KEY" }
+  ],
+  "kanto-route-12": [
+    { "itemSlug": "super-rod", "name": "Super Rod", "note": "Fishing guru — route house", "pocket": "KEY" }
+  ],
+  "kanto-route-16": [
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "note": "House west of the gate", "pocket": "HM" }
+  ],
+  "celadon-city": [
+    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Diner — man in the corner", "pocket": "KEY" },
+    { "itemSlug": "fresh-water", "name": "Fresh Water", "note": "Dept. Store roof — vending machines", "pocket": "ITEMS" }
+  ],
+  "saffron-city": [
+    { "itemSlug": "tm-psychic", "name": "TM29 — Psychic", "note": "Mr. Psychic — southeast house", "pocket": "TM" },
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Silph Co. president — 11F", "pocket": "BALLS" }
+  ],
+  "fuchsia-city": [
+    { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fishing guru — south house", "pocket": "KEY" },
+    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "note": "Safari Warden — return his teeth", "pocket": "HM" }
+  ],
+  "safari-zone": [
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "note": "Secret house — Area 3", "pocket": "HM" },
+    { "itemSlug": "gold-teeth", "name": "Gold Teeth", "note": "Area 3 — near the secret house", "pocket": "KEY" }
+  ],
+  "cinnabar-island": [
+    { "itemSlug": "tm-normal", "name": "TM35 — Metronome", "note": "Pokémon Lab — research room", "pocket": "TM" }
+  ],
+  "power-plant": [
+    { "itemSlug": "tm-electric", "name": "TM25 — Thunder", "note": "Deep in the plant", "pocket": "TM" }
+  ]
+}

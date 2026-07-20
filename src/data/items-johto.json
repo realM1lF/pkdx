@@ -1,0 +1,27 @@
+{
+  "violet-city": [
+    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "note": "Sprout Tower elder — defeat the sages", "pocket": "TM" }
+  ],
+  "azalea-town": [
+    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Charcoal maker — after Slowpoke Well", "pocket": "ITEMS" }
+  ],
+  "ilex-forest": [
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Charcoal maker's apprentice", "pocket": "HM" }
+  ],
+  "goldenrod-city": [
+    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Game Corner — hidden on the floor", "pocket": "KEY", "hidden": true },
+    { "itemSlug": "squirt-bottle", "name": "Squirt Bottle", "note": "Flower shop — after Sudowoodo", "pocket": "KEY" }
+  ],
+  "ecruteak-city": [
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "note": "Kimono Girl — dance theater", "pocket": "HM" }
+  ],
+  "olivine-city": [
+    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "note": "Sailor — harbor café", "pocket": "HM" }
+  ],
+  "cianwood-city": [
+    { "itemSlug": "secret-potion", "name": "Secret Potion", "note": "Pharmacy — for Jasmine's Ampharos", "pocket": "KEY" }
+  ],
+  "lake-of-rage": [
+    { "itemSlug": "red-scale", "name": "Red Scale", "note": "After the red Gyarados", "pocket": "KEY" }
+  ]
+}

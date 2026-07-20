@@ -1,0 +1,26 @@
+{
+  "rustboro-city": [
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Cutter's house", "pocket": "HM" }
+  ],
+  "granite-cave": [
+    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "note": "Hiker — cave entrance", "pocket": "TM" }
+  ],
+  "slateport-city": [
+    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Pokémon Fan Club — back room", "pocket": "ITEMS" }
+  ],
+  "mauville-city": [
+    { "itemSlug": "hm-fighting", "name": "HM06 — Rock Smash", "note": "Man in the southeast house", "pocket": "HM" }
+  ],
+  "lavaridge-town": [
+    { "itemSlug": "go-goggles", "name": "Go-Goggles", "note": "Rival — Route 111, post-gym", "pocket": "KEY" }
+  ],
+  "meteor-falls": [
+    { "itemSlug": "tm-dragon", "name": "TM02 — Dragon Claw", "note": "B1F — dragon chamber", "pocket": "TM" }
+  ],
+  "mossdeep-city": [
+    { "itemSlug": "hm-water", "name": "HM08 — Dive", "note": "Steven — his house", "pocket": "HM" }
+  ],
+  "sootopolis-city": [
+    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "note": "Cave of Origin", "pocket": "HM" }
+  ]
+}

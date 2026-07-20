@@ -1,0 +1,14 @@
+{
+  "striaton-city": [
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Fennel — after the trio badge", "pocket": "HM" }
+  ],
+  "wellspring-cave": [
+    { "itemSlug": "tm-dark", "name": "TM46 — Thief", "note": "1F — near the water", "pocket": "TM" }
+  ],
+  "giant-chasm": [
+    { "itemSlug": "tm-ice", "name": "TM13 — Ice Beam", "note": "Cave — northeast corner", "pocket": "TM" }
+  ],
+  "undella-town": [
+    { "itemSlug": "hm-water", "name": "HM06 — Dive", "note": "From the man by the bay", "pocket": "HM" }
+  ]
+}
