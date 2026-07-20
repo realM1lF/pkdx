@@ -1,20 +1,58 @@
-import { useState } from 'react'
-import '../App.css'
+/* Home — `/` (home.md). First-visit preloader → hero → search gateway →
+ * spotlight → type spectrum → generations rail → features → stats band. */
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import PokeballLoader from '@/components/PokeballLoader';
+import Hero from './home/Hero';
+import SearchGateway from './home/SearchGateway';
+import Spotlight from './home/Spotlight';
+import TypeSpectrum from './home/TypeSpectrum';
+import GenerationsRail from './home/GenerationsRail';
+import Features from './home/Features';
+import StatsBand from './home/StatsBand';
+
+const SESSION_KEY = 'pdx:preloader-done';
 
 export default function Home() {
-  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(() => {
+    try {
+      return !sessionStorage.getItem(SESSION_KEY);
+    } catch {
+      return false;
+    }
+  });
+
+  const finish = () => {
+    try {
+      sessionStorage.setItem(SESSION_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+    setLoading(false);
+  };
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            key="preloader"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="fixed inset-0 z-[100]"
+          >
+            <PokeballLoader variant="page" onDone={finish} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <Hero started={!loading} />
+      <SearchGateway />
+      <Spotlight />
+      <TypeSpectrum />
+      <GenerationsRail />
+      <Features />
+      <StatsBand />
     </>
-  )
+  );
 }
