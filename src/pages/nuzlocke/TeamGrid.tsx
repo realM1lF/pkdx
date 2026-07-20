@@ -1,11 +1,12 @@
 /* Nuzlocke run — ACTIVE PARTIES team grid (nuzlocke.md §2.6).
- * players × 6 slots; click → /pokemon/:id; boxed overflow drawer. */
+ * players × 6 slots; click → /pokemon/:id. Boxed survivors render in the
+ * always-visible BOX section below (BoxSection) — no hidden drawer. */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MoreVertical, X } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
 import Sprite from '@/components/Sprite';
-import { boxedOf, partyOf } from '@/lib/nuzlocke-store';
+import { partyOf } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { getPokemon, pokemonTypes } from '@/lib/pokeapi';
 import { TYPE_COLORS } from '@/lib/types';
@@ -102,21 +103,16 @@ export default function TeamGrid({
   state,
   online,
   nameOf,
-  routeLabel,
   linkPartner,
   onMenu,
 }: {
   state: RunState;
   online: Record<string, { name: string; color: string }>;
   nameOf: (id: number) => string;
-  routeLabel: (key: string) => string;
   linkPartner: (encId: string) => NuzEncounterRow | null;
   onMenu: (enc: NuzEncounterRow, x: number, y: number) => void;
 }) {
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
-  const [boxedPlayer, setBoxedPlayer] = useState<string | null>(null);
-  const boxedList = boxedPlayer ? boxedOf(state, boxedPlayer) : [];
-  const boxedOwner = players.find((p) => p.id === boxedPlayer);
 
   return (
     <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label="Active parties">
@@ -127,7 +123,6 @@ export default function TeamGrid({
       <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
         {players.map((p, pi) => {
           const party = partyOf(state, p.id);
-          const boxed = boxedOf(state, p.id);
           return (
             <motion.div
               key={p.id}
@@ -166,56 +161,10 @@ export default function TeamGrid({
                   </div>
                 ))}
               </div>
-              {boxed.length > 0 && (
-                <button type="button" onClick={() => setBoxedPlayer(p.id)} className="mt-2 text-[10px] font-semibold text-tx-muted transition-colors hover:text-gold">
-                  + {boxed.length} BOXED
-                </button>
-              )}
             </motion.div>
           );
         })}
       </div>
-
-      {/* boxed drawer */}
-      <AnimatePresence>
-        {boxedPlayer && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[65] bg-void/50" onClick={() => setBoxedPlayer(null)} />
-            <motion.aside
-              initial={{ x: 320 }}
-              animate={{ x: 0 }}
-              exit={{ x: 320 }}
-              transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-              className="fixed right-0 top-0 z-[66] flex h-full w-[320px] flex-col border-l border-hairline2 bg-surface1"
-              aria-label={`${boxedOwner?.name ?? 'Player'} boxed Pokémon`}
-            >
-              <div className="flex items-center gap-2 border-b border-hairline px-4 py-3">
-                <span className="h-2.5 w-2.5 rounded-full" style={{ background: boxedOwner?.color }} />
-                <span className="font-display text-[14px] font-bold text-tx-primary">{boxedOwner?.name} — BOX</span>
-                <span className="text-[10px] tabular-nums text-tx-muted">{boxedList.length}</span>
-                <button type="button" onClick={() => setBoxedPlayer(null)} aria-label="Close box" className="ml-auto text-tx-muted transition-colors hover:text-gold">
-                  <X size={15} />
-                </button>
-              </div>
-              <div className="nz-slim-scroll flex-1 overflow-y-auto p-2">
-                {boxedList.map((enc) => (
-                  <button
-                    key={enc.id}
-                    type="button"
-                    onClick={() => setBoxedPlayer(null)}
-                    className="flex h-9 w-full items-center gap-2 rounded-sm px-2 text-left transition-colors hover:bg-surface3"
-                  >
-                    <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[28px] w-[28px]" skeleton={false} />
-                    <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
-                    <span className="font-display text-[9px] font-bold text-tx-muted">LV {enc.level}</span>
-                    <span className="rounded-full border border-hairline2 px-1.5 font-pixel text-[6px] uppercase text-tx-muted">{routeLabel(enc.route_key)}</span>
-                  </button>
-                ))}
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

@@ -22,6 +22,7 @@ import RunHeader from './nuzlocke/RunHeader';
 import RulesBar from './nuzlocke/RulesBar';
 import Timeline from './nuzlocke/Timeline';
 import TeamGrid from './nuzlocke/TeamGrid';
+import BoxSection from './nuzlocke/BoxSection';
 import Graveyard from './nuzlocke/Graveyard';
 import Feed from './nuzlocke/Feed';
 import QuickEntry from './nuzlocke/QuickEntry';
@@ -179,10 +180,11 @@ export default function NuzlockeRun() {
               state={state}
               online={entry.online}
               nameOf={nameOf}
-              routeLabel={routeLabel}
               linkPartner={(encId) => linkPartnerOf(state, encId)}
               onMenu={(enc, x, y) => setMenu({ enc, x, y })}
             />
+            {/* visible BOX storage — between team grid and graveyard */}
+            <BoxSection state={state} nameOf={nameOf} routeLabel={routeLabel} />
             <Graveyard state={state} nameOf={nameOf} routeLabel={routeLabel} />
           </div>
           <Feed feed={entry.feed} live={entry.status === 'live'} />

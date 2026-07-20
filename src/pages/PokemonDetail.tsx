@@ -2,7 +2,7 @@
  * 12-col panel grid, gap 16px:
  *   Row 1: Hero (span 7) · Combat (span 5)          — fits one 1440×900 viewport
  *   Row 2: Moves (span 7) · Side stack (span 5)
- *   Row 3: Evolution (span 4) · SPRITE MUSEUM (span 8)
+ *   Row 3: Evolution + Where to Find (span 4 stack) · SPRITE MUSEUM (span 8)
  *   Prev/Next 40px strip · MISSINGNO 404 · loading skeletons
  * Direct loads crossfade in (400ms — shared-element morph fallback, §6.2-3). */
 import { useEffect, useMemo, useState } from 'react';
@@ -21,6 +21,7 @@ import MovesPanel from './detail/MovesPanel';
 import PrevNextStrip from './detail/PrevNextStrip';
 import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
+import WhereToFind from './detail/WhereToFind';
 import { Panel } from './detail/ui';
 import { typeRgb } from './detail/data';
 import './detail/detail.css';
@@ -163,15 +164,21 @@ export default function PokemonDetail() {
           <SideStack pokemon={pokemon} species={species} />
         </div>
 
-        {/* ROW 3 */}
-        <Panel
-          eyebrow="EVOLUTION"
-          title="Family Tree"
-          className="col-span-12 lg:col-span-4"
-          bodyClassName="min-h-[140px]"
-        >
-          <EvolutionPanel species={species} currentId={species?.id ?? pokemon.id} />
-        </Panel>
+        {/* ROW 3 — left stack: evolution + where to find (span 4) · museum (span 8) */}
+        <div className="col-span-12 flex flex-col gap-4 lg:col-span-4">
+          <Panel eyebrow="EVOLUTION" title="Family Tree" bodyClassName="min-h-[140px]">
+            <EvolutionPanel species={species} currentId={species?.id ?? pokemon.id} />
+          </Panel>
+
+          <Panel
+            eyebrow="WILD DATA"
+            title="Where to Find"
+            className="flex-1"
+            bodyClassName="p-0"
+          >
+            <WhereToFind key={pokemon.id} id={pokemon.id} />
+          </Panel>
+        </div>
 
         <Panel
           id="sprite-museum"
