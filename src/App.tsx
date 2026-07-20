@@ -9,6 +9,10 @@ import { ShinyProvider } from './lib/shiny';
 const Home = lazy(() => import('./pages/Home'));
 const Pokedex = lazy(() => import('./pages/Pokedex'));
 const PokemonDetail = lazy(() => import('./pages/PokemonDetail'));
+const Maps = lazy(() => import('./pages/Maps'));
+const MapRegion = lazy(() => import('./pages/MapRegion'));
+const Nuzlocke = lazy(() => import('./pages/Nuzlocke'));
+const NuzlockeRun = lazy(() => import('./pages/NuzlockeRun'));
 
 function PageFallback() {
   return (
@@ -28,6 +32,10 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/pokedex" element={<Pokedex />} />
               <Route path="/pokemon/:id" element={<PokemonDetail />} />
+              <Route path="/maps" element={<Maps />} />
+              <Route path="/maps/:region" element={<MapRegion />} />
+              <Route path="/nuzlocke" element={<Nuzlocke />} />
+              <Route path="/nuzlocke/:runId" element={<NuzlockeRun />} />
             </Routes>
           </Suspense>
         </Layout>
