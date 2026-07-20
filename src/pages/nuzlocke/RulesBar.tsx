@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Minus, Plus } from 'lucide-react';
-import { kpisOf, pushToast, setRunRules } from '@/lib/nuzlocke-store';
+import { boxedOf, kpisOf, pushToast, setRunRules } from '@/lib/nuzlocke-store';
 import type { RunState } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { GoldSwitch, InfoTip, PixelLabel, Popover } from './ui';
@@ -107,6 +107,8 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
   const [capOpen, setCapOpen] = useState(false);
   const cap = state.run.rules.levelCap;
   const pct = k.routesTotal > 0 ? Math.round((k.routesDone / k.routesTotal) * 100) : 0;
+  /* boxed = alive catches beyond the party of 6, summed over the crew (§0.4) */
+  const boxedTotal = state.players.reduce((n, p) => n + boxedOf(state, p.id).length, 0);
 
   const toggle = (key: 'dupes' | 'shiny', v: boolean) => {
     setRunRules(state.run.id, { [key]: v });
@@ -119,6 +121,8 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
         {/* counters */}
         <div className="flex items-center gap-4">
           <Counter label="CAUGHT" value={k.caught} dot={<span className="h-2 w-2 rounded-full bg-[#63D96B]" />} />
+          <span className="h-4 w-px bg-hairline2" />
+          <Counter label="BOXED" value={boxedTotal} dot={<span className="h-2 w-2 rounded-[3px] border border-tx-muted/80 bg-surface3" />} />
           <span className="h-4 w-px bg-hairline2" />
           <Counter label="MISSED" value={k.missed} dot={<span className="h-2 w-2 rounded-full border border-gold/70" />} />
           <span className="h-4 w-px bg-hairline2" />
