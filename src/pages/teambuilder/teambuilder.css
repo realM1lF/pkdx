@@ -1,0 +1,283 @@
+/* Team Builder — command-deck density (density-addendum §1, §5)
+ * Local compact styles; tailwind.config.js / index.css stay untouched. */
+
+.tb-panel {
+  background: #11141d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+}
+
+.tb-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.tb-micro {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5e6680;
+}
+
+.tb-micro-gold {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f6c945;
+}
+
+.tb-input {
+  background: #171b27;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  color: #f4f6fc;
+  font-size: 13px;
+  padding: 7px 10px;
+  outline: none;
+  transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.tb-input::placeholder {
+  color: #5e6680;
+}
+
+.tb-input:focus {
+  border-color: rgba(246, 201, 69, 0.6);
+  box-shadow: 0 0 0 1px rgba(246, 201, 69, 0.35), 0 0 18px rgba(246, 201, 69, 0.15);
+}
+
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #171b27;
+  color: #a8b0c4;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.tb-btn:hover {
+  background: #1f2433;
+  color: #f6c945;
+  border-color: rgba(246, 201, 69, 0.5);
+}
+
+.tb-btn:active {
+  transform: scale(0.97);
+}
+
+.tb-btn-primary {
+  background: linear-gradient(135deg, rgba(246, 201, 69, 0.22), rgba(246, 201, 69, 0.08));
+  border-color: rgba(246, 201, 69, 0.6);
+  color: #f4f6fc;
+  font-family: Orbitron, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.tb-btn-primary:hover {
+  border-color: #f6c945;
+  box-shadow: 0 0 24px rgba(246, 201, 69, 0.35);
+  color: #f6c945;
+}
+
+.tb-btn-icon {
+  padding: 8px;
+}
+
+/* compact chip (density-addendum §3) */
+.tb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #171b27;
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #a8b0c4;
+}
+
+/* heatmap cell for the defensive matrix */
+.tb-heat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #171b27;
+  padding: 6px 2px 5px;
+  min-height: 52px;
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tb-heat:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--t), 0.55);
+  box-shadow: 0 0 14px rgba(var(--t), 0.3);
+}
+
+.tb-heat[data-sev='2'] {
+  border-color: rgba(246, 201, 69, 0.45);
+  background: rgba(246, 201, 69, 0.07);
+}
+
+.tb-heat[data-sev='3'] {
+  border-color: rgba(246, 201, 69, 0.8);
+  background: rgba(246, 201, 69, 0.14);
+  box-shadow: 0 0 12px rgba(246, 201, 69, 0.25);
+}
+
+/* dropdown panels */
+.tb-dropdown {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  background: rgba(13, 15, 22, 0.92);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.tb-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #a8b0c4;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background 150ms;
+}
+
+.tb-option:hover,
+.tb-option[data-active='true'] {
+  background: #1f2433;
+  color: #f4f6fc;
+}
+
+.tb-option[data-active='true'] {
+  border-left-color: #f6c945;
+}
+
+/* compact EV slider rows */
+.tb-ev-row {
+  display: grid;
+  grid-template-columns: 34px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+}
+
+.tb-ev-row input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: #1f2433;
+  outline: none;
+  cursor: pointer;
+}
+
+.tb-ev-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #f6c945;
+  box-shadow: 0 0 10px rgba(246, 201, 69, 0.5);
+  border: none;
+  transition: transform 150ms;
+}
+
+.tb-ev-row input[type='range']::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+
+.tb-ev-row input[type='range']::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #f6c945;
+  box-shadow: 0 0 10px rgba(246, 201, 69, 0.5);
+  border: none;
+}
+
+/* slot card drag affordance */
+.tb-slot-drag {
+  cursor: grab;
+}
+
+.tb-slot-drag:active {
+  cursor: grabbing;
+}
+
+/* gold pulse for illegal flags */
+@keyframes tb-flag-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.tb-illegal-flag {
+  animation: tb-flag-pulse 2.4s ease-in-out infinite;
+}
+
+/* thin scrollbars inside picker lists */
+.tb-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tb-scroll::-webkit-scrollbar-thumb {
+  background: #1f2433;
+  border-radius: 999px;
+}
+
+.tb-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(246, 201, 69, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tb-illegal-flag {
+    animation: none;
+  }
+
+  .tb-heat,
+  .tb-btn {
+    transition: none;
+  }
+}
