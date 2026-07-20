@@ -1,6 +1,6 @@
 /* CommandBar — the 56px ops-deck bar (maps.md §2.1): back, region chip,
- * version chips, WALK/SURF/FISH/OTHER filters, node search, scan status,
- * legend popover, reset view. */
+ * version chips, SCHEMATIC|ORIGINAL view toggle, WALK/SURF/FISH/OTHER
+ * filters, node search, scan status, legend popover, reset view. */
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'framer-motion';
@@ -10,6 +10,9 @@ import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, versionChipLabel } from '@/lib/regions';
 import type { MethodBucket } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
+
+/** map render mode — persisted in localStorage `pdx2.mapview` (MapRegion) */
+export type MapViewMode = 'schematic' | 'original';
 
 const METHODS: Array<{ bucket: MethodBucket; label: string; icon: typeof Footprints }> = [
   { bucket: 'WALK', label: 'WALK', icon: Footprints },
@@ -31,6 +34,8 @@ interface CommandBarProps {
   onResetView: () => void;
   /** bumped to retrigger the empty-filter shake (gold feedback, §6.2-9) */
   shakeKey: number;
+  view: MapViewMode;
+  onView: (v: MapViewMode) => void;
 }
 
 export default function CommandBar({
@@ -45,8 +50,11 @@ export default function CommandBar({
   offline,
   onResetView,
   shakeKey,
+  view,
+  onView,
 }: CommandBarProps) {
   const rgb = accentRgb(region.accent);
+  const originalAvailable = region.region === 'kanto';
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const [legend, setLegend] = useState(false);
@@ -116,6 +124,49 @@ export default function CommandBar({
             </span>
           </button>
         ))}
+      </div>
+
+      <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
+
+      {/* view toggle — SCHEMATIC | ORIGINAL (Kanto pilot) */}
+      <div
+        className="flex h-7 shrink-0 items-center rounded-pill border border-hairline bg-surface1 p-0.5"
+        role="group"
+        aria-label="Map view"
+      >
+        {(['schematic', 'original'] as const).map((mode) => {
+          const disabled = mode === 'original' && !originalAvailable;
+          const active = view === mode && !disabled;
+          return (
+            <button
+              key={mode}
+              type="button"
+              disabled={disabled}
+              aria-pressed={active}
+              title={disabled ? 'Original map — SOON for this region' : mode === 'original' ? 'Original game map' : 'Schematic transit map'}
+              onClick={() => onView(mode)}
+              className={cn('relative rounded-pill px-2 py-1', disabled && 'cursor-not-allowed opacity-50')}
+            >
+              {active && (
+                <motion.span
+                  layoutId="maps-view-thumb"
+                  className="absolute inset-0 rounded-pill border"
+                  style={{ borderColor: `rgba(${rgb},0.6)`, background: `rgba(${rgb},0.16)` }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 30 }}
+                />
+              )}
+              <span
+                className={cn(
+                  'pixel-label relative z-10 text-[7px]',
+                  active ? 'text-tx-primary' : 'text-tx-muted hover:text-tx-secondary',
+                )}
+              >
+                {mode.toUpperCase()}
+                {disabled && <span className="ml-1 text-gold/70">SOON</span>}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />

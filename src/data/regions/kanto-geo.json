@@ -1,0 +1,190 @@
+{
+  "version": "firered",
+  "image": "/maps/kanto-original.jpg",
+  "nodes": {
+    "pallet-town": [
+      0.172,
+      0.678
+    ],
+    "kanto-route-1": [
+      0.172,
+      0.585
+    ],
+    "viridian-city": [
+      0.163,
+      0.492
+    ],
+    "kanto-route-22": [
+      0.095,
+      0.492
+    ],
+    "kanto-route-2": [
+      0.17,
+      0.41
+    ],
+    "viridian-forest": [
+      0.168,
+      0.318
+    ],
+    "digletts-cave": [
+      0.759,
+      0.537
+    ],
+    "pewter-city": [
+      0.162,
+      0.196
+    ],
+    "kanto-route-3": [
+      0.27,
+      0.195
+    ],
+    "mt-moon": [
+      0.355,
+      0.135
+    ],
+    "kanto-route-4": [
+      0.5,
+      0.135
+    ],
+    "cerulean-city": [
+      0.662,
+      0.148
+    ],
+    "kanto-route-24": [
+      0.672,
+      0.055
+    ],
+    "kanto-route-25": [
+      0.85,
+      0.02
+    ],
+    "cerulean-cave": [
+      0.618,
+      0.09
+    ],
+    "kanto-route-5": [
+      0.662,
+      0.255
+    ],
+    "kanto-route-6": [
+      0.665,
+      0.445
+    ],
+    "vermilion-city": [
+      0.657,
+      0.545
+    ],
+    "kanto-route-11": [
+      0.84,
+      0.556
+    ],
+    "kanto-route-9": [
+      0.78,
+      0.13
+    ],
+    "kanto-route-10": [
+      0.925,
+      0.17
+    ],
+    "rock-tunnel": [
+      0.93,
+      0.285
+    ],
+    "power-plant": [
+      0.928,
+      0.222
+    ],
+    "lavender-town": [
+      0.955,
+      0.348
+    ],
+    "pokemon-tower": [
+      0.963,
+      0.318
+    ],
+    "kanto-route-8": [
+      0.78,
+      0.335
+    ],
+    "kanto-route-7": [
+      0.607,
+      0.33
+    ],
+    "celadon-city": [
+      0.51,
+      0.345
+    ],
+    "kanto-route-16": [
+      0.39,
+      0.343
+    ],
+    "kanto-route-17": [
+      0.333,
+      0.5
+    ],
+    "kanto-route-18": [
+      0.375,
+      0.795
+    ],
+    "fuchsia-city": [
+      0.485,
+      0.795
+    ],
+    "safari-zone": [
+      0.504,
+      0.752
+    ],
+    "kanto-route-12": [
+      0.963,
+      0.475
+    ],
+    "kanto-route-13": [
+      0.87,
+      0.697
+    ],
+    "kanto-route-14": [
+      0.76,
+      0.745
+    ],
+    "kanto-route-15": [
+      0.68,
+      0.8
+    ],
+    "kanto-route-19": [
+      0.533,
+      0.9
+    ],
+    "kanto-route-20": [
+      0.26,
+      0.968
+    ],
+    "seafoam-islands": [
+      0.352,
+      0.963
+    ],
+    "cinnabar-island": [
+      0.162,
+      0.968
+    ],
+    "kanto-route-21": [
+      0.172,
+      0.82
+    ],
+    "kanto-route-23": [
+      0.04,
+      0.25
+    ],
+    "victory-road": [
+      0.036,
+      0.088
+    ],
+    "indigo-plateau": [
+      0.03,
+      0.032
+    ],
+    "saffron-city": [
+      0.657,
+      0.345
+    ]
+  }
+}
