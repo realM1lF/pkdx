@@ -1,0 +1,121 @@
+/* /pokedex page CSS — density addendum §5 (page-local compact styles).
+ * Hover physics live here (CSS) while Framer owns entrance/layout motion.
+ * Plain (unlayered) classes — Tailwind v3 forbids @layer in page CSS files. */
+
+/* ---- scroll rails: hidden scrollbar + edge fade masks ---- */
+.pdx-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
+}
+.pdx-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- compact grid: 180px min columns → 6–8 cols at ≥1440px ---- */
+.pdx-grid-compact {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+/* ---- card hover / focus-within: lift + type glow (design.md §6.2-2) ---- */
+.pdx-card {
+  transition:
+    transform 250ms var(--ease-out),
+    box-shadow 250ms var(--ease-out),
+    border-color 250ms var(--ease-out);
+  will-change: transform;
+}
+.pdx-card-wrap:hover .pdx-card,
+.pdx-card-wrap:focus-within .pdx-card {
+  transform: translateY(-6px) scale(1.025);
+  border-color: rgba(var(--t), 0.55);
+  box-shadow:
+    0 0 0 1px rgba(var(--t), 0.55),
+    0 8px 40px rgba(var(--t), 0.3),
+    0 0 24px rgba(var(--t), 0.25);
+}
+
+/* sprite hop with squash-stretch (keyframes from index.css) */
+.pdx-card-wrap:hover .pdx-sprite,
+.pdx-card-wrap:focus-within .pdx-sprite {
+  animation: hop 420ms var(--ease-out);
+}
+
+/* aura brightens 0.85 → 1 */
+.pdx-aura {
+  opacity: 0.85;
+  transition: opacity 250ms var(--ease-out);
+}
+.pdx-card-wrap:hover .pdx-aura,
+.pdx-card-wrap:focus-within .pdx-aura {
+  opacity: 1;
+}
+
+/* mini stat triad brightens 40% → 100% */
+.pdx-triad-bar {
+  opacity: 0.4;
+  transition: opacity 200ms var(--ease-out);
+}
+.pdx-card-wrap:hover .pdx-triad-bar,
+.pdx-card-wrap:focus-within .pdx-triad-bar {
+  opacity: 1;
+}
+
+/* legendary conic ring: animation runs only while lit (perf with 96 cards) */
+.pdx-card.legendary-ring {
+  animation-play-state: paused;
+}
+.pdx-card-wrap:hover .pdx-card.legendary-ring,
+.pdx-card-wrap:focus-within .pdx-card.legendary-ring {
+  animation-play-state: running;
+}
+
+/* mythical: psychic-glow border at rest, brighter on hover */
+.pdx-card--mythical {
+  border-color: rgba(255, 92, 168, 0.4);
+  box-shadow: 0 0 12px rgba(255, 92, 168, 0.16);
+}
+.pdx-card-wrap:hover .pdx-card--mythical,
+.pdx-card-wrap:focus-within .pdx-card--mythical {
+  border-color: rgba(255, 92, 168, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(255, 92, 168, 0.55),
+    0 8px 40px rgba(255, 92, 168, 0.28),
+    0 0 24px rgba(255, 92, 168, 0.22);
+}
+
+/* ---- type toggle rail buttons ---- */
+.pdx-type-toggle:hover {
+  color: rgb(var(--tg));
+  background: rgba(var(--tg), 0.12);
+}
+
+/* ---- list rows: hover = 2px type-glow left border + surface-2 ---- */
+.pdx-row {
+  transition:
+    background-color 150ms var(--ease-out),
+    box-shadow 150ms var(--ease-out);
+}
+.pdx-row-wrap:hover .pdx-row,
+.pdx-row-wrap:focus-within .pdx-row {
+  background: var(--surface-2);
+  box-shadow:
+    inset 2px 0 0 rgb(var(--t)),
+    inset 0 0 18px rgba(var(--t), 0.07);
+}
+
+/* ---- empty-state pokéball glow pulse (design.md §4) ---- */
+.pdx-empty-glow {
+  animation: pdx-empty-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pdx-empty-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
