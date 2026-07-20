@@ -1,0 +1,263 @@
+/* Nuzlocke hub — MISSION CONTROL (nuzlocke.md §1).
+ * Header + sync banner + runs grid + join-by-code + New-Run wizard. */
+import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Info, Plus, X } from 'lucide-react';
+import { bootNameIndex, padNum } from '@/lib/pokeapi';
+import { lookupByCode, useHubRuns } from '@/lib/nuzlocke-store';
+import type { JoinLookup } from '@/lib/nuzlocke-store';
+import { isMultiCapable } from '@/lib/supabase';
+import { cn } from '@/lib/utils';
+import Wizard from './nuzlocke/Wizard';
+import RunCard from './nuzlocke/RunCard';
+import NuzToasts from './nuzlocke/Toasts';
+import { GoldHint, InfoTip, PixelLabel, useShake } from './nuzlocke/ui';
+import './nuzlocke/nuzlocke.css';
+
+const NUZ_TIP =
+  'A self-imposed challenge: catch only the first Pokémon you meet on each route; if it faints, it\u2019s gone for good. Nickname everything.';
+const SOLO_TIP = 'Create a run anyway — you can upgrade it to multiplayer later.';
+
+export default function Nuzlocke() {
+  const { runs, loading, entries } = useHubRuns();
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [joinPreset, setJoinPreset] = useState<JoinLookup | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const [bannerOff, setBannerOff] = useState(() => sessionStorage.getItem('pdx2.nuz.banner') === 'off');
+  const [nameIdx, setNameIdx] = useState<Map<number, string>>(new Map());
+
+  useEffect(() => {
+    void bootNameIndex()
+      .then((idx) => setNameIdx(new Map(idx.map((e) => [e.id, e.label]))))
+      .catch(() => undefined);
+  }, []);
+
+  const nameOf = useMemo(() => {
+    return (id: number) => nameIdx.get(id) ?? padNum(id);
+  }, [nameIdx]);
+
+  const multi = isMultiCapable();
+  const visible = showAll ? runs : runs.slice(0, 6);
+  const entryOf = (id: string) => entries.find((e) => e.id === id);
+
+  const closeBanner = () => {
+    setBannerOff(true);
+    sessionStorage.setItem('pdx2.nuz.banner', 'off');
+  };
+
+  return (
+    <div className="mx-auto max-w-[1440px] px-4 pb-24 pt-12 md:px-8">
+      {/* ---------- header (§1.1) ---------- */}
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-[640px]">
+          <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4 }}>
+            <PixelLabel className="text-gold">PHASE 05 — SURVIVAL PROTOCOL</PixelLabel>
+          </motion.div>
+          <motion.h1
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.06 }}
+            className="mt-2 font-display text-[clamp(28px,4vw,44px)] font-extrabold uppercase leading-[1.1] text-tx-primary"
+          >
+            Nuzlocke Tracker
+          </motion.h1>
+          <motion.p
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.12 }}
+            className="mt-2 flex flex-wrap items-center gap-1.5 text-[14px] leading-relaxed text-tx-secondary"
+          >
+            One encounter per route. Fainting is forever. Track your run as a living timeline — alone, or SoulLinked with a partner.
+            <InfoTip text={NUZ_TIP} iconSize={13} />
+            <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">WHAT IS A NUZLOCKE?</span>
+          </motion.p>
+        </div>
+        <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, delay: 0.18 }} className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setJoinPreset(null);
+              setWizardOpen(true);
+            }}
+            className="nz-sheen flex items-center gap-2 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 hover:border-gold"
+          >
+            <Plus size={15} /> New Run
+          </button>
+          <a
+            href="#join-code"
+            className="rounded-md border border-hairline2 px-5 py-3 text-[13px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          >
+            Join with code
+          </a>
+        </motion.div>
+      </header>
+
+      {/* ---------- sync mode banner (§1.2) ---------- */}
+      {!bannerOff && (
+        <motion.div
+          initial={{ y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.25, delay: 0.2 }}
+          className="mt-5 flex h-8 items-center gap-2 rounded-full border border-hairline bg-surface1 px-4"
+        >
+          {multi ? (
+            <>
+              <span className="nz-dot-live h-2 w-2 rounded-full bg-[#45C8FF]" />
+              <span className="text-[11px] tracking-wide text-tx-secondary">ONLINE — REALTIME SYNC READY</span>
+            </>
+          ) : (
+            <>
+              <span className="h-2 w-2 rounded-full bg-gold" />
+              <span className="text-[11px] tracking-wide text-tx-secondary">SOLO MODE — RUNS SAVE TO THIS DEVICE</span>
+              <InfoTip text={SOLO_TIP} />
+            </>
+          )}
+          <button type="button" onClick={closeBanner} aria-label="Dismiss" className="ml-auto text-tx-muted transition-colors hover:text-gold">
+            <X size={12} />
+          </button>
+        </motion.div>
+      )}
+
+      {/* ---------- join by code (§1.4) ---------- */}
+      <JoinRow
+        onJoin={(lookup) => {
+          setJoinPreset(lookup);
+          setWizardOpen(true);
+        }}
+      />
+
+      {/* ---------- runs grid (§1.3) ---------- */}
+      <section className="mt-8">
+        <div className="mb-3 flex items-baseline gap-3">
+          <h2 className="font-display text-[18px] font-bold uppercase text-tx-primary">Active Operations</h2>
+          <PixelLabel>{`${runs.length} ${runs.length === 1 ? 'RUN' : 'RUNS'}`}</PixelLabel>
+        </div>
+
+        {!loading && runs.length === 0 ? (
+          /* empty state (§1.6) */
+          <div className="grid place-items-center py-16 text-center">
+            <div className="relative">
+              <img src="/empty-dex.svg" alt="" className="h-[140px] opacity-60" />
+              <span className="nz-dot-gold-pulse absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-gold/30" />
+            </div>
+            <h3 className="mt-4 font-display text-[20px] font-bold text-tx-primary">No runs yet</h3>
+            <p className="mt-1 text-[13px] text-tx-secondary">Every legend starts with Route 1 and bad odds.</p>
+            <button
+              type="button"
+              onClick={() => {
+                setJoinPreset(null);
+                setWizardOpen(true);
+              }}
+              className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+            >
+              Start your first run
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-12 gap-4">
+              {/* new run card */}
+              <motion.button
+                type="button"
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                onClick={() => {
+                  setJoinPreset(null);
+                  setWizardOpen(true);
+                }}
+                className="group col-span-12 grid min-h-[150px] place-items-center rounded-lg border border-dashed border-hairline2 transition-colors hover:border-gold lg:col-span-6"
+              >
+                <span className="flex flex-col items-center gap-2 py-6">
+                  <span className="relative">
+                    <img src="/pokeball.svg" alt="" className="h-9 w-9 opacity-40 transition-opacity group-hover:opacity-90" />
+                    <Plus size={16} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-gold transition-transform duration-300 group-hover:rotate-90" />
+                  </span>
+                  <span className="font-pixel text-[9px] tracking-[0.1em] text-tx-muted transition-colors group-hover:text-gold">+ NEW RUN</span>
+                </span>
+              </motion.button>
+
+              {visible.map((s, i) => (
+                <RunCard key={s.run.id} state={s} entry={entryOf(s.run.id)} index={i + 1} nameOf={nameOf} />
+              ))}
+            </div>
+            {runs.length > 6 && !showAll && (
+              <button type="button" onClick={() => setShowAll(true)} className="mt-4 text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold">
+                Show all runs ({runs.length}) →
+              </button>
+            )}
+          </>
+        )}
+      </section>
+
+      <Wizard open={wizardOpen} onClose={() => setWizardOpen(false)} joinPreset={joinPreset} runCount={runs.length} />
+      <NuzToasts />
+    </div>
+  );
+}
+
+/* ---------- join-by-code inline row (§1.4) ---------- */
+
+function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
+  const [code, setCode] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [shakeKey, shake] = useShake();
+  const [hint, setHint] = useState('');
+
+  const submit = async () => {
+    if (!code.trim() || busy) return;
+    setBusy(true);
+    try {
+      const lookup = await lookupByCode(code);
+      if (lookup) {
+        onJoin(lookup);
+        setCode('');
+      } else {
+        shake();
+        setHint('No run with that code — check spelling.');
+        window.setTimeout(() => setHint(''), 2600);
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div id="join-code" className="mt-4 flex min-h-[56px] flex-wrap items-center gap-3 rounded-md border border-hairline bg-surface1 px-4 py-2">
+      <PixelLabel>HAVE AN INVITE?</PixelLabel>
+      <div className="relative">
+        <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
+          <input
+            value={code}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') void submit();
+            }}
+            placeholder="SOUL-····"
+            maxLength={12}
+            aria-label="Invite code"
+            className={cn(
+              'h-9 w-[150px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold uppercase tracking-[0.14em] text-gold outline-none placeholder:text-tx-muted/50',
+              'border-hairline2 focus:border-gold',
+            )}
+          />
+        </div>
+        <GoldHint text={hint} show={!!hint} />
+      </div>
+      <button
+        type="button"
+        disabled={busy || !code.trim()}
+        onClick={() => void submit()}
+        className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Join <ArrowRight size={13} />
+      </button>
+      {!isMultiCapable() && (
+        <span className="flex items-center gap-1 text-[11px] text-tx-muted">
+          <Info size={11} /> Joining needs an online connection.
+        </span>
+      )}
+      <span className="ml-auto hidden text-[10px] text-tx-muted/60 md:block">Codes look like SOUL-7K2</span>
+    </div>
+  );
+}
