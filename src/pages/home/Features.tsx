@@ -1,8 +1,9 @@
 /* Feature Highlights — "BUILT FOR TRAINERS" (home.md §6).
  * Three live micro-demos + locked roadmap marquee. */
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router';
 import { AnimatePresence, animate, motion, useInView } from 'framer-motion';
-import { Lock } from 'lucide-react';
+import { ArrowRight, GitCompareArrows, Lock, Map as MapIcon, Swords, Users } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import StatBar from '@/components/StatBar';
 import TypeGlyph from '@/components/TypeGlyph';
@@ -324,13 +325,45 @@ const CARDS = [
   },
 ];
 
-const ROADMAP = [
-  'PHASE 02 — BATTLE SIMULATOR',
-  'PHASE 03 — TEAM BUILDER',
-  'PHASE 04 — INTERACTIVE MAPS',
-  'PHASE 05 — NUZLOCKE TRACKER',
-  'PHASE 06 — LIVING DEX',
-  'PHASE 07 — TCG CARDS',
+/* Toolkit teasers — live features shipped after Phase 01. */
+const TOOLKIT = [
+  {
+    to: '/maps',
+    Icon: MapIcon,
+    tag: 'MAPS',
+    title: 'Interactive Region Maps',
+    caption: 'Transit-style region charts + the original Kanto map. Every route, every encounter table, every item.',
+  },
+  {
+    to: '/nuzlocke',
+    Icon: Users,
+    tag: 'NUZLOCKE',
+    title: 'Nuzlocke Tracker',
+    caption: 'Solo or multiplayer SoulLink runs — route timeline, team grid, graveyard, live sync.',
+  },
+  {
+    to: '/team',
+    Icon: Swords,
+    tag: 'TEAM',
+    title: 'Team Builder',
+    caption: 'Six slots, full move legality per game version, coverage & weakness analysis, share links.',
+  },
+  {
+    to: '/pokemon/6?vs=3',
+    Icon: GitCompareArrows,
+    tag: 'VERSUS',
+    title: 'Versus — 1v1 Matchups',
+    caption: 'Pick two Pokémon, get the full damage math: best moves, KO ranges, speed tiers. On every dex page.',
+  },
+];
+
+const ROADMAP: Array<{ label: string; to?: string }> = [
+  { label: 'PHASE 02 — VERSUS MATCHUPS', to: '/pokemon/6?vs=3' },
+  { label: 'PHASE 03 — TEAM BUILDER', to: '/team' },
+  { label: 'PHASE 04 — INTERACTIVE MAPS', to: '/maps' },
+  { label: 'PHASE 05 — NUZLOCKE TRACKER', to: '/nuzlocke' },
+  { label: 'PHASE 06 — LIVING DEX' },
+  { label: 'PHASE 07 — TCG CARDS' },
 ];
 
 function DemoCard({ title, caption, Demo, index }: { title: string; caption: string; Demo: (p: { live: boolean }) => React.JSX.Element; index: number }) {
@@ -370,20 +403,70 @@ export default function Features() {
         ))}
       </div>
 
-      {/* roadmap marquee — locked later phases */}
-      <div className="group relative mt-16 overflow-hidden border-y border-hairline py-4 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+      {/* toolkit teasers — live features beyond the dex */}
+      <div className="mt-16">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="pixel-label text-[10px] text-gold">BEYOND THE DEX</span>
+          <span className="h-px flex-1 bg-hairline" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {TOOLKIT.map(({ to, Icon, tag, title, caption }, i) => (
+            <motion.div
+              key={tag}
+              initial={{ y: 24, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, margin: '-10% 0px' }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}
+            >
+              <Link
+                to={to}
+                className="group flex h-full flex-col gap-3 rounded-xl border border-hairline bg-surface1 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-glow-gold"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="grid h-9 w-9 place-items-center rounded-md border border-hairline bg-surface2 text-gold transition-colors group-hover:border-gold/40">
+                    <Icon size={16} strokeWidth={1.75} />
+                  </span>
+                  <span className="pixel-label text-[8px] text-tx-muted">{tag}</span>
+                </div>
+                <h3 className="font-display text-base font-bold leading-tight">{title}</h3>
+                <p className="font-sans text-xs leading-relaxed text-tx-secondary">{caption}</p>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-gold">
+                  Open
+                  <ArrowRight size={12} strokeWidth={2} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* roadmap marquee — live phases link out, locked stay dimmed */}
+      <div className="group relative mt-10 overflow-hidden border-y border-hairline py-4 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
         <div className="flex w-max animate-[marquee_60s_linear_infinite] gap-10 group-hover:[animation-play-state:paused] sm:animate-[marquee_40s_linear_infinite]">
           {[0, 1].map((copy) => (
             <div key={copy} className="flex gap-10" aria-hidden={copy === 1}>
-              {ROADMAP.map((item) => (
-                <span key={`${copy}-${item}`} className="group/item relative flex cursor-default items-center gap-2 opacity-40">
-                  <Lock size={12} strokeWidth={1.75} className="text-tx-muted" />
-                  <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{item}</span>
-                  <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 scale-95 whitespace-nowrap rounded-sm border border-hairline bg-surface2 px-2 py-1 font-sans text-xs text-tx-secondary opacity-0 shadow-elevate transition-all duration-150 group-hover/item:scale-100 group-hover/item:opacity-100">
-                    Locked — arrives in a later phase.
+              {ROADMAP.map((item) =>
+                item.to ? (
+                  <Link
+                    key={`${copy}-${item.label}`}
+                    to={item.to}
+                    tabIndex={copy === 1 ? -1 : 0}
+                    className="flex items-center gap-2 opacity-70 transition-opacity hover:opacity-100"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-glow-gold" />
+                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{item.label}</span>
+                    <span className="pixel-label text-[8px] text-gold">LIVE</span>
+                  </Link>
+                ) : (
+                  <span key={`${copy}-${item.label}`} className="group/item relative flex cursor-default items-center gap-2 opacity-40">
+                    <Lock size={12} strokeWidth={1.75} className="text-tx-muted" />
+                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{item.label}</span>
+                    <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 scale-95 whitespace-nowrap rounded-sm border border-hairline bg-surface2 px-2 py-1 font-sans text-xs text-tx-secondary opacity-0 shadow-elevate transition-all duration-150 group-hover/item:scale-100 group-hover/item:opacity-100">
+                      Locked — arrives in a later phase.
+                    </span>
                   </span>
-                </span>
-              ))}
+                ),
+              )}
             </div>
           ))}
         </div>

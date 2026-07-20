@@ -102,7 +102,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
               </button>
             </div>
 
-            <div className="tb-scroll max-h-[46vh] overflow-y-auto p-3">
+            <div className="tb-scroll max-h-[46vh] overflow-y-auto p-3" data-lenis-prevent>
               {phase.kind === 'loading' && (
                 <div className="flex flex-col items-center gap-2 py-6">
                   <PokeballLoader variant="inline" />

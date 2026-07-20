@@ -5,10 +5,11 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
+import { useLocation } from 'react-router';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import SearchCommand from './SearchCommand';
-import { destroyLenis, initLenis, scrollToTop } from '@/lib/smooth';
+import { destroyLenis, getLenis, initLenis, scrollToTop } from '@/lib/smooth';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 
@@ -102,11 +103,21 @@ function BackToTop() {
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     initLenis();
     return () => destroyLenis();
   }, []);
+
+  /* Scroll restoration: reset to top on every route change. Lenis keeps its own
+   * virtual scroll offset, so it must be reset too — otherwise a page mounted
+   * after a scrolled page (e.g. detail → maps) starts mid-scroll and fixed-height
+   * decks appear "shifted up" with no way back. */
+  useEffect(() => {
+    getLenis()?.scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   /* "/" hotkey opens global search */
   useEffect(() => {

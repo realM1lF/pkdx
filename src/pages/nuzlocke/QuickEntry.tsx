@@ -256,7 +256,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             className="h-8 w-full rounded-sm border border-hairline bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
           />
         </div>
-        <div className="nz-slim-scroll max-h-[300px] overflow-y-auto py-1" role="listbox" aria-label="Routes">
+        <div className="nz-slim-scroll max-h-[300px] overflow-y-auto py-1" data-lenis-prevent role="listbox" aria-label="Routes">
           {filteredNodes.map((n) => {
             const st = nodeState(n.id);
             const used = st !== 'pending';
@@ -514,7 +514,7 @@ export default function QuickEntry(props: QuickEntryProps) {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-              className="fixed inset-x-0 bottom-0 z-[69] max-h-[85dvh] overflow-y-auto rounded-t-2xl border-t border-gold/40 bg-surface1 p-4 md:hidden nz-slim-scroll"
+              className="fixed inset-x-0 bottom-0 z-[69] max-h-[85dvh] overflow-y-auto rounded-t-2xl border-t border-gold/40 bg-surface1 p-4 md:hidden nz-slim-scroll" data-lenis-prevent
             >
               <div className="mb-3 flex items-center justify-between">
                 <PixelLabel className="text-gold">QUICK ENTRY</PixelLabel>

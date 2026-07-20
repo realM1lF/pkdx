@@ -74,7 +74,7 @@ export default function CommandBar({
     <div
       key={shakeKey}
       className={cn(
-        'sticky top-16 z-40 flex h-14 items-center gap-2.5 overflow-x-auto border-b border-hairline px-3 sm:px-4',
+        'sticky top-0 z-40 flex h-14 items-center gap-2.5 overflow-x-auto border-b border-hairline px-3 sm:px-4',
         shakeKey > 0 && 'maps-shake',
       )}
       style={{ background: 'rgba(13,15,22,0.72)', backdropFilter: 'blur(16px) saturate(1.4)' }}

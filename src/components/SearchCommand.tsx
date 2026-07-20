@@ -262,7 +262,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
       )}
 
       {results.length > 0 && (
-        <ul ref={listRef} role="listbox" id="pdx-search-listbox" className="max-h-[340px] overflow-y-auto py-1">
+        <ul ref={listRef} role="listbox" id="pdx-search-listbox" data-lenis-prevent className="max-h-[340px] overflow-y-auto py-1">
           {results.map((r, i) => {
             const types = typesMap[r.id] ?? [];
             const tColor = types[0] ? `var(--type-${types[0]})` : 'transparent';

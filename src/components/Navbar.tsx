@@ -8,7 +8,6 @@ import { useShiny } from '@/lib/shiny';
 import { cn } from '@/lib/utils';
 
 const LINKS = [
-  { to: '/', label: 'Home' },
   { to: '/pokedex', label: 'Pokédex' },
   { to: '/maps', label: 'Maps' },
   { to: '/nuzlocke', label: 'Nuzlocke' },

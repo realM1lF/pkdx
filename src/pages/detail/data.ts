@@ -140,7 +140,7 @@ export function evoCondition(details: EvolutionDetail[]): EvoCondition {
   }
   if (d.trigger.name === 'trade') parts.push('Trade');
   if (d.trigger.name === 'use-item' && !d.item) parts.push('Use item');
-  if (d.min_happiness != null && d.trigger.name !== 'trade') parts.push('High friendship');
+  if (d.min_happiness != null && d.trigger.name !== 'trade') parts.push('Friendship');
   if (d.min_affection != null) parts.push('Affection');
   if (d.known_move_type) parts.push(`${titleCase(d.known_move_type.name)} move`);
   if (d.min_level != null) parts.push(`Lv ${d.min_level}`);

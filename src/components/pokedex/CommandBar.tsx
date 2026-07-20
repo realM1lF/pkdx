@@ -216,7 +216,7 @@ function FilterPopover(p: FilterPopoverProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -4, scale: 0.96 }}
               transition={{ duration: 0.2, ease: EASE_OUT }}
-              className="glass absolute right-0 top-full z-40 mt-2 max-h-[70dvh] w-[320px] overflow-y-auto rounded-md border border-hairline p-3 shadow-elevate max-sm:fixed max-sm:inset-x-3 max-sm:left-3 max-sm:top-[124px] max-sm:w-auto"
+              className="glass absolute right-0 top-full z-40 mt-2 max-h-[70dvh] w-[320px] overflow-y-auto rounded-md border border-hairline p-3 shadow-elevate max-sm:fixed max-sm:inset-x-3 max-sm:left-3 max-sm:top-[124px] max-sm:w-auto" data-lenis-prevent
             >
               {/* sort */}
               <div className="mb-3">

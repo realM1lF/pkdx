@@ -52,8 +52,8 @@ function StageCard({
     <div className="relative flex flex-col items-center">
       {current && (
         <motion.span
-          className="pixel-label absolute -top-4 z-10 text-[8px] text-gold"
-          animate={{ y: [0, -3, 0] }}
+          className="pixel-label absolute -top-4 z-10 whitespace-nowrap rounded-pill border border-gold/40 bg-void/90 px-1.5 py-px text-[8px] text-gold"
+          animate={{ y: [0, -2, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           YOU ARE HERE
@@ -110,7 +110,7 @@ function EvoNode({
     <div className="flex items-center">
       <StageCard stage={stage} currentId={currentId} registerRef={registerRef} />
       {stage.children.length > 0 && (
-        <div className="flex flex-col justify-center gap-3 pl-16">
+        <div className="flex flex-col justify-center gap-5 pl-24">
           {stage.children.map((c) => (
             <EvoNode key={c.key} stage={c} currentId={currentId} registerRef={registerRef} />
           ))}
@@ -172,7 +172,17 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
   const nodeRefs = useRef(new Map<string, HTMLButtonElement>());
   const [edges, setEdges] = useState<Edge[]>([]);
   const [box, setBox] = useState({ w: 0, h: 0 });
-  const inView = useInView(containerRef, { once: true, margin: '-20% 0px' });
+  /* amount-based trigger (the old '-20% 0px' margin never fired when the panel
+   * sat in the lower viewport band → connectors stayed at pathLength 0 and only
+   * the marker arrowheads rendered). Timeout fallback guarantees the draw even
+   * if the observer never trips (tab switches, short viewports). */
+  const inViewRaw = useInView(containerRef, { once: true, amount: 0.2 });
+  const [inViewForced, setInViewForced] = useState(false);
+  useEffect(() => {
+    const t = window.setTimeout(() => setInViewForced(true), 1500);
+    return () => window.clearTimeout(t);
+  }, []);
+  const inView = inViewRaw || inViewForced;
 
   const registerRef = (key: string, el: HTMLButtonElement | null) => {
     if (el) nodeRefs.current.set(key, el);
@@ -201,7 +211,10 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
           key: `${parent.key}->${child.key}`,
           d: `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`,
           midX: (x1 + x2) / 2,
-          midY: (y1 + y2) / 2,
+          /* chip rides at the CHILD's row height inside the gutter — at the
+           * bezier's true midpoint it collided with neighbouring cards in
+           * fan-out trees (Eevee). */
+          midY: y2,
           condition: child.condition,
           rgb: '246,201,69',
         });
@@ -270,7 +283,7 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
         {edges.map((e, i) => (
           <motion.span
             key={`chip-${e.key}`}
-            className="absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-pill border border-hairline bg-surface2 px-1.5 py-px font-sans text-[9px] font-semibold text-tx-secondary shadow-elevate"
+            className="absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-pill border border-hairline bg-void/95 px-1.5 py-px font-sans text-[9px] font-semibold text-tx-secondary shadow-elevate"
             style={{ left: e.midX, top: e.midY }}
             initial={{ scale: 0.6, opacity: 0 }}
             animate={inView ? { scale: 1, opacity: 1 } : undefined}

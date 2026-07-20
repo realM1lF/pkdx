@@ -57,7 +57,7 @@ function GameSelector({ value, onChange }: GameSelectorProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="tb-dropdown tb-scroll !min-w-[280px] max-h-[380px] overflow-y-auto py-1"
+            className="tb-dropdown tb-scroll !min-w-[280px] max-h-[380px] overflow-y-auto py-1" data-lenis-prevent
             role="listbox"
             aria-label="Version groups"
           >

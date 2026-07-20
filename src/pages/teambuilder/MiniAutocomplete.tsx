@@ -145,7 +145,7 @@ export default function MiniAutocomplete<T>({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="tb-dropdown tb-scroll max-h-[280px] overflow-y-auto py-1"
+            className="tb-dropdown tb-scroll max-h-[280px] overflow-y-auto py-1" data-lenis-prevent
             role="listbox"
           >
             {results.length === 0 && (

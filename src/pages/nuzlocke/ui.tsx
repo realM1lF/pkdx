@@ -250,6 +250,7 @@ export function NuzModal({ open, onClose, children, wide }: { open: boolean; onC
               'relative max-h-[88dvh] w-full overflow-y-auto rounded-xl border border-hairline2 bg-[rgba(13,15,22,0.92)] shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl nz-slim-scroll',
               wide ? 'max-w-[640px]' : 'max-w-[560px]',
             )}
+            data-lenis-prevent
             onClick={(e) => e.stopPropagation()}
           >
             <button
