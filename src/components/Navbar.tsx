@@ -12,6 +12,7 @@ const LINKS = [
   { to: '/pokedex', label: 'Pokédex' },
   { to: '/maps', label: 'Maps' },
   { to: '/nuzlocke', label: 'Nuzlocke' },
+  { to: '/team', label: 'Team' },
 ];
 
 interface NavbarProps {

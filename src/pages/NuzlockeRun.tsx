@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
 import { REGIONS, nodeIndex, regionById } from '@/lib/regions';
 import { useRegionData } from '@/lib/mapdata';
@@ -30,6 +31,7 @@ import type { Prefill } from './nuzlocke/QuickEntry';
 import EncounterMenu from './nuzlocke/EncounterMenu';
 import type { MenuTarget } from './nuzlocke/EncounterMenu';
 import NuzToasts from './nuzlocke/Toasts';
+import VersusTab from './nuzlocke/VersusTab';
 import { PixelLabel } from './nuzlocke/ui';
 import './nuzlocke/nuzlocke.css';
 
@@ -66,6 +68,7 @@ export default function NuzlockeRun() {
 
   const [prefill, setPrefill] = useState<Prefill | null>(null);
   const [menu, setMenu] = useState<MenuTarget | null>(null);
+  const [deckTab, setDeckTab] = useState<'deck' | 'versus'>('deck');
   const [flash, setFlash] = useState<{ route: string; playerId: string; key: number } | null>(null);
   const [fly, setFly] = useState<FlyState | null>(null);
   const [pendingFly, setPendingFly] = useState<{ enc: NuzEncounterRow; from: DOMRect } | null>(null);
@@ -144,12 +147,40 @@ export default function NuzlockeRun() {
       <RunHeader entry={entry} />
       <RulesBar state={state} owner={owner} />
 
+      {/* deck tab strip — RUN DECK / VERSUS (versus.md UI 2) */}
+      <div className="mt-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label="Run view">
+        {(['deck', 'versus'] as const).map((t) => (
+          <button
+            key={t}
+            type="button"
+            role="tab"
+            aria-selected={deckTab === t}
+            onClick={() => setDeckTab(t)}
+            className={`relative flex items-center gap-1.5 px-3 py-2 transition-colors duration-150 ${
+              deckTab === t ? 'text-gold' : 'text-tx-muted hover:text-tx-secondary'
+            }`}
+          >
+            {t === 'versus' && <Swords size={11} />}
+            <span className="pixel-label text-[9px]">{t === 'deck' ? 'RUN DECK' : 'VERSUS'}</span>
+            {deckTab === t && (
+              <motion.span layoutId="nuz-deck-tab" className="absolute inset-x-2 -bottom-px h-0.5 bg-gold" transition={{ type: 'spring', stiffness: 420, damping: 30 }} />
+            )}
+          </button>
+        ))}
+      </div>
+
       {/* a11y live region (§2.12) */}
       <div className="sr-only" aria-live="polite">
         {entry.feed[0]?.title ?? ''}
       </div>
 
-      <div className="mt-4 space-y-8 pb-16">
+      {deckTab === 'versus' && (
+        <div className="mt-4 pb-16">
+          <VersusTab state={state} nameOf={nameOf} />
+        </div>
+      )}
+
+      <div className={deckTab === 'versus' ? 'hidden' : 'mt-4 space-y-8 pb-16'}>
         {/* timeline (dims on failed run, §2.10) */}
         <div className={failed ? 'opacity-70' : undefined}>
           <Timeline

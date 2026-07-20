@@ -22,7 +22,8 @@
           "party": [
             {
               "species": "squirtle",
-              "level": 5
+              "level": 5,
+              "moves": []
             }
           ],
           "important": true,
@@ -34,7 +35,8 @@
           "party": [
             {
               "species": "charmander",
-              "level": 5
+              "level": 5,
+              "moves": []
             }
           ],
           "important": true,
@@ -46,7 +48,8 @@
           "party": [
             {
               "species": "bulbasaur",
-              "level": 5
+              "level": 5,
+              "moves": []
             }
           ],
           "important": true,
@@ -232,23 +235,28 @@
           "party": [
             {
               "species": "rhyhorn",
-              "level": 45
+              "level": 45,
+              "moves": ["take-down", "rock-blast", "scary-face", "earthquake"]
             },
             {
               "species": "dugtrio",
-              "level": 42
+              "level": 42,
+              "moves": ["slash", "sand-tomb", "mud-slap", "earthquake"]
             },
             {
               "species": "nidoqueen",
-              "level": 44
+              "level": 44,
+              "moves": ["body-slam", "double-kick", "poison-sting", "earthquake"]
             },
             {
               "species": "nidoking",
-              "level": 45
+              "level": 45,
+              "moves": ["thrash", "double-kick", "poison-sting", "earthquake"]
             },
             {
               "species": "rhyhorn",
-              "level": 50
+              "level": 50,
+              "moves": ["take-down", "rock-blast", "scary-face", "earthquake"]
             }
           ],
           "important": true,
@@ -263,7 +271,8 @@
           "party": [
             {
               "species": "rhyhorn",
-              "level": 43
+              "level": 43,
+              "moves": []
             }
           ],
           "important": false,
@@ -278,11 +287,13 @@
           "party": [
             {
               "species": "arbok",
-              "level": 39
+              "level": 39,
+              "moves": []
             },
             {
               "species": "tauros",
-              "level": 39
+              "level": 39,
+              "moves": []
             }
           ],
           "important": false,
@@ -297,11 +308,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 40
+              "level": 40,
+              "moves": []
             },
             {
               "species": "machoke",
-              "level": 40
+              "level": 40,
+              "moves": []
             }
           ],
           "important": false,
@@ -316,7 +329,8 @@
           "party": [
             {
               "species": "machoke",
-              "level": 43
+              "level": 43,
+              "moves": []
             }
           ],
           "important": false,
@@ -331,15 +345,18 @@
           "party": [
             {
               "species": "machoke",
-              "level": 38
+              "level": 38,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 38
+              "level": 38,
+              "moves": []
             },
             {
               "species": "machoke",
-              "level": 38
+              "level": 38,
+              "moves": []
             }
           ],
           "important": false,
@@ -354,23 +371,28 @@
           "party": [
             {
               "species": "sandslash",
-              "level": 37
+              "level": 37,
+              "moves": ["slash", "swift", "sand-attack", "poison-sting"]
             },
             {
               "species": "sandslash",
-              "level": 37
+              "level": 37,
+              "moves": ["slash", "swift", "sand-attack", "poison-sting"]
             },
             {
               "species": "rhyhorn",
-              "level": 38
+              "level": 38,
+              "moves": ["take-down", "rock-blast", "fury-attack", "scary-face"]
             },
             {
               "species": "nidorino",
-              "level": 39
+              "level": 39,
+              "moves": ["fury-attack", "horn-attack", "poison-sting", "double-kick"]
             },
             {
               "species": "nidoking",
-              "level": 39
+              "level": 39,
+              "moves": ["thrash", "double-kick", "poison-sting", "focus-energy"]
             }
           ],
           "important": false,
@@ -385,23 +407,28 @@
           "party": [
             {
               "species": "sandslash",
-              "level": 38
+              "level": 38,
+              "moves": ["slash", "swift", "sand-attack", "poison-sting"]
             },
             {
               "species": "graveler",
-              "level": 38
+              "level": 38,
+              "moves": ["rock-blast", "magnitude", "mud-sport", "defense-curl"]
             },
             {
               "species": "onix",
-              "level": 38
+              "level": 38,
+              "moves": ["dragon-breath", "sandstorm", "rock-throw", "bind"]
             },
             {
               "species": "graveler",
-              "level": 38
+              "level": 38,
+              "moves": ["rock-blast", "magnitude", "rollout", "defense-curl"]
             },
             {
               "species": "marowak",
-              "level": 38
+              "level": 38,
+              "moves": ["bonemerang", "headbutt", "leer", "growl"]
             }
           ],
           "important": false,
@@ -416,23 +443,28 @@
           "party": [
             {
               "species": "marowak",
-              "level": 37
+              "level": 37,
+              "moves": ["bonemerang", "headbutt", "leer", "growl"]
             },
             {
               "species": "marowak",
-              "level": 37
+              "level": 37,
+              "moves": ["bonemerang", "headbutt", "leer", "growl"]
             },
             {
               "species": "rhyhorn",
-              "level": 38
+              "level": 38,
+              "moves": ["take-down", "rock-blast", "fury-attack", "scary-face"]
             },
             {
               "species": "nidorina",
-              "level": 39
+              "level": 39,
+              "moves": ["fury-swipes", "bite", "poison-sting", "double-kick"]
             },
             {
               "species": "nidoqueen",
-              "level": 39
+              "level": 39,
+              "moves": ["body-slam", "bite", "poison-sting", "double-kick"]
             }
           ],
           "important": false,
@@ -542,11 +574,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 9
+              "level": 9,
+              "moves": ["tackle", "sand-attack"]
             },
             {
               "species": "squirtle",
-              "level": 9
+              "level": 9,
+              "moves": ["tackle", "tail-whip"]
             }
           ],
           "important": true,
@@ -558,11 +592,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 9
+              "level": 9,
+              "moves": ["tackle", "sand-attack"]
             },
             {
               "species": "bulbasaur",
-              "level": 9
+              "level": 9,
+              "moves": ["tackle", "growl"]
             }
           ],
           "important": true,
@@ -574,11 +610,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 9
+              "level": 9,
+              "moves": ["tackle", "sand-attack"]
             },
             {
               "species": "charmander",
-              "level": 9
+              "level": 9,
+              "moves": ["scratch", "growl"]
             }
           ],
           "important": true,
@@ -590,27 +628,33 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 47
+              "level": 47,
+              "moves": ["feather-dance", "wing-attack", "gust", "quick-attack"]
             },
             {
               "species": "rhyhorn",
-              "level": 45
+              "level": 45,
+              "moves": ["take-down", "horn-drill", "rock-blast", "fury-attack"]
             },
             {
               "species": "growlithe",
-              "level": 45
+              "level": 45,
+              "moves": ["flame-wheel", "take-down", "leer", "agility"]
             },
             {
               "species": "exeggcute",
-              "level": 45
+              "level": 45,
+              "moves": ["solar-beam", "sleep-powder", "poison-powder", "stun-spore"]
             },
             {
               "species": "alakazam",
-              "level": 47
+              "level": 47,
+              "moves": ["psychic", "calm-mind", "future-sight", "disable"]
             },
             {
               "species": "blastoise",
-              "level": 53
+              "level": 53,
+              "moves": ["water-gun", "rain-dance", "bite", "rapid-spin"]
             }
           ],
           "important": true,
@@ -622,27 +666,33 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 47
+              "level": 47,
+              "moves": ["feather-dance", "wing-attack", "gust", "quick-attack"]
             },
             {
               "species": "rhyhorn",
-              "level": 45
+              "level": 45,
+              "moves": ["take-down", "horn-drill", "rock-blast", "fury-attack"]
             },
             {
               "species": "gyarados",
-              "level": 45
+              "level": 45,
+              "moves": ["hydro-pump", "twister", "leer", "rain-dance"]
             },
             {
               "species": "growlithe",
-              "level": 45
+              "level": 45,
+              "moves": ["flame-wheel", "take-down", "leer", "agility"]
             },
             {
               "species": "alakazam",
-              "level": 47
+              "level": 47,
+              "moves": ["psychic", "calm-mind", "future-sight", "disable"]
             },
             {
               "species": "venusaur",
-              "level": 53
+              "level": 53,
+              "moves": ["razor-leaf", "sweet-scent", "growth", "synthesis"]
             }
           ],
           "important": true,
@@ -654,27 +704,33 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 47
+              "level": 47,
+              "moves": ["feather-dance", "wing-attack", "gust", "quick-attack"]
             },
             {
               "species": "rhyhorn",
-              "level": 45
+              "level": 45,
+              "moves": ["take-down", "horn-drill", "rock-blast", "fury-attack"]
             },
             {
               "species": "exeggcute",
-              "level": 45
+              "level": 45,
+              "moves": ["solar-beam", "sleep-powder", "poison-powder", "stun-spore"]
             },
             {
               "species": "gyarados",
-              "level": 45
+              "level": 45,
+              "moves": ["hydro-pump", "twister", "leer", "rain-dance"]
             },
             {
               "species": "alakazam",
-              "level": 47
+              "level": 47,
+              "moves": ["psychic", "calm-mind", "future-sight", "disable"]
             },
             {
               "species": "charizard",
-              "level": 53
+              "level": 53,
+              "moves": ["flamethrower", "wing-attack", "slash", "scary-face"]
             }
           ],
           "important": true,
@@ -797,11 +853,13 @@
           "party": [
             {
               "species": "weedle",
-              "level": 6
+              "level": 6,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 6
+              "level": 6,
+              "moves": []
             }
           ],
           "important": false,
@@ -816,15 +874,18 @@
           "party": [
             {
               "species": "weedle",
-              "level": 7
+              "level": 7,
+              "moves": []
             },
             {
               "species": "kakuna",
-              "level": 7
+              "level": 7,
+              "moves": []
             },
             {
               "species": "weedle",
-              "level": 7
+              "level": 7,
+              "moves": []
             }
           ],
           "important": false,
@@ -839,7 +900,8 @@
           "party": [
             {
               "species": "weedle",
-              "level": 9
+              "level": 9,
+              "moves": []
             }
           ],
           "important": false,
@@ -854,11 +916,13 @@
           "party": [
             {
               "species": "caterpie",
-              "level": 7
+              "level": 7,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 8
+              "level": 8,
+              "moves": []
             }
           ],
           "important": false,
@@ -873,15 +937,18 @@
           "party": [
             {
               "species": "metapod",
-              "level": 7
+              "level": 7,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 7
+              "level": 7,
+              "moves": []
             },
             {
               "species": "metapod",
-              "level": 7
+              "level": 7,
+              "moves": []
             }
           ],
           "important": false,
@@ -978,11 +1045,13 @@
           "party": [
             {
               "species": "geodude",
-              "level": 12
+              "level": 12,
+              "moves": ["tackle", "defense-curl"]
             },
             {
               "species": "onix",
-              "level": 14
+              "level": 14,
+              "moves": ["tackle", "bind", "rock-tomb"]
             }
           ],
           "important": true,
@@ -997,11 +1066,13 @@
           "party": [
             {
               "species": "geodude",
-              "level": 10
+              "level": 10,
+              "moves": ["tackle", "defense-curl"]
             },
             {
               "species": "sandshrew",
-              "level": 11
+              "level": 11,
+              "moves": ["scratch", "defense-curl", "sand-attack"]
             }
           ],
           "important": false,
@@ -1168,11 +1239,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1187,7 +1260,8 @@
           "party": [
             {
               "species": "spearow",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -1202,15 +1276,18 @@
           "party": [
             {
               "species": "caterpie",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "weedle",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 10
+              "level": 10,
+              "moves": []
             }
           ],
           "important": false,
@@ -1225,19 +1302,23 @@
           "party": [
             {
               "species": "weedle",
-              "level": 9
+              "level": 9,
+              "moves": []
             },
             {
               "species": "kakuna",
-              "level": 9
+              "level": 9,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 9
+              "level": 9,
+              "moves": []
             },
             {
               "species": "metapod",
-              "level": 9
+              "level": 9,
+              "moves": []
             }
           ],
           "important": false,
@@ -1252,11 +1333,13 @@
           "party": [
             {
               "species": "caterpie",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "metapod",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1271,11 +1354,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 9
+              "level": 9,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 9
+              "level": 9,
+              "moves": []
             }
           ],
           "important": false,
@@ -1290,11 +1375,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "nidoran-f",
-              "level": 10
+              "level": 10,
+              "moves": []
             }
           ],
           "important": false,
@@ -1309,7 +1396,8 @@
           "party": [
             {
               "species": "jigglypuff",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -1500,15 +1588,18 @@
           "party": [
             {
               "species": "geodude",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "onix",
-              "level": 10
+              "level": 10,
+              "moves": []
             }
           ],
           "important": false,
@@ -1523,15 +1614,18 @@
           "party": [
             {
               "species": "rattata",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 10
+              "level": 10,
+              "moves": []
             }
           ],
           "important": false,
@@ -1546,11 +1640,13 @@
           "party": [
             {
               "species": "oddish",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1565,7 +1661,8 @@
           "party": [
             {
               "species": "clefairy",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -1580,11 +1677,13 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "voltorb",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1599,11 +1698,13 @@
           "party": [
             {
               "species": "weedle",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "kakuna",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1618,15 +1719,18 @@
           "party": [
             {
               "species": "caterpie",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "metapod",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 10
+              "level": 10,
+              "moves": []
             }
           ],
           "important": false,
@@ -1641,15 +1745,18 @@
           "party": [
             {
               "species": "grimer",
-              "level": 12
+              "level": 12,
+              "moves": []
             },
             {
               "species": "voltorb",
-              "level": 12
+              "level": 12,
+              "moves": []
             },
             {
               "species": "koffing",
-              "level": 12
+              "level": 12,
+              "moves": []
             }
           ],
           "important": false,
@@ -1661,11 +1768,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 13
+              "level": 13,
+              "moves": []
             }
           ],
           "important": false,
@@ -1680,15 +1789,18 @@
           "party": [
             {
               "species": "sandshrew",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1703,11 +1815,13 @@
           "party": [
             {
               "species": "zubat",
-              "level": 11
+              "level": 11,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 11
+              "level": 11,
+              "moves": []
             }
           ],
           "important": false,
@@ -1722,11 +1836,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "sandshrew",
-              "level": 13
+              "level": 13,
+              "moves": []
             }
           ],
           "important": false,
@@ -1789,15 +1905,18 @@
           "party": [
             {
               "species": "paras",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "paras",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "parasect",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -1872,19 +1991,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 17
+              "level": 17,
+              "moves": ["tackle", "sand-attack", "gust", "quick-attack"]
             },
             {
               "species": "abra",
-              "level": 16
+              "level": 16,
+              "moves": ["teleport"]
             },
             {
               "species": "rattata",
-              "level": 15
+              "level": 15,
+              "moves": ["tackle", "tail-whip", "quick-attack"]
             },
             {
               "species": "squirtle",
-              "level": 18
+              "level": 18,
+              "moves": ["tackle", "tail-whip", "withdraw", "water-gun"]
             }
           ],
           "important": true,
@@ -1896,19 +2019,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 17
+              "level": 17,
+              "moves": ["tackle", "sand-attack", "gust", "quick-attack"]
             },
             {
               "species": "abra",
-              "level": 16
+              "level": 16,
+              "moves": ["teleport"]
             },
             {
               "species": "rattata",
-              "level": 15
+              "level": 15,
+              "moves": ["tackle", "tail-whip", "quick-attack"]
             },
             {
               "species": "bulbasaur",
-              "level": 18
+              "level": 18,
+              "moves": ["sleep-powder", "poison-powder", "vine-whip", "leech-seed"]
             }
           ],
           "important": true,
@@ -1920,19 +2047,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 17
+              "level": 17,
+              "moves": ["tackle", "sand-attack", "gust", "quick-attack"]
             },
             {
               "species": "abra",
-              "level": 16
+              "level": 16,
+              "moves": ["teleport"]
             },
             {
               "species": "rattata",
-              "level": 15
+              "level": 15,
+              "moves": ["tackle", "tail-whip", "quick-attack"]
             },
             {
               "species": "charmander",
-              "level": 18
+              "level": 18,
+              "moves": ["metal-claw", "ember", "growl", "scratch"]
             }
           ],
           "important": true,
@@ -1944,11 +2075,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -1963,11 +2096,13 @@
           "party": [
             {
               "species": "staryu",
-              "level": 18
+              "level": 18,
+              "moves": ["tackle", "harden", "recover", "water-pulse"]
             },
             {
               "species": "starmie",
-              "level": 21
+              "level": 21,
+              "moves": ["swift", "recover", "rapid-spin", "water-pulse"]
             }
           ],
           "important": true,
@@ -1982,7 +2117,8 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -1997,11 +2133,13 @@
           "party": [
             {
               "species": "horsea",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 16
+              "level": 16,
+              "moves": []
             }
           ],
           "important": false,
@@ -2165,11 +2303,13 @@
           "party": [
             {
               "species": "sandshrew",
-              "level": 14
+              "level": 14,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -2184,19 +2324,23 @@
           "party": [
             {
               "species": "caterpie",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "weedle",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "metapod",
-              "level": 10
+              "level": 10,
+              "moves": []
             },
             {
               "species": "kakuna",
-              "level": 10
+              "level": 10,
+              "moves": []
             }
           ],
           "important": false,
@@ -2211,11 +2355,13 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "nidoran-f",
-              "level": 16
+              "level": 16,
+              "moves": []
             }
           ],
           "important": false,
@@ -2230,15 +2376,18 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 12
+              "level": 12,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 12
+              "level": 12,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 12
+              "level": 12,
+              "moves": []
             }
           ],
           "important": false,
@@ -2253,11 +2402,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 14
+              "level": 14,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -2272,7 +2423,8 @@
           "party": [
             {
               "species": "mankey",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -2287,11 +2439,13 @@
           "party": [
             {
               "species": "ekans",
-              "level": 15
+              "level": 15,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 15
+              "level": 15,
+              "moves": []
             }
           ],
           "important": false,
@@ -2355,11 +2509,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 15
+              "level": 15,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 15
+              "level": 15,
+              "moves": []
             }
           ],
           "important": false,
@@ -2374,7 +2530,8 @@
           "party": [
             {
               "species": "slowpoke",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -2389,11 +2546,13 @@
           "party": [
             {
               "species": "ekans",
-              "level": 14
+              "level": 14,
+              "moves": []
             },
             {
               "species": "sandshrew",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -2408,11 +2567,13 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 15
+              "level": 15,
+              "moves": []
             },
             {
               "species": "nidoran-f",
-              "level": 15
+              "level": 15,
+              "moves": []
             }
           ],
           "important": false,
@@ -2427,15 +2588,18 @@
           "party": [
             {
               "species": "oddish",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 13
+              "level": 13,
+              "moves": []
             }
           ],
           "important": false,
@@ -2450,11 +2614,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 15
+              "level": 15,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 15
+              "level": 15,
+              "moves": []
             }
           ],
           "important": false,
@@ -2469,19 +2635,23 @@
           "party": [
             {
               "species": "geodude",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 13
+              "level": 13,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 13
+              "level": 13,
+              "moves": []
             }
           ],
           "important": false,
@@ -2496,7 +2666,8 @@
           "party": [
             {
               "species": "onix",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -2511,11 +2682,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 14
+              "level": 14,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 14
+              "level": 14,
+              "moves": []
             }
           ],
           "important": false,
@@ -2662,15 +2835,18 @@
           "party": [
             {
               "species": "weedle",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "caterpie",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "weedle",
-              "level": 16
+              "level": 16,
+              "moves": []
             }
           ],
           "important": false,
@@ -2685,7 +2861,8 @@
           "party": [
             {
               "species": "butterfree",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -2700,7 +2877,8 @@
           "party": [
             {
               "species": "squirtle",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -2715,11 +2893,13 @@
           "party": [
             {
               "species": "spearow",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 16
+              "level": 16,
+              "moves": []
             }
           ],
           "important": false,
@@ -2734,11 +2914,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "pikachu",
-              "level": 16
+              "level": 16,
+              "moves": []
             }
           ],
           "important": false,
@@ -2753,15 +2935,18 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 16
+              "level": 16,
+              "moves": []
             }
           ],
           "important": false,
@@ -2919,11 +3104,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "nidoran-f",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -2938,7 +3125,8 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -2953,11 +3141,13 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "nidoran-f",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -2972,11 +3162,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -2991,19 +3183,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "wartortle",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": true,
@@ -3015,19 +3211,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "ivysaur",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": true,
@@ -3039,19 +3239,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 16
+              "level": 16,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "charmeleon",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": true,
@@ -3063,15 +3267,18 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3086,7 +3293,8 @@
           "party": [
             {
               "species": "pikachu",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -3101,11 +3309,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "ponyta",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3120,11 +3330,13 @@
           "party": [
             {
               "species": "rattata",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "pikachu",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3139,15 +3351,18 @@
           "party": [
             {
               "species": "tentacool",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "staryu",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3162,7 +3377,8 @@
           "party": [
             {
               "species": "machop",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -3177,11 +3393,13 @@
           "party": [
             {
               "species": "tentacool",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "staryu",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3196,15 +3414,18 @@
           "party": [
             {
               "species": "horsea",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3219,7 +3440,8 @@
           "party": [
             {
               "species": "shellder",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -3234,15 +3456,18 @@
           "party": [
             {
               "species": "horsea",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3257,11 +3482,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3276,11 +3503,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3295,15 +3524,18 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 21
+              "level": 21,
+              "moves": ["sonic-boom", "tackle", "screech", "shock-wave"]
             },
             {
               "species": "pikachu",
-              "level": 18
+              "level": 18,
+              "moves": ["quick-attack", "thunder-wave", "double-team", "shock-wave"]
             },
             {
               "species": "raichu",
-              "level": 24
+              "level": 24,
+              "moves": ["quick-attack", "thunder-wave", "double-team", "shock-wave"]
             }
           ],
           "important": true,
@@ -3318,11 +3550,13 @@
           "party": [
             {
               "species": "pikachu",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "pikachu",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -3337,11 +3571,13 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "magnemite",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -3356,7 +3592,8 @@
           "party": [
             {
               "species": "pikachu",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -3523,7 +3760,8 @@
           "party": [
             {
               "species": "ekans",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -3538,11 +3776,13 @@
           "party": [
             {
               "species": "sandshrew",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -3557,15 +3797,18 @@
           "party": [
             {
               "species": "rattata",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 17
+              "level": 17,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 17
+              "level": 17,
+              "moves": []
             }
           ],
           "important": false,
@@ -3580,11 +3823,13 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "nidorino",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3599,7 +3844,8 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -3614,15 +3860,18 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "magnemite",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "magneton",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3637,11 +3886,13 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3656,11 +3907,13 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3675,11 +3928,13 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "magnemite",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3694,11 +3949,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "vulpix",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3785,11 +4042,13 @@
           "party": [
             {
               "species": "beedrill",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "beedrill",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -3804,15 +4063,18 @@
           "party": [
             {
               "species": "caterpie",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "weedle",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "venonat",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -3827,11 +4089,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "charmander",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -3846,19 +4110,23 @@
           "party": [
             {
               "species": "rattata",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "sandshrew",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "sandshrew",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -3873,19 +4141,23 @@
           "party": [
             {
               "species": "oddish",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 18
+              "level": 18,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 18
+              "level": 18,
+              "moves": []
             }
           ],
           "important": false,
@@ -3900,7 +4172,8 @@
           "party": [
             {
               "species": "meowth",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -3915,11 +4188,13 @@
           "party": [
             {
               "species": "geodude",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             },
             {
               "species": "onix",
-              "level": 21
+              "level": 21,
+              "moves": ["harden", "rock-throw", "bind", "screech"]
             }
           ],
           "important": false,
@@ -3934,15 +4209,18 @@
           "party": [
             {
               "species": "geodude",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -3957,11 +4235,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "onix",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4040,11 +4320,13 @@
           "party": [
             {
               "species": "pikachu",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "clefairy",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4059,11 +4341,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "pidgeotto",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -4078,11 +4362,13 @@
           "party": [
             {
               "species": "rhyhorn",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "lickitung",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -4097,11 +4383,13 @@
           "party": [
             {
               "species": "cubone",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "slowpoke",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4116,11 +4404,13 @@
           "party": [
             {
               "species": "geodude",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             },
             {
               "species": "onix",
-              "level": 21
+              "level": 21,
+              "moves": ["harden", "rock-throw", "bind", "screech"]
             }
           ],
           "important": false,
@@ -4135,11 +4425,13 @@
           "party": [
             {
               "species": "onix",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "graveler",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -4226,19 +4518,23 @@
           "party": [
             {
               "species": "geodude",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -4253,15 +4549,18 @@
           "party": [
             {
               "species": "onix",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "onix",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "geodude",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4276,11 +4575,13 @@
           "party": [
             {
               "species": "geodude",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             },
             {
               "species": "graveler",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             }
           ],
           "important": false,
@@ -4295,11 +4596,13 @@
           "party": [
             {
               "species": "cubone",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "slowpoke",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -4314,11 +4617,13 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "clefairy",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -4333,19 +4638,23 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -4360,15 +4669,18 @@
           "party": [
             {
               "species": "meowth",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4383,15 +4695,18 @@
           "party": [
             {
               "species": "jigglypuff",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -4406,11 +4721,13 @@
           "party": [
             {
               "species": "oddish",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "bulbasaur",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -4425,15 +4742,18 @@
           "party": [
             {
               "species": "geodude",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             },
             {
               "species": "geodude",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             },
             {
               "species": "graveler",
-              "level": 21
+              "level": 21,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             }
           ],
           "important": false,
@@ -4448,7 +4768,8 @@
           "party": [
             {
               "species": "geodude",
-              "level": 25
+              "level": 25,
+              "moves": ["magnitude", "rock-throw", "mud-sport", "defense-curl"]
             }
           ],
           "important": false,
@@ -4463,11 +4784,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "onix",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4482,15 +4805,18 @@
           "party": [
             {
               "species": "slowpoke",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "slowpoke",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "slowpoke",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -4505,11 +4831,13 @@
           "party": [
             {
               "species": "charmander",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "cubone",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -4524,7 +4852,8 @@
           "party": [
             {
               "species": "slowpoke",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": false,
@@ -4768,23 +5097,28 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "exeggcute",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "wartortle",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": true,
@@ -4796,23 +5130,28 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "gyarados",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "ivysaur",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": true,
@@ -4824,23 +5163,28 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "exeggcute",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "gyarados",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "charmeleon",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": true,
@@ -4852,7 +5196,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -4867,7 +5212,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -4882,7 +5228,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -4897,7 +5244,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -4912,11 +5260,13 @@
           "party": [
             {
               "species": "gastly",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "gastly",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -4931,7 +5281,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -4946,7 +5297,8 @@
           "party": [
             {
               "species": "haunter",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -4961,7 +5313,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -4976,7 +5329,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -4991,7 +5345,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -5006,15 +5361,18 @@
           "party": [
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "gastly",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -5029,7 +5387,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5044,7 +5403,8 @@
           "party": [
             {
               "species": "gastly",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5059,15 +5419,18 @@
           "party": [
             {
               "species": "zubat",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "golbat",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": false,
@@ -5082,11 +5445,13 @@
           "party": [
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -5101,19 +5466,23 @@
           "party": [
             {
               "species": "zubat",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -5159,11 +5528,13 @@
           "party": [
             {
               "species": "nidoran-f",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "nidorina",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -5178,15 +5549,18 @@
           "party": [
             {
               "species": "meowth",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5201,23 +5575,28 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "nidoran-m",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "pikachu",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -5232,11 +5611,13 @@
           "party": [
             {
               "species": "clefairy",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "clefairy",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -5251,19 +5632,23 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 20
+              "level": 20,
+              "moves": ["sonic-boom", "screech", "tackle", "charge"]
             },
             {
               "species": "koffing",
-              "level": 20
+              "level": 20,
+              "moves": ["sludge", "smog", "tackle", "poison-gas"]
             },
             {
               "species": "voltorb",
-              "level": 20
+              "level": 20,
+              "moves": ["sonic-boom", "screech", "tackle", "charge"]
             },
             {
               "species": "magnemite",
-              "level": 20
+              "level": 20,
+              "moves": ["sonic-boom", "supersonic", "thunder-shock", "tackle"]
             }
           ],
           "important": false,
@@ -5278,15 +5663,18 @@
           "party": [
             {
               "species": "grimer",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "muk",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "grimer",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -5301,7 +5689,8 @@
           "party": [
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["sludge", "smokescreen", "smog", "self-destruct"]
             }
           ],
           "important": false,
@@ -5316,15 +5705,18 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "poliwag",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "poliwhirl",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -5339,11 +5731,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "vulpix",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5358,11 +5752,13 @@
           "party": [
             {
               "species": "clefairy",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "jigglypuff",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -5377,15 +5773,18 @@
           "party": [
             {
               "species": "koffing",
-              "level": 22
+              "level": 22,
+              "moves": ["sludge", "smog", "tackle", "poison-gas"]
             },
             {
               "species": "koffing",
-              "level": 22
+              "level": 22,
+              "moves": ["sludge", "smog", "tackle", "poison-gas"]
             },
             {
               "species": "grimer",
-              "level": 23
+              "level": 23,
+              "moves": ["minimize", "sludge", "disable", "pound"]
             }
           ],
           "important": false,
@@ -5400,11 +5799,13 @@
           "party": [
             {
               "species": "grimer",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "grimer",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5639,11 +6040,13 @@
           "party": [
             {
               "species": "raticate",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -5658,15 +6061,18 @@
           "party": [
             {
               "species": "victreebel",
-              "level": 29
+              "level": 29,
+              "moves": ["stun-spore", "acid", "poison-powder", "giga-drain"]
             },
             {
               "species": "tangela",
-              "level": 24
+              "level": 24,
+              "moves": ["poison-powder", "constrict", "ingrain", "giga-drain"]
             },
             {
               "species": "vileplume",
-              "level": 29
+              "level": 29,
+              "moves": ["sleep-powder", "acid", "stun-spore", "giga-drain"]
             }
           ],
           "important": true,
@@ -5681,11 +6087,13 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "weepinbell",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -5700,11 +6108,13 @@
           "party": [
             {
               "species": "oddish",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "gloom",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -5719,11 +6129,13 @@
           "party": [
             {
               "species": "bulbasaur",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "ivysaur",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5738,19 +6150,23 @@
           "party": [
             {
               "species": "oddish",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -5765,11 +6181,13 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "bellsprout",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5784,7 +6202,8 @@
           "party": [
             {
               "species": "exeggcute",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -5799,23 +6218,28 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 22
+              "level": 22,
+              "moves": ["wrap", "stun-spore", "poison-powder", "growth"]
             },
             {
               "species": "oddish",
-              "level": 22
+              "level": 22,
+              "moves": ["poison-powder", "stun-spore", "absorb", "sweet-scent"]
             },
             {
               "species": "weepinbell",
-              "level": 22
+              "level": 22,
+              "moves": ["vine-whip", "stun-spore", "poison-powder", "growth"]
             },
             {
               "species": "gloom",
-              "level": 22
+              "level": 22,
+              "moves": ["absorb", "stun-spore", "poison-powder", "sweet-scent"]
             },
             {
               "species": "ivysaur",
-              "level": 22
+              "level": 22,
+              "moves": ["razor-leaf", "sleep-powder", "vine-whip", "leech-seed"]
             }
           ],
           "important": false,
@@ -5830,11 +6254,13 @@
           "party": [
             {
               "species": "drowzee",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -5849,11 +6275,13 @@
           "party": [
             {
               "species": "raticate",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -5868,15 +6296,18 @@
           "party": [
             {
               "species": "grimer",
-              "level": 20
+              "level": 20,
+              "moves": ["minimize", "sludge", "disable", "harden"]
             },
             {
               "species": "koffing",
-              "level": 20
+              "level": 20,
+              "moves": ["smog", "tackle", "poison-gas"]
             },
             {
               "species": "koffing",
-              "level": 20
+              "level": 20,
+              "moves": ["smog", "tackle", "poison-gas"]
             }
           ],
           "important": false,
@@ -5891,19 +6322,23 @@
           "party": [
             {
               "species": "rattata",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 19
+              "level": 19,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 19
+              "level": 19,
+              "moves": []
             }
           ],
           "important": false,
@@ -5918,11 +6353,13 @@
           "party": [
             {
               "species": "grimer",
-              "level": 22
+              "level": 22,
+              "moves": ["minimize", "sludge", "disable", "harden"]
             },
             {
               "species": "koffing",
-              "level": 22
+              "level": 22,
+              "moves": ["sludge", "smog", "tackle", "poison-gas"]
             }
           ],
           "important": false,
@@ -5937,23 +6374,28 @@
           "party": [
             {
               "species": "zubat",
-              "level": 17
+              "level": 17,
+              "moves": ["bite", "astonish", "supersonic", "leech-life"]
             },
             {
               "species": "koffing",
-              "level": 17
+              "level": 17,
+              "moves": ["smog", "tackle", "poison-gas"]
             },
             {
               "species": "grimer",
-              "level": 17
+              "level": 17,
+              "moves": ["sludge", "disable", "harden", "pound"]
             },
             {
               "species": "zubat",
-              "level": 17
+              "level": 17,
+              "moves": ["bite", "astonish", "supersonic", "leech-life"]
             },
             {
               "species": "raticate",
-              "level": 17
+              "level": 17,
+              "moves": ["hyper-fang", "quick-attack", "tail-whip", "tackle"]
             }
           ],
           "important": false,
@@ -5968,15 +6410,18 @@
           "party": [
             {
               "species": "rattata",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 20
+              "level": 20,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 20
+              "level": 20,
+              "moves": []
             }
           ],
           "important": false,
@@ -5991,11 +6436,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -6010,15 +6457,18 @@
           "party": [
             {
               "species": "onix",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "rhyhorn",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "kangaskhan",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": true,
@@ -6033,11 +6483,13 @@
           "party": [
             {
               "species": "koffing",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -6052,15 +6504,18 @@
           "party": [
             {
               "species": "sandshrew",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "sandslash",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -6075,15 +6530,18 @@
           "party": [
             {
               "species": "ekans",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "sandshrew",
-              "level": 23
+              "level": 23,
+              "moves": []
             },
             {
               "species": "arbok",
-              "level": 23
+              "level": 23,
+              "moves": []
             }
           ],
           "important": false,
@@ -6514,11 +6972,13 @@
           "party": [
             {
               "species": "grimer",
-              "level": 29
+              "level": 29,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             },
             {
               "species": "koffing",
-              "level": 29
+              "level": 29,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -6533,7 +6993,8 @@
           "party": [
             {
               "species": "weezing",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -6548,15 +7009,18 @@
           "party": [
             {
               "species": "weezing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -6571,15 +7035,18 @@
           "party": [
             {
               "species": "machop",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "mankey",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -6594,11 +7061,13 @@
           "party": [
             {
               "species": "mankey",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -6613,11 +7082,13 @@
           "party": [
             {
               "species": "mankey",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -6632,11 +7103,13 @@
           "party": [
             {
               "species": "rapidash",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "ninetales",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -6731,7 +7204,8 @@
           "party": [
             {
               "species": "muk",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -6746,11 +7220,13 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 29
+              "level": 29,
+              "moves": ["spark", "sonic-boom", "screech", "charge"]
             },
             {
               "species": "voltorb",
-              "level": 29
+              "level": 29,
+              "moves": ["spark", "sonic-boom", "screech", "charge"]
             }
           ],
           "important": false,
@@ -6765,11 +7241,13 @@
           "party": [
             {
               "species": "weezing",
-              "level": 29
+              "level": 29,
+              "moves": ["sludge", "smokescreen", "smog", "tackle"]
             },
             {
               "species": "muk",
-              "level": 29
+              "level": 29,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             }
           ],
           "important": false,
@@ -6784,23 +7262,28 @@
           "party": [
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "self-destruct", "tackle"]
             }
           ],
           "important": false,
@@ -6815,11 +7298,13 @@
           "party": [
             {
               "species": "mankey",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "primeape",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -6834,11 +7319,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "machamp",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -6853,7 +7340,8 @@
           "party": [
             {
               "species": "machoke",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -6868,19 +7356,23 @@
           "party": [
             {
               "species": "mankey",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "mankey",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "machamp",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -6895,11 +7387,13 @@
           "party": [
             {
               "species": "primeape",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "machoke",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -6914,15 +7408,18 @@
           "party": [
             {
               "species": "weezing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -6992,11 +7489,13 @@
           "party": [
             {
               "species": "spearow",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -7011,7 +7510,8 @@
           "party": [
             {
               "species": "dodrio",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -7026,19 +7526,23 @@
           "party": [
             {
               "species": "spearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -7124,19 +7628,23 @@
           "party": [
             {
               "species": "koffing",
-              "level": 37
+              "level": 37,
+              "moves": ["self-destruct", "sludge", "smokescreen", "toxic"]
             },
             {
               "species": "muk",
-              "level": 39
+              "level": 39,
+              "moves": ["minimize", "sludge", "acid-armor", "toxic"]
             },
             {
               "species": "koffing",
-              "level": 37
+              "level": 37,
+              "moves": ["self-destruct", "sludge", "smokescreen", "toxic"]
             },
             {
               "species": "weezing",
-              "level": 43
+              "level": 43,
+              "moves": ["tackle", "sludge", "smokescreen", "toxic"]
             }
           ],
           "important": true,
@@ -7151,11 +7659,13 @@
           "party": [
             {
               "species": "sandslash",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "arbok",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -7170,15 +7680,18 @@
           "party": [
             {
               "species": "arbok",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "sandslash",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "arbok",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -7193,19 +7706,23 @@
           "party": [
             {
               "species": "drowzee",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -7220,11 +7737,13 @@
           "party": [
             {
               "species": "drowzee",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "hypno",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -7239,7 +7758,8 @@
           "party": [
             {
               "species": "hypno",
-              "level": 38
+              "level": 38,
+              "moves": []
             }
           ],
           "important": false,
@@ -7254,11 +7774,13 @@
           "party": [
             {
               "species": "drowzee",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -7722,15 +8244,18 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "poliwag",
-              "level": 22
+              "level": 22,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 22
+              "level": 22,
+              "moves": []
             }
           ],
           "important": false,
@@ -7745,11 +8270,13 @@
           "party": [
             {
               "species": "tentacool",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -7764,7 +8291,8 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -7779,19 +8307,23 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 21
+              "level": 21,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 21
+              "level": 21,
+              "moves": []
             }
           ],
           "important": false,
@@ -7806,11 +8338,13 @@
           "party": [
             {
               "species": "magikarp",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "magikarp",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -7825,11 +8359,13 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "electrode",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -7844,11 +8380,13 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "nidorino",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -7863,11 +8401,13 @@
           "party": [
             {
               "species": "nidoran-m",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "nidoran-f",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -7938,15 +8478,18 @@
           "party": [
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "poison-gas"]
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -7961,15 +8504,18 @@
           "party": [
             {
               "species": "rattata",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "pikachu",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -7984,11 +8530,13 @@
           "party": [
             {
               "species": "clefairy",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8003,11 +8551,13 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "pidgeotto",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8022,23 +8572,28 @@
           "party": [
             {
               "species": "spearow",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": false,
@@ -8053,19 +8608,23 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "pidgeotto",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -8080,15 +8639,18 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "poliwag",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -8103,23 +8665,28 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "pikachu",
-              "level": 24
+              "level": 24,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 24
+              "level": 24,
+              "moves": []
             }
           ],
           "important": false,
@@ -8134,11 +8701,13 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "poliwag",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -8153,19 +8722,23 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "meowth",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "pidgeotto",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -8228,11 +8801,13 @@
           "party": [
             {
               "species": "koffing",
-              "level": 29
+              "level": 29,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "grimer",
-              "level": 29
+              "level": 29,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             }
           ],
           "important": false,
@@ -8247,19 +8822,23 @@
           "party": [
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "grimer",
-              "level": 26
+              "level": 26,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             },
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -8274,15 +8853,18 @@
           "party": [
             {
               "species": "grimer",
-              "level": 28
+              "level": 28,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             },
             {
               "species": "grimer",
-              "level": 28
+              "level": 28,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -8297,11 +8879,13 @@
           "party": [
             {
               "species": "koffing",
-              "level": 29
+              "level": 29,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "muk",
-              "level": 29
+              "level": 29,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             }
           ],
           "important": false,
@@ -8316,7 +8900,8 @@
           "party": [
             {
               "species": "farfetchd",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -8331,11 +8916,13 @@
           "party": [
             {
               "species": "spearow",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8350,15 +8937,18 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "doduo",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "pidgeotto",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -8373,19 +8963,23 @@
           "party": [
             {
               "species": "pidgey",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "spearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -8400,11 +8994,13 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8419,15 +9015,18 @@
           "party": [
             {
               "species": "spearow",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "doduo",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -8442,11 +9041,13 @@
           "party": [
             {
               "species": "charmander",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "squirtle",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8493,23 +9094,28 @@
           "party": [
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "grimer",
-              "level": 25
+              "level": 25,
+              "moves": ["minimize", "sludge", "disable", "pound"]
             }
           ],
           "important": false,
@@ -8524,15 +9130,18 @@
           "party": [
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "grimer",
-              "level": 28
+              "level": 28,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             },
             {
               "species": "weezing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -8547,11 +9156,13 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "wigglytuff",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8566,11 +9177,13 @@
           "party": [
             {
               "species": "bulbasaur",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "ivysaur",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8585,19 +9198,23 @@
           "party": [
             {
               "species": "pidgeotto",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "farfetchd",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "doduo",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "pidgey",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -8612,15 +9229,18 @@
           "party": [
             {
               "species": "dodrio",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "doduo",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "doduo",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -8635,15 +9255,18 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "tangela",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8658,15 +9281,18 @@
           "party": [
             {
               "species": "gloom",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "oddish",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -8681,11 +9307,13 @@
           "party": [
             {
               "species": "pikachu",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "raichu",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8700,7 +9328,8 @@
           "party": [
             {
               "species": "clefairy",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -8715,11 +9344,13 @@
           "party": [
             {
               "species": "hitmonchan",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "hitmonlee",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8765,11 +9396,13 @@
           "party": [
             {
               "species": "tentacool",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -8784,15 +9417,18 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "staryu",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8807,11 +9443,13 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "poliwhirl",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -8826,19 +9464,23 @@
           "party": [
             {
               "species": "horsea",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -8853,15 +9495,18 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8876,11 +9521,13 @@
           "party": [
             {
               "species": "horsea",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -8895,23 +9542,28 @@
           "party": [
             {
               "species": "tentacool",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "staryu",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "tentacruel",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -8926,23 +9578,28 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "poliwag",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -8957,11 +9614,13 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -8976,15 +9635,18 @@
           "party": [
             {
               "species": "staryu",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "staryu",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "staryu",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -8999,11 +9661,13 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -9042,11 +9706,13 @@
           "party": [
             {
               "species": "shellder",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "cloyster",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -9061,7 +9727,8 @@
           "party": [
             {
               "species": "staryu",
-              "level": 35
+              "level": 35,
+              "moves": []
             }
           ],
           "important": false,
@@ -9076,19 +9743,23 @@
           "party": [
             {
               "species": "horsea",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "seadra",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -9103,7 +9774,8 @@
           "party": [
             {
               "species": "seaking",
-              "level": 35
+              "level": 35,
+              "moves": []
             }
           ],
           "important": false,
@@ -9118,15 +9790,18 @@
           "party": [
             {
               "species": "shellder",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "shellder",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "cloyster",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -9141,11 +9816,13 @@
           "party": [
             {
               "species": "poliwag",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -9160,15 +9837,18 @@
           "party": [
             {
               "species": "seadra",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "seadra",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -9183,15 +9863,18 @@
           "party": [
             {
               "species": "fearow",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "fearow",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "pidgeotto",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -9206,11 +9889,13 @@
           "party": [
             {
               "species": "goldeen",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -9225,15 +9910,18 @@
           "party": [
             {
               "species": "tentacool",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "horsea",
-              "level": 30
+              "level": 30,
+              "moves": []
             },
             {
               "species": "seel",
-              "level": 30
+              "level": 30,
+              "moves": []
             }
           ],
           "important": false,
@@ -9476,19 +10164,23 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 42
+              "level": 42,
+              "moves": ["bite", "roar", "take-down", "fire-blast"]
             },
             {
               "species": "ponyta",
-              "level": 40
+              "level": 40,
+              "moves": ["stomp", "bounce", "fire-spin", "fire-blast"]
             },
             {
               "species": "rapidash",
-              "level": 42
+              "level": 42,
+              "moves": ["stomp", "bounce", "fire-spin", "fire-blast"]
             },
             {
               "species": "arcanine",
-              "level": 47
+              "level": 47,
+              "moves": ["bite", "roar", "take-down", "fire-blast"]
             }
           ],
           "important": true,
@@ -9503,15 +10195,18 @@
           "party": [
             {
               "species": "vulpix",
-              "level": 36
+              "level": 36,
+              "moves": []
             },
             {
               "species": "vulpix",
-              "level": 36
+              "level": 36,
+              "moves": []
             },
             {
               "species": "ninetales",
-              "level": 36
+              "level": 36,
+              "moves": []
             }
           ],
           "important": false,
@@ -9526,19 +10221,23 @@
           "party": [
             {
               "species": "ponyta",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "charmander",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "vulpix",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -9553,7 +10252,8 @@
           "party": [
             {
               "species": "rapidash",
-              "level": 41
+              "level": 41,
+              "moves": []
             }
           ],
           "important": false,
@@ -9568,11 +10268,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "vulpix",
-              "level": 37
+              "level": 37,
+              "moves": []
             }
           ],
           "important": false,
@@ -9587,15 +10289,18 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 36
+              "level": 36,
+              "moves": []
             },
             {
               "species": "vulpix",
-              "level": 36
+              "level": 36,
+              "moves": []
             },
             {
               "species": "ninetales",
-              "level": 36
+              "level": 36,
+              "moves": []
             }
           ],
           "important": false,
@@ -9610,7 +10315,8 @@
           "party": [
             {
               "species": "ponyta",
-              "level": 41
+              "level": 41,
+              "moves": []
             }
           ],
           "important": false,
@@ -9625,11 +10331,13 @@
           "party": [
             {
               "species": "vulpix",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 37
+              "level": 37,
+              "moves": []
             }
           ],
           "important": false,
@@ -9644,11 +10352,13 @@
           "party": [
             {
               "species": "electrode",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "weezing",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -9663,15 +10373,18 @@
           "party": [
             {
               "species": "ekans",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -9686,11 +10399,13 @@
           "party": [
             {
               "species": "charmander",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "charmeleon",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -9705,7 +10420,8 @@
           "party": [
             {
               "species": "ninetales",
-              "level": 38
+              "level": 38,
+              "moves": []
             }
           ],
           "important": false,
@@ -9720,15 +10436,18 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "magneton",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "voltorb",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -9743,11 +10462,13 @@
           "party": [
             {
               "species": "growlithe",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "ponyta",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -9762,11 +10483,13 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "electrode",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -9925,19 +10648,23 @@
           "party": [
             {
               "species": "seaking",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "seaking",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -9952,27 +10679,33 @@
           "party": [
             {
               "species": "magikarp",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "magikarp",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "magikarp",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "magikarp",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "magikarp",
-              "level": 27
+              "level": 27,
+              "moves": []
             },
             {
               "species": "magikarp",
-              "level": 27
+              "level": 27,
+              "moves": []
             }
           ],
           "important": false,
@@ -9987,11 +10720,13 @@
           "party": [
             {
               "species": "seadra",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "tentacruel",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -10006,11 +10741,13 @@
           "party": [
             {
               "species": "seadra",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "starmie",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -10025,11 +10762,13 @@
           "party": [
             {
               "species": "shellder",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "cloyster",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -10044,11 +10783,13 @@
           "party": [
             {
               "species": "seaking",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "goldeen",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -10063,7 +10804,8 @@
           "party": [
             {
               "species": "starmie",
-              "level": 37
+              "level": 37,
+              "moves": []
             }
           ],
           "important": false,
@@ -10078,11 +10820,13 @@
           "party": [
             {
               "species": "staryu",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "wartortle",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -10097,15 +10841,18 @@
           "party": [
             {
               "species": "poliwhirl",
-              "level": 32
+              "level": 32,
+              "moves": []
             },
             {
               "species": "tentacool",
-              "level": 32
+              "level": 32,
+              "moves": []
             },
             {
               "species": "seadra",
-              "level": 32
+              "level": 32,
+              "moves": []
             }
           ],
           "important": false,
@@ -10286,23 +11033,28 @@
           "party": [
             {
               "species": "persian",
-              "level": 42
+              "level": 42,
+              "moves": ["fury-swipes", "screech", "feint-attack", "pay-day"]
             },
             {
               "species": "ponyta",
-              "level": 42
+              "level": 42,
+              "moves": ["agility", "take-down", "fire-spin", "stomp"]
             },
             {
               "species": "rapidash",
-              "level": 42
+              "level": 42,
+              "moves": ["fury-attack", "fire-spin", "stomp", "growl"]
             },
             {
               "species": "vulpix",
-              "level": 42
+              "level": 42,
+              "moves": ["flamethrower", "confuse-ray", "quick-attack", "imprison"]
             },
             {
               "species": "ninetales",
-              "level": 42
+              "level": 42,
+              "moves": ["safeguard", "will-o-wisp", "confuse-ray", "fire-spin"]
             }
           ],
           "important": false,
@@ -10317,23 +11069,28 @@
           "party": [
             {
               "species": "raticate",
-              "level": 42
+              "level": 42,
+              "moves": ["super-fang", "pursuit", "scary-face", "quick-attack"]
             },
             {
               "species": "ivysaur",
-              "level": 42
+              "level": 42,
+              "moves": ["razor-leaf", "sleep-powder", "sweet-scent", "synthesis"]
             },
             {
               "species": "wartortle",
-              "level": 42
+              "level": 42,
+              "moves": ["water-gun", "bite", "rapid-spin", "tail-whip"]
             },
             {
               "species": "charmeleon",
-              "level": 42
+              "level": 42,
+              "moves": ["flamethrower", "slash", "smokescreen", "scary-face"]
             },
             {
               "species": "charizard",
-              "level": 42
+              "level": 42,
+              "moves": ["flamethrower", "wing-attack", "smokescreen", "scary-face"]
             }
           ],
           "important": false,
@@ -10348,15 +11105,18 @@
           "party": [
             {
               "species": "charmeleon",
-              "level": 40
+              "level": 40,
+              "moves": []
             },
             {
               "species": "lapras",
-              "level": 40
+              "level": 40,
+              "moves": []
             },
             {
               "species": "lickitung",
-              "level": 40
+              "level": 40,
+              "moves": []
             }
           ],
           "important": false,
@@ -10371,15 +11131,18 @@
           "party": [
             {
               "species": "machoke",
-              "level": 43
+              "level": 43,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 43
+              "level": 43,
+              "moves": []
             },
             {
               "species": "machoke",
-              "level": 43
+              "level": 43,
+              "moves": []
             }
           ],
           "important": false,
@@ -10394,19 +11157,23 @@
           "party": [
             {
               "species": "drowzee",
-              "level": 41
+              "level": 41,
+              "moves": []
             },
             {
               "species": "hypno",
-              "level": 41
+              "level": 41,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 41
+              "level": 41,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 41
+              "level": 41,
+              "moves": []
             }
           ],
           "important": false,
@@ -10421,7 +11188,8 @@
           "party": [
             {
               "species": "mr-mime",
-              "level": 48
+              "level": 48,
+              "moves": ["psychic", "role-play", "double-slap", "encore"]
             }
           ],
           "important": false,
@@ -10436,11 +11204,13 @@
           "party": [
             {
               "species": "persian",
-              "level": 44
+              "level": 44,
+              "moves": []
             },
             {
               "species": "golduck",
-              "level": 44
+              "level": 44,
+              "moves": []
             }
           ],
           "important": false,
@@ -10455,23 +11225,28 @@
           "party": [
             {
               "species": "exeggutor",
-              "level": 42
+              "level": 42,
+              "moves": ["egg-bomb", "confusion", "stun-spore", "sleep-powder"]
             },
             {
               "species": "sandslash",
-              "level": 42
+              "level": 42,
+              "moves": ["fury-swipes", "swift", "poison-sting", "sand-attack"]
             },
             {
               "species": "cloyster",
-              "level": 42
+              "level": 42,
+              "moves": ["spike-cannon", "spikes", "aurora-beam", "supersonic"]
             },
             {
               "species": "electrode",
-              "level": 42
+              "level": 42,
+              "moves": ["spark", "sonic-boom", "screech", "light-screen"]
             },
             {
               "species": "arcanine",
-              "level": 42
+              "level": 42,
+              "moves": ["flame-wheel", "roar", "bite", "take-down"]
             }
           ],
           "important": false,
@@ -10486,23 +11261,28 @@
           "party": [
             {
               "species": "kingler",
-              "level": 41
+              "level": 41,
+              "moves": ["guillotine", "stomp", "mud-shot", "bubble"]
             },
             {
               "species": "poliwhirl",
-              "level": 42
+              "level": 42,
+              "moves": ["body-slam", "double-slap", "water-gun", "hypnosis"]
             },
             {
               "species": "tentacruel",
-              "level": 42
+              "level": 42,
+              "moves": ["barrier", "wrap", "bubble-beam", "acid"]
             },
             {
               "species": "seadra",
-              "level": 42
+              "level": 42,
+              "moves": ["water-gun", "smokescreen", "twister", "leer"]
             },
             {
               "species": "blastoise",
-              "level": 43
+              "level": 43,
+              "moves": ["water-gun", "bite", "rapid-spin", "rain-dance"]
             }
           ],
           "important": false,
@@ -10517,23 +11297,28 @@
           "party": [
             {
               "species": "bellsprout",
-              "level": 42
+              "level": 42,
+              "moves": ["razor-leaf", "acid", "stun-spore", "poison-powder"]
             },
             {
               "species": "weepinbell",
-              "level": 42
+              "level": 42,
+              "moves": ["razor-leaf", "acid", "sleep-powder", "poison-powder"]
             },
             {
               "species": "victreebel",
-              "level": 42
+              "level": 42,
+              "moves": ["razor-leaf", "acid", "stun-spore", "sleep-powder"]
             },
             {
               "species": "paras",
-              "level": 42
+              "level": 42,
+              "moves": ["growth", "slash", "leech-life", "stun-spore"]
             },
             {
               "species": "parasect",
-              "level": 42
+              "level": 42,
+              "moves": ["spore", "slash", "leech-life", "poison-powder"]
             }
           ],
           "important": false,
@@ -10548,23 +11333,28 @@
           "party": [
             {
               "species": "clefairy",
-              "level": 42
+              "level": 42,
+              "moves": ["light-screen", "cosmic-power", "double-slap", "encore"]
             },
             {
               "species": "jigglypuff",
-              "level": 42
+              "level": 42,
+              "moves": ["sing", "body-slam", "rollout", "disable"]
             },
             {
               "species": "persian",
-              "level": 42
+              "level": 42,
+              "moves": ["pay-day", "feint-attack", "bite", "screech"]
             },
             {
               "species": "dewgong",
-              "level": 42
+              "level": 42,
+              "moves": ["sheer-cold", "take-down", "rest", "aurora-beam"]
             },
             {
               "species": "chansey",
-              "level": 42
+              "level": 42,
+              "moves": ["sing", "egg-bomb", "soft-boiled", "minimize"]
             }
           ],
           "important": false,
@@ -10579,11 +11369,13 @@
           "party": [
             {
               "species": "nidoqueen",
-              "level": 45
+              "level": 45,
+              "moves": ["superpower", "body-slam", "double-kick", "poison-sting"]
             },
             {
               "species": "nidoking",
-              "level": 45
+              "level": 45,
+              "moves": ["megahorn", "thrash", "double-kick", "poison-sting"]
             }
           ],
           "important": false,
@@ -10604,23 +11396,28 @@
           "party": [
             {
               "species": "gengar",
-              "level": 54
+              "level": 54,
+              "moves": ["shadow-punch", "confuse-ray", "toxic", "double-team"]
             },
             {
               "species": "golbat",
-              "level": 54
+              "level": 54,
+              "moves": ["confuse-ray", "poison-fang", "air-cutter", "bite"]
             },
             {
               "species": "haunter",
-              "level": 53
+              "level": 53,
+              "moves": ["hypnosis", "dream-eater", "curse", "mean-look"]
             },
             {
               "species": "arbok",
-              "level": 56
+              "level": 56,
+              "moves": ["sludge-bomb", "screech", "iron-tail", "bite"]
             },
             {
               "species": "gengar",
-              "level": 58
+              "level": 58,
+              "moves": ["shadow-ball", "sludge-bomb", "hypnosis", "nightmare"]
             }
           ],
           "important": true,
@@ -10632,23 +11429,28 @@
           "party": [
             {
               "species": "onix",
-              "level": 51
+              "level": 51,
+              "moves": ["earthquake", "rock-tomb", "iron-tail", "roar"]
             },
             {
               "species": "hitmonchan",
-              "level": 53
+              "level": 53,
+              "moves": ["sky-uppercut", "mach-punch", "rock-tomb", "counter"]
             },
             {
               "species": "hitmonlee",
-              "level": 53
+              "level": 53,
+              "moves": ["mega-kick", "foresight", "brick-break", "facade"]
             },
             {
               "species": "onix",
-              "level": 54
+              "level": 54,
+              "moves": ["double-edge", "earthquake", "iron-tail", "sand-tomb"]
             },
             {
               "species": "machamp",
-              "level": 56
+              "level": 56,
+              "moves": ["cross-chop", "bulk-up", "scary-face", "rock-tomb"]
             }
           ],
           "important": true,
@@ -10660,27 +11462,33 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 59
+              "level": 59,
+              "moves": ["aerial-ace", "feather-dance", "sand-attack", "whirlwind"]
             },
             {
               "species": "alakazam",
-              "level": 57
+              "level": 57,
+              "moves": ["psychic", "future-sight", "recover", "reflect"]
             },
             {
               "species": "rhydon",
-              "level": 59
+              "level": 59,
+              "moves": ["take-down", "earthquake", "rock-tomb", "scary-face"]
             },
             {
               "species": "arcanine",
-              "level": 59
+              "level": 59,
+              "moves": ["extreme-speed", "flamethrower", "roar", "bite"]
             },
             {
               "species": "exeggutor",
-              "level": 61
+              "level": 61,
+              "moves": ["giga-drain", "egg-bomb", "sleep-powder", "light-screen"]
             },
             {
               "species": "blastoise",
-              "level": 63
+              "level": 63,
+              "moves": ["hydro-pump", "rain-dance", "skull-bash", "bite"]
             }
           ],
           "important": true,
@@ -10692,27 +11500,33 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 59
+              "level": 59,
+              "moves": ["aerial-ace", "feather-dance", "sand-attack", "whirlwind"]
             },
             {
               "species": "alakazam",
-              "level": 57
+              "level": 57,
+              "moves": ["psychic", "future-sight", "recover", "reflect"]
             },
             {
               "species": "rhydon",
-              "level": 59
+              "level": 59,
+              "moves": ["take-down", "earthquake", "rock-tomb", "scary-face"]
             },
             {
               "species": "gyarados",
-              "level": 59
+              "level": 59,
+              "moves": ["hydro-pump", "dragon-rage", "bite", "thrash"]
             },
             {
               "species": "arcanine",
-              "level": 61
+              "level": 61,
+              "moves": ["extreme-speed", "flamethrower", "roar", "bite"]
             },
             {
               "species": "venusaur",
-              "level": 63
+              "level": 63,
+              "moves": ["solar-beam", "synthesis", "sunny-day", "growth"]
             }
           ],
           "important": true,
@@ -10724,27 +11538,33 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 59
+              "level": 59,
+              "moves": ["aerial-ace", "feather-dance", "sand-attack", "whirlwind"]
             },
             {
               "species": "alakazam",
-              "level": 57
+              "level": 57,
+              "moves": ["psychic", "future-sight", "recover", "reflect"]
             },
             {
               "species": "rhydon",
-              "level": 59
+              "level": 59,
+              "moves": ["take-down", "earthquake", "rock-tomb", "scary-face"]
             },
             {
               "species": "exeggutor",
-              "level": 59
+              "level": 59,
+              "moves": ["giga-drain", "egg-bomb", "sleep-powder", "light-screen"]
             },
             {
               "species": "gyarados",
-              "level": 61
+              "level": 61,
+              "moves": ["hydro-pump", "dragon-rage", "bite", "thrash"]
             },
             {
               "species": "charizard",
-              "level": 63
+              "level": 63,
+              "moves": ["fire-blast", "aerial-ace", "slash", "fire-spin"]
             }
           ],
           "important": true,
@@ -10756,23 +11576,28 @@
           "party": [
             {
               "species": "gyarados",
-              "level": 56
+              "level": 56,
+              "moves": ["hyper-beam", "dragon-rage", "twister", "bite"]
             },
             {
               "species": "dragonair",
-              "level": 54
+              "level": 54,
+              "moves": ["hyper-beam", "safeguard", "dragon-rage", "outrage"]
             },
             {
               "species": "dragonair",
-              "level": 54
+              "level": 54,
+              "moves": ["hyper-beam", "safeguard", "thunder-wave", "outrage"]
             },
             {
               "species": "aerodactyl",
-              "level": 58
+              "level": 58,
+              "moves": ["hyper-beam", "ancient-power", "wing-attack", "scary-face"]
             },
             {
               "species": "dragonite",
-              "level": 60
+              "level": 60,
+              "moves": ["hyper-beam", "safeguard", "outrage", "wing-attack"]
             }
           ],
           "important": true,
@@ -10784,23 +11609,28 @@
           "party": [
             {
               "species": "dewgong",
-              "level": 52
+              "level": 52,
+              "moves": ["ice-beam", "surf", "hail", "safeguard"]
             },
             {
               "species": "cloyster",
-              "level": 51
+              "level": 51,
+              "moves": ["spikes", "protect", "hail", "dive"]
             },
             {
               "species": "slowbro",
-              "level": 52
+              "level": 52,
+              "moves": ["ice-beam", "surf", "amnesia", "yawn"]
             },
             {
               "species": "jynx",
-              "level": 54
+              "level": 54,
+              "moves": ["ice-punch", "double-slap", "lovely-kiss", "attract"]
             },
             {
               "species": "lapras",
-              "level": 54
+              "level": 54,
+              "moves": ["confuse-ray", "ice-beam", "surf", "body-slam"]
             }
           ],
           "important": true,
@@ -11080,15 +11910,18 @@
           "party": [
             {
               "species": "machop",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "mankey",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "primeape",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -11103,11 +11936,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 32
+              "level": 32,
+              "moves": []
             },
             {
               "species": "machoke",
-              "level": 32
+              "level": 32,
+              "moves": []
             }
           ],
           "important": false,
@@ -11122,7 +11957,8 @@
           "party": [
             {
               "species": "primeape",
-              "level": 36
+              "level": 36,
+              "moves": []
             }
           ],
           "important": false,
@@ -11137,15 +11973,18 @@
           "party": [
             {
               "species": "mankey",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "mankey",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "primeape",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -11160,11 +11999,13 @@
           "party": [
             {
               "species": "hitmonlee",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "hitmonchan",
-              "level": 37
+              "level": 37,
+              "moves": []
             }
           ],
           "important": false,
@@ -11179,19 +12020,23 @@
           "party": [
             {
               "species": "kadabra",
-              "level": 38
+              "level": 38,
+              "moves": ["psybeam", "reflect", "future-sight", "calm-mind"]
             },
             {
               "species": "mr-mime",
-              "level": 37
+              "level": 37,
+              "moves": ["barrier", "psybeam", "baton-pass", "calm-mind"]
             },
             {
               "species": "venomoth",
-              "level": 38
+              "level": 38,
+              "moves": ["psybeam", "gust", "leech-life", "supersonic"]
             },
             {
               "species": "alakazam",
-              "level": 43
+              "level": 43,
+              "moves": ["psychic", "recover", "future-sight", "calm-mind"]
             }
           ],
           "important": true,
@@ -11206,19 +12051,23 @@
           "party": [
             {
               "species": "kadabra",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "slowpoke",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "mr-mime",
-              "level": 31
+              "level": 31,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 31
+              "level": 31,
+              "moves": []
             }
           ],
           "important": false,
@@ -11233,11 +12082,13 @@
           "party": [
             {
               "species": "mr-mime",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "kadabra",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -11252,15 +12103,18 @@
           "party": [
             {
               "species": "slowpoke",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "slowpoke",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "slowbro",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -11275,7 +12129,8 @@
           "party": [
             {
               "species": "slowbro",
-              "level": 38
+              "level": 38,
+              "moves": []
             }
           ],
           "important": false,
@@ -11290,11 +12145,13 @@
           "party": [
             {
               "species": "gastly",
-              "level": 34
+              "level": 34,
+              "moves": []
             },
             {
               "species": "haunter",
-              "level": 34
+              "level": 34,
+              "moves": []
             }
           ],
           "important": false,
@@ -11309,7 +12166,8 @@
           "party": [
             {
               "species": "haunter",
-              "level": 38
+              "level": 38,
+              "moves": []
             }
           ],
           "important": false,
@@ -11324,15 +12182,18 @@
           "party": [
             {
               "species": "gastly",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "gastly",
-              "level": 33
+              "level": 33,
+              "moves": []
             },
             {
               "species": "haunter",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -11347,11 +12208,13 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "koffing",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11366,7 +12229,8 @@
           "party": [
             {
               "species": "machoke",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -11381,19 +12245,23 @@
           "party": [
             {
               "species": "nidorino",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "kangaskhan",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "rhyhorn",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "nidoqueen",
-              "level": 41
+              "level": 41,
+              "moves": []
             }
           ],
           "important": true,
@@ -11405,23 +12273,28 @@
           "party": [
             {
               "species": "rattata",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "ekans",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": false,
@@ -11436,15 +12309,18 @@
           "party": [
             {
               "species": "cubone",
-              "level": 32
+              "level": 32,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 32
+              "level": 32,
+              "moves": []
             },
             {
               "species": "marowak",
-              "level": 32
+              "level": 32,
+              "moves": []
             }
           ],
           "important": false,
@@ -11459,19 +12335,23 @@
           "party": [
             {
               "species": "grimer",
-              "level": 26
+              "level": 26,
+              "moves": ["screech", "minimize", "sludge", "disable"]
             },
             {
               "species": "weezing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "self-destruct"]
             },
             {
               "species": "weezing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -11486,15 +12366,18 @@
           "party": [
             {
               "species": "magnemite",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "voltorb",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "magneton",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -11509,11 +12392,13 @@
           "party": [
             {
               "species": "cubone",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11528,23 +12413,28 @@
           "party": [
             {
               "species": "golbat",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 25
+              "level": 25,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 25
+              "level": 25,
+              "moves": []
             }
           ],
           "important": false,
@@ -11559,11 +12449,13 @@
           "party": [
             {
               "species": "electrode",
-              "level": 29
+              "level": 29,
+              "moves": ["spark", "sonic-boom", "screech", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 29
+              "level": 29,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             }
           ],
           "important": false,
@@ -11578,15 +12470,18 @@
           "party": [
             {
               "species": "raticate",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "hypno",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "raticate",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -11601,7 +12496,8 @@
           "party": [
             {
               "species": "electrode",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -11616,11 +12512,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11635,15 +12533,18 @@
           "party": [
             {
               "species": "ekans",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "cubone",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -11658,19 +12559,23 @@
           "party": [
             {
               "species": "magneton",
-              "level": 26
+              "level": 26,
+              "moves": ["spark", "thunder-wave", "sonic-boom", "supersonic"]
             },
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "weezing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "magnemite",
-              "level": 26
+              "level": 26,
+              "moves": ["spark", "thunder-wave", "sonic-boom", "supersonic"]
             }
           ],
           "important": false,
@@ -11685,7 +12590,8 @@
           "party": [
             {
               "species": "arbok",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -11700,7 +12606,8 @@
           "party": [
             {
               "species": "hypno",
-              "level": 33
+              "level": 33,
+              "moves": []
             }
           ],
           "important": false,
@@ -11715,11 +12622,13 @@
           "party": [
             {
               "species": "kadabra",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "mr-mime",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11734,23 +12643,28 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 25
+              "level": 25,
+              "moves": ["spark", "sonic-boom", "screech", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "magneton",
-              "level": 25
+              "level": 25,
+              "moves": ["thunder-wave", "sonic-boom", "supersonic", "thunder-shock"]
             },
             {
               "species": "magnemite",
-              "level": 25
+              "level": 25,
+              "moves": ["thunder-wave", "sonic-boom", "supersonic", "thunder-shock"]
             },
             {
               "species": "koffing",
-              "level": 25
+              "level": 25,
+              "moves": ["smokescreen", "sludge", "smog", "self-destruct"]
             }
           ],
           "important": false,
@@ -11765,11 +12679,13 @@
           "party": [
             {
               "species": "machop",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "machoke",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11784,15 +12700,18 @@
           "party": [
             {
               "species": "zubat",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "golbat",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -11807,23 +12726,28 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 38
+              "level": 38,
+              "moves": []
             },
             {
               "species": "exeggcute",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "alakazam",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "blastoise",
-              "level": 40
+              "level": 40,
+              "moves": []
             }
           ],
           "important": true,
@@ -11835,23 +12759,28 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "gyarados",
-              "level": 38
+              "level": 38,
+              "moves": []
             },
             {
               "species": "growlithe",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "alakazam",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "venusaur",
-              "level": 40
+              "level": 40,
+              "moves": []
             }
           ],
           "important": true,
@@ -11863,23 +12792,28 @@
           "party": [
             {
               "species": "pidgeot",
-              "level": 37
+              "level": 37,
+              "moves": []
             },
             {
               "species": "exeggcute",
-              "level": 38
+              "level": 38,
+              "moves": []
             },
             {
               "species": "gyarados",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "alakazam",
-              "level": 35
+              "level": 35,
+              "moves": []
             },
             {
               "species": "charizard",
-              "level": 40
+              "level": 40,
+              "moves": []
             }
           ],
           "important": true,
@@ -11891,11 +12825,13 @@
           "party": [
             {
               "species": "electrode",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "muk",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11910,11 +12846,13 @@
           "party": [
             {
               "species": "cubone",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "cubone",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11929,11 +12867,13 @@
           "party": [
             {
               "species": "sandshrew",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "sandslash",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11948,19 +12888,23 @@
           "party": [
             {
               "species": "raticate",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "zubat",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "golbat",
-              "level": 26
+              "level": 26,
+              "moves": []
             },
             {
               "species": "rattata",
-              "level": 26
+              "level": 26,
+              "moves": []
             }
           ],
           "important": false,
@@ -11975,11 +12919,13 @@
           "party": [
             {
               "species": "grimer",
-              "level": 29
+              "level": 29,
+              "moves": []
             },
             {
               "species": "electrode",
-              "level": 29
+              "level": 29,
+              "moves": []
             }
           ],
           "important": false,
@@ -11994,19 +12940,23 @@
           "party": [
             {
               "species": "raticate",
-              "level": 26
+              "level": 26,
+              "moves": ["scary-face", "hyper-fang", "quick-attack", "tail-whip"]
             },
             {
               "species": "arbok",
-              "level": 26
+              "level": 26,
+              "moves": ["glare", "bite", "poison-sting", "leer"]
             },
             {
               "species": "koffing",
-              "level": 26
+              "level": 26,
+              "moves": ["smokescreen", "sludge", "smog", "tackle"]
             },
             {
               "species": "golbat",
-              "level": 26
+              "level": 26,
+              "moves": ["wing-attack", "bite", "astonish", "supersonic"]
             }
           ],
           "important": false,
@@ -12021,15 +12971,18 @@
           "party": [
             {
               "species": "weezing",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "golbat",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -12044,15 +12997,18 @@
           "party": [
             {
               "species": "voltorb",
-              "level": 28
+              "level": 28,
+              "moves": ["spark", "sonic-boom", "screech", "tackle"]
             },
             {
               "species": "koffing",
-              "level": 28
+              "level": 28,
+              "moves": ["smokescreen", "sludge", "tackle", "smog"]
             },
             {
               "species": "magneton",
-              "level": 28
+              "level": 28,
+              "moves": ["spark", "thunder-wave", "sonic-boom", "supersonic"]
             }
           ],
           "important": false,
@@ -12067,15 +13023,18 @@
           "party": [
             {
               "species": "drowzee",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "grimer",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "machop",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,
@@ -12090,15 +13049,18 @@
           "party": [
             {
               "species": "golbat",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "drowzee",
-              "level": 28
+              "level": 28,
+              "moves": []
             },
             {
               "species": "hypno",
-              "level": 28
+              "level": 28,
+              "moves": []
             }
           ],
           "important": false,

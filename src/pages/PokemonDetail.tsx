@@ -6,9 +6,9 @@
  *   Prev/Next 40px strip · MISSINGNO 404 · loading skeletons
  * Direct loads crossfade in (400ms — shared-element morph fallback, §6.2-3). */
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
 import { getPokemon, getSpecies, pokemonTypes } from '@/lib/pokeapi';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
@@ -21,6 +21,7 @@ import MovesPanel from './detail/MovesPanel';
 import PrevNextStrip from './detail/PrevNextStrip';
 import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
+import VersusPanel from './detail/VersusPanel';
 import WhereToFind from './detail/WhereToFind';
 import { Panel } from './detail/ui';
 import { typeRgb } from './detail/data';
@@ -75,6 +76,36 @@ export default function PokemonDetail() {
   const secondary = types[1];
   const legendary = Boolean(species?.is_legendary || species?.is_mythical);
 
+  /* ---------- VERSUS tab + ?vs=<id> deep link (versus.md UI 1) ---------- */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const vsParam = searchParams.get('vs');
+  const [tab, setTab] = useState<'overview' | 'versus'>(vsParam ? 'versus' : 'overview');
+
+  /* external ?vs= changes (shared link paste / back-forward) open the tab */
+  const [prevVs, setPrevVs] = useState(vsParam);
+  if (vsParam !== prevVs) {
+    setPrevVs(vsParam);
+    if (vsParam) setTab('versus');
+  }
+
+  const switchTab = (t: 'overview' | 'versus') => {
+    setTab(t);
+    if (t === 'overview' && vsParam) {
+      const next = new URLSearchParams(searchParams);
+      next.delete('vs');
+      setSearchParams(next, { replace: true });
+    }
+  };
+
+  const writeOpponent = (id: number | null) => {
+    const cur = searchParams.get('vs');
+    if ((id ? String(id) : null) === cur) return;
+    const next = new URLSearchParams(searchParams);
+    if (id) next.set('vs', String(id));
+    else next.delete('vs');
+    setSearchParams(next, { replace: true });
+  };
+
   /* ---------- 404 ---------- */
   if (status === 'notfound' || status === 'error') {
     return <MissingNo query={param} />;
@@ -127,9 +158,35 @@ export default function PokemonDetail() {
         <span className="pixel-label hidden text-[8px] text-tx-muted sm:inline">LIVING ENTRY · PHASE 01</span>
       </div>
 
+      {/* tab strip — OVERVIEW dashboard / VERSUS matchup lab (versus.md) */}
+      <div className="mb-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label="Entry view">
+        {(['overview', 'versus'] as const).map((t) => (
+          <button
+            key={t}
+            type="button"
+            role="tab"
+            aria-selected={tab === t}
+            onClick={() => switchTab(t)}
+            className={`relative flex items-center gap-1.5 px-3 py-2 transition-colors duration-150 ${
+              tab === t ? 'text-gold' : 'text-tx-muted hover:text-tx-secondary'
+            }`}
+          >
+            {t === 'versus' && <Swords size={11} />}
+            <span className="pixel-label text-[9px]">{t === 'overview' ? 'OVERVIEW' : 'VERSUS'}</span>
+            {tab === t && (
+              <motion.span layoutId="detail-tab" className="absolute inset-x-2 -bottom-px h-0.5 bg-gold" transition={{ type: 'spring', stiffness: 420, damping: 30 }} />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'versus' ? (
+        <VersusPanel pokemon={pokemon} initialVs={vsParam} onOpponentChange={writeOpponent} />
+      ) : (
+      <>
       <div className="grid grid-cols-12 gap-4">
         {/* ROW 1 */}
-        <Panel className="col-span-12 lg:col-span-7" bodyClassName="relative">
+        <Panel className="relative col-span-12 lg:col-span-7" bodyClassName="relative">
           {/* type mesh backdrop */}
           <div
             aria-hidden
@@ -139,6 +196,16 @@ export default function PokemonDetail() {
             }}
           />
           <HeroPanel pokemon={pokemon} species={species} />
+          {/* VS shortcut — opens the VERSUS tab (versus.md §Integration) */}
+          <button
+            type="button"
+            onClick={() => switchTab('versus')}
+            title="Open VERSUS matchup lab"
+            className="absolute right-3 top-3 z-20 inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold uppercase tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
+          >
+            <Swords size={11} />
+            VS
+          </button>
         </Panel>
 
         <Panel
@@ -196,6 +263,8 @@ export default function PokemonDetail() {
         <div className="mt-4">
           <PrevNextStrip id={pokemon.id} />
         </div>
+      )}
+      </>
       )}
     </motion.div>
   );
