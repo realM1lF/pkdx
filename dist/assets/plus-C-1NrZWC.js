@@ -1,0 +1,1 @@
+import{c as o}from"./index-pFkJQJaV.js";const c=[["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}],["path",{d:"M12 16v-4",key:"1dtifu"}],["path",{d:"M12 8h.01",key:"e9boi3"}]],n=o("info",c);const s=[["path",{d:"M5 12h14",key:"1ays0h"}]],a=o("minus",s);const e=[["path",{d:"M5 12h14",key:"1ays0h"}],["path",{d:"M12 5v14",key:"s699le"}]],i=o("plus",e);export{n as I,a as M,i as P};
