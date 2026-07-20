@@ -5,8 +5,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { AnimatePresence, useReducedMotion } from 'framer-motion';
 import CommandBar from './maps/CommandBar';
+import type { MapViewMode } from './maps/CommandBar';
 import LeftRail, { computeRailStats } from './maps/LeftRail';
 import MapCanvas from './maps/MapCanvas';
+import OriginalCanvas from './maps/OriginalCanvas';
 import DetailDrawer from './maps/DetailDrawer';
 import Minimap from './maps/Minimap';
 import { useMapCamera } from './maps/useMapCamera';
@@ -82,6 +84,24 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
 
   const [methods, setMethods] = useState<ReadonlySet<MethodBucket>>(() => new Set(METHOD_BUCKETS));
   const [shakeKey, setShakeKey] = useState(0);
+
+  /* SCHEMATIC | ORIGINAL view — persisted (Kanto pilot; others: ORIGINAL disabled) */
+  const [view, setView] = useState<MapViewMode>(() => {
+    try {
+      return window.localStorage.getItem('pdx2.mapview') === 'original' ? 'original' : 'schematic';
+    } catch {
+      return 'schematic';
+    }
+  });
+  const [origResetSignal, setOrigResetSignal] = useState(0);
+  const effectiveView: MapViewMode = region.region === 'kanto' ? view : 'schematic';
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('pdx2.mapview', view);
+    } catch {
+      /* private mode — ignore */
+    }
+  }, [view]);
 
   const { data, scanned, total, scanning, offline } = useRegionData(region, version);
 
@@ -164,6 +184,12 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
 
   const resetMethods = useCallback(() => setMethods(new Set(METHOD_BUCKETS)), []);
 
+  /* reset view targets the active canvas */
+  const onResetView = useCallback(() => {
+    if (effectiveView === 'original') setOrigResetSignal((k) => k + 1);
+    else camera.resetView();
+  }, [effectiveView, camera]);
+
   /* esc closes the drawer */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -188,8 +214,10 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
         scanned={scanned}
         total={total}
         offline={offline}
-        onResetView={camera.resetView}
+        onResetView={onResetView}
         shakeKey={shakeKey}
+        view={effectiveView}
+        onView={setView}
       />
 
       {/* mobile KPI strip */}
@@ -219,27 +247,44 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
 
         {/* canvas + overlays */}
         <div className="relative h-[62dvh] min-w-0 flex-1 lg:h-full">
-          <MapCanvas
-            region={region}
-            camera={camera}
-            data={data}
-            methods={methods}
-            selectedId={selectedId}
-            onSelect={onSelect}
-            version={version}
-            motionOk={motionOk}
-            scanningDone={!scanning}
-          />
+          {effectiveView === 'original' ? (
+            <OriginalCanvas
+              region={region}
+              data={data}
+              methods={methods}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              version={version}
+              motionOk={motionOk}
+              scanningDone={!scanning}
+              isMobile={isMobile}
+              resetSignal={origResetSignal}
+            />
+          ) : (
+            <MapCanvas
+              region={region}
+              camera={camera}
+              data={data}
+              methods={methods}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              version={version}
+              motionOk={motionOk}
+              scanningDone={!scanning}
+            />
+          )}
 
-          {/* minimap + zoom stack — shifts left when the drawer docks */}
-          <div
-            className={cn(
-              'absolute bottom-3 right-3 z-30 transition-[right] duration-300',
-              selectedNode && !isMobile && 'right-[412px]',
-            )}
-          >
-            <Minimap region={region} camera={camera} />
-          </div>
+          {/* minimap + zoom stack (schematic view only) — shifts left when the drawer docks */}
+          {effectiveView === 'schematic' && (
+            <div
+              className={cn(
+                'absolute bottom-3 right-3 z-30 transition-[right] duration-300',
+                selectedNode && !isMobile && 'right-[412px]',
+              )}
+            >
+              <Minimap region={region} camera={camera} />
+            </div>
+          )}
 
           <AnimatePresence>
             {selectedNode && (
