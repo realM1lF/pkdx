@@ -161,7 +161,9 @@ export function useMapCamera(vbW: number, vbH: number, resetKey: string): MapCam
       const el = containerRef.current;
       if (!el) return;
       suppressClickRef.current = false;
-      el.setPointerCapture(e.pointerId);
+      /* Firefox retargets the follow-up click to the capture element (spec), which
+         swallows node clicks — capture only for touch/pen, never for mouse. */
+      if (e.pointerType !== 'mouse') el.setPointerCapture(e.pointerId);
       pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
       if (pointersRef.current.size === 1) {
         dragRef.current = { sx: e.clientX, sy: e.clientY, cam: camRef.current, moved: false };

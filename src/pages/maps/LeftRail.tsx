@@ -81,7 +81,7 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
   const progress = total > 0 ? scanned / total : 0;
 
   return (
-    <aside className="flex w-[232px] shrink-0 flex-col gap-4 overflow-y-auto px-4 py-4">
+    <aside className="flex w-[232px] shrink-0 flex-col gap-4 overflow-y-auto border-r border-hairline bg-surface1/90 px-4 py-4 backdrop-blur-md">
       {/* coverage ring */}
       <div className="flex items-center gap-3">
         <svg width={64} height={64} viewBox="0 0 64 64" className="shrink-0">

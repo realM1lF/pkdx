@@ -61,6 +61,12 @@ function useMoveDetails(rows: MoveRow[], pokemonId: number) {
 
 const EMPTY_ROWS: MoveRow[] = [];
 
+const CAT_COLORS: Record<string, string> = {
+  physical: '#FB923C',
+  special: '#38BDF8',
+  status: '#A8B3C7',
+};
+
 export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
   /* version groups that actually teach this Pokémon anything, newest → oldest */
   const availableVersions = useMemo(() => {
@@ -258,11 +264,16 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
                     </td>
                     <td className="text-center">
                       {mv ? (
-                        <img
-                          src={`/move-${cat}.svg`}
-                          alt={cat}
+                        <span
+                          role="img"
+                          aria-label={cat}
                           title={cat.charAt(0).toUpperCase() + cat.slice(1)}
-                          className="mx-auto h-3.5 w-3.5 opacity-80"
+                          className="mx-auto block h-3.5 w-3.5 opacity-90"
+                          style={{
+                            backgroundColor: CAT_COLORS[cat] ?? CAT_COLORS.status,
+                            WebkitMask: `url(/move-${cat}.svg) center / contain no-repeat`,
+                            mask: `url(/move-${cat}.svg) center / contain no-repeat`,
+                          }}
                         />
                       ) : (
                         <span className="dx-skel mx-auto inline-block h-3.5 w-3.5 rounded-full" />
