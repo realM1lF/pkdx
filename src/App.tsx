@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router';
 import { MotionConfig } from 'framer-motion';
 import Layout from './components/Layout';
 import PokeballLoader from './components/PokeballLoader';
+import { LangGate, LangHomeRedirect, LangRedirect } from './components/LangGate';
 import { ShinyProvider } from './lib/shiny';
 
 /* Route-level code splitting (design.md §11) — Three.js + GSAP ship only with Home. */
@@ -30,14 +31,20 @@ export default function App() {
         <Layout>
           <Suspense fallback={<PageFallback />}>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/pokedex" element={<Pokedex />} />
-              <Route path="/pokemon/:id" element={<PokemonDetail />} />
-              <Route path="/maps" element={<Maps />} />
-              <Route path="/maps/:region" element={<MapRegion />} />
-              <Route path="/nuzlocke" element={<Nuzlocke />} />
-              <Route path="/nuzlocke/:runId" element={<NuzlockeRun />} />
-              <Route path="/team" element={<TeamBuilder />} />
+              {/* every app route lives once under the /:lang prefix (WP7);
+                  unprefixed legacy URLs redirect to the detected language */}
+              <Route path="/:lang" element={<LangGate />}>
+                <Route index element={<Home />} />
+                <Route path="pokedex" element={<Pokedex />} />
+                <Route path="pokemon/:id" element={<PokemonDetail />} />
+                <Route path="maps" element={<Maps />} />
+                <Route path="maps/:region" element={<MapRegion />} />
+                <Route path="nuzlocke" element={<Nuzlocke />} />
+                <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />
+                <Route path="team" element={<TeamBuilder />} />
+                <Route path="*" element={<LangHomeRedirect />} />
+              </Route>
+              <Route path="*" element={<LangRedirect />} />
             </Routes>
           </Suspense>
         </Layout>

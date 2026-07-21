@@ -21,7 +21,9 @@ void i18n
     interpolation: { escapeValue: false },
     returnNull: false,
     detection: {
-      order: ['localStorage', 'navigator'],
+      // URL prefix is the source of truth (WP7); then persisted choice, then browser
+      order: ['path', 'localStorage', 'navigator'],
+      lookupFromPathIndex: 0,
       lookupLocalStorage: 'pdx2.lang',
       caches: ['localStorage'],
     },

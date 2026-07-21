@@ -1,6 +1,8 @@
 /* DE | EN segment control — pixel-label style, active = gold, inactive = muted.
  * Used in the navbar (desktop) and the mobile drawer. Switching is live. */
+import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { localePath, stripLocalePrefix, useLocale } from '@/lib/locale-link';
 import { cn } from '@/lib/utils';
 
 const LANGS = ['de', 'en'] as const;
@@ -11,7 +13,18 @@ interface LanguageToggleProps {
 
 export default function LanguageToggle({ className }: LanguageToggleProps) {
   const { i18n, t } = useTranslation();
-  const active = i18n.language.startsWith('de') ? 'de' : 'en';
+  const navigate = useNavigate();
+  const location = useLocation();
+  const active = useLocale();
+
+  /* toggle = navigate to the same route under the other language prefix
+   * (query + hash preserved); LangSync does the i18n/localStorage side */
+  const switchTo = (lng: 'de' | 'en') => {
+    if (lng === active) return;
+    const rest = stripLocalePrefix(location.pathname);
+    void i18n.changeLanguage(lng);
+    navigate(`${localePath(lng, rest)}${location.search}${location.hash}`);
+  };
 
   return (
     <div
@@ -27,7 +40,7 @@ export default function LanguageToggle({ className }: LanguageToggleProps) {
           {i > 0 && <span className="mx-1 text-[10px] text-tx-muted/50">|</span>}
           <button
             type="button"
-            onClick={() => void i18n.changeLanguage(lng)}
+            onClick={() => switchTo(lng)}
             aria-pressed={active === lng}
             className={cn(
               'pixel-label px-1.5 py-1 text-[10px] transition-colors duration-200',
