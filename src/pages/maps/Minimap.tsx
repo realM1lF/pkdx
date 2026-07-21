@@ -1,6 +1,7 @@
 /* Minimap — 150×105 overview with gold viewport rect + zoom stack
  * (maps.md §2.3 corner controls). Click/drag moves the camera. */
 import { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { Maximize, Minus, Plus } from 'lucide-react';
 import type { RegionMap } from '@/lib/regions';
@@ -16,6 +17,7 @@ interface MinimapProps {
 }
 
 export default function Minimap({ region, camera }: MinimapProps) {
+  const { t } = useTranslation();
   const svgRef = useRef<SVGSVGElement>(null);
   const draggingRef = useRef(false);
   const byId = useMemo(() => nodeIndex(region), [region]);
@@ -107,7 +109,7 @@ export default function Minimap({ region, camera }: MinimapProps) {
       <div className="flex flex-col overflow-hidden rounded-md border border-hairline bg-surface1/90 shadow-elevate backdrop-blur">
         <button
           type="button"
-          aria-label="Zoom in"
+          aria-label={t('maps.zoomIn')}
           onClick={() => camera.zoomBy(1.25)}
           className="flex h-8 w-8 items-center justify-center text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
@@ -115,7 +117,7 @@ export default function Minimap({ region, camera }: MinimapProps) {
         </button>
         <button
           type="button"
-          aria-label="Zoom out"
+          aria-label={t('maps.zoomOut')}
           onClick={() => camera.zoomBy(1 / 1.25)}
           className="flex h-8 w-8 items-center justify-center border-t border-hairline text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
@@ -123,7 +125,7 @@ export default function Minimap({ region, camera }: MinimapProps) {
         </button>
         <button
           type="button"
-          aria-label="Fit region"
+          aria-label={t('maps.zoomReset')}
           onClick={() => camera.resetView()}
           className="flex h-8 w-8 items-center justify-center border-t border-hairline text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >

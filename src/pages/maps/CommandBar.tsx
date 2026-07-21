@@ -2,23 +2,25 @@
  * version chips, SCHEMATIC|ORIGINAL view toggle, WALK/SURF/FISH/OTHER
  * filters, node search, scan status, legend popover, reset view. */
 import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
 import { ChevronLeft, Fish, Footprints, Info, Loader2, RotateCcw, Search, Sparkles, Waves, X } from 'lucide-react';
 import { LinkKindGlyphs, NodeKindGlyphs } from './LegendGlyphs';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, versionChipLabel } from '@/lib/regions';
+import { accentRgb, nodeName, regionName, versionChipLabel } from '@/lib/regions';
+import { useLanguage } from '@/lib/i18n-data';
 import type { MethodBucket } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
 
 /** map render mode — persisted in localStorage `pdx2.mapview` (MapRegion) */
 export type MapViewMode = 'schematic' | 'original';
 
-const METHODS: Array<{ bucket: MethodBucket; label: string; icon: typeof Footprints }> = [
-  { bucket: 'WALK', label: 'WALK', icon: Footprints },
-  { bucket: 'SURF', label: 'SURF', icon: Waves },
-  { bucket: 'FISH', label: 'FISH', icon: Fish },
-  { bucket: 'OTHER', label: 'OTHER', icon: Sparkles },
+const METHODS: Array<{ bucket: MethodBucket; labelKey: string; icon: typeof Footprints }> = [
+  { bucket: 'WALK', labelKey: 'maps.walk', icon: Footprints },
+  { bucket: 'SURF', labelKey: 'maps.surf', icon: Waves },
+  { bucket: 'FISH', labelKey: 'maps.fish', icon: Fish },
+  { bucket: 'OTHER', labelKey: 'maps.other', icon: Sparkles },
 ];
 
 interface CommandBarProps {
@@ -53,6 +55,8 @@ export default function CommandBar({
   view,
   onView,
 }: CommandBarProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const rgb = accentRgb(region.accent);
   const originalAvailable = region.region === 'kanto';
   const [q, setQ] = useState('');
@@ -64,7 +68,12 @@ export default function CommandBar({
     const needle = q.trim().toLowerCase();
     if (!needle) return [];
     return region.nodes
-      .filter((n) => n.label.toLowerCase().includes(needle) || n.id.includes(needle))
+      .filter(
+        (n) =>
+          n.label.toLowerCase().includes(needle) ||
+          n.id.includes(needle) ||
+          (n.nameDe?.toLowerCase().includes(needle) ?? false),
+      )
       .slice(0, 6);
   }, [q, region]);
 
@@ -80,25 +89,25 @@ export default function CommandBar({
       style={{ background: 'rgba(13,15,22,0.72)', backdropFilter: 'blur(16px) saturate(1.4)' }}
     >
       {/* back */}
-      <Link
+      <LocaleLink
         to="/maps"
-        aria-label="Back to atlas"
+        aria-label={t('maps.backAtlas')}
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold"
       >
         <ChevronLeft size={16} />
-      </Link>
+      </LocaleLink>
 
       {/* region chip */}
       <div className="flex shrink-0 items-center gap-2">
         <span className="h-2 w-2 rounded-full" style={{ background: region.accent, boxShadow: `0 0 8px rgba(${rgb},0.9)` }} />
-        <span className="font-display text-[13px] font-bold uppercase tracking-wide text-tx-primary">{region.name}</span>
+        <span className="font-display text-[13px] font-bold uppercase tracking-wide text-tx-primary">{regionName(region, lang)}</span>
         <span className="pixel-label hidden text-[7px] text-tx-muted sm:inline">{region.gen}</span>
       </div>
 
       <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
       {/* version chips */}
-      <div className="flex shrink-0 rounded-pill border border-hairline bg-surface1 p-0.5" role="group" aria-label="Game version">
+      <div className="flex shrink-0 rounded-pill border border-hairline bg-surface1 p-0.5" role="group" aria-label={t('maps.version')}>
         {region.versions.map((v) => (
           <button
             key={v}
@@ -132,7 +141,7 @@ export default function CommandBar({
       <div
         className="flex h-7 shrink-0 items-center rounded-pill border border-hairline bg-surface1 p-0.5"
         role="group"
-        aria-label="Map view"
+        aria-label={t('maps.view')}
       >
         {(['schematic', 'original'] as const).map((mode) => {
           const disabled = mode === 'original' && !originalAvailable;
@@ -143,7 +152,7 @@ export default function CommandBar({
               type="button"
               disabled={disabled}
               aria-pressed={active}
-              title={disabled ? 'Original map — SOON for this region' : mode === 'original' ? 'Original game map' : 'Schematic transit map'}
+              title={disabled ? t('maps.viewSoon') : mode === 'original' ? t('maps.viewOriginal') : t('maps.viewSchematic')}
               onClick={() => onView(mode)}
               className={cn('relative rounded-pill px-2 py-1', disabled && 'cursor-not-allowed opacity-50')}
             >
@@ -161,8 +170,8 @@ export default function CommandBar({
                   active ? 'text-tx-primary' : 'text-tx-muted hover:text-tx-secondary',
                 )}
               >
-                {mode.toUpperCase()}
-                {disabled && <span className="ml-1 text-gold/70">SOON</span>}
+                {t(`maps.${mode}`)}
+                {disabled && <span className="ml-1 text-gold/70">{t('maps.soon')}</span>}
               </span>
             </button>
           );
@@ -172,7 +181,7 @@ export default function CommandBar({
       <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
       {/* method filters */}
-      <div className="flex shrink-0 items-center gap-1" role="group" aria-label="Encounter method filter">
+      <div className="flex shrink-0 items-center gap-1" role="group" aria-label={t('maps.methodAria')}>
         {METHODS.map((m) => {
           const active = methods.has(m.bucket);
           const Icon = m.icon;
@@ -193,7 +202,7 @@ export default function CommandBar({
               }
             >
               <Icon size={12} />
-              <span className="hidden sm:inline">{m.label}</span>
+              <span className="hidden sm:inline">{t(m.labelKey)}</span>
             </button>
           );
         })}
@@ -223,12 +232,12 @@ export default function CommandBar({
                 setOpen(false);
               }
             }}
-            placeholder="SEARCH NODE…"
-            aria-label="Search map nodes"
+            placeholder={t('maps.searchPlaceholder')}
+            aria-label={t('maps.searchAria')}
             className="pixel-label w-full min-w-0 bg-transparent text-[8px] tracking-wider text-tx-primary outline-none placeholder:text-tx-muted"
           />
           {q && (
-            <button type="button" aria-label="Clear" onClick={() => setQ('')} className="text-tx-muted hover:text-tx-primary">
+            <button type="button" aria-label={t('maps.clear')} onClick={() => setQ('')} className="text-tx-muted hover:text-tx-primary">
               <X size={12} />
             </button>
           )}
@@ -247,9 +256,9 @@ export default function CommandBar({
                 }}
                 className="flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left text-[12px] font-medium text-tx-secondary transition-colors hover:bg-surface3 hover:text-tx-primary"
               >
-                <span className="truncate">{n.label}</span>
+                <span className="truncate">{nodeName(n, lang)}</span>
                 <span className="pixel-label shrink-0 text-[7px] text-tx-muted">
-                  #{n.order} {n.kind.toUpperCase()}
+                  #{n.order} {t(`maps.kind${n.kind.charAt(0).toUpperCase() + n.kind.slice(1)}`, { defaultValue: n.kind.toUpperCase() })}
                 </span>
               </button>
             ))}
@@ -263,17 +272,17 @@ export default function CommandBar({
       {offline ? (
         <span className="pixel-label inline-flex shrink-0 items-center gap-1.5 text-[8px] text-gold">
           <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          OFFLINE — CACHED
+          {t('maps.offline')}
         </span>
       ) : scanning ? (
         <span className="pixel-label inline-flex shrink-0 items-center gap-1.5 text-[8px] text-tx-secondary" aria-live="polite">
           <Loader2 size={11} className="animate-spin" style={{ color: region.accent }} />
-          SCANNING {scanned}/{total}
+          {t('maps.scanning', { scanned, total })}
         </span>
       ) : (
         <span className="pixel-label inline-flex shrink-0 items-center gap-1.5 text-[8px] text-tx-secondary">
           <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-[0_0_6px_rgba(246,201,69,0.9)]" />
-          ONLINE
+          {t('maps.online')}
         </span>
       )}
 
@@ -281,7 +290,7 @@ export default function CommandBar({
       <div className="relative shrink-0">
         <button
           type="button"
-          aria-label="Map legend"
+          aria-label={t('maps.legend')}
           aria-expanded={legend}
           onClick={() => setLegend((s) => !s)}
           className="flex h-8 w-8 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold"
@@ -292,17 +301,17 @@ export default function CommandBar({
           <>
             <button
               type="button"
-              aria-label="Close legend"
+              aria-label={t('maps.closeLegend')}
               className="fixed inset-0 z-40 cursor-default"
               onClick={() => setLegend(false)}
             />
             <div className="absolute right-0 top-10 z-50 w-[240px] rounded-md border border-hairline2 bg-surface2 p-3.5 shadow-elevate">
-              <div className="pixel-label mb-2.5 text-[8px] text-tx-muted">NODE KINDS</div>
+              <div className="pixel-label mb-2.5 text-[8px] text-tx-muted">{t('maps.howNodeKinds')}</div>
               <NodeKindGlyphs />
-              <div className="pixel-label mb-2.5 mt-4 text-[8px] text-tx-muted">LINK KINDS</div>
+              <div className="pixel-label mb-2.5 mt-4 text-[8px] text-tx-muted">{t('maps.howLinkKinds')}</div>
               <LinkKindGlyphs />
               <p className="mt-4 border-t border-hairline pt-2.5 text-[10px] font-medium leading-relaxed text-tx-muted">
-                Gold star = special · dashed = post-game. Edges are schematic, not to scale.
+                {t('maps.legendNote')}
               </p>
             </div>
           </>
@@ -316,7 +325,7 @@ export default function CommandBar({
         className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-2.5 text-[11px] font-semibold text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold"
       >
         <RotateCcw size={13} />
-        <span className="hidden sm:inline">RESET VIEW</span>
+        <span className="hidden sm:inline">{t('maps.resetView')}</span>
       </button>
     </div>
   );

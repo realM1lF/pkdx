@@ -8,8 +8,10 @@ import NodeGlyph from './NodeGlyph';
 import type { NodeDataState } from './NodeGlyph';
 import ScoutTooltip from './ScoutTooltip';
 import type { MapCamera } from './useMapCamera';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/lib/i18n-data';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, nodeIndex } from '@/lib/regions';
+import { accentRgb, nodeName, nodeIndex } from '@/lib/regions';
 import type { MethodBucket, NodeMapData } from '@/lib/mapdata';
 import { itemsForNode } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
@@ -54,6 +56,8 @@ export default function MapCanvas({
   motionOk,
   scanningDone,
 }: MapCanvasProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const byId = useMemo(() => nodeIndex(region), [region]);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [hoveredEdge, setHoveredEdge] = useState<number | null>(null);
@@ -267,10 +271,10 @@ export default function MapCanvas({
             <li key={`sr-${n.id}`}>
               <button
                 type="button"
-                aria-label={`${n.label} — ${nd?.pokemonCount ?? 0} Pokémon, ${items} items`}
+                aria-label={t('maps.nodeAria', { label: nodeName(n, lang), count: nd?.pokemonCount ?? 0, items })}
                 onClick={() => onSelect(n)}
               >
-                {n.label}
+                {nodeName(n, lang)}
               </button>
             </li>
           );
@@ -300,7 +304,7 @@ export default function MapCanvas({
           className="pointer-events-none absolute z-30 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-sm border border-hairline2 bg-surface2 px-2 py-1 text-[10px] font-semibold text-tx-secondary shadow-elevate"
           style={{ left: edgeTipPos.x, top: edgeTipPos.y - 8 }}
         >
-          {hoveredEdgeData.a.label} ↔ {hoveredEdgeData.b.label}
+          {nodeName(hoveredEdgeData.a, lang)} ↔ {nodeName(hoveredEdgeData.b, lang)}
         </div>
       )}
 

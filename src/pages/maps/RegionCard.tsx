@@ -1,12 +1,14 @@
 /* RegionCard — the atlas card artifact (maps.md §1.2). Accent-coded mini
  * schematic background, coverage chip, stat strip, glow CTAs. */
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Compass, Lock } from 'lucide-react';
 import MiniSchematic from './MiniSchematic';
 import type { RegionMap } from '@/lib/regions';
-import { accentRgb, coverageTier } from '@/lib/regions';
+import { accentRgb, coverageTier, regionName } from '@/lib/regions';
+import { useLanguage } from '@/lib/i18n-data';
 import { itemCountForRegion } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +21,7 @@ const ERA_LINE: Record<string, string> = {
 };
 
 function CoverageChip({ region }: { region: RegionMap }) {
+  const { t } = useTranslation();
   const tier = coverageTier(region);
   const rgb = accentRgb(region.accent);
   if (tier === 'FULL') {
@@ -28,7 +31,7 @@ function CoverageChip({ region }: { region: RegionMap }) {
         style={{ borderColor: `rgba(${rgb},0.5)`, color: region.accent }}
       >
         <span className="h-2 w-2 rounded-full" style={{ background: region.accent, boxShadow: `0 0 6px rgba(${rgb},0.9)` }} />
-        FULL
+        {t('maps.full')}
       </span>
     );
   }
@@ -36,19 +39,21 @@ function CoverageChip({ region }: { region: RegionMap }) {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-pill border border-gold/50 px-2 py-0.5 pixel-label text-[8px] text-gold">
         <span className="h-2 w-2 rounded-full bg-gold/70" />
-        PARTIAL
+        {t('maps.partial')}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1.5 rounded-pill border border-dashed border-hairline2 px-2 py-0.5 pixel-label text-[8px] text-tx-muted">
       <Lock size={10} />
-      SOON
+      {t('maps.soon')}
     </span>
   );
 }
 
 export default function RegionCard({ region, index }: { region: RegionMap; index: number }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [hover, setHover] = useState(false);
   const [par, setPar] = useState({ x: 0, y: 0 });
   const rgb = accentRgb(region.accent);
@@ -98,10 +103,10 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
 
         {/* title + meta */}
         <h2 className="mt-2 font-display text-[28px] font-extrabold uppercase leading-none tracking-wide text-tx-primary">
-          {region.name}
+          {regionName(region, lang)}
         </h2>
         <p className="mt-1.5 text-[12px] font-medium text-tx-secondary">
-          {region.nodes.length} locations · {region.speciesCount} species · {ERA_LINE[region.region] ?? ''}
+          {t('maps.cardMeta', { locations: region.nodes.length, species: region.speciesCount })} · {ERA_LINE[region.region] ?? ''}
         </p>
 
         <div className="flex-1" />
@@ -109,9 +114,9 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
         {/* stat strip */}
         <div className="grid grid-cols-3 divide-x divide-hairline border-y border-hairline py-2">
           {[
-            ['LOCATIONS', region.nodes.length],
-            ['SPECIES', region.speciesCount],
-            ['ITEMS', items],
+            [t('maps.locations'), region.nodes.length],
+            [t('maps.species'), region.speciesCount],
+            [t('maps.items'), items],
           ].map(([label, value]) => (
             <div key={label as string} className="px-3 first:pl-0">
               <div className="pixel-label text-[8px] text-tx-muted">{label}</div>
@@ -124,7 +129,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
 
         {/* CTAs */}
         <div className="mt-3 flex items-center gap-2.5">
-          <Link
+          <LocaleLink
             to={`/maps/${region.region}`}
             className={cn(
               'inline-flex h-9 items-center gap-1.5 rounded-md border px-4',
@@ -136,16 +141,16 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
               background: `linear-gradient(135deg, rgba(${rgb},0.25), rgba(${rgb},0.10))`,
             }}
           >
-            Open map
+            {t('maps.openMap')}
             <ArrowRight size={14} />
-          </Link>
-          <Link
+          </LocaleLink>
+          <LocaleLink
             to={`/nuzlocke/new?region=${region.region}`}
             className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
           >
             <Compass size={14} />
-            Nuzlocke here
-          </Link>
+            {t('maps.nuzlockeHere')}
+          </LocaleLink>
         </div>
       </div>
     </motion.article>
@@ -154,6 +159,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
 
 /** Locked "more regions" placeholder card (maps.md §1.2 SOON card). */
 export function SoonCard({ index }: { index: number }) {
+  const { t } = useTranslation();
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -161,7 +167,7 @@ export function SoonCard({ index }: { index: number }) {
       viewport={{ once: true, margin: '-15%' }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: index * 0.05 }}
       className="group relative flex h-60 flex-col items-center justify-center gap-3 overflow-hidden rounded-lg border border-dashed border-hairline2 bg-surface1/60 p-4"
-      aria-label="More regions — locked"
+      aria-label={t('maps.soonAria')}
     >
       <Lock size={20} className="text-tx-muted" />
       <div className="text-center">
@@ -172,7 +178,7 @@ export function SoonCard({ index }: { index: number }) {
         role="tooltip"
         className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-hairline2 bg-surface2 px-2.5 py-1.5 text-[11px] text-tx-secondary opacity-0 shadow-elevate transition-opacity duration-200 group-hover:opacity-100"
       >
-        These regions join the atlas in a later phase.
+        {t('maps.soonNote')}
       </div>
     </motion.article>
   );

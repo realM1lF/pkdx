@@ -2,8 +2,10 @@
  * (maps.md §2.3). Pure SVG; hover glow keys off --ac (accent rgb triplet). */
 import { memo } from 'react';
 import type { CSSProperties } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/lib/i18n-data';
 import type { MapNode } from '@/lib/regions';
-import { accentRgb } from '@/lib/regions';
+import { accentRgb, nodeName } from '@/lib/regions';
 
 export type NodeDataState = 'pending' | 'loaded' | 'empty' | 'decor';
 
@@ -110,6 +112,9 @@ function NodeGlyph({
   onHover,
   onSelect,
 }: NodeGlyphProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const label = nodeName(node, lang);
   const stroke = state === 'empty' ? EMPTY_STROKE : accent;
   const lp = labelOffset(node.labelPos);
   const hoverScale = node.kind === 'city' ? 1.3 : node.kind === 'route' ? 1.45 : 1.35;
@@ -122,7 +127,7 @@ function NodeGlyph({
       style={{ '--ac': accentRgb(accent), '--hover-scale': hoverScale, transition: 'opacity 200ms ease' } as CSSProperties}
       role="button"
       tabIndex={0}
-      aria-label={`${node.label} — ${node.kind} ${node.order}`}
+      aria-label={`${label} — ${t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })} ${node.order}`}
       data-node-id={node.id}
       onPointerEnter={() => onHover(node)}
       onPointerLeave={() => onHover(null)}
@@ -196,7 +201,7 @@ function NodeGlyph({
             strokeWidth={3}
             paintOrder="stroke"
           >
-            {node.label.toUpperCase()}
+            {label.toUpperCase()}
             {node.postGame && (
               <tspan fill="#F6C945" opacity={0.8} dx={4} fontSize={6.5}>
                 POST

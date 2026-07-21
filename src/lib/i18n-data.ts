@@ -206,6 +206,23 @@ export function genRegionKey(region: string): string {
   return GEN_REGION_KEY[region] ?? 'kanto';
 }
 
+const POCKETS_DE: Record<string, string> = {
+  items: 'Items',
+  'key-items': 'Basis-Items',
+  'poke-balls': 'Pokébälle',
+  'tms-hms': 'TM/VM',
+  machines: 'TM/VM',
+  berries: 'Beeren',
+  medicine: 'Medizin',
+  'battle-items': 'Kampfitems',
+  'mail': 'Briefe',
+};
+
+export function nameOfPocket(slug: string, lang: Lang): string {
+  if (isDe(lang) && POCKETS_DE[slug]) return POCKETS_DE[slug];
+  return displayName(slug);
+}
+
 const NATURES_DE: Record<string, string> = {
   hardy: 'Robust', lonely: 'Solo', brave: 'Mutig', adamant: 'Hart', naughty: 'Frech',
   bold: 'Kühn', docile: 'Sanft', relaxed: 'Locker', impish: 'Pfiffig', lax: 'Lasch',

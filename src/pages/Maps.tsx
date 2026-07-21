@@ -3,6 +3,7 @@
  * "how it reads" legend strip, compact header stats. */
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import RegionCard, { SoonCard } from './maps/RegionCard';
 import { LinkKindGlyphs, NodeKindGlyphs } from './maps/LegendGlyphs';
 import { REGIONS, TOTAL_LOCATIONS } from '@/lib/regions';
@@ -39,6 +40,7 @@ const reveal = (i: number) => ({
 });
 
 export default function Maps() {
+  const { t } = useTranslation();
   const regions = useCountUp(REGIONS.length);
   const locations = useCountUp(TOTAL_LOCATIONS, 1200, 350);
 
@@ -48,33 +50,32 @@ export default function Maps() {
       <header className="mx-auto flex max-w-content flex-wrap items-end justify-between gap-6 px-4 pb-10 pt-12 sm:px-8">
         <div className="max-w-[600px]">
           <motion.p {...reveal(0)} className="pixel-label text-[10px] text-gold">
-            PHASE 04 — ATLAS
+            {t('maps.atlasEyebrow')}
           </motion.p>
           <motion.h1
             {...reveal(1)}
             className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold uppercase leading-[1.1] text-tx-primary"
           >
-            Interactive Maps
+            {t('maps.atlasTitle')}
           </motion.h1>
           <motion.p {...reveal(2)} className="mt-3 max-w-[560px] text-[14px] font-medium leading-relaxed text-tx-secondary">
-            Every region as a living transit map. Hover a route to scout it — click it to see exactly what
-            walks, swims, and bites there.
+            {t('maps.atlasBlurb')}
           </motion.p>
         </div>
         <motion.div {...reveal(3)} className="hidden items-center gap-2 text-[12px] font-medium text-tx-muted md:flex">
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{regions}</span> REGIONS
+          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{regions}</span> {t('maps.regions')}
           <span aria-hidden>·</span>
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{locations}</span> LOCATIONS
+          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{locations}</span> {t('maps.locations')}
           <span aria-hidden>·</span>
           <span className="inline-flex items-center gap-1.5">
             <span className="maps-scan-dot inline-block h-1.5 w-1.5 rounded-full bg-type-grass" />
-            LIVE POKÉAPI DATA
+            {t('maps.live')}
           </span>
         </motion.div>
       </header>
 
       {/* §1.2 region grid */}
-      <section className="mx-auto grid max-w-content grid-cols-1 gap-4 px-4 sm:px-8 lg:grid-cols-2" aria-label="Regions">
+      <section className="mx-auto grid max-w-content grid-cols-1 gap-4 px-4 sm:px-8 lg:grid-cols-2" aria-label={t('maps.regionsAria')}>
         {REGIONS.map((r, i) => (
           <RegionCard key={r.region} region={r} index={i} />
         ))}
@@ -82,16 +83,15 @@ export default function Maps() {
       </section>
 
       {/* §1.3 how it reads */}
-      <section className="mx-auto mt-4 grid max-w-content grid-cols-1 gap-4 px-4 sm:px-8 md:grid-cols-3" aria-label="How to read the maps">
+      <section className="mx-auto mt-4 grid max-w-content grid-cols-1 gap-4 px-4 sm:px-8 md:grid-cols-3" aria-label={t('maps.howAria')}>
         {[
-          { title: 'NODE KINDS', body: <NodeKindGlyphs /> },
-          { title: 'LINK KINDS', body: <LinkKindGlyphs /> },
+          { title: t('maps.howNodeKinds'), body: <NodeKindGlyphs /> },
+          { title: t('maps.howLinkKinds'), body: <LinkKindGlyphs /> },
           {
-            title: 'DATA',
+            title: t('maps.howData'),
             body: (
               <p className="text-[12px] font-medium leading-relaxed text-tx-secondary">
-                Spawns &amp; rates stream live from PokéAPI per game version. Items are curated per route.
-                Nothing here is a screenshot — it&apos;s all SVG.
+                {t('maps.howDataBody')}
               </p>
             ),
           },
@@ -112,8 +112,7 @@ export default function Maps() {
 
       {/* §1.4 footer note */}
       <p className="mx-auto max-w-content px-4 py-8 text-center text-[12px] font-medium text-tx-muted sm:px-8">
-        Maps are schematic illustrations, not to scale. Data — PokéAPI. Pokémon © Nintendo/Creatures
-        Inc./GAME FREAK inc.
+        {t('maps.footerNote')}
       </p>
     </div>
   );

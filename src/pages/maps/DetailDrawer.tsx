@@ -2,14 +2,16 @@
  * (sprite / name / method chip / level range / rate micro-bar, multi-area
  * sub-headers, statics pinned to SPECIAL) + curated items tab + Nuzlocke link. */
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import { ChevronRight, Fish, Footprints, Sparkles, Waves, X } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, nodeIndex, versionLabel } from '@/lib/regions';
+import { accentRgb, nodeIndex, nodeName, regionName, versionLabel } from '@/lib/regions';
+import { nameOfItem, nameOfPokemon, nameOfPocket, useLanguage } from '@/lib/i18n-data';
 import type { CuratedItem, EncounterEntry, MethodBucket, NodeMapData } from '@/lib/mapdata';
 import { ITEM_SPRITE_BASE, METHOD_BUCKETS, itemsForNode } from '@/lib/mapdata';
-import { displayName, padNum } from '@/lib/pokeapi';
+import { padNum } from '@/lib/pokeapi';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import { cn } from '@/lib/utils';
@@ -40,19 +42,21 @@ function ItemSprite({ slug }: { slug: string }) {
 }
 
 function EncounterRow({ e, region, node }: { e: EncounterEntry; region: RegionMap; node: MapNode }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const rgb = accentRgb(region.accent);
   const rare = e.maxChance <= 10;
   return (
-    <Link
+    <LocaleLink
       to={`/pokemon/${e.pokemonId}?from=${region.region}:${node.id}`}
       className="maps-row group flex h-10 items-center gap-2 border-b border-hairline/60 px-3 transition-colors hover:bg-surface3"
     >
       <span className="maps-row-sprite h-[30px] w-[30px] shrink-0">
-        <Sprite id={e.pokemonId} name={e.slug} era={e.pokemonId <= 649 ? 'gen5' : 'default'} className="h-[30px] w-[30px]" />
+        <Sprite id={e.pokemonId} name={nameOfPokemon(e.pokemonId, lang)} era={e.pokemonId <= 649 ? 'gen5' : 'default'} className="h-[30px] w-[30px]" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[13px] font-medium leading-tight text-tx-primary">
-          {displayName(e.slug)}
+          {nameOfPokemon(e.pokemonId, lang)}
         </span>
         <span className="pixel-label block text-[7px] text-tx-muted">{padNum(e.pokemonId)}</span>
       </span>
@@ -63,7 +67,7 @@ function EncounterRow({ e, region, node }: { e: EncounterEntry; region: RegionMa
           return (
             <span
               key={m}
-              title={m}
+              title={t(`maps.${m.toLowerCase()}`)}
               className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-sm border"
               style={{
                 color: gold ? '#F6C945' : region.accent,
@@ -91,7 +95,7 @@ function EncounterRow({ e, region, node }: { e: EncounterEntry; region: RegionMa
         </span>
       </span>
       <ChevronRight size={14} className="shrink-0 text-tx-muted opacity-0 transition-opacity group-hover:opacity-100" />
-    </Link>
+    </LocaleLink>
   );
 }
 
@@ -118,6 +122,8 @@ export default function DetailDrawer({
   onClose,
   isMobile,
 }: DetailDrawerProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [tab, setTab] = useState<'encounters' | 'items'>('encounters');
   const [sort, setSort] = useState<SortKey>('rate');
   const items = useMemo(() => itemsForNode(region.region, node.id), [region, node]);
@@ -128,10 +134,13 @@ export default function DetailDrawer({
     const neighbors = region.edges
       .filter((e) => e.from === node.id || e.to === node.id)
       .map((e) => (e.from === node.id ? e.to : e.from))
-      .map((id) => byId.get(id)?.label)
-      .filter(Boolean) as string[];
-    return neighbors.length > 0 ? `Between ${neighbors.slice(0, 2).join(' & ')}` : region.name;
-  }, [region, node, byId]);
+      .map((id) => byId.get(id))
+      .filter((n): n is NonNullable<typeof n> => Boolean(n))
+      .map((n) => nodeName(n, lang));
+    return neighbors.length > 0
+      ? t('maps.between', { neighbors: neighbors.slice(0, 2).join(' & ') })
+      : regionName(region, lang);
+  }, [region, node, byId, lang, t]);
 
   const methodCount = nd ? Object.keys(nd.methodTop).length : 0;
 
@@ -141,7 +150,7 @@ export default function DetailDrawer({
       sort === 'rate'
         ? b.maxChance - a.maxChance || a.pokemonId - b.pokemonId
         : sort === 'name'
-          ? displayName(a.slug).localeCompare(displayName(b.slug))
+          ? nameOfPokemon(a.pokemonId, lang).localeCompare(nameOfPokemon(b.pokemonId, lang), lang)
           : a.minLevel - b.minLevel || a.pokemonId - b.pokemonId;
     const statics: EncounterEntry[] = [];
     let all = 0;
@@ -158,7 +167,7 @@ export default function DetailDrawer({
       .filter((g) => g.entries.length > 0);
     statics.sort(sorter);
     return { staticEntries: statics, areas: groups, totalShown: shown, totalAll: all };
-  }, [nd, methods, sort]);
+  }, [nd, methods, sort, lang]);
 
   return (
     <motion.aside
@@ -173,7 +182,7 @@ export default function DetailDrawer({
           : 'absolute bottom-0 right-0 top-0 w-[400px] border-l',
       )}
       role="dialog"
-      aria-label={`${node.label} details`}
+      aria-label={t('maps.drawerAria', { label: nodeName(node, lang) })}
     >
       {/* header */}
       <div className="border-b border-hairline p-4 pb-3">
@@ -183,34 +192,34 @@ export default function DetailDrawer({
               className="pixel-label rounded-sm border px-1.5 py-0.5 text-[7px]"
               style={{ color: region.accent, borderColor: `rgba(${rgb},0.4)` }}
             >
-              {node.kind.toUpperCase()}
+              {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}
             </span>
             <span className="pixel-label rounded-sm border border-hairline px-1.5 py-0.5 text-[7px] text-tx-muted">
-              ORDER {node.order}
+              {t('maps.order', { n: node.order })}
             </span>
             <span className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[7px] text-gold">
               {versionLabel(version)}
             </span>
             {node.postGame && (
               <span className="pixel-label rounded-sm border border-dashed border-gold/50 px-1.5 py-0.5 text-[7px] text-gold">
-                POST-GAME
+                {t('maps.postGame')}
               </span>
             )}
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('maps.close')}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-all hover:rotate-90 hover:border-hairline2 hover:text-gold"
           >
             <X size={14} />
           </button>
         </div>
         <h2 className="mt-2.5 font-display text-[22px] font-extrabold uppercase leading-none text-tx-primary">
-          {node.label}
+          {nodeName(node, lang)}
         </h2>
         <p className="mt-1 text-[11px] font-medium text-tx-muted">
-          {region.name} — {caption}
+          {regionName(region, lang)} — {caption}
         </p>
       </div>
 
@@ -218,10 +227,10 @@ export default function DetailDrawer({
       <div className="grid grid-cols-4 divide-x divide-hairline border-b border-hairline">
         {(
           [
-            ['POKÉMON', nd ? nd.pokemonCount : '…'],
-            ['METHODS', nd ? methodCount : '…'],
-            ['ITEMS', items.length],
-            ['BEST', nd ? `${nd.bestRate}%` : '…'],
+            [t('maps.pokemonUnit'), nd ? nd.pokemonCount : '…'],
+            [t('maps.methods'), nd ? methodCount : '…'],
+            [t('maps.itemsUnit'), items.length],
+            [t('maps.best'), nd ? `${nd.bestRate}%` : '…'],
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
           <div key={label} className="px-3 py-2">
@@ -229,7 +238,7 @@ export default function DetailDrawer({
             <div
               className={cn(
                 'mt-0.5 font-display text-[15px] font-bold tabular-nums text-tx-primary',
-                label === 'ITEMS' && items.length === 0 && 'text-tx-muted/50',
+                label === t('maps.itemsUnit') && items.length === 0 && 'text-tx-muted/50',
               )}
             >
               {value}
@@ -242,8 +251,8 @@ export default function DetailDrawer({
       <div className="flex border-b border-hairline" role="tablist">
         {(
           [
-            ['encounters', `ENCOUNTERS ${nd?.status === 'loaded' ? totalAll : '…'}`],
-            ['items', `ITEMS ${items.length}`],
+            ['encounters', t('maps.encountersTab', { count: nd?.status === 'loaded' ? totalAll : '…' })],
+            ['items', t('maps.itemsTab', { count: items.length })],
           ] as Array<['encounters' | 'items', string]>
         ).map(([key, label]) => (
           <button
@@ -279,7 +288,7 @@ export default function DetailDrawer({
                       type="button"
                       aria-pressed={active}
                       onClick={() => onToggleMethod(m)}
-                      title={m}
+                      title={t(`maps.${m.toLowerCase()}`)}
                       className={cn(
                         'inline-flex h-6 items-center gap-1 rounded-pill border px-1.5 text-[9px] font-semibold transition-all',
                         active ? 'border-current' : 'border-hairline text-tx-muted',
@@ -287,17 +296,17 @@ export default function DetailDrawer({
                       style={active ? { color: region.accent, background: `rgba(${rgb},0.16)` } : undefined}
                     >
                       <Icon size={11} />
-                      {m}
+                      {t(`maps.${m.toLowerCase()}`)}
                     </button>
                   );
                 })}
               </div>
-              <div className="flex items-center gap-0.5" role="group" aria-label="Sort">
+              <div className="flex items-center gap-0.5" role="group" aria-label={t('maps.sort')}>
                 {(
                   [
-                    ['rate', 'RATE'],
-                    ['name', 'NAME'],
-                    ['level', 'LV'],
+                    ['rate', t('maps.sortRate')],
+                    ['name', t('maps.sortName')],
+                    ['level', t('maps.sortLevel')],
                   ] as Array<[SortKey, string]>
                 ).map(([key, label]) => (
                   <button
@@ -319,26 +328,26 @@ export default function DetailDrawer({
             {nd === undefined ? (
               <div className="flex flex-col items-center gap-3 py-14">
                 <PokeballLoader variant="inline" />
-                <span className="pixel-label text-[8px] text-tx-muted">SCANNING…</span>
+                <span className="pixel-label text-[8px] text-tx-muted">{t('maps.scanningShort')}</span>
               </div>
             ) : nd.status !== 'loaded' ? (
               <div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
-                <span className="pixel-label text-[9px] text-tx-muted">NO WILD DATA — {versionLabel(version)}</span>
+                <span className="pixel-label text-[9px] text-tx-muted">{t('maps.noWild', { version: versionLabel(version) })}</span>
                 <p className="text-[11px] font-medium text-tx-muted">
-                  Nothing spawns here in this version. Try another game chip above.
+                  {t('maps.noWildBody')}
                 </p>
               </div>
             ) : totalShown === 0 ? (
               <div className="flex flex-col items-center gap-3 px-6 py-14 text-center">
                 <span className="pixel-label text-[9px] text-gold">
-                  NO {[...methods].join(' / ')} ENCOUNTERS IN {versionLabel(version)}
+                  {t('maps.noEncounters', { methods: [...methods].map((m) => t(`maps.${m.toLowerCase()}`)).join(' / '), version: versionLabel(version) })}
                 </span>
                 <button
                   type="button"
                   onClick={onResetMethods}
                   className="rounded-md border border-hairline2 px-3 py-1.5 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
                 >
-                  Reset filters
+                  {t('maps.resetFilters')}
                 </button>
               </div>
             ) : (
@@ -346,7 +355,7 @@ export default function DetailDrawer({
                 {staticEntries.length > 0 && (
                   <section>
                     <div className="flex items-center justify-between border-b border-hairline bg-surface2/60 px-3 py-1.5">
-                      <span className="pixel-label text-[8px] text-gold">SPECIAL</span>
+                      <span className="pixel-label text-[8px] text-gold">{t('maps.special')}</span>
                       <span className="font-sans text-[9px] tabular-nums text-tx-muted">{staticEntries.length}</span>
                     </div>
                     {staticEntries.map((e) => (
@@ -376,7 +385,7 @@ export default function DetailDrawer({
             {items.length === 0 ? (
               <div className="flex flex-col items-center gap-2.5 px-6 py-14 text-center">
                 <img src="/pokeball.svg" alt="" width={40} height={40} className="opacity-50" />
-                <p className="text-[12px] font-medium text-tx-muted">No item data curated for this spot yet.</p>
+                <p className="text-[12px] font-medium text-tx-muted">{t('maps.noItems')}</p>
               </div>
             ) : (
               items.map((it: CuratedItem) => (
@@ -385,17 +394,19 @@ export default function DetailDrawer({
                     <ItemSprite slug={it.itemSlug} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[13px] font-medium text-tx-primary">{it.name}</span>
+                    {/* item names localize via the de artifact; curated notes stay English
+                        (NON-GOAL — authored EN curation from pret/pokefirered data) */}
+                    <span className="block truncate text-[13px] font-medium text-tx-primary">{nameOfItem(it.itemSlug, lang)}</span>
                     <span className="block truncate text-[10px] text-tx-muted">{it.note}</span>
                   </span>
                   <span className="flex shrink-0 items-center gap-1">
                     {it.hidden && (
                       <span className="pixel-label rounded-sm border border-dashed border-gold/50 px-1 py-0.5 text-[6px] text-gold">
-                        HIDDEN
+                        {t('maps.hidden')}
                       </span>
                     )}
                     <span className="pixel-label rounded-sm border border-hairline px-1 py-0.5 text-[6px] text-tx-muted">
-                      {it.pocket}
+                      {nameOfPocket(it.pocket, lang)}
                     </span>
                   </span>
                 </div>
@@ -407,14 +418,14 @@ export default function DetailDrawer({
 
       {/* footer */}
       <div className="flex items-center justify-between gap-2 border-t border-hairline px-3 py-2.5">
-        <Link
+        <LocaleLink
           to={`/nuzlocke/new?region=${region.region}&at=${node.id}`}
           className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
-          Add to Nuzlocke
+          {t('maps.addToNuzlocke')}
           <ChevronRight size={13} />
-        </Link>
-        <span className="text-[9px] font-medium text-tx-muted">Data: PokéAPI · {versionLabel(version)}</span>
+        </LocaleLink>
+        <span className="text-[9px] font-medium text-tx-muted">{t('maps.dataSource', { version: versionLabel(version) })}</span>
       </div>
     </motion.aside>
   );

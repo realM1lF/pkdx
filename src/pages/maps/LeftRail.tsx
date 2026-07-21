@@ -1,11 +1,12 @@
 /* LeftRail — the 232px KPI rail (maps.md §2.4): coverage ring, KPI grid,
  * TOP SPAWNS / RAREST leaderboards keyed to the loaded version data. */
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, nodeIndex } from '@/lib/regions';
+import { accentRgb, nodeIndex, nodeName } from '@/lib/regions';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { NodeMapData, SpawnLeader } from '@/lib/mapdata';
 import { itemCountForRegion, speciesUnion, spawnLeaders } from '@/lib/mapdata';
-import { displayName } from '@/lib/pokeapi';
 import Sprite from '@/components/Sprite';
 
 export interface RailStats {
@@ -40,21 +41,23 @@ function LeaderRow({
   accent: string;
   onPick: () => void;
 }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   return (
     <button
       type="button"
       onClick={onPick}
       className="group flex w-full items-center gap-2 rounded-md px-1.5 py-1 text-left transition-colors hover:bg-surface3"
-      title={node ? `Fly to ${node.label}` : undefined}
+      title={node ? t('maps.flyTo', { label: nodeName(node, lang) }) : undefined}
     >
       <span className="h-6 w-6 shrink-0">
         <Sprite id={leader.pokemonId} name={leader.slug} era={leader.pokemonId <= 649 ? 'gen5' : 'default'} className="h-6 w-6" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[12px] font-medium leading-tight text-tx-primary transition-colors group-hover:text-gold">
-          {displayName(leader.slug)}
+          {nameOfPokemon(leader.pokemonId, lang)}
         </span>
-        <span className="block truncate text-[9px] text-tx-muted">{node?.label ?? ''}</span>
+        <span className="block truncate text-[9px] text-tx-muted">{node ? nodeName(node, lang) : ''}</span>
       </span>
       <span className="shrink-0 font-display text-[11px] font-bold tabular-nums" style={{ color: accent }}>
         {leader.rate}%
@@ -72,6 +75,7 @@ interface LeftRailProps {
 }
 
 export default function LeftRail({ region, data, scanned, total, onPickNode }: LeftRailProps) {
+  const { t } = useTranslation();
   const rgb = accentRgb(region.accent);
   const byId = useMemo(() => nodeIndex(region), [region]);
   const stats = useMemo(() => computeRailStats(region, data), [region, data]);
@@ -104,9 +108,9 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
           </text>
         </svg>
         <div>
-          <div className="pixel-label text-[8px] text-tx-muted">COVERAGE</div>
+          <div className="pixel-label text-[8px] text-tx-muted">{t('maps.coverage')}</div>
           <div className="mt-0.5 text-[11px] font-medium tabular-nums text-tx-secondary">
-            {scanned}/{total} SCANNED
+            {t('maps.scanned', { scanned, total })}
           </div>
         </div>
       </div>
@@ -115,10 +119,10 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
       <div className="grid grid-cols-2 gap-2">
         {(
           [
-            ['LOCATIONS', stats.locations],
-            ['SPECIES', stats.species],
-            ['ITEMS', stats.items],
-            ['RAREST', stats.rarest],
+            [t('maps.locations'), stats.locations],
+            [t('maps.species'), stats.species],
+            [t('maps.items'), stats.items],
+            [t('maps.rarest'), stats.rarest],
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
           <div key={label} className="rounded-md border border-hairline bg-surface1 px-2.5 py-2">
@@ -132,8 +136,8 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
 
       {/* top spawns */}
       {stats.common.length > 0 && (
-        <section aria-label="Top spawns">
-          <div className="pixel-label mb-1.5 text-[8px] text-tx-muted">TOP SPAWNS</div>
+        <section aria-label={t('maps.topSpawns')}>
+          <div className="pixel-label mb-1.5 text-[8px] text-tx-muted">{t('maps.topSpawns')}</div>
           <div className="flex flex-col">
             {stats.common.map((l) => (
               <LeaderRow
@@ -153,8 +157,8 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
 
       {/* rarest */}
       {stats.rare.length > 0 && (
-        <section aria-label="Rarest spawns">
-          <div className="pixel-label mb-1.5 text-[8px] text-tx-muted">RAREST</div>
+        <section aria-label={t('maps.rarest')}>
+          <div className="pixel-label mb-1.5 text-[8px] text-tx-muted">{t('maps.rarest')}</div>
           <div className="flex flex-col">
             {stats.rare.map((l) => (
               <LeaderRow
@@ -173,7 +177,7 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
       )}
 
       <p className="mt-auto text-[10px] font-medium leading-relaxed text-tx-muted">
-        Rates = max encounter chance per area, per selected version. Source: PokéAPI.
+        {t('maps.ratesNote')}
       </p>
     </aside>
   );

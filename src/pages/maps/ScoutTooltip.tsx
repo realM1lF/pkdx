@@ -2,9 +2,11 @@
  * `N POKÉMON · M ITEMS`, method dots with top rates, CLICK TO OPEN hint.
  * Anchored to the node, flips at canvas edges. */
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Fish, Footprints, Sparkles, Waves } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, versionLabel } from '@/lib/regions';
+import { accentRgb, nodeName, versionLabel } from '@/lib/regions';
+import { useLanguage } from '@/lib/i18n-data';
 import type { MethodBucket, NodeMapData } from '@/lib/mapdata';
 
 interface ScoutTooltipProps {
@@ -28,6 +30,8 @@ const METHOD_META: Array<{ bucket: MethodBucket; short: string; icon: typeof Foo
 ];
 
 export default function ScoutTooltip({ node, region, nd, itemCount, version, x, y, flipX, flipY }: ScoutTooltipProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const rgb = accentRgb(region.accent);
   return (
     <motion.div
@@ -46,26 +50,26 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
     >
       {/* line 1 — kind + label + order */}
       <div className="flex items-baseline justify-between gap-2">
-        <span className="truncate text-[13px] font-bold text-tx-primary">{node.label}</span>
-        <span className="pixel-label shrink-0 text-[8px] text-tx-muted">ORDER {node.order}</span>
+        <span className="truncate text-[13px] font-bold text-tx-primary">{nodeName(node, lang)}</span>
+        <span className="pixel-label shrink-0 text-[8px] text-tx-muted">{t('maps.order', { n: node.order })}</span>
       </div>
       <div className="pixel-label mt-0.5 text-[7px] uppercase" style={{ color: region.accent }}>
-        {node.kind}
-        {node.postGame ? ' · POST-GAME' : ''}
+        {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}
+        {node.postGame ? ` · ${t('maps.postGame')}` : ''}
       </div>
 
       {/* line 2 — scout readout */}
       <div className="mt-1.5 font-display text-[12px] font-bold tabular-nums">
         {nd === undefined ? (
-          <span className="maps-shimmer pixel-label text-[8px] text-tx-secondary">SCANNING…</span>
+          <span className="maps-shimmer pixel-label text-[8px] text-tx-secondary">{t('maps.scanningShort')}</span>
         ) : nd.status === 'loaded' ? (
           <span>
-            <span style={{ color: region.accent }}>{nd.pokemonCount} POKÉMON</span>
+            <span style={{ color: region.accent }}>{nd.pokemonCount} {t('maps.pokemonUnit')}</span>
             <span className="text-tx-muted"> · </span>
-            <span className={itemCount > 0 ? 'text-gold' : 'text-tx-muted/60'}>{itemCount} ITEMS</span>
+            <span className={itemCount > 0 ? 'text-gold' : 'text-tx-muted/60'}>{itemCount} {t('maps.itemsUnit')}</span>
           </span>
         ) : (
-          <span className="pixel-label text-[7px] text-tx-muted">NO WILD DATA — {versionLabel(version)}</span>
+          <span className="pixel-label text-[7px] text-tx-muted">{t('maps.noWild', { version: versionLabel(version) })}</span>
         )}
       </div>
 
@@ -85,7 +89,7 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
       )}
 
       {/* hint */}
-      <div className="pixel-label mt-1.5 text-[7px] text-tx-primary/40">CLICK TO OPEN</div>
+      <div className="pixel-label mt-1.5 text-[7px] text-tx-primary/40">{t('maps.clickToOpen')}</div>
     </motion.div>
   );
 }

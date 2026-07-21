@@ -12,8 +12,10 @@ import { Maximize, Minus, Plus } from 'lucide-react';
 import ScoutTooltip from './ScoutTooltip';
 import { useMapCamera } from './useMapCamera';
 import geoJson from '@/data/regions/kanto-geo.json';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/lib/i18n-data';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb } from '@/lib/regions';
+import { accentRgb, nodeName } from '@/lib/regions';
 import type { MethodBucket, NodeMapData } from '@/lib/mapdata';
 import { itemsForNode } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
@@ -135,6 +137,9 @@ const OriginalMarker = memo(function OriginalMarker({
   onHover,
   onSelect,
 }: OriginalMarkerProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const label = nodeName(node, lang);
   const stroke = state === 'empty' ? EMPTY_STROKE : accent;
   const hoverScale = node.kind === 'city' ? 1.25 : 1.35;
 
@@ -146,7 +151,7 @@ const OriginalMarker = memo(function OriginalMarker({
       style={{ '--ac': accentRgb(accent), '--hover-scale': hoverScale, transition: 'opacity 200ms ease' } as CSSProperties}
       role="button"
       tabIndex={0}
-      aria-label={`${node.label} — ${node.kind} ${node.order}`}
+      aria-label={`${label} — ${t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })} ${node.order}`}
       data-node-id={node.id}
       onPointerEnter={() => onHover(node)}
       onPointerLeave={() => onHover(null)}
@@ -236,7 +241,7 @@ const OriginalMarker = memo(function OriginalMarker({
             strokeWidth={4}
             paintOrder="stroke"
           >
-            {node.label.toUpperCase()}
+            {label.toUpperCase()}
             {node.postGame && (
               <tspan fill={GOLD} opacity={0.9} dx={6} fontSize={6.5 * S}>
                 POST
@@ -275,6 +280,8 @@ export default function OriginalCanvas({
   isMobile,
   resetSignal,
 }: OriginalCanvasProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const camera = useMapCamera(IMG_W, IMG_H, `${region.region}-original`);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const rgb = accentRgb(region.accent);
@@ -433,10 +440,10 @@ export default function OriginalCanvas({
             <li key={`sr-${n.id}`}>
               <button
                 type="button"
-                aria-label={`${n.label} — ${nd?.pokemonCount ?? 0} Pokémon, ${items} items`}
+                aria-label={t('maps.nodeAria', { label: nodeName(n, lang), count: nd?.pokemonCount ?? 0, items })}
                 onClick={() => onSelect(n)}
               >
-                {n.label}
+                {nodeName(n, lang)}
               </button>
             </li>
           );
@@ -469,7 +476,7 @@ export default function OriginalCanvas({
       >
         <button
           type="button"
-          aria-label="Zoom in"
+          aria-label={t('maps.zoomIn')}
           onClick={() => camera.zoomBy(1.25)}
           className="flex h-8 w-8 items-center justify-center text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
@@ -477,7 +484,7 @@ export default function OriginalCanvas({
         </button>
         <button
           type="button"
-          aria-label="Zoom out"
+          aria-label={t('maps.zoomOut')}
           onClick={() => camera.zoomBy(1 / 1.25)}
           className="flex h-8 w-8 items-center justify-center border-t border-hairline text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
@@ -485,7 +492,7 @@ export default function OriginalCanvas({
         </button>
         <button
           type="button"
-          aria-label="Fit region"
+          aria-label={t('maps.zoomReset')}
           onClick={() => camera.resetView()}
           className="flex h-8 w-8 items-center justify-center border-t border-hairline text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >

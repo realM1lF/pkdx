@@ -2,7 +2,9 @@
  * left KPI rail, SVG transit-map canvas, 400px detail drawer, minimap.
  * Deep links ?node= / ?v= · progressive scan light-up · desktop full-deck. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
 import { AnimatePresence, useReducedMotion } from 'framer-motion';
 import CommandBar from './maps/CommandBar';
 import type { MapViewMode } from './maps/CommandBar';
@@ -34,6 +36,7 @@ function useMediaQuery(query: string): boolean {
 /* ---- 404: unknown region id (maps.md §2.7) ---- */
 
 function UnchartedSector() {
+  const { t } = useTranslation();
   return (
     <div className="relative flex min-h-[70dvh] flex-col items-center justify-center overflow-hidden px-6 text-center">
       {/* glitch map-grid silhouette */}
@@ -47,17 +50,17 @@ function UnchartedSector() {
       </svg>
       <p className="pixel-label text-[10px] text-gold">ERROR — 404</p>
       <h1 className="mt-4 font-display text-[clamp(28px,4vw,44px)] font-extrabold uppercase text-tx-primary">
-        This sector is uncharted
+        {t('maps.uncharted')}
       </h1>
       <p className="mt-3 max-w-[420px] text-[14px] font-medium text-tx-secondary">
-        No region data lives at this coordinate. The atlas, however, is fully mapped.
+        {t('maps.unchartedBody')}
       </p>
-      <Link
+      <LocaleLink
         to="/maps"
         className="mt-6 inline-flex h-11 items-center rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-6 font-display text-[13px] font-bold uppercase tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(246,201,69,0.35)]"
       >
-        Back to Atlas
-      </Link>
+        {t('maps.backToAtlas')}
+      </LocaleLink>
     </div>
   );
 }
@@ -65,6 +68,7 @@ function UnchartedSector() {
 /* ---- the deck ---- */
 
 function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regionById>> }) {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const motionOk = !useReducedMotion();
   const isMobile = !useMediaQuery('(min-width: 1024px)');
@@ -221,13 +225,13 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
       />
 
       {/* mobile KPI strip */}
-      <div className="flex gap-2 overflow-x-auto px-3 py-2 lg:hidden" aria-label="Region stats">
+      <div className="flex gap-2 overflow-x-auto px-3 py-2 lg:hidden" aria-label={t('maps.regionStats')}>
         {(
           [
-            ['LOCATIONS', railStats.locations],
-            ['SPECIES', railStats.species],
-            ['ITEMS', railStats.items],
-            ['RAREST', railStats.rarest],
+            [t('maps.locations'), railStats.locations],
+            [t('maps.species'), railStats.species],
+            [t('maps.items'), railStats.items],
+            [t('maps.rarest'), railStats.rarest],
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
           <div key={label} className="min-w-[104px] shrink-0 rounded-md border border-hairline bg-surface1 px-2.5 py-1.5">
