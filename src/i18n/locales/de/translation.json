@@ -12,7 +12,9 @@
     "closeMenu": "Menü schließen",
     "menu": "MENÜ",
     "home": "Pokédex 2.0 Startseite",
-    "language": "Sprache"
+    "language": "Sprache",
+    "deCoverageNoteEn": "DE is mostly translated, but not complete.",
+    "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig."
   },
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
