@@ -1,6 +1,7 @@
 /* Nuzlocke run — activity rail (nuzlocke.md §2.8). 36px rows, live dot,
  * event glyphs, player-color left flash, milestone rows. */
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Plus, SlidersHorizontal } from 'lucide-react';
 import type { FeedEvent } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
@@ -17,14 +18,15 @@ function FeedGlyph({ ev }: { ev: FeedEvent }) {
 }
 
 export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean }) {
+  const { t } = useTranslation();
   return (
-    <aside className="rounded-lg border border-hairline bg-surface1 p-3" aria-label="Activity feed">
+    <aside className="rounded-lg border border-hairline bg-surface1 p-3" aria-label={t('nuz.feed.aria')}>
       <div className="flex items-center gap-2">
-        <h4 className="font-sans text-[14px] font-bold text-tx-primary">FEED</h4>
+        <h4 className="font-sans text-[14px] font-bold text-tx-primary">{t('nuz.feed.title')}</h4>
         {live && <span className="nz-dot-live h-1.5 w-1.5 rounded-full bg-[#45C8FF]" />}
       </div>
       <div className="nz-slim-scroll mt-2 max-h-[420px] space-y-px overflow-y-auto" data-lenis-prevent>
-        {feed.length === 0 && <p className="py-6 text-center text-[11px] text-tx-muted">Nothing yet. Route 1 awaits.</p>}
+        {feed.length === 0 && <p className="py-6 text-center text-[11px] text-tx-muted">{t('nuz.feed.empty')}</p>}
         {feed.map((ev) => (
           <motion.div
             key={ev.id}
@@ -44,11 +46,11 @@ export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean 
               <span className="block truncate text-[11px] leading-tight text-tx-secondary">{ev.title}</span>
               {ev.meta && <span className="block font-pixel text-[6px] uppercase tracking-[0.06em] text-tx-muted">{ev.meta}</span>}
             </span>
-            <span className="shrink-0 text-[9px] tabular-nums text-tx-muted">{timeAgo(ev.t).replace(' AGO', '')}</span>
+            <span className="shrink-0 text-[9px] tabular-nums text-tx-muted">{timeAgo(ev.t, true)}</span>
           </motion.div>
         ))}
       </div>
-      <PixelLabel className="mt-2 block text-right opacity-40">{feed.length} EVENTS</PixelLabel>
+      <PixelLabel className="mt-2 block text-right opacity-40">{t('nuz.feed.events', { count: feed.length })}</PixelLabel>
     </aside>
   );
 }

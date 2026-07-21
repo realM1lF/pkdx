@@ -3,7 +3,10 @@
  * traveling pulses, death-cascade dashes). Drag / shift-wheel scroll. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
+import { nodeName } from '@/lib/regions';
+import { useLanguage } from '@/lib/i18n-data';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
 import Sprite from '@/components/Sprite';
@@ -77,6 +80,7 @@ function SoulLinkOverlay({
   height: number;
   nameOf: (id: number) => string;
 }) {
+  const { t } = useTranslation();
   const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const slotOf = (pid: string) => state.players.findIndex((p) => p.id === pid);
   const colorOf = (pid: string) => state.players.find((p) => p.id === pid)?.color ?? '#F6C945';
@@ -98,7 +102,10 @@ function SoulLinkOverlay({
         const sb = slotOf(l.b.player_id);
         if (sa < 0 || sb < 0) return null;
         const { d, mx, my } = linkGeometry(ci, Math.min(sa, sb), Math.max(sa, sb));
-        const label = `SOUL LINK — ${l.a.nickname ?? nameOf(l.a.pokemon_id)} ⇄ ${l.b.nickname ?? nameOf(l.b.pokemon_id)}. If one falls, the other is boxed.`;
+        const label = t('nuz.timeline.soulLinkTip', {
+          a: l.a.nickname ?? nameOf(l.a.pokemon_id),
+          b: l.b.nickname ?? nameOf(l.b.pokemon_id),
+        });
         return (
           <g key={`${l.routeKey}-${l.a.id}-${l.b.id}`}>
             <path
@@ -148,8 +155,15 @@ interface SlotProps {
 }
 
 function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cascade, nameOf, onPrefill, onOpen }: SlotProps) {
+  const { t } = useTranslation();
   const tip = enc
-    ? `${nameOf(enc.pokemon_id)}${enc.nickname ? ` '${enc.nickname}'` : ''} · Lv ${enc.level} · ${enc.status} ${timeAgo(enc.created_at)} — ${playerName}`
+    ? t('nuz.timeline.slotTip', {
+        name: `${nameOf(enc.pokemon_id)}${enc.nickname ? ` '${enc.nickname}'` : ''}`,
+        level: enc.level,
+        status: t(`nuz.status${enc.status.charAt(0).toUpperCase() + enc.status.slice(1)}`),
+        time: timeAgo(enc.created_at),
+        player: playerName,
+      })
     : undefined;
   return (
     <div
@@ -162,7 +176,7 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
         <button
           type="button"
           onClick={onPrefill}
-          aria-label={`Log encounter for ${playerName} on this route`}
+          aria-label={t('nuz.timeline.logFor', { player: playerName })}
           className="mx-auto flex h-[30px] w-full items-center justify-center rounded-sm border border-dashed border-hairline2 text-tx-muted transition-colors hover:border-gold/50 hover:text-gold"
         >
           <Plus size={12} />
@@ -176,7 +190,7 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
             <span className="block truncate text-[11px] font-semibold text-tx-muted line-through">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
             <span className="block font-display text-[9px] font-bold text-tx-muted/70">LV {enc.level}</span>
           </span>
-          <span className="h-2 w-2 shrink-0 rounded-full border border-gold/70" aria-label="fallen" />
+          <span className="h-2 w-2 shrink-0 rounded-full border border-gold/70" aria-label={t('nuz.timeline.fallen')} />
         </>
       ) : enc.status === 'missed' || enc.status === 'duped' ? (
         <>
@@ -185,7 +199,7 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
           </span>
           <span className="min-w-0 flex-1 truncate text-[10px] text-tx-muted">{nameOf(enc.pokemon_id)}</span>
           <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] tracking-[0.06em] text-gold">
-            {enc.status === 'missed' ? 'MISSED' : 'DUPED'}
+            {t(enc.status === 'missed' ? 'nuz.statusMissed' : 'nuz.statusDuped')}
           </span>
         </>
       ) : (
@@ -196,7 +210,7 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
           }}
-          aria-label={`${enc.nickname ?? nameOf(enc.pokemon_id)} options`}
+          aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 transition-transform duration-200 group-hover/slot:-translate-y-[6%]">
             <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[36px] w-[36px]" skeleton={false} />
@@ -206,15 +220,15 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
             <span className="block font-display text-[9px] font-bold text-tx-muted">LV {enc.level}</span>
           </span>
           {overCap && (
-            <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title={`Above cap — logged over the level cap`}>
+            <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title={t('nuz.timeline.capTip')}>
               CAP+
             </span>
           )}
-          {pendingSync && <span className="nz-orbit h-1.5 w-1.5 shrink-0" aria-label="pending sync" />}
+          {pendingSync && <span className="nz-orbit h-1.5 w-1.5 shrink-0" aria-label={t('nuz.timeline.pendingSync')} />}
         </button>
       )}
       {cascade && enc?.status === 'caught' && (
-        <span className="absolute -top-1.5 right-1 rounded-full border border-gold bg-surface2 px-1 font-pixel text-[6px] text-gold" title="SoulLink rule — this partner must be boxed or released.">
+        <span className="absolute -top-1.5 right-1 rounded-full border border-gold bg-surface2 px-1 font-pixel text-[6px] text-gold" title={t('nuz.timeline.boxCascade')}>
           BOX?
         </span>
       )}
@@ -237,6 +251,8 @@ interface TimelineProps {
 }
 
 export default function Timeline({ state, region, links, nameOf, flash, cascadeIds, pendingSync, onPrefill, onOpenEncounter }: TimelineProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const nodes = useMemo(() => routeOrder(region), [region]);
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const hereKey = youAreHereKey(state);
@@ -300,7 +316,7 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
   const cardH = HEADER_H + players.length * SLOT_H + 22;
 
   return (
-    <section className="group/tl relative rounded-xl border border-hairline bg-[#07080D]" aria-label="Route timeline">
+    <section className="group/tl relative rounded-xl border border-hairline bg-[#07080D]" aria-label={t('nuz.timeline.aria')}>
       <div className="nz-player-hairline rounded-t-xl" style={hairlineVars} />
       <div
         className="pointer-events-none absolute inset-0 rounded-xl opacity-[0.04] mix-blend-overlay"
@@ -346,23 +362,23 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                       isHere && 'border-gold/60 shadow-[inset_0_2px_0_0_var(--gold),0_0_18px_rgba(246,201,69,0.12)]',
                     )}
                     style={{ height: cardH }}
-                    aria-label={node.label}
+                    aria-label={nodeName(node, lang)}
                   >
                     {isHere && !(empty && i === 0) && (
                       <span className="nz-bob absolute -top-6 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-gold bg-void px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-gold">
-                        YOU ARE HERE
+                        {t('nuz.timeline.youAreHere')}
                       </span>
                     )}
                     {empty && i === 0 && (
                       <span className="nz-bob absolute -top-6 left-1/2 z-20 w-max -translate-x-1/2 whitespace-nowrap rounded-full border border-gold/70 bg-surface2 px-2 py-0.5 font-pixel text-[7px] text-gold">
-                        LOG YOUR FIRST ENCOUNTER BELOW ↓
+                        {t('nuz.timeline.firstEncounter')}
                       </span>
                     )}
                     {/* header */}
                     <div className="flex h-[28px] items-center gap-1.5 border-b border-hairline px-2">
                       <span className="font-display text-[9px] font-bold tabular-nums text-tx-muted">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="min-w-0 flex-1 truncate font-pixel text-[7px] uppercase tracking-[0.05em] text-tx-secondary">{node.label}</span>
-                      {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">POST</span>}
+                      <span className="min-w-0 flex-1 truncate font-pixel text-[7px] uppercase tracking-[0.05em] text-tx-secondary">{nodeName(node, lang)}</span>
+                      {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">{t('nuz.timeline.post')}</span>}
                       <span className="flex shrink-0 items-center gap-[3px]">
                         {players.map((p) => {
                           const enc = encBy.get(`${p.id}:${node.id}`);
@@ -394,17 +410,17 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                     {/* footer */}
                     <div className="absolute inset-x-0 bottom-0 flex h-[20px] items-center gap-1 px-2">
                       <KindGlyph kind={node.kind} />
-                      <PixelLabel className="text-[6px]">{node.kind.toUpperCase()}</PixelLabel>
-                      <Link
+                      <PixelLabel className="text-[6px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}</PixelLabel>
+                      <LocaleLink
                         to={`/maps/${region.region}?node=${node.id}`}
                         onClick={(e) => e.stopPropagation()}
-                        title={`Open ${node.label} in Maps`}
-                        aria-label={`Open ${node.label} in Maps`}
+                        title={t('nuz.openInMaps', { label: nodeName(node, lang) })}
+                        aria-label={t('nuz.openInMaps', { label: nodeName(node, lang) })}
                         className="ml-auto flex items-center gap-0.5 text-tx-muted/50 transition-colors hover:text-gold"
                       >
                         <span className="font-pixel text-[6px]">MAPS</span>
                         <ExternalLink size={9} />
-                      </Link>
+                      </LocaleLink>
                     </div>
                   </motion.li>
                 );
@@ -422,7 +438,7 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
         <button
           key={side}
           type="button"
-          aria-label={side === 'left' ? 'Scroll timeline left' : 'Scroll timeline right'}
+          aria-label={side === 'left' ? t('nuz.timeline.scrollLeft') : t('nuz.timeline.scrollRight')}
           onClick={() => scrollRef.current?.scrollBy({ left: dir * STRIDE * 3, behavior: 'smooth' })}
           className={cn(
             'absolute top-1/2 z-20 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full border border-hairline2 bg-[rgba(13,15,22,0.85)] text-tx-secondary opacity-0 backdrop-blur transition-all hover:border-gold hover:text-gold group-hover/tl:opacity-100',

@@ -2,7 +2,9 @@
  * Rules bar → route timeline + SoulLink overlay → team grid / feed →
  * graveyard → sticky Quick Entry. Solo & multi render identically. */
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -45,6 +47,7 @@ interface FlyState {
 }
 
 export default function NuzlockeRun() {
+  const { t } = useTranslation();
   const { runId } = useParams<{ runId: string }>();
   const entry = useRunEntry(runId);
   const state = entry?.state ?? null;
@@ -128,13 +131,13 @@ export default function NuzlockeRun() {
     return (
       <div className="mx-auto grid max-w-[1440px] place-items-center px-4 py-32 text-center md:px-8">
         <img src="/empty-dex.svg" alt="" className="h-[120px] opacity-60" />
-        <h1 className="mt-4 font-display text-[22px] font-bold text-tx-primary">Run not found</h1>
+        <h1 className="mt-4 font-display text-[22px] font-bold text-tx-primary">{t('nuz.runNotFound')}</h1>
         <p className="mt-1 max-w-[360px] text-[13px] text-tx-secondary">
-          This run isn't on this device — join it with its invite code from the hub.
+          {t('nuz.runNotFoundBody')}
         </p>
-        <Link to="/nuzlocke" className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary">
-          ← All runs
-        </Link>
+        <LocaleLink to="/nuzlocke" className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary">
+          ← {t('nuz.backToRuns')}
+        </LocaleLink>
       </div>
     );
   }
@@ -213,10 +216,10 @@ export default function NuzlockeRun() {
 
         {failed && (
           <div className="flex items-center justify-center gap-3 rounded-lg border border-hairline bg-surface1/60 px-4 py-3">
-            <PixelLabel>RUN FAILED — PRESS F</PixelLabel>
-            <Link to="/nuzlocke" className="rounded-md border border-gold/60 px-4 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/10">
-              Start a new run
-            </Link>
+            <PixelLabel>{t('nuz.runFailed')}</PixelLabel>
+            <LocaleLink to="/nuzlocke" className="rounded-md border border-gold/60 px-4 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/10">
+              {t('nuz.startNew')}
+            </LocaleLink>
           </div>
         )}
 

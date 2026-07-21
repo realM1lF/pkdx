@@ -4,6 +4,7 @@
  * Identical UI in both modes. All writes optimistic; failed remote writes
  * replay with a gold `RETRYING SYNC…` toast — never red. */
 import { useEffect, useReducer, useState } from 'react';
+import i18n from '@/i18n';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import {
   dropChannel,
@@ -372,7 +373,7 @@ function seedFeed(entry: RunEntry): void {
     events.push(encounterFeedEvent(s, enc, false));
   }
   for (const p of s.players) {
-    events.push({ id: `join-${p.id}`, t: Date.parse(p.created_at) || 0, kind: 'join', color: p.color, title: `${p.name} joined the run` });
+    events.push({ id: `join-${p.id}`, t: Date.parse(p.created_at) || 0, kind: 'join', color: p.color, title: i18n.t('nuz.feed.joined', { name: p.name }) });
   }
   entry.feed = events.sort((a, b) => b.t - a.t).slice(0, 60);
 }
@@ -382,11 +383,11 @@ function pushFeed(entry: RunEntry, ev: Omit<FeedEvent, 'id' | 't'> & { t?: numbe
   emit(entry);
 }
 
-const FEED_VERB: Record<NuzEncounterStatus, string> = {
-  caught: 'caught',
-  dead: 'lost',
-  missed: 'missed',
-  duped: 'skipped (dupe)',
+const FEED_VERB_KEY: Record<NuzEncounterStatus, string> = {
+  caught: 'nuz.feed.verbCaught',
+  dead: 'nuz.feed.verbDead',
+  missed: 'nuz.feed.verbMissed',
+  duped: 'nuz.feed.verbDuped',
 };
 
 function encounterFeedEvent(state: RunState, enc: NuzEncounterRow, _live: boolean): FeedEvent {
@@ -399,7 +400,14 @@ function encounterFeedEvent(state: RunState, enc: NuzEncounterRow, _live: boolea
     t: Date.parse(enc.created_at) || Date.now(),
     kind,
     color: p?.color,
-    title: `${p?.name ?? 'Someone'} ${FEED_VERB[enc.status]} ${species} the ${speciesNamer(enc.pokemon_id)}`,
+    // feed text is generated in the active language at write time (i18n.t);
+    // historical entries keep the language they were written in (accepted)
+    title: i18n.t('nuz.feed.encounter', {
+      player: p?.name ?? i18n.t('nuz.feed.someone'),
+      verb: i18n.t(FEED_VERB_KEY[enc.status]),
+      name: species,
+      species: speciesNamer(enc.pokemon_id),
+    }),
     meta: `${route} · LV ${enc.level}`,
   };
 }
@@ -528,7 +536,7 @@ function goLive(entry: RunEntry): void {
           st.players = st.players.map((x) => (x.id === p.id ? p : x));
         } else {
           st.players = [...st.players, p].sort((a, b) => a.slot - b.slot);
-          pushFeed(entry, { kind: 'join', color: p.color, title: `${p.name} joined the run` });
+          pushFeed(entry, { kind: 'join', color: p.color, title: i18n.t('nuz.feed.joined', { name: p.name }) });
         }
       }
       saveLocalRun(st);
@@ -556,7 +564,7 @@ function goLive(entry: RunEntry): void {
         if (m.player_id) {
           online[m.player_id] = { name: m.name, color: m.color };
           if (!wasOnline.has(m.player_id) && m.player_id !== presenceMe(entry)?.player_id) {
-            pushFeed(entry, { kind: 'presence', color: m.color, title: `${m.name} is online` });
+            pushFeed(entry, { kind: 'presence', color: m.color, title: i18n.t('nuz.feed.online', { name: m.name }) });
           }
         }
       }
@@ -649,12 +657,12 @@ function checkMilestones(entry: RunEntry): void {
     entry.milestones.add(key);
     pushFeed(entry, { kind: 'milestone', color: '#F6C945', title, meta });
   };
-  if (k.caught >= 10) fire('caught-10', '10 CAUGHT', 'the crew is building');
-  if (k.dead >= 1) fire('first-blood', 'FIRST BLOOD', 'press F');
+  if (k.caught >= 10) fire('caught-10', i18n.t('nuz.feed.msCaught'), i18n.t('nuz.feed.msCaughtMeta'));
+  if (k.dead >= 1) fire('first-blood', i18n.t('nuz.feed.msBlood'), i18n.t('nuz.feed.msBloodMeta'));
   if (k.routesTotal > 0 && k.routesDone >= Math.ceil(k.routesTotal / 2)) {
-    fire('halfway', `HALFWAY — ${k.routesDone}/${k.routesTotal} ROUTES`);
+    fire('halfway', i18n.t('nuz.feed.msHalfway', { done: k.routesDone, total: k.routesTotal }));
   }
-  if (s.run.status === 'complete') fire('complete', 'RUN COMPLETE', 'champions.');
+  if (s.run.status === 'complete') fire('complete', i18n.t('nuz.feed.msComplete'), i18n.t('nuz.feed.msCompleteMeta'));
 }
 
 function announceLink(entry: RunEntry, s: RunState, enc: NuzEncounterRow): void {
@@ -665,10 +673,10 @@ function announceLink(entry: RunEntry, s: RunState, enc: NuzEncounterRow): void 
   pushFeed(entry, {
     kind: 'link',
     color: '#F6C945',
-    title: `Soul link formed — ${aName} ⇄ ${bName}`,
+    title: i18n.t('nuz.feed.linkFormed', { a: aName, b: bName }),
     meta: routeLabelOf(s.run, enc.route_key).toUpperCase(),
   });
-  pushToast('link', `SOUL LINK FORMED — ${aName.toUpperCase()} ⇄ ${bName.toUpperCase()}`);
+  pushToast('link', i18n.t('nuz.toast.soulLink', { a: aName.toUpperCase(), b: bName.toUpperCase() }));
 }
 
 function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
@@ -680,10 +688,10 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
   pushFeed(entry, {
     kind: 'link',
     color: '#F6C945',
-    title: `SoulLink cascade — ${name} must be boxed`,
+    title: i18n.t('nuz.feed.linkCascade', { name }),
     meta: routeLabelOf(s.run, deadEnc.route_key).toUpperCase(),
   });
-  pushToast('info', `SOULLINK RULE — ${name.toUpperCase()} MUST BE BOXED OR RELEASED`);
+  pushToast('info', i18n.t('nuz.toast.cascade', { name: name.toUpperCase() }));
 }
 
 /* ---------- actions: create / join / upgrade ---------- */
@@ -971,7 +979,7 @@ export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
   if (!s) return;
   s.run.rules = { ...s.run.rules, ...rules };
   saveLocalRun(s);
-  pushFeed(entry, { kind: 'rule', color: '#F6C945', title: 'Rules updated', meta: rulesSummary(s.run.rules) });
+  pushFeed(entry, { kind: 'rule', color: '#F6C945', title: i18n.t('nuz.feed.rulesUpdated'), meta: rulesSummary(s.run.rules) });
   if (s.mode === 'multi') {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ rules: s.run.rules }).eq('id', runId));
   }
@@ -979,7 +987,10 @@ export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
 }
 
 function rulesSummary(r: NuzRules): string {
-  const bits = [r.dupes ? 'DUPES ON' : 'DUPES OFF', r.shiny ? 'SHINY ON' : 'SHINY OFF'];
+  const bits = [
+    i18n.t(r.dupes ? 'nuz.feed.dupesOn' : 'nuz.feed.dupesOff'),
+    i18n.t(r.shiny ? 'nuz.feed.shinyOn' : 'nuz.feed.shinyOff'),
+  ];
   if (r.levelCap) bits.push(`CAP ${r.levelCap}`);
   if (r.soulLink) bits.push('SOULLINK');
   return bits.join(' · ');
@@ -994,7 +1005,12 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
   pushFeed(entry, {
     kind: 'status',
     color: status === 'complete' ? '#F6C945' : '#5E6680',
-    title: status === 'complete' ? 'Run complete — champions.' : status === 'failed' ? 'Run failed. Press F.' : 'Run reactivated',
+    title:
+      status === 'complete'
+        ? i18n.t('nuz.feed.statusComplete')
+        : status === 'failed'
+          ? i18n.t('nuz.feed.statusFailed')
+          : i18n.t('nuz.feed.statusActive'),
   });
   checkMilestones(entry);
   if (s.mode === 'multi') {

@@ -2,6 +2,9 @@
  * mini-timeline dot strip, KPIs, overflow menu. Hover lifts + gold border. */
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { useLocalePath } from '@/lib/locale-link';
+import i18n from '@/i18n';
 import { motion } from 'framer-motion';
 import { CloudUpload, Copy, HardDrive, MoreVertical, Pencil, CopyPlus, Archive } from 'lucide-react';
 import { regionById, routeOrder, versionChipLabel } from '@/lib/regions';
@@ -74,6 +77,8 @@ function MiniTimeline({ state, nameOf }: { state: RunState; nameOf: NameOf }) {
 
 export default function RunCard({ state, entry, index, nameOf }: { state: RunState; entry?: RunEntry; index: number; nameOf: NameOf }) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
   const region = regionById(state.run.region);
   const k = kpisOf(state);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -82,7 +87,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
   const [nameDraft, setNameDraft] = useState(state.run.name);
   const last = state.encounters[state.encounters.length - 1]?.created_at ?? state.run.created_at;
 
-  const open = () => navigate(`/nuzlocke/${state.run.id}`);
+  const open = () => navigate(localePath(`/nuzlocke/${state.run.id}`));
   const multi = state.mode === 'multi';
 
   return (
@@ -92,7 +97,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
       transition={{ duration: 0.4, delay: index * 0.05 }}
       onClick={open}
       className="group col-span-12 cursor-pointer rounded-lg border border-hairline bg-surface1 p-4 transition-all duration-200 hover:-translate-y-1 hover:border-gold/35 lg:col-span-6"
-      aria-label={`Open run ${state.run.name}`}
+      aria-label={t('nuz.openRun', { name: state.run.name })}
     >
       {/* row 1 — name / chips */}
       <div className="flex items-center gap-2">
@@ -126,7 +131,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
         </span>
         <RunStatusChip status={state.run.status} />
         <span className="ml-auto flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-          <span title={multi ? 'Multiplayer — live sync' : 'Solo — local save'} className="text-tx-muted">
+          <span title={multi ? t('nuz.card.multiTip') : t('nuz.card.soloTip')} className="text-tx-muted">
             {multi ? <CloudUpload size={14} /> : <HardDrive size={14} />}
           </span>
           <Popover
@@ -139,7 +144,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
             anchor={
               <button
                 type="button"
-                aria-label="Run options"
+                aria-label={t('nuz.card.options')}
                 onClick={() => setMenuOpen((o) => !o)}
                 className="grid h-6 w-6 place-items-center rounded-sm text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
               >
@@ -149,15 +154,15 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
             className="w-[190px] py-1"
           >
             {[
-              { icon: Pencil, label: 'Rename', act: () => { setMenuOpen(false); setRenaming(true); } },
-              { icon: CopyPlus, label: 'Duplicate as solo', act: () => { const id = duplicateAsSolo(state.run.id); if (id) pushToast('success', 'DUPLICATED AS SOLO RUN'); setMenuOpen(false); } },
+              { icon: Pencil, label: t('nuz.card.rename'), act: () => { setMenuOpen(false); setRenaming(true); } },
+              { icon: CopyPlus, label: t('nuz.card.duplicate'), act: () => { const id = duplicateAsSolo(state.run.id); if (id) pushToast('success', i18n.t('nuz.card.duplicated')); setMenuOpen(false); } },
               {
                 icon: Copy,
-                label: multi ? `Copy invite code` : 'Copy invite code (online runs)',
+                label: t(multi ? 'nuz.card.copyInvite' : 'nuz.card.copyInviteOnline'),
                 act: () => {
                   if (state.run.invite_code) {
                     void navigator.clipboard?.writeText(state.run.invite_code).catch(() => undefined);
-                    pushToast('success', `INVITE COPIED — ${state.run.invite_code}`);
+                    pushToast('success', i18n.t('nuz.toast.inviteCopied', { code: state.run.invite_code }));
                   }
                   setMenuOpen(false);
                 },
@@ -181,7 +186,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
                   return;
                 }
                 archiveRun(state.run.id);
-                pushToast('info', 'RUN ARCHIVED ON THIS DEVICE');
+                pushToast('info', i18n.t('nuz.toast.archived'));
                 setMenuOpen(false);
               }}
               className={cn(
@@ -189,7 +194,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
                 confirmArchive ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
               )}
             >
-              <Archive size={13} /> {confirmArchive ? 'Confirm archive?' : 'Archive'}
+              <Archive size={13} /> {confirmArchive ? t('nuz.card.confirmArchive') : t('nuz.card.archive')}
             </button>
           </Popover>
         </span>
@@ -204,7 +209,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
             const alive = state.encounters.filter((e) => e.player_id === p.id && e.status === 'caught').length;
             const online = multi && entry?.online[p.id];
             return (
-              <span key={p.id} className="flex items-center gap-1.5" title={`${p.name} — ${alive} alive · ${total} logged`}>
+              <span key={p.id} className="flex items-center gap-1.5" title={t('nuz.card.playerTip', { name: p.name, alive, total })}>
                 <span className={cn('h-2.5 w-2.5 rounded-full', online && 'nz-presence-ring')} style={{ background: p.color }} />
                 <span className="text-[12px] font-semibold text-tx-primary">{p.name}</span>
                 <span className="text-[10px] tabular-nums text-tx-muted">
@@ -223,19 +228,19 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
       {/* row 4 — KPIs */}
       <div className="mt-2 flex items-center gap-4 border-t border-hairline pt-2">
         <span className="flex items-baseline gap-1.5">
-          <PixelLabel>CAUGHT</PixelLabel>
+          <PixelLabel>{t('nuz.card.caught')}</PixelLabel>
           <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{k.caught}</span>
         </span>
         <span className="flex items-baseline gap-1.5">
-          <PixelLabel>DEAD</PixelLabel>
+          <PixelLabel>{t('nuz.card.dead')}</PixelLabel>
           <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{k.dead}</span>
         </span>
         <span className="flex items-baseline gap-1.5">
           <img src="/sparkle.svg" alt="" className="h-2.5 w-2.5 self-center" />
-          <PixelLabel>LINKS</PixelLabel>
+          <PixelLabel>{t('nuz.card.links')}</PixelLabel>
           <span className="font-display text-[14px] font-bold tabular-nums text-gold">{k.links}</span>
         </span>
-        <span className="ml-auto font-pixel text-[7px] tracking-[0.08em] text-tx-muted">LAST MOVE {timeAgo(last)}</span>
+        <span className="ml-auto font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.card.lastMove', { time: timeAgo(last, true) })}</span>
       </div>
     </motion.article>
   );

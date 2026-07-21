@@ -1,10 +1,14 @@
 /* Nuzlocke run — header (nuzlocke.md §2.1): back link, inline rename,
  * chips, player pills with presence, invite / go-online, overflow menu. */
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
+import { useLanguage } from '@/lib/i18n-data';
+import i18n from '@/i18n';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Skull, SlidersHorizontal, Archive } from 'lucide-react';
-import { regionById, versionChipLabel } from '@/lib/regions';
+import { regionById, regionName, versionChipLabel } from '@/lib/regions';
 import {
   archiveRun,
   goOnline,
@@ -20,6 +24,9 @@ import { RulesEditor } from './RulesBar';
 
 export default function RunHeader({ entry }: { entry: RunEntry }) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const state = entry.state;
   const [renaming, setRenaming] = useState(false);
   const [draft, setDraft] = useState('');
@@ -37,15 +44,15 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
     if (!state.run.invite_code) return;
     void navigator.clipboard?.writeText(state.run.invite_code).catch(() => undefined);
     setCopied(true);
-    pushToast('success', `INVITE COPIED — ${state.run.invite_code}`);
+    pushToast('success', i18n.t('nuz.toast.inviteCopied', { code: state.run.invite_code }));
     window.setTimeout(() => setCopied(false), 1500);
   };
 
   return (
     <motion.header initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.35 }} className="flex flex-wrap items-center gap-3 py-4">
-      <Link to="/nuzlocke" className="flex items-center gap-1 font-pixel text-[8px] tracking-[0.08em] text-tx-muted transition-colors hover:text-gold">
-        <ArrowLeft size={12} /> ALL RUNS
-      </Link>
+      <LocaleLink to="/nuzlocke" className="flex items-center gap-1 font-pixel text-[8px] tracking-[0.08em] text-tx-muted transition-colors hover:text-gold">
+        <ArrowLeft size={12} /> {t('nuz.backToRuns')}
+      </LocaleLink>
       <span className="h-5 w-px bg-hairline2" />
 
       {renaming ? (
@@ -69,7 +76,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
       ) : (
         <h1
           className={cn('font-display text-[clamp(18px,2.4vw,24px)] font-extrabold uppercase text-tx-primary', owner && 'cursor-text')}
-          title={owner ? 'Click to rename' : undefined}
+          title={owner ? t('nuz.header.renameTip') : undefined}
           onClick={() => {
             if (!owner) return;
             setDraft(state.run.name);
@@ -87,7 +94,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
         {versionChipLabel(state.run.game)}
       </span>
       <span className="rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">
-        {region?.name.toUpperCase() ?? state.run.region.toUpperCase()}
+        {region ? regionName(region, lang).toUpperCase() : state.run.region.toUpperCase()}
       </span>
       <RunStatusChip status={state.run.status} />
       <SyncBadge status={multi ? entry.status : 'local'} />
@@ -107,7 +114,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
                 initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 420, damping: 30, delay: i * 0.05 }}
-                title={`${p.name} — ${alive} alive · ${dead} dead`}
+                title={t('nuz.header.playerTip', { name: p.name, alive, dead })}
                 className="flex h-9 items-center gap-1.5 rounded-full border border-hairline bg-surface1 px-3"
               >
                 <span className={cn('h-2.5 w-2.5 rounded-full', online && 'nz-presence-ring')} style={{ background: p.color }} />
@@ -125,7 +132,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
             className="flex h-9 items-center gap-1.5 rounded-md border border-gold/60 px-3 text-[12px] font-semibold text-gold transition-colors hover:bg-gold/10"
           >
             {copied ? <Check size={13} /> : <Link2 size={13} />}
-            {copied ? state.run.invite_code : 'Invite'}
+            {copied ? state.run.invite_code : t('nuz.header.invite')}
           </button>
         ) : (
           <Popover
@@ -138,13 +145,13 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
                 onClick={() => setInviteOpen((o) => !o)}
                 className="flex h-9 items-center gap-1.5 rounded-md border border-gold/60 px-3 text-[12px] font-semibold text-gold transition-colors hover:bg-gold/10"
               >
-                <Link2 size={13} /> Invite
+                <Link2 size={13} /> {t('nuz.header.invite')}
               </button>
             }
             className="w-[240px] p-3"
           >
-            <PixelLabel className="text-gold">SOLO RUN</PixelLabel>
-            <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">Upgrade this run to multiplayer to invite friends — realtime sync, presence, the works.</p>
+            <PixelLabel className="text-gold">{t('nuz.header.soloRun')}</PixelLabel>
+            <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.header.soloBody')}</p>
             <button
               type="button"
               disabled={goingOnline}
@@ -157,7 +164,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
               }}
               className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-[11px] font-bold uppercase tracking-[0.06em] text-tx-primary disabled:opacity-50"
             >
-              {goingOnline ? 'Going online…' : 'Go online'}
+              {goingOnline ? t('nuz.header.goingOnline') : t('nuz.header.goOnline')}
             </button>
           </Popover>
         )}
@@ -170,7 +177,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
           anchor={
             <button
               type="button"
-              aria-label="Run options"
+              aria-label={t('nuz.header.options')}
               onClick={() => setMenuOpen((o) => !o)}
               className="grid h-9 w-9 place-items-center rounded-md border border-hairline text-tx-muted transition-colors hover:border-gold/50 hover:text-gold"
             >
@@ -188,7 +195,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
               }}
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
-              <SlidersHorizontal size={13} /> Edit rules
+              <SlidersHorizontal size={13} /> {t('nuz.header.editRules')}
             </button>
           )}
           <button
@@ -202,19 +209,19 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
             }}
             className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3', owner ? 'text-tx-secondary hover:text-gold' : 'text-tx-muted/50')}
           >
-            <Pencil size={13} /> Rename
+            <Pencil size={13} /> {t('nuz.header.rename')}
           </button>
           {state.run.status !== 'complete' && (
             <button
               type="button"
               onClick={() => {
                 setRunStatus(state.run.id, 'complete');
-                pushToast('success', 'RUN COMPLETE — CHAMPIONS.');
+                pushToast('success', i18n.t('nuz.toast.complete'));
                 setMenuOpen(false);
               }}
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
-              <Flag size={13} /> Mark run complete
+              <Flag size={13} /> {t('nuz.header.markComplete')}
             </button>
           )}
           {state.run.status !== 'failed' && (
@@ -226,7 +233,7 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
               }}
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
-              <Skull size={13} /> Mark run failed
+              <Skull size={13} /> {t('nuz.header.markFailed')}
             </button>
           )}
           {state.run.status !== 'active' && (
@@ -238,19 +245,19 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
               }}
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
-              <Flag size={13} /> Reactivate run
+              <Flag size={13} /> {t('nuz.header.reactivate')}
             </button>
           )}
           <button
             type="button"
             onClick={() => {
               archiveRun(state.run.id);
-              pushToast('info', 'RUN ARCHIVED ON THIS DEVICE');
-              navigate('/nuzlocke');
+              pushToast('info', i18n.t('nuz.toast.archived'));
+              navigate(localePath('/nuzlocke'));
             }}
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
-            <Archive size={13} /> Archive
+            <Archive size={13} /> {t('nuz.header.archive')}
           </button>
         </Popover>
 

@@ -5,6 +5,8 @@
  * always on the deck, between ACTIVE PARTIES and THE FALLEN. */
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { useLocalePath } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import Sprite from '@/components/Sprite';
 import { boxedOf } from '@/lib/nuzlocke-store';
@@ -25,6 +27,8 @@ function BoxCell({
   index: number;
 }) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
   const nick = enc.nickname ?? nameOf(enc.pokemon_id);
   return (
     <motion.button
@@ -33,15 +37,15 @@ function BoxCell({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.25, delay: Math.min(index, 10) * 0.03 }}
-      onClick={() => navigate(`/pokemon/${enc.pokemon_id}`)}
+      onClick={() => navigate(localePath(`/pokemon/${enc.pokemon_id}`))}
       onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = `${color}88`;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = '';
       }}
-      title={`${nick} — LV ${enc.level} · caught on ${routeLabel(enc.route_key)} — open dex entry`}
-      aria-label={`Open ${nick} in the dex`}
+      title={t('nuz.box.cellTip', { name: nick, level: enc.level, route: routeLabel(enc.route_key) })}
+      aria-label={t('nuz.box.openDexAria', { name: nick })}
       className="group/box flex w-[64px] flex-col items-center gap-0 rounded-sm border border-hairline bg-surface2/60 px-1 pb-1 pt-0.5 transition-colors duration-150"
     >
       <span className="transition-transform duration-200 group-hover/box:-translate-y-[6%]">
@@ -65,15 +69,16 @@ export default function BoxSection({
   nameOf: (id: number) => string;
   routeLabel: (key: string) => string;
 }) {
+  const { t } = useTranslation();
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const total = players.reduce((n, p) => n + boxedOf(state, p.id).length, 0);
 
   return (
-    <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label="Box storage">
+    <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label={t('nuz.box.aria')}>
       <div className="flex items-baseline gap-3">
-        <h4 className="font-sans text-[15px] font-bold text-tx-primary">BOX</h4>
-        <PixelLabel>SURVIVORS BEYOND THE PARTY OF 6</PixelLabel>
-        <span className="ml-auto font-display text-[12px] font-bold tabular-nums text-tx-muted">{total} BOXED</span>
+        <h4 className="font-sans text-[15px] font-bold text-tx-primary">{t('nuz.box.title')}</h4>
+        <PixelLabel>{t('nuz.box.note')}</PixelLabel>
+        <span className="ml-auto font-display text-[12px] font-bold tabular-nums text-tx-muted">{t('nuz.box.count', { count: total })}</span>
       </div>
       <div className="mt-3">
         {players.map((p) => {
@@ -91,7 +96,7 @@ export default function BoxSection({
               </div>
               {boxed.length === 0 ? (
                 <div className="grid h-10 flex-1 place-items-center rounded-sm border border-dashed border-hairline2 opacity-50">
-                  <PixelLabel>BOX EMPTY</PixelLabel>
+                  <PixelLabel>{t('nuz.box.empty')}</PixelLabel>
                 </div>
               ) : (
                 <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">

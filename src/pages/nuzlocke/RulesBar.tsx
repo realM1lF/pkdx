@@ -4,15 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Minus, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import { boxedOf, kpisOf, pushToast, setRunRules } from '@/lib/nuzlocke-store';
 import type { RunState } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { GoldSwitch, InfoTip, PixelLabel, Popover } from './ui';
-
-const DUPES_TIP = 'If your first encounter is a species you already have, you may skip it and try the next.';
-const SHINY_TIP = 'Shinies may always be caught, clause-free.';
-const CAP_TIP = "Your party may not exceed the next gym leader's ace level.";
-const OWNER_TIP = 'Only the run owner edits rules';
 
 /* number tween 300ms (§2.2) */
 function useCountUp(value: number): number {
@@ -54,11 +51,12 @@ function Counter({ label, value, dot, gold }: { label: string; value: number; do
 }
 
 export function LevelCapStepper({ cap, onChange, disabled }: { cap: number | null; onChange: (v: number | null) => void; disabled?: boolean }) {
+  const { t } = useTranslation();
   return (
     <span className={cn('flex items-center gap-1.5', disabled && 'opacity-40')}>
       <button
         type="button"
-        aria-label="Lower level cap"
+        aria-label={t('nuz.rules.lower')}
         disabled={disabled}
         onClick={() => onChange(cap ? Math.max(1, cap - 1) : null)}
         className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted hover:border-gold hover:text-gold disabled:cursor-not-allowed"
@@ -68,7 +66,7 @@ export function LevelCapStepper({ cap, onChange, disabled }: { cap: number | nul
       <span className="w-8 text-center font-display text-[13px] font-bold tabular-nums text-gold">{cap ?? '—'}</span>
       <button
         type="button"
-        aria-label="Raise level cap"
+        aria-label={t('nuz.rules.raise')}
         disabled={disabled}
         onClick={() => onChange(Math.min(100, (cap ?? 25) + 1))}
         className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted hover:border-gold hover:text-gold disabled:cursor-not-allowed"
@@ -81,20 +79,21 @@ export function LevelCapStepper({ cap, onChange, disabled }: { cap: number | nul
 
 /** Shared rules editor — used in the header "Edit rules" popover (owner). */
 export function RulesEditor({ state }: { state: RunState }) {
+  const { t } = useTranslation();
   const r = state.run.rules;
   const set = (patch: Parameters<typeof setRunRules>[1]) => setRunRules(state.run.id, patch);
   return (
     <div className="w-[240px] space-y-2.5 p-3">
-      <PixelLabel className="text-gold">HOUSE RULES</PixelLabel>
-      <GoldSwitch checked={r.dupes} onChange={(v) => set({ dupes: v })} label="DUPES CLAUSE" tip={DUPES_TIP} />
+      <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
+      <GoldSwitch checked={r.dupes} onChange={(v) => set({ dupes: v })} label={t('nuz.rules.dupesClause')} tip={t('nuz.rules.dupesTip')} />
       <div />
-      <GoldSwitch checked={r.shiny} onChange={(v) => set({ shiny: v })} label="SHINY CLAUSE" tip={SHINY_TIP} />
+      <GoldSwitch checked={r.shiny} onChange={(v) => set({ shiny: v })} label={t('nuz.rules.shinyClause')} tip={t('nuz.rules.shinyTip')} />
       <div />
-      <GoldSwitch checked={r.soulLink} onChange={(v) => set({ soulLink: v })} label="SOUL LINK" tip="SoulLink ties two players' games: same-route catches become linked pairs. If one dies, its partner is boxed." />
+      <GoldSwitch checked={r.soulLink} onChange={(v) => set({ soulLink: v })} label={t('nuz.rules.soulLink')} tip={t('nuz.rules.soulLinkTip')} />
       <div className="flex items-center justify-between border-t border-hairline pt-2.5">
         <span className="flex items-center gap-1.5">
-          <PixelLabel>LEVEL CAP</PixelLabel>
-          <InfoTip text={CAP_TIP} />
+          <PixelLabel>{t('nuz.rules.levelCap')}</PixelLabel>
+          <InfoTip text={t('nuz.rules.capTip')} />
         </span>
         <LevelCapStepper cap={r.levelCap} onChange={(v) => set({ levelCap: v })} />
       </div>
@@ -103,6 +102,7 @@ export function RulesEditor({ state }: { state: RunState }) {
 }
 
 export default function RulesBar({ state, owner }: { state: RunState; owner: boolean }) {
+  const { t } = useTranslation();
   const k = kpisOf(state);
   const [capOpen, setCapOpen] = useState(false);
   const cap = state.run.rules.levelCap;
@@ -112,7 +112,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
 
   const toggle = (key: 'dupes' | 'shiny', v: boolean) => {
     setRunRules(state.run.id, { [key]: v });
-    pushToast('info', `${key.toUpperCase()} CLAUSE ${v ? 'ON' : 'OFF'}`);
+    pushToast('info', i18n.t('nuz.toast.clause', { clause: i18n.t(`nuz.rules.${key}Clause`), state: i18n.t(v ? 'nuz.on' : 'nuz.off') }).toUpperCase());
   };
 
   return (
@@ -120,14 +120,14 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
       <div className="mx-auto flex min-h-[48px] max-w-[1440px] flex-wrap items-center gap-x-4 gap-y-1.5 py-1.5">
         {/* counters */}
         <div className="flex items-center gap-4">
-          <Counter label="CAUGHT" value={k.caught} dot={<span className="h-2 w-2 rounded-full bg-[#63D96B]" />} />
+          <Counter label={t('nuz.rules.caught')} value={k.caught} dot={<span className="h-2 w-2 rounded-full bg-[#63D96B]" />} />
           <span className="h-4 w-px bg-hairline2" />
-          <Counter label="BOXED" value={boxedTotal} dot={<span className="h-2 w-2 rounded-[3px] border border-tx-muted/80 bg-surface3" />} />
+          <Counter label={t('nuz.rules.boxed')} value={boxedTotal} dot={<span className="h-2 w-2 rounded-[3px] border border-tx-muted/80 bg-surface3" />} />
           <span className="h-4 w-px bg-hairline2" />
-          <Counter label="MISSED" value={k.missed} dot={<span className="h-2 w-2 rounded-full border border-gold/70" />} />
+          <Counter label={t('nuz.rules.missed')} value={k.missed} dot={<span className="h-2 w-2 rounded-full border border-gold/70" />} />
           <span className="h-4 w-px bg-hairline2" />
           <Counter
-            label="DEAD"
+            label={t('nuz.rules.dead')}
             value={k.dead}
             dot={
               <svg width="8" height="8" viewBox="0 0 8 8" className="text-tx-muted">
@@ -136,16 +136,16 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
             }
           />
           <span className="h-4 w-px bg-hairline2" />
-          <Counter label="LINKS" value={k.links} gold dot={<img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />} />
+          <Counter label={t('nuz.rules.links')} value={k.links} gold dot={<img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />} />
         </div>
 
         {/* clause toggles */}
         <div className="flex items-center gap-4 border-l border-hairline2 pl-4">
-          <span title={owner ? undefined : OWNER_TIP}>
-            <GoldSwitch checked={state.run.rules.dupes} onChange={(v) => toggle('dupes', v)} disabled={!owner} label="DUPES" tip={DUPES_TIP} />
+          <span title={owner ? undefined : t('nuz.rules.ownerTip')}>
+            <GoldSwitch checked={state.run.rules.dupes} onChange={(v) => toggle('dupes', v)} disabled={!owner} label="DUPES" tip={t('nuz.rules.dupesTip')} />
           </span>
-          <span title={owner ? undefined : OWNER_TIP}>
-            <GoldSwitch checked={state.run.rules.shiny} onChange={(v) => toggle('shiny', v)} disabled={!owner} label="SHINY" tip={SHINY_TIP} />
+          <span title={owner ? undefined : t('nuz.rules.ownerTip')}>
+            <GoldSwitch checked={state.run.rules.shiny} onChange={(v) => toggle('shiny', v)} disabled={!owner} label="SHINY" tip={t('nuz.rules.shinyTip')} />
           </span>
         </div>
 
@@ -158,7 +158,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
             <button
               type="button"
               onClick={() => owner && setCapOpen((o) => !o)}
-              title={cap ? `Party limit until next gym: ${cap}.` : 'No level cap set'}
+              title={cap ? t('nuz.rules.capTitle', { cap }) : t('nuz.rules.noCap')}
               className={cn(
                 'flex items-center gap-1.5 rounded-full border border-gold/50 px-2.5 py-1',
                 owner && 'transition-colors hover:bg-gold/10',
@@ -173,7 +173,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
             cap={cap}
             onChange={(v) => {
               setRunRules(state.run.id, { levelCap: v });
-              pushToast('info', v ? `LEVEL CAP ${v}` : 'LEVEL CLEARED');
+              pushToast('info', v ? i18n.t('nuz.toast.levelCap', { cap: v }) : i18n.t('nuz.toast.levelCleared'));
             }}
           />
         </Popover>
@@ -191,7 +191,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
             </motion.div>
           </div>
           <PixelLabel className="shrink-0">
-            {k.routesDone}/{k.routesTotal} ROUTES
+            {t('nuz.rules.routes', { done: k.routesDone, total: k.routesTotal })}
           </PixelLabel>
         </div>
       </div>

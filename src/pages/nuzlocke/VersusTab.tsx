@@ -192,11 +192,11 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* ================= LEFT — own picker ================= */}
-      <Panel eyebrow="YOUR SIDE" title="Team + Box" className="col-span-12 lg:col-span-3" bodyClassName="flex max-h-[640px] flex-col p-2">
+      <Panel eyebrow={t('versus.yourSide')} title={t('versus.teamBox')} className="col-span-12 lg:col-span-3" bodyClassName="flex max-h-[640px] flex-col p-2">
         {/* player filter */}
         <div className="mb-2 flex flex-wrap gap-1">
           <FilterChip active={playerFilter === 'all'} onClick={() => setPlayerFilter('all')}>
-            <Users size={9} className="mr-1" /> ALL
+            <Users size={9} className="mr-1" /> {t('versus.all')}
           </FilterChip>
           {state.players.map((p) => (
             <FilterChip key={p.id} active={playerFilter === p.id} onClick={() => setPlayerFilter(p.id)}>
@@ -209,7 +209,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
           {ownMons.length === 0 && (
             <div className="flex h-32 flex-col items-center justify-center gap-2">
               <img src="/pokeball.svg" alt="" className="h-8 w-8 opacity-50" />
-              <p className="px-4 text-center font-sans text-[11px] text-gold">No catches yet — log encounters first.</p>
+              <p className="px-4 text-center font-sans text-[11px] text-gold">{t('versus.noCatches')}</p>
             </div>
           )}
           {ownMons.map((m) => {
@@ -240,20 +240,20 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
       {/* ================= RIGHT — foe + matchup + ranking ================= */}
       <div className="col-span-12 flex min-w-0 flex-col gap-4 lg:col-span-9">
         <Panel
-          eyebrow="OPPONENT"
-          title={foeRef ? foeRef.context : 'Pick a target'}
+          eyebrow={t('versus.opponent')}
+          title={foeRef ? foeRef.context : t('versus.pickTarget')}
           className="min-h-[150px]"
           right={
             isKanto ? (
               <SegmentedControl
                 id="foe-mode"
                 size="xs"
-                ariaLabel="Opponent source"
+                ariaLabel={t('versus.opponentSource')}
                 value={foeMode}
                 onChange={(v) => setFoeMode(v as 'trainers' | 'wild')}
                 options={[
-                  { value: 'trainers', label: 'TRAINERS' },
-                  { value: 'wild', label: 'ANY POKÉMON' },
+                  { value: 'trainers', label: t('versus.trainers') },
+                  { value: 'wild', label: t('versus.anyPokemon') },
                 ]}
               />
             ) : undefined
@@ -271,13 +271,13 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                     level: you.level,
                     moves: [],
                     source: 'wild',
-                    context: `${entry?.label ?? 'Pokémon'} · wild`,
+                    context: `${entry?.label ?? 'Pokémon'} · ${t('versus.trainers') === 'TRAINER' ? 'wild' : 'wild'}`,
                   });
                 }}
-                placeholder="SEARCH ANY POKÉMON…"
+                placeholder={t('versus.searchAny')}
               />
               <p className="mt-2 font-sans text-[10px] text-tx-muted">
-                Wild opponents use their 4 most recent level-up moves at the set level.
+                {t('versus.wildNote')}
               </p>
             </div>
           ) : (
@@ -300,12 +300,12 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
         {/* matchup zone */}
         {!sel && (
           <div className="flex h-24 items-center justify-center rounded-lg border border-hairline bg-surface1/60">
-            <span className="font-sans text-[12px] text-tx-muted">Pick one of your Pokémon on the left.</span>
+            <span className="font-sans text-[12px] text-tx-muted">{t('versus.pickOneLeft')}</span>
           </div>
         )}
         {sel && !foeRef && (
           <div className="flex h-24 items-center justify-center rounded-lg border border-hairline bg-surface1/60">
-            <span className="font-sans text-[12px] text-gold">Pick an opponent — a key trainer above, or any Pokémon.</span>
+            <span className="font-sans text-[12px] text-gold">{t('versus.pickOpponentHint')}</span>
           </div>
         )}
 
@@ -314,7 +314,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
             {/* head row: compact side headers */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <SideHeader
-                title="YOU"
+                title={t('versus.you')}
                 loading={youStatus === 'loading'}
                 pokemon={youPokemon}
                 fallbackId={sel.enc.pokemon_id}
@@ -323,7 +323,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                 onLevel={(lv) => setYou((s) => ({ ...s, level: lv }))}
               />
               <SideHeader
-                title="FOE"
+                title={t('versus.foe')}
                 loading={foeStatus === 'loading'}
                 pokemon={foePokemon}
                 name={foeName}
@@ -332,7 +332,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
               />
             </div>
 
-            <SpeedCheckBanner check={check} youName="YOU" foeName={foeName.toUpperCase()} />
+            <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName.toUpperCase()} />
 
             {(youStatus === 'loading' || foeStatus === 'loading') && (
               <div className="flex h-24 items-center justify-center">
@@ -344,7 +344,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
               <>
                 <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                   <Panel eyebrow="YOUR OFFENSE" title={`${youName} → ${foeName}`} bodyClassName="p-1">
-                    <DamageMatrix rows={youRows} heading="MOVE" />
+                    <DamageMatrix rows={youRows} heading={t('versus.moveCol')} />
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={you.slots}
@@ -361,7 +361,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                     </div>
                   </Panel>
                   <Panel eyebrow="FOE OFFENSE" title={`${foeName} → ${youName}`} bodyClassName="p-1">
-                    <DamageMatrix rows={foeRows} heading="MOVE" />
+                    <DamageMatrix rows={foeRows} heading={t('versus.moveCol')} />
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={foe.slots}
@@ -380,10 +380,10 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-                  <Panel eyebrow="STAT DELTA" title="Level-Adjusted">
+                  <Panel eyebrow={t('versus.statDeltaEyebrow')} title={t('versus.statDeltaTitle')}>
                     <StatDelta you={youStats} foe={foeStats} />
                   </Panel>
-                  <Panel eyebrow="DEFENSIVE PROFILES" title="Type Matchups">
+                  <Panel eyebrow={t('versus.defenseEyebrow')} title={t('versus.defenseTitle')}>
                     <DefensiveProfiles
                       youTypes={youPokemon.types.map((t) => t.type.name)}
                       foeTypes={foePokemon.types.map((t) => t.type.name)}
@@ -448,6 +448,7 @@ function SideHeader({
   level: number;
   onLevel: (lv: number) => void;
 }) {
+  const { t } = useTranslation();
   const types = pokemon?.types.map((t) => t.type.name) ?? [];
   const id = pokemon?.id ?? fallbackId ?? 0;
   return (
@@ -479,7 +480,7 @@ function SideHeader({
             className="vs-input w-12 text-center tabular-nums"
             aria-label={`${title} level`}
           />
-          {loading && <span className="pixel-label text-[7px] text-tx-muted">SYNC…</span>}
+          {loading && <span className="pixel-label text-[7px] text-tx-muted">{t('versus.syncShort')}</span>}
         </div>
       </div>
       <Swords size={12} className="shrink-0 text-gold/50" />
@@ -601,6 +602,8 @@ function BestAnswerRanking({
   selectedId: string | null;
   onSelect: (encId: string) => void;
 }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [rows, setRows] = useState<RankedRow[]>([]);
   const [pending, setPending] = useState(0);
   const pokeCache = useRef(new Map<number, Pokemon>());
@@ -637,7 +640,7 @@ function BestAnswerRanking({
         const outCells = set.map((s) => damageBetween(side, foe, s)).filter((c): c is NonNullable<typeof c> => Boolean(c));
         const inCells = foe.moves.map((s) => damageBetween(foe, side, s)).filter((c): c is NonNullable<typeof c> => Boolean(c));
         const sc = speedCheck(side, foe);
-        const verdict = judgeMatchup(outCells, inCells, sc ? sc.delta > 0 : null);
+        const verdict = judgeMatchup(outCells, inCells, sc ? sc.delta > 0 : null, lang);
         out.push({ mon: m, verdict });
       }
       if (cancelled) return;
@@ -648,7 +651,7 @@ function BestAnswerRanking({
     return () => {
       cancelled = true;
     };
-  }, [foe, mons]);
+  }, [foe, mons, lang]);
 
   const tiers = useMemo(() => {
     const counts = new Map<AnswerTier, number>();
@@ -658,13 +661,13 @@ function BestAnswerRanking({
 
   return (
     <Panel
-      eyebrow="BEST ANSWER RANKING"
+      eyebrow={t('versus.rankingEyebrow')}
       title={`vs ${foeName}`}
       right={
         <div className="flex items-center gap-1.5">
           {tiers.map(({ tier, n }) => (
             <span key={tier} className="vs-rank" data-tier={tier}>
-              {tier} {n}
+              {t(`versus.tier${tier.charAt(0) + tier.slice(1).toLowerCase()}`)} {n}
             </span>
           ))}
         </div>
@@ -673,12 +676,12 @@ function BestAnswerRanking({
       {pending > 0 && (
         <div className="flex h-20 items-center justify-center gap-2">
           <PokeballLoader variant="inline" />
-          <span className="pixel-label text-[8px] text-tx-muted">RANKING {mons.length} MONS…</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('versus.rankingLoading', { count: mons.length })}</span>
         </div>
       )}
       {pending === 0 && rows.length === 0 && (
         <div className="flex h-20 items-center justify-center">
-          <span className="font-sans text-[11px] text-tx-muted">No ranked answers yet.</span>
+          <span className="font-sans text-[11px] text-tx-muted">{t('versus.noRanking')}</span>
         </div>
       )}
       {pending === 0 && rows.length > 0 && (
@@ -695,7 +698,7 @@ function BestAnswerRanking({
               transition={{ duration: 0.2, delay: Math.min(i, 10) * 0.03 }}
             >
               <span className="vs-rank" data-tier={r.verdict.tier}>
-                {r.verdict.tier}
+                {t(`versus.tier${r.verdict.tier.charAt(0) + r.verdict.tier.slice(1).toLowerCase()}`)}
               </span>
               <Sprite id={r.mon.enc.pokemon_id} name={r.mon.label} className="h-7 w-7" skeleton={false} />
               <span className="min-w-0">

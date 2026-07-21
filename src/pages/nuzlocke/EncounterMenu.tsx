@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, HeartCrack, Pencil, Trash2, Wind } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { deleteEncounter, updateEncounter } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, UpdateResult } from '@/lib/nuzlocke-store';
 
@@ -23,6 +24,7 @@ export default function EncounterMenu({
   onClose: () => void;
   onCascade: (res: UpdateResult, enc: NuzEncounterRow) => void;
 }) {
+  const { t } = useTranslation();
   const [noteMode, setNoteMode] = useState(false);
   const [note, setNote] = useState('');
   const [nickMode, setNickMode] = useState(false);
@@ -86,7 +88,7 @@ export default function EncounterMenu({
         {enc.status === 'caught' && !noteMode && !nickMode && (
           <>
             <button type="button" onClick={() => setNoteMode(true)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
-              <HeartCrack size={13} /> Mark dead…
+              <HeartCrack size={13} /> {t('nuz.menu.markDead')}
             </button>
             <button
               type="button"
@@ -98,7 +100,7 @@ export default function EncounterMenu({
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
               role="menuitem"
             >
-              <Wind size={13} /> Mark missed
+              <Wind size={13} /> {t('nuz.menu.markMissed')}
             </button>
           </>
         )}
@@ -112,31 +114,31 @@ export default function EncounterMenu({
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             role="menuitem"
           >
-            <Check size={13} /> Restore as caught
+            <Check size={13} /> {t('nuz.menu.restoreCaught')}
           </button>
         )}
 
         {noteMode && (
           <div className="px-3 py-2">
-            <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">DEATH NOTE (OPTIONAL)</label>
+            <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.menu.deathNote')}</label>
             <input
               autoFocus
               value={note}
               onChange={(e) => setNote(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && markDead()}
-              placeholder="Crit from Blue's Raticate…"
+              placeholder={t('nuz.menu.deathPlaceholder')}
               maxLength={80}
               className="mt-1.5 h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
             />
             <button type="button" onClick={markDead} className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/20">
-              Confirm — it faints
+              {t('nuz.menu.confirmDead')}
             </button>
           </div>
         )}
 
         {!noteMode && !nickMode && (
           <button type="button" onClick={() => setNickMode(true)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
-            <Pencil size={13} /> Edit nickname
+            <Pencil size={13} /> {t('nuz.menu.editNick')}
           </button>
         )}
 
@@ -169,7 +171,7 @@ export default function EncounterMenu({
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
             role="menuitem"
           >
-            <Trash2 size={13} /> Remove entry
+            <Trash2 size={13} /> {t('nuz.menu.remove')}
           </button>
         )}
       </motion.div>

@@ -3,6 +3,8 @@
  * always-visible BOX section below (BoxSection) — no hidden drawer. */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MoreVertical } from 'lucide-react';
 import Sprite from '@/components/Sprite';
@@ -55,6 +57,8 @@ function PartySlot({
   onMenu: (enc: NuzEncounterRow, x: number, y: number) => void;
 }) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
   const types = useTypes(enc.pokemon_id);
   return (
     <motion.div
@@ -64,12 +68,12 @@ function PartySlot({
       transition={{ duration: 0.4 }}
       className="group/cell relative flex h-[72px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-sm border border-hairline bg-surface2 transition-colors"
       style={{ ['--pc' as string]: color }}
-      onClick={() => navigate(`/pokemon/${enc.pokemon_id}`)}
+      onClick={() => navigate(localePath(`/pokemon/${enc.pokemon_id}`))}
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${color}88`)}
       onMouseLeave={(e) => (e.currentTarget.style.borderColor = '')}
-      title={`${enc.nickname ?? nameOf(enc.pokemon_id)} — open dex entry`}
+      title={t('nuz.team.openDex', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
       role="link"
-      aria-label={`Open ${enc.nickname ?? nameOf(enc.pokemon_id)} in the dex`}
+      aria-label={t('nuz.team.openDexAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
     >
       <span className="transition-transform duration-200 group-hover/cell:-translate-y-[6%]">
         <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[36px] w-[36px]" skeleton={false} />
@@ -82,11 +86,11 @@ function PartySlot({
         ))}
       </span>
       {linked && (
-        <img src="/sparkle.svg" alt="" className="absolute left-1 top-1 h-1.5 w-1.5" title={partnerName ? `SoulLinked with ${partnerName}` : 'SoulLinked'} />
+        <img src="/sparkle.svg" alt="" className="absolute left-1 top-1 h-1.5 w-1.5" title={partnerName ? t('nuz.team.soulLinkedWith', { name: partnerName }) : t('nuz.team.soulLinked')} />
       )}
       <button
         type="button"
-        aria-label="Encounter options"
+        aria-label={t('nuz.team.options')}
         onClick={(e) => {
           e.stopPropagation();
           onMenu(enc, e.clientX, e.clientY);
@@ -112,13 +116,14 @@ export default function TeamGrid({
   linkPartner: (encId: string) => NuzEncounterRow | null;
   onMenu: (enc: NuzEncounterRow, x: number, y: number) => void;
 }) {
+  const { t } = useTranslation();
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
 
   return (
-    <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label="Active parties">
+    <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label={t('nuz.team.aria')}>
       <div className="flex items-baseline gap-3">
-        <h4 className="font-sans text-[15px] font-bold text-tx-primary">ACTIVE PARTIES</h4>
-        <PixelLabel>LAST 6 ALIVE PER PLAYER · REST ARE BOXED</PixelLabel>
+        <h4 className="font-sans text-[15px] font-bold text-tx-primary">{t('nuz.team.title')}</h4>
+        <PixelLabel>{t('nuz.team.note')}</PixelLabel>
       </div>
       <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
         {players.map((p, pi) => {

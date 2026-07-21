@@ -8,7 +8,8 @@ import { calculate, Generations, Move as CalcMove, Pokemon as CalcPokemon, toID 
 import type { StatsTable } from '@smogon/calc';
 import type { Move, Pokemon, StatKey } from './types';
 import { STAT_ORDER } from './types';
-import { displayName } from './pokeapi';
+import i18n from '@/i18n';
+import { nameOfMove } from './i18n-data';
 
 const GEN = Generations.get(9);
 
@@ -459,7 +460,12 @@ const hitsFromPct = (pct: number): number => (pct <= 0 ? 0 : Math.min(9, Math.ma
  * Rank one own Pokémon against the opponent.
  * outCells: your move results vs the foe · inCells: foe results vs you.
  */
-export function judgeMatchup(outCells: DamageCell[], inCells: DamageCell[], outspeed: boolean | null): AnswerVerdict {
+export function judgeMatchup(
+  outCells: DamageCell[],
+  inCells: DamageCell[],
+  outspeed: boolean | null,
+  lang: 'en' | 'de' = 'en',
+): AnswerVerdict {
   const damaging = outCells.filter((c) => c.range[1] > 0);
   const best = damaging.sort((a, b) => b.pct[1] - a.pct[1])[0] ?? null;
   const worstIn = inCells.filter((c) => c.range[1] > 0).sort((a, b) => b.pct[1] - a.pct[1])[0] ?? null;
@@ -487,17 +493,23 @@ export function judgeMatchup(outCells: DamageCell[], inCells: DamageCell[], outs
   else if (outHits > 0 && inHits >= 3) tier = 'RISKY';
   else tier = 'AVOID';
 
+  const t = (key: string, opts?: Record<string, unknown>) => i18n.t(key, { lng: lang, ...opts });
   const parts: string[] = [];
   if (best) {
-    const stab = best.eff >= 2 ? 'super-effective ' : '';
-    parts.push(`${stab}${displayName(best.move)} ${koLabel(best)}`);
+    const stab = best.eff >= 2 ? `${t('versus.reasonSuper')} ` : '';
+    parts.push(`${stab}${nameOfMove(best.move, lang)} ${koLabel(best)}`);
   } else {
-    parts.push('no damaging answer');
+    parts.push(t('versus.reasonNoAnswer'));
   }
-  if (worstIn) parts.push(inHits > 0 ? `takes ${inHits >= 4 ? '4HKO+' : `${inHits}HKO`}` : 'takes chip');
-  else parts.push('untouched');
-  if (outspeed === true) parts.push('outspeeds');
-  if (outspeed === false && inHits > 0 && inHits <= 2) parts.push('outsped');
+  if (worstIn)
+    parts.push(
+      inHits > 0
+        ? t('versus.reasonTakes', { ko: inHits >= 4 ? '4HKO+' : `${inHits}HKO` })
+        : t('versus.reasonChip'),
+    );
+  else parts.push(t('versus.reasonUntouched'));
+  if (outspeed === true) parts.push(t('versus.reasonOutspeeds'));
+  if (outspeed === false && inHits > 0 && inHits <= 2) parts.push(t('versus.reasonOutsped'));
 
   return { tier, score, reason: parts.join(' · '), bestMove: best?.move ?? null, outHits, inHits, outspeed, bestEff: best?.eff ?? 1 };
 }

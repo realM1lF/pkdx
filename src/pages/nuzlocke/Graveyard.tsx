@@ -1,25 +1,27 @@
 /* Nuzlocke run — THE FALLEN graveyard (nuzlocke.md §2.7).
  * Grayscale, strikethrough, smaller, memorial candle dots. Never red. */
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import { graveyardOf } from '@/lib/nuzlocke-store';
 import type { RunState } from '@/lib/nuzlocke-store';
 import { PixelLabel } from './ui';
 
 export default function Graveyard({ state, nameOf, routeLabel }: { state: RunState; nameOf: (id: number) => string; routeLabel: (key: string) => string }) {
+  const { t } = useTranslation();
   const fallen = graveyardOf(state);
   return (
-    <section className="rounded-lg border border-hairline bg-surface1/70 p-4" aria-label="The fallen">
+    <section className="rounded-lg border border-hairline bg-surface1/70 p-4" aria-label={t('nuz.graveyard.aria')}>
       <div className="h-px bg-gradient-to-r from-transparent via-[rgba(246,201,69,0.2)] to-transparent" />
       <div className="mt-3 flex items-baseline gap-3">
-        <h4 className="font-sans text-[15px] font-bold text-tx-primary">THE FALLEN</h4>
+        <h4 className="font-sans text-[15px] font-bold text-tx-primary">{t('nuz.graveyard.title')}</h4>
         <span className="font-display text-[16px] font-bold tabular-nums text-tx-muted">{fallen.length}</span>
         <PixelLabel className="opacity-30">PRESS F</PixelLabel>
       </div>
       <div className="nz-slim-scroll mt-3 flex gap-3 overflow-x-auto pb-1">
         {fallen.length === 0 ? (
           <div className="grid h-[140px] w-[120px] shrink-0 place-items-center rounded-md border border-dashed border-hairline2">
-            <span className="px-2 text-center text-[11px] text-tx-muted">No losses. Yet.</span>
+            <span className="px-2 text-center text-[11px] text-tx-muted">{t('nuz.graveyard.empty')}</span>
           </div>
         ) : (
           fallen.map((enc, i) => {

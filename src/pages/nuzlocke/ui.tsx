@@ -5,6 +5,8 @@ import type { CSSProperties, ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Info, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import type { NuzEncounterStatus } from '@/lib/nuzlocke-store';
 
 /* ---------- tooltip (§9.11 shell, gold left border, 200ms intent) ---------- */
@@ -76,20 +78,22 @@ export function useShake(): [number, () => void] {
 /* ---------- status dots (§1.3 / §2.3) ---------- */
 
 export function StatusDot({ status, color, size = 8, className }: { status: NuzEncounterStatus | 'pending'; color?: string; size?: number; className?: string }) {
+  const { t } = useTranslation();
+  const statusLabel = (v: string) => t(`nuz.status${v.charAt(0).toUpperCase() + v.slice(1)}`).toLowerCase();
   if (status === 'dead') {
     return (
-      <svg width={size} height={size} viewBox="0 0 8 8" className={cn('shrink-0 text-tx-muted', className)} aria-label="dead">
+      <svg width={size} height={size} viewBox="0 0 8 8" className={cn('shrink-0 text-tx-muted', className)} aria-label={statusLabel('dead')}>
         <path d="M1 1l6 6M7 1l-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     );
   }
   if (status === 'missed' || status === 'duped') {
-    return <span className={cn('shrink-0 rounded-full border border-gold/70', className)} style={{ width: size, height: size }} aria-label={status} />;
+    return <span className={cn('shrink-0 rounded-full border border-gold/70', className)} style={{ width: size, height: size }} aria-label={statusLabel(status)} />;
   }
   if (status === 'pending') {
-    return <span className={cn('shrink-0 rounded-full border border-tx-muted/40', className)} style={{ width: size, height: size }} aria-label="pending" />;
+    return <span className={cn('shrink-0 rounded-full border border-tx-muted/40', className)} style={{ width: size, height: size }} aria-label={statusLabel('pending')} />;
   }
-  return <span className={cn('shrink-0 rounded-full', className)} style={{ width: size, height: size, background: color ?? '#63D96B' }} aria-label="caught" />;
+  return <span className={cn('shrink-0 rounded-full', className)} style={{ width: size, height: size, background: color ?? '#63D96B' }} aria-label={statusLabel('caught')} />;
 }
 
 /* ---------- pixel micro-label ---------- */
@@ -143,12 +147,13 @@ export function GoldSwitch({
 /* ---------- run status chip ---------- */
 
 export function RunStatusChip({ status }: { status: 'active' | 'complete' | 'failed' }) {
+  const { t } = useTranslation();
   if (status === 'complete') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-2 py-0.5">
         <span className="h-1.5 w-1.5 rounded-full bg-gold" />
         <img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">COMPLETE</span>
+        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.complete')}</span>
       </span>
     );
   }
@@ -156,14 +161,14 @@ export function RunStatusChip({ status }: { status: 'active' | 'complete' | 'fai
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline2 px-2 py-0.5">
         <span className="h-1.5 w-1.5 rounded-full border border-tx-muted" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">FAILED</span>
+        <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.chip.failed')}</span>
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(99,217,107,0.4)] bg-[rgba(99,217,107,0.08)] px-2 py-0.5">
       <span className="h-1.5 w-1.5 rounded-full bg-[#63D96B]" />
-      <span className="font-pixel text-[7px] tracking-[0.08em] text-[#63D96B]">ACTIVE</span>
+      <span className="font-pixel text-[7px] tracking-[0.08em] text-[#63D96B]">{t('nuz.chip.active')}</span>
     </span>
   );
 }
@@ -171,26 +176,27 @@ export function RunStatusChip({ status }: { status: 'active' | 'complete' | 'fai
 /* ---------- sync badge (§1.2 / §2.1) ---------- */
 
 export function SyncBadge({ status }: { status: 'local' | 'connecting' | 'live' | 'reconnecting' }) {
+  const { t } = useTranslation();
   if (status === 'live') {
     return (
-      <span className="inline-flex items-center gap-1.5" title="Multiplayer — live sync">
+      <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.liveTip')}>
         <span className="nz-dot-live h-2 w-2 rounded-full bg-[#45C8FF]" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-[#45C8FF]">LIVE</span>
+        <span className="font-pixel text-[7px] tracking-[0.08em] text-[#45C8FF]">{t('nuz.chip.live')}</span>
       </span>
     );
   }
   if (status === 'reconnecting' || status === 'connecting') {
     return (
-      <span className="inline-flex items-center gap-1.5" title="Reconnecting to realtime sync">
+      <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.reconnectingTip')}>
         <span className="nz-orbit h-2.5 w-2.5" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">RECONNECTING…</span>
+        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.reconnecting')}</span>
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1.5" title="Solo — local save on this device">
+    <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.localTip')}>
       <span className="h-2 w-2 rounded-full bg-gold" />
-      <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">LOCAL</span>
+      <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.local')}</span>
     </span>
   );
 }
@@ -222,6 +228,7 @@ export function SparkleBurst({ burstKey, className }: { burstKey: number; classN
 /* ---------- glass modal shell (§1.5) ---------- */
 
 export function NuzModal({ open, onClose, children, wide }: { open: boolean; onClose: () => void; children: ReactNode; wide?: boolean }) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (!open) return undefined;
     const onKey = (e: KeyboardEvent) => {
@@ -256,7 +263,7 @@ export function NuzModal({ open, onClose, children, wide }: { open: boolean; onC
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t('maps.close')}
               className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-md border border-hairline bg-surface2 text-tx-muted transition-all hover:rotate-90 hover:border-gold/50 hover:text-gold"
             >
               <X size={14} />
@@ -328,14 +335,15 @@ export function Popover({
 
 /* ---------- time ago ---------- */
 
-export function timeAgo(iso: string | number): string {
+/** localized relative time; short = bare unit for dense feed rows */
+export function timeAgo(iso: string | number, short = false): string {
   const t = typeof iso === 'number' ? iso : Date.parse(iso);
   const s = Math.max(0, (Date.now() - t) / 1000);
-  if (s < 60) return 'NOW';
+  if (s < 60) return i18n.t('nuz.time.now');
   const m = Math.floor(s / 60);
-  if (m < 60) return `${m}M AGO`;
+  if (m < 60) return i18n.t(short ? 'nuz.time.minShort' : 'nuz.time.min', { m });
   const h = Math.floor(m / 60);
-  if (h < 24) return `${h}H AGO`;
+  if (h < 24) return i18n.t(short ? 'nuz.time.hourShort' : 'nuz.time.hour', { h });
   const d = Math.floor(h / 24);
-  return `${d}D AGO`;
+  return i18n.t(short ? 'nuz.time.dayShort' : 'nuz.time.day', { d });
 }

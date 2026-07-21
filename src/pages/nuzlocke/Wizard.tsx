@@ -2,9 +2,13 @@
  * 3 steps: 01 GAME → 02 CREW → 03 RULES; success pane mints the invite code. */
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { useLocalePath } from '@/lib/locale-link';
+import { useLanguage } from '@/lib/i18n-data';
+import i18n from '@/i18n';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Copy, Minus, Plus } from 'lucide-react';
-import { REGIONS, coverageTier, versionLabel, viewBoxParts } from '@/lib/regions';
+import { REGIONS, coverageTier, regionName, versionLabel, viewBoxParts } from '@/lib/regions';
 import type { RegionId } from '@/lib/regions';
 import {
   DEFAULT_RULES,
@@ -18,13 +22,6 @@ import type { JoinLookup, NuzRules } from '@/lib/nuzlocke-store';
 import { isMultiCapable } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import { GoldHint, GoldSwitch, InfoTip, NuzModal, PixelLabel, SparkleBurst, useShake } from './ui';
-
-const SOULLINK_TIP =
-  "SoulLink ties two players' games together: the Pokémon each of you catches on the same route become a linked pair. If one partner dies, its link must be boxed or released too. Linked pairs glow on your timeline.";
-const DUPES_TIP = 'If your first encounter is a species you already have, you may skip it and try the next.';
-const SHINY_TIP = 'Shinies may always be caught, clause-free.';
-const NICK_TIP = 'A Nuzlocke classic. Every catch gets a name — it hurts more that way.';
-const CAP_TIP = "Your party may not exceed the next gym leader's ace level.";
 
 /* ---------- mini region schematic (compact re-render of /maps cards) ---------- */
 
@@ -64,6 +61,9 @@ interface CrewPlayer {
 
 export default function Wizard({ open, onClose, joinPreset, runCount }: WizardProps) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const joinMode = !!joinPreset;
 
   const [step, setStep] = useState(0); // join mode starts at 1
@@ -71,7 +71,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
   const region = useMemo(() => REGIONS.find((r) => r.region === regionId) ?? REGIONS[0], [regionId]);
   const [game, setGame] = useState(region.defaultVersion);
   const [name, setName] = useState('');
-  const [crew, setCrew] = useState<CrewPlayer[]>([{ name: 'You', color: PLAYER_COLORS[0] }]);
+  const [crew, setCrew] = useState<CrewPlayer[]>([{ name: '', color: PLAYER_COLORS[0] }]);
   const [soulLink, setSoulLink] = useState(false);
   const [online, setOnline] = useState(true);
   const [rules, setRules] = useState<NuzRules>({ ...DEFAULT_RULES });
@@ -88,10 +88,10 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
 
   const reset = () => {
     setStep(joinPreset ? 1 : 0);
-    const suggestion = `${REGIONS[0].name} Protocol #${runCount + 1}`;
+    const suggestion = t('nuz.wizard.runNameSuggestion', { region: regionName(REGIONS[0], lang), n: runCount + 1 });
     setAutoName(suggestion);
     setName(suggestion);
-    setCrew([{ name: 'You', color: PLAYER_COLORS[0] }]);
+    setCrew([{ name: '', color: PLAYER_COLORS[0] }]);
     setSoulLink(false);
     setOnline(true);
     setRules({ ...DEFAULT_RULES });
@@ -117,7 +117,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
 
   const startRun = async () => {
     if (!name.trim()) {
-      fail('Give your run a name — legend requires it.');
+      fail(t('nuz.wizard.failName'));
       return;
     }
     setBusy(true);
@@ -126,7 +126,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
         name: name.trim(),
         region: regionId,
         game,
-        players: crew.map((p, i) => ({ name: p.name.trim() || `PLAYER ${i + 1}`, color: p.color })),
+        players: crew.map((p, i) => ({ name: p.name.trim() || (i === 0 ? t('nuz.wizard.you') : `PLAYER ${i + 1}`), color: p.color })),
         rules: { ...rules, soulLink },
         online: online && isMultiCapable(),
       });
@@ -135,7 +135,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
         setCreatedId(res.state.run.id);
       } else {
         onClose();
-        navigate(`/nuzlocke/${res.state.run.id}`);
+        navigate(localePath(`/nuzlocke/${res.state.run.id}`));
       }
     } finally {
       setBusy(false);
@@ -145,18 +145,18 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
   const doJoin = async () => {
     if (!joinPreset) return;
     if (!joinName.trim()) {
-      fail('Tell the crew your trainer name.');
+      fail(t('nuz.wizard.failJoinName'));
       return;
     }
     setBusy(true);
     try {
       const state = await joinRun(joinPreset, joinName, joinColor);
       if (!state) {
-        fail('Could not join — the run may be full.');
+        fail(t('nuz.wizard.failJoin'));
         return;
       }
       onClose();
-      navigate(`/nuzlocke/${state.run.id}`);
+      navigate(localePath(`/nuzlocke/${state.run.id}`));
     } finally {
       setBusy(false);
     }
@@ -166,11 +166,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
     if (!invite) return;
     void navigator.clipboard?.writeText(invite).catch(() => undefined);
     setCopied(true);
-    pushToast('success', `INVITE COPIED — ${invite}`);
+    pushToast('success', i18n.t('nuz.toast.inviteCopied', { code: invite }));
     window.setTimeout(() => setCopied(false), 1600);
   };
 
-  const steps = ['01 GAME', '02 CREW', '03 RULES'];
+  const steps = [t('nuz.wizard.stepGame'), t('nuz.wizard.stepCrew'), t('nuz.wizard.stepRules')];
 
   return (
     <NuzModal open={open} onClose={onClose}>
@@ -200,45 +200,45 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                 <img src="/pokeball.svg" alt="" className="h-14 w-14" />
                 <SparkleBurst burstKey={1} />
               </div>
-              <PixelLabel className="text-gold">RUN ONLINE — INVITE YOUR CREW</PixelLabel>
+              <PixelLabel className="text-gold">{t('nuz.wizard.online')}</PixelLabel>
               <div className="mx-auto mt-3 flex w-fit items-center gap-2 rounded-md border border-gold/60 bg-gold/10 px-4 py-2">
                 <span className="font-display text-lg font-bold tracking-[0.12em] text-gold">{invite}</span>
-                <button type="button" onClick={copyInvite} className="grid h-7 w-7 place-items-center rounded-sm border border-gold/40 text-gold transition-colors hover:bg-gold/20" aria-label="Copy invite code">
+                <button type="button" onClick={copyInvite} className="grid h-7 w-7 place-items-center rounded-sm border border-gold/40 text-gold transition-colors hover:bg-gold/20" aria-label={t('nuz.wizard.copyInvite')}>
                   {copied ? <Check size={13} /> : <Copy size={13} />}
                 </button>
               </div>
-              <p className="mt-2 text-[12px] text-tx-muted">Anyone with this code can join from the hub.</p>
+              <p className="mt-2 text-[12px] text-tx-muted">{t('nuz.wizard.anyoneCanJoin')}</p>
               <button
                 type="button"
                 onClick={() => {
                   onClose();
-                  if (createdId) navigate(`/nuzlocke/${createdId}`);
+                  if (createdId) navigate(localePath(`/nuzlocke/${createdId}`));
                 }}
                 className="nz-sheen mx-auto mt-5 block rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
               >
-                Enter run →
+                {t('nuz.wizard.enterRun')}
               </button>
             </motion.div>
           ) : joinMode && joinPreset ? (
             /* ---------- join flow ---------- */
             <motion.div key="join" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
               <div className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-[12px] text-tx-secondary">
-                You're joining <span className="font-semibold text-tx-primary">“{joinPreset.run.name}”</span> — {joinPreset.players.length} player{joinPreset.players.length === 1 ? '' : 's'} inside
+                {t('nuz.wizard.joiningRun')} <span className="font-semibold text-tx-primary">“{joinPreset.run.name}”</span> — {joinPreset.players.length === 1 ? t('nuz.wizard.playersInside', { count: 1 }) : t('nuz.wizard.playersInsidePlural', { count: joinPreset.players.length })}
               </div>
-              <PixelLabel>YOUR TRAINER</PixelLabel>
+              <PixelLabel>{t('nuz.wizard.yourTrainer')}</PixelLabel>
               <div className="relative mt-2">
                 <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
                   <input
                     value={joinName}
                     onChange={(e) => setJoinName(e.target.value)}
-                    placeholder="Trainer name"
+                    placeholder={t('nuz.wizard.trainerName')}
                     maxLength={18}
                     className="h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 text-[14px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
                   />
                 </div>
                 <GoldHint text={hint} show={!!hint} />
               </div>
-              <PixelLabel className="mt-4 block">PICK YOUR COLOR</PixelLabel>
+              <PixelLabel className="mt-4 block">{t('nuz.wizard.pickColor')}</PixelLabel>
               <div className="mt-2 flex gap-2">
                 {PLAYER_COLORS.map((c) => {
                   const taken = joinPreset.players.some((p) => p.color === c);
@@ -250,7 +250,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                       onClick={() => setJoinColor(c)}
                       className={cn('h-8 w-8 rounded-full border-2 transition-transform', taken && 'cursor-not-allowed opacity-25', joinColor === c ? 'scale-110 border-white' : 'border-transparent')}
                       style={{ background: c }}
-                      title={taken ? 'Taken by another player' : c}
+                      title={taken ? t('nuz.wizard.colorTaken') : c}
                       aria-label={`color ${c}`}
                     />
                   );
@@ -262,13 +262,13 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                 onClick={() => void doJoin()}
                 className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
               >
-                {busy ? 'Joining…' : 'Join run →'}
+                {busy ? t('nuz.wizard.joining') : t('nuz.wizard.joinRun')}
               </button>
             </motion.div>
           ) : step === 0 ? (
             /* ---------- step 1: game & region ---------- */
             <motion.div key="s0" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
-              <PixelLabel className="text-gold">CHOOSE YOUR REGION</PixelLabel>
+              <PixelLabel className="text-gold">{t('nuz.wizard.chooseRegion')}</PixelLabel>
               <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
                 {REGIONS.map((r) => {
                   const active = r.region === regionId;
@@ -280,7 +280,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                         setRegionId(r.region);
                         setGame(r.defaultVersion);
                         if (!name || name === autoName) {
-                          const next = `${r.name} Protocol #${runCount + 1}`;
+                          const next = t('nuz.wizard.runNameSuggestion', { region: regionName(r, lang), n: runCount + 1 });
                           setAutoName(next);
                           setName(next);
                         }
@@ -294,14 +294,14 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                         <RegionSchematic regionId={r.region} accent={r.accent} />
                       </div>
                       <div className="mt-1 flex items-center justify-between px-0.5">
-                        <span className="text-[11px] font-semibold text-tx-primary">{r.name}</span>
+                        <span className="text-[11px] font-semibold text-tx-primary">{regionName(r, lang)}</span>
                         <span className="font-pixel text-[6px] text-tx-muted">{coverageTier(r)}</span>
                       </div>
                     </button>
                   );
                 })}
               </div>
-              <PixelLabel className="mt-4 block text-gold">GAME VERSION</PixelLabel>
+              <PixelLabel className="mt-4 block text-gold">{t('nuz.wizard.gameVersion')}</PixelLabel>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {region.versions.map((v) => (
                   <button
@@ -317,20 +317,20 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                   </button>
                 ))}
               </div>
-              <PixelLabel className="mt-4 block text-gold">RUN NAME</PixelLabel>
+              <PixelLabel className="mt-4 block text-gold">{t('nuz.wizard.runName')}</PixelLabel>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={`${region.name} Protocol #${runCount + 1}`}
+                placeholder={t('nuz.wizard.runNameSuggestion', { region: regionName(region, lang), n: runCount + 1 })}
                 maxLength={40}
                 className="mt-2 h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 font-display text-[14px] font-bold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
               />
-              <WizardFooter back={null} next={() => setStep(1)} nextLabel="Crew →" />
+              <WizardFooter back={null} next={() => setStep(1)} nextLabel={t('nuz.wizard.crewNext')} />
             </motion.div>
           ) : step === 1 ? (
             /* ---------- step 2: crew ---------- */
             <motion.div key="s1" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
-              <PixelLabel className="text-gold">THE CREW (1–{MAX_PLAYERS})</PixelLabel>
+              <PixelLabel className="text-gold">{t('nuz.wizard.crew', { max: MAX_PLAYERS })}</PixelLabel>
               <div className="mt-2 space-y-2">
                 {crew.map((p, i) => (
                   <div key={i} className="flex h-11 items-center gap-2 rounded-md border border-hairline bg-surface1 px-2">
@@ -341,19 +341,19 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                       }
                       className="h-6 w-6 shrink-0 rounded-full border border-white/20 transition-transform hover:scale-110"
                       style={{ background: p.color }}
-                      title="Cycle color"
-                      aria-label="Cycle player color"
+                      title={t('nuz.wizard.cycleColor')}
+                      aria-label={t('nuz.wizard.cycleColor')}
                     />
                     <input
                       value={p.name}
                       onChange={(e) => setCrew((c) => c.map((x, xi) => (xi === i ? { ...x, name: e.target.value } : x)))}
-                      placeholder={`PLAYER ${i + 1}`}
+                      placeholder={i === 0 ? t('nuz.wizard.you') : `PLAYER ${i + 1}`}
                       maxLength={18}
                       className="h-full flex-1 bg-transparent text-[13px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted"
                     />
                     <span className="font-pixel text-[7px] text-tx-muted">P{i + 1}</span>
                     {i > 0 && (
-                      <button type="button" onClick={() => setCrew((c) => c.filter((_, xi) => xi !== i))} className="text-tx-muted transition-colors hover:text-gold" aria-label="Remove player">
+                      <button type="button" onClick={() => setCrew((c) => c.filter((_, xi) => xi !== i))} className="text-tx-muted transition-colors hover:text-gold" aria-label={t('nuz.wizard.removePlayer')}>
                         <Minus size={13} />
                       </button>
                     )}
@@ -366,7 +366,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                   onClick={() => setCrew((c) => [...c, { name: '', color: PLAYER_COLORS[c.length] }])}
                   className="mt-2 flex h-9 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-hairline2 text-[12px] text-tx-muted transition-colors hover:border-gold/60 hover:text-gold"
                 >
-                  <Plus size={13} /> Add player
+                  <Plus size={13} /> {t('nuz.wizard.addPlayer')}
                 </button>
               )}
 
@@ -375,11 +375,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">SOUL LINK</span>
-                    <InfoTip text={SOULLINK_TIP} />
+                    <InfoTip text={t('nuz.rules.soulLinkTip')} />
                   </span>
-                  <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={crew.length < 2} label={soulLink ? 'ON' : 'OFF'} />
+                  <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={crew.length < 2} label={t(soulLink ? 'nuz.on' : 'nuz.off').toUpperCase()} />
                 </div>
-                {crew.length < 2 && <p className="mt-1 text-[10px] text-tx-muted">Needs 2+ players</p>}
+                {crew.length < 2 && <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.needsTwo')}</p>}
                 {soulLink && crew.length >= 2 && (
                   <svg viewBox="0 0 200 36" className="mt-2 h-9 w-full" aria-hidden>
                     <defs>
@@ -397,11 +397,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
 
               {isMultiCapable() && (
                 <div className="mt-4">
-                  <PixelLabel className="text-gold">MODE</PixelLabel>
+                  <PixelLabel className="text-gold">{t('nuz.wizard.mode')}</PixelLabel>
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     {[
-                      { v: true, label: 'ONLINE — INVITE BY CODE' },
-                      { v: false, label: 'LOCAL — SHARED SCREEN' },
+                      { v: true, label: t('nuz.wizard.modeOnline') },
+                      { v: false, label: t('nuz.wizard.modeLocal') },
                     ].map((o) => (
                       <button
                         key={o.label}
@@ -418,33 +418,33 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                   </div>
                 </div>
               )}
-              <WizardFooter back={() => setStep(0)} next={() => setStep(2)} nextLabel="Rules →" />
+              <WizardFooter back={() => setStep(0)} next={() => setStep(2)} nextLabel={t('nuz.wizard.rulesNext')} />
             </motion.div>
           ) : (
             /* ---------- step 3: rules ---------- */
             <motion.div key="s2" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
-              <PixelLabel className="text-gold">HOUSE RULES</PixelLabel>
+              <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
               <div className="relative mt-2">
                 <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
-                      <GoldSwitch checked={rules.dupes} onChange={(v) => setRules((r) => ({ ...r, dupes: v }))} label="DUPES CLAUSE" tip={DUPES_TIP} />
+                      <GoldSwitch checked={rules.dupes} onChange={(v) => setRules((r) => ({ ...r, dupes: v }))} label={t('nuz.rules.dupesClause')} tip={t('nuz.rules.dupesTip')} />
                     </div>
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
-                      <GoldSwitch checked={rules.shiny} onChange={(v) => setRules((r) => ({ ...r, shiny: v }))} label="SHINY CLAUSE" tip={SHINY_TIP} />
+                      <GoldSwitch checked={rules.shiny} onChange={(v) => setRules((r) => ({ ...r, shiny: v }))} label={t('nuz.rules.shinyClause')} tip={t('nuz.rules.shinyTip')} />
                     </div>
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
-                      <GoldSwitch checked label="NICKNAMES" tip={NICK_TIP} disabled />
+                      <GoldSwitch checked label={t('nuz.wizard.nicknames')} tip={t('nuz.wizard.nickTip')} disabled />
                     </div>
                     <div className="flex items-center justify-between rounded-md border border-hairline bg-surface1 px-3 py-2">
                       <span className="flex items-center gap-1.5">
-                        <span className="font-pixel text-[8px] uppercase tracking-[0.08em] text-tx-muted">LEVEL CAP</span>
-                        <InfoTip text={CAP_TIP} />
+                        <span className="font-pixel text-[8px] uppercase tracking-[0.08em] text-tx-muted">{t('nuz.rules.levelCap')}</span>
+                        <InfoTip text={t('nuz.rules.capTip')} />
                       </span>
                       <span className="flex items-center gap-1.5">
                         <button
                           type="button"
-                          aria-label="Lower cap"
+                          aria-label={t('nuz.wizard.lowerCap')}
                           onClick={() => setRules((r) => ({ ...r, levelCap: r.levelCap ? Math.max(1, r.levelCap - 1) : null }))}
                           className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted hover:border-gold hover:text-gold"
                         >
@@ -453,7 +453,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                         <span className="w-8 text-center font-display text-[14px] font-bold text-gold">{rules.levelCap ?? '—'}</span>
                         <button
                           type="button"
-                          aria-label="Raise cap"
+                          aria-label={t('nuz.wizard.raiseCap')}
                           onClick={() => setRules((r) => ({ ...r, levelCap: Math.min(100, (r.levelCap ?? 25) + 1) }))}
                           className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted hover:border-gold hover:text-gold"
                         >
@@ -467,7 +467,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
               </div>
               <div className="mt-6 flex items-center justify-between">
                 <button type="button" onClick={() => setStep(1)} className="rounded-md border border-hairline2 px-4 py-2.5 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold">
-                  Back
+                  {t('nuz.wizard.back')}
                 </button>
                 <button
                   type="button"
@@ -475,7 +475,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                   onClick={() => void startRun()}
                   className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                 >
-                  {busy ? 'Starting…' : 'Start run →'}
+                  {busy ? t('nuz.wizard.starting') : t('nuz.wizard.startRun')}
                 </button>
               </div>
             </motion.div>
@@ -487,11 +487,13 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
 }
 
 function WizardFooter({ back, next, nextLabel }: { back: (() => void) | null; next: () => void; nextLabel: string }) {
+  const { t } = useTranslation();
+  const backLabel = t('nuz.wizard.back');
   return (
     <div className="mt-6 flex items-center justify-between">
       {back ? (
         <button type="button" onClick={back} className="rounded-md border border-hairline2 px-4 py-2.5 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold">
-          Back
+          {backLabel}
         </button>
       ) : (
         <span />
