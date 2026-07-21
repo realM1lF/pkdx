@@ -110,6 +110,21 @@
   pointer-events: none;
 }
 
+/* ---------- entry bar highlight (route + click → focus) ---------- */
+@keyframes nz-entry-highlight {
+  0%, 100% {
+    border-color: var(--hairline);
+    box-shadow: none;
+  }
+  20%, 80% {
+    border-color: rgba(246, 201, 69, 0.65);
+    box-shadow:
+      0 0 0 2px rgba(246, 201, 69, 0.2),
+      0 0 28px rgba(246, 201, 69, 0.12);
+  }
+}
+.nz-entry-highlight { animation: nz-entry-highlight 1.4s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+
 /* ---------- slot ring flash after a catch lands (§2.5) ---------- */
 @keyframes nz-ring-flash {
   0% { box-shadow: 0 0 0 0 var(--ring-c, rgba(255, 214, 10, 0.8)); opacity: 1; }

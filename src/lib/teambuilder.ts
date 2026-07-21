@@ -21,7 +21,8 @@ import { cachedJson, displayName, getPokemon } from './pokeapi';
 import type { Pokemon } from './types';
 import { POKEMON_TYPES, STAT_ORDER } from './types';
 import type { PokemonType, StatKey } from './types';
-import { getRunTeam, loadLocalRun, readRunIndex } from './nuzlocke-store';
+import { getRunTeam, loadLocalRun, pushToast, readRunIndex } from './nuzlocke-store';
+import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 
 /* ------------------------------------------------------------------ */
 /* Version groups                                                      */
@@ -591,20 +592,11 @@ const LS_TEAMS = 'pdx2.teams';
 const LS_DRAFT = 'pdx2.teams.draft';
 
 function readJson<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
+  return readLocalJson(key, fallback);
 }
 
-function writeJson(key: string, value: unknown): void {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    /* quota — session state still works */
-  }
+function writeJson(key: string, value: unknown): boolean {
+  return writeLocalJson(key, value);
 }
 
 export function loadTeams(): Team[] {
@@ -617,15 +609,19 @@ export function saveTeam(team: Team): Team[] {
   const list = loadTeams();
   const next = { ...team, updatedAt: Date.now() };
   const idx = list.findIndex((t) => t.id === team.id);
-  if (idx >= 0) list[idx] = next;
-  else list.unshift(next);
-  writeJson(LS_TEAMS, list);
-  return list;
+  const updated = [...list];
+  if (idx >= 0) updated[idx] = next;
+  else updated.unshift(next);
+  if (!writeJson(LS_TEAMS, updated)) {
+    pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    return list;
+  }
+  return updated;
 }
 
 export function deleteTeam(id: string): Team[] {
   const list = loadTeams().filter((t) => t.id !== id);
-  writeJson(LS_TEAMS, list);
+  if (!writeJson(LS_TEAMS, list)) pushToast('sync', i18n.t('tb.toast.storageFailed'));
   return list;
 }
 
@@ -635,13 +631,10 @@ export function loadDraft(): Team | null {
 }
 
 export function saveDraft(team: Team | null): void {
-  if (team) writeJson(LS_DRAFT, team);
-  else {
-    try {
-      localStorage.removeItem(LS_DRAFT);
-    } catch {
-      /* ignore */
-    }
+  if (team) {
+    if (!writeJson(LS_DRAFT, team)) pushToast('sync', i18n.t('tb.toast.storageFailed'));
+  } else {
+    removeLocalKey(LS_DRAFT);
   }
 }
 

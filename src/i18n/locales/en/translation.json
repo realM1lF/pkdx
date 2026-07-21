@@ -99,7 +99,15 @@
     "explore": "EXPLORE",
     "home": "Home",
     "pokedex": "Pokédex",
+    "maps": "Maps",
+    "nuzlocke": "Nuzlocke",
+    "team": "Team Builder",
     "random": "Random Pokémon",
+    "regions": "REGIONS",
+    "mapsAtlas": "Region Atlas",
+    "legal": "LEGAL",
+    "impressum": "Imprint",
+    "privacy": "Privacy Policy",
     "data": "DATA",
     "dataCredits": "Data & sprites —",
     "fanProject": "Fan project. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
@@ -480,13 +488,31 @@
     "pickRouteFirst": "Pick a route first",
     "pokemonAria": "Pokémon",
     "level": "Level",
+    "levelShort": "LV",
+    "levelTip": "Catch level.",
     "status": "Status",
+    "statusTip": "Caught, dead, missed, or dupes-clause skip.",
     "nicknamePlaceholder": "Name it — it matters",
     "nickname": "Nickname",
     "logEncounter": "Log encounter",
     "logEncounterEnter": "Log encounter (Enter)",
     "pickPokemon": "Pick a Pokémon",
     "routeAlready": "Route already logged for {{player}} — Dupes Clause is {{dupes}}.",
+    "continueRun": "Continue last run",
+    "continueRunHint": "{{name}} — pick up where you left off",
+    "err": {
+      "routeAlready": "Route already logged for {{player}}.",
+      "speciesDupe": "Species already on your team — Dupes Clause blocks this catch.",
+      "nicknameRequired": "Nickname required — nickname rule is active.",
+      "levelCap": "Level {{level}} is above cap {{cap}} — not allowed.",
+      "giftRoute": "Gift/special route — use route encounters only, or log Missed/Duped."
+    },
+    "shinyCatch": "Shiny",
+    "giftRouteChip": "Gift",
+    "specialRouteChip": "Special",
+    "exportSummary": "Copy run summary",
+    "exportCopied": "Summary copied",
+    "importToTeam": "Import to Team Builder",
     "on": "on",
     "off": "off",
     "fullDex": "FULL DEX",
@@ -515,7 +541,9 @@
       "levelCleared": "LEVEL CLEARED",
       "clause": "{{clause}} {{state}}",
       "soulLink": "SOUL LINK FORMED — {{a}} ⇄ {{b}}",
-      "cascade": "SOULLINK RULE — {{name}} MUST BE BOXED OR RELEASED"
+      "cascade": "SOULLINK RULE — {{name}} MUST BE BOXED OR RELEASED",
+      "releaseRule": "NUZLOCKE RULE — {{name}} fainted and must be released.",
+      "storageFailed": "STORAGE FULL — could not save run. Old PokéAPI cache was trimmed; please try again."
     },
     "rules": {
       "dupesTip": "If your first encounter is a species you already have, you may skip it and try the next.",
@@ -528,6 +556,12 @@
       "shinyClause": "SHINY CLAUSE",
       "soulLink": "SOUL LINK",
       "levelCap": "LEVEL CAP",
+      "autoLevelCap": "AUTO CAP (BADGES)",
+      "autoLevelCapTip": "Cap follows regional badge progress — overrides manual cap.",
+      "badges": "BADGES",
+      "badgeTip": "Badge progress — drives auto cap and gym prep.",
+      "releaseOnDeath": "DEATH = RELEASE",
+      "releaseOnDeathTip": "Reminds on death that the Pokémon cannot be used further.",
       "lower": "Lower level cap",
       "raise": "Raise level cap",
       "caught": "CAUGHT",
@@ -665,6 +699,11 @@
       "modeLocal": "LOCAL — SHARED SCREEN",
       "nickTip": "A Nuzlocke classic. Every catch gets a name — it hurts more that way.",
       "nicknames": "NICKNAMES",
+      "autoLevelCap": "AUTO CAP BY BADGE",
+      "autoLevelCapTip": "Cap rises with each badge — no manual tuning needed.",
+      "autoCapStart": "Starting cap: Lv. {{cap}} (0 badges)",
+      "autoCapExplain": "During the run, set badges in the rules bar — the cap follows your region's gym leaders automatically.",
+      "manualCapHint": "Manual cap — for house rules without the badge ladder.",
       "lowerCap": "Lower cap",
       "raiseCap": "Raise cap",
       "back": "Back",
@@ -707,6 +746,7 @@
       "remove": "Remove entry"
     },
     "quickEntry": "QUICK ENTRY",
+    "quickEntryHint": "Timeline + picks route & player.",
     "mapsChip": "MAPS",
     "routesAria": "Routes",
     "customChip": "CUSTOM",
@@ -932,7 +972,8 @@
       "setApplied": "SET APPLIED — {{name}}",
       "imported": "TEAM IMPORTED FROM RUN",
       "cleared": "TEAM CLEARED",
-      "deleted": "TEAM DELETED"
+      "deleted": "TEAM DELETED",
+      "storageFailed": "STORAGE FULL — could not save team. Old PokéAPI cache was trimmed; please try again."
     },
     "page": {
       "eyebrow": "PHASE 03 — TEAM BUILDER",
@@ -958,6 +999,188 @@
       "noNatures": "No natures in this gen",
       "nature": "Nature not in game",
       "noEvs": "No EVs in this gen"
+    }
+  },
+  "legal": {
+    "impressum": {
+      "eyebrow": "LEGAL",
+      "title": "Imprint",
+      "sections": [
+        {
+          "heading": "Information pursuant to § 5 TMG",
+          "subsections": [
+            {
+              "heading": "Responsible for content",
+              "paragraphs": [
+                "Sebastian Schwerdhöfer",
+                "Hauptstraße 51",
+                "97204 Höchberg",
+                "Germany"
+              ]
+            },
+            {
+              "heading": "Contact",
+              "paragraphs": [
+                "Email: sapple.schwerdhoefer@gmail.com"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Liability for content",
+          "paragraphs": [
+            "As a service provider, we are responsible for our own content on these pages in accordance with § 7 (1) TMG under general law. According to §§ 8 to 10 TMG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
+            "Obligations to remove or block the use of information under general law remain unaffected. Liability in this regard is only possible from the time we become aware of a specific legal violation. If we become aware of corresponding legal violations, we will remove this content immediately."
+          ]
+        },
+        {
+          "heading": "Liability for links",
+          "paragraphs": [
+            "Our offer contains links to external third-party websites over whose content we have no influence. Therefore, we cannot assume any liability for this external content. The respective provider or operator of the linked pages is always responsible for their content."
+          ]
+        },
+        {
+          "heading": "Copyright",
+          "paragraphs": [
+            "The content and works created by the site operators on these pages are subject to German copyright law. Reproduction, editing, distribution and any kind of use outside the limits of copyright require the written consent of the respective author or creator."
+          ]
+        },
+        {
+          "heading": "Fan project notice",
+          "paragraphs": [
+            "Pokédex 2.0 is an independent fan project and is not officially affiliated with Nintendo, Creatures Inc., or GAME FREAK inc. Pokémon and all related names, trademarks, and media are the property of their respective rights holders."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "eyebrow": "LEGAL",
+      "title": "Privacy Policy",
+      "sections": [
+        {
+          "heading": "1. Privacy at a glance",
+          "subsections": [
+            {
+              "heading": "General information",
+              "paragraphs": [
+                "The following notes provide a simple overview of what happens to your personal data when you visit this website. Personal data is any data with which you can be personally identified."
+              ]
+            },
+            {
+              "heading": "Data collection on this website",
+              "paragraphs": [
+                "Who is responsible for data collection on this website?",
+                "Data processing on this website is carried out by the website operator:",
+                "Sebastian Schwerdhöfer",
+                "Hauptstraße 51",
+                "97204 Höchberg",
+                "Germany",
+                "Email: hallo@adhsleben.org"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "2. Hosting",
+          "paragraphs": [
+            "This website is provided via the hosting provider Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA. When you visit the website, technically necessary data such as IP address, browser type, and access time are processed on Netlify's servers. Personal data may also be transferred to Netlify servers in the USA. Further information can be found in Netlify's privacy policy: https://www.netlify.com/privacy/"
+          ]
+        },
+        {
+          "heading": "3. General notes and mandatory information",
+          "subsections": [
+            {
+              "heading": "Privacy",
+              "paragraphs": [
+                "The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with statutory data protection regulations and this privacy policy.",
+                "Use of our website is generally possible without providing personal data. Where personal data (such as name, address, or email addresses) is collected on our pages, this is always done on a voluntary basis wherever possible."
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "4. Data collection on this website",
+          "subsections": [
+            {
+              "heading": "Local storage in your browser",
+              "paragraphs": [
+                "Many Pokédex 2.0 features store data locally in your browser (LocalStorage and SessionStorage) when you use solo mode or do not create multiplayer Nuzlocke runs. This includes, among other things:",
+                "Language preference, PokéAPI cache, saved teams, solo Nuzlocke runs, recent search history, Pokédex view density, and map display mode.",
+                "This locally stored data is not automatically transmitted to our servers. You can delete it at any time in your browser settings under \"Clear site data\"."
+              ]
+            },
+            {
+              "heading": "Multiplayer Nuzlocke (Supabase)",
+              "paragraphs": [
+                "When you create a multiplayer Nuzlocke run or join one via invite code, run name, player name, rules, encounters, nicknames, levels, status, and related metadata are stored on servers operated by Supabase Inc. (USA/EU depending on region) and synchronized in real time between participants.",
+                "The legal basis is your voluntary use of this feature. Without this information, multiplayer mode cannot be used. Further information: https://supabase.com/privacy"
+              ]
+            },
+            {
+              "heading": "Server log files",
+              "paragraphs": [
+                "The hosting provider automatically collects and stores information in so-called server log files that your browser transmits to us. These are:"
+              ],
+              "list": [
+                "Browser type and version",
+                "Operating system used",
+                "Referrer URL",
+                "Host name of the accessing computer",
+                "Time of the server request",
+                "IP address"
+              ]
+            },
+            {
+              "paragraphs": [
+                "This data is not merged with other data sources."
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "5. External services",
+          "subsections": [
+            {
+              "heading": "PokéAPI",
+              "paragraphs": [
+                "For Pokémon data, moves, encounters, and similar content, your browser sends direct requests to pokeapi.co. Technical data such as your IP address may be processed by the PokéAPI operator. Responses are also cached locally in your browser."
+              ]
+            },
+            {
+              "heading": "GitHub (sprites & media)",
+              "paragraphs": [
+                "Sprites, item graphics, and Pokémon cries are loaded directly from the GitHub repository raw.githubusercontent.com. When retrieved, technical connection data may be transmitted to GitHub/Microsoft."
+              ]
+            },
+            {
+              "heading": "Smogon / data.pkmn.cc",
+              "paragraphs": [
+                "In the Team Builder, Smogon standard sets can optionally be loaded from data.pkmn.cc. Your browser connects directly to this service; no personal profiles are transmitted, but technical access data may arise."
+              ]
+            },
+            {
+              "heading": "External links",
+              "paragraphs": [
+                "Our site contains links to external websites, for example data sources, organizations, or social media profiles. When you click such a link, you leave our service. The operators of those external sites are responsible for their privacy practices."
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "6. Your rights",
+          "paragraphs": [
+            "You have the right at any time to obtain information about the personal data stored about you, its origin and recipients, and the purpose of data processing. You also have the right to rectification, deletion, or restriction of processing of this data.",
+            "For this and other questions about privacy, you can contact us at any time using the address given in the imprint."
+          ]
+        },
+        {
+          "heading": "7. Deleting your data",
+          "paragraphs": [
+            "Locally stored data (teams, solo Nuzlocke runs, cache, settings) exists only in your browser and can be deleted there at any time.",
+            "For multiplayer Nuzlocke runs, you can contact us by email if you want server-side run data deleted. Please include the run name or invite code where possible."
+          ]
+        }
+      ]
     }
   }
 }

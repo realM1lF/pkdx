@@ -2,6 +2,8 @@
 import { useNavigate } from 'react-router';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useTranslation } from 'react-i18next';
+import { REGIONS, regionName } from '@/lib/regions';
+import { currentLang } from '@/lib/i18n-data';
 import { MAX_DEX_ID } from '@/lib/types';
 
 const HAIRLINE =
@@ -9,19 +11,33 @@ const HAIRLINE =
 
 export default function Footer() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const localePath = useLocalePath();
+  const lang = currentLang(i18n.language);
   const random = () => navigate(localePath(`/pokemon/${1 + Math.floor(Math.random() * MAX_DEX_ID)}`));
 
   const linkCls =
     'inline-block font-sans text-sm text-tx-secondary transition-all duration-200 hover:translate-x-1 hover:text-gold';
 
+  const featureLinks = [
+    { to: '/', key: 'footer.home' },
+    { to: '/pokedex', key: 'footer.pokedex' },
+    { to: '/maps', key: 'footer.maps' },
+    { to: '/nuzlocke', key: 'footer.nuzlocke' },
+    { to: '/team', key: 'footer.team' },
+  ] as const;
+
+  const legalLinks = [
+    { to: '/impressum', key: 'footer.impressum' },
+    { to: '/datenschutz', key: 'footer.privacy' },
+  ] as const;
+
   return (
     <footer className="relative mt-0">
       <div className="h-px w-full" style={{ background: HAIRLINE }} />
-      <div className="mx-auto grid max-w-content gap-10 px-4 py-16 md:grid-cols-3 md:px-8">
+      <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 md:px-8">
         {/* Brand */}
-        <div className="flex flex-col items-start gap-4">
+        <div className="flex flex-col items-start gap-4 sm:col-span-2 lg:col-span-1 xl:col-span-1">
           <div className="flex items-center gap-2.5">
             <img src="/logo.svg" alt="" className="h-8 w-8" />
             <span className="font-display text-lg font-extrabold tracking-wide">POKÉDEX</span>
@@ -31,22 +47,44 @@ export default function Footer() {
           <span className="pixel-label text-[9px] text-tx-muted">{t('footer.phase')}</span>
         </div>
 
-        {/* Explore */}
+        {/* Features */}
         <div className="flex flex-col gap-3">
           <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.explore')}</h4>
-          <LocaleLink to="/" className={linkCls}>
-            {t('footer.home')}
-          </LocaleLink>
-          <LocaleLink to="/pokedex" className={linkCls}>
-            {t('footer.pokedex')}
-          </LocaleLink>
+          {featureLinks.map(({ to, key }) => (
+            <LocaleLink key={to} to={to} className={linkCls}>
+              {t(key)}
+            </LocaleLink>
+          ))}
           <button type="button" onClick={random} className={`${linkCls} text-left`}>
             {t('footer.random')}
           </button>
         </div>
 
-        {/* Data */}
+        {/* Regions */}
         <div className="flex flex-col gap-3">
+          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.regions')}</h4>
+          <LocaleLink to="/maps" className={linkCls}>
+            {t('footer.mapsAtlas')}
+          </LocaleLink>
+          {REGIONS.map((region) => (
+            <LocaleLink key={region.region} to={`/maps/${region.region}`} className={linkCls}>
+              {regionName(region, lang)}
+            </LocaleLink>
+          ))}
+        </div>
+
+        {/* Legal */}
+        <div className="flex flex-col gap-3">
+          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.legal')}</h4>
+          {legalLinks.map(({ to, key }) => (
+            <LocaleLink key={to} to={to} className={linkCls}>
+              {t(key)}
+            </LocaleLink>
+          ))}
+        </div>
+
+        {/* Data */}
+        <div className="flex flex-col gap-3 sm:col-span-2 lg:col-span-1 xl:col-span-1">
           <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.data')}</h4>
           <p className="font-sans text-sm text-tx-secondary">
             {t('footer.dataCredits')}{' '}
@@ -68,18 +106,24 @@ export default function Footer() {
               PokeAPI Sprites Repo
             </a>
           </p>
-          <p className="font-sans text-xs text-tx-muted">
-            {t('footer.fanProject')}
-          </p>
+          <p className="font-sans text-xs text-tx-muted">{t('footer.fanProject')}</p>
         </div>
       </div>
 
       <div className="border-t border-hairline">
         <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-3 px-4 py-6 md:px-8">
           <span className="pixel-label text-[9px] text-tx-muted">{t('footer.madeWith')}</span>
-          <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] text-gold">
-            v1.0-phase-01
-          </span>
+          <div className="flex flex-wrap items-center gap-3">
+            <LocaleLink to="/impressum" className="pixel-label text-[9px] text-tx-muted transition-colors hover:text-gold">
+              {t('footer.impressum')}
+            </LocaleLink>
+            <LocaleLink to="/datenschutz" className="pixel-label text-[9px] text-tx-muted transition-colors hover:text-gold">
+              {t('footer.privacy')}
+            </LocaleLink>
+            <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] text-gold">
+              v1.0-phase-01
+            </span>
+          </div>
         </div>
       </div>
     </footer>

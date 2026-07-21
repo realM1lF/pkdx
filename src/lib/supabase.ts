@@ -28,9 +28,9 @@ export interface NuzRules {
   dupes: boolean;
   shiny: boolean;
   nicknames: boolean;
-  /** manual level cap; null = no cap */
-  levelCap: number | null;
   soulLink: boolean;
+  /** remind on death that mon must be released / not used */
+  releaseOnDeath: boolean;
 }
 
 export interface NuzRunRow {

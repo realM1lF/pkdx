@@ -7,10 +7,11 @@ import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useLanguage } from '@/lib/i18n-data';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Skull, SlidersHorizontal, Archive } from 'lucide-react';
+import { ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Share2, Skull, SlidersHorizontal, Archive, Swords } from 'lucide-react';
 import { regionById, regionName, versionChipLabel } from '@/lib/regions';
 import {
   archiveRun,
+  exportRunSummary,
   goOnline,
   isRunOwner,
   pushToast,
@@ -22,7 +23,15 @@ import { cn } from '@/lib/utils';
 import { PixelLabel, Popover, RunStatusChip, SyncBadge } from './ui';
 import { RulesEditor } from './RulesBar';
 
-export default function RunHeader({ entry }: { entry: RunEntry }) {
+export default function RunHeader({
+  entry,
+  nameOf,
+  routeLabel,
+}: {
+  entry: RunEntry;
+  nameOf: (id: number) => string;
+  routeLabel: (key: string) => string;
+}) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
   const { t } = useTranslation();
@@ -46,6 +55,18 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
     setCopied(true);
     pushToast('success', i18n.t('nuz.toast.inviteCopied', { code: state.run.invite_code }));
     window.setTimeout(() => setCopied(false), 1500);
+  };
+
+  const copySummary = () => {
+    const summary = exportRunSummary(state, {
+      nameOf,
+      routeLabel,
+      regionLabel: region ? regionName(region, lang) : state.run.region,
+      gameLabel: versionChipLabel(state.run.game),
+    });
+    void navigator.clipboard?.writeText(summary).catch(() => undefined);
+    pushToast('success', i18n.t('nuz.exportCopied'));
+    setMenuOpen(false);
   };
 
   return (
@@ -198,6 +219,23 @@ export default function RunHeader({ entry }: { entry: RunEntry }) {
               <SlidersHorizontal size={13} /> {t('nuz.header.editRules')}
             </button>
           )}
+          <button
+            type="button"
+            onClick={copySummary}
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          >
+            <Share2 size={13} /> {t('nuz.exportSummary')}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              navigate(localePath(`/team?fromRun=${state.run.id}`));
+            }}
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          >
+            <Swords size={13} /> {t('nuz.importToTeam')}
+          </button>
           <button
             type="button"
             onClick={() => {

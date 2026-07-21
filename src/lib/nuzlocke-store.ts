@@ -23,6 +23,9 @@ import type {
 import { nodeIndex, regionById, routeOrder } from './regions';
 import type { RegionId } from './regions';
 import { padNum } from './pokeapi';
+import { formatRunSummary, normalizeRules, validateLogDraft } from './nuzlocke-rules';
+import type { LogValidationError } from './nuzlocke-rules';
+import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 
 export type {
   NuzEncounterRow,
@@ -42,8 +45,8 @@ export const DEFAULT_RULES: NuzRules = {
   dupes: true,
   shiny: true,
   nicknames: true,
-  levelCap: null,
   soulLink: false,
+  releaseOnDeath: true,
 };
 
 const LS_INDEX = 'pdx2.nuz.runs';
@@ -114,28 +117,50 @@ function uuid(): string {
 }
 
 function readJson<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
+  return readLocalJson(key, fallback);
 }
 
-function writeJson(key: string, value: unknown): void {
+function writeJson(key: string, value: unknown): boolean {
+  return writeLocalJson(key, value);
+}
+
+function notifyStorageFailure(): void {
+  pushToast('sync', i18n.t('nuz.toast.storageFailed'));
+}
+
+function notifyHub(): void {
+  hubListeners.forEach((fn) => fn());
+}
+
+/** Recover runs whose payload exists but index entry was lost (quota race, etc.). */
+function reconcileRunIndex(): void {
+  const indexed = new Set(readRunIndex());
+  const recovered: string[] = [];
+  const prefix = 'pdx2.nuz.run.';
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key?.startsWith(prefix)) continue;
+      const id = key.slice(prefix.length);
+      if (id && !indexed.has(id) && loadLocalRun(id)) recovered.push(id);
+    }
   } catch {
-    /* quota — session state still works */
+    /* ignore */
   }
+  if (recovered.length) writeRunIndex([...recovered, ...readRunIndex()]);
 }
 
 export function readRunIndex(): string[] {
   return readJson<string[]>(LS_INDEX, []);
 }
 
+/** Most recently touched run id (hub index head). */
+export function getLatestRunId(): string | null {
+  return readRunIndex()[0] ?? null;
+}
+
 function writeRunIndex(ids: string[]): void {
-  writeJson(LS_INDEX, ids);
+  if (!writeJson(LS_INDEX, ids)) notifyStorageFailure();
 }
 
 function addToIndex(id: string): void {
@@ -145,11 +170,12 @@ function addToIndex(id: string): void {
 export function loadLocalRun(id: string): RunState | null {
   const s = readJson<RunState | null>(LS_RUN(id), null);
   if (!s || !s.run) return null;
-  return { ...s, run: { ...s.run, rules: { ...DEFAULT_RULES, ...s.run.rules } } };
+  return { ...s, run: { ...s.run, rules: normalizeRules(s.run.rules) } };
 }
 
 function saveLocalRun(state: RunState): void {
-  writeJson(LS_RUN(state.run.id), state);
+  if (!writeJson(LS_RUN(state.run.id), state)) notifyStorageFailure();
+  else addToIndex(state.run.id);
 }
 
 export function getMemberships(): Record<string, string> {
@@ -161,7 +187,7 @@ export function myPlayerId(runId: string): string | null {
 }
 
 function setMembership(runId: string, playerId: string): void {
-  writeJson(LS_MEMBERS, { ...getMemberships(), [runId]: playerId });
+  if (!writeJson(LS_MEMBERS, { ...getMemberships(), [runId]: playerId })) notifyStorageFailure();
 }
 
 export function isRunOwner(runId: string): boolean {
@@ -170,7 +196,7 @@ export function isRunOwner(runId: string): boolean {
 
 function setRunOwner(runId: string): void {
   const owners = readJson<string[]>(LS_OWNERS, []);
-  if (!owners.includes(runId)) writeJson(LS_OWNERS, [...owners, runId]);
+  if (!owners.includes(runId) && !writeJson(LS_OWNERS, [...owners, runId])) notifyStorageFailure();
 }
 
 function mintInviteCode(): string {
@@ -759,7 +785,6 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
 
   const state: RunState = { run: baseRun, mode, players, encounters: [] };
   saveLocalRun(state);
-  addToIndex(id);
   setRunOwner(id);
   setMembership(id, players[0].id);
   const entry = ensureEntry(id);
@@ -769,6 +794,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   seedFeed(entry);
   if (mode === 'multi') goLive(entry);
   emit(entry);
+  notifyHub();
   return { state, inviteCode: invite, offlineFallback };
 }
 
@@ -787,7 +813,7 @@ export async function lookupByCode(code: string): Promise<JoinLookup | null> {
     const { data: players } = await nuzTables.players().select('*').eq('run_id', data.id).order('slot');
     const row = data as NuzRunRow;
     return {
-      run: { ...row, rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) } },
+      run: { ...row, rules: normalizeRules(row.rules as Partial<NuzRules>) },
       players: (players ?? []) as NuzPlayerRow[],
     };
   } catch {
@@ -816,7 +842,6 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
     encounters: [],
   };
   saveLocalRun(state);
-  addToIndex(lookup.run.id);
   setMembership(lookup.run.id, player.id);
   const entry = ensureEntry(lookup.run.id);
   entry.state = state;
@@ -824,6 +849,7 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   seedFeed(entry);
   void refreshRemote(entry).then(() => goLive(entry));
   emit(entry);
+  notifyHub();
   return state;
 }
 
@@ -863,11 +889,15 @@ export interface LogDraft {
   level: number;
   status: NuzEncounterStatus;
   note?: string | null;
+  /** shiny catch — may bypass dupes clause when shiny rule is on */
+  isShiny?: boolean;
+  /** logged via full-dex override (not from route table) */
+  offRoute?: boolean;
 }
 
 export interface LogResult {
   ok: boolean;
-  error?: 'duplicate';
+  error?: LogValidationError;
   encounter?: NuzEncounterRow;
   linkedWith?: NuzEncounterRow | null;
 }
@@ -880,7 +910,10 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return { ok: false };
-  if (encounterAt(s, draft.playerId, draft.routeKey)) return { ok: false, error: 'duplicate' };
+  const region = regionById(s.run.region);
+  const node = region ? nodeIndex(region).get(draft.routeKey) : undefined;
+  const violation = validateLogDraft(s, draft, node);
+  if (violation) return { ok: false, error: violation };
 
   const enc: NuzEncounterRow = {
     id: uuid(),
@@ -936,6 +969,9 @@ export function updateEncounter(
     if (patch.status === 'dead') {
       cascadePartner = linkPartnerOf(s, enc.id);
       checkCascade(entry, enc);
+      if (s.run.rules.releaseOnDeath) {
+        pushToast('info', i18n.t('nuz.toast.releaseRule', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
+      }
     }
   }
   if (s.mode === 'multi') {
@@ -977,7 +1013,8 @@ export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return;
-  s.run.rules = { ...s.run.rules, ...rules };
+  const next = normalizeRules({ ...s.run.rules, ...rules });
+  s.run.rules = next;
   saveLocalRun(s);
   pushFeed(entry, { kind: 'rule', color: '#F6C945', title: i18n.t('nuz.feed.rulesUpdated'), meta: rulesSummary(s.run.rules) });
   if (s.mode === 'multi') {
@@ -991,9 +1028,12 @@ function rulesSummary(r: NuzRules): string {
     i18n.t(r.dupes ? 'nuz.feed.dupesOn' : 'nuz.feed.dupesOff'),
     i18n.t(r.shiny ? 'nuz.feed.shinyOn' : 'nuz.feed.shinyOff'),
   ];
-  if (r.levelCap) bits.push(`CAP ${r.levelCap}`);
   if (r.soulLink) bits.push('SOULLINK');
   return bits.join(' · ');
+}
+
+export function exportRunSummary(state: RunState, opts: Parameters<typeof formatRunSummary>[1]): string {
+  return formatRunSummary(state, opts);
 }
 
 export function setRunStatus(runId: string, status: NuzRunStatus): void {
@@ -1022,11 +1062,7 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
 /** Archive = remove from this device (remote rows untouched). */
 export function archiveRun(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
-  try {
-    localStorage.removeItem(LS_RUN(runId));
-  } catch {
-    /* noop */
-  }
+  removeLocalKey(LS_RUN(runId));
   const entry = entries.get(runId);
   if (entry) {
     dropLive(entry);
@@ -1035,7 +1071,7 @@ export function archiveRun(runId: string): void {
     emit(entry);
     entries.delete(runId);
   }
-  hubListeners.forEach((fn) => fn());
+  notifyHub();
 }
 
 export function duplicateAsSolo(runId: string): string | null {
@@ -1063,10 +1099,9 @@ export function duplicateAsSolo(runId: string): string | null {
     encounters,
   };
   saveLocalRun(state);
-  addToIndex(id);
   setRunOwner(id);
   if (players[0]) setMembership(id, players[0].id);
-  hubListeners.forEach((fn) => fn());
+  notifyHub();
   return id;
 }
 
@@ -1076,10 +1111,12 @@ const hubListeners = new Set<() => void>();
 let hubLoaded = false;
 
 function hubRefresh(): void {
+  reconcileRunIndex();
   for (const id of readRunIndex()) {
     const e = ensureEntry(id);
-    if (e.state?.mode === 'multi' && !e.remoteLoaded) void refreshRemote(e).then(() => hubListeners.forEach((fn) => fn()));
+    if (e.state?.mode === 'multi' && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
   }
+  notifyHub();
 }
 
 export function useHubRuns(): { runs: RunState[]; loading: boolean; entries: RunEntry[] } {

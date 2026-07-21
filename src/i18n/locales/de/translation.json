@@ -99,7 +99,15 @@
     "explore": "ENTDECKEN",
     "home": "Start",
     "pokedex": "Pokédex",
+    "maps": "Maps",
+    "nuzlocke": "Nuzlocke",
+    "team": "Team-Builder",
     "random": "Zufälliges Pokémon",
+    "regions": "REGIONEN",
+    "mapsAtlas": "Regions-Atlas",
+    "legal": "RECHTLICHES",
+    "impressum": "Impressum",
+    "privacy": "Datenschutz",
     "data": "DATEN",
     "dataCredits": "Daten & Sprites —",
     "fanProject": "Fanprojekt. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
@@ -480,13 +488,31 @@
     "pickRouteFirst": "Erst eine Route wählen",
     "pokemonAria": "Pokémon",
     "level": "Level",
+    "levelShort": "LV",
+    "levelTip": "Level beim Fang.",
     "status": "Status",
+    "statusTip": "Gefangen, tot, verpasst oder Dupe-Klausel.",
     "nicknamePlaceholder": "Gib ihm einen Namen",
     "nickname": "Spitzname",
     "logEncounter": "Begegnung eintragen",
     "logEncounterEnter": "Begegnung eintragen (Enter)",
     "pickPokemon": "Pokémon wählen",
     "routeAlready": "Route für {{player}} bereits eingetragen — Dupes-Klausel ist {{dupes}}.",
+    "continueRun": "Letzten Run fortsetzen",
+    "continueRunHint": "{{name}} — dort weitermachen",
+    "err": {
+      "routeAlready": "Route für {{player}} bereits eingetragen.",
+      "speciesDupe": "Art bereits im Team — Dupes-Klausel blockiert den Fang.",
+      "nicknameRequired": "Spitzname nötig — Nickname-Regel ist aktiv.",
+      "levelCap": "Level {{level}} über Cap {{cap}} — nicht erlaubt.",
+      "giftRoute": "Geschenk-/Spezialroute — nur Route-Encounters oder Status „Verpasst/Duplett“."
+    },
+    "shinyCatch": "Schillernd",
+    "giftRouteChip": "Geschenk",
+    "specialRouteChip": "Spezial",
+    "exportSummary": "Run-Zusammenfassung kopieren",
+    "exportCopied": "Zusammenfassung kopiert",
+    "importToTeam": "In Team-Builder importieren",
     "on": "an",
     "off": "aus",
     "fullDex": "VOLLE DEX",
@@ -515,7 +541,9 @@
       "levelCleared": "CAP ENTFERNT",
       "clause": "{{clause}} {{state}}",
       "soulLink": "SOUL LINK GESCHMIEDET — {{a}} ⇄ {{b}}",
-      "cascade": "SOULLINK-REGEL — {{name}} MUSS IN DIE BOX ODER FREIGELASSEN WERDEN"
+      "cascade": "SOULLINK-REGEL — {{name}} MUSS IN DIE BOX ODER FREIGELASSEN WERDEN",
+      "releaseRule": "NUZLOCKE-REGEL — {{name}} ist tot und muss freigelassen werden.",
+      "storageFailed": "SPEICHER VOLL — Run konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen."
     },
     "rules": {
       "dupesTip": "Ist die erste Begegnung eine Art, die du bereits hast, darfst du sie überspringen und die nächste versuchen.",
@@ -528,6 +556,12 @@
       "shinyClause": "SCHILLERND-KLAUSEL",
       "soulLink": "SOUL LINK",
       "levelCap": "LEVEL-CAP",
+      "autoLevelCap": "AUTO-CAP (ORDEN)",
+      "autoLevelCapTip": "Cap folgt Orden-Fortschritt der Region — manueller Cap wird überschrieben.",
+      "badges": "ORDEN",
+      "badgeTip": "Orden-Fortschritt — steuert Auto-Cap und Gym-Vorbereitung.",
+      "releaseOnDeath": "TOD = FREIGABE",
+      "releaseOnDeathTip": "Erinnert beim Tod, dass das Pokémon nicht weiter genutzt werden darf.",
       "lower": "Cap senken",
       "raise": "Cap erhöhen",
       "caught": "GEFANGEN",
@@ -665,6 +699,11 @@
       "modeLocal": "LOKAL — GETEILTER BILDSCHIRM",
       "nickTip": "Ein Nuzlocke-Klassiker. Jeder Fang bekommt einen Namen — so tut's mehr weh.",
       "nicknames": "SPITZNAMEN",
+      "autoLevelCap": "AUTO-CAP NACH ORDEN",
+      "autoLevelCapTip": "Cap steigt mit jedem Orden — kein manuelles Nachziehen nötig.",
+      "autoCapStart": "Start-Cap: Lv. {{cap}} (0 Orden)",
+      "autoCapExplain": "Im Run stellst du Orden in der Regel-Leiste ein — der Cap folgt automatisch dem nächsten Arenaleiter deiner Region.",
+      "manualCapHint": "Manueller Cap — für Hausregeln ohne Orden-Leiter.",
       "lowerCap": "Cap senken",
       "raiseCap": "Cap erhöhen",
       "back": "Zurück",
@@ -707,6 +746,7 @@
       "remove": "Eintrag entfernen"
     },
     "quickEntry": "SCHNELLEINTRAG",
+    "quickEntryHint": "Plus in der Timeline wählt Route & Spieler.",
     "mapsChip": "MAPS",
     "routesAria": "Routen",
     "customChip": "MANUELL",
@@ -932,7 +972,8 @@
       "setApplied": "SET ÜBERNOMMEN — {{name}}",
       "imported": "TEAM AUS RUN IMPORTIERT",
       "cleared": "TEAM GELEERT",
-      "deleted": "TEAM GELÖSCHT"
+      "deleted": "TEAM GELÖSCHT",
+      "storageFailed": "SPEICHER VOLL — Team konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen."
     },
     "page": {
       "eyebrow": "PHASE 03 — TEAM-BUILDER",
@@ -958,6 +999,188 @@
       "noNatures": "Keine Wesen in dieser Gen",
       "nature": "Wesen nicht im Spiel",
       "noEvs": "Keine FP in dieser Gen"
+    }
+  },
+  "legal": {
+    "impressum": {
+      "eyebrow": "RECHTLICHES",
+      "title": "Impressum",
+      "sections": [
+        {
+          "heading": "Angaben gemäß § 5 TMG",
+          "subsections": [
+            {
+              "heading": "Verantwortlich für den Inhalt",
+              "paragraphs": [
+                "Sebastian Schwerdhöfer",
+                "Hauptstraße 51",
+                "97204 Höchberg",
+                "Deutschland"
+              ]
+            },
+            {
+              "heading": "Kontakt",
+              "paragraphs": [
+                "E-Mail: sapple.schwerdhoefer@gmail.com"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Haftung für Inhalte",
+          "paragraphs": [
+            "Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
+            "Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen."
+          ]
+        },
+        {
+          "heading": "Haftung für Links",
+          "paragraphs": [
+            "Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich."
+          ]
+        },
+        {
+          "heading": "Urheberrecht",
+          "paragraphs": [
+            "Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers."
+          ]
+        },
+        {
+          "heading": "Hinweis zum Fanprojekt",
+          "paragraphs": [
+            "Pokédex 2.0 ist ein unabhängiges Fanprojekt und steht in keiner offiziellen Verbindung zu Nintendo, Creatures Inc. oder GAME FREAK inc. Pokémon sowie alle damit verbundenen Namen, Marken und Medien sind Eigentum ihrer jeweiligen Rechteinhaber."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "eyebrow": "RECHTLICHES",
+      "title": "Datenschutzerklärung",
+      "sections": [
+        {
+          "heading": "1. Datenschutz auf einen Blick",
+          "subsections": [
+            {
+              "heading": "Allgemeine Hinweise",
+              "paragraphs": [
+                "Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können."
+              ]
+            },
+            {
+              "heading": "Datenerfassung auf dieser Website",
+              "paragraphs": [
+                "Wer ist verantwortlich für die Datenerfassung auf dieser Website?",
+                "Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber:",
+                "Sebastian Schwerdhöfer",
+                "Hauptstraße 51",
+                "97204 Höchberg",
+                "Deutschland",
+                "E-Mail: hallo@adhsleben.org"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "2. Hosting",
+          "paragraphs": [
+            "Diese Website wird über den Hosting-Anbieter Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA, bereitgestellt. Beim Besuch der Website werden technisch notwendige Daten wie IP-Adresse, Browsertyp und Zugriffszeit auf den Servern von Netlify verarbeitet. Hierbei können auch personenbezogene Daten an Server von Netlify in den USA übermittelt werden. Weitere Informationen findest du in der Datenschutzerklärung von Netlify: https://www.netlify.com/privacy/"
+          ]
+        },
+        {
+          "heading": "3. Allgemeine Hinweise und Pflichtinformationen",
+          "subsections": [
+            {
+              "heading": "Datenschutz",
+              "paragraphs": [
+                "Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.",
+                "Die Nutzung unserer Website ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder E-Mail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis."
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "4. Datenerfassung auf dieser Website",
+          "subsections": [
+            {
+              "heading": "Lokale Speicherung in deinem Browser",
+              "paragraphs": [
+                "Viele Funktionen von Pokédex 2.0 speichern Daten ausschließlich lokal in deinem Browser (LocalStorage und SessionStorage), solange du den Solo-Modus nutzt oder keine Multiplayer-Nuzlocke-Runs erstellst. Dazu gehören unter anderem:",
+                "Spracheinstellung, PokéAPI-Cache, gespeicherte Teams, Nuzlocke-Solo-Runs, zuletzt genutzte Suche, Pokédex-Ansichtsdichte und Map-Darstellungsmodus.",
+                "Diese lokal gespeicherten Daten werden nicht automatisch an unsere Server übermittelt. Du kannst sie jederzeit in deinen Browser-Einstellungen unter „Website-Daten löschen“ entfernen."
+              ]
+            },
+            {
+              "heading": "Multiplayer-Nuzlocke (Supabase)",
+              "paragraphs": [
+                "Wenn du einen Multiplayer-Nuzlocke-Run erstellst oder einem per Einladungscode beitrittst, werden Run-Name, Spielername, Regeln, Encounters, Nicknames, Level, Status und zugehörige Metadaten auf Servern von Supabase Inc. (USA/EU je nach Region) gespeichert und per Echtzeit-Synchronisation zwischen Teilnehmenden ausgetauscht.",
+                "Rechtsgrundlage ist deine freiwillige Nutzung dieser Funktion. Ohne diese Angaben ist der Multiplayer-Modus nicht nutzbar. Weitere Informationen: https://supabase.com/privacy"
+              ]
+            },
+            {
+              "heading": "Server-Logdateien",
+              "paragraphs": [
+                "Der Hosting-Anbieter erhebt und speichert automatisch Informationen in sogenannten Server-Logdateien, die dein Browser automatisch an uns übermittelt. Dies sind:"
+              ],
+              "list": [
+                "Browsertyp und Browserversion",
+                "Verwendetes Betriebssystem",
+                "Referrer URL",
+                "Hostname des zugreifenden Rechners",
+                "Uhrzeit der Serveranfrage",
+                "IP-Adresse"
+              ]
+            },
+            {
+              "paragraphs": [
+                "Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen."
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "5. Externe Dienste",
+          "subsections": [
+            {
+              "heading": "PokéAPI",
+              "paragraphs": [
+                "Für Pokémon-Daten, Attacken, Begegnungen und ähnliche Inhalte stellt dein Browser direkte Anfragen an pokeapi.co. Dabei können technische Daten wie deine IP-Adresse beim Betreiber der PokéAPI verarbeitet werden. Antworten werden zusätzlich lokal in deinem Browser zwischengespeichert."
+              ]
+            },
+            {
+              "heading": "GitHub (Sprites & Medien)",
+              "paragraphs": [
+                "Sprites, Item-Grafiken und Pokémon-Rufe werden direkt aus dem GitHub-Repository raw.githubusercontent.com geladen. Beim Abruf können technische Verbindungsdaten an GitHub/Microsoft übermittelt werden."
+              ]
+            },
+            {
+              "heading": "Smogon / data.pkmn.cc",
+              "paragraphs": [
+                "Im Team-Builder können optional Smogon-Standard-Sets von data.pkmn.cc geladen werden. Dabei wird dein Browser direkt mit diesem Dienst verbunden; es werden keine personenbezogenen Profile übermittelt, jedoch können technische Zugriffsdaten anfallen."
+              ]
+            },
+            {
+              "heading": "Externe Links",
+              "paragraphs": [
+                "Unsere Seite enthält Links zu externen Websites, beispielsweise zu Datenquellen, Organisationen oder Social-Media-Profilen. Beim Klick auf einen solchen Link verlässt du unser Angebot. Für die Datenschutzpraktiken dieser externen Seiten sind deren Betreiber verantwortlich."
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "6. Ihre Rechte",
+          "paragraphs": [
+            "Sie haben jederzeit das Recht auf Auskunft über die bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger sowie den Zweck der Datenverarbeitung. Sie haben außerdem ein Recht auf Berichtigung, Löschung oder Einschränkung der Verarbeitung dieser Daten.",
+            "Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden."
+          ]
+        },
+        {
+          "heading": "7. Löschung deiner Daten",
+          "paragraphs": [
+            "Lokal gespeicherte Daten (Teams, Solo-Nuzlocke-Runs, Cache, Einstellungen) liegen ausschließlich in deinem Browser und kannst du dort jederzeit löschen.",
+            "Für Multiplayer-Nuzlocke-Runs kannst du uns per E-Mail kontaktieren, wenn du die Löschung serverseitig gespeicherter Run-Daten wünschst. Bitte nenne dabei den Run-Namen oder Einladungscode, soweit möglich."
+          ]
+        }
+      ]
     }
   }
 }

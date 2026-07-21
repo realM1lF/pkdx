@@ -2,6 +2,7 @@
  * 6-slot builder with GAME legality, synergy deck, Smogon meta, nuzlocke import.
  * State lives in src/lib/teambuilder.ts; this page wires data → components. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { AnimatePresence, Reorder } from 'framer-motion';
 import { getMove, getPokemon } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
@@ -16,6 +17,7 @@ import {
   fetchMetaDump,
   filledSlots,
   genTypesOf,
+  importRunTeams,
   loadDraft,
   loadTeams,
   offensiveCoverage,
@@ -45,6 +47,7 @@ import ImportRunDialog from './teambuilder/ImportRunDialog';
 import SavedTeamsHub from './teambuilder/SavedTeamsHub';
 import SlotCard from './teambuilder/SlotCard';
 import SlotEditor from './teambuilder/SlotEditor';
+import NuzToasts from './nuzlocke/Toasts';
 import './teambuilder/teambuilder.css';
 
 /** 'Swords Dance' → 'swords-dance' (PokéAPI move slug) */
@@ -57,6 +60,8 @@ function slugify(name: string): string {
 
 export default function TeamBuilder() {
   const lang = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const fromRunHandled = useRef(false);
   /* shared-team hash is consumed once at mount (lazy initializer) */
   const [sharedPayload] = useState<string | null>(() => consumeTeamHash());
   const [team, setTeam] = useState<Team | null>(() => (sharedPayload ? null : loadDraft()));
@@ -229,6 +234,25 @@ export default function TeamBuilder() {
     [patchTeam],
   );
 
+  useEffect(() => {
+    const runId = searchParams.get('fromRun');
+    if (!runId || fromRunHandled.current) return undefined;
+    fromRunHandled.current = true;
+    const next = new URLSearchParams(searchParams);
+    next.delete('fromRun');
+    setSearchParams(next, { replace: true });
+    let alive = true;
+    void importRunTeams(runId).then((teams) => {
+      if (!alive) return;
+      const ready = teams.filter((t) => t.members.length > 0);
+      if (ready.length === 1) handleImport(ready[0]);
+      else if (ready.length > 0) setImportOpen(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [searchParams, setSearchParams, handleImport]);
+
   const handleShare = useCallback(async () => {
     if (!team) return;
     try {
@@ -247,7 +271,8 @@ export default function TeamBuilder() {
 
   const handleSave = useCallback(() => {
     if (!team) return;
-    setTeams(saveTeam(team));
+    const next = saveTeam(team);
+    setTeams(next);
     saveDraft(team);
     setSavedFlash(true);
     window.setTimeout(() => setSavedFlash(false), 2200);
@@ -359,6 +384,10 @@ export default function TeamBuilder() {
 
   const expandedSlot = team?.slots.find((s) => s.id === expandedId) ?? null;
 
+  useEffect(() => {
+    if (!team) setTeams(loadTeams());
+  }, [team]);
+
   /* ---------- hub (no team being edited) ---------- */
   if (!team) {
     return (
@@ -377,6 +406,7 @@ export default function TeamBuilder() {
           }}
           onDelete={(id) => setTeams(deleteTeam(id))}
         />
+        <NuzToasts />
       </div>
     );
   }
@@ -395,8 +425,12 @@ export default function TeamBuilder() {
         onSave={handleSave}
         onClear={handleClear}
         onOpenHub={() => {
-          setTeams(loadTeams());
-          saveDraft(team);
+          if (team && filledSlots(team).length > 0) {
+            setTeams(saveTeam(team));
+          } else {
+            setTeams(loadTeams());
+          }
+          saveDraft(null);
           setTeam(null);
         }}
         savedCount={teams.length}
@@ -459,6 +493,7 @@ export default function TeamBuilder() {
       />
 
       <ImportRunDialog open={importOpen} onClose={() => setImportOpen(false)} onImport={handleImport} />
+      <NuzToasts />
     </div>
   );
 }
