@@ -206,6 +206,20 @@ export function genRegionKey(region: string): string {
   return GEN_REGION_KEY[region] ?? 'kanto';
 }
 
+const NATURES_DE: Record<string, string> = {
+  hardy: 'Robust', lonely: 'Solo', brave: 'Mutig', adamant: 'Hart', naughty: 'Frech',
+  bold: 'Kühn', docile: 'Sanft', relaxed: 'Locker', impish: 'Pfiffig', lax: 'Lasch',
+  timid: 'Scheu', hasty: 'Hastig', serious: 'Ernst', jolly: 'Froh', naive: 'Naiv',
+  modest: 'Mäßig', mild: 'Mild', quiet: 'Ruhig', bashful: 'Zaghaft', rash: 'Hitzig',
+  calm: 'Still', gentle: 'Zart', sassy: 'Forsch', careful: 'Sacht', quirky: 'Kauzig',
+};
+
+/** Nature names — official German terminology (Wesen). EN falls back to the @pkmn name. */
+export function nameOfNature(slug: string, lang: Lang): string {
+  if (isDe(lang) && NATURES_DE[slug]) return NATURES_DE[slug];
+  return displayName(slug);
+}
+
 /* ---------- search ---------- */
 
 /** Resolve a (possibly German) query to a dex id via the de reverse index. */

@@ -8,16 +8,24 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCcw, Search, SlidersHorizontal, Swords } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
 import TypeGlyph from '@/components/TypeGlyph';
 import PokeballLoader from '@/components/PokeballLoader';
-import { bootNameIndex, displayName, getMove, getPokemon, padNum, pokemonTypes } from '@/lib/pokeapi';
+import { bootNameIndex, getMove, getPokemon, padNum, pokemonTypes } from '@/lib/pokeapi';
+import {
+  germanAliasOfPokemon,
+  nameOfMove,
+  nameOfNature,
+  nameOfPokemon,
+  nameOfType,
+  useLanguage,
+} from '@/lib/i18n-data';
 import type { DexIndexEntry, Move, Pokemon, StatKey } from '@/lib/types';
 import { MAX_DEX_ID, STAT_LABELS, STAT_ORDER } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
-  MOVESET_LABEL,
   NATURES,
   damageBetween,
   koLabel,
@@ -169,6 +177,8 @@ export interface ComboItem {
   spriteId?: number;
   type?: string; // move type glyph
   disabled?: boolean;
+  /** extra lowercase match string (e.g. German alias) — display stays `label` */
+  alias?: string;
 }
 
 export function VsCombobox({
@@ -193,10 +203,16 @@ export function VsCombobox({
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   const view = useMemo(() => {
     const q = value.trim().toLowerCase();
-    const base = q ? items.filter((i) => i.label.toLowerCase().includes(q) || i.key.includes(q)) : items;
+    const base = q
+      ? items.filter(
+          (i) =>
+            i.label.toLowerCase().includes(q) || i.key.includes(q) || (i.alias?.includes(q) ?? false),
+        )
+      : items;
     return base.slice(0, 8);
   }, [items, value]);
 
@@ -258,7 +274,7 @@ export function VsCombobox({
             role="listbox"
           >
             {view.length === 0 ? (
-              <div className="px-3 py-2 font-sans text-[11px] font-semibold text-gold">No matches — check spelling.</div>
+              <div className="px-3 py-2 font-sans text-[11px] font-semibold text-gold">{t('versus.noMatches')}</div>
             ) : (
               view.map((item, i) => (
                 <button
@@ -299,24 +315,28 @@ export function OpponentAutocomplete({
   index,
   excludeId,
   onPick,
-  placeholder = 'PICK OPPONENT…',
+  placeholder,
 }: {
   index: DexIndexEntry[];
   excludeId?: number;
   onPick: (id: number) => void;
   placeholder?: string;
 }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [q, setQ] = useState('');
   const items = useMemo<ComboItem[]>(
     () =>
       index.map((e) => ({
         key: String(e.id),
-        label: e.label,
+        label: nameOfPokemon(e.id, lang),
         sub: e.num,
         spriteId: e.id,
         disabled: e.id === excludeId,
+        // de artifact name → matches "glumanda" against charmander either way
+        alias: `${e.name} ${germanAliasOfPokemon(e.id) ?? ''}`,
       })),
-    [index, excludeId],
+    [index, excludeId, lang],
   );
   return (
     <VsCombobox
@@ -327,8 +347,8 @@ export function OpponentAutocomplete({
         onPick(Number(key));
         setQ('');
       }}
-      placeholder={placeholder}
-      ariaLabel="Opponent search"
+      placeholder={placeholder ?? t('versus.pickOpponentPlaceholder')}
+      ariaLabel={t('versus.opponentSearch')}
       icon={<Search size={12} />}
     />
   );
@@ -353,25 +373,35 @@ export function MoveSlots({
   onReset?: () => void;
   source: MovesetSource;
 }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [q, setQ] = useState('');
   const items = useMemo<ComboItem[]>(
     () =>
       pool.map((slug) => {
         const mv = details.get(slug);
-        return { key: slug, label: displayName(slug), type: mv?.type.name, sub: mv?.power ? String(mv.power) : '—' };
+        return {
+          key: slug,
+          label: nameOfMove(slug, lang),
+          type: mv?.type.name,
+          sub: mv?.power ? String(mv.power) : '—',
+          alias: slug,
+        };
       }),
-    [pool, details],
+    [pool, details, lang],
   );
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
-        <span className="pixel-label text-[7px] text-tx-muted">MOVES · {MOVESET_LABEL[source]}</span>
+        <span className="pixel-label text-[7px] text-tx-muted">
+          {t('versus.movesSource', { source: t(`versus.source${source.charAt(0).toUpperCase() + source.slice(1)}`) })}
+        </span>
         {onReset && (
           <button
             type="button"
             onClick={onReset}
-            title="Reset to level-up default"
+            title={t('versus.resetDefault')}
             className="grid h-4 w-4 place-items-center rounded-sm text-tx-muted transition-colors hover:text-gold"
           >
             <RotateCcw size={10} />
@@ -398,8 +428,8 @@ export function MoveSlots({
                   setEditIdx(null);
                   setQ('');
                 }}
-                placeholder="MOVE…"
-                ariaLabel={`Move slot ${i + 1}`}
+                placeholder={t('versus.movePlaceholder')}
+                ariaLabel={t('versus.moveSlotAria', { n: i + 1 })}
               />
             );
           }
@@ -416,14 +446,14 @@ export function MoveSlots({
                 'font-sans text-[11px] font-semibold transition-colors duration-150 hover:border-hairline2',
                 slug ? 'text-tx-primary' : 'text-tx-muted',
               )}
-              title={slug ? displayName(slug) : 'Empty slot — click to pick'}
+              title={slug ? nameOfMove(slug, lang) : t('versus.emptySlot')}
             >
               {mv && (
                 <span style={{ color: `rgb(${typeRgb(mv.type.name)})` }}>
                   <TypeGlyph type={mv.type.name} size={11} />
                 </span>
               )}
-              <span className="truncate">{slug ? displayName(slug) : '—'}</span>
+              <span className="truncate">{slug ? nameOfMove(slug, lang) : '—'}</span>
             </button>
           );
         })}
@@ -455,6 +485,8 @@ export function SideCard({
   onSlotsReset?: () => void;
   aura?: boolean;
 }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const types = pokemonTypes(pokemon);
   const [tune, setTune] = useState(false);
   const [shake, setShake] = useState(false);
@@ -483,12 +515,12 @@ export function SideCard({
               }}
             />
           )}
-          <Sprite id={pokemon.id} name={pokemon.name} era="artwork" className="relative z-10 h-[72px] w-[72px]" eager />
+          <Sprite id={pokemon.id} name={nameOfPokemon(pokemon.id, lang)} era="artwork" className="relative z-10 h-[72px] w-[72px]" eager />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-1.5">
             <span className="truncate font-display text-[15px] font-bold uppercase text-tx-primary">
-              {displayName(pokemon.name)}
+              {nameOfPokemon(pokemon.id, lang)}
             </span>
             <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(pokemon.id)}</span>
           </div>
@@ -506,7 +538,7 @@ export function SideCard({
               value={side.level}
               onChange={(e) => setLevel(e.target.value)}
               className={cn('vs-input w-12 text-center tabular-nums', shake && 'vs-shake')}
-              aria-label="Level"
+              aria-label={t('versus.level')}
             />
             <button
               type="button"
@@ -518,7 +550,7 @@ export function SideCard({
               )}
             >
               <SlidersHorizontal size={9} />
-              Tune
+              {t('versus.tune')}
             </button>
           </div>
         </div>
@@ -535,17 +567,17 @@ export function SideCard({
           >
             <div className="flex flex-col gap-1.5 rounded-md border border-hairline bg-abyss/40 p-2">
               <label className="flex items-center gap-2">
-                <span className="pixel-label w-12 text-[7px] text-tx-muted">NATURE</span>
+                <span className="pixel-label w-12 text-[7px] text-tx-muted">{t('versus.nature')}</span>
                 <select
                   className="dx-select h-6 flex-1 text-[11px]"
                   value={side.nature ?? ''}
                   onChange={(e) => onSide({ nature: e.target.value || null })}
-                  aria-label="Nature"
+                  aria-label={t('versus.natureAria')}
                 >
-                  <option value="">Neutral</option>
+                  <option value="">{t('versus.neutral')}</option>
                   {NATURES.filter((n) => n.plus).map((n) => (
                     <option key={n.name} value={n.name}>
-                      {n.name} (+{n.plus ? STAT_LABELS[n.plus] : ''} −{n.minus ? STAT_LABELS[n.minus] : ''})
+                      {nameOfNature(n.name, lang)} (+{n.plus ? STAT_LABELS[n.plus] : ''} −{n.minus ? STAT_LABELS[n.minus] : ''})
                     </option>
                   ))}
                 </select>
@@ -565,7 +597,7 @@ export function SideCard({
                         onSide({ evs: { ...side.evs, [key]: v } });
                       }}
                       className="vs-input w-full px-1 text-center text-[10px] tabular-nums"
-                      aria-label={`${STAT_LABELS[key]} EVs`}
+                      aria-label={t('versus.evsAria', { stat: STAT_LABELS[key] })}
                     />
                   </label>
                 ))}
@@ -598,18 +630,20 @@ export interface MatrixRow {
 }
 
 export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: string }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   return (
     <div>
       <div className="grid grid-cols-[20px_minmax(0,1fr)_18px_76px_34px_46px] items-center gap-1.5 border-b border-hairline px-2 pb-1">
         <span className="pixel-label text-[7px] text-tx-muted"> </span>
         <span className="pixel-label text-[7px] text-tx-muted">{heading}</span>
-        <span className="pixel-label text-center text-[6px] text-tx-muted">CAT</span>
-        <span className="pixel-label text-[7px] text-tx-muted">RANGE</span>
-        <span className="pixel-label text-center text-[7px] text-tx-muted">EFF</span>
-        <span className="pixel-label text-right text-[7px] text-tx-muted">KO</span>
+        <span className="pixel-label text-center text-[6px] text-tx-muted">{t('versus.catCol')}</span>
+        <span className="pixel-label text-[7px] text-tx-muted">{t('versus.rangeCol')}</span>
+        <span className="pixel-label text-center text-[7px] text-tx-muted">{t('versus.effCol')}</span>
+        <span className="pixel-label text-right text-[7px] text-tx-muted">{t('versus.koCol')}</span>
       </div>
       {rows.length === 0 && (
-        <div className="flex h-24 items-center justify-center font-sans text-[11px] text-tx-muted">No damaging set resolved.</div>
+        <div className="flex h-24 items-center justify-center font-sans text-[11px] text-tx-muted">{t('versus.noSet')}</div>
       )}
       {rows.map((row, ri) => {
         const mv = row.detail;
@@ -625,13 +659,13 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
             <span style={{ color: `rgb(${typeRgb(type)})` }}>
               <TypeGlyph type={type} size={14} />
             </span>
-            <span className="truncate font-sans text-[12px] font-semibold text-tx-primary" title={displayName(row.slug)}>
-              {displayName(row.slug)}
+            <span className="truncate font-sans text-[12px] font-semibold text-tx-primary" title={nameOfMove(row.slug, lang)}>
+              {nameOfMove(row.slug, lang)}
             </span>
             <span
               role="img"
-              aria-label={cat}
-              title={cat}
+              aria-label={t(`detail.moves.cat${cat.charAt(0).toUpperCase() + cat.slice(1)}`)}
+              title={t(`detail.moves.cat${cat.charAt(0).toUpperCase() + cat.slice(1)}`)}
               className="vs-cat"
               style={{
                 backgroundColor: CAT_COLORS[cat] ?? CAT_COLORS.status,
@@ -650,7 +684,7 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
                 </span>
               </span>
             ) : (
-              <span className="font-sans text-[9px] text-tx-muted">{mv ? (cell ? 'status' : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
+              <span className="font-sans text-[9px] text-tx-muted">{mv ? (cell ? t('versus.statusMove') : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
             )}
             <span className="vs-eff" data-e={damaging ? String(eff) : '1'}>
               {damaging
@@ -668,7 +702,7 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
                 : '—'}
             </span>
             <span className="text-right">
-              <span className="vs-ko" data-n={koN} title={cell && cell.koChance > 0 && cell.koChance < 1 ? `${Math.round(cell.koChance * 100)}% chance` : undefined}>
+              <span className="vs-ko" data-n={koN} title={cell && cell.koChance > 0 && cell.koChance < 1 ? t('versus.koChance', { pct: Math.round(cell.koChance * 100) }) : undefined}>
                 {koLabel(cell)}
               </span>
             </span>
@@ -724,17 +758,16 @@ export function StatDelta({
 }
 
 export function SpeedCheckBanner({ check, youName, foeName }: { check: SpeedCheck | null; youName: string; foeName: string }) {
+  const { t } = useTranslation();
   if (!check) {
     return (
       <div className="flex h-10 items-center justify-center gap-2 rounded-lg border border-hairline bg-surface1/60">
-        <span className="pixel-label text-[8px] text-tx-muted">SPEED CHECK —</span>
+        <span className="pixel-label text-[8px] text-tx-muted">{t('versus.speedCheck')} —</span>
       </div>
     );
   }
   const youWin = check.delta > 0;
   const tie = check.delta === 0;
-  const youVerb = youName === 'YOU' ? 'OUTSPEED' : 'OUTSPEEDS';
-  const foeVerb = foeName === 'YOU' ? 'OUTSPEED' : 'OUTSPEEDS';
   return (
     <div
       className={cn(
@@ -742,13 +775,13 @@ export function SpeedCheckBanner({ check, youName, foeName }: { check: SpeedChec
         youWin || tie ? 'border-gold/50 bg-gold/10' : 'border-hairline bg-surface1/60',
       )}
     >
-      <span className={cn('pixel-label text-[8px]', youWin || tie ? 'text-gold' : 'text-tx-muted')}>SPEED CHECK</span>
+      <span className={cn('pixel-label text-[8px]', youWin || tie ? 'text-gold' : 'text-tx-muted')}>{t('versus.speedCheck')}</span>
       <span className={cn('font-display text-[12px] font-bold uppercase tracking-wide', youWin ? 'text-gold' : tie ? 'text-tx-primary' : 'text-tx-muted')}>
         {tie
-          ? `SPEED TIE AT ${check.you} — coin flip`
+          ? t('versus.speedTie', { speed: check.you })
           : youWin
-            ? `${youName} ${youVerb} BY ${check.delta} — you strike first`
-            : `${foeName} ${foeVerb} BY ${-check.delta} — it strikes first`}
+            ? t('versus.speedWin', { name: youName, delta: check.delta })
+            : t('versus.speedLose', { name: foeName, delta: -check.delta })}
       </span>
       <span className="hidden font-sans text-[10px] font-semibold tabular-nums text-tx-muted sm:inline">
         {check.you} vs {check.foe}
@@ -758,27 +791,32 @@ export function SpeedCheckBanner({ check, youName, foeName }: { check: SpeedChec
 }
 
 export function DefensiveProfiles({ youTypes, foeTypes, youName, foeName }: { youTypes: string[]; foeTypes: string[]; youName: string; foeName: string }) {
+  const { t } = useTranslation();
+  const titleFor = (n: string) =>
+    n === 'YOU' ? t('versus.youTake') : t('versus.nameTakes', { name: n });
   return (
     <div className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-2">
-      <DefenseColumn title={youName === 'YOU' ? 'YOU TAKE' : `${youName} TAKES`} types={youTypes} />
-      <DefenseColumn title={foeName === 'YOU' ? 'YOU TAKE' : `${foeName} TAKES`} types={foeTypes} />
+      <DefenseColumn title={titleFor(youName)} types={youTypes} />
+      <DefenseColumn title={titleFor(foeName)} types={foeTypes} />
     </div>
   );
 }
 
 function DefenseColumn({ title, types }: { title: string; types: string[] }) {
+  const { t } = useTranslation();
   const m = computeMatchups(types);
   return (
     <div className="flex flex-col gap-1">
       <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
-      <MatchupRow label="WEAK" types={m.weak} mult="×2" color="#F6C945" />
-      <MatchupRow label="RESIST" types={m.resist} mult="×½" color="#63D96B" />
-      <MatchupRow label="IMMUNE" types={m.immune} mult="×0" color="#5E6680" />
+      <MatchupRow label={t('versus.weak')} types={m.weak} mult="×2" color="#F6C945" />
+      <MatchupRow label={t('versus.resist')} types={m.resist} mult="×½" color="#63D96B" />
+      <MatchupRow label={t('versus.immune')} types={m.immune} mult="×0" color="#5E6680" />
     </div>
   );
 }
 
 function MatchupRow({ label, types, mult, color }: { label: string; types: string[]; mult: string; color: string }) {
+  const lang = useLanguage();
   return (
     <div className="flex min-h-[20px] items-center gap-1.5">
       <span className="w-10 shrink-0 font-sans text-[8px] font-bold uppercase" style={{ color }}>
@@ -797,7 +835,7 @@ function MatchupRow({ label, types, mult, color }: { label: string; types: strin
             }}
           >
             <TypeGlyph type={t} size={10} />
-            {t}
+            {nameOfType(t, lang)}
           </span>
         ))}
       </div>
@@ -833,6 +871,8 @@ export default function VersusPanel({
   initialVs: string | null;
   onOpponentChange: (id: number | null) => void;
 }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const index = useDexIndex();
 
   /* ----- foe selection (deep-link ?vs= resolves once the dex index is in) ----- */
@@ -908,13 +948,13 @@ export default function VersusPanel({
     [youV, foeV, foe.slots, details],
   );
 
-  const youName = displayName(pokemon.name);
-  const foeName = foePokemon ? displayName(foePokemon.name) : 'FOE';
+  const youName = nameOfPokemon(pokemon.id, lang);
+  const foeName = foePokemon ? nameOfPokemon(foePokemon.id, lang) : t('versus.foe');
 
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* ---------- head-to-head ---------- */}
-      <Panel eyebrow="YOU" title={youName} className="col-span-12 lg:col-span-5" bodyClassName="min-h-[150px]">
+      <Panel eyebrow={t('versus.you')} title={youName} className="col-span-12 lg:col-span-5" bodyClassName="min-h-[150px]">
         <SideCard
           pokemon={pokemon}
           side={you}
@@ -944,8 +984,8 @@ export default function VersusPanel({
       </div>
 
       <Panel
-        eyebrow="FOE"
-        title={foePokemon ? foeName : 'PICK OPPONENT'}
+        eyebrow={t('versus.foe')}
+        title={foePokemon ? foeName : t('versus.pickOpponent')}
         className="col-span-12 lg:col-span-5"
         bodyClassName="flex min-h-[150px] flex-col"
         right={
@@ -957,8 +997,8 @@ export default function VersusPanel({
         {foeStatus === 'idle' && (
           <div className="flex flex-1 flex-col items-center justify-center gap-2 p-6">
             <img src="/pokeball.svg" alt="" className="h-10 w-10 opacity-50" />
-            <p className="font-sans text-[12px] text-gold">Pick any Pokémon above — or open a shared ?vs= link.</p>
-            <p className="font-sans text-[11px] text-tx-muted">Your own entry can't fight itself (SELF disabled).</p>
+            <p className="font-sans text-[12px] text-gold">{t('versus.emptyTitle')}</p>
+            <p className="font-sans text-[11px] text-tx-muted">{t('versus.emptySelf')}</p>
           </div>
         )}
         {foeStatus === 'loading' && (
@@ -968,7 +1008,7 @@ export default function VersusPanel({
         )}
         {foeStatus === 'error' && (
           <div className="flex flex-1 items-center justify-center p-6">
-            <p className="font-sans text-[12px] text-gold">Opponent data unavailable — try another pick.</p>
+            <p className="font-sans text-[12px] text-gold">{t('versus.errorUnavailable')}</p>
           </div>
         )}
         {foeStatus === 'ready' && foePokemon && (
@@ -990,26 +1030,26 @@ export default function VersusPanel({
 
       {/* ---------- speed check ---------- */}
       <div className="col-span-12">
-        <SpeedCheckBanner check={check} youName="YOU" foeName={foeName.toUpperCase()} />
+        <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName.toUpperCase()} />
       </div>
 
       {foeV && foePokemon && (
         <>
           {/* ---------- stat delta + defensive profiles ---------- */}
-          <Panel eyebrow="STAT DELTA" title="Level-Adjusted" className="col-span-12 lg:col-span-5">
+          <Panel eyebrow={t('versus.statDeltaEyebrow')} title={t('versus.statDeltaTitle')} className="col-span-12 lg:col-span-5">
             <StatDelta you={youStats} foe={foeStats} />
           </Panel>
 
-          <Panel eyebrow="DEFENSIVE PROFILES" title="Type Matchups" className="col-span-12 lg:col-span-7">
+          <Panel eyebrow={t('versus.defenseEyebrow')} title={t('versus.defenseTitle')} className="col-span-12 lg:col-span-7">
             <DefensiveProfiles youTypes={pokemonTypes(pokemon)} foeTypes={pokemonTypes(foePokemon)} youName="YOU" foeName="FOE" />
           </Panel>
 
           {/* ---------- damage matrices ---------- */}
-          <Panel eyebrow="YOUR OFFENSE" title={`${youName} → ${foeName}`} className="col-span-12 lg:col-span-6" bodyClassName="p-1">
-            <DamageMatrix rows={youRows} heading="MOVE" />
+          <Panel eyebrow={t('versus.yourOffense')} title={`${youName} → ${foeName}`} className="col-span-12 lg:col-span-6" bodyClassName="p-1">
+            <DamageMatrix rows={youRows} heading={t('versus.moveCol')} />
           </Panel>
-          <Panel eyebrow="FOE OFFENSE" title={`${foeName} → ${youName}`} className="col-span-12 lg:col-span-6" bodyClassName="p-1">
-            <DamageMatrix rows={foeRows} heading="MOVE" />
+          <Panel eyebrow={t('versus.foeOffense')} title={`${foeName} → ${youName}`} className="col-span-12 lg:col-span-6" bodyClassName="p-1">
+            <DamageMatrix rows={foeRows} heading={t('versus.moveCol')} />
           </Panel>
         </>
       )}

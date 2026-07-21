@@ -5,8 +5,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
-import { displayName } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { sprites } from '@/lib/sprites';
 import { cn } from '@/lib/utils';
 import { SegmentedControl } from './ui';
@@ -176,6 +177,7 @@ function MuseumSprite({
     return () => io.disconnect();
   }, [tile.animated]);
 
+  const { t } = useTranslation();
   const srcIdx = Math.min(step, tile.urls.length - 1);
   const paused = tile.animated && !inView && tile.urls.length > 1;
   const src = paused ? tile.urls[Math.min(1, tile.urls.length - 1)] : tile.urls[srcIdx];
@@ -187,7 +189,7 @@ function MuseumSprite({
       )}
       <img
         src={src}
-        alt={`${name} — ${tile.game} ${tile.variant.toLowerCase()} sprite`}
+        alt={t('detail.museum.spriteAlt', { name, game: tile.game, variant: tile.variant })}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"
         draggable={false}
@@ -214,6 +216,7 @@ function Scrubber({
   active: number;
   onChange: (i: number) => void;
 }) {
+  const { t } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
   const era = eras[active];
 
@@ -232,7 +235,7 @@ function Scrubber({
       ref={trackRef}
       role="slider"
       tabIndex={0}
-      aria-label="Sprite era timeline"
+      aria-label={t('detail.museum.timelineAria')}
       aria-valuemin={0}
       aria-valuemax={eras.length - 1}
       aria-valuenow={active}
@@ -293,7 +296,9 @@ function Scrubber({
 
 /* ---------- museum ---------- */
 
-export default function SpriteMuseum({ id, name }: { id: number; name: string }) {
+export default function SpriteMuseum({ id, name: _name }: { id: number; name: string }) {
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const available = useMemo(() => ERAS.filter((e) => id <= e.maxId), [id]);
   const [eraIdx, setEraIdx] = useState(0);
   const era = available[Math.min(eraIdx, available.length - 1)] ?? available[0];
@@ -310,7 +315,8 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
   const selected = tiles.find((t) => t.key === selKey) ?? tiles[0];
 
   if (!era) return null;
-  const dispName = displayName(name);
+  const dispName = nameOfPokemon(id, lang);
+  const variant = (v: string) => t8n(`detail.museum.variants.${v}`, { defaultValue: v });
 
   return (
     <div className="dx-museum relative flex h-full flex-col">
@@ -359,7 +365,7 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
               </div>
               <div className="mt-0.5 flex items-center gap-1.5">
                 <span className="rounded-pill border border-hairline bg-surface2 px-1.5 py-px font-sans text-[9px] font-bold uppercase text-tx-secondary">
-                  {selected?.variant ?? '—'}
+                  {selected ? variant(selected.variant) : '—'}
                 </span>
                 {selected?.shiny && <img src="/sparkle.svg" alt="shiny" className="h-3 w-3" />}
                 <span className="pixel-label text-[7px] text-tx-muted">{era.years}</span>
@@ -367,7 +373,7 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
             </motion.div>
           </AnimatePresence>
           <p className="mt-1.5 hidden font-sans text-[11px] leading-snug text-tx-muted sm:block">
-            Every era of {dispName}, from 1996 pixels to 3D-era GIFs. Pick a tile or scrub the timeline.
+            {t8n('detail.museum.blurb', { name: dispName })}
           </p>
         </div>
         {/* era tabs */}
@@ -375,7 +381,7 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
           <SegmentedControl
             id="museum-era"
             size="xs"
-            ariaLabel="Sprite era"
+            ariaLabel={t8n('detail.museum.eraAria')}
             value={era.key}
             onChange={(k) => setEraIdx(available.findIndex((e) => e.key === k))}
             options={available.map((e) => ({ value: e.key, label: e.tab }))}
@@ -388,7 +394,7 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
         <SegmentedControl
           id="museum-era-m"
           size="xs"
-          ariaLabel="Sprite era"
+          ariaLabel={t8n('detail.museum.eraAria')}
           value={era.key}
           onChange={(k) => setEraIdx(available.findIndex((e) => e.key === k))}
           options={available.map((e) => ({ value: e.key, label: e.tab }))}
@@ -416,7 +422,7 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3, delay: Math.min(i, 10) * 0.03, ease: EASE }}
-              aria-label={`${t.game} ${t.variant} — show in display case`}
+              aria-label={t8n('detail.museum.tileAria', { game: t.game, variant: variant(t.variant) })}
             >
               {t.shiny && <img src="/sparkle.svg" alt="" aria-hidden className="absolute right-1 top-1 h-2.5 w-2.5 opacity-80" />}
               {t.shiny && <span aria-hidden className="absolute inset-x-2 top-0 h-px bg-gold/50" />}
@@ -431,7 +437,7 @@ export default function SpriteMuseum({ id, name }: { id: number; name: string })
               <span className="max-w-full truncate text-center font-sans text-[9px] font-semibold text-tx-secondary">
                 {t.game}
               </span>
-              <span className="pixel-label text-[6px] text-tx-muted">{t.variant}</span>
+              <span className="pixel-label text-[6px] text-tx-muted">{variant(t.variant)}</span>
             </motion.button>
           ))}
         </AnimatePresence>
