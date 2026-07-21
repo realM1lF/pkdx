@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'framer-motion';
-import { ArrowRight, Compass, Lock } from 'lucide-react';
+import { ArrowRight, Compass, ExternalLink, Lock } from 'lucide-react';
 import MiniSchematic from './MiniSchematic';
+import { resolveInteractiveMapLink } from '@/lib/interactive-maps';
 import type { RegionMap } from '@/lib/regions';
 import { accentRgb, coverageTier } from '@/lib/regions';
 import { itemCountForRegion } from '@/lib/mapdata';
@@ -53,6 +54,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
   const [par, setPar] = useState({ x: 0, y: 0 });
   const rgb = accentRgb(region.accent);
   const items = itemCountForRegion(region.region);
+  const interactive = resolveInteractiveMapLink(region.region, region.defaultVersion);
 
   return (
     <motion.article
@@ -123,7 +125,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
         </div>
 
         {/* CTAs */}
-        <div className="mt-3 flex items-center gap-2.5">
+        <div className="mt-3 flex flex-wrap items-center gap-2.5">
           <Link
             to={`/maps/${region.region}`}
             className={cn(
@@ -139,6 +141,21 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
             Open map
             <ArrowRight size={14} />
           </Link>
+          {interactive && (
+            <a
+              href={interactive.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${interactive.site} — ${interactive.game} (external)`}
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
+            >
+              Interactive
+              <span aria-hidden className="text-[11px] leading-none">
+                ↗
+              </span>
+              <ExternalLink size={12} className="opacity-60" aria-hidden />
+            </a>
+          )}
           <Link
             to={`/nuzlocke/new?region=${region.region}`}
             className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"

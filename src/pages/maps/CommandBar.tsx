@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Fish, Footprints, Info, Loader2, RotateCcw, Search, Sparkles, Waves, X } from 'lucide-react';
 import { LinkKindGlyphs, NodeKindGlyphs } from './LegendGlyphs';
+import { resolveInteractiveMapLink } from '@/lib/interactive-maps';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, versionChipLabel } from '@/lib/regions';
 import type { MethodBucket } from '@/lib/mapdata';
@@ -20,6 +21,10 @@ const METHODS: Array<{ bucket: MethodBucket; label: string; icon: typeof Footpri
   { bucket: 'FISH', label: 'FISH', icon: Fish },
   { bucket: 'OTHER', label: 'OTHER', icon: Sparkles },
 ];
+
+/** Fixed height so the active pill (layoutId thumb) matches label bounds with leading-[0]. */
+const VIEW_TOGGLE_ITEM = 'relative inline-flex h-6 items-center justify-center rounded-pill px-2';
+const VIEW_TOGGLE_LABEL = 'pixel-label relative z-10 text-[7px] leading-[0]';
 
 interface CommandBarProps {
   region: RegionMap;
@@ -55,6 +60,7 @@ export default function CommandBar({
 }: CommandBarProps) {
   const rgb = accentRgb(region.accent);
   const originalAvailable = region.region === 'kanto';
+  const interactive = resolveInteractiveMapLink(region.region, version);
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const [legend, setLegend] = useState(false);
@@ -74,11 +80,12 @@ export default function CommandBar({
     <div
       key={shakeKey}
       className={cn(
-        'sticky top-0 z-40 flex h-14 items-center gap-2.5 overflow-x-auto border-b border-hairline px-3 sm:px-4',
+        'sticky top-0 z-50 border-b border-hairline',
         shakeKey > 0 && 'maps-shake',
       )}
       style={{ background: 'rgba(13,15,22,0.72)', backdropFilter: 'blur(16px) saturate(1.4)' }}
     >
+      <div className="flex h-14 items-center gap-2.5 overflow-visible px-3 sm:px-4">
       {/* back */}
       <Link
         to="/maps"
@@ -97,6 +104,8 @@ export default function CommandBar({
 
       <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
+      {/* scrollable controls — overflow-x only here so search dropdown is not clipped */}
+      <div className="flex min-w-0 flex-1 items-center gap-2.5 overflow-x-auto">
       {/* version chips */}
       <div className="flex shrink-0 rounded-pill border border-hairline bg-surface1 p-0.5" role="group" aria-label="Game version">
         {region.versions.map((v) => (
@@ -128,7 +137,7 @@ export default function CommandBar({
 
       <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
-      {/* view toggle — SCHEMATIC | ORIGINAL (Kanto pilot) */}
+      {/* view toggle — SCHEMATIC | ORIGINAL | INTERACTIVE ↗ (external) */}
       <div
         className="flex h-7 shrink-0 items-center rounded-pill border border-hairline bg-surface1 p-0.5"
         role="group"
@@ -145,7 +154,7 @@ export default function CommandBar({
               aria-pressed={active}
               title={disabled ? 'Original map — SOON for this region' : mode === 'original' ? 'Original game map' : 'Schematic transit map'}
               onClick={() => onView(mode)}
-              className={cn('relative rounded-pill px-2 py-1', disabled && 'cursor-not-allowed opacity-50')}
+              className={cn(VIEW_TOGGLE_ITEM, disabled && 'cursor-not-allowed opacity-50')}
             >
               {active && (
                 <motion.span
@@ -157,7 +166,7 @@ export default function CommandBar({
               )}
               <span
                 className={cn(
-                  'pixel-label relative z-10 text-[7px]',
+                  VIEW_TOGGLE_LABEL,
                   active ? 'text-tx-primary' : 'text-tx-muted hover:text-tx-secondary',
                 )}
               >
@@ -167,6 +176,22 @@ export default function CommandBar({
             </button>
           );
         })}
+        {interactive && (
+          <a
+            href={interactive.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`${interactive.site} — ${interactive.game} (external community map)`}
+            className={cn(VIEW_TOGGLE_ITEM, 'text-tx-muted transition-colors hover:text-gold')}
+          >
+            <span className={cn(VIEW_TOGGLE_LABEL, 'inline-flex items-center gap-0.5')}>
+              INTERACTIVE
+              <span aria-hidden className="text-[8px] leading-[0] opacity-80">
+                ↗
+              </span>
+            </span>
+          </a>
+        )}
       </div>
 
       <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
@@ -198,9 +223,10 @@ export default function CommandBar({
           );
         })}
       </div>
+      </div>
 
-      {/* node search */}
-      <div className="relative min-w-[150px] shrink-0">
+      {/* node search — outside overflow-x-auto so suggest panel stays visible */}
+      <div className="relative z-[60] min-w-[150px] shrink-0">
         <div className="flex h-8 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-2 transition-colors focus-within:border-hairline2">
           <Search size={13} className="shrink-0 text-tx-muted" />
           <input
@@ -234,7 +260,7 @@ export default function CommandBar({
           )}
         </div>
         {open && results.length > 0 && (
-          <div className="absolute left-0 top-9 z-50 w-[220px] overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-elevate">
+          <div className="absolute left-0 top-[calc(100%+4px)] z-[70] w-[240px] overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-elevate">
             {results.map((n) => (
               <button
                 key={n.id}
@@ -245,7 +271,7 @@ export default function CommandBar({
                   setQ('');
                   setOpen(false);
                 }}
-                className="flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left text-[12px] font-medium text-tx-secondary transition-colors hover:bg-surface3 hover:text-tx-primary"
+                className="flex w-full items-center justify-between gap-2 px-2.5 py-2 text-left font-sans text-[13px] font-semibold text-tx-primary transition-colors hover:bg-surface3"
               >
                 <span className="truncate">{n.label}</span>
                 <span className="pixel-label shrink-0 text-[7px] text-tx-muted">
@@ -303,6 +329,13 @@ export default function CommandBar({
               <LinkKindGlyphs />
               <p className="mt-4 border-t border-hairline pt-2.5 text-[10px] font-medium leading-relaxed text-tx-muted">
                 Gold star = special · dashed = post-game. Edges are schematic, not to scale.
+                {interactive && (
+                  <>
+                    {' '}
+                    <span className="text-tx-secondary">INTERACTIVE ↗</span> opens a third-party zoom map (
+                    {interactive.site}) in a new tab.
+                  </>
+                )}
               </p>
             </div>
           </>
@@ -318,6 +351,7 @@ export default function CommandBar({
         <RotateCcw size={13} />
         <span className="hidden sm:inline">RESET VIEW</span>
       </button>
+      </div>
     </div>
   );
 }
