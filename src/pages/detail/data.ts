@@ -169,17 +169,29 @@ export function typeRgb(type: string): string {
   return TYPE_COLORS[type as PokemonType]?.rgb ?? '169,176,181';
 }
 
-export function formatHeight(dm: number): string {
-  return `${(dm / 10).toFixed(1)} m`;
+/* locale-aware decimal (de: "0,7 m" · en: "0.7 m") */
+const NF1 = {
+  en: new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+  de: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+};
+
+const NF01 = {
+  en: new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }),
+  de: new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 }),
+};
+
+export function formatHeight(dm: number, lang: Lang = 'en'): string {
+  return `${NF1[lang].format(dm / 10)} m`;
 }
 
-export function formatWeight(hg: number): string {
-  return `${(hg / 10).toFixed(1)} kg`;
+export function formatWeight(hg: number, lang: Lang = 'en'): string {
+  return `${NF1[lang].format(hg / 10)} kg`;
 }
 
 export function genderLabel(rate: number | undefined, lang: Lang = 'en'): string {
   if (rate == null) return '—';
   if (rate < 0) return i18n.t('detail.side.genderless', { lng: lang });
   const female = (rate / 8) * 100;
-  return `${100 - female}% ♂ · ${female}% ♀`;
+  const pct = (v: number) => `${NF01[lang].format(v)} %`;
+  return `${pct(100 - female)} ♂ · ${pct(female)} ♀`;
 }

@@ -401,8 +401,8 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             transition={{ duration: 0.4, ease: EASE }}
             className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
           >
-            <Fact label={t('detail.hero.height')}>{formatHeight(pokemon.height)}</Fact>
-            <Fact label={t('detail.hero.weight')}>{formatWeight(pokemon.weight)}</Fact>
+            <Fact label={t('detail.hero.height')}>{formatHeight(pokemon.height, lang)}</Fact>
+            <Fact label={t('detail.hero.weight')}>{formatWeight(pokemon.weight, lang)}</Fact>
             <Fact label={t('detail.hero.catchRate')}>
               {extras.capture_rate != null ? <CatchMeter rate={extras.capture_rate} /> : '—'}
             </Fact>
