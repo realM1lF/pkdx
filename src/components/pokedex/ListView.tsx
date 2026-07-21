@@ -9,6 +9,8 @@ import Sprite from '@/components/Sprite';
 import TypeChipMini from './TypeChipMini';
 import { padNum, prefetchPokemon } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
+import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
+import { useTranslation } from 'react-i18next';
 import { STAT_ORDER, STAT_LABELS, TYPE_COLORS } from '@/lib/types';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import type { DexSummary } from './dex-data';
@@ -20,12 +22,13 @@ const EASE_OUT = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const BST_MAX = 780;
 
 function ListHeader() {
+  const { t } = useTranslation();
   return (
     <div className={cn(COLS, 'h-8 border-b border-hairline px-2')} aria-hidden>
       <span className="pixel-label text-[8px] text-tx-muted">#</span>
       <span />
-      <span className="pixel-label text-[8px] text-tx-muted">NAME</span>
-      <span className="pixel-label text-[8px] text-tx-muted">TYPE</span>
+      <span className="pixel-label text-[8px] text-tx-muted">{t('pokedex.listName')}</span>
+      <span className="pixel-label text-[8px] text-tx-muted">{t('pokedex.listType')}</span>
       {STAT_ORDER.map((k) => (
         <span key={k} className="pixel-label text-right text-[8px] text-tx-muted">
           {STAT_LABELS[k]}
@@ -44,7 +47,10 @@ interface ListRowProps {
 }
 
 function ListRow({ summary: s, index, ref }: ListRowProps) {
+  const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
+  const lang = useLanguage();
+  const label = nameOfPokemon(s.id, lang);
   const [override, setOverride] = useState<boolean | null>(null);
   const shiny = override ?? globalShiny;
   const t1 = (s.types[0] ?? 'normal') as PokemonType;
@@ -74,12 +80,12 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
           {padNum(s.id)}
         </span>
         <span className="relative grid h-7 w-7 place-items-center">
-          <Sprite id={s.id} name={s.label} shiny={shiny} skeleton={false} className="h-7 w-7" />
+          <Sprite id={s.id} name={label} shiny={shiny} skeleton={false} className="h-7 w-7" />
         </span>
         <span className="flex min-w-0 items-baseline gap-1.5">
-          <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">{s.label}</span>
-          {s.legendary && <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-gold/90" title="Legendary" />}
-          {s.mythical && <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-type-psychic" title="Mythical" />}
+          <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">{label}</span>
+          {s.legendary && <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-gold/90" title={t('pokedex.legendary')} />}
+          {s.mythical && <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-type-psychic" title={t('pokedex.mythical')} />}
         </span>
         <span className="flex min-w-0 gap-1 overflow-hidden">
           {s.types.map((t) => (
@@ -112,7 +118,7 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
         <button
           type="button"
           aria-pressed={shiny}
-          aria-label={`Toggle shiny ${s.label}`}
+          aria-label={`Toggle shiny ${label}`}
           onClick={() => setOverride(!shiny)}
           className="pointer-events-auto relative z-20 grid h-7 w-7 place-items-center"
         >
@@ -128,7 +134,7 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
       </div>
       <Link
         to={`/pokemon/${s.id}`}
-        aria-label={`${s.label} — ${padNum(s.id)}`}
+        aria-label={`${label} — ${padNum(s.id)}`}
         onMouseEnter={() => prefetchPokemon(s.id)}
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10"

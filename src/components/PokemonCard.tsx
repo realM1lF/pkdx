@@ -14,6 +14,7 @@ import SparkleBurst from './pokedex/SparkleBurst';
 import TypeChipMini from './pokedex/TypeChipMini';
 import { padNum, prefetchPokemon } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
+import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
 import { STAT_LABELS, TYPE_COLORS, genOf } from '@/lib/types';
 import type { PokemonType, StatKey } from '@/lib/types';
 import type { DexSummary } from './pokedex/dex-data';
@@ -33,6 +34,8 @@ interface PokemonCardProps {
 function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) {
   const compact = density === 'compact';
   const { shiny: globalShiny } = useShiny();
+  const lang = useLanguage();
+  const label = nameOfPokemon(s.id, lang);
   const [override, setOverride] = useState<boolean | null>(null);
   const [burst, setBurst] = useState(0);
   const shiny = override ?? globalShiny;
@@ -113,7 +116,7 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
           )}
           <Sprite
             id={s.id}
-            name={s.label}
+            name={label}
             shiny={shiny}
             className={cn('pdx-sprite relative z-[1]', compact ? 'h-20 w-20' : 'h-28 w-28')}
           />
@@ -127,7 +130,7 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
             compact ? 'h-5 text-sm leading-5' : 'h-6 text-lg leading-6',
           )}
         >
-          {s.label}
+          {label}
         </h3>
 
         {/* types */}
@@ -159,7 +162,7 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
       {/* stretched link — real anchor, prefetch on hover/focus */}
       <Link
         to={`/pokemon/${s.id}`}
-        aria-label={`${s.label} — ${padNum(s.id)}`}
+        aria-label={`${label} — ${padNum(s.id)}`}
         onMouseEnter={() => prefetchPokemon(s.id)}
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10 rounded-lg"
@@ -169,7 +172,7 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
       <button
         type="button"
         aria-pressed={shiny}
-        aria-label={`Toggle shiny ${s.label}`}
+        aria-label={`Toggle shiny ${label}`}
         onClick={() => {
           setOverride(!shiny);
           setBurst((b) => b + 1);

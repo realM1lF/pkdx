@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Ref } from 'react';
 import { useSearchParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, animate, motion, useMotionValue } from 'framer-motion';
 import { RotateCcw, WifiOff } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -22,6 +23,7 @@ import {
 import type { Density, SortKey, Special } from '@/components/pokedex/dex-data';
 import { padNum } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
+import { useLanguage, nameOfType } from '@/lib/i18n-data';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MAX_DEX_ID } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -121,6 +123,8 @@ function CardSkeleton({ id, ref }: { id: number; ref?: Ref<HTMLDivElement> }) {
 
 export default function Pokedex() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const { shiny, toggleShiny } = useShiny();
   const isMobile = useIsMobile();
 
@@ -200,8 +204,8 @@ export default function Pokedex() {
   const sorted = useMemo(() => {
     if (!filtered) return null;
     if (statSort && !statSortReady) return null; // gate stat sorts on full summary data
-    return sortEntries(filtered, summaries, filters.sort);
-  }, [filtered, statSort, statSortReady, summaries, filters.sort]);
+    return sortEntries(filtered, summaries, filters.sort, lang);
+  }, [filtered, statSort, statSortReady, summaries, filters.sort, lang]);
 
   const total = sorted?.length ?? 0;
   const isFiltered =
@@ -261,12 +265,12 @@ export default function Pokedex() {
   const [announce, setAnnounce] = useState('');
   useEffect(() => {
     if (sorted === null) return;
-    const t = window.setTimeout(() => setAnnounce(`${total} Pokémon shown`), 400);
+    const t = window.setTimeout(() => setAnnounce(t8n('pokedex.announceShown', { count: total })), 400);
     return () => window.clearTimeout(t);
-  }, [total, sorted]);
+  }, [total, sorted, t8n]);
   useEffect(() => {
-    setAnnounce(shiny ? 'Shiny mode on' : 'Shiny mode off');
-  }, [shiny]);
+    setAnnounce(shiny ? t8n('pokedex.shinyOn') : t8n('pokedex.shinyOff'));
+  }, [shiny, t8n]);
 
   /* filter mutators */
   const onToggleType = useCallback(
@@ -295,12 +299,12 @@ export default function Pokedex() {
 
   const emptyHint =
     filters.types.length > 0
-      ? `the ${filters.types[0]} type filter`
+      ? t8n('pokedex.hintType', { type: nameOfType(filters.types[0], lang) })
       : filters.gen !== null
-        ? 'the generation filter'
+        ? t8n('pokedex.hintGen')
         : debouncedQ.trim()
-          ? 'the search term'
-          : 'a filter';
+          ? t8n('pokedex.hintSearch')
+          : t8n('pokedex.hintFilter');
 
   return (
     <div className="relative">
@@ -311,17 +315,17 @@ export default function Pokedex() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: EASE_OUT }}
         >
-          <p className="pixel-label text-[10px] text-gold">NATIONAL DEX — GEN I–IX</p>
+          <p className="pixel-label text-[10px] text-gold">{t8n('pokedex.eyebrow')}</p>
           <div className="mt-1.5 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
             <h1 className="font-display text-[clamp(26px,3.5vw,40px)] font-extrabold uppercase leading-none tracking-wide">
-              The Pokédex
+              {t8n('pokedex.title')}
             </h1>
             <p className="font-sans text-[13px] text-tx-secondary" aria-hidden>
-              Showing <TweenNumber value={total} /> of{' '}
+              {t8n('pokedex.showing')} <TweenNumber value={total} /> {t8n('pokedex.of')}{' '}
               <span className="font-bold tabular-nums text-tx-primary">{MAX_DEX_ID.toLocaleString()}</span>{' '}
-              Pokémon
+              {t8n('pokedex.species')}
               {pendingCount > 0 && (
-                <span className="pixel-label ml-2 text-[8px] text-tx-muted">SYNCING…</span>
+                <span className="pixel-label ml-2 text-[8px] text-tx-muted">{t8n('pokedex.syncing')}</span>
               )}
             </p>
           </div>
@@ -362,13 +366,13 @@ export default function Pokedex() {
             <div className="border-b border-gold/30 bg-gold-soft/40">
               <div className="mx-auto flex h-8 max-w-content items-center gap-2 px-4 md:px-8">
                 <WifiOff size={12} strokeWidth={1.75} className="text-gold" />
-                <p className="pixel-label text-[9px] text-gold">OFFLINE MODE — SHOWING CACHED DEX</p>
+                <p className="pixel-label text-[9px] text-gold">{t8n('pokedex.offline')}</p>
                 <button
                   type="button"
                   onClick={() => setBannerDismissed(true)}
                   className="pixel-label ml-auto text-[9px] text-gold/70 transition-colors hover:text-gold"
                 >
-                  DISMISS
+                  {t8n('pokedex.dismiss')}
                 </button>
               </div>
             </div>
@@ -383,7 +387,7 @@ export default function Pokedex() {
           <div className="grid min-h-[40dvh] place-items-center">
             <div className="flex flex-col items-center gap-4">
               <PokeballLoader variant="inline" />
-              <p className="pixel-label text-[9px] text-tx-muted">BOOTING NATIONAL DEX…</p>
+              <p className="pixel-label text-[9px] text-tx-muted">{t8n('pokedex.booting')}</p>
             </div>
           </div>
         )}
@@ -392,9 +396,9 @@ export default function Pokedex() {
           <div className="grid min-h-[40dvh] place-items-center">
             <div className="flex flex-col items-center gap-3 text-center">
               <img src="/pokeball-open.svg" alt="" className="pdx-empty-glow h-14 w-12 opacity-60" />
-              <p className="font-sans text-base font-bold text-tx-primary">The dex could not be reached</p>
+              <p className="font-sans text-base font-bold text-tx-primary">{t8n('pokedex.bootFailTitle')}</p>
               <p className="font-sans text-xs text-gold">
-                {online ? 'PokéAPI is not answering — try again.' : 'You are offline and no cached dex was found.'}
+                {online ? t8n('pokedex.bootFailOnline') : t8n('pokedex.bootFailOffline')}
               </p>
               <button
                 type="button"
@@ -402,7 +406,7 @@ export default function Pokedex() {
                 className="mt-1 flex h-8 items-center gap-1.5 rounded-md border border-gold/60 bg-gold-soft px-3 font-sans text-[11px] font-bold text-gold transition-all duration-200 hover:shadow-glow-gold"
               >
                 <RotateCcw size={11} strokeWidth={1.75} />
-                Retry
+                {t8n('pokedex.retry')}
               </button>
             </div>
           </div>
@@ -414,7 +418,7 @@ export default function Pokedex() {
             <div className="flex flex-col items-center gap-4">
               <PokeballLoader variant="inline" />
               <p className="pixel-label text-[9px] text-tx-muted">
-                {statSort && !statSortReady ? 'FETCHING STAT DATA…' : 'LOADING TYPE DATA…'}
+                {statSort && !statSortReady ? t8n('pokedex.fetchingStats') : t8n('pokedex.loadingTypes')}
               </p>
             </div>
           </div>
@@ -430,14 +434,14 @@ export default function Pokedex() {
             className="flex h-[200px] flex-col items-center justify-center gap-2 text-center"
           >
             <img src="/empty-dex.svg" alt="" className="pdx-empty-glow h-16 w-auto opacity-60" />
-            <h2 className="font-sans text-base font-bold text-tx-primary">No Pokémon found</h2>
-            <p className="font-sans text-xs text-gold">Try removing {emptyHint}.</p>
+            <h2 className="font-sans text-base font-bold text-tx-primary">{t8n('pokedex.emptyTitle')}</h2>
+            <p className="font-sans text-xs text-gold">{t8n('pokedex.emptyHint', { hint: emptyHint })}</p>
             <button
               type="button"
               onClick={onResetAll}
               className="mt-1 h-8 rounded-md border border-hairline2 px-3 font-sans text-[11px] font-semibold text-tx-secondary transition-all duration-200 hover:border-gold/60 hover:text-gold"
             >
-              Reset all filters
+              {t8n('pokedex.resetAll')}
             </button>
           </motion.div>
         )}
@@ -488,11 +492,11 @@ export default function Pokedex() {
                 />
                 <p className="pixel-label text-[9px] text-gold">
                   {isFiltered
-                    ? `ALL ${total.toLocaleString()} MATCHES SHOWN`
-                    : `DEX COMPLETE — ${total.toLocaleString()} / ${MAX_DEX_ID.toLocaleString()}`}
+                    ? t8n('pokedex.allMatches', { count: total.toLocaleString() })
+                    : t8n('pokedex.dexComplete', { shown: total.toLocaleString(), total: MAX_DEX_ID.toLocaleString() })}
                 </p>
                 <p className="font-sans text-xs text-tx-muted">
-                  You&rsquo;ve reached the edge of the National Dex.
+                  {t8n('pokedex.edge')}
                 </p>
               </div>
             )}

@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router';
 import Fuse from 'fuse.js';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import { bootNameIndex } from '@/lib/pokeapi';
+import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { DexIndexEntry } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +23,8 @@ interface CommandSearchProps {
 
 export default function CommandSearch({ value, onChange, className }: CommandSearchProps) {
   const navigate = useNavigate();
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
@@ -38,16 +42,20 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
 
   const fuse = useMemo(
     () =>
-      new Fuse(index.map((e) => ({ ...e, idStr: String(e.id) })), {
+      new Fuse(
+        index.map((e) => ({ ...e, idStr: String(e.id), de: germanAliasOfPokemon(e.id) ?? '' })),
+        {
         keys: [
           { name: 'label', weight: 2 },
           { name: 'name', weight: 1.5 },
+          { name: 'de', weight: 2 },
           { name: 'idStr', weight: 1 },
           { name: 'num', weight: 1 },
         ],
         threshold: 0.3,
         ignoreLocation: true,
-      }),
+        },
+      ),
     [index],
   );
 
@@ -111,18 +119,18 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
           onKeyDown={onKeyDown}
           onFocus={() => setOpen(true)}
           onBlur={() => window.setTimeout(() => setOpen(false), 140)}
-          placeholder="SEARCH NAME OR # …"
+          placeholder={t8n('pokedex.searchPlaceholder')}
           role="combobox"
           aria-expanded={showPanel && results.length > 0}
           aria-controls="pdx-bar-listbox"
           aria-activedescendant={results[active] ? `pdx-bar-opt-${results[active].id}` : undefined}
-          aria-label="Search Pokémon by name or dex number"
+          aria-label={t8n('pokedex.searchAria')}
           className="h-full min-w-0 flex-1 bg-transparent font-sans text-[13px] font-medium text-tx-primary outline-none placeholder:font-pixel placeholder:text-[8px] placeholder:tracking-[0.08em] placeholder:text-tx-muted"
         />
         {value && (
           <button
             type="button"
-            aria-label="Clear search"
+            aria-label={t8n('pokedex.clearSearch')}
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
               onChange('');
@@ -153,7 +161,7 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
               >
                 <img src="/pokeball-open.svg" alt="" className="h-7 w-6 opacity-50" />
                 <p className="font-sans text-xs font-semibold text-gold">
-                  No Pokémon matches “{value.trim()}” — try a dex number.
+                  {t8n('pokedex.noMatch', { q: value.trim() })}
                 </p>
               </motion.div>
             ) : (
@@ -170,9 +178,9 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
                         i === active ? 'border-gold bg-surface3' : 'border-transparent',
                       )}
                     >
-                      <Sprite id={r.id} name={r.label} era="gen5" skeleton={false} className="h-7 w-7 shrink-0" />
+                      <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="gen5" skeleton={false} className="h-7 w-7 shrink-0" />
                       <span className="min-w-0 flex-1 truncate font-sans text-[13px] font-semibold text-tx-primary">
-                        {r.label}
+                        {nameOfPokemon(r.id, lang)}
                       </span>
                       <span className="pixel-label shrink-0 text-[8px] text-tx-muted">{r.num}</span>
                     </button>

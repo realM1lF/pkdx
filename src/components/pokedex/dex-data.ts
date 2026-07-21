@@ -3,6 +3,7 @@
  * Wraps src/lib/pokeapi.ts (cachedJson/getPokemon) — does not modify shared libs. */
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import { bootNameIndex, cachedJson, displayName, getPokemon } from '@/lib/pokeapi';
+import { germanAliasOfPokemon, nameOfPokemon, type Lang } from '@/lib/i18n-data';
 import { MAX_DEX_ID, POKEMON_TYPES, genOf } from '@/lib/types';
 import type { DexIndexEntry, Pokemon, PokemonType, StatKey } from '@/lib/types';
 
@@ -12,13 +13,14 @@ export type Density = 'comfort' | 'compact' | 'list';
 export type SortKey = 'id' | 'id-desc' | 'name' | 'height' | 'weight' | 'bst';
 export type Special = 'legendary' | 'mythical';
 
-export const SORT_OPTIONS: Array<{ key: SortKey; label: string }> = [
-  { key: 'id', label: 'Dex # ↑' },
-  { key: 'id-desc', label: 'Dex # ↓' },
-  { key: 'name', label: 'Name A–Z' },
-  { key: 'height', label: 'Height' },
-  { key: 'weight', label: 'Weight' },
-  { key: 'bst', label: 'Base Stat Total' },
+/* labels are i18n keys under pokedex.sortOptions (rendered via t()) */
+export const SORT_OPTIONS: Array<{ key: SortKey; labelKey: string }> = [
+  { key: 'id', labelKey: 'pokedex.sortOptions.id' },
+  { key: 'id-desc', labelKey: 'pokedex.sortOptions.idDesc' },
+  { key: 'name', labelKey: 'pokedex.sortOptions.name' },
+  { key: 'height', labelKey: 'pokedex.sortOptions.height' },
+  { key: 'weight', labelKey: 'pokedex.sortOptions.weight' },
+  { key: 'bst', labelKey: 'pokedex.sortOptions.bst' },
 ];
 
 export const STAT_SORTS: ReadonlySet<SortKey> = new Set(['height', 'weight', 'bst']);
@@ -254,7 +256,9 @@ export function filterEntries(
         e.label.toLowerCase().includes(q) ||
         e.name.includes(q) ||
         e.num.includes(q) ||
-        String(e.id) === q,
+        String(e.id) === q ||
+        // German alias (build-time de artifact) — "bisasam" finds bulbasaur
+        (germanAliasOfPokemon(e.id)?.includes(q) ?? false),
     );
   }
   if (f.gen !== null) out = out.filter((e) => e.gen === f.gen);
@@ -278,6 +282,7 @@ export function sortEntries(
   entries: DexIndexEntry[],
   summaries: ReadonlyMap<number, DexSummary>,
   sort: SortKey,
+  lang: Lang = 'en',
 ): DexIndexEntry[] {
   const arr = [...entries];
   switch (sort) {
@@ -286,7 +291,10 @@ export function sortEntries(
     case 'id-desc':
       return arr.reverse();
     case 'name':
-      return arr.sort((a, b) => a.label.localeCompare(b.label));
+      // sort by the localized display name of the active language
+      return arr.sort((a, b) =>
+        nameOfPokemon(a.id, lang).localeCompare(nameOfPokemon(b.id, lang), lang),
+      );
     case 'height':
     case 'weight':
     case 'bst': {

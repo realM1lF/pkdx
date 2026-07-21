@@ -6,7 +6,9 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import { ChevronDown, Crown, LayoutGrid, Grid2X2, Rows3, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
+import { useLanguage, nameOfType } from '@/lib/i18n-data';
 import CommandSearch from './CommandSearch';
 import { GENERATIONS, POKEMON_TYPES, TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -21,10 +23,12 @@ const EASE_OUT = [0.16, 1, 0.3, 1] as [number, number, number, number];
 /* ---------- type toggle rail ---------- */
 
 function TypeRail({ types, onToggleType }: { types: PokemonType[]; onToggleType: (t: PokemonType) => void }) {
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   return (
     <div
       role="group"
-      aria-label="Filter by type"
+      aria-label={t8n('pokedex.filterByType')}
       className="pdx-rail flex min-w-0 flex-1 items-center gap-1 overflow-x-auto px-0.5 py-1"
     >
       {POKEMON_TYPES.map((t) => {
@@ -35,8 +39,8 @@ function TypeRail({ types, onToggleType }: { types: PokemonType[]; onToggleType:
             key={t}
             type="button"
             aria-pressed={active}
-            aria-label={`${t} type`}
-            title={t}
+            aria-label={t8n('pokedex.typeFilterAria', { type: nameOfType(t, lang) })}
+            title={nameOfType(t, lang)}
             whileTap={{ scale: 0.94 }}
             onClick={() => onToggleType(t)}
             className={cn(
@@ -69,21 +73,23 @@ function TypeRail({ types, onToggleType }: { types: PokemonType[]; onToggleType:
 
 /* ---------- density segmented toggle ---------- */
 
-const DENSITIES: Array<{ key: Density; label: string; icon: typeof LayoutGrid }> = [
-  { key: 'comfort', label: 'Comfort cards', icon: LayoutGrid },
-  { key: 'compact', label: 'Compact cards', icon: Grid2X2 },
-  { key: 'list', label: 'List view', icon: Rows3 },
+const DENSITIES: Array<{ key: Density; labelKey: string; icon: typeof LayoutGrid }> = [
+  { key: 'comfort', labelKey: 'pokedex.densityComfort', icon: LayoutGrid },
+  { key: 'compact', labelKey: 'pokedex.densityCompact', icon: Grid2X2 },
+  { key: 'list', labelKey: 'pokedex.densityList', icon: Rows3 },
 ];
 
 function DensityToggle({ density, onDensity }: { density: Density; onDensity: (d: Density) => void }) {
+  const { t: t8n } = useTranslation();
   return (
     <div
       role="group"
-      aria-label="Grid density"
+      aria-label={t8n('pokedex.density')}
       className="hidden shrink-0 items-center gap-0.5 rounded-pill border border-hairline bg-surface1 p-0.5 md:flex"
     >
-      {DENSITIES.map(({ key, label, icon: Icon }) => {
+      {DENSITIES.map(({ key, labelKey, icon: Icon }) => {
         const active = density === key;
+        const label = t8n(labelKey);
         return (
           <button
             key={key}
@@ -116,13 +122,14 @@ function DensityToggle({ density, onDensity }: { density: Density; onDensity: (d
 
 function ShinySwitch() {
   const { shiny, toggleShiny } = useShiny();
+  const { t: t8n } = useTranslation();
   return (
     <button
       type="button"
       role="switch"
       aria-checked={shiny}
-      aria-label="Shiny mode"
-      title="Shiny mode"
+      aria-label={t8n('pokedex.shinyMode')}
+      title={t8n('pokedex.shinyMode')}
       onClick={toggleShiny}
       className={cn(
         'relative h-7 w-12 shrink-0 rounded-pill border transition-colors duration-200',
@@ -158,6 +165,7 @@ interface FilterPopoverProps {
 }
 
 function FilterPopover(p: FilterPopoverProps) {
+  const { t: t8n } = useTranslation();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -176,7 +184,7 @@ function FilterPopover(p: FilterPopoverProps) {
       <button
         type="button"
         aria-expanded={open}
-        aria-label="Filters"
+        aria-label={t8n('pokedex.filters')}
         onClick={() => setOpen((o) => !o)}
         className={cn(
           'flex h-9 items-center gap-1.5 rounded-md border px-2.5 transition-all duration-200',
@@ -186,7 +194,7 @@ function FilterPopover(p: FilterPopoverProps) {
         )}
       >
         <SlidersHorizontal size={14} strokeWidth={1.75} />
-        <span className="hidden font-sans text-[12px] font-semibold lg:inline">Filters</span>
+        <span className="hidden font-sans text-[12px] font-semibold lg:inline">{t8n('pokedex.filters')}</span>
         {p.activeCount > 0 && (
           <span className="grid h-4 min-w-4 place-items-center rounded-pill bg-gold px-1 font-sans text-[10px] font-bold text-abyss">
             {p.activeCount}
@@ -204,14 +212,14 @@ function FilterPopover(p: FilterPopoverProps) {
           <>
             <button
               type="button"
-              aria-label="Close filters"
+              aria-label={t8n('pokedex.closeFilters')}
               tabIndex={-1}
               onClick={() => setOpen(false)}
               className="fixed inset-0 z-30 cursor-default"
             />
             <motion.div
               role="dialog"
-              aria-label="Filters"
+              aria-label={t8n('pokedex.filters')}
               initial={{ opacity: 0, y: -4, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -4, scale: 0.96 }}
@@ -220,7 +228,7 @@ function FilterPopover(p: FilterPopoverProps) {
             >
               {/* sort */}
               <div className="mb-3">
-                <span className={sectionLabel}>SORT</span>
+                <span className={sectionLabel}>{t8n('pokedex.sort')}</span>
                 <div className="grid grid-cols-2 gap-0.5">
                   {SORT_OPTIONS.map((o) => {
                     const active = p.sort === o.key;
@@ -235,7 +243,7 @@ function FilterPopover(p: FilterPopoverProps) {
                           active ? 'bg-gold-soft text-gold' : 'text-tx-secondary hover:bg-surface3 hover:text-tx-primary',
                         )}
                       >
-                        {o.label}
+                        {t8n(o.labelKey)}
                         <span className={cn('h-1.5 w-1.5 rounded-full', active ? 'bg-gold' : 'bg-transparent')} />
                       </button>
                     );
@@ -245,7 +253,7 @@ function FilterPopover(p: FilterPopoverProps) {
 
               {/* generation */}
               <div className="mb-3">
-                <span className={sectionLabel}>GENERATION</span>
+                <span className={sectionLabel}>{t8n('pokedex.generation')}</span>
                 <div className="grid grid-cols-5 gap-1">
                   <button
                     type="button"
@@ -258,7 +266,7 @@ function FilterPopover(p: FilterPopoverProps) {
                         : 'border-hairline bg-surface2 text-tx-muted hover:text-tx-primary',
                     )}
                   >
-                    ALL
+                    {t8n('pokedex.all')}
                   </button>
                   {GENERATIONS.map((g) => {
                     const active = p.gen === g.gen;
@@ -284,7 +292,7 @@ function FilterPopover(p: FilterPopoverProps) {
 
               {/* region (synced with generation) */}
               <div className="mb-3">
-                <span className={sectionLabel}>REGION</span>
+                <span className={sectionLabel}>{t8n('pokedex.region')}</span>
                 <div className="grid grid-cols-3 gap-1">
                   {GENERATIONS.map((g) => {
                     const active = p.gen === g.gen;
@@ -301,7 +309,7 @@ function FilterPopover(p: FilterPopoverProps) {
                             : 'border-hairline bg-surface2 text-tx-secondary hover:text-tx-primary',
                         )}
                       >
-                        {g.region}
+                        {t8n(`regions.${REGION_KEY[g.region] ?? 'kanto'}`)}
                       </button>
                     );
                   })}
@@ -310,7 +318,7 @@ function FilterPopover(p: FilterPopoverProps) {
 
               {/* special */}
               <div className="mb-3">
-                <span className={sectionLabel}>SPECIAL</span>
+                <span className={sectionLabel}>{t8n('pokedex.special')}</span>
                 <div className="flex gap-1.5">
                   <button
                     type="button"
@@ -324,7 +332,7 @@ function FilterPopover(p: FilterPopoverProps) {
                     )}
                   >
                     <Crown size={12} strokeWidth={1.75} />
-                    Legendary
+                    {t8n('pokedex.legendary')}
                   </button>
                   <button
                     type="button"
@@ -338,7 +346,7 @@ function FilterPopover(p: FilterPopoverProps) {
                     )}
                   >
                     <img src="/sparkle.svg" alt="" className="h-3 w-3" />
-                    Mythical
+                    {t8n('pokedex.mythical')}
                   </button>
                 </div>
               </div>
@@ -353,14 +361,14 @@ function FilterPopover(p: FilterPopoverProps) {
                   className="flex items-center gap-1.5 font-sans text-[11px] font-semibold text-tx-muted transition-colors hover:text-gold"
                 >
                   <RotateCcw size={11} strokeWidth={1.75} />
-                  Clear all
+                  {t8n('pokedex.clearAll')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
                   className="ml-auto h-8 rounded-md border border-gold/60 bg-gold-soft px-3 font-sans text-[11px] font-bold text-gold transition-all duration-200 hover:shadow-glow-gold"
                 >
-                  Show {p.resultCount.toLocaleString()} Pokémon
+                  {t8n('pokedex.showResults', { count: p.resultCount.toLocaleString() })}
                 </button>
               </div>
             </motion.div>
@@ -381,6 +389,7 @@ interface ChipSpec {
 }
 
 function ChipsRow({ chips, onResetAll }: { chips: ChipSpec[]; onResetAll: () => void }) {
+  const { t: t8n } = useTranslation();
   return (
     <div className="pdx-rail flex h-8 items-center gap-1.5 overflow-x-auto border-t border-hairline/60">
       <AnimatePresence mode="popLayout" initial={false}>
@@ -410,7 +419,7 @@ function ChipsRow({ chips, onResetAll }: { chips: ChipSpec[]; onResetAll: () => 
             {chip.label}
             <button
               type="button"
-              aria-label={`Remove filter ${chip.label}`}
+              aria-label={t8n('pokedex.removeFilter', { label: chip.label })}
               onClick={chip.onRemove}
               className="grid h-4 w-4 place-items-center rounded-full text-current opacity-70 transition-all duration-150 hover:rotate-90 hover:opacity-100"
             >
@@ -424,7 +433,7 @@ function ChipsRow({ chips, onResetAll }: { chips: ChipSpec[]; onResetAll: () => 
         onClick={onResetAll}
         className="pixel-label ml-auto shrink-0 px-1 text-[8px] text-gold/80 transition-colors hover:text-gold"
       >
-        RESET
+        {t8n('pokedex.reset')}
       </button>
     </div>
   );
@@ -451,7 +460,22 @@ export interface CommandBarProps {
   showEmptyHint: boolean;
 }
 
+/* GENERATIONS region display name -> locale key (regions.*) */
+const REGION_KEY: Record<string, string> = {
+  Kanto: 'kanto',
+  Johto: 'johto',
+  Hoenn: 'hoenn',
+  Sinnoh: 'sinnoh',
+  Unova: 'unova',
+  Kalos: 'kalos',
+  Alola: 'alola',
+  'Galar / Hisui': 'galarHisui',
+  Paldea: 'paldea',
+};
+
 export default function CommandBar(p: CommandBarProps) {
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const controls = useAnimationControls();
   const [stuck, setStuck] = useState(false);
 
@@ -470,16 +494,24 @@ export default function CommandBar(p: CommandBarProps) {
 
   const chips: ChipSpec[] = [];
   if (p.q.trim()) chips.push({ key: 'q', label: `“${p.q.trim()}”`, onRemove: () => p.onQuery('') });
-  for (const t of p.types) chips.push({ key: `t-${t}`, label: t, type: t, onRemove: () => p.onToggleType(t) });
+  for (const t of p.types)
+    chips.push({ key: `t-${t}`, label: nameOfType(t, lang), type: t, onRemove: () => p.onToggleType(t) });
   if (p.gen !== null) {
     const g = GENERATIONS[p.gen - 1];
-    chips.push({ key: 'gen', label: `GEN ${g.roman} · ${g.region}`, onRemove: () => p.onGen(null) });
+    chips.push({
+      key: 'gen',
+      label: `GEN ${g.roman} · ${t8n(`regions.${REGION_KEY[g.region] ?? 'kanto'}`)}`,
+      onRemove: () => p.onGen(null),
+    });
   }
-  for (const s of p.special) chips.push({ key: `s-${s}`, label: s, onRemove: () => p.onToggleSpecial(s) });
+  for (const s of p.special)
+    chips.push({ key: `s-${s}`, label: t8n(`pokedex.${s}`), onRemove: () => p.onToggleSpecial(s) });
   if (p.sort !== 'id')
     chips.push({
       key: 'sort',
-      label: `Sort: ${SORT_OPTIONS.find((o) => o.key === p.sort)?.label ?? p.sort}`,
+      label: t8n('pokedex.sortChip', {
+        label: t8n(SORT_OPTIONS.find((o) => o.key === p.sort)?.labelKey ?? 'pokedex.sortOptions.id'),
+      }),
       onRemove: () => p.onSort('id'),
     });
 
@@ -549,7 +581,7 @@ export default function CommandBar(p: CommandBarProps) {
               >
                 <div className="flex h-8 items-center border-t border-gold/30 bg-gold-soft/40 px-1">
                   <p className="font-sans text-[11px] font-semibold text-gold">
-                    No Pokémon match — try removing a filter.
+                    {t8n('pokedex.emptyBarHint')}
                   </p>
                 </div>
               </motion.div>

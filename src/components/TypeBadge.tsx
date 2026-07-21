@@ -1,6 +1,7 @@
 /* TypeBadge — pill per design.md §9.3. Colors driven by --t (type rgb triplet). */
 import type { CSSProperties } from 'react';
 import TypeGlyph from './TypeGlyph';
+import { useLanguage, nameOfType } from '@/lib/i18n-data';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -13,6 +14,7 @@ interface TypeBadgeProps {
 }
 
 export default function TypeBadge({ type, glow = false, className }: TypeBadgeProps) {
+  const lang = useLanguage();
   const color = TYPE_COLORS[type as PokemonType] ?? TYPE_COLORS.normal;
   return (
     <span
@@ -30,7 +32,7 @@ export default function TypeBadge({ type, glow = false, className }: TypeBadgePr
       style={{ '--t': color.rgb } as CSSProperties}
     >
       <TypeGlyph type={type} size={14} />
-      {type}
+      {nameOfType(String(type), lang)}
     </span>
   );
 }
