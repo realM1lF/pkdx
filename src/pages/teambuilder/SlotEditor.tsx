@@ -14,6 +14,7 @@ import {
   genItems,
   genNatures,
   legalMoves,
+  legalityReasonText,
   versionGroupById,
   zeroEvs,
 } from '@/lib/teambuilder';
@@ -161,11 +162,14 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                   {t('tb.slot.illegalIn', { vg: vg.label })}
                 </div>
                 <ul className="space-y-0.5">
-                  {legality.reasons.map((r) => (
-                    <li key={r} className="text-[10px] font-semibold uppercase tracking-wide text-gold/90">
-                      · {r}
-                    </li>
-                  ))}
+                  {legality.reasons.map((r) => {
+                    const text = legalityReasonText(r, lang);
+                    return (
+                      <li key={text} className="text-[10px] font-semibold uppercase tracking-wide text-gold/90">
+                        · {text}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}

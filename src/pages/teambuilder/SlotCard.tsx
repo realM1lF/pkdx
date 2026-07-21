@@ -10,7 +10,7 @@ import TypeBadge from '@/components/TypeBadge';
 import { padNum } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
-import { genTypesOf, versionGroupById } from '@/lib/teambuilder';
+import { genTypesOf, legalityReasonText, versionGroupById } from '@/lib/teambuilder';
 import type { SlotLegality, TeamSlot } from '@/lib/teambuilder';
 import type { Pokemon } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
@@ -117,7 +117,7 @@ export default function SlotCard({
           {!legality.legal && (
             <span
               className="tb-illegal-flag tb-chip !border-gold/70 !bg-gold/10 !px-1.5 !py-0.5 !text-[7px] !text-gold"
-              title={legality.reasons.join(' · ')}
+              title={legality.reasons.map((r) => legalityReasonText(r, lang)).join(' · ')}
             >
               <AlertTriangle size={9} />
               {t8n('tb.slot.illegalIn', { vg: vg.short })}

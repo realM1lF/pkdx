@@ -418,7 +418,7 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                         aria-label={t('nuz.openInMaps', { label: nodeName(node, lang) })}
                         className="ml-auto flex items-center gap-0.5 text-tx-muted/50 transition-colors hover:text-gold"
                       >
-                        <span className="font-pixel text-[6px]">MAPS</span>
+                        <span className="font-pixel text-[6px]">{t('nuz.mapsChip')}</span>
                         <ExternalLink size={9} />
                       </LocaleLink>
                     </div>

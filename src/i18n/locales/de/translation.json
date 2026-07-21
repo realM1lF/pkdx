@@ -624,7 +624,8 @@
       "local": "LOKAL",
       "liveTip": "Multiplayer — Live-Sync",
       "reconnectingTip": "Verbinde erneut mit Echtzeit-Sync",
-      "localTip": "Solo — lokale Speicherung auf diesem Gerät"
+      "localTip": "Solo — lokale Speicherung auf diesem Gerät",
+      "used": "VERGEBEN"
     },
     "wizard": {
       "stepGame": "01 SPIEL",
@@ -699,7 +700,15 @@
       "confirmDead": "Bestätigen — es wird besiegt",
       "editNick": "Spitzname bearbeiten",
       "remove": "Eintrag entfernen"
-    }
+    },
+    "quickEntry": "SCHNELLEINTRAG",
+    "mapsChip": "KARTEN",
+    "routesAria": "Routen",
+    "customChip": "MANUELL",
+    "customTip": "Nicht in den Encounter-Daten — manuell eingetragen.",
+    "levelDown": "Level senken",
+    "levelUp": "Level erhöhen",
+    "runViewAria": "Run-Ansicht"
   },
   "search": {
     "recent": "ZULETZT",
@@ -932,6 +941,18 @@
       "clear": "Löschen",
       "noMatch": "Keine Treffer.",
       "searchPokemon": "POKÉMON SUCHEN…"
+    },
+    "illegal": {
+      "species": "Spezies nicht im Spiel",
+      "level": "Level außerhalb des Bereichs",
+      "move": "{{name}} nicht erlernbar",
+      "noItems": "Keine getragenen Items in dieser Gen",
+      "item": "{{name}} nicht im Spiel",
+      "noAbilities": "Keine Fähigkeiten in dieser Gen",
+      "ability": "{{name}} nicht verfügbar",
+      "noNatures": "Keine Wesen in dieser Gen",
+      "nature": "Wesen nicht im Spiel",
+      "noEvs": "Keine FP in dieser Gen"
     }
   }
 }

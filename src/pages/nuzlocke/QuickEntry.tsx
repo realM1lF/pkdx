@@ -273,7 +273,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             className="h-8 w-full rounded-sm border border-hairline bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
           />
         </div>
-        <div className="nz-slim-scroll max-h-[300px] overflow-y-auto py-1" data-lenis-prevent role="listbox" aria-label="Routes">
+        <div className="nz-slim-scroll max-h-[300px] overflow-y-auto py-1" data-lenis-prevent role="listbox" aria-label={t('nuz.routesAria')}>
           {filteredNodes.map((n) => {
             const st = nodeState(n.id);
             const used = st !== 'pending';
@@ -288,7 +288,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               >
                 <span className="w-6 font-display text-[9px] font-bold tabular-nums text-tx-muted">{String(nodes.indexOf(n) + 1).padStart(2, '0')}</span>
                 <span className="min-w-0 flex-1 truncate">{n.label}</span>
-                {used && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">USED</span>}
+                {used && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">{t('nuz.chip.used')}</span>}
                 <span className="font-pixel text-[7px] text-tx-muted">
                   {st === 'caught' ? '✓' : st === 'dead' ? '✕' : st === 'pending' ? '○' : '—'}
                 </span>
@@ -368,8 +368,8 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 <img src={sprites.front(o.id)} alt="" loading="lazy" className="h-[32px] w-[32px] [image-rendering:pixelated]" />
                 <span className="min-w-0 flex-1 truncate font-semibold">{o.label}</span>
                 {o.custom ? (
-                  <span className="rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title="Not in encounter data — logged manually.">
-                    CUSTOM
+                  <span className="rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title={t('nuz.customTip')}>
+                    {t('nuz.customChip')}
                   </span>
                 ) : (
                   o.rate !== undefined && <span className="text-[9px] tabular-nums text-tx-muted">{o.rate}%</span>
@@ -401,7 +401,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             overCap ? 'border-gold shadow-[0_0_10px_rgba(246,201,69,0.25)]' : 'border-hairline2',
           )}
         >
-          <button type="button" aria-label="Level down" onClick={() => setLevel((l) => Math.max(1, l - 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
+          <button type="button" aria-label={t('nuz.levelDown')} onClick={() => setLevel((l) => Math.max(1, l - 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
             <Minus size={11} />
           </button>
           <input
@@ -413,7 +413,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             aria-label={t('nuz.level')}
             className="w-[36px] bg-transparent text-center font-display text-[14px] font-bold tabular-nums text-tx-primary outline-none"
           />
-          <button type="button" aria-label="Level up" onClick={() => setLevel((l) => Math.min(100, l + 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
+          <button type="button" aria-label={t('nuz.levelUp')} onClick={() => setLevel((l) => Math.min(100, l + 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
             <Plus size={11} />
           </button>
         </div>
@@ -535,8 +535,8 @@ export default function QuickEntry(props: QuickEntryProps) {
               className="fixed inset-x-0 bottom-0 z-[69] max-h-[85dvh] overflow-y-auto rounded-t-2xl border-t border-gold/40 bg-surface1 p-4 md:hidden nz-slim-scroll" data-lenis-prevent
             >
               <div className="mb-3 flex items-center justify-between">
-                <PixelLabel className="text-gold">QUICK ENTRY</PixelLabel>
-                <button type="button" onClick={() => setSheetOpen(false)} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-md border border-hairline text-tx-muted">
+                <PixelLabel className="text-gold">{t('nuz.quickEntry')}</PixelLabel>
+                <button type="button" onClick={() => setSheetOpen(false)} aria-label={t('nuz.dismiss')} className="grid h-8 w-8 place-items-center rounded-md border border-hairline text-tx-muted">
                   <X size={14} />
                 </button>
               </div>

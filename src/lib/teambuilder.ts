@@ -14,6 +14,9 @@
 import { Generations } from '@pkmn/data';
 import { Dex } from '@pkmn/dex';
 import type { GenerationNum, Nature, Specie, TypeName } from '@pkmn/data';
+import i18n from '@/i18n';
+import { nameOfMove } from './i18n-data';
+import type { Lang } from './i18n-data';
 import { cachedJson, displayName, getPokemon } from './pokeapi';
 import type { Pokemon } from './types';
 import { POKEMON_TYPES, STAT_ORDER } from './types';
@@ -259,9 +262,36 @@ export function legalMoves(pokemon: Pokemon, vgId: string): LegalMoveOption[] {
 /* Legality re-check (derived — flags, never deletes)                  */
 /* ------------------------------------------------------------------ */
 
+export type LegalityReasonKey =
+  | 'species'
+  | 'level'
+  | 'move'
+  | 'noItems'
+  | 'item'
+  | 'noAbilities'
+  | 'ability'
+  | 'noNatures'
+  | 'nature'
+  | 'noEvs';
+
+export interface LegalityReason {
+  key: LegalityReasonKey;
+  /** move slug / item / ability display — resolved at the render edge */
+  param?: string;
+}
+
 export interface SlotLegality {
   legal: boolean;
-  reasons: string[];
+  /** structured codes — localized via legalityReasonText at the render edge */
+  reasons: LegalityReason[];
+}
+
+/** localized one-line reason (uppercase chip style).
+ * item/ability params come from the (English) @pkmn data and are kept as-is;
+ * move params are PokéAPI slugs → localized via nameOfMove. */
+export function legalityReasonText(r: LegalityReason, lang: Lang): string {
+  const name = r.param == null ? '' : r.key === 'move' ? nameOfMove(r.param, lang) : r.param;
+  return i18n.t(`tb.illegal.${r.key}`, { lng: lang, name }).toUpperCase();
 }
 
 /**
@@ -270,38 +300,38 @@ export interface SlotLegality {
  * While the payload is loading, the slot is treated as legal (no flicker).
  */
 export function slotLegality(slot: TeamSlot, vgId: string, pokemon: Pokemon | undefined): SlotLegality {
-  const reasons: string[] = [];
+  const reasons: LegalityReason[] = [];
   if (!slot.pokemon || slot.pokemonId == null) return { legal: true, reasons };
 
   const sp = genSpecies(vgId, slot.pokemon);
-  if (!sp?.exists) reasons.push('SPECIES NOT IN GAME');
+  if (!sp?.exists) reasons.push({ key: 'species' });
 
-  if (slot.level < 1 || slot.level > MAX_LEVEL) reasons.push('LEVEL OUT OF RANGE');
+  if (slot.level < 1 || slot.level > MAX_LEVEL) reasons.push({ key: 'level' });
 
   if (pokemon) {
     const legal = new Set(legalMoves(pokemon, vgId).map((m) => m.name));
     for (const mv of slot.moves) {
-      if (mv && !legal.has(mv)) reasons.push(`${displayName(mv).toUpperCase()} NOT LEARNABLE`);
+      if (mv && !legal.has(mv)) reasons.push({ key: 'move', param: mv });
     }
   }
 
   const mech = genHasMechanics(vgId);
   if (slot.item) {
-    if (!mech.items) reasons.push('NO HELD ITEMS IN THIS GEN');
-    else if (!genFor(vgId).items.get(slot.item)?.exists) reasons.push(`${slot.item.toUpperCase()} NOT IN GAME`);
+    if (!mech.items) reasons.push({ key: 'noItems' });
+    else if (!genFor(vgId).items.get(slot.item)?.exists) reasons.push({ key: 'item', param: slot.item });
   }
   if (slot.ability) {
-    if (!mech.abilities) reasons.push('NO ABILITIES IN THIS GEN');
+    if (!mech.abilities) reasons.push({ key: 'noAbilities' });
     else {
       const ok = genAbilitiesOf(vgId, slot.pokemon).some((a) => a.toLowerCase() === slot.ability!.toLowerCase());
-      if (!ok) reasons.push(`${slot.ability.toUpperCase()} NOT AVAILABLE`);
+      if (!ok) reasons.push({ key: 'ability', param: slot.ability });
     }
   }
   if (slot.nature) {
-    if (!mech.natures) reasons.push('NO NATURES IN THIS GEN');
-    else if (!genFor(vgId).natures.get(slot.nature)?.exists) reasons.push('NATURE NOT IN GAME');
+    if (!mech.natures) reasons.push({ key: 'noNatures' });
+    else if (!genFor(vgId).natures.get(slot.nature)?.exists) reasons.push({ key: 'nature' });
   }
-  if (!mech.evs && evTotal(slot) > 0) reasons.push('NO EVs IN THIS GEN');
+  if (!mech.evs && evTotal(slot) > 0) reasons.push({ key: 'noEvs' });
 
   return { legal: reasons.length === 0, reasons };
 }

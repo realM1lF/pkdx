@@ -624,7 +624,8 @@
       "local": "LOCAL",
       "liveTip": "Multiplayer — live sync",
       "reconnectingTip": "Reconnecting to realtime sync",
-      "localTip": "Solo — local save on this device"
+      "localTip": "Solo — local save on this device",
+      "used": "USED"
     },
     "wizard": {
       "stepGame": "01 GAME",
@@ -699,7 +700,15 @@
       "confirmDead": "Confirm — it faints",
       "editNick": "Edit nickname",
       "remove": "Remove entry"
-    }
+    },
+    "quickEntry": "QUICK ENTRY",
+    "mapsChip": "MAPS",
+    "routesAria": "Routes",
+    "customChip": "CUSTOM",
+    "customTip": "Not in encounter data — logged manually.",
+    "levelDown": "Level down",
+    "levelUp": "Level up",
+    "runViewAria": "Run view"
   },
   "search": {
     "recent": "RECENT",
@@ -932,6 +941,18 @@
       "clear": "Clear",
       "noMatch": "No matches.",
       "searchPokemon": "SEARCH POKÉMON…"
+    },
+    "illegal": {
+      "species": "Species not in game",
+      "level": "Level out of range",
+      "move": "{{name}} not learnable",
+      "noItems": "No held items in this gen",
+      "item": "{{name}} not in game",
+      "noAbilities": "No abilities in this gen",
+      "ability": "{{name}} not available",
+      "noNatures": "No natures in this gen",
+      "nature": "Nature not in game",
+      "noEvs": "No EVs in this gen"
     }
   }
 }

@@ -166,7 +166,7 @@ export default function NuzlockeRun() {
       <RulesBar state={state} owner={owner} />
 
       {/* deck tab strip — RUN DECK / VERSUS (versus.md UI 2) */}
-      <div className="mt-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label="Run view">
+      <div className="mt-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label={t('nuz.runViewAria')}>
         {(['deck', 'versus'] as const).map((t) => (
           <button
             key={t}
