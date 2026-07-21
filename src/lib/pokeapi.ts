@@ -184,6 +184,15 @@ export function latestEnglishFlavor(species: PokemonSpecies): string {
   return last ? sanitizeFlavor(last.flavor_text) : '';
 }
 
+/** Latest flavor text preferring the requested language (de → en fallback). */
+export function latestFlavor(species: PokemonSpecies, lang: string): string {
+  if (lang.startsWith('de')) {
+    const de = species.flavor_text_entries.filter((e) => e.language.name === 'de');
+    if (de.length) return sanitizeFlavor(de[de.length - 1].flavor_text);
+  }
+  return latestEnglishFlavor(species);
+}
+
 /** All English flavor entries mapped to game versions (version picker). */
 export function englishFlavorsByVersion(species: PokemonSpecies): Array<{ version: string; text: string }> {
   return species.flavor_text_entries

@@ -8,7 +8,7 @@ import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import { ChevronDown, Crown, LayoutGrid, Grid2X2, Rows3, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
-import { useLanguage, nameOfType } from '@/lib/i18n-data';
+import { fmtNum, useLanguage, nameOfType } from '@/lib/i18n-data';
 import CommandSearch from './CommandSearch';
 import { GENERATIONS, POKEMON_TYPES, TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -166,6 +166,7 @@ interface FilterPopoverProps {
 
 function FilterPopover(p: FilterPopoverProps) {
   const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -368,7 +369,7 @@ function FilterPopover(p: FilterPopoverProps) {
                   onClick={() => setOpen(false)}
                   className="ml-auto h-8 rounded-md border border-gold/60 bg-gold-soft px-3 font-sans text-[11px] font-bold text-gold transition-all duration-200 hover:shadow-glow-gold"
                 >
-                  {t8n('pokedex.showResults', { count: p.resultCount.toLocaleString() })}
+                  {t8n('pokedex.showResults', { count: fmtNum(p.resultCount, lang) })}
                 </button>
               </div>
             </motion.div>

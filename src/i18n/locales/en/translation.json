@@ -465,5 +465,91 @@
     "noMatch": "No Pokémon matches “{{q}}” — check the spelling or try a dex number.",
     "dialogAria": "Search Pokémon",
     "closeSearch": "Close search"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "POKÉDEX 2.0 // PHASE 01 — CORE DEX",
+      "titleA": "EVERY POKÉMON.",
+      "titleB": "ALIVE.",
+      "blurb": "An interactive, breathing companion for trainers. Browse 1,025 Pokémon across nine generations — watch stats come alive, trace evolution chains, and time-travel through every sprite era from 1996 to today.",
+      "cta": "Open the Pokédex",
+      "surprise": "Surprise me",
+      "stats": "1,025 POKÉMON · 18 TYPES · 9 GENERATIONS",
+      "scrollAria": "Scroll to search",
+      "scroll": "SCROLL",
+      "artworkAlt": "{{name}} — official artwork"
+    },
+    "gateway": {
+      "eyebrow": "DIRECT ACCESS",
+      "title": "Find your Pokémon",
+      "popular": "POPULAR:"
+    },
+    "spotlight": {
+      "loadingFlavor": "Catching data from the tall grass…",
+      "viewEntry": "View full entry →",
+      "next": "Next spotlight",
+      "eyebrow": "TODAY'S SPOTLIGHT"
+    },
+    "spectrum": {
+      "eyebrow": "TYPE SPECTRUM",
+      "title": "Eighteen Energies",
+      "blurb": "Every Pokémon channels one or two elemental energies. Pick one."
+    },
+    "generations": {
+      "title": "Nine Generations",
+      "drag": "DRAG ⟶",
+      "prev": "Previous generation",
+      "next": "Next generation",
+      "starterAlt": "Gen {{roman}} starter",
+      "count": "{{count}} POKÉMON"
+    },
+    "features": {
+      "eyebrow": "PHASE 01 — WHAT'S INSIDE",
+      "title": "Built for Trainers",
+      "filterTitle": "Filter in a flash",
+      "filterCaption": "Type, generation, region — the whole dex reshuffles instantly.",
+      "statsTitle": "Stats that move",
+      "statsCaption": "Base stats fill, count, and morph — numbers you can feel.",
+      "museumTitle": "Sprite Museum",
+      "museumCaption": "From 1996 pixels to 3D-era GIFs — every sprite era, one gallery.",
+      "emptyDemo": "No water types in this mini set.",
+      "scrubberAria": "Sprite era scrubber",
+      "toolkitEyebrow": "BEYOND THE DEX",
+      "open": "Open",
+      "live": "LIVE",
+      "lockedTip": "Locked — arrives in a later phase.",
+      "toolkit": {
+        "maps": {
+          "title": "Interactive Region Maps",
+          "caption": "Transit-style region charts + the original Kanto map. Every route, every encounter table, every item."
+        },
+        "nuzlocke": {
+          "title": "Nuzlocke Tracker",
+          "caption": "Solo or multiplayer SoulLink runs — route timeline, team grid, graveyard, live sync."
+        },
+        "team": {
+          "title": "Team Builder",
+          "caption": "Six slots, full move legality per game version, coverage & weakness analysis, share links."
+        },
+        "versus": {
+          "title": "Versus — 1v1 Matchups",
+          "caption": "Pick two Pokémon, get the full damage math: best moves, KO ranges, speed tiers. On every dex page."
+        }
+      },
+      "roadmap": {
+        "p2": "PHASE 02 — VERSUS MATCHUPS",
+        "p3": "PHASE 03 — TEAM BUILDER",
+        "p4": "PHASE 04 — INTERACTIVE MAPS",
+        "p5": "PHASE 05 — NUZLOCKE TRACKER",
+        "p6": "PHASE 06 — LIVING DEX",
+        "p7": "PHASE 07 — TCG CARDS"
+      }
+    },
+    "statsband": {
+      "pokemon": "POKÉMON",
+      "types": "TYPES",
+      "generations": "GENERATIONS",
+      "sprites": "SPRITES ARCHIVED"
+    }
   }
 }

@@ -29,8 +29,14 @@ interface AbilityPayload {
   flavor_text_entries?: Array<{ flavor_text: string; language: NamedAPIResource }>;
 }
 
-export function getAbilityShort(name: string): Promise<string> {
+export function getAbilityShort(name: string, lang: Lang = 'en'): Promise<string> {
   return cachedJson<AbilityPayload>(`ability:${name}`, `https://pokeapi.co/api/v2/ability/${name}`).then((a) => {
+    // de: PokéAPI ships localized flavor_text_entries (short in-game text) for most
+    // abilities — the long effect_entries stay en-only (documented data limitation)
+    if (lang === 'de') {
+      const fl = a.flavor_text_entries?.filter((f) => f.language.name === 'de').pop();
+      if (fl) return fl.flavor_text.replace(/[\f\n\r]+/g, ' ');
+    }
     const en = a.effect_entries.find((e) => e.language.name === 'en');
     if (en) return en.short_effect;
     const fl = a.flavor_text_entries?.filter((f) => f.language.name === 'en').pop();

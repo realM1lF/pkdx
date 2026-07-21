@@ -1,7 +1,9 @@
 /* Feature Highlights — "BUILT FOR TRAINERS" (home.md §6).
  * Three live micro-demos + locked roadmap marquee. */
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
+import { nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { AnimatePresence, animate, motion, useInView } from 'framer-motion';
 import { ArrowRight, GitCompareArrows, Lock, Map as MapIcon, Swords, Users } from 'lucide-react';
 import Sprite from '@/components/Sprite';
@@ -27,6 +29,8 @@ const MINIS: Array<{ id: number; name: string; types: PokemonType[] }> = [
 const FILTER_TYPES: PokemonType[] = ['grass', 'fire', 'water'];
 
 function FilterDemo({ live }: { live: boolean }) {
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const [active, setActive] = useState<PokemonType | null>(null);
   const shown = MINIS.filter((m) => !active || m.types.includes(active));
   return (
@@ -49,7 +53,7 @@ function FilterDemo({ live }: { live: boolean }) {
               style={{ '--t': TYPE_COLORS[t].rgb } as React.CSSProperties}
             >
               <TypeGlyph type={t} size={14} />
-              {t}
+              {nameOfType(t, lang)}
             </button>
           );
         })}
@@ -71,8 +75,8 @@ function FilterDemo({ live }: { live: boolean }) {
                 className="absolute inset-x-2 top-1 h-8 rounded-full blur-md"
                 style={{ background: `rgba(${TYPE_COLORS[m.types[0]].rgb},0.25)` }}
               />
-              <Sprite id={m.id} name={m.name} era="gen5" skeleton={false} eager={live} className="relative h-14 w-14" />
-              <span className="font-sans text-[11px] font-semibold text-tx-secondary">{m.name}</span>
+              <Sprite id={m.id} name={nameOfPokemon(m.id, lang)} era="gen5" skeleton={false} eager={live} className="relative h-14 w-14" />
+              <span className="font-sans text-[11px] font-semibold text-tx-secondary">{nameOfPokemon(m.id, lang)}</span>
             </motion.div>
           ))}
         </AnimatePresence>
@@ -83,7 +87,7 @@ function FilterDemo({ live }: { live: boolean }) {
             className="col-span-3 flex flex-col items-center gap-2 py-6"
           >
             <img src="/empty-dex.svg" alt="" className="h-14 w-auto opacity-70" />
-            <span className="font-sans text-xs font-medium text-gold">No water types in this mini set.</span>
+            <span className="font-sans text-xs font-medium text-gold">{t8n('home.features.emptyDemo')}</span>
           </motion.div>
         )}
       </motion.div>
@@ -151,6 +155,7 @@ function Radar({ values, prog }: { values: number[]; prog: number }) {
 }
 
 function StatsDemo({ live }: { live: boolean }) {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<'bars' | 'radar'>('bars');
   const [cycle, setCycle] = useState(0);
   const [prog, setProg] = useState(0);
@@ -193,7 +198,7 @@ function StatsDemo({ live }: { live: boolean }) {
                 transition={{ type: 'spring', stiffness: 420, damping: 30 }}
               />
             )}
-            <span className="relative">{m}</span>
+            <span className="relative">{t(`detail.combat.${m}`)}</span>
           </button>
         ))}
       </div>
@@ -240,6 +245,7 @@ const ERAS = [
 ];
 
 function MuseumDemo() {
+  const { t } = useTranslation();
   const [idx, setIdx] = useState(0);
   const era = ERAS[idx];
   const src =
@@ -283,7 +289,7 @@ function MuseumDemo() {
         step={1}
         value={idx}
         onChange={(e) => setIdx(Number(e.target.value))}
-        aria-label="Sprite era scrubber"
+        aria-label={t('home.features.scrubberAria')}
         className="w-full accent-gold"
       />
       <div className="flex justify-between">
@@ -308,65 +314,30 @@ function MuseumDemo() {
 /* ---------- section ---------- */
 
 const CARDS = [
-  {
-    title: 'Filter in a flash',
-    caption: 'Type, generation, region — the whole dex reshuffles instantly.',
-    Demo: FilterDemo,
-  },
-  {
-    title: 'Stats that move',
-    caption: 'Base stats fill, count, and morph — numbers you can feel.',
-    Demo: StatsDemo,
-  },
-  {
-    title: 'Sprite Museum',
-    caption: 'From 1996 pixels to 3D-era GIFs — every sprite era, one gallery.',
-    Demo: MuseumDemo,
-  },
+  { titleKey: 'home.features.filterTitle', captionKey: 'home.features.filterCaption', Demo: FilterDemo },
+  { titleKey: 'home.features.statsTitle', captionKey: 'home.features.statsCaption', Demo: StatsDemo },
+  { titleKey: 'home.features.museumTitle', captionKey: 'home.features.museumCaption', Demo: MuseumDemo },
 ];
 
 /* Toolkit teasers — live features shipped after Phase 01. */
 const TOOLKIT = [
-  {
-    to: '/maps',
-    Icon: MapIcon,
-    tag: 'MAPS',
-    title: 'Interactive Region Maps',
-    caption: 'Transit-style region charts + the original Kanto map. Every route, every encounter table, every item.',
-  },
-  {
-    to: '/nuzlocke',
-    Icon: Users,
-    tag: 'NUZLOCKE',
-    title: 'Nuzlocke Tracker',
-    caption: 'Solo or multiplayer SoulLink runs — route timeline, team grid, graveyard, live sync.',
-  },
-  {
-    to: '/team',
-    Icon: Swords,
-    tag: 'TEAM',
-    title: 'Team Builder',
-    caption: 'Six slots, full move legality per game version, coverage & weakness analysis, share links.',
-  },
-  {
-    to: '/pokemon/6?vs=3',
-    Icon: GitCompareArrows,
-    tag: 'VERSUS',
-    title: 'Versus — 1v1 Matchups',
-    caption: 'Pick two Pokémon, get the full damage math: best moves, KO ranges, speed tiers. On every dex page.',
-  },
+  { to: '/maps', Icon: MapIcon, tag: 'MAPS', titleKey: 'home.features.toolkit.maps.title', captionKey: 'home.features.toolkit.maps.caption' },
+  { to: '/nuzlocke', Icon: Users, tag: 'NUZLOCKE', titleKey: 'home.features.toolkit.nuzlocke.title', captionKey: 'home.features.toolkit.nuzlocke.caption' },
+  { to: '/team', Icon: Swords, tag: 'TEAM', titleKey: 'home.features.toolkit.team.title', captionKey: 'home.features.toolkit.team.caption' },
+  { to: '/pokemon/6?vs=3', Icon: GitCompareArrows, tag: 'VERSUS', titleKey: 'home.features.toolkit.versus.title', captionKey: 'home.features.toolkit.versus.caption' },
 ];
 
-const ROADMAP: Array<{ label: string; to?: string }> = [
-  { label: 'PHASE 02 — VERSUS MATCHUPS', to: '/pokemon/6?vs=3' },
-  { label: 'PHASE 03 — TEAM BUILDER', to: '/team' },
-  { label: 'PHASE 04 — INTERACTIVE MAPS', to: '/maps' },
-  { label: 'PHASE 05 — NUZLOCKE TRACKER', to: '/nuzlocke' },
-  { label: 'PHASE 06 — LIVING DEX' },
-  { label: 'PHASE 07 — TCG CARDS' },
+const ROADMAP: Array<{ labelKey: string; to?: string }> = [
+  { labelKey: 'home.features.roadmap.p2', to: '/pokemon/6?vs=3' },
+  { labelKey: 'home.features.roadmap.p3', to: '/team' },
+  { labelKey: 'home.features.roadmap.p4', to: '/maps' },
+  { labelKey: 'home.features.roadmap.p5', to: '/nuzlocke' },
+  { labelKey: 'home.features.roadmap.p6' },
+  { labelKey: 'home.features.roadmap.p7' },
 ];
 
-function DemoCard({ title, caption, Demo, index }: { title: string; caption: string; Demo: (p: { live: boolean }) => React.JSX.Element; index: number }) {
+function DemoCard({ titleKey, captionKey, Demo, index }: { titleKey: string; captionKey: string; Demo: (p: { live: boolean }) => React.JSX.Element; index: number }) {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-20% 0px' });
   return (
@@ -380,37 +351,38 @@ function DemoCard({ title, caption, Demo, index }: { title: string; caption: str
     >
       <Demo live={inView} />
       <div className="mt-auto">
-        <h3 className="font-display text-lg font-bold">{title}</h3>
-        <p className="mt-1 font-sans text-sm text-tx-secondary">{caption}</p>
+        <h3 className="font-display text-lg font-bold">{t(titleKey)}</h3>
+        <p className="mt-1 font-sans text-sm text-tx-secondary">{t(captionKey)}</p>
       </div>
     </motion.div>
   );
 }
 
 export default function Features() {
+  const { t } = useTranslation();
   return (
     <section className="mx-auto max-w-content px-4 py-24 md:px-8">
       <div className="mb-12 flex flex-col gap-4">
-        <span className="pixel-label text-[10px] text-gold">PHASE 01 — WHAT'S INSIDE</span>
+        <span className="pixel-label text-[10px] text-gold">{t('home.features.eyebrow')}</span>
         <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
-          Built for Trainers
+          {t('home.features.title')}
         </h2>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         {CARDS.map((c, i) => (
-          <DemoCard key={c.title} title={c.title} caption={c.caption} Demo={c.Demo} index={i} />
+          <DemoCard key={c.titleKey} titleKey={c.titleKey} captionKey={c.captionKey} Demo={c.Demo} index={i} />
         ))}
       </div>
 
       {/* toolkit teasers — live features beyond the dex */}
       <div className="mt-16">
         <div className="mb-6 flex items-center gap-3">
-          <span className="pixel-label text-[10px] text-gold">BEYOND THE DEX</span>
+          <span className="pixel-label text-[10px] text-gold">{t('home.features.toolkitEyebrow')}</span>
           <span className="h-px flex-1 bg-hairline" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {TOOLKIT.map(({ to, Icon, tag, title, caption }, i) => (
+          {TOOLKIT.map(({ to, Icon, tag, titleKey, captionKey }, i) => (
             <motion.div
               key={tag}
               initial={{ y: 24, opacity: 0 }}
@@ -418,7 +390,7 @@ export default function Features() {
               viewport={{ once: true, margin: '-10% 0px' }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}
             >
-              <Link
+              <LocaleLink
                 to={to}
                 className="group flex h-full flex-col gap-3 rounded-xl border border-hairline bg-surface1 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-glow-gold"
               >
@@ -428,13 +400,13 @@ export default function Features() {
                   </span>
                   <span className="pixel-label text-[8px] text-tx-muted">{tag}</span>
                 </div>
-                <h3 className="font-display text-base font-bold leading-tight">{title}</h3>
-                <p className="font-sans text-xs leading-relaxed text-tx-secondary">{caption}</p>
+                <h3 className="font-display text-base font-bold leading-tight">{t(titleKey)}</h3>
+                <p className="font-sans text-xs leading-relaxed text-tx-secondary">{t(captionKey)}</p>
                 <span className="mt-auto inline-flex items-center gap-1.5 pt-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-gold">
-                  Open
+                  {t('home.features.open')}
                   <ArrowRight size={12} strokeWidth={2} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                 </span>
-              </Link>
+              </LocaleLink>
             </motion.div>
           ))}
         </div>
@@ -447,22 +419,22 @@ export default function Features() {
             <div key={copy} className="flex gap-10" aria-hidden={copy === 1}>
               {ROADMAP.map((item) =>
                 item.to ? (
-                  <Link
-                    key={`${copy}-${item.label}`}
+                  <LocaleLink
+                    key={`${copy}-${item.labelKey}`}
                     to={item.to}
                     tabIndex={copy === 1 ? -1 : 0}
                     className="flex items-center gap-2 opacity-70 transition-opacity hover:opacity-100"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-glow-gold" />
-                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{item.label}</span>
-                    <span className="pixel-label text-[8px] text-gold">LIVE</span>
-                  </Link>
+                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{t(item.labelKey)}</span>
+                    <span className="pixel-label text-[8px] text-gold">{t('home.features.live')}</span>
+                  </LocaleLink>
                 ) : (
-                  <span key={`${copy}-${item.label}`} className="group/item relative flex cursor-default items-center gap-2 opacity-40">
+                  <span key={`${copy}-${item.labelKey}`} className="group/item relative flex cursor-default items-center gap-2 opacity-40">
                     <Lock size={12} strokeWidth={1.75} className="text-tx-muted" />
-                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{item.label}</span>
+                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{t(item.labelKey)}</span>
                     <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 scale-95 whitespace-nowrap rounded-sm border border-hairline bg-surface2 px-2 py-1 font-sans text-xs text-tx-secondary opacity-0 shadow-elevate transition-all duration-150 group-hover/item:scale-100 group-hover/item:opacity-100">
-                      Locked — arrives in a later phase.
+                      {t('home.features.lockedTip')}
                     </span>
                   </span>
                 ),

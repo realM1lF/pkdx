@@ -43,13 +43,13 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
   const [desc, setDesc] = useState<string | null>(null);
   useEffect(() => {
     let on = true;
-    getAbilityShort(name)
+    getAbilityShort(name, lang)
       .then((d) => on && setDesc(d))
       .catch(() => on && setDesc(''));
     return () => {
       on = false;
     };
-  }, [name, pokemonId]);
+  }, [name, pokemonId, lang]);
 
   return (
     <li className="flex items-start gap-2 border-b border-hairline py-1.5 last:border-0 last:pb-0 first:pt-0">

@@ -2,6 +2,9 @@
  * 6×3 grid, radial-wave entrance, hover lights the cell + pops 3 Gen-V sprites. */
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { useLocalePath } from '@/lib/locale-link';
+import { nameOfType, useLanguage } from '@/lib/i18n-data';
 import { AnimatePresence, motion } from 'framer-motion';
 import Sprite from '@/components/Sprite';
 import TypeGlyph from '@/components/TypeGlyph';
@@ -15,6 +18,9 @@ const COARSE = () => typeof window !== 'undefined' && window.matchMedia('(pointe
 
 export default function TypeSpectrum() {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const [active, setActive] = useState<PokemonType | null>(null);
 
   const handlePick = (t: PokemonType) => {
@@ -22,18 +28,18 @@ export default function TypeSpectrum() {
       setActive(t); // first tap lights the cell; second tap navigates
       return;
     }
-    navigate(`/pokedex?type=${t}`);
+    navigate(localePath(`/pokedex?type=${t}`));
   };
 
   return (
     <section className="mx-auto max-w-content px-4 py-24 md:px-8">
       <Reveal className="mb-12 flex flex-col items-center gap-4 text-center">
-        <span className="pixel-label text-[10px] text-gold">TYPE SPECTRUM</span>
+        <span className="pixel-label text-[10px] text-gold">{t8n('home.spectrum.eyebrow')}</span>
         <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
-          Eighteen Energies
+          {t8n('home.spectrum.title')}
         </h2>
         <p className="max-w-[52ch] font-sans text-base text-tx-secondary">
-          Every Pokémon channels one or two elemental energies. Pick one.
+          {t8n('home.spectrum.blurb')}
         </p>
       </Reveal>
 
@@ -82,7 +88,7 @@ export default function TypeSpectrum() {
                         exit={{ scale: 0, opacity: 0 }}
                         transition={{ type: 'spring', stiffness: 420, damping: 30, delay: j * 0.06 }}
                       >
-                        <Sprite id={id} name={t} era="gen5" skeleton={false} className="h-12 w-12" />
+                        <Sprite id={id} name={nameOfType(t, lang)} era="gen5" skeleton={false} className="h-12 w-12" />
                       </motion.div>
                     ))}
                   </div>

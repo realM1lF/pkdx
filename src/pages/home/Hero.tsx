@@ -1,6 +1,9 @@
 /* Hero — "THE LIVING DEX" (home.md §1). 100svh, bleeds under fixed nav (-mt-16). */
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, Dices } from 'lucide-react';
 import HeroBackdrop from './HeroBackdrop';
@@ -55,6 +58,8 @@ function SplitChars({
 }
 
 function SpotlightPedestal({ started }: { started: boolean }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
@@ -100,7 +105,7 @@ function SpotlightPedestal({ started }: { started: boolean }) {
         <motion.img
           key={current.id}
           src={sprites.artwork(current.id)}
-          alt={`${current.name} — official artwork`}
+          alt={t('home.hero.artworkAlt', { name: nameOfPokemon(current.id, lang) })}
           draggable={false}
           className="absolute inset-0 m-auto h-[88%] w-[88%] object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.5)]"
           initial={{ opacity: 0, scale: 0.96 }}
@@ -127,7 +132,7 @@ function SpotlightPedestal({ started }: { started: boolean }) {
                 >
                   <Sprite
                     id={o.id}
-                    name={o.name}
+                    name={nameOfPokemon(o.id, lang)}
                     era="gen5"
                     skeleton={false}
                     className="-ml-12 -mt-12 h-24 w-24"
@@ -144,6 +149,9 @@ function SpotlightPedestal({ started }: { started: boolean }) {
 
 export default function Hero({ started }: { started: boolean }) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
   const [rattling, setRattling] = useState(false);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
@@ -153,7 +161,7 @@ export default function Hero({ started }: { started: boolean }) {
     if (rattling) return;
     setRattling(true);
     const id = 1 + Math.floor(Math.random() * MAX_DEX_ID);
-    window.setTimeout(() => navigate(`/pokemon/${id}`), 500);
+    window.setTimeout(() => navigate(localePath(`/pokemon/${id}`)), 500);
   };
 
   return (
@@ -173,13 +181,13 @@ export default function Hero({ started }: { started: boolean }) {
             animate={started ? { opacity: 1, letterSpacing: '0.08em' } : {}}
             transition={{ duration: 0.4 }}
           >
-            POKÉDEX 2.0 // PHASE 01 — CORE DEX
+            {t('home.hero.eyebrow')}
           </motion.p>
 
           <h1 className="mt-6 font-display text-[clamp(48px,8vw,96px)] font-black uppercase leading-[1.02] tracking-[0.01em]">
-            <SplitChars text="EVERY POKÉMON." started={started} baseDelay={0.15} />
+            <SplitChars text={t('home.hero.titleA')} started={started} baseDelay={0.15} />
             <br />
-            <SplitChars text="ALIVE." started={started} baseDelay={0.45} gradient />
+            <SplitChars text={t('home.hero.titleB')} started={started} baseDelay={0.45} gradient />
           </h1>
 
           <motion.p
@@ -188,9 +196,7 @@ export default function Hero({ started }: { started: boolean }) {
             animate={started ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.7, ease: EASE }}
           >
-            An interactive, breathing companion for trainers. Browse 1,025 Pokémon across nine
-            generations — watch stats come alive, trace evolution chains, and time-travel through
-            every sprite era from 1996 to today.
+            {t('home.hero.blurb')}
           </motion.p>
 
           <motion.div
@@ -199,13 +205,13 @@ export default function Hero({ started }: { started: boolean }) {
             animate={started ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.79, ease: EASE }}
           >
-            <Link
+            <LocaleLink
               to="/pokedex"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:border-gold hover:shadow-glow-gold active:scale-[0.97]"
             >
               <span className="absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.35)_50%,transparent_70%)] transition-transform duration-sheen group-hover:translate-x-full" />
-              <span className="relative">Open the Pokédex</span>
-            </Link>
+              <span className="relative">{t('home.hero.cta')}</span>
+            </LocaleLink>
             <button
               type="button"
               onClick={surprise}
@@ -218,7 +224,7 @@ export default function Hero({ started }: { started: boolean }) {
               >
                 <Dices size={18} strokeWidth={1.75} />
               </motion.span>
-              Surprise me
+              {t('home.hero.surprise')}
             </button>
           </motion.div>
 
@@ -228,7 +234,7 @@ export default function Hero({ started }: { started: boolean }) {
             animate={started ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.88, ease: EASE }}
           >
-            1,025 POKÉMON · 18 TYPES · 9 GENERATIONS
+            {t('home.hero.stats')}
           </motion.p>
         </div>
 
@@ -243,7 +249,7 @@ export default function Hero({ started }: { started: boolean }) {
             transition={{ delay: 1, duration: 0.5 }}
           >
             {ORBITERS.map((o) => (
-              <Sprite key={o.id} id={o.id} name={o.name} era="gen5" skeleton={false} className="h-16 w-16" />
+              <Sprite key={o.id} id={o.id} name={nameOfPokemon(o.id, lang)} era="gen5" skeleton={false} className="h-16 w-16" />
             ))}
           </motion.div>
         </div>
@@ -256,9 +262,9 @@ export default function Hero({ started }: { started: boolean }) {
         initial={{ opacity: 0 }}
         animate={started ? { opacity: 1 } : {}}
         transition={{ delay: 1.3, duration: 0.5 }}
-        aria-label="Scroll to search"
+        aria-label={t('home.hero.scrollAria')}
       >
-        <span className="pixel-label text-[9px]">SCROLL</span>
+        <span className="pixel-label text-[9px]">{t('home.hero.scroll')}</span>
         <ChevronDown size={20} strokeWidth={1.75} className="animate-cue-bounce" />
       </motion.a>
     </section>

@@ -465,5 +465,91 @@
     "noMatch": "Kein Pokémon passt zu „{{q}}“ — Schreibweise prüfen oder Dex-Nummer versuchen.",
     "dialogAria": "Pokémon suchen",
     "closeSearch": "Suche schließen"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "POKÉDEX 2.0 // PHASE 01 — CORE-DEX",
+      "titleA": "JEDES POKÉMON.",
+      "titleB": "LEBENDIG.",
+      "blurb": "Ein interaktiver, atmender Begleiter für Trainer. Stöbere durch 1.025 Pokémon aus neun Generationen — sieh zu, wie Statuswerte lebendig werden, verfolge Entwicklungsreihen und reise durch jede Sprite-Ära von 1996 bis heute.",
+      "cta": "Pokédex öffnen",
+      "surprise": "Überrasch mich",
+      "stats": "1.025 POKÉMON · 18 TYPEN · 9 GENERATIONEN",
+      "scrollAria": "Zur Suche scrollen",
+      "scroll": "SCROLLEN",
+      "artworkAlt": "{{name}} — offizielles Artwork"
+    },
+    "gateway": {
+      "eyebrow": "DIREKTZUGRIFF",
+      "title": "Finde dein Pokémon",
+      "popular": "BELIEBT:"
+    },
+    "spotlight": {
+      "loadingFlavor": "Daten werden aus dem hohen Gras geholt…",
+      "viewEntry": "Vollen Eintrag ansehen →",
+      "next": "Nächstes Spotlight",
+      "eyebrow": "SPOTLIGHT DES TAGES"
+    },
+    "spectrum": {
+      "eyebrow": "TYP-SPEKTRUM",
+      "title": "Achtzehn Energien",
+      "blurb": "Jedes Pokémon bündelt ein oder zwei elementare Energien. Wähle eine aus."
+    },
+    "generations": {
+      "title": "Neun Generationen",
+      "drag": "ZIEHEN ⟶",
+      "prev": "Vorherige Generation",
+      "next": "Nächste Generation",
+      "starterAlt": "Gen-{{roman}}-Starter",
+      "count": "{{count}} POKÉMON"
+    },
+    "features": {
+      "eyebrow": "PHASE 01 — INHALT",
+      "title": "Für Trainer gebaut",
+      "filterTitle": "Blitzschnell filtern",
+      "filterCaption": "Typ, Generation, Region — der ganze Dex sortiert sich sofort neu.",
+      "statsTitle": "Werte in Bewegung",
+      "statsCaption": "Basiswerte füllen sich, zählen, morphen — Zahlen zum Anfassen.",
+      "museumTitle": "Sprite-Museum",
+      "museumCaption": "Von 1996-Pixeln bis zu 3D-Ära-GIFs — jede Sprite-Ära in einer Galerie.",
+      "emptyDemo": "Keine Wasser-Typen in diesem Mini-Set.",
+      "scrubberAria": "Sprite-Ära-Regler",
+      "toolkitEyebrow": "JENSEITS DES DEX",
+      "open": "Öffnen",
+      "live": "LIVE",
+      "lockedTip": "Gesperrt — kommt in einer späteren Phase.",
+      "toolkit": {
+        "maps": {
+          "title": "Interaktive Regionskarten",
+          "caption": "Linien-Karten der Regionen + die Original-Kanto-Karte. Jede Route, jede Begegnungstabelle, jedes Item."
+        },
+        "nuzlocke": {
+          "title": "Nuzlocke-Tracker",
+          "caption": "Solo- oder Multiplayer-SoulLink-Runs — Routen-Timeline, Team-Raster, Friedhof, Live-Sync."
+        },
+        "team": {
+          "title": "Team-Builder",
+          "caption": "Sechs Slots, volle Attacken-Legalität pro Spielversion, Coverage- & Schwächen-Analyse, Share-Links."
+        },
+        "versus": {
+          "title": "Versus — 1v1-Matchups",
+          "caption": "Wähle zwei Pokémon und erhalte die komplette Schadensrechnung: beste Attacken, KO-Bereiche, Initiative. Auf jeder Dex-Seite."
+        }
+      },
+      "roadmap": {
+        "p2": "PHASE 02 — VERSUS-MATCHUPS",
+        "p3": "PHASE 03 — TEAM-BUILDER",
+        "p4": "PHASE 04 — INTERAKTIVE KARTEN",
+        "p5": "PHASE 05 — NUZLOCKE-TRACKER",
+        "p6": "PHASE 06 — LEBENDER DEX",
+        "p7": "PHASE 07 — TCG-KARTEN"
+      }
+    },
+    "statsband": {
+      "pokemon": "POKÉMON",
+      "types": "TYPEN",
+      "generations": "GENERATIONEN",
+      "sprites": "SPRITES ARCHIVIERT"
+    }
   }
 }

@@ -23,7 +23,7 @@ import {
 import type { Density, SortKey, Special } from '@/components/pokedex/dex-data';
 import { padNum } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
-import { useLanguage, nameOfType } from '@/lib/i18n-data';
+import { fmtNum, useLanguage, nameOfType } from '@/lib/i18n-data';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MAX_DEX_ID } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -82,7 +82,7 @@ function loadDensity(): Density {
 
 /* ---------- animated count ---------- */
 
-function TweenNumber({ value }: { value: number }) {
+function TweenNumber({ value, lang }: { value: number; lang: 'en' | 'de' }) {
   const mv = useMotionValue(value);
   const [display, setDisplay] = useState(value);
   useEffect(() => {
@@ -93,7 +93,7 @@ function TweenNumber({ value }: { value: number }) {
     });
     return () => controls.stop();
   }, [mv, value]);
-  return <span className="font-bold tabular-nums text-tx-primary">{display.toLocaleString()}</span>;
+  return <span className="font-bold tabular-nums text-tx-primary">{fmtNum(display, lang)}</span>;
 }
 
 /* ---------- grid skeleton card (Pokéball silhouette pulse, §9.5) ---------- */
@@ -321,8 +321,8 @@ export default function Pokedex() {
               {t8n('pokedex.title')}
             </h1>
             <p className="font-sans text-[13px] text-tx-secondary" aria-hidden>
-              {t8n('pokedex.showing')} <TweenNumber value={total} /> {t8n('pokedex.of')}{' '}
-              <span className="font-bold tabular-nums text-tx-primary">{MAX_DEX_ID.toLocaleString()}</span>{' '}
+              {t8n('pokedex.showing')} <TweenNumber value={total} lang={lang} /> {t8n('pokedex.of')}{' '}
+              <span className="font-bold tabular-nums text-tx-primary">{fmtNum(MAX_DEX_ID, lang)}</span>{' '}
               {t8n('pokedex.species')}
               {pendingCount > 0 && (
                 <span className="pixel-label ml-2 text-[8px] text-tx-muted">{t8n('pokedex.syncing')}</span>
@@ -492,8 +492,8 @@ export default function Pokedex() {
                 />
                 <p className="pixel-label text-[9px] text-gold">
                   {isFiltered
-                    ? t8n('pokedex.allMatches', { count: total.toLocaleString() })
-                    : t8n('pokedex.dexComplete', { shown: total.toLocaleString(), total: MAX_DEX_ID.toLocaleString() })}
+                    ? t8n('pokedex.allMatches', { count: fmtNum(total, lang) })
+                    : t8n('pokedex.dexComplete', { shown: fmtNum(total, lang), total: fmtNum(MAX_DEX_ID, lang) })}
                 </p>
                 <p className="font-sans text-xs text-tx-muted">
                   {t8n('pokedex.edge')}

@@ -1,20 +1,14 @@
 /* Spotlight of the Day — "TODAY'S SPOTLIGHT" (home.md §3). */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
+import { genusOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import StatBar from '@/components/StatBar';
 import TypeBadge from '@/components/TypeBadge';
 import PokeballLoader from '@/components/PokeballLoader';
-import {
-  displayName,
-  englishGenus,
-  getPokemon,
-  getSpecies,
-  latestEnglishFlavor,
-  padNum,
-  statOf,
-} from '@/lib/pokeapi';
+import { englishGenus, getPokemon, getSpecies, latestFlavor, padNum, statOf } from '@/lib/pokeapi';
 import { sprites } from '@/lib/sprites';
 import { MAX_DEX_ID, TYPE_COLORS } from '@/lib/types';
 import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
@@ -62,6 +56,8 @@ function SparkleBurst({ burstKey }: { burstKey: number }) {
 }
 
 export default function Spotlight() {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [offset, setOffset] = useState(0);
   const id = pickId(offset);
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
@@ -178,7 +174,7 @@ export default function Spotlight() {
                   {pokemon && (
                     <img
                       src={shiny ? sprites.artworkShiny(id) : sprites.artwork(id)}
-                      alt={`${displayName(pokemon.name)} — official artwork${shiny ? ' (shiny)' : ''}`}
+                      alt={`${t('home.hero.artworkAlt', { name: nameOfPokemon(id, lang) })}${shiny ? t('detail.hero.shinySuffix') : ''}`}
                       draggable={false}
                       className="h-full w-full object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.5)]"
                     />
@@ -204,7 +200,7 @@ export default function Spotlight() {
               <button
                 type="button"
                 aria-pressed={shiny}
-                aria-label="Toggle shiny artwork"
+                aria-label={t('detail.hero.shinyArtwork')}
                 onClick={() => {
                   setShiny((s) => !s);
                   setBurst((b) => b + 1);
@@ -238,10 +234,10 @@ export default function Spotlight() {
                   </span>,
                   <div key="name">
                     <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
-                      {pokemon ? displayName(pokemon.name) : '…'}
+                      {pokemon ? nameOfPokemon(id, lang) : '…'}
                     </h2>
                     <p className="mt-1 font-sans text-base italic text-tx-secondary">
-                      {species ? englishGenus(species) : ' '}
+                      {lang === 'de' ? genusOfPokemon(id, lang) : species ? englishGenus(species) : ' '}
                     </p>
                   </div>,
                   <div key="types" className="flex flex-wrap gap-2">
@@ -250,7 +246,7 @@ export default function Spotlight() {
                     ))}
                   </div>,
                   <p key="flavor" className="max-w-[62ch] font-sans text-base leading-[1.55] text-tx-secondary">
-                    {species ? latestEnglishFlavor(species) : 'Catching data from the tall grass…'}
+                    {species ? latestFlavor(species, lang) : t('home.spotlight.loadingFlavor')}
                   </p>,
                   <div key="stats" className="flex max-w-[440px] flex-col gap-2.5">
                     <StatBar label="HP" value={pokemon ? statOf(pokemon, 'hp') : 0} type={primary} />
@@ -258,7 +254,7 @@ export default function Spotlight() {
                     <StatBar label="DEF" value={pokemon ? statOf(pokemon, 'defense') : 0} type={primary} delay={160} />
                   </div>,
                   <div key="cta" className="mt-2 flex flex-wrap gap-4">
-                    <Link
+                    <LocaleLink
                       to={`/pokemon/${id}`}
                       className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border px-6 py-3 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-primary transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
                       style={{
@@ -268,14 +264,14 @@ export default function Spotlight() {
                       }}
                     >
                       <span className="absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.35)_50%,transparent_70%)] transition-transform duration-sheen group-hover:translate-x-full" />
-                      <span className="relative">View full entry →</span>
-                    </Link>
+                      <span className="relative">{t('home.spotlight.viewEntry')}</span>
+                    </LocaleLink>
                     <button
                       type="button"
                       onClick={() => setOffset((o) => o + 1)}
                       className="rounded-md border border-hairline2 px-6 py-3 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-secondary transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface3 hover:text-gold active:scale-[0.97]"
                     >
-                      Next spotlight
+                      {t('home.spotlight.next')}
                     </button>
                   </div>,
                 ].map((node, i) => (

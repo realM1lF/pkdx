@@ -1,12 +1,14 @@
 /* Stats Band — counters (home.md §7, motion §6.2-12). */
 import { useEffect, useRef, useState } from 'react';
 import { animate, useInView } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/lib/i18n-data';
 
-const STATS = [
-  { target: 1025, label: 'POKÉMON', format: (v: number) => v.toLocaleString('en-US') },
-  { target: 18, label: 'TYPES', format: (v: number) => String(v) },
-  { target: 9, label: 'GENERATIONS', format: (v: number) => String(v) },
-  { target: 10000, label: 'SPRITES ARCHIVED', format: (v: number) => `${v.toLocaleString('en-US')}+` },
+const STATS: Array<{ target: number; labelKey: string; suffix?: string }> = [
+  { target: 1025, labelKey: 'home.statsband.pokemon' },
+  { target: 18, labelKey: 'home.statsband.types' },
+  { target: 9, labelKey: 'home.statsband.generations' },
+  { target: 10000, labelKey: 'home.statsband.sprites', suffix: '+' },
 ];
 
 function Counter({ target, format, delay }: { target: number; format: (v: number) => string; delay: number }) {
@@ -34,6 +36,10 @@ function Counter({ target, format, delay }: { target: number; format: (v: number
 }
 
 export default function StatsBand() {
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  // locale-aware thousands separator (de: 1.025 / en: 1,025)
+  const fmt = (v: number, suffix = '') => `${v.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}${suffix}`;
   return (
     <section className="relative border-y border-hairline bg-surface1">
       {/* faint aura blobs — water left, fire right */}
@@ -49,9 +55,9 @@ export default function StatsBand() {
       />
       <div className="relative mx-auto grid max-w-content grid-cols-2 gap-10 px-4 py-16 md:px-8 lg:grid-cols-4">
         {STATS.map((s, i) => (
-          <div key={s.label} className="flex flex-col items-center gap-3 text-center">
-            <Counter target={s.target} format={s.format} delay={i * 0.15} />
-            <span className="pixel-label text-[10px] text-tx-muted">{s.label}</span>
+          <div key={s.labelKey} className="flex flex-col items-center gap-3 text-center">
+            <Counter target={s.target} format={(v) => fmt(v, s.suffix)} delay={i * 0.15} />
+            <span className="pixel-label text-[10px] text-tx-muted">{t(s.labelKey)}</span>
           </div>
         ))}
       </div>

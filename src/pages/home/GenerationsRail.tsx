@@ -1,7 +1,9 @@
 /* Generations Rail — "NINE GENERATIONS" (home.md §5).
  * Framer drag="x" with inertia, arrow buttons, gold progress hairline. */
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
+import { genRegionKey } from '@/lib/i18n-data';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Sprite from '@/components/Sprite';
@@ -20,6 +22,7 @@ const GLOW_CYCLE = [
 ];
 
 export default function GenerationsRail() {
+  const { t } = useTranslation();
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -50,15 +53,15 @@ export default function GenerationsRail() {
         <div className="flex flex-col gap-4">
           <span className="pixel-label text-[10px] text-gold">1996 → 2022</span>
           <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
-            Nine Generations
+            {t('home.generations.title')}
           </h2>
         </div>
         <div className="flex items-center gap-4">
-          <span className="pixel-label hidden text-[9px] text-tx-muted sm:block">DRAG ⟶</span>
+          <span className="pixel-label hidden text-[9px] text-tx-muted sm:block">{t('home.generations.drag')}</span>
           <button
             type="button"
             onClick={() => nudge(-1)}
-            aria-label="Previous generation"
+            aria-label={t('home.generations.prev')}
             className="grid h-10 w-10 place-items-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-all duration-200 hover:border-gold/60 hover:text-gold"
           >
             <ArrowLeft size={18} strokeWidth={1.75} />
@@ -66,7 +69,7 @@ export default function GenerationsRail() {
           <button
             type="button"
             onClick={() => nudge(1)}
-            aria-label="Next generation"
+            aria-label={t('home.generations.next')}
             className="grid h-10 w-10 place-items-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-all duration-200 hover:border-gold/60 hover:text-gold"
           >
             <ArrowRight size={18} strokeWidth={1.75} />
@@ -93,7 +96,7 @@ export default function GenerationsRail() {
               const count = g.range[1] - g.range[0] + 1;
               const era = g.gen <= 5 ? ('gen5' as const) : ('home' as const);
               return (
-                <Link
+                <LocaleLink
                   key={g.gen}
                   to={`/pokedex?gen=${g.gen}`}
                   draggable={false}
@@ -127,20 +130,20 @@ export default function GenerationsRail() {
                         className="group-hover:animate-[hop_0.42s_ease-in-out]"
                         style={{ animationDelay: `${j * 100}ms` }}
                       >
-                        <Sprite id={id} name={`Gen ${g.roman} starter`} era={era} skeleton={false} className="h-20 w-20 sm:h-24 sm:w-24" />
+                        <Sprite id={id} name={t('home.generations.starterAlt', { roman: g.roman })} era={era} skeleton={false} className="h-20 w-20 sm:h-24 sm:w-24" />
                       </div>
                     ))}
                   </div>
 
                   <div>
                     <h3 className="font-sans text-lg font-bold text-tx-primary transition-colors duration-200 group-hover:text-gold">
-                      {g.region}
+                      {t(`regions.${genRegionKey(g.region)}`)}
                     </h3>
                     <span className="pixel-label mt-1 block text-[9px] text-tx-muted">
-                      {count} POKÉMON
+                      {t('home.generations.count', { count })}
                     </span>
                   </div>
-                </Link>
+                </LocaleLink>
               );
             })}
           </motion.div>

@@ -159,6 +159,7 @@ const EGG_GROUPS_DE: Record<string, string> = {
   field: 'Feld',
   fairy: 'Fee',
   grass: 'Pflanze',
+  plant: 'Pflanze', // PokéAPI slug for the grass egg group is 'plant'
   'human-like': 'Humanotyp',
   water3: 'Wasser 3',
   mineral: 'Mineral',
@@ -235,6 +236,15 @@ const NATURES_DE: Record<string, string> = {
 export function nameOfNature(slug: string, lang: Lang): string {
   if (isDe(lang) && NATURES_DE[slug]) return NATURES_DE[slug];
   return displayName(slug);
+}
+
+/* ---------- numbers ---------- */
+
+const NF = { en: new Intl.NumberFormat('en-US'), de: new Intl.NumberFormat('de-DE') };
+
+/** Locale-aware thousands separator (de: 1.025 / en: 1,025). */
+export function fmtNum(v: number, lang: Lang): string {
+  return NF[lang].format(v);
 }
 
 /* ---------- search ---------- */
