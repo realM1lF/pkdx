@@ -1,0 +1,17 @@
+{
+  "nav": {
+    "pokedex": "Pokédex",
+    "maps": "Karten",
+    "nuzlocke": "Nuzlocke",
+    "team": "Team",
+    "search": "Suchen…",
+    "searchDrawer": "Pokédex durchsuchen…",
+    "openSearch": "Suche öffnen",
+    "toggleShiny": "Schillernd-Modus umschalten",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "menu": "MENÜ",
+    "home": "Pokédex 2.0 Startseite",
+    "language": "Sprache"
+  }
+}

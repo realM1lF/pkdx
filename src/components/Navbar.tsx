@@ -4,14 +4,16 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { Menu, Search, Sparkles, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useShiny } from '@/lib/shiny';
 import { cn } from '@/lib/utils';
+import LanguageToggle from './LanguageToggle';
 
 const LINKS = [
-  { to: '/pokedex', label: 'Pokédex' },
-  { to: '/maps', label: 'Maps' },
-  { to: '/nuzlocke', label: 'Nuzlocke' },
-  { to: '/team', label: 'Team' },
+  { to: '/pokedex', key: 'nav.pokedex' },
+  { to: '/maps', key: 'nav.maps' },
+  { to: '/nuzlocke', key: 'nav.nuzlocke' },
+  { to: '/team', key: 'nav.team' },
 ];
 
 interface NavbarProps {
@@ -23,6 +25,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
   const [drawer, setDrawer] = useState(false);
   const { shiny, toggleShiny } = useShiny();
   const { scrollYProgress } = useScroll();
+  const { t } = useTranslation();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
       >
         <nav className="mx-auto flex h-full max-w-content items-center justify-between gap-4 px-4 md:px-8">
           {/* brand */}
-          <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="Pokédex 2.0 home">
+          <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label={t('nav.home')}>
             <img
               src="/logo.svg"
               alt=""
@@ -68,7 +71,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               >
                 {({ isActive }) => (
                   <>
-                    {l.label}
+                    {t(l.key)}
                     <span
                       className={cn(
                         'absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 bg-gold transition-all duration-300 ease-out-expo',
@@ -83,14 +86,15 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
 
           {/* right cluster */}
           <div className="flex items-center gap-2">
+            <LanguageToggle className="hidden sm:flex" />
             <button
               type="button"
               onClick={onSearchOpen}
               className="flex h-10 items-center gap-2 rounded-md border border-hairline bg-surface2 px-3 text-tx-muted transition-all duration-200 hover:border-hairline2 hover:text-tx-primary"
-              aria-label="Open search"
+              aria-label={t('nav.openSearch')}
             >
               <Search size={16} strokeWidth={1.75} />
-              <span className="hidden font-sans text-sm lg:inline">Search…</span>
+              <span className="hidden font-sans text-sm lg:inline">{t('nav.search')}</span>
               <kbd className="pixel-label hidden rounded-sm border border-hairline2 px-1.5 py-0.5 text-[9px] lg:inline">
                 /
               </kbd>
@@ -99,7 +103,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               type="button"
               onClick={toggleShiny}
               aria-pressed={shiny}
-              aria-label="Toggle shiny mode"
+              aria-label={t('nav.toggleShiny')}
               className={cn(
                 'grid h-10 w-10 place-items-center rounded-md border transition-all duration-200',
                 shiny
@@ -112,7 +116,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             <button
               type="button"
               onClick={() => setDrawer(true)}
-              aria-label="Open menu"
+              aria-label={t('nav.openMenu')}
               className="grid h-10 w-10 place-items-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:text-tx-primary md:hidden"
             >
               <Menu size={18} strokeWidth={1.75} />
@@ -139,11 +143,11 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
           >
             <div className="grain-overlay absolute inset-0" />
             <div className="relative flex h-16 items-center justify-between px-4">
-              <span className="pixel-label text-[10px] text-gold">MENU</span>
+              <span className="pixel-label text-[10px] text-gold">{t('nav.menu')}</span>
               <button
                 type="button"
                 onClick={() => setDrawer(false)}
-                aria-label="Close menu"
+                aria-label={t('nav.closeMenu')}
                 className="grid h-10 w-10 place-items-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-all duration-200 hover:rotate-90 hover:text-gold"
               >
                 <X size={18} strokeWidth={1.75} />
@@ -168,7 +172,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                       )
                     }
                   >
-                    {l.label}
+                    {t(l.key)}
                   </NavLink>
                 </motion.div>
               ))}
@@ -183,8 +187,16 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                 }}
                 className="mt-4 flex items-center gap-3 rounded-md border border-hairline bg-surface2 px-5 py-3 font-sans text-base font-semibold text-tx-secondary"
               >
-                <Search size={18} strokeWidth={1.75} /> Search the dex…
+                <Search size={18} strokeWidth={1.75} /> {t('nav.searchDrawer')}
               </motion.button>
+              <motion.div
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.14 + LINKS.length * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-4"
+              >
+                <LanguageToggle />
+              </motion.div>
             </nav>
           </motion.div>
         )}
