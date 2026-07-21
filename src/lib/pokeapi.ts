@@ -195,6 +195,22 @@ export function englishGenus(species: PokemonSpecies): string {
   return species.genera.find((g) => g.language.name === 'en')?.genus ?? '';
 }
 
+/**
+ * Flavor entries by version for the requested language, falling back to English
+ * (many species lack de entries in newer versions; EN is always present).
+ */
+export function flavorsByVersion(
+  species: PokemonSpecies,
+  lang: string,
+): Array<{ version: string; text: string }> {
+  const wanted = lang.startsWith('de') ? 'de' : 'en';
+  const primary = species.flavor_text_entries.filter((e) => e.language.name === wanted);
+  const entries = wanted !== 'en' && primary.length === 0
+    ? species.flavor_text_entries.filter((e) => e.language.name === 'en')
+    : primary;
+  return entries.map((e) => ({ version: displayName(e.version.name), text: sanitizeFlavor(e.flavor_text) }));
+}
+
 /* ---------- generation / region maps ---------- */
 
 export { genOf, regionOf, GENERATIONS };

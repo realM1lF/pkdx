@@ -5,8 +5,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, useInView } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
-import { displayName, getEvolutionChain, evolutionChainId, padNum, prefetchPokemon } from '@/lib/pokeapi';
+import { getEvolutionChain, evolutionChainId, padNum, prefetchPokemon } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage, type Lang } from '@/lib/i18n-data';
 import type { ChainLink, EvolutionChain, PokemonSpecies } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { evoCondition } from './data';
@@ -24,14 +26,14 @@ interface EvoStage {
   children: EvoStage[];
 }
 
-function parseChain(link: ChainLink): EvoStage {
+function parseChain(link: ChainLink, lang: Lang): EvoStage {
   const id = Number(link.species.url.replace(/\/$/, '').split('/').pop());
   return {
     key: link.species.name,
     name: link.species.name,
     id,
-    condition: link.evolution_details.length ? evoCondition(link.evolution_details) : null,
-    children: link.evolves_to.map(parseChain),
+    condition: link.evolution_details.length ? evoCondition(link.evolution_details, lang) : null,
+    children: link.evolves_to.map((c) => parseChain(c, lang)),
   };
 }
 
@@ -47,6 +49,9 @@ function StageCard({
   registerRef: (key: string, el: HTMLButtonElement | null) => void;
 }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const label = nameOfPokemon(stage.id, lang);
   const current = stage.id === currentId;
   return (
     <div className="relative flex flex-col items-center">
@@ -56,7 +61,7 @@ function StageCard({
           animate={{ y: [0, -2, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          YOU ARE HERE
+          {t('detail.evo.youAreHere')}
         </motion.span>
       )}
       <button
@@ -65,7 +70,7 @@ function StageCard({
         onClick={() => !current && navigate(`/pokemon/${stage.id}`)}
         onMouseEnter={() => prefetchPokemon(stage.id)}
         onFocus={() => prefetchPokemon(stage.id)}
-        aria-label={current ? `${displayName(stage.name)} (current)` : `Open ${displayName(stage.name)}`}
+        aria-label={current ? t('detail.evo.currentEntry', { name: label }) : t('detail.evo.openEntry', { name: label })}
         className={cn(
           'group relative flex w-[96px] flex-col items-center gap-0.5 rounded-lg border px-1.5 py-1.5 transition-all duration-200',
           current
@@ -83,11 +88,11 @@ function StageCard({
             }}
           />
           <span className="relative h-16 w-16 transition-transform duration-300 group-hover:scale-110">
-            <Sprite id={stage.id} name={displayName(stage.name)} era={stage.id <= 649 ? 'gen5' : 'default'} />
+            <Sprite id={stage.id} name={label} era={stage.id <= 649 ? 'gen5' : 'default'} />
           </span>
         </span>
         <span className="max-w-full truncate font-display text-[11px] font-bold uppercase text-tx-primary">
-          {displayName(stage.name)}
+          {label}
         </span>
         <span className="pixel-label text-[8px] text-tx-muted">{padNum(stage.id)}</span>
       </button>
@@ -142,6 +147,8 @@ function collectEdges(stage: EvoStage, out: Array<[EvoStage, EvoStage]> = []): A
 /* ---------- panel body ---------- */
 
 export default function EvolutionPanel({ species, currentId }: { species: PokemonSpecies | null; currentId: number }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [chain, setChain] = useState<EvolutionChain | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -165,7 +172,7 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
     };
   }, [species]);
 
-  const root = useMemo(() => (chain ? parseChain(chain.chain) : null), [chain]);
+  const root = useMemo(() => (chain ? parseChain(chain.chain, lang) : null), [chain, lang]);
   const edgePairs = useMemo(() => (root ? collectEdges(root) : []), [root]);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -233,7 +240,7 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
   }, [root, edgePairs]);
 
   if (failed) {
-    return <p className="p-4 font-sans text-xs text-tx-muted">Evolution data unavailable offline.</p>;
+    return <p className="p-4 font-sans text-xs text-tx-muted">{t('detail.evo.offline')}</p>;
   }
   if (!species || !root) {
     return (
@@ -299,7 +306,7 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
         {noEvolution && (
           <div className="ml-16 flex h-[92px] items-center rounded-lg border border-dashed border-hairline2 px-4">
             <p className="max-w-[200px] font-sans text-[11px] leading-snug text-tx-muted">
-              This Pokémon does not evolve — and doesn't need to.
+              {t('detail.evo.noEvolution')}
             </p>
           </div>
         )}

@@ -3,7 +3,7 @@
  * | BST value + 40px mini-bar | shiny sparkle-dot. Row hover = 2px type-glow left + surface-2. */
 import { memo, useState } from 'react';
 import type { CSSProperties, Ref } from 'react';
-import { Link } from 'react-router';
+import { LocaleLink } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
 import Sprite from '@/components/Sprite';
 import TypeChipMini from './TypeChipMini';
@@ -132,7 +132,7 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
           />
         </button>
       </div>
-      <Link
+      <LocaleLink
         to={`/pokemon/${s.id}`}
         aria-label={`${label} — ${padNum(s.id)}`}
         onMouseEnter={() => prefetchPokemon(s.id)}

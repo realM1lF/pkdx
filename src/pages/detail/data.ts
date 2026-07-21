@@ -1,6 +1,8 @@
 /* Detail-page data helpers — type matchups, version groups, species extras.
  * Page-local only (density-addendum §5); shared lib files are untouched. */
 import { cachedJson } from '@/lib/pokeapi';
+import i18n from '@/i18n';
+import { nameOfItem, nameOfType, type Lang } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource, PokemonSpecies, PokemonType } from '@/lib/types';
 import { POKEMON_TYPES, TYPE_COLORS } from '@/lib/types';
 
@@ -127,25 +129,30 @@ function titleCase(slug: string): string {
     .join(' ');
 }
 
-/** Condense PokéAPI evolution_details into one compact chip (first alternative). */
-export function evoCondition(details: EvolutionDetail[]): EvoCondition {
+/** Condense PokéAPI evolution_details into one compact chip (first alternative).
+ * Labels are localized (item/type names via the de artifact, connective words
+ * via detail.evo.* keys); slugs in the data model stay English. */
+export function evoCondition(details: EvolutionDetail[], lang: Lang = 'en'): EvoCondition {
+  const t = (key: string, opts?: Record<string, unknown>) => i18n.t(key, { lng: lang, ...opts });
   if (!details.length) return { label: '—' };
   const d = details[0];
   const parts: string[] = [];
   let itemIcon: string | undefined;
 
   if (d.item) {
-    parts.push(titleCase(d.item.name));
+    parts.push(nameOfItem(d.item.name, lang));
     itemIcon = `${ITEMS_BASE}/${d.item.name}.png`;
   }
-  if (d.trigger.name === 'trade') parts.push('Trade');
-  if (d.trigger.name === 'use-item' && !d.item) parts.push('Use item');
-  if (d.min_happiness != null && d.trigger.name !== 'trade') parts.push('Friendship');
-  if (d.min_affection != null) parts.push('Affection');
-  if (d.known_move_type) parts.push(`${titleCase(d.known_move_type.name)} move`);
-  if (d.min_level != null) parts.push(`Lv ${d.min_level}`);
-  if (d.time_of_day) parts.push(`(${d.time_of_day})`);
-  if (d.trigger.name === 'shed') parts.push('Shed');
+  if (d.trigger.name === 'trade') parts.push(t('detail.evo.trade'));
+  if (d.trigger.name === 'use-item' && !d.item) parts.push(t('detail.evo.useItem'));
+  if (d.min_happiness != null && d.trigger.name !== 'trade') parts.push(t('detail.evo.friendship'));
+  if (d.min_affection != null) parts.push(t('detail.evo.affection'));
+  if (d.known_move_type)
+    parts.push(t('detail.evo.typedMove', { type: nameOfType(d.known_move_type.name, lang) }));
+  if (d.min_level != null) parts.push(t('detail.evo.level', { level: d.min_level }));
+  if (d.time_of_day) parts.push(t(`detail.evo.${d.time_of_day === 'night' ? 'night' : 'day'}`));
+  if (d.trigger.name === 'shed') parts.push(t('detail.evo.shed'));
+  // rare triggers (spin, tower-of-darkness, …) fall back to the English slug label
   if (!parts.length) parts.push(titleCase(d.trigger.name));
   return { label: parts.join(' · '), itemIcon };
 }
@@ -164,9 +171,9 @@ export function formatWeight(hg: number): string {
   return `${(hg / 10).toFixed(1)} kg`;
 }
 
-export function genderLabel(rate: number | undefined): string {
+export function genderLabel(rate: number | undefined, lang: Lang = 'en'): string {
   if (rate == null) return '—';
-  if (rate < 0) return 'Genderless';
+  if (rate < 0) return i18n.t('detail.side.genderless', { lng: lang });
   const female = (rate / 8) * 100;
   return `${100 - female}% ♂ · ${female}% ♀`;
 }

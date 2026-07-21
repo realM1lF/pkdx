@@ -5,7 +5,7 @@
  * mythical = psychic-glow border. Card-level shiny overrides the global mode. */
 import { memo, useState } from 'react';
 import type { CSSProperties, Ref } from 'react';
-import { Link } from 'react-router';
+import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import Sprite from './Sprite';
@@ -160,7 +160,7 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
       </div>
 
       {/* stretched link — real anchor, prefetch on hover/focus */}
-      <Link
+      <LocaleLink
         to={`/pokemon/${s.id}`}
         aria-label={`${label} — ${padNum(s.id)}`}
         onMouseEnter={() => prefetchPokemon(s.id)}

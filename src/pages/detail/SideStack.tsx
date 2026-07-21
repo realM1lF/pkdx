@@ -3,8 +3,10 @@
  * training/breeding mini panel. Three stacked micro-panels. */
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
-import { displayName, pokemonTypes } from '@/lib/pokeapi';
+import { pokemonTypes } from '@/lib/pokeapi';
+import { nameOfAbility, nameOfGrowth, nameOfType, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { computeMatchups, genderLabel, getAbilityShort, speciesExtras, typeRgb } from './data';
@@ -36,6 +38,8 @@ function MiniPanel({
 /* ---------- abilities ---------- */
 
 function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean; pokemonId: number }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [desc, setDesc] = useState<string | null>(null);
   useEffect(() => {
     let on = true;
@@ -52,10 +56,10 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold shadow-[0_0_6px_rgba(246,201,69,0.8)]" aria-hidden />
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <span className="font-sans text-[13px] font-semibold text-tx-primary">{displayName(name)}</span>
+          <span className="font-sans text-[13px] font-semibold text-tx-primary">{nameOfAbility(name, lang)}</span>
           {hidden && (
             <span className="rounded-pill border border-gold/50 bg-gold-soft px-1.5 font-sans text-[9px] font-bold uppercase text-gold">
-              Hidden
+              {t('detail.side.hidden')}
             </span>
           )}
         </div>
@@ -63,7 +67,7 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
           <span className="dx-skel mt-1 block h-3 w-4/5" />
         ) : (
           <p className="truncate font-sans text-[11px] leading-snug text-tx-muted" title={desc}>
-            {desc || 'No description available.'}
+            {desc || t('detail.side.noDesc')}
           </p>
         )}
       </div>
@@ -74,6 +78,8 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
 /* ---------- matchup chips ---------- */
 
 function MatchupRow({ label, mult, types, tint }: { label: string; mult: string; types: string[]; tint: string }) {
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   return (
     <div className="flex items-start gap-2 py-1">
       <span className="pixel-label w-14 shrink-0 pt-1 text-[8px]" style={{ color: tint }}>
@@ -91,10 +97,10 @@ function MatchupRow({ label, mult, types, tint }: { label: string; mult: string;
                 borderColor: `rgba(${typeRgb(t)},0.4)`,
                 background: `rgba(${typeRgb(t)},0.12)`,
               }}
-              title={`${t} deals ${mult} damage`}
+              title={t8n('detail.side.dealsDamage', { type: nameOfType(t, lang), mult })}
             >
               <TypeGlyph type={t} size={11} />
-              {t}
+              {nameOfType(t, lang)}
             </span>
           ))
         ) : (
@@ -119,9 +125,11 @@ function KV({ k, v }: { k: string; v: React.ReactNode }) {
 /* ---------- stack ---------- */
 
 export default function SideStack({ pokemon, species }: { pokemon: Pokemon; species: PokemonSpecies | null }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const matchups = computeMatchups(pokemonTypes(pokemon));
   const extras = speciesExtras(species);
-  const growth = extras.growth_rate ? displayName(extras.growth_rate.name) : '—';
+  const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
   return (
     <motion.div
@@ -132,7 +140,7 @@ export default function SideStack({ pokemon, species }: { pokemon: Pokemon; spec
       variants={{ on: { transition: { staggerChildren: 0.06 } } }}
     >
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
-        <MiniPanel eyebrow="TRAITS" title="Abilities">
+        <MiniPanel eyebrow={t('detail.side.traitsEyebrow')} title={t('detail.side.abilitiesTitle')}>
           <ul>
             {pokemon.abilities.map((a) => (
               <AbilityRow key={a.ability.name} name={a.ability.name} hidden={a.is_hidden} pokemonId={pokemon.id} />
@@ -142,21 +150,25 @@ export default function SideStack({ pokemon, species }: { pokemon: Pokemon; spec
       </motion.div>
 
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
-        <MiniPanel eyebrow="DEFENSE" title="Type Matchups">
-          <MatchupRow label="WEAK ×2" mult="×2" types={matchups.weak} tint="#FF8A6B" />
-          <MatchupRow label="RESIST ×½" mult="×0.5" types={matchups.resist} tint="#63D96B" />
-          <MatchupRow label="IMMUNE ×0" mult="×0" types={matchups.immune} tint="#5E6680" />
+        <MiniPanel eyebrow={t('detail.side.defenseEyebrow')} title={t('detail.side.matchupsTitle')}>
+          <MatchupRow label={t('detail.side.weak')} mult="×2" types={matchups.weak} tint="#FF8A6B" />
+          <MatchupRow label={t('detail.side.resist')} mult="×0.5" types={matchups.resist} tint="#63D96B" />
+          <MatchupRow label={t('detail.side.immune')} mult="×0" types={matchups.immune} tint="#5E6680" />
         </MiniPanel>
       </motion.div>
 
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
-        <MiniPanel eyebrow="TRAINING" title="Breeding & Growth">
-          <KV k="GROWTH RATE" v={growth} />
-          <KV k="BASE HAPPINESS" v={extras.base_happiness ?? '—'} />
-          <KV k="GENDER" v={genderLabel(extras.gender_rate)} />
+        <MiniPanel eyebrow={t('detail.side.trainingEyebrow')} title={t('detail.side.breedingTitle')}>
+          <KV k={t('detail.side.growthRate')} v={growth} />
+          <KV k={t('detail.side.baseHappiness')} v={extras.base_happiness ?? '—'} />
+          <KV k={t('detail.side.gender')} v={genderLabel(extras.gender_rate, lang)} />
           <KV
-            k="EGG CYCLES"
-            v={extras.hatch_counter != null ? `${extras.hatch_counter} (~${extras.hatch_counter * 257} steps)` : '—'}
+            k={t('detail.side.eggCycles')}
+            v={
+              extras.hatch_counter != null
+                ? `${extras.hatch_counter} (${t('detail.side.steps', { count: extras.hatch_counter * 257 })})`
+                : '—'
+            }
           />
         </MiniPanel>
       </motion.div>

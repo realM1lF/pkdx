@@ -18,6 +18,8 @@ export interface MapNode {
   /** kebab key, e.g. 'kanto-route-1' — USED AS route_key EVERYWHERE */
   id: string;
   label: string;
+  /** German display name (build-time artifact from PokéAPI) — label stays EN */
+  nameDe?: string;
   kind: NodeKind;
   /** authored, in region viewBox units */
   x: number;
@@ -41,6 +43,8 @@ export interface MapEdge {
 export interface RegionMap {
   region: RegionId;
   name: string;
+  /** German region display name — `name` stays EN */
+  nameDe?: string;
   gen: string;
   /** signature energy hex (maps.md §0 accent table) */
   accent: string;
@@ -71,6 +75,17 @@ const ALL: RegionMap[] = [
 export const REGIONS: readonly RegionMap[] = ALL;
 
 const BY_ID = new Map<RegionId, RegionMap>(ALL.map((r) => [r.region, r]));
+
+/** Localized node label — route keys (`id`) and EN `label` are the data model;
+ *  `nameDe` is display-only. */
+export function nodeName(node: MapNode, lang: string): string {
+  return lang.startsWith('de') ? (node.nameDe ?? node.label) : node.label;
+}
+
+/** Localized region name — display-only. */
+export function regionName(region: RegionMap, lang: string): string {
+  return lang.startsWith('de') ? (region.nameDe ?? region.name) : region.name;
+}
 
 /** Lookup a region by id; undefined for unknown ids (e.g. /maps/kalos → 404 state). */
 export function regionById(id: string | undefined | null): RegionMap | undefined {

@@ -111,6 +111,101 @@ export function nameOfRegion(slug: string, lang: Lang): string {
   return displayName(slug);
 }
 
+/* ---------- encounter methods / egg groups / growth rates ----------
+ * Small closed vocabularies — official German game terminology, kept inline
+ * instead of a build artifact (PokéAPI coverage is patchy here). */
+
+const METHODS_DE: Record<string, string> = {
+  walk: 'Gehen',
+  surf: 'Surfen',
+  'old-rod': 'Angel',
+  'good-rod': 'Profiangel',
+  'super-rod': 'Superangel',
+  fish: 'Angeln',
+  fishing: 'Angeln',
+  'rock-smash': 'Zertrümmerer',
+  headbutt: 'Kopfnuss',
+  gift: 'Geschenk',
+  'gift-egg': 'Ei-Geschenk',
+  'only-one': 'Nur einmal',
+  'dark-grass': 'Dunkles Gras',
+  'rustling-grass': 'Raschelndes Gras',
+  'grass-spots': 'Grasstellen',
+  'cave-spots': 'Höhlenstellen',
+  'bridge-spots': 'Brückenstellen',
+  'yellow-flowers': 'Gelbe Blumen',
+  'purple-flowers': 'Lila Blumen',
+  'red-flowers': 'Rote Blumen',
+  'rough-terrain': 'Raues Terrain',
+  seaweed: 'Seetang',
+  sos: 'SOS-Ruf',
+  'bubbling-spots': 'Blubberstellen',
+  swarm: 'Schwarm',
+  pokeradar: 'PokéRadar',
+  roaming: 'Wandernd',
+  'honey-trees': 'Honigbäume',
+};
+
+export function nameOfMethod(slug: string, lang: Lang): string {
+  if (isDe(lang) && METHODS_DE[slug]) return METHODS_DE[slug];
+  return displayName(slug);
+}
+
+const EGG_GROUPS_DE: Record<string, string> = {
+  monster: 'Monster',
+  water1: 'Wasser 1',
+  bug: 'Käfer',
+  flying: 'Flug',
+  field: 'Feld',
+  fairy: 'Fee',
+  grass: 'Pflanze',
+  'human-like': 'Humanotyp',
+  water3: 'Wasser 3',
+  mineral: 'Mineral',
+  amorph: 'Amorph',
+  water2: 'Wasser 2',
+  ditto: 'Ditto',
+  dragon: 'Drache',
+  'no-eggs': 'Unbekannt',
+};
+
+export function nameOfEggGroup(slug: string, lang: Lang): string {
+  if (isDe(lang) && EGG_GROUPS_DE[slug]) return EGG_GROUPS_DE[slug];
+  return displayName(slug);
+}
+
+const GROWTH_DE: Record<string, string> = {
+  slow: 'Langsam',
+  'medium-slow': 'Mittellangsam',
+  fast: 'Schnell',
+  'medium-fast': 'Mittelschnell',
+  medium: 'Mittel',
+  erratic: 'Erratisch',
+  fluctuating: 'Fluktuierend',
+};
+
+export function nameOfGrowth(slug: string, lang: Lang): string {
+  if (isDe(lang) && GROWTH_DE[slug]) return GROWTH_DE[slug];
+  return displayName(slug);
+}
+
+/** GENERATIONS region display name -> locale key under `regions.*` */
+const GEN_REGION_KEY: Record<string, string> = {
+  Kanto: 'kanto',
+  Johto: 'johto',
+  Hoenn: 'hoenn',
+  Sinnoh: 'sinnoh',
+  Unova: 'unova',
+  Kalos: 'kalos',
+  Alola: 'alola',
+  'Galar / Hisui': 'galarHisui',
+  Paldea: 'paldea',
+};
+
+export function genRegionKey(region: string): string {
+  return GEN_REGION_KEY[region] ?? 'kanto';
+}
+
 /* ---------- search ---------- */
 
 /** Resolve a (possibly German) query to a dex id via the de reverse index. */

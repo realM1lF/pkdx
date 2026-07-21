@@ -2,6 +2,7 @@
  * 6 StatBars + BARS/RADAR SegmentedControl + BST ring, all in one panel. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import StatBar from '@/components/StatBar';
 import { statOf, totalBaseStats } from '@/lib/pokeapi';
 import { STAT_LABELS, STAT_ORDER } from '@/lib/types';
@@ -15,6 +16,7 @@ const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 /* ---------- radar hexagon ---------- */
 
 function RadarHex({ values, type }: { values: number[]; type: string }) {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-10% 0px' });
   const size = 176;
@@ -34,7 +36,7 @@ function RadarHex({ values, type }: { values: number[]; type: string }) {
 
   return (
     <div ref={ref} className="flex justify-center">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Stat radar">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={t('detail.combat.statRadar')}>
         {/* grid rings */}
         {[0.25, 0.5, 0.75, 1].map((f) => (
           <polygon
@@ -97,14 +99,16 @@ function RadarHex({ values, type }: { values: number[]; type: string }) {
 
 /* ---------- BST ring ---------- */
 
-function bstTier(bst: number): string {
-  if (bst >= 600) return 'ELITE';
-  if (bst >= 500) return 'STRONG';
-  if (bst >= 420) return 'AVERAGE';
-  return 'BELOW AVERAGE';
+/* tier labels resolve through detail.combat.* i18n keys */
+function bstTierKey(bst: number): string {
+  if (bst >= 600) return 'detail.combat.elite';
+  if (bst >= 500) return 'detail.combat.strong';
+  if (bst >= 420) return 'detail.combat.average';
+  return 'detail.combat.belowAverage';
 }
 
 function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-10% 0px' });
   const mv = useMotionValue(0);
@@ -150,14 +154,14 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
         </motion.span>
       </div>
       <div className="min-w-0">
-        <div className="pixel-label text-[8px] text-tx-muted">BASE STAT TOTAL</div>
+        <div className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.bst')}</div>
         <div
           className={cn(
             'mt-1 inline-block rounded-pill border px-2 py-px font-sans text-[10px] font-bold tracking-wide',
             bst >= 500 ? 'border-gold/50 bg-gold-soft text-gold' : 'border-hairline text-tx-secondary',
           )}
         >
-          {bstTier(bst)}
+          {t(bstTierKey(bst))}
         </div>
       </div>
     </div>
@@ -167,6 +171,7 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
 /* ---------- combat panel ---------- */
 
 export default function CombatPanel({ pokemon, legendary = false }: { pokemon: Pokemon; legendary?: boolean }) {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<'bars' | 'radar'>('bars');
   const types = pokemon.types.map((t) => t.type.name);
   const primary = types[0] ?? 'normal';
@@ -179,16 +184,16 @@ export default function CombatPanel({ pokemon, legendary = false }: { pokemon: P
   return (
     <div className="flex h-full flex-col gap-3 p-4 md:p-5">
       <div className="flex items-center justify-between">
-        <span className="pixel-label text-[8px] text-tx-muted">FILL ON SCROLL · TIER-CODED</span>
+        <span className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.fillNote')}</span>
         <SegmentedControl
           id="combat-mode"
           size="xs"
-          ariaLabel="Stat visualization"
+          ariaLabel={t('detail.combat.statViz')}
           value={mode}
           onChange={(v) => setMode(v as 'bars' | 'radar')}
           options={[
-            { value: 'bars', label: 'BARS' },
-            { value: 'radar', label: 'RADAR' },
+            { value: 'bars', label: t('detail.combat.bars') },
+            { value: 'radar', label: t('detail.combat.radar') },
           ]}
         />
       </div>
@@ -208,7 +213,7 @@ export default function CombatPanel({ pokemon, legendary = false }: { pokemon: P
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3">
         <BstRing key={pokemon.id} bst={bst} legendary={legendary} />
         <div className="flex flex-col items-end gap-1">
-          <span className="pixel-label text-[8px] text-tx-muted">EV YIELD</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.evYield')}</span>
           <div className="flex gap-1">
             {evChips.length ? (
               evChips.map((c) => (

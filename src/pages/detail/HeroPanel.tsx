@@ -3,11 +3,13 @@
  * identity column: # / name / TypeBadges / flavor+version chips / quick-facts 2×4. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { Link } from 'react-router';
+import { LocaleLink } from '@/lib/locale-link';
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowRight, Sparkles, Volume2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import TypeBadge from '@/components/TypeBadge';
-import { displayName, englishFlavorsByVersion, englishGenus, padNum, pokemonTypes } from '@/lib/pokeapi';
+import { englishGenus, flavorsByVersion, padNum, pokemonTypes } from '@/lib/pokeapi';
+import { genRegionKey, genusOfPokemon, nameOfAbility, nameOfEggGroup, nameOfGrowth, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { getLenis } from '@/lib/smooth';
 import { useShiny } from '@/lib/shiny';
 import { sprites } from '@/lib/sprites';
@@ -103,6 +105,9 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const primary = types[0] ?? 'normal';
   const secondary = types[1];
   const { shiny: globalShiny } = useShiny();
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const name = nameOfPokemon(pokemon.id, lang);
   const [shiny, setShiny] = useState(globalShiny);
   const [burst, setBurst] = useState(0);
   const [crying, setCrying] = useState(false);
@@ -117,7 +122,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const srx = useSpring(rx, { stiffness: 180, damping: 22 });
   const sry = useSpring(ry, { stiffness: 180, damping: 22 });
 
-  const flavors = useMemo(() => (species ? englishFlavorsByVersion(species) : []), [species]);
+  const flavors = useMemo(() => (species ? flavorsByVersion(species, lang) : []), [species, lang]);
   const versionChips = useMemo(() => {
     const seen = new Set<string>();
     const out: Array<{ version: string; text: string }> = [];
@@ -133,11 +138,14 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const activeFlavor = versionChips.find((f) => f.version === version) ?? versionChips[0];
 
   const extras = speciesExtras(species);
-  const genus = species ? englishGenus(species) : '';
+  const genus = lang === 'de' ? genusOfPokemon(pokemon.id, lang) : species ? englishGenus(species) : '';
   const gen = genOf(pokemon.id);
-  const abilityNames = pokemon.abilities.map((a) => displayName(a.ability.name) + (a.is_hidden ? ' (H)' : ''));
-  const eggGroups = extras.egg_groups?.map((g) => displayName(g.name)).join(' · ') || '—';
-  const growth = extras.growth_rate ? displayName(extras.growth_rate.name) : '—';
+  const hiddenAbbr = t('detail.hero.hiddenAbbr');
+  const abilityNames = pokemon.abilities.map(
+    (a) => nameOfAbility(a.ability.name, lang) + (a.is_hidden ? ` ${hiddenAbbr}` : ''),
+  );
+  const eggGroups = extras.egg_groups?.map((g) => nameOfEggGroup(g.name, lang)).join(' · ') || '—';
+  const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
   /* reset shiny per entry */
   const [prevId, setPrevId] = useState(pokemon.id);
@@ -232,7 +240,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
                 <motion.img
                   key={shiny ? 'shiny' : 'normal'}
                   src={shiny ? sprites.artworkShiny(pokemon.id) : sprites.artwork(pokemon.id)}
-                  alt={`${displayName(pokemon.name)} official artwork${shiny ? ' (shiny)' : ''}`}
+                  alt={`${t('detail.hero.artworkAlt', { name })}${shiny ? t('detail.hero.shinySuffix') : ''}`}
                   className="h-full w-full object-contain drop-shadow-[0_16px_32px_rgba(0,0,0,0.5)]"
                   draggable={false}
                   initial={{ opacity: 0 }}
@@ -252,7 +260,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
           type="button"
           onClick={toggleShiny}
           aria-pressed={shiny}
-          aria-label="Toggle shiny artwork"
+          aria-label={t('detail.hero.shinyArtwork')}
           className={cn(
             'absolute right-1 top-1 z-20 grid h-10 w-10 place-items-center rounded-md border backdrop-blur-sm transition-all duration-200',
             shiny
@@ -266,7 +274,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
         {/* cry button */}
         <button
           type="button"
-          aria-label="Play cry (long-press for legacy cry)"
+          aria-label={t('detail.hero.playCry')}
           onClick={() => {
             if (longPressed.current) {
               longPressed.current = false;
@@ -304,7 +312,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             </>
           )}
           <Volume2 size={14} strokeWidth={1.75} />
-          <span className="pixel-label text-[9px]">CRY</span>
+          <span className="pixel-label text-[9px]">{t('detail.hero.cry')}</span>
         </button>
       </div>
 
@@ -324,11 +332,11 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             <div className="flex items-baseline gap-3">
               <span className="pixel-label text-[11px] text-gold">{padNum(pokemon.id)}</span>
               <span className="pixel-label text-[8px] text-tx-muted">
-                {gen.region} · GEN {gen.roman}
+                {t(`regions.${genRegionKey(gen.region)}`)} · GEN {gen.roman}
               </span>
             </div>
             <h1 className="mt-0.5 font-display text-[32px] font-black uppercase leading-[1.05] tracking-wide text-tx-primary md:text-[38px]">
-              {displayName(pokemon.name)}
+              {name}
             </h1>
           </motion.div>
 
@@ -343,7 +351,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             ))}
             {(species?.is_legendary || species?.is_mythical) && (
               <span className="legendary-ring rounded-pill px-2.5 py-0.5 font-sans text-[10px] font-bold uppercase tracking-wider text-gold">
-                {species.is_mythical ? 'Mythical' : 'Legendary'}
+                {species.is_mythical ? t('pokedex.mythical') : t('pokedex.legendary')}
               </span>
             )}
           </motion.div>
@@ -382,7 +390,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
                 transition={{ duration: 0.25, ease: EASE }}
                 className="line-clamp-3 font-sans text-[13px] leading-snug text-tx-secondary"
               >
-                {activeFlavor?.text ?? 'No dex entry data available.'}
+                {activeFlavor?.text ?? t('detail.hero.noFlavor')}
               </motion.p>
             </AnimatePresence>
           </motion.div>
@@ -393,29 +401,29 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             transition={{ duration: 0.4, ease: EASE }}
             className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
           >
-            <Fact label="Height">{formatHeight(pokemon.height)}</Fact>
-            <Fact label="Weight">{formatWeight(pokemon.weight)}</Fact>
-            <Fact label="Catch Rate">
+            <Fact label={t('detail.hero.height')}>{formatHeight(pokemon.height)}</Fact>
+            <Fact label={t('detail.hero.weight')}>{formatWeight(pokemon.weight)}</Fact>
+            <Fact label={t('detail.hero.catchRate')}>
               {extras.capture_rate != null ? <CatchMeter rate={extras.capture_rate} /> : '—'}
             </Fact>
-            <Fact label="Base EXP">{pokemon.base_experience ?? '—'}</Fact>
-            <Fact label="Abilities" span={2}>
+            <Fact label={t('detail.hero.baseExp')}>{pokemon.base_experience ?? '—'}</Fact>
+            <Fact label={t('detail.hero.abilities')} span={2}>
               <span className="text-[12px]" title={abilityNames.join(' · ')}>
                 {abilityNames.map((n, i) => (
                   <span key={n}>
                     {i > 0 && <span className="text-tx-muted"> · </span>}
-                    <span className={n.endsWith('(H)') ? 'text-gold' : undefined}>{n}</span>
+                    <span className={n.endsWith(hiddenAbbr) ? 'text-gold' : undefined}>{n}</span>
                   </span>
                 ))}
               </span>
             </Fact>
-            <Fact label="Egg Groups" span={2}>
+            <Fact label={t('detail.hero.eggGroups')} span={2}>
               <span className="text-[12px]">{eggGroups}</span>
             </Fact>
-            <Fact label="Genus" span={2}>
+            <Fact label={t('detail.hero.genus')} span={2}>
               <span className="text-[12px] italic">{genus || '—'}</span>
             </Fact>
-            <Fact label="Growth" span={2}>
+            <Fact label={t('detail.hero.growth')} span={2}>
               <span className="text-[12px]">{growth}</span>
             </Fact>
           </motion.div>
@@ -439,15 +447,15 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
               }
               data-type={primary as PokemonType}
             >
-              Sprite Museum
+              {t('detail.hero.museum')}
               <ArrowRight size={13} strokeWidth={2} className="transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
-            <Link
+            <LocaleLink
               to="/pokedex"
               className="inline-flex h-8 items-center rounded-md border border-hairline2 px-3.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-tx-secondary transition-all duration-200 hover:bg-surface3 hover:text-gold"
             >
-              Back to grid
-            </Link>
+              {t('detail.hero.backToGrid')}
+            </LocaleLink>
           </motion.div>
         </motion.div>
       </div>

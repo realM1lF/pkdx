@@ -3,6 +3,7 @@
  * Typing live-filters the grid via onChange; picking a result opens the detail page. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useLocalePath } from '@/lib/locale-link';
 import Fuse from 'fuse.js';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X } from 'lucide-react';
@@ -23,6 +24,7 @@ interface CommandSearchProps {
 
 export default function CommandSearch({ value, onChange, className }: CommandSearchProps) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
@@ -75,7 +77,7 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
   const pick = (entry: DexIndexEntry) => {
     setOpen(false);
     inputRef.current?.blur();
-    navigate(`/pokemon/${entry.id}`);
+    navigate(localePath(`/pokemon/${entry.id}`));
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {

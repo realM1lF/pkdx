@@ -4,111 +4,813 @@
   "gen": "GEN V",
   "accent": "#8C6FFF",
   "viewBox": "0 0 1200 840",
-  "versions": ["black", "white", "black-2", "white-2"],
+  "versions": [
+    "black",
+    "white",
+    "black-2",
+    "white-2"
+  ],
   "defaultVersion": "black",
   "coverage": 0.92,
   "speciesCount": 297,
   "nodes": [
-    { "id": "nuvema-town", "label": "Nuvema Town", "kind": "city", "x": 1010, "y": 740, "order": 1, "locationSlug": "nuvema-town", "labelPos": "bottom" },
-    { "id": "unova-route-1", "label": "Route 1", "kind": "route", "x": 1010, "y": 640, "order": 2, "locationSlug": "unova-route-1", "labelPos": "left" },
-    { "id": "accumula-town", "label": "Accumula Town", "kind": "city", "x": 1010, "y": 540, "order": 3, "locationSlug": "accumula-town", "labelPos": "left" },
-    { "id": "unova-route-2", "label": "Route 2", "kind": "route", "x": 1010, "y": 440, "order": 4, "locationSlug": "unova-route-2", "labelPos": "left" },
-    { "id": "striaton-city", "label": "Striaton City", "kind": "city", "x": 1010, "y": 340, "order": 5, "locationSlug": "striaton-city", "labelPos": "left" },
-    { "id": "dreamyard", "label": "Dreamyard", "kind": "dungeon", "x": 1105, "y": 390, "order": 6, "locationSlug": "dreamyard", "labelPos": "bottom" },
-    { "id": "unova-route-3", "label": "Route 3", "kind": "route", "x": 900, "y": 340, "order": 7, "locationSlug": "unova-route-3", "labelPos": "bottom" },
-    { "id": "wellspring-cave", "label": "Wellspring Cave", "kind": "dungeon", "x": 870, "y": 250, "order": 8, "locationSlug": "wellspring-cave", "labelPos": "bottom" },
-    { "id": "nacrene-city", "label": "Nacrene City", "kind": "city", "x": 790, "y": 340, "order": 9, "locationSlug": "nacrene-city", "labelPos": "bottom" },
-    { "id": "pinwheel-forest", "label": "Pinwheel Forest", "kind": "dungeon", "x": 650, "y": 420, "order": 10, "locationSlug": "pinwheel-forest", "labelPos": "right" },
-    { "id": "castelia-city", "label": "Castelia City", "kind": "city", "x": 620, "y": 590, "order": 11, "locationSlug": "castelia-city", "labelPos": "right" },
-    { "id": "unova-route-4", "label": "Route 4", "kind": "route", "x": 620, "y": 450, "order": 12, "locationSlug": "unova-route-4", "labelPos": "left" },
-    { "id": "desert-resort", "label": "Desert Resort", "kind": "dungeon", "x": 500, "y": 410, "order": 13, "locationSlug": "desert-resort", "labelPos": "bottom" },
-    { "id": "relic-castle", "label": "Relic Castle", "kind": "dungeon", "x": 450, "y": 500, "order": 14, "locationSlug": "relic-castle", "labelPos": "bottom" },
-    { "id": "nimbasa-city", "label": "Nimbasa City", "kind": "city", "x": 620, "y": 290, "order": 15, "locationSlug": "nimbasa-city", "labelPos": "bottom" },
-    { "id": "unova-route-5", "label": "Route 5", "kind": "route", "x": 510, "y": 290, "order": 16, "locationSlug": "unova-route-5", "labelPos": "top" },
-    { "id": "driftveil-city", "label": "Driftveil City", "kind": "city", "x": 390, "y": 290, "order": 17, "locationSlug": "driftveil-city", "labelPos": "top" },
-    { "id": "unova-route-6", "label": "Route 6", "kind": "route", "x": 280, "y": 305, "order": 18, "locationSlug": "unova-route-6", "labelPos": "top" },
-    { "id": "chargestone-cave", "label": "Chargestone Cave", "kind": "dungeon", "x": 195, "y": 370, "order": 19, "locationSlug": "chargestone-cave", "labelPos": "bottom" },
-    { "id": "mistralton-city", "label": "Mistralton City", "kind": "city", "x": 115, "y": 295, "order": 20, "locationSlug": "mistralton-city", "labelPos": "bottom" },
-    { "id": "unova-route-7", "label": "Route 7", "kind": "route", "x": 125, "y": 200, "order": 21, "locationSlug": "unova-route-7", "labelPos": "bottom" },
-    { "id": "celestial-tower", "label": "Celestial Tower", "kind": "dungeon", "x": 45, "y": 120, "order": 22, "locationSlug": "celestial-tower", "labelPos": "bottom" },
-    { "id": "twist-mountain", "label": "Twist Mountain", "kind": "dungeon", "x": 230, "y": 125, "order": 23, "locationSlug": "twist-mountain", "labelPos": "bottom" },
-    { "id": "icirrus-city", "label": "Icirrus City", "kind": "city", "x": 340, "y": 105, "order": 24, "locationSlug": "icirrus-city", "labelPos": "bottom" },
-    { "id": "dragonspiral-tower", "label": "Dragonspiral Tower", "kind": "dungeon", "x": 330, "y": 28, "order": 25, "locationSlug": "dragonspiral-tower", "labelPos": "bottom" },
-    { "id": "unova-route-8", "label": "Route 8", "kind": "route", "x": 440, "y": 115, "order": 26, "locationSlug": "unova-route-8", "labelPos": "top" },
-    { "id": "moor-of-icirrus", "label": "Moor of Icirrus", "kind": "dungeon", "x": 450, "y": 210, "order": 27, "locationSlug": "moor-of-icirrus", "labelPos": "bottom" },
-    { "id": "opelucid-city", "label": "Opelucid City", "kind": "city", "x": 560, "y": 120, "order": 28, "locationSlug": "opelucid-city", "labelPos": "bottom" },
-    { "id": "unova-route-9", "label": "Route 9", "kind": "route", "x": 675, "y": 125, "order": 29, "locationSlug": "unova-route-9", "labelPos": "bottom" },
-    { "id": "unova-route-11", "label": "Route 11", "kind": "route", "x": 785, "y": 140, "order": 30, "locationSlug": "unova-route-11", "labelPos": "bottom" },
-    { "id": "unova-route-12", "label": "Route 12", "kind": "route", "x": 890, "y": 160, "order": 31, "locationSlug": "unova-route-12", "labelPos": "bottom" },
-    { "id": "lacunosa-town", "label": "Lacunosa Town", "kind": "city", "x": 975, "y": 230, "order": 32, "locationSlug": "lacunosa-town", "labelPos": "top" },
-    { "id": "unova-route-13", "label": "Route 13", "kind": "route", "x": 1030, "y": 315, "order": 33, "locationSlug": "unova-route-13", "labelPos": "right" },
-    { "id": "giant-chasm", "label": "Giant Chasm", "kind": "dungeon", "x": 1100, "y": 140, "order": 34, "locationSlug": "giant-chasm", "labelPos": "bottom" },
-    { "id": "undella-town", "label": "Undella Town", "kind": "city", "x": 1045, "y": 410, "order": 35, "locationSlug": "undella-town", "labelPos": "right" },
-    { "id": "unova-route-14", "label": "Route 14", "kind": "route", "x": 945, "y": 475, "order": 36, "locationSlug": "unova-route-14", "labelPos": "right" },
-    { "id": "abundant-shrine", "label": "Abundant Shrine", "kind": "special", "x": 860, "y": 555, "order": 37, "locationSlug": "abundant-shrine", "labelPos": "bottom" },
-    { "id": "unova-route-16", "label": "Route 16", "kind": "route", "x": 740, "y": 330, "order": 38, "locationSlug": "unova-route-16", "labelPos": "top" },
-    { "id": "lostlorn-forest", "label": "Lostlorn Forest", "kind": "dungeon", "x": 860, "y": 390, "order": 39, "locationSlug": "lostlorn-forest", "labelPos": "bottom" },
-    { "id": "unova-route-10", "label": "Route 10", "kind": "route", "x": 600, "y": 45, "order": 40, "locationSlug": "unova-route-10", "labelPos": "bottom" },
-    { "id": "unova-victory-road", "label": "Victory Road", "kind": "dungeon", "x": 730, "y": 45, "order": 41, "locationSlug": "unova-victory-road", "labelPos": "bottom" },
-    { "id": "aspertia-city", "label": "Aspertia City", "kind": "city", "x": 130, "y": 730, "order": 42, "locationSlug": "aspertia-city", "labelPos": "bottom" },
-    { "id": "unova-route-19", "label": "Route 19", "kind": "route", "x": 230, "y": 700, "order": 43, "locationSlug": "unova-route-19", "labelPos": "bottom" },
-    { "id": "floccesy-ranch", "label": "Floccesy Ranch", "kind": "special", "x": 320, "y": 715, "order": 44, "locationSlug": "floccesy-ranch", "labelPos": "bottom" },
-    { "id": "unova-route-20", "label": "Route 20", "kind": "route", "x": 310, "y": 600, "order": 45, "locationSlug": "unova-route-20", "labelPos": "right" },
-    { "id": "virbank-city", "label": "Virbank City", "kind": "city", "x": 290, "y": 490, "order": 46, "locationSlug": "virbank-city", "labelPos": "right" },
-    { "id": "unova-route-21", "label": "Route 21", "kind": "route", "x": 190, "y": 430, "order": 47, "locationSlug": "unova-route-21", "labelPos": "right" },
-    { "id": "humilau-city", "label": "Humilau City", "kind": "city", "x": 160, "y": 320, "order": 48, "locationSlug": "humilau-city", "labelPos": "bottom" },
-    { "id": "unova-route-22", "label": "Route 22", "kind": "route", "x": 245, "y": 235, "order": 49, "locationSlug": "unova-route-22", "labelPos": "bottom" },
-    { "id": "unova-route-23", "label": "Route 23", "kind": "route", "x": 330, "y": 210, "order": 50, "locationSlug": "unova-route-23", "labelPos": "bottom" }
+    {
+      "id": "nuvema-town",
+      "label": "Nuvema Town",
+      "kind": "city",
+      "x": 1010,
+      "y": 740,
+      "order": 1,
+      "locationSlug": "nuvema-town",
+      "labelPos": "bottom",
+      "nameDe": "Avenitia"
+    },
+    {
+      "id": "unova-route-1",
+      "label": "Route 1",
+      "kind": "route",
+      "x": 1010,
+      "y": 640,
+      "order": 2,
+      "locationSlug": "unova-route-1",
+      "labelPos": "left",
+      "nameDe": "Route 1"
+    },
+    {
+      "id": "accumula-town",
+      "label": "Accumula Town",
+      "kind": "city",
+      "x": 1010,
+      "y": 540,
+      "order": 3,
+      "locationSlug": "accumula-town",
+      "labelPos": "left",
+      "nameDe": "Gavina"
+    },
+    {
+      "id": "unova-route-2",
+      "label": "Route 2",
+      "kind": "route",
+      "x": 1010,
+      "y": 440,
+      "order": 4,
+      "locationSlug": "unova-route-2",
+      "labelPos": "left",
+      "nameDe": "Route 2"
+    },
+    {
+      "id": "striaton-city",
+      "label": "Striaton City",
+      "kind": "city",
+      "x": 1010,
+      "y": 340,
+      "order": 5,
+      "locationSlug": "striaton-city",
+      "labelPos": "left",
+      "nameDe": "Orion City"
+    },
+    {
+      "id": "dreamyard",
+      "label": "Dreamyard",
+      "kind": "dungeon",
+      "x": 1105,
+      "y": 390,
+      "order": 6,
+      "locationSlug": "dreamyard",
+      "labelPos": "bottom",
+      "nameDe": "Traumbrache"
+    },
+    {
+      "id": "unova-route-3",
+      "label": "Route 3",
+      "kind": "route",
+      "x": 900,
+      "y": 340,
+      "order": 7,
+      "locationSlug": "unova-route-3",
+      "labelPos": "bottom",
+      "nameDe": "Route 3"
+    },
+    {
+      "id": "wellspring-cave",
+      "label": "Wellspring Cave",
+      "kind": "dungeon",
+      "x": 870,
+      "y": 250,
+      "order": 8,
+      "locationSlug": "wellspring-cave",
+      "labelPos": "bottom",
+      "nameDe": "Grundwassersenke"
+    },
+    {
+      "id": "nacrene-city",
+      "label": "Nacrene City",
+      "kind": "city",
+      "x": 790,
+      "y": 340,
+      "order": 9,
+      "locationSlug": "nacrene-city",
+      "labelPos": "bottom",
+      "nameDe": "Septerna City"
+    },
+    {
+      "id": "pinwheel-forest",
+      "label": "Pinwheel Forest",
+      "kind": "dungeon",
+      "x": 650,
+      "y": 420,
+      "order": 10,
+      "locationSlug": "pinwheel-forest",
+      "labelPos": "right",
+      "nameDe": "Ewigenwald"
+    },
+    {
+      "id": "castelia-city",
+      "label": "Castelia City",
+      "kind": "city",
+      "x": 620,
+      "y": 590,
+      "order": 11,
+      "locationSlug": "castelia-city",
+      "labelPos": "right",
+      "nameDe": "Stratos City"
+    },
+    {
+      "id": "unova-route-4",
+      "label": "Route 4",
+      "kind": "route",
+      "x": 620,
+      "y": 450,
+      "order": 12,
+      "locationSlug": "unova-route-4",
+      "labelPos": "left",
+      "nameDe": "Route 4"
+    },
+    {
+      "id": "desert-resort",
+      "label": "Desert Resort",
+      "kind": "dungeon",
+      "x": 500,
+      "y": 410,
+      "order": 13,
+      "locationSlug": "desert-resort",
+      "labelPos": "bottom",
+      "nameDe": "Wüstenresort"
+    },
+    {
+      "id": "relic-castle",
+      "label": "Relic Castle",
+      "kind": "dungeon",
+      "x": 450,
+      "y": 500,
+      "order": 14,
+      "locationSlug": "relic-castle",
+      "labelPos": "bottom",
+      "nameDe": "Alter Palast"
+    },
+    {
+      "id": "nimbasa-city",
+      "label": "Nimbasa City",
+      "kind": "city",
+      "x": 620,
+      "y": 290,
+      "order": 15,
+      "locationSlug": "nimbasa-city",
+      "labelPos": "bottom",
+      "nameDe": "Rayono City"
+    },
+    {
+      "id": "unova-route-5",
+      "label": "Route 5",
+      "kind": "route",
+      "x": 510,
+      "y": 290,
+      "order": 16,
+      "locationSlug": "unova-route-5",
+      "labelPos": "top",
+      "nameDe": "Route 5"
+    },
+    {
+      "id": "driftveil-city",
+      "label": "Driftveil City",
+      "kind": "city",
+      "x": 390,
+      "y": 290,
+      "order": 17,
+      "locationSlug": "driftveil-city",
+      "labelPos": "top",
+      "nameDe": "Marea City"
+    },
+    {
+      "id": "unova-route-6",
+      "label": "Route 6",
+      "kind": "route",
+      "x": 280,
+      "y": 305,
+      "order": 18,
+      "locationSlug": "unova-route-6",
+      "labelPos": "top",
+      "nameDe": "Route 6"
+    },
+    {
+      "id": "chargestone-cave",
+      "label": "Chargestone Cave",
+      "kind": "dungeon",
+      "x": 195,
+      "y": 370,
+      "order": 19,
+      "locationSlug": "chargestone-cave",
+      "labelPos": "bottom",
+      "nameDe": "Elektrolithhöhle"
+    },
+    {
+      "id": "mistralton-city",
+      "label": "Mistralton City",
+      "kind": "city",
+      "x": 115,
+      "y": 295,
+      "order": 20,
+      "locationSlug": "mistralton-city",
+      "labelPos": "bottom",
+      "nameDe": "Panaero City"
+    },
+    {
+      "id": "unova-route-7",
+      "label": "Route 7",
+      "kind": "route",
+      "x": 125,
+      "y": 200,
+      "order": 21,
+      "locationSlug": "unova-route-7",
+      "labelPos": "bottom",
+      "nameDe": "Route 7"
+    },
+    {
+      "id": "celestial-tower",
+      "label": "Celestial Tower",
+      "kind": "dungeon",
+      "x": 45,
+      "y": 120,
+      "order": 22,
+      "locationSlug": "celestial-tower",
+      "labelPos": "bottom",
+      "nameDe": "Turm des Himmels"
+    },
+    {
+      "id": "twist-mountain",
+      "label": "Twist Mountain",
+      "kind": "dungeon",
+      "x": 230,
+      "y": 125,
+      "order": 23,
+      "locationSlug": "twist-mountain",
+      "labelPos": "bottom",
+      "nameDe": "Wendelberg"
+    },
+    {
+      "id": "icirrus-city",
+      "label": "Icirrus City",
+      "kind": "city",
+      "x": 340,
+      "y": 105,
+      "order": 24,
+      "locationSlug": "icirrus-city",
+      "labelPos": "bottom",
+      "nameDe": "Nevaio City"
+    },
+    {
+      "id": "dragonspiral-tower",
+      "label": "Dragonspiral Tower",
+      "kind": "dungeon",
+      "x": 330,
+      "y": 28,
+      "order": 25,
+      "locationSlug": "dragonspiral-tower",
+      "labelPos": "bottom",
+      "nameDe": "Drachenstiege"
+    },
+    {
+      "id": "unova-route-8",
+      "label": "Route 8",
+      "kind": "route",
+      "x": 440,
+      "y": 115,
+      "order": 26,
+      "locationSlug": "unova-route-8",
+      "labelPos": "top",
+      "nameDe": "Route 8"
+    },
+    {
+      "id": "moor-of-icirrus",
+      "label": "Moor of Icirrus",
+      "kind": "dungeon",
+      "x": 450,
+      "y": 210,
+      "order": 27,
+      "locationSlug": "moor-of-icirrus",
+      "labelPos": "bottom",
+      "nameDe": "Moor von Nevaio"
+    },
+    {
+      "id": "opelucid-city",
+      "label": "Opelucid City",
+      "kind": "city",
+      "x": 560,
+      "y": 120,
+      "order": 28,
+      "locationSlug": "opelucid-city",
+      "labelPos": "bottom",
+      "nameDe": "Twindrake City"
+    },
+    {
+      "id": "unova-route-9",
+      "label": "Route 9",
+      "kind": "route",
+      "x": 675,
+      "y": 125,
+      "order": 29,
+      "locationSlug": "unova-route-9",
+      "labelPos": "bottom",
+      "nameDe": "Route 9"
+    },
+    {
+      "id": "unova-route-11",
+      "label": "Route 11",
+      "kind": "route",
+      "x": 785,
+      "y": 140,
+      "order": 30,
+      "locationSlug": "unova-route-11",
+      "labelPos": "bottom",
+      "nameDe": "Route 11"
+    },
+    {
+      "id": "unova-route-12",
+      "label": "Route 12",
+      "kind": "route",
+      "x": 890,
+      "y": 160,
+      "order": 31,
+      "locationSlug": "unova-route-12",
+      "labelPos": "bottom",
+      "nameDe": "Route 12"
+    },
+    {
+      "id": "lacunosa-town",
+      "label": "Lacunosa Town",
+      "kind": "city",
+      "x": 975,
+      "y": 230,
+      "order": 32,
+      "locationSlug": "lacunosa-town",
+      "labelPos": "top",
+      "nameDe": "Tessera"
+    },
+    {
+      "id": "unova-route-13",
+      "label": "Route 13",
+      "kind": "route",
+      "x": 1030,
+      "y": 315,
+      "order": 33,
+      "locationSlug": "unova-route-13",
+      "labelPos": "right",
+      "nameDe": "Route 13"
+    },
+    {
+      "id": "giant-chasm",
+      "label": "Giant Chasm",
+      "kind": "dungeon",
+      "x": 1100,
+      "y": 140,
+      "order": 34,
+      "locationSlug": "giant-chasm",
+      "labelPos": "bottom",
+      "nameDe": "Riesengrotte"
+    },
+    {
+      "id": "undella-town",
+      "label": "Undella Town",
+      "kind": "city",
+      "x": 1045,
+      "y": 410,
+      "order": 35,
+      "locationSlug": "undella-town",
+      "labelPos": "right",
+      "nameDe": "Ondula"
+    },
+    {
+      "id": "unova-route-14",
+      "label": "Route 14",
+      "kind": "route",
+      "x": 945,
+      "y": 475,
+      "order": 36,
+      "locationSlug": "unova-route-14",
+      "labelPos": "right",
+      "nameDe": "Route 14"
+    },
+    {
+      "id": "abundant-shrine",
+      "label": "Abundant Shrine",
+      "kind": "special",
+      "x": 860,
+      "y": 555,
+      "order": 37,
+      "locationSlug": "abundant-shrine",
+      "labelPos": "bottom",
+      "nameDe": "Schrein der Ernte"
+    },
+    {
+      "id": "unova-route-16",
+      "label": "Route 16",
+      "kind": "route",
+      "x": 740,
+      "y": 330,
+      "order": 38,
+      "locationSlug": "unova-route-16",
+      "labelPos": "top",
+      "nameDe": "Route 16"
+    },
+    {
+      "id": "lostlorn-forest",
+      "label": "Lostlorn Forest",
+      "kind": "dungeon",
+      "x": 860,
+      "y": 390,
+      "order": 39,
+      "locationSlug": "lostlorn-forest",
+      "labelPos": "bottom",
+      "nameDe": "Hain der Täuschung"
+    },
+    {
+      "id": "unova-route-10",
+      "label": "Route 10",
+      "kind": "route",
+      "x": 600,
+      "y": 45,
+      "order": 40,
+      "locationSlug": "unova-route-10",
+      "labelPos": "bottom",
+      "nameDe": "Route 10"
+    },
+    {
+      "id": "unova-victory-road",
+      "label": "Victory Road",
+      "kind": "dungeon",
+      "x": 730,
+      "y": 45,
+      "order": 41,
+      "locationSlug": "unova-victory-road",
+      "labelPos": "bottom",
+      "nameDe": "Siegesstraße"
+    },
+    {
+      "id": "aspertia-city",
+      "label": "Aspertia City",
+      "kind": "city",
+      "x": 130,
+      "y": 730,
+      "order": 42,
+      "locationSlug": "aspertia-city",
+      "labelPos": "bottom",
+      "nameDe": "Eventura City"
+    },
+    {
+      "id": "unova-route-19",
+      "label": "Route 19",
+      "kind": "route",
+      "x": 230,
+      "y": 700,
+      "order": 43,
+      "locationSlug": "unova-route-19",
+      "labelPos": "bottom",
+      "nameDe": "Route 19"
+    },
+    {
+      "id": "floccesy-ranch",
+      "label": "Floccesy Ranch",
+      "kind": "special",
+      "x": 320,
+      "y": 715,
+      "order": 44,
+      "locationSlug": "floccesy-ranch",
+      "labelPos": "bottom",
+      "nameDe": "Dausing-Hof"
+    },
+    {
+      "id": "unova-route-20",
+      "label": "Route 20",
+      "kind": "route",
+      "x": 310,
+      "y": 600,
+      "order": 45,
+      "locationSlug": "unova-route-20",
+      "labelPos": "right",
+      "nameDe": "Route 20"
+    },
+    {
+      "id": "virbank-city",
+      "label": "Virbank City",
+      "kind": "city",
+      "x": 290,
+      "y": 490,
+      "order": 46,
+      "locationSlug": "virbank-city",
+      "labelPos": "right",
+      "nameDe": "Vapydro City"
+    },
+    {
+      "id": "unova-route-21",
+      "label": "Route 21",
+      "kind": "route",
+      "x": 190,
+      "y": 430,
+      "order": 47,
+      "locationSlug": "unova-route-21",
+      "labelPos": "right",
+      "nameDe": "Route 21"
+    },
+    {
+      "id": "humilau-city",
+      "label": "Humilau City",
+      "kind": "city",
+      "x": 160,
+      "y": 320,
+      "order": 48,
+      "locationSlug": "humilau-city",
+      "labelPos": "bottom",
+      "nameDe": "Abidaya City"
+    },
+    {
+      "id": "unova-route-22",
+      "label": "Route 22",
+      "kind": "route",
+      "x": 245,
+      "y": 235,
+      "order": 49,
+      "locationSlug": "unova-route-22",
+      "labelPos": "bottom",
+      "nameDe": "Route 22"
+    },
+    {
+      "id": "unova-route-23",
+      "label": "Route 23",
+      "kind": "route",
+      "x": 330,
+      "y": 210,
+      "order": 50,
+      "locationSlug": "unova-route-23",
+      "labelPos": "bottom",
+      "nameDe": "Route 23"
+    }
   ],
   "edges": [
-    { "from": "nuvema-town", "to": "unova-route-1", "kind": "land" },
-    { "from": "unova-route-1", "to": "accumula-town", "kind": "land" },
-    { "from": "accumula-town", "to": "unova-route-2", "kind": "land" },
-    { "from": "unova-route-2", "to": "striaton-city", "kind": "land" },
-    { "from": "striaton-city", "to": "dreamyard", "kind": "land" },
-    { "from": "striaton-city", "to": "unova-route-3", "kind": "land" },
-    { "from": "unova-route-3", "to": "nacrene-city", "kind": "land" },
-    { "from": "unova-route-3", "to": "wellspring-cave", "kind": "land" },
-    { "from": "nacrene-city", "to": "pinwheel-forest", "kind": "land" },
-    { "from": "pinwheel-forest", "to": "castelia-city", "kind": "land" },
-    { "from": "castelia-city", "to": "unova-route-4", "kind": "land" },
-    { "from": "unova-route-4", "to": "nimbasa-city", "kind": "land" },
-    { "from": "unova-route-4", "to": "desert-resort", "kind": "land" },
-    { "from": "desert-resort", "to": "relic-castle", "kind": "land" },
-    { "from": "nimbasa-city", "to": "unova-route-5", "kind": "land" },
-    { "from": "unova-route-5", "to": "driftveil-city", "kind": "land" },
-    { "from": "driftveil-city", "to": "unova-route-6", "kind": "land" },
-    { "from": "unova-route-6", "to": "chargestone-cave", "kind": "land" },
-    { "from": "chargestone-cave", "to": "mistralton-city", "kind": "land" },
-    { "from": "mistralton-city", "to": "unova-route-7", "kind": "land" },
-    { "from": "unova-route-7", "to": "twist-mountain", "kind": "land" },
-    { "from": "twist-mountain", "to": "icirrus-city", "kind": "land" },
-    { "from": "unova-route-7", "to": "celestial-tower", "kind": "land" },
-    { "from": "icirrus-city", "to": "dragonspiral-tower", "kind": "water" },
-    { "from": "icirrus-city", "to": "unova-route-8", "kind": "land" },
-    { "from": "unova-route-8", "to": "opelucid-city", "kind": "land" },
-    { "from": "unova-route-8", "to": "moor-of-icirrus", "kind": "land" },
-    { "from": "opelucid-city", "to": "unova-route-9", "kind": "land" },
-    { "from": "unova-route-9", "to": "unova-route-11", "kind": "land" },
-    { "from": "unova-route-11", "to": "unova-route-12", "kind": "land" },
-    { "from": "unova-route-12", "to": "lacunosa-town", "kind": "land" },
-    { "from": "lacunosa-town", "to": "giant-chasm", "kind": "land" },
-    { "from": "lacunosa-town", "to": "unova-route-13", "kind": "land" },
-    { "from": "unova-route-13", "to": "undella-town", "kind": "land" },
-    { "from": "undella-town", "to": "unova-route-14", "kind": "land" },
-    { "from": "unova-route-14", "to": "abundant-shrine", "kind": "land" },
-    { "from": "nimbasa-city", "to": "unova-route-16", "kind": "land" },
-    { "from": "unova-route-16", "to": "lostlorn-forest", "kind": "land" },
-    { "from": "opelucid-city", "to": "unova-route-10", "kind": "land" },
-    { "from": "unova-route-10", "to": "unova-victory-road", "kind": "land" },
-    { "from": "aspertia-city", "to": "unova-route-19", "kind": "land" },
-    { "from": "unova-route-19", "to": "floccesy-ranch", "kind": "land" },
-    { "from": "floccesy-ranch", "to": "unova-route-20", "kind": "land" },
-    { "from": "unova-route-20", "to": "virbank-city", "kind": "land" },
-    { "from": "virbank-city", "to": "unova-route-21", "kind": "water" },
-    { "from": "unova-route-21", "to": "humilau-city", "kind": "water" },
-    { "from": "humilau-city", "to": "unova-route-22", "kind": "land" },
-    { "from": "unova-route-22", "to": "unova-route-23", "kind": "land" },
-    { "from": "unova-route-23", "to": "icirrus-city", "kind": "land" }
-  ]
+    {
+      "from": "nuvema-town",
+      "to": "unova-route-1",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-1",
+      "to": "accumula-town",
+      "kind": "land"
+    },
+    {
+      "from": "accumula-town",
+      "to": "unova-route-2",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-2",
+      "to": "striaton-city",
+      "kind": "land"
+    },
+    {
+      "from": "striaton-city",
+      "to": "dreamyard",
+      "kind": "land"
+    },
+    {
+      "from": "striaton-city",
+      "to": "unova-route-3",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-3",
+      "to": "nacrene-city",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-3",
+      "to": "wellspring-cave",
+      "kind": "land"
+    },
+    {
+      "from": "nacrene-city",
+      "to": "pinwheel-forest",
+      "kind": "land"
+    },
+    {
+      "from": "pinwheel-forest",
+      "to": "castelia-city",
+      "kind": "land"
+    },
+    {
+      "from": "castelia-city",
+      "to": "unova-route-4",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-4",
+      "to": "nimbasa-city",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-4",
+      "to": "desert-resort",
+      "kind": "land"
+    },
+    {
+      "from": "desert-resort",
+      "to": "relic-castle",
+      "kind": "land"
+    },
+    {
+      "from": "nimbasa-city",
+      "to": "unova-route-5",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-5",
+      "to": "driftveil-city",
+      "kind": "land"
+    },
+    {
+      "from": "driftveil-city",
+      "to": "unova-route-6",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-6",
+      "to": "chargestone-cave",
+      "kind": "land"
+    },
+    {
+      "from": "chargestone-cave",
+      "to": "mistralton-city",
+      "kind": "land"
+    },
+    {
+      "from": "mistralton-city",
+      "to": "unova-route-7",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-7",
+      "to": "twist-mountain",
+      "kind": "land"
+    },
+    {
+      "from": "twist-mountain",
+      "to": "icirrus-city",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-7",
+      "to": "celestial-tower",
+      "kind": "land"
+    },
+    {
+      "from": "icirrus-city",
+      "to": "dragonspiral-tower",
+      "kind": "water"
+    },
+    {
+      "from": "icirrus-city",
+      "to": "unova-route-8",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-8",
+      "to": "opelucid-city",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-8",
+      "to": "moor-of-icirrus",
+      "kind": "land"
+    },
+    {
+      "from": "opelucid-city",
+      "to": "unova-route-9",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-9",
+      "to": "unova-route-11",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-11",
+      "to": "unova-route-12",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-12",
+      "to": "lacunosa-town",
+      "kind": "land"
+    },
+    {
+      "from": "lacunosa-town",
+      "to": "giant-chasm",
+      "kind": "land"
+    },
+    {
+      "from": "lacunosa-town",
+      "to": "unova-route-13",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-13",
+      "to": "undella-town",
+      "kind": "land"
+    },
+    {
+      "from": "undella-town",
+      "to": "unova-route-14",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-14",
+      "to": "abundant-shrine",
+      "kind": "land"
+    },
+    {
+      "from": "nimbasa-city",
+      "to": "unova-route-16",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-16",
+      "to": "lostlorn-forest",
+      "kind": "land"
+    },
+    {
+      "from": "opelucid-city",
+      "to": "unova-route-10",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-10",
+      "to": "unova-victory-road",
+      "kind": "land"
+    },
+    {
+      "from": "aspertia-city",
+      "to": "unova-route-19",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-19",
+      "to": "floccesy-ranch",
+      "kind": "land"
+    },
+    {
+      "from": "floccesy-ranch",
+      "to": "unova-route-20",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-20",
+      "to": "virbank-city",
+      "kind": "land"
+    },
+    {
+      "from": "virbank-city",
+      "to": "unova-route-21",
+      "kind": "water"
+    },
+    {
+      "from": "unova-route-21",
+      "to": "humilau-city",
+      "kind": "water"
+    },
+    {
+      "from": "humilau-city",
+      "to": "unova-route-22",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-22",
+      "to": "unova-route-23",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-23",
+      "to": "icirrus-city",
+      "kind": "land"
+    }
+  ],
+  "nameDe": "Einall"
 }

@@ -1,7 +1,8 @@
 /* Navbar — design.md §9.1. Fixed 64px, transparent → glass after 24px scroll.
  * Layout owns the matching top offset (navbar positioning contract). */
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { NavLink } from 'react-router';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { Menu, Search, Sparkles, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +27,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
   const { shiny, toggleShiny } = useShiny();
   const { scrollYProgress } = useScroll();
   const { t } = useTranslation();
+  const localePath = useLocalePath();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
       >
         <nav className="mx-auto flex h-full max-w-content items-center justify-between gap-4 px-4 md:px-8">
           {/* brand */}
-          <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label={t('nav.home')}>
+          <LocaleLink to="/" className="group flex shrink-0 items-center gap-2.5" aria-label={t('nav.home')}>
             <img
               src="/logo.svg"
               alt=""
@@ -53,7 +55,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             />
             <span className="font-display text-lg font-extrabold tracking-wide text-tx-primary">POKÉDEX</span>
             <span className="pixel-label text-[10px] text-gold">2.0</span>
-          </Link>
+          </LocaleLink>
 
           {/* center links (desktop) */}
           <div className="hidden items-center gap-8 md:flex">
@@ -162,7 +164,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                   transition={{ delay: 0.08 + i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <NavLink
-                    to={l.to}
+                    to={localePath(l.to)}
                     end={l.to === '/'}
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>

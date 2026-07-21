@@ -1,12 +1,14 @@
 /* MISSINGNO 404 — pokemon-detail.md §7. Glitch silhouette (3 clip-path slices),
  * gold — never red. */
-import { Link } from 'react-router';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
 
 export default function MissingNo({ query }: { query: string }) {
+  const { t } = useTranslation();
   return (
     <div className="mx-auto flex max-w-content flex-col items-center px-4 py-24 text-center">
-      <span className="pixel-label text-[10px] text-gold">ERROR · ENTRY “{query}” NOT FOUND</span>
+      <span className="pixel-label text-[10px] text-gold">{t('missingno.error', { query })}</span>
 
       {/* glitching silhouette */}
       <div className="relative mt-8 h-32 w-32" aria-hidden>
@@ -27,18 +29,17 @@ export default function MissingNo({ query }: { query: string }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        A wild <span className="text-gold">MISSINGNO</span> appeared
+        {t('missingno.titlePre')} <span className="text-gold">MISSINGNO</span> {t('missingno.titlePost')}
       </motion.h1>
       <p className="mt-3 max-w-md font-sans text-sm text-tx-secondary">
-        This Pokédex entry does not exist in the National Dex (1–1025). Glitch readings suggest you
-        return to safety.
+        {t('missingno.body')}
       </p>
-      <Link
+      <LocaleLink
         to="/pokedex"
         className="mt-8 inline-flex h-10 items-center rounded-md border border-gold/60 bg-gold-soft px-6 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
       >
-        Return to the Dex
-      </Link>
+        {t('missingno.cta')}
+      </LocaleLink>
     </div>
   );
 }

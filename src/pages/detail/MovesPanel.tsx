@@ -6,8 +6,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
-import { displayName, getMove } from '@/lib/pokeapi';
+import { getMove } from '@/lib/pokeapi';
+import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
 import type { Move, Pokemon } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { VERSION_GROUPS, typeRgb } from './data';
@@ -16,11 +18,12 @@ import { SegmentedControl } from './ui';
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 type Method = 'level-up' | 'machine' | 'egg' | 'tutor';
-const METHODS: Array<{ key: Method; label: string }> = [
-  { key: 'level-up', label: 'LEVEL-UP' },
-  { key: 'machine', label: 'TM/HM' },
-  { key: 'egg', label: 'EGG' },
-  { key: 'tutor', label: 'TUTOR' },
+/* labels are i18n keys under detail.moves */
+const METHODS: Array<{ key: Method; labelKey: string }> = [
+  { key: 'level-up', labelKey: 'detail.moves.levelUp' },
+  { key: 'machine', labelKey: 'detail.moves.machine' },
+  { key: 'egg', labelKey: 'detail.moves.egg' },
+  { key: 'tutor', labelKey: 'detail.moves.tutor' },
 ];
 
 interface MoveRow {
@@ -68,6 +71,8 @@ const CAT_COLORS: Record<string, string> = {
 };
 
 export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   /* version groups that actually teach this Pokémon anything, newest → oldest */
   const availableVersions = useMemo(() => {
     const present = new Set<string>();
@@ -97,9 +102,10 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
       }
       for (const [method, level] of perMethod) map.get(method)!.push({ name: m.move.name, level });
     }
-    for (const rows of map.values()) rows.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+    for (const rows of map.values())
+      rows.sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
     return map;
-  }, [pokemon, activeVersion]);
+  }, [pokemon, activeVersion, lang]);
 
   const [activeMethod, setMethod] = useState<Method>('level-up');
   const rows = byMethod.get(activeMethod) ?? EMPTY_ROWS;
@@ -138,16 +144,16 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
       out = [...out].sort((a, b) => {
         const ma = cache.get(a.name);
         const mb = cache.get(b.name);
-        const va = sort.key === 'name' ? a.name : (ma?.[sort.key] ?? -1);
-        const vb = sort.key === 'name' ? b.name : (mb?.[sort.key] ?? -1);
+        const va = sort.key === 'name' ? nameOfMove(a.name, lang) : (ma?.[sort.key] ?? -1);
+        const vb = sort.key === 'name' ? nameOfMove(b.name, lang) : (mb?.[sort.key] ?? -1);
         if (typeof va === 'string' && typeof vb === 'string') return va.localeCompare(vb) * dir;
         return ((va as number) - (vb as number)) * dir;
       });
     } else if (activeMethod === 'level-up') {
-      out = [...out].sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+      out = [...out].sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
     }
     return out;
-  }, [rows, cache, typeFilter, sort, activeMethod]);
+  }, [rows, cache, typeFilter, sort, activeMethod, lang]);
 
   const toggleSort = (key: SortKey) =>
     setSort((s) => (s?.key === key ? (s.dir === 1 ? { key, dir: -1 } : null) : { key, dir: 1 }));
@@ -159,14 +165,14 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
         <SegmentedControl
           id="move-method"
           size="xs"
-          ariaLabel="Learn method"
+          ariaLabel={t8n('detail.moves.learnMethod')}
           value={activeMethod}
           onChange={(v) => setMethod(v as Method)}
           options={METHODS.map((m) => ({
             value: m.key,
             label: (
               <>
-                {m.label}
+                {t8n(m.labelKey)}
                 <span className="text-[9px] text-tx-muted">{byMethod.get(m.key)?.length ?? 0}</span>
               </>
             ),
@@ -176,7 +182,7 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
           className="dx-select"
           value={activeVersion}
           onChange={(e) => setVersion(e.target.value)}
-          aria-label="Version group"
+          aria-label={t8n('detail.moves.versionGroup')}
         >
           {availableVersions.map((v) => (
             <option key={v.key} value={v.key}>
@@ -190,7 +196,7 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
             <button
               key={t}
               type="button"
-              title={`Filter ${t} moves`}
+              title={t8n('detail.moves.filterType', { type: nameOfType(t, lang) })}
               aria-pressed={typeFilter === t}
               onClick={() => setTypeFilter((f) => (f === t ? null : t))}
               className={cn(
@@ -213,18 +219,18 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
         {view.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center gap-2">
             <img src="/pokeball.svg" alt="" className="h-10 w-10 opacity-50" />
-            <p className="font-sans text-xs text-gold">No moves in this category for this version.</p>
+            <p className="font-sans text-xs text-gold">{t8n('detail.moves.empty')}</p>
           </div>
         ) : (
           <table className="dx-moves-table">
             <thead>
               <tr>
-                <SortTh label="NAME" sortKey="name" sort={sort} onSort={toggleSort} className="pl-3" />
-                <th className="w-14">TYPE</th>
-                <th className="w-10 text-center">CAT</th>
-                <SortTh label="PWR" sortKey="power" sort={sort} onSort={toggleSort} numeric />
-                <SortTh label="ACC" sortKey="accuracy" sort={sort} onSort={toggleSort} numeric />
-                <SortTh label="PP" sortKey="pp" sort={sort} onSort={toggleSort} numeric className="pr-3" />
+                <SortTh label={t8n('detail.moves.colName')} sortKey="name" sort={sort} onSort={toggleSort} className="pl-3" />
+                <th className="w-14">{t8n('detail.moves.colType')}</th>
+                <th className="w-10 text-center">{t8n('detail.moves.colCat')}</th>
+                <SortTh label={t8n('detail.moves.colPwr')} sortKey="power" sort={sort} onSort={toggleSort} numeric />
+                <SortTh label={t8n('detail.moves.colAcc')} sortKey="accuracy" sort={sort} onSort={toggleSort} numeric />
+                <SortTh label={t8n('detail.moves.colPp')} sortKey="pp" sort={sort} onSort={toggleSort} numeric className="pr-3" />
               </tr>
             </thead>
             <tbody key={listKey}>
@@ -248,7 +254,7 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
                           <span className="pixel-label w-6 shrink-0 text-[8px] text-gold">{r.level}</span>
                         )}
                         <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">
-                          {displayName(r.name)}
+                          {nameOfMove(r.name, lang)}
                         </span>
                       </span>
                     </td>
@@ -256,7 +262,7 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
                       {mv ? (
                         <span className="flex items-center gap-1" style={{ color: `rgb(${typeRgb(t)})` }}>
                           <TypeGlyph type={t} size={14} className={cn('dx-glyph', `dx-glyph-${t}`)} />
-                          <span className="hidden font-sans text-[10px] font-semibold uppercase xl:inline">{t}</span>
+                          <span className="hidden font-sans text-[10px] font-semibold uppercase xl:inline">{nameOfType(t, lang)}</span>
                         </span>
                       ) : (
                         <span className="dx-skel inline-block h-3.5 w-8" />
@@ -266,8 +272,8 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
                       {mv ? (
                         <span
                           role="img"
-                          aria-label={cat}
-                          title={cat.charAt(0).toUpperCase() + cat.slice(1)}
+                          aria-label={t8n(`detail.moves.cat${cat.charAt(0).toUpperCase() + cat.slice(1)}`)}
+                          title={t8n(`detail.moves.cat${cat.charAt(0).toUpperCase() + cat.slice(1)}`)}
                           className="mx-auto block h-3.5 w-3.5 opacity-90"
                           style={{
                             backgroundColor: CAT_COLORS[cat] ?? CAT_COLORS.status,

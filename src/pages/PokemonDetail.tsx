@@ -6,11 +6,14 @@
  *   Prev/Next 40px strip · MISSINGNO 404 · loading skeletons
  * Direct loads crossfade in (400ms — shared-element morph fallback, §6.2-3). */
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
+import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Swords } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
 import { getPokemon, getSpecies, pokemonTypes } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { MAX_DEX_ID } from '@/lib/types';
 import CombatPanel from './detail/CombatPanel';
@@ -31,6 +34,8 @@ type Status = 'loading' | 'ready' | 'notfound' | 'error';
 
 export default function PokemonDetail() {
   const { id: param = '' } = useParams();
+  const { t: t8n } = useTranslation();
+  const lang = useLanguage();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
   const [status, setStatus] = useState<Status>('loading');
@@ -68,8 +73,8 @@ export default function PokemonDetail() {
   }, [param]);
 
   useEffect(() => {
-    if (pokemon) document.title = `${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} — Pokédex 2.0`;
-  }, [pokemon]);
+    if (pokemon) document.title = `${nameOfPokemon(pokemon.id, lang)} — Pokédex 2.0`;
+  }, [pokemon, lang]);
 
   const types = useMemo(() => (pokemon ? pokemonTypes(pokemon) : []), [pokemon]);
   const primary = types[0] ?? 'normal';
@@ -120,7 +125,7 @@ export default function PokemonDetail() {
           <div className="dx-panel col-span-12 flex h-[380px] items-center justify-center lg:col-span-7">
             <div className="flex flex-col items-center gap-3">
               <PokeballLoader variant="inline" />
-              <span className="pixel-label text-[9px] text-tx-muted">SYNCING ENTRY {param}</span>
+              <span className="pixel-label text-[9px] text-tx-muted">{t8n('detail.syncing', { id: param })}</span>
             </div>
           </div>
           <div className="dx-panel col-span-12 h-[380px] p-5 lg:col-span-5">
@@ -148,18 +153,18 @@ export default function PokemonDetail() {
     >
       {/* top utility row */}
       <div className="mb-3 flex items-center justify-between">
-        <Link
+        <LocaleLink
           to="/pokedex"
           className="group inline-flex items-center gap-1.5 font-sans text-[13px] font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
         >
           <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
-          ALL POKÉMON
-        </Link>
-        <span className="pixel-label hidden text-[8px] text-tx-muted sm:inline">LIVING ENTRY · PHASE 01</span>
+          {t8n('detail.backAll')}
+        </LocaleLink>
+        <span className="pixel-label hidden text-[8px] text-tx-muted sm:inline">{t8n('detail.living')}</span>
       </div>
 
       {/* tab strip — OVERVIEW dashboard / VERSUS matchup lab (versus.md) */}
-      <div className="mb-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label="Entry view">
+      <div className="mb-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label={t8n('detail.tabAria')}>
         {(['overview', 'versus'] as const).map((t) => (
           <button
             key={t}
@@ -172,7 +177,7 @@ export default function PokemonDetail() {
             }`}
           >
             {t === 'versus' && <Swords size={11} />}
-            <span className="pixel-label text-[9px]">{t === 'overview' ? 'OVERVIEW' : 'VERSUS'}</span>
+            <span className="pixel-label text-[9px]">{t === 'overview' ? t8n('detail.overview') : t8n('detail.versus')}</span>
             {tab === t && (
               <motion.span layoutId="detail-tab" className="absolute inset-x-2 -bottom-px h-0.5 bg-gold" transition={{ type: 'spring', stiffness: 420, damping: 30 }} />
             )}
@@ -200,7 +205,7 @@ export default function PokemonDetail() {
           <button
             type="button"
             onClick={() => switchTab('versus')}
-            title="Open VERSUS matchup lab"
+            title={t8n('detail.vsTitle')}
             className="absolute right-3 top-3 z-20 inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold uppercase tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
           >
             <Swords size={11} />
@@ -209,8 +214,8 @@ export default function PokemonDetail() {
         </Panel>
 
         <Panel
-          eyebrow="BASE STATS"
-          title="Combat Profile"
+          eyebrow={t8n('detail.panels.combatEyebrow')}
+          title={t8n('detail.panels.combatTitle')}
           className="col-span-12 lg:col-span-5"
           bodyClassName="h-[calc(100%-45px)]"
         >
@@ -219,8 +224,8 @@ export default function PokemonDetail() {
 
         {/* ROW 2 */}
         <Panel
-          eyebrow="ATTACKS"
-          title="Move Pool"
+          eyebrow={t8n('detail.panels.movesEyebrow')}
+          title={t8n('detail.panels.movesTitle')}
           className="col-span-12 lg:col-span-7"
           bodyClassName="flex min-h-[420px] flex-col"
         >
@@ -233,13 +238,13 @@ export default function PokemonDetail() {
 
         {/* ROW 3 — left stack: evolution + where to find (span 4) · museum (span 8) */}
         <div className="col-span-12 flex flex-col gap-4 lg:col-span-4">
-          <Panel eyebrow="EVOLUTION" title="Family Tree" bodyClassName="min-h-[140px]">
+          <Panel eyebrow={t8n('detail.panels.evoEyebrow')} title={t8n('detail.panels.evoTitle')} bodyClassName="min-h-[140px]">
             <EvolutionPanel species={species} currentId={species?.id ?? pokemon.id} />
           </Panel>
 
           <Panel
-            eyebrow="WILD DATA"
-            title="Where to Find"
+            eyebrow={t8n('detail.panels.findEyebrow')}
+            title={t8n('detail.panels.findTitle')}
             className="flex-1"
             bodyClassName="p-0"
           >
@@ -249,8 +254,8 @@ export default function PokemonDetail() {
 
         <Panel
           id="sprite-museum"
-          eyebrow="ARCHIVE"
-          title="Sprite Museum"
+          eyebrow={t8n('detail.panels.museumEyebrow')}
+          title={t8n('detail.panels.museumTitle')}
           className="col-span-12 lg:col-span-8"
           bodyClassName="p-0"
         >

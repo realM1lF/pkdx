@@ -1,5 +1,6 @@
 /* Footer — design.md §9.2. */
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useTranslation } from 'react-i18next';
 import { MAX_DEX_ID } from '@/lib/types';
 
@@ -9,7 +10,8 @@ const HAIRLINE =
 export default function Footer() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const random = () => navigate(`/pokemon/${1 + Math.floor(Math.random() * MAX_DEX_ID)}`);
+  const localePath = useLocalePath();
+  const random = () => navigate(localePath(`/pokemon/${1 + Math.floor(Math.random() * MAX_DEX_ID)}`));
 
   const linkCls =
     'inline-block font-sans text-sm text-tx-secondary transition-all duration-200 hover:translate-x-1 hover:text-gold';
@@ -32,12 +34,12 @@ export default function Footer() {
         {/* Explore */}
         <div className="flex flex-col gap-3">
           <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.explore')}</h4>
-          <Link to="/" className={linkCls}>
+          <LocaleLink to="/" className={linkCls}>
             {t('footer.home')}
-          </Link>
-          <Link to="/pokedex" className={linkCls}>
+          </LocaleLink>
+          <LocaleLink to="/pokedex" className={linkCls}>
             {t('footer.pokedex')}
-          </Link>
+          </LocaleLink>
           <button type="button" onClick={random} className={`${linkCls} text-left`}>
             {t('footer.random')}
           </button>

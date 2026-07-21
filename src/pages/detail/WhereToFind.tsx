@@ -5,12 +5,14 @@
  * kanto victory-road variants → 'kanto-victory-road-2'. Aggregated per node
  * across all versions (best rate wins); rows deep-link /maps/{region}?node=. */
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cachedJson, displayName } from '@/lib/pokeapi';
-import { REGIONS, accentRgb } from '@/lib/regions';
-import type { RegionId, RegionMap } from '@/lib/regions';
+import { nameOfMethod, useLanguage } from '@/lib/i18n-data';
+import { LocaleLink } from '@/lib/locale-link';
+import { REGIONS, accentRgb, nodeName, regionName } from '@/lib/regions';
+import type { MapNode, RegionId, RegionMap } from '@/lib/regions';
 import { methodBucket } from '@/lib/mapdata';
 import type { MethodBucket } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
@@ -41,12 +43,14 @@ interface NodeHit {
   region: RegionMap;
   nodeId: string;
   label: string;
+  node: MapNode;
 }
 
 const SLUG_INDEX = new Map<string, NodeHit>();
 for (const region of REGIONS) {
   for (const node of region.nodes) {
-    if (node.locationSlug) SLUG_INDEX.set(node.locationSlug, { region, nodeId: node.id, label: node.label });
+    if (node.locationSlug)
+      SLUG_INDEX.set(node.locationSlug, { region, nodeId: node.id, label: node.label, node });
   }
 }
 
@@ -72,6 +76,7 @@ function resolveArea(areaName: string): NodeHit | null {
 interface WhereRow {
   key: string;
   label: string;
+  node: MapNode | null;
   region: RegionMap | null;
   regionPrefix: string;
   nodeId: string | null;
@@ -94,6 +99,7 @@ function aggregate(areas: EncounterAreaEntry[]): WhereRow[] {
       row = {
         key,
         label: hit ? hit.label : displayName(base),
+        node: hit ? hit.node : null,
         region: hit ? hit.region : null,
         regionPrefix: base.split('-')[0] ?? '',
         nodeId: hit ? hit.nodeId : null,
@@ -140,12 +146,18 @@ const REGION_ABBR: Record<RegionId, string> = { kanto: 'KAN', johto: 'JOH', hoen
 const TOP_N = 12;
 
 function RowView({ row }: { row: WhereRow }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const region = row.region;
   const nodeId = row.nodeId;
   const linked = nodeId !== null && region !== null;
   const accent = region?.accent ?? null;
   const abbr = row.region ? REGION_ABBR[row.region.region] : row.regionPrefix.slice(0, 3).toUpperCase();
-  const lv = row.minLevel === row.maxLevel ? `LV ${row.minLevel}` : `LV ${row.minLevel}–${row.maxLevel}`;
+  const lv =
+    row.minLevel === row.maxLevel
+      ? t('detail.find.level', { level: row.minLevel })
+      : t('detail.find.levelRange', { min: row.minLevel, max: row.maxLevel });
+  const label = row.node ? nodeName(row.node, lang) : row.label;
 
   const body = (
     <>
@@ -164,7 +176,7 @@ function RowView({ row }: { row: WhereRow }) {
         {abbr || '???'}
       </span>
       {/* route display name */}
-      <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">{row.label}</span>
+      <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">{label}</span>
       {/* method chips (type-style, bucket-colored) */}
       <span className="hidden shrink-0 items-center gap-1 md:flex">
         {row.methods.slice(0, 3).map((m) => {
@@ -175,7 +187,7 @@ function RowView({ row }: { row: WhereRow }) {
               className="rounded-full px-1.5 py-px text-[8px] font-bold uppercase leading-[14px]"
               style={{ color: `rgb(${rgb})`, background: `rgba(${rgb},0.14)` }}
             >
-              {displayName(m)}
+              {nameOfMethod(m, lang)}
             </span>
           );
         })}
@@ -202,7 +214,7 @@ function RowView({ row }: { row: WhereRow }) {
         <>
           <ArrowUpRight size={12} className="shrink-0 text-tx-muted transition-colors duration-150 group-hover/wtf:text-gold" />
           <span className="pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 rounded-[3px] border border-gold/40 bg-surface2 px-1.5 py-0.5 font-pixel text-[7px] text-gold opacity-0 transition-opacity duration-150 group-hover/wtf:opacity-100">
-            OPEN IN MAP
+            {t('detail.find.openInMap')}
           </span>
         </>
       )}
@@ -215,17 +227,22 @@ function RowView({ row }: { row: WhereRow }) {
   );
 
   return linked ? (
-    <Link to={`/maps/${region.region}?node=${nodeId}`} className={cls} title={`Open ${row.label} on the ${region.name} map`}>
+    <LocaleLink
+      to={`/maps/${region.region}?node=${nodeId}`}
+      className={cls}
+      title={t('detail.find.openOnMap', { label, region: regionName(region, lang) })}
+    >
       {body}
-    </Link>
+    </LocaleLink>
   ) : (
-    <div className={cls} title="No map coverage for this area">
+    <div className={cls} title={t('detail.find.noCoverage')}>
       {body}
     </div>
   );
 }
 
 export default function WhereToFind({ id }: { id: number }) {
+  const { t } = useTranslation();
   const [areas, setAreas] = useState<EncounterAreaEntry[] | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'empty' | 'error'>('loading');
   const [showAll, setShowAll] = useState(false);
@@ -268,9 +285,7 @@ export default function WhereToFind({ id }: { id: number }) {
         <div className="flex flex-col items-center gap-2 text-center">
           <img src="/pokeball.svg" alt="" className="h-8 w-8 opacity-40" />
           <p className={cn('max-w-[260px] text-[12px] font-semibold leading-snug', status === 'empty' ? 'text-gold' : 'text-tx-muted')}>
-            {status === 'empty'
-              ? 'Not found in the wild — gift, trade or evolution only.'
-              : 'Encounter data unavailable right now — try again later.'}
+            {status === 'empty' ? t('detail.find.empty') : t('detail.find.error')}
           </p>
         </div>
       </div>
@@ -290,7 +305,7 @@ export default function WhereToFind({ id }: { id: number }) {
           onClick={() => setShowAll((v) => !v)}
           className="flex h-8 w-full items-center justify-center gap-1 border-t border-hairline font-pixel text-[8px] uppercase tracking-[0.08em] text-tx-muted transition-colors duration-150 hover:text-gold"
         >
-          {showAll ? `SHOW TOP ${TOP_N} ↑` : `SHOW ALL (${rows.length}) ↓`}
+          {showAll ? t('detail.find.showTop', { count: TOP_N }) : t('detail.find.showAll', { count: rows.length })}
         </button>
       )}
     </div>
