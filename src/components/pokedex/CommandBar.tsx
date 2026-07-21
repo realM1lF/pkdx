@@ -137,10 +137,11 @@ function ShinySwitch() {
       )}
     >
       <motion.span
-        animate={{ x: shiny ? 20 : 0 }}
+        initial={false}
+        animate={{ x: shiny ? 22 : 0, y: '-50%' }}
         transition={{ type: 'spring', stiffness: 420, damping: 30 }}
         className={cn(
-          'absolute left-0.5 top-1/2 grid h-5 w-5 -translate-y-1/2 place-items-center rounded-full border',
+          'absolute left-0.5 top-1/2 grid h-5 w-5 place-items-center rounded-full border',
           shiny ? 'border-gold/70 bg-surface3 shadow-glow-gold' : 'border-hairline2 bg-surface3',
         )}
       >

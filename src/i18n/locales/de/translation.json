@@ -426,7 +426,10 @@
     "zoomIn": "Vergrößern",
     "zoomOut": "Verkleinern",
     "zoomReset": "Zoom zurücksetzen",
-    "minimap": "Minikarte — ziehen zum Verschieben"
+    "minimap": "Minikarte — ziehen zum Verschieben",
+    "interactiveCta": "INTERAKTIV",
+    "legendInteractive": "INTERAKTIV ↗ öffnet eine externe Zoom-Karte ({{site}}) in einem neuen Tab.",
+    "interactiveTitle": "{{site}} — {{game}} (extern)"
   },
   "nuz": {
     "eyebrow": "PHASE 05 — ÜBERLEBENSPROTOKOLL",

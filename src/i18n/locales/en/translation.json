@@ -426,7 +426,10 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "zoomReset": "Reset zoom",
-    "minimap": "Minimap — drag to pan"
+    "minimap": "Minimap — drag to pan",
+    "interactiveCta": "INTERACTIVE",
+    "legendInteractive": "INTERACTIVE ↗ opens a third-party zoom map ({{site}}) in a new tab.",
+    "interactiveTitle": "{{site}} — {{game}} (external)"
   },
   "nuz": {
     "eyebrow": "PHASE 05 — SURVIVAL PROTOCOL",

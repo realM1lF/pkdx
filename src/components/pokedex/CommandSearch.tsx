@@ -152,7 +152,7 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="glass absolute inset-x-0 top-full z-50 mt-1.5 overflow-hidden rounded-md border border-hairline shadow-elevate"
+            className="absolute inset-x-0 top-full z-[60] mt-1.5 overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-elevate"
           >
             {results.length === 0 ? (
               <motion.div

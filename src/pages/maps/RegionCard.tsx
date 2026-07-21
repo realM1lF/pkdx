@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Compass, Lock } from 'lucide-react';
+import { ArrowRight, Compass, ExternalLink, Lock } from 'lucide-react';
 import MiniSchematic from './MiniSchematic';
+import { resolveInteractiveMapLink } from '@/lib/interactive-maps';
 import type { RegionMap } from '@/lib/regions';
 import { accentRgb, coverageTier, regionName } from '@/lib/regions';
 import { useLanguage } from '@/lib/i18n-data';
@@ -58,6 +59,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
   const [par, setPar] = useState({ x: 0, y: 0 });
   const rgb = accentRgb(region.accent);
   const items = itemCountForRegion(region.region);
+  const interactive = resolveInteractiveMapLink(region.region, region.defaultVersion);
 
   return (
     <motion.article
@@ -128,7 +130,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
         </div>
 
         {/* CTAs */}
-        <div className="mt-3 flex items-center gap-2.5">
+        <div className="mt-3 flex flex-wrap items-center gap-2.5">
           <LocaleLink
             to={`/maps/${region.region}`}
             className={cn(
@@ -144,6 +146,21 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
             {t('maps.openMap')}
             <ArrowRight size={14} />
           </LocaleLink>
+          {interactive && (
+            <a
+              href={interactive.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={t('maps.interactiveTitle', { site: interactive.site, game: interactive.game })}
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
+            >
+              {t('maps.interactiveCta')}
+              <span aria-hidden className="text-[11px] leading-none">
+                ↗
+              </span>
+              <ExternalLink size={12} className="opacity-60" aria-hidden />
+            </a>
+          )}
           <LocaleLink
             to={`/nuzlocke/new?region=${region.region}`}
             className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"

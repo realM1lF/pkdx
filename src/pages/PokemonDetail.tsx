@@ -2,7 +2,7 @@
  * 12-col panel grid, gap 16px:
  *   Row 1: Hero (span 7) · Combat (span 5)          — fits one 1440×900 viewport
  *   Row 2: Moves (span 7) · Side stack (span 5)
- *   Row 3: Evolution + Where to Find (span 4 stack) · SPRITE MUSEUM (span 8)
+ *   Row 3: Evolution + Where to Find (span 5 stack) · SPRITE MUSEUM (span 7)
  *   Prev/Next 40px strip · MISSINGNO 404 · loading skeletons
  * Direct loads crossfade in (400ms — shared-element morph fallback, §6.2-3). */
 import { useEffect, useMemo, useState } from 'react';
@@ -236,8 +236,8 @@ export default function PokemonDetail() {
           <SideStack pokemon={pokemon} species={species} />
         </div>
 
-        {/* ROW 3 — left stack: evolution + where to find (span 4) · museum (span 8) */}
-        <div className="col-span-12 flex flex-col gap-4 lg:col-span-4">
+        {/* ROW 3 — left stack: evolution + where to find (span 5) · museum (span 7) */}
+        <div className="col-span-12 flex flex-col gap-4 lg:col-span-5">
           <Panel eyebrow={t8n('detail.panels.evoEyebrow')} title={t8n('detail.panels.evoTitle')} bodyClassName="min-h-[140px]">
             <EvolutionPanel species={species} currentId={species?.id ?? pokemon.id} />
           </Panel>
@@ -256,7 +256,7 @@ export default function PokemonDetail() {
           id="sprite-museum"
           eyebrow={t8n('detail.panels.museumEyebrow')}
           title={t8n('detail.panels.museumTitle')}
-          className="col-span-12 lg:col-span-8"
+          className="col-span-12 lg:col-span-7"
           bodyClassName="p-0"
         >
           <SpriteMuseum id={pokemon.id} name={pokemon.name} />
