@@ -6,7 +6,7 @@ import type { CSSProperties } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, Check, ChevronDown, CloudOff, Crosshair, Shield, Sparkles } from 'lucide-react';
 import TypeGlyph from '@/components/TypeGlyph';
-import { displayName } from '@/lib/pokeapi';
+import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { worstCases } from '@/lib/teambuilder';
 import type { CoverageResult, DefenseRow, SmogonSpeciesEntry, SmogonSet } from '@/lib/teambuilder';
 import { POKEMON_TYPES, STAT_LABELS, STAT_ORDER, TYPE_COLORS } from '@/lib/types';
@@ -80,6 +80,7 @@ function DefensePanel({ rows }: { rows: DefenseRow[] }) {
 /* ============================== OFFENSIVE COVERAGE ============================== */
 
 function CoveragePanel({ coverage, loading }: { coverage: CoverageResult; loading: boolean }) {
+  const lang = useLanguage();
   const covered = POKEMON_TYPES.filter((t) => coverage.se[t].length > 0);
   return (
     <section className="tb-panel md:col-span-12 lg:col-span-4" aria-label="Offensive coverage">
@@ -111,7 +112,7 @@ function CoveragePanel({ coverage, loading }: { coverage: CoverageResult; loadin
                 title={
                   isGap
                     ? `NO ANSWER FOR ${t.toUpperCase()}`
-                    : `${t.toUpperCase()} hit super-effectively by: ${hitters.map(displayName).join(', ')}`
+                    : `${nameOfType(t, lang).toUpperCase()} hit super-effectively by: ${hitters.map((h) => nameOfMove(h, lang)).join(', ')}`
                 }
               >
                 <TypeGlyph

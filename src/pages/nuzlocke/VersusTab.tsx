@@ -9,7 +9,9 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Crown, Shield, Skull, Swords, Users } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
-import { displayName, getPokemon, padNum } from '@/lib/pokeapi';
+import { useTranslation } from 'react-i18next';
+import { getPokemon, padNum } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon } from '@/lib/types';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
@@ -83,6 +85,8 @@ interface FoeRef {
 /* ================================================================== */
 
 export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: (id: number) => string }) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const index = useDexIndex();
   const isKanto = state.run.region === 'kanto';
   const idOf = useMemo(() => {
@@ -178,7 +182,12 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const foeStats = useMemo(() => (foeV ? statsOf(foeV) : null), [foeV]);
 
   const youName = sel ? sel.label : '—';
-  const foeName = foeRef?.label ?? (foePokemon ? displayName(foePokemon.name) : 'FOE');
+  // label re-resolves live from the slug so language toggles update it
+  const foeName = foeRef
+    ? nameOfPokemon(foeRef.slug, lang)
+    : foePokemon
+      ? nameOfPokemon(foePokemon.id, lang)
+      : t('versus.foe');
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -258,7 +267,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                   const entry = index.find((e) => e.id === id);
                   setFoeRef({
                     slug: entry?.name ?? String(id),
-                    label: entry?.label ?? displayName(String(id)),
+                    label: entry?.name ?? String(id),
                     level: you.level,
                     moves: [],
                     source: 'wild',
@@ -277,7 +286,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
               onPick={(t, member) => {
                 setFoeRef({
                   slug: member.species,
-                  label: displayName(member.species),
+                  label: member.species,
                   level: member.level,
                   moves: member.moves ?? [],
                   source: (member.moves?.length ?? 0) > 0 ? 'trainer' : 'wild',
@@ -495,6 +504,7 @@ function TrainerPicker({
   idOf: (slug: string) => number;
   onPick: (t: EnrichedTrainer, member: { species: string; level: number; moves?: string[] }) => void;
 }) {
+  const lang = useLanguage();
   const [openKey, setOpenKey] = useState<string | null>(null);
   const important = useMemo(() => TRAINERS.filter((t) => t.important), []);
   return (
@@ -542,7 +552,7 @@ function TrainerPicker({
                         >
                           <PartySprite id={idOf(m.species)} big />
                           <span className="min-w-0 flex-1 truncate text-left font-sans text-[11px] font-semibold text-tx-primary">
-                            {displayName(m.species)}
+                            {nameOfPokemon(m.species, lang)}
                           </span>
                           <span className="pixel-label shrink-0 text-[7px] text-gold">LV{m.level}</span>
                         </button>

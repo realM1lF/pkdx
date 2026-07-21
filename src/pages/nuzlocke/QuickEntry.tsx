@@ -2,14 +2,17 @@
  * Sticky 64px bar on md+, floating gold FAB → bottom sheet on mobile.
  * Route-filtered Pokémon autocomplete from maps.md §0 encounter data. */
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, ChevronDown, Minus, Plus, Search, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import { routeOrder } from '@/lib/regions';
+import { nodeName } from '@/lib/regions';
 import type { RegionMap } from '@/lib/regions';
 import type { RegionDataState } from '@/lib/mapdata';
 import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
+import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
 import { sprites } from '@/lib/sprites';
@@ -29,11 +32,11 @@ interface SpeciesOption {
   custom?: boolean;
 }
 
-const STATUS_META: Record<NuzEncounterStatus, { label: string; cls: string }> = {
-  caught: { label: 'CAUGHT', cls: 'border-[rgba(99,217,107,0.5)] text-[#63D96B]' },
-  dead: { label: 'DEAD', cls: 'border-hairline2 text-tx-muted' },
-  missed: { label: 'MISSED', cls: 'border-gold/60 text-gold' },
-  duped: { label: 'DUPED', cls: 'border-gold/40 text-gold/80 border-dashed' },
+const STATUS_META: Record<NuzEncounterStatus, { labelKey: string; cls: string }> = {
+  caught: { labelKey: 'nuz.statusCaught', cls: 'border-[rgba(99,217,107,0.5)] text-[#63D96B]' },
+  dead: { labelKey: 'nuz.statusDead', cls: 'border-hairline2 text-tx-muted' },
+  missed: { labelKey: 'nuz.statusMissed', cls: 'border-gold/60 text-gold' },
+  duped: { labelKey: 'nuz.statusDuped', cls: 'border-gold/40 text-gold/80 border-dashed' },
 };
 
 interface FormProps {
@@ -48,6 +51,8 @@ interface FormProps {
 }
 
 function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked, onDone }: FormProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const nodes = useMemo(() => routeOrder(region), [region]);
 
@@ -101,23 +106,31 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     for (const g of nd.areas) {
       for (const e of g.entries) {
         const prev = best.get(e.pokemonId);
-        const label = nameIdx.get(e.pokemonId)?.label ?? e.slug;
+        const label = nameIdx.has(e.pokemonId) ? nameOfPokemon(e.pokemonId, lang) : e.slug;
         if (!prev || e.maxChance > (prev.rate ?? 0)) best.set(e.pokemonId, { id: e.pokemonId, label, rate: e.maxChance });
       }
     }
     return [...best.values()].sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0));
-  }, [routeKey, mapData.data, nameIdx]);
+  }, [routeKey, mapData.data, nameIdx, lang]);
 
   const options = useMemo<SpeciesOption[]>(() => {
     const q = query.trim().toLowerCase();
     if (fullDex) {
       const all = [...nameIdx.values()];
-      const filtered = q ? all.filter((e) => e.label.toLowerCase().includes(q) || e.name.includes(q) || String(e.id) === q) : all;
-      return filtered.slice(0, 8).map((e) => ({ id: e.id, label: e.label, custom: true }));
+      const filtered = q
+        ? all.filter(
+            (e) =>
+              e.label.toLowerCase().includes(q) ||
+              e.name.includes(q) ||
+              String(e.id) === q ||
+              (germanAliasOfPokemon(e.id)?.includes(q) ?? false),
+          )
+        : all;
+      return filtered.slice(0, 8).map((e) => ({ id: e.id, label: nameOfPokemon(e.id, lang), custom: true }));
     }
     const base = routeOptions;
-    return (q ? base.filter((o) => o.label.toLowerCase().includes(q)) : base).slice(0, 8);
-  }, [query, fullDex, nameIdx, routeOptions]);
+    return (q ? base.filter((o) => o.label.toLowerCase().includes(q) || (germanAliasOfPokemon(o.id)?.includes(q) ?? false)) : base).slice(0, 8);
+  }, [query, fullDex, nameIdx, routeOptions, lang]);
 
   /* N focuses the bar (route field) */
   useEffect(() => {
@@ -146,7 +159,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const pickRoute = (key: string) => {
     if (player && encounterAt(state, player.id, key)) {
       setRouteOpen(false);
-      fail(`Route already logged for ${player.name} — Dupes Clause is ${state.run.rules.dupes ? 'on' : 'off'}.`);
+      fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
       return;
     }
     setRouteKey(key);
@@ -169,7 +182,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       status,
     });
     if (!res.ok) {
-      fail(`Route already logged for ${player.name} — Dupes Clause is ${state.run.rules.dupes ? 'on' : 'off'}.`);
+      fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
       return;
     }
     onLogged({ ...res, fromRect });
@@ -181,10 +194,14 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   };
 
   const canLog = !!player && !!routeKey && !!species;
-  const disabledReason = !routeKey ? 'Pick a route first' : !species ? 'Pick a Pokémon' : '';
+  const disabledReason = !routeKey ? t('nuz.pickRouteFirst') : !species ? t('nuz.pickPokemon') : '';
 
-  const routeLabel = routeKey ? nodes.find((n) => n.id === routeKey)?.label ?? routeKey : 'Route…';
-  const filteredNodes = nodes.filter((n) => n.label.toLowerCase().includes(routeFilter.trim().toLowerCase()));
+  const routeNode = routeKey ? nodes.find((n) => n.id === routeKey) : undefined;
+  const routeLabel = routeKey ? (routeNode ? nodeName(routeNode, lang) : routeKey) : t('nuz.routePlaceholder');
+  const routeNeedle = routeFilter.trim().toLowerCase();
+  const filteredNodes = nodes.filter(
+    (n) => n.label.toLowerCase().includes(routeNeedle) || (n.nameDe?.toLowerCase().includes(routeNeedle) ?? false),
+  );
 
   return (
     <div className={cn('relative flex gap-2', stacked ? 'flex-col' : 'flex-wrap items-center')}>
@@ -196,7 +213,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           <button
             type="button"
             onClick={() => setPlayerOpen((o) => !o)}
-            aria-label="Player"
+            aria-label={t('nuz.player')}
             className={cn('flex h-10 items-center gap-1.5 rounded-md border border-hairline2 bg-surface2 px-2.5 text-[12px] font-semibold text-tx-primary hover:border-gold/50', stacked ? 'w-full justify-between' : 'w-[140px] justify-between')}
           >
             <span className="flex min-w-0 items-center gap-1.5">
@@ -238,7 +255,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           <button
             type="button"
             onClick={() => setRouteOpen((o) => !o)}
-            aria-label="Route"
+            aria-label={t('nuz.route')}
             className={cn('flex h-10 items-center justify-between gap-1.5 rounded-md border bg-surface2 px-2.5 text-[12px] font-semibold hover:border-gold/50', routeKey ? 'border-hairline2 text-tx-primary' : 'border-dashed border-hairline2 text-tx-muted', stacked ? 'w-full' : 'w-[200px]')}
           >
             <span className="truncate">{routeLabel}</span>
@@ -252,7 +269,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             autoFocus
             value={routeFilter}
             onChange={(e) => setRouteFilter(e.target.value)}
-            placeholder="Filter routes…"
+            placeholder={t('nuz.filterRoutes')}
             className="h-8 w-full rounded-sm border border-hairline bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
           />
         </div>
@@ -313,9 +330,9 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               setListOpen(false);
             }
           }}
-          placeholder={routeKey ? 'Pokémon…' : 'Pick a route first'}
+          placeholder={routeKey ? t('nuz.pokemonPlaceholder') : t('nuz.pickRouteFirst')}
           disabled={!routeKey}
-          aria-label="Pokémon"
+          aria-label={t('nuz.pokemonAria')}
           aria-expanded={listOpen}
           role="combobox"
           className={cn(
@@ -393,7 +410,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               const v = Number(e.target.value.replace(/\D/g, ''));
               if (Number.isFinite(v)) setLevel(Math.max(1, Math.min(100, v)));
             }}
-            aria-label="Level"
+            aria-label={t('nuz.level')}
             className="w-[36px] bg-transparent text-center font-display text-[14px] font-bold tabular-nums text-tx-primary outline-none"
           />
           <button type="button" aria-label="Level up" onClick={() => setLevel((l) => Math.min(100, l + 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
@@ -411,10 +428,10 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           <button
             type="button"
             onClick={() => setStatusOpen((o) => !o)}
-            aria-label="Status"
+            aria-label={t('nuz.status')}
             className={cn('flex h-10 items-center justify-between gap-1 rounded-md border bg-surface2 px-2.5 font-pixel text-[8px] tracking-[0.08em]', STATUS_META[status].cls, stacked ? 'w-full' : 'w-[110px]')}
           >
-            {STATUS_META[status].label}
+            {t(STATUS_META[status].labelKey)}
             <ChevronDown size={12} />
           </button>
         }
@@ -430,7 +447,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             }}
             className={cn('flex w-full items-center gap-2 px-3 py-2 text-left font-pixel text-[8px] tracking-[0.08em] transition-colors hover:bg-surface3', STATUS_META[s].cls)}
           >
-            {STATUS_META[s].label}
+            {t(STATUS_META[s].labelKey)}
             {s === status && <Check size={12} className="ml-auto" />}
           </button>
         ))}
@@ -442,9 +459,9 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           value={nick}
           onChange={(e) => setNick(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
-          placeholder="Name it — it matters"
+          placeholder={t('nuz.nicknamePlaceholder')}
           maxLength={18}
-          aria-label="Nickname"
+          aria-label={t('nuz.nickname')}
           className={cn('h-10 rounded-md border border-hairline2 bg-surface2 px-3 text-[12px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold/60', stacked ? 'w-full' : 'w-[160px]')}
         />
       )}
@@ -455,7 +472,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           <button
             type="button"
             disabled={!canLog}
-            title={canLog ? 'Log encounter (Enter)' : disabledReason}
+            title={canLog ? t('nuz.logEncounterEnter') : disabledReason}
             onClick={submit}
             className={cn(
               'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-5 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
@@ -476,6 +493,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
 interface QuickEntryProps extends Omit<FormProps, 'stacked' | 'onDone'> {}
 
 export default function QuickEntry(props: QuickEntryProps) {
+  const { t } = useTranslation();
   const [sheetOpen, setSheetOpen] = useState(false);
 
   /* prefill on mobile opens the sheet */
@@ -497,7 +515,7 @@ export default function QuickEntry(props: QuickEntryProps) {
       {/* mobile FAB */}
       <button
         type="button"
-        aria-label="Log encounter"
+        aria-label={t('nuz.logEncounter')}
         onClick={() => setSheetOpen(true)}
         className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full border border-gold/70 bg-[linear-gradient(135deg,rgba(246,201,69,0.9),rgba(246,201,69,0.7))] text-void shadow-[0_8px_32px_rgba(246,201,69,0.35)] md:hidden"
       >

@@ -187,7 +187,14 @@ export function registerSpeciesNamer(fn: (id: number) => string): void {
   speciesNamer = fn;
 }
 
+/** Pages also register a localized route namer (display-only; route_key stays EN). */
+let routeNamer: ((run: NuzRunRow, routeKey: string) => string) | null = null;
+export function registerRouteNamer(fn: ((run: NuzRunRow, routeKey: string) => string) | null): void {
+  routeNamer = fn;
+}
+
 function routeLabelOf(run: NuzRunRow, routeKey: string): string {
+  if (routeNamer) return routeNamer(run, routeKey);
   const region = regionById(run.region);
   return nodeIndex(region ?? { nodes: [] } as never).get(routeKey)?.label ?? routeKey;
 }

@@ -3,12 +3,15 @@
  * variant="inline": embedded large search (Home + /pokedex). */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import Fuse from 'fuse.js';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X } from 'lucide-react';
 import Sprite from './Sprite';
 import TypeBadge from './TypeBadge';
 import { bootNameIndex, getPokemon, padNum } from '@/lib/pokeapi';
+import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { useLocalePath } from '@/lib/locale-link';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -47,6 +50,9 @@ interface SearchCommandProps {
 
 export default function SearchCommand({ variant = 'modal', open = false, onClose, className }: SearchCommandProps) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
   const [query, setQuery] = useState('');
   const [debounced, setDebounced] = useState('');
@@ -89,11 +95,12 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   const fuse = useMemo(
     () =>
       new Fuse(
-        index.map((e) => ({ ...e, idStr: String(e.id) })),
+        index.map((e) => ({ ...e, idStr: String(e.id), de: germanAliasOfPokemon(e.id) ?? '' })),
         {
           keys: [
             { name: 'label', weight: 2 },
             { name: 'name', weight: 1.5 },
+            { name: 'de', weight: 2 },
             { name: 'idStr', weight: 1 },
             { name: 'num', weight: 1 },
           ],
@@ -149,7 +156,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
       setRecents(pushRecent({ id: entry.id, label: entry.label }));
       setQuery('');
       onClose?.();
-      navigate(`/pokemon/${entry.id}`);
+      navigate(localePath(`/pokemon/${entry.id}`));
     },
     [navigate, onClose],
   );
@@ -188,7 +195,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
         onKeyDown={onKeyDown}
         onFocus={() => setFocused(true)}
         onBlur={() => window.setTimeout(() => setFocused(false), 120)}
-        placeholder="SEARCH NAME OR # …"
+        placeholder={t('pokedex.searchPlaceholder')}
         role="combobox"
         aria-expanded={results.length > 0}
         aria-controls="pdx-search-listbox"
@@ -198,7 +205,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
       {query ? (
         <button
           type="button"
-          aria-label="Clear search"
+          aria-label={t('pokedex.clearSearch')}
           onClick={() => setQuery('')}
           className="shrink-0 text-tx-muted transition-colors hover:text-gold"
         >
@@ -223,7 +230,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
         >
           <img src="/pokeball-open.svg" alt="" className="h-12 w-10 opacity-50" />
           <p className="font-sans text-sm font-semibold text-gold">
-            No Pokémon matches “{debounced}” — check the spelling or try a dex number.
+            {t('search.noMatch', { q: debounced })}
           </p>
         </motion.div>
       )}
@@ -231,7 +238,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
       {!debounced && recents.length > 0 && (
         <div className="px-3 py-2">
           <div className="flex items-center justify-between px-2 py-1">
-            <span className="pixel-label text-[9px] text-tx-muted">RECENT</span>
+            <span className="pixel-label text-[9px] text-tx-muted">{t('search.recent')}</span>
             <button
               type="button"
               onClick={() => {
@@ -240,7 +247,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
               }}
               className="pixel-label text-[9px] text-tx-muted transition-colors hover:text-gold"
             >
-              CLEAR
+              {t('search.clear')}
             </button>
           </div>
           <ul>
@@ -251,8 +258,8 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
                   onClick={() => pick(r)}
                   className="flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-surface3"
                 >
-                  <Sprite id={r.id} name={r.label} era="gen5" skeleton={false} className="h-8 w-8" />
-                  <span className="flex-1 font-sans text-sm font-medium text-tx-secondary">{r.label}</span>
+                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="gen5" skeleton={false} className="h-8 w-8" />
+                  <span className="flex-1 font-sans text-sm font-medium text-tx-secondary">{nameOfPokemon(r.id, lang)}</span>
                   <span className="pixel-label text-[9px] text-tx-muted">{padNum(r.id)}</span>
                 </button>
               </li>
@@ -278,9 +285,9 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
                   )}
                   style={i === active ? { borderColor: tColor } : undefined}
                 >
-                  <Sprite id={r.id} name={r.label} era="gen5" skeleton={false} className="h-10 w-10 shrink-0" />
+                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="gen5" skeleton={false} className="h-10 w-10 shrink-0" />
                   <span className="min-w-0 flex-1 truncate font-sans text-base font-semibold text-tx-primary">
-                    {r.label}
+                    {nameOfPokemon(r.id, lang)}
                   </span>
                   <span className="pixel-label shrink-0 text-[9px] text-tx-muted">{r.num}</span>
                   <span className="hidden shrink-0 items-center gap-1 sm:flex">
@@ -318,14 +325,14 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
           transition={{ duration: 0.2 }}
         >
           <motion.button
-            aria-label="Close search"
+            aria-label={t('search.closeSearch')}
             className="absolute inset-0 cursor-default bg-void/60 backdrop-blur-sm"
             onClick={onClose}
             tabIndex={-1}
           />
           <motion.div
             role="dialog"
-            aria-label="Search Pokémon"
+            aria-label={t('search.dialogAria')}
             className="relative w-full max-w-[640px]"
             initial={{ y: -16, scale: 0.98, opacity: 0 }}
             animate={{ y: 0, scale: 1, opacity: 1 }}

@@ -6,16 +6,18 @@ import { Link, useParams } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
-import { REGIONS, nodeIndex, regionById } from '@/lib/regions';
+import { REGIONS, nodeIndex, nodeName, regionById } from '@/lib/regions';
 import { useRegionData } from '@/lib/mapdata';
 import {
   isRunOwner,
   linkPartnerOf,
+  registerRouteNamer,
   registerSpeciesNamer,
   soulLinksOf,
   useRunEntry,
 } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterRow, UpdateResult } from '@/lib/nuzlocke-store';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { bootNameIndex, padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
 import { sprites } from '@/lib/sprites';
@@ -56,15 +58,28 @@ export default function NuzlockeRun() {
       .catch(() => undefined);
   }, []);
 
-  const nameOf = useMemo(() => (id: number) => nameIdx.get(id)?.label ?? padNum(id), [nameIdx]);
+  const lang = useLanguage();
+  const nameOf = useMemo(
+    () => (id: number) => (nameIdx.has(id) ? nameOfPokemon(id, lang) : padNum(id)),
+    [nameIdx, lang],
+  );
 
-  /* feed text uses proper species names (store-level hook) */
+  /* feed text uses proper species + route names (store-level hooks) */
   useEffect(() => {
-    registerSpeciesNamer((id) => nameIdx.get(id)?.label ?? padNum(id));
-  }, [nameIdx]);
+    registerSpeciesNamer((id) => nameOf(id));
+    registerRouteNamer((_run: import('@/lib/nuzlocke-store').NuzRunRow, key: string) => routeLabel(key));
+    return () => registerRouteNamer(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameIdx, lang]);
 
   const routeLabelMap = useMemo(() => nodeIndex(region), [region]);
-  const routeLabel = useMemo(() => (key: string) => routeLabelMap.get(key)?.label ?? key, [routeLabelMap]);
+  const routeLabel = useMemo(
+    () => (key: string) => {
+      const node = routeLabelMap.get(key);
+      return node ? nodeName(node, lang) : key;
+    },
+    [routeLabelMap, lang],
+  );
 
   const [prefill, setPrefill] = useState<Prefill | null>(null);
   const [menu, setMenu] = useState<MenuTarget | null>(null);

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { FolderOpen, Plus, Trash2 } from 'lucide-react';
 import Sprite from '@/components/Sprite';
-import { displayName } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { filledSlots, versionGroupById } from '@/lib/teambuilder';
 import type { Team } from '@/lib/teambuilder';
 
@@ -27,6 +27,7 @@ function formatWhen(ts: number): string {
 }
 
 export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedTeamsHubProps) {
+  const lang = useLanguage();
   return (
     <div className="mx-auto max-w-[960px]">
       <div className="mb-4 flex items-end justify-between gap-3">
@@ -88,7 +89,7 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                       className="flex h-10 w-10 items-center justify-center rounded-[8px] border border-hairline bg-surface2"
                     >
                       {s.pokemonId != null && s.pokemon ? (
-                        <Sprite id={s.pokemonId} name={displayName(s.pokemon)} era="default" className="h-9 w-9" skeleton={false} />
+                        <Sprite id={s.pokemonId} name={nameOfPokemon(s.pokemon, lang)} era="default" className="h-9 w-9" skeleton={false} />
                       ) : (
                         <span className="tb-micro !text-[8px] text-tx-muted">—</span>
                       )}

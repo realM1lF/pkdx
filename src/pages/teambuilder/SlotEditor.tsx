@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Eraser } from 'lucide-react';
-import { displayName } from '@/lib/pokeapi';
+import { nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import {
   MAX_EV_PER_STAT,
   MAX_EV_TOTAL,
@@ -38,20 +38,21 @@ interface MoveSlotPickerProps {
 }
 
 function MoveSlotPicker({ value, options, onChange, disabled }: MoveSlotPickerProps) {
+  const lang = useLanguage();
   return (
     <MiniAutocomplete
       items={options}
-      filter={(m, q) => m.label.toLowerCase().includes(q) || m.name.includes(q)}
+      filter={(m, q) => m.label.toLowerCase().includes(q) || m.name.includes(q) || nameOfMove(m.name, lang).toLowerCase().includes(q)}
       onSelect={(m) => onChange(m.name)}
       keyOf={(m) => m.name}
       placeholder="ADD MOVE…"
-      displayValue={value ? displayName(value) : undefined}
+      displayValue={value ? nameOfMove(value, lang) : undefined}
       onClear={value ? () => onChange(null) : undefined}
       disabled={disabled}
       maxResults={60}
       renderItem={(m) => (
         <span className="flex w-full items-center justify-between gap-2">
-          <span className="truncate">{m.label}</span>
+          <span className="truncate">{nameOfMove(m.name, lang)}</span>
           <span className="tb-chip shrink-0 !px-1.5 !py-0 !text-[8px]">
             {m.method === 'level-up' ? `LV ${m.level}` : METHOD_CHIP[m.method]}
           </span>
@@ -91,6 +92,7 @@ interface SlotEditorProps {
 }
 
 export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPatch }: SlotEditorProps) {
+  const lang = useLanguage();
   const vg = versionGroupById(versionGroup);
   const mech = genHasMechanics(versionGroup);
   const moveOptions = useMemo(() => (pokemon ? legalMoves(pokemon, versionGroup) : []), [pokemon, versionGroup]);
@@ -173,7 +175,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               <input
                 value={slot.nickname ?? ''}
                 onChange={(e) => patch({ nickname: e.target.value || null })}
-                placeholder={slot.pokemon ? displayName(slot.pokemon) : ''}
+                placeholder={slot.pokemon ? nameOfPokemon(slot.pokemon, lang) : ''}
                 maxLength={18}
                 className="tb-input mt-1 !py-1.5 !text-[12px]"
               />

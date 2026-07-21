@@ -2,12 +2,13 @@
  * Empty → "+" autocomplete add · Filled → sprite aura, types, level, move pips,
  * gold ILLEGAL flag (never red), VS icon-link → /pokemon/{id}?vs= */
 import { useState } from 'react';
-import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronDown, Plus, Swords, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
-import { displayName, padNum } from '@/lib/pokeapi';
+import { padNum } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { LocaleLink } from '@/lib/locale-link';
 import { genTypesOf, versionGroupById } from '@/lib/teambuilder';
 import type { SlotLegality, TeamSlot } from '@/lib/teambuilder';
 import type { Pokemon } from '@/lib/types';
@@ -43,6 +44,7 @@ export default function SlotCard({
   onToggleExpand,
   onFocus,
 }: SlotCardProps) {
+  const lang = useLanguage();
   const [picking, setPicking] = useState(false);
 
   /* ---------- empty slot ---------- */
@@ -88,7 +90,7 @@ export default function SlotCard({
   const fallbackTypes = (pokemon?.types.map((t) => t.type.name) ?? []) as PokemonType[];
   const types = genTypesOf(versionGroup, slot.pokemon, fallbackTypes);
   const primary = TYPE_COLORS[types[0] ?? 'normal'];
-  const label = slot.nickname || displayName(slot.pokemon);
+  const label = slot.nickname || nameOfPokemon(slot.pokemon, lang);
   const moveCount = slot.moves.filter(Boolean).length;
   const vg = versionGroupById(versionGroup);
 
@@ -145,7 +147,7 @@ export default function SlotCard({
         />
         <Sprite
           id={slot.pokemonId}
-          name={displayName(slot.pokemon)}
+          name={nameOfPokemon(slot.pokemon, lang)}
           era={slot.pokemonId <= 649 ? 'gen5' : 'default'}
           className="relative h-full w-full"
         />
@@ -178,7 +180,7 @@ export default function SlotCard({
 
       {/* actions: VS link + expander toggle */}
       <div className="mt-2 flex items-center justify-between border-t border-hairline pt-1.5">
-        <Link
+        <LocaleLink
           to={`/pokemon/${slot.pokemonId}?vs=`}
           onClick={(e) => e.stopPropagation()}
           className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
@@ -187,7 +189,7 @@ export default function SlotCard({
         >
           <Swords size={9} />
           VS
-        </Link>
+        </LocaleLink>
         <button
           type="button"
           onClick={(e) => {

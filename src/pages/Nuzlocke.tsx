@@ -2,8 +2,10 @@
  * Header + sync banner + runs grid + join-by-code + New-Run wizard. */
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, Info, Plus, X } from 'lucide-react';
 import { bootNameIndex, padNum } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { lookupByCode, useHubRuns } from '@/lib/nuzlocke-store';
 import type { JoinLookup } from '@/lib/nuzlocke-store';
 import { isMultiCapable } from '@/lib/supabase';
@@ -14,11 +16,9 @@ import NuzToasts from './nuzlocke/Toasts';
 import { GoldHint, InfoTip, PixelLabel, useShake } from './nuzlocke/ui';
 import './nuzlocke/nuzlocke.css';
 
-const NUZ_TIP =
-  'A self-imposed challenge: catch only the first Pokémon you meet on each route; if it faints, it\u2019s gone for good. Nickname everything.';
-const SOLO_TIP = 'Create a run anyway — you can upgrade it to multiplayer later.';
-
 export default function Nuzlocke() {
+  const { t } = useTranslation();
+  const lang = useLanguage();
   const { runs, loading, entries } = useHubRuns();
   const [wizardOpen, setWizardOpen] = useState(false);
   const [joinPreset, setJoinPreset] = useState<JoinLookup | null>(null);
@@ -33,8 +33,9 @@ export default function Nuzlocke() {
   }, []);
 
   const nameOf = useMemo(() => {
-    return (id: number) => nameIdx.get(id) ?? padNum(id);
-  }, [nameIdx]);
+    // localized display name (de artifact) — EN label from the boot index as fallback
+    return (id: number) => (nameIdx.has(id) ? nameOfPokemon(id, lang) : padNum(id));
+  }, [nameIdx, lang]);
 
   const multi = isMultiCapable();
   const visible = showAll ? runs : runs.slice(0, 6);
@@ -51,7 +52,7 @@ export default function Nuzlocke() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-[640px]">
           <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4 }}>
-            <PixelLabel className="text-gold">PHASE 05 — SURVIVAL PROTOCOL</PixelLabel>
+            <PixelLabel className="text-gold">{t('nuz.eyebrow')}</PixelLabel>
           </motion.div>
           <motion.h1
             initial={{ y: 24, opacity: 0 }}
@@ -59,7 +60,7 @@ export default function Nuzlocke() {
             transition={{ duration: 0.4, delay: 0.06 }}
             className="mt-2 font-display text-[clamp(28px,4vw,44px)] font-extrabold uppercase leading-[1.1] text-tx-primary"
           >
-            Nuzlocke Tracker
+            {t('nuz.title')}
           </motion.h1>
           <motion.p
             initial={{ y: 24, opacity: 0 }}
@@ -67,9 +68,9 @@ export default function Nuzlocke() {
             transition={{ duration: 0.4, delay: 0.12 }}
             className="mt-2 flex flex-wrap items-center gap-1.5 text-[14px] leading-relaxed text-tx-secondary"
           >
-            One encounter per route. Fainting is forever. Track your run as a living timeline — alone, or SoulLinked with a partner.
-            <InfoTip text={NUZ_TIP} iconSize={13} />
-            <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">WHAT IS A NUZLOCKE?</span>
+            {t('nuz.blurb')}
+            <InfoTip text={t('nuz.nuzTip')} iconSize={13} />
+            <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.whatIs')}</span>
           </motion.p>
         </div>
         <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, delay: 0.18 }} className="flex items-center gap-2">
@@ -81,13 +82,13 @@ export default function Nuzlocke() {
             }}
             className="nz-sheen flex items-center gap-2 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 hover:border-gold"
           >
-            <Plus size={15} /> New Run
+            <Plus size={15} /> {t('nuz.newRun')}
           </button>
           <a
             href="#join-code"
             className="rounded-md border border-hairline2 px-5 py-3 text-[13px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
-            Join with code
+            {t('nuz.joinWithCode')}
           </a>
         </motion.div>
       </header>
@@ -103,16 +104,16 @@ export default function Nuzlocke() {
           {multi ? (
             <>
               <span className="nz-dot-live h-2 w-2 rounded-full bg-[#45C8FF]" />
-              <span className="text-[11px] tracking-wide text-tx-secondary">ONLINE — REALTIME SYNC READY</span>
+              <span className="text-[11px] tracking-wide text-tx-secondary">{t('nuz.online')}</span>
             </>
           ) : (
             <>
               <span className="h-2 w-2 rounded-full bg-gold" />
-              <span className="text-[11px] tracking-wide text-tx-secondary">SOLO MODE — RUNS SAVE TO THIS DEVICE</span>
-              <InfoTip text={SOLO_TIP} />
+              <span className="text-[11px] tracking-wide text-tx-secondary">{t('nuz.solo')}</span>
+              <InfoTip text={t('nuz.soloTip')} />
             </>
           )}
-          <button type="button" onClick={closeBanner} aria-label="Dismiss" className="ml-auto text-tx-muted transition-colors hover:text-gold">
+          <button type="button" onClick={closeBanner} aria-label={t('nuz.dismiss')} className="ml-auto text-tx-muted transition-colors hover:text-gold">
             <X size={12} />
           </button>
         </motion.div>
@@ -129,8 +130,8 @@ export default function Nuzlocke() {
       {/* ---------- runs grid (§1.3) ---------- */}
       <section className="mt-8">
         <div className="mb-3 flex items-baseline gap-3">
-          <h2 className="font-display text-[18px] font-bold uppercase text-tx-primary">Active Operations</h2>
-          <PixelLabel>{`${runs.length} ${runs.length === 1 ? 'RUN' : 'RUNS'}`}</PixelLabel>
+          <h2 className="font-display text-[18px] font-bold uppercase text-tx-primary">{t('nuz.activeOps')}</h2>
+          <PixelLabel>{runs.length === 1 ? t('nuz.run', { count: runs.length }) : t('nuz.runs', { count: runs.length })}</PixelLabel>
         </div>
 
         {!loading && runs.length === 0 ? (
@@ -140,8 +141,8 @@ export default function Nuzlocke() {
               <img src="/empty-dex.svg" alt="" className="h-[140px] opacity-60" />
               <span className="nz-dot-gold-pulse absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-gold/30" />
             </div>
-            <h3 className="mt-4 font-display text-[20px] font-bold text-tx-primary">No runs yet</h3>
-            <p className="mt-1 text-[13px] text-tx-secondary">Every legend starts with Route 1 and bad odds.</p>
+            <h3 className="mt-4 font-display text-[20px] font-bold text-tx-primary">{t('nuz.emptyTitle')}</h3>
+            <p className="mt-1 text-[13px] text-tx-secondary">{t('nuz.emptyBody')}</p>
             <button
               type="button"
               onClick={() => {
@@ -150,7 +151,7 @@ export default function Nuzlocke() {
               }}
               className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
             >
-              Start your first run
+              {t('nuz.emptyCta')}
             </button>
           </div>
         ) : (
@@ -173,7 +174,7 @@ export default function Nuzlocke() {
                     <img src="/pokeball.svg" alt="" className="h-9 w-9 opacity-40 transition-opacity group-hover:opacity-90" />
                     <Plus size={16} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-gold transition-transform duration-300 group-hover:rotate-90" />
                   </span>
-                  <span className="font-pixel text-[9px] tracking-[0.1em] text-tx-muted transition-colors group-hover:text-gold">+ NEW RUN</span>
+                  <span className="font-pixel text-[9px] tracking-[0.1em] text-tx-muted transition-colors group-hover:text-gold">{t('nuz.newRunPlus')}</span>
                 </span>
               </motion.button>
 
@@ -183,7 +184,7 @@ export default function Nuzlocke() {
             </div>
             {runs.length > 6 && !showAll && (
               <button type="button" onClick={() => setShowAll(true)} className="mt-4 text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold">
-                Show all runs ({runs.length}) →
+                {t('nuz.showAll', { count: runs.length })}
               </button>
             )}
           </>
@@ -199,6 +200,7 @@ export default function Nuzlocke() {
 /* ---------- join-by-code inline row (§1.4) ---------- */
 
 function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
+  const { t } = useTranslation();
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [shakeKey, shake] = useShake();
@@ -214,7 +216,7 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
         setCode('');
       } else {
         shake();
-        setHint('No run with that code — check spelling.');
+        setHint(t('nuz.joinHint'));
         window.setTimeout(() => setHint(''), 2600);
       }
     } finally {
@@ -224,7 +226,7 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
 
   return (
     <div id="join-code" className="mt-4 flex min-h-[56px] flex-wrap items-center gap-3 rounded-md border border-hairline bg-surface1 px-4 py-2">
-      <PixelLabel>HAVE AN INVITE?</PixelLabel>
+      <PixelLabel>{t('nuz.haveInvite')}</PixelLabel>
       <div className="relative">
         <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
           <input
@@ -235,7 +237,7 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
             }}
             placeholder="SOUL-····"
             maxLength={12}
-            aria-label="Invite code"
+            aria-label={t('nuz.inviteAria')}
             className={cn(
               'h-9 w-[150px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold uppercase tracking-[0.14em] text-gold outline-none placeholder:text-tx-muted/50',
               'border-hairline2 focus:border-gold',
@@ -250,14 +252,14 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
         onClick={() => void submit()}
         className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        Join <ArrowRight size={13} />
+        {t('nuz.join')} <ArrowRight size={13} />
       </button>
       {!isMultiCapable() && (
         <span className="flex items-center gap-1 text-[11px] text-tx-muted">
-          <Info size={11} /> Joining needs an online connection.
+          <Info size={11} /> {t('nuz.joinOffline')}
         </span>
       )}
-      <span className="ml-auto hidden text-[10px] text-tx-muted/60 md:block">Codes look like SOUL-7K2</span>
+      <span className="ml-auto hidden text-[10px] text-tx-muted/60 md:block">{t('nuz.codeFormat')}</span>
     </div>
   );
 }

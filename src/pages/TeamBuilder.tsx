@@ -3,7 +3,8 @@
  * State lives in src/lib/teambuilder.ts; this page wires data → components. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, Reorder } from 'framer-motion';
-import { displayName, getMove, getPokemon } from '@/lib/pokeapi';
+import { getMove, getPokemon } from '@/lib/pokeapi';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import {
   consumeTeamHash,
   decodeTeamHash,
@@ -55,6 +56,7 @@ function slugify(name: string): string {
 }
 
 export default function TeamBuilder() {
+  const lang = useLanguage();
   /* shared-team hash is consumed once at mount (lazy initializer) */
   const [sharedPayload] = useState<string | null>(() => consumeTeamHash());
   const [team, setTeam] = useState<Team | null>(() => (sharedPayload ? null : loadDraft()));
@@ -330,7 +332,7 @@ export default function TeamBuilder() {
     return team.slots.find((s) => s.id === focusedId && s.pokemon) ?? filledSlots(team)[0] ?? null;
   }, [team, focusedId]);
 
-  const focusSpecies = focusSlot?.pokemon ? displayName(focusSlot.pokemon) : null;
+  const focusSpecies = focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null;
 
   useEffect(() => {
     if (!focusSpecies) return undefined;
@@ -449,7 +451,7 @@ export default function TeamBuilder() {
         coverageLoading={coverageLoading}
         metaState={metaState}
         metaEntry={metaEntry}
-        metaFocusLabel={focusSlot?.pokemon ? displayName(focusSlot.pokemon) : null}
+        metaFocusLabel={focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null}
         onApplySet={handleApplySet}
         appliedSetName={appliedSetName}
       />
