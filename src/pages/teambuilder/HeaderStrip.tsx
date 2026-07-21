@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, ChevronDown, Download, Gamepad2, Pencil, Save, Share2, Trash2, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { genRegionKey } from '@/lib/i18n-data';
 import { VERSION_GROUPS, versionGroupById } from '@/lib/teambuilder';
 import type { Team } from '@/lib/teambuilder';
 import { GENERATIONS } from '@/lib/types';
@@ -14,6 +16,7 @@ interface GameSelectorProps {
 }
 
 function GameSelector({ value, onChange }: GameSelectorProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const current = versionGroupById(value);
@@ -42,10 +45,10 @@ function GameSelector({ value, onChange }: GameSelectorProps) {
         className="tb-btn !gap-2"
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Select game version group"
+        aria-label={t('tb.selectGame')}
       >
         <Gamepad2 size={14} className="text-gold" />
-        <span className="tb-micro-gold !text-[8px]">GAME</span>
+        <span className="tb-micro-gold !text-[8px]">{t('tb.game')}</span>
         <span className="font-display text-[11px] font-bold tracking-wide text-tx-primary">{current.short}</span>
         <span className="hidden text-[11px] text-tx-muted lg:inline">{current.label}</span>
         <ChevronDown size={12} className={cn('transition-transform duration-200', open && 'rotate-180')} />
@@ -59,7 +62,7 @@ function GameSelector({ value, onChange }: GameSelectorProps) {
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="tb-dropdown tb-scroll !min-w-[280px] max-h-[380px] overflow-y-auto py-1" data-lenis-prevent
             role="listbox"
-            aria-label="Version groups"
+            aria-label={t('tb.versionGroups')}
           >
             {GENERATIONS.map((g) => {
               const groups = VERSION_GROUPS.filter((v) => v.gen === g.gen);
@@ -67,7 +70,7 @@ function GameSelector({ value, onChange }: GameSelectorProps) {
               return (
                 <div key={g.gen}>
                   <div className="tb-micro px-3 pb-1 pt-2.5 !text-[8px]">
-                    GEN {g.roman} · {g.region.toUpperCase()}
+                    GEN {g.roman} · {t(`regions.${genRegionKey(g.region)}`).toUpperCase()}
                   </div>
                   {groups.map((v) => (
                     <button
@@ -128,6 +131,7 @@ export default function HeaderStrip({
   onOpenHub,
   savedCount,
 }: HeaderStripProps) {
+  const { t } = useTranslation();
   return (
     <div className="tb-panel mb-3 flex flex-wrap items-center gap-2 !rounded-[12px] px-3 py-2.5">
       <div className="flex min-w-[180px] flex-1 items-center gap-2">
@@ -135,9 +139,9 @@ export default function HeaderStrip({
         <input
           value={team.name}
           onChange={(e) => onName(e.target.value)}
-          placeholder="TEAM NAME"
+          placeholder={t('tb.teamName')}
           maxLength={40}
-          aria-label="Team name"
+          aria-label={t('tb.teamName')}
           className="w-full bg-transparent font-display text-[15px] font-bold uppercase tracking-wide text-tx-primary outline-none transition-colors placeholder:text-tx-muted focus:text-gold"
         />
       </div>
@@ -145,22 +149,22 @@ export default function HeaderStrip({
         <GameSelector value={team.versionGroup} onChange={onGameChange} />
         <button type="button" onClick={onImport} className="tb-btn">
           <Download size={13} />
-          IMPORT FROM RUN
+          {t('tb.importFromRun')}
         </button>
         <button type="button" onClick={onShare} className="tb-btn" aria-live="polite">
           {shareState === 'copied' ? <Check size={13} className="text-gold" /> : <Share2 size={13} />}
-          {shareState === 'copied' ? 'LINK COPIED' : 'SHARE'}
+          {shareState === 'copied' ? t('tb.linkCopied') : t('tb.share')}
         </button>
         <button type="button" onClick={onSave} className="tb-btn tb-btn-primary">
           <Save size={13} />
-          {saved ? 'SAVED ✓' : 'SAVE'}
+          {saved ? t('tb.saved') : t('tb.save')}
         </button>
-        <button type="button" onClick={onOpenHub} className="tb-btn" aria-label="My saved teams">
+        <button type="button" onClick={onOpenHub} className="tb-btn" aria-label={t('tb.myTeams')}>
           <Users size={13} />
-          <span className="hidden sm:inline">MY TEAMS</span>
+          <span className="hidden sm:inline">{t('tb.myTeams')}</span>
           {savedCount > 0 && <span className="tb-chip !px-1.5 !py-0 !text-[9px] text-gold">{savedCount}</span>}
         </button>
-        <button type="button" onClick={onClear} className="tb-btn tb-btn-icon" aria-label="Clear team">
+        <button type="button" onClick={onClear} className="tb-btn tb-btn-icon" aria-label={t('tb.clearTeam')}>
           <Trash2 size={13} />
         </button>
       </div>

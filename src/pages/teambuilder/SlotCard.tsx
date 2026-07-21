@@ -2,6 +2,7 @@
  * Empty → "+" autocomplete add · Filled → sprite aura, types, level, move pips,
  * gold ILLEGAL flag (never red), VS icon-link → /pokemon/{id}?vs= */
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronDown, Plus, Swords, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
@@ -45,6 +46,7 @@ export default function SlotCard({
   onFocus,
 }: SlotCardProps) {
   const lang = useLanguage();
+  const { t: t8n } = useTranslation();
   const [picking, setPicking] = useState(false);
 
   /* ---------- empty slot ---------- */
@@ -58,7 +60,7 @@ export default function SlotCard({
       >
         {picking ? (
           <>
-            <span className="tb-micro text-center">ADD TO SLOT {index + 1}</span>
+            <span className="tb-micro text-center">{t8n('tb.slot.addToSlot', { n: index + 1 })}</span>
             <PokemonPicker
               onPick={(e) => {
                 onPick(slot.id, e.name, e.id);
@@ -66,7 +68,7 @@ export default function SlotCard({
               }}
             />
             <button type="button" onClick={() => setPicking(false)} className="tb-micro mx-auto hover:text-gold">
-              CANCEL
+              {t8n('tb.slot.cancel')}
             </button>
           </>
         ) : (
@@ -74,12 +76,12 @@ export default function SlotCard({
             type="button"
             onClick={() => setPicking(true)}
             className="group flex flex-1 flex-col items-center justify-center gap-2"
-            aria-label={`Add pokémon to slot ${index + 1}`}
+            aria-label={t8n('tb.slot.addAria', { n: index + 1 })}
           >
             <span className="flex h-11 w-11 items-center justify-center rounded-full border border-hairline2 bg-surface2 text-tx-muted transition-all duration-200 group-hover:border-gold/60 group-hover:text-gold group-hover:shadow-glow-gold">
               <Plus size={20} />
             </span>
-            <span className="tb-micro group-hover:text-gold">ADD POKÉMON</span>
+            <span className="tb-micro group-hover:text-gold">{t8n('tb.slot.addPokemon')}</span>
           </button>
         )}
       </div>
@@ -118,12 +120,12 @@ export default function SlotCard({
               title={legality.reasons.join(' · ')}
             >
               <AlertTriangle size={9} />
-              ILLEGAL IN {vg.short}
+              {t8n('tb.slot.illegalIn', { vg: vg.short })}
             </span>
           )}
           <button
             type="button"
-            aria-label={`Remove ${label}`}
+            aria-label={t8n('tb.slot.removeAria', { name: label })}
             onClick={(e) => {
               e.stopPropagation();
               onRemove(slot.id);
@@ -168,7 +170,7 @@ export default function SlotCard({
       {/* meta row: level + move pips */}
       <div className="mt-2 flex items-center justify-between gap-1">
         <span className="tb-chip !text-[9px]">LV {slot.level}</span>
-        <span className="flex items-center gap-1" aria-label={`${moveCount} of 4 moves set`}>
+        <span className="flex items-center gap-1" aria-label={t8n('tb.slot.movesSet', { count: moveCount })}>
           {slot.moves.map((m, i) => (
             <span
               key={i}
@@ -184,8 +186,8 @@ export default function SlotCard({
           to={`/pokemon/${slot.pokemonId}?vs=`}
           onClick={(e) => e.stopPropagation()}
           className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
-          aria-label={`Compare ${label} in Versus`}
-          title="Open in VS"
+          aria-label={t8n('tb.slot.compare', { name: label })}
+          title={t8n('tb.slot.openVs')}
         >
           <Swords size={9} />
           VS
@@ -198,9 +200,9 @@ export default function SlotCard({
           }}
           className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
           aria-expanded={expanded}
-          aria-label={`Edit ${label}`}
+          aria-label={t8n('tb.slot.editAria', { name: label })}
         >
-          EDIT
+          {t8n('tb.slot.edit')}
           <ChevronDown size={9} className={cn('transition-transform duration-200', expanded && 'rotate-180')} />
         </button>
       </div>

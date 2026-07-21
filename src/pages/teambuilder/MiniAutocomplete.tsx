@@ -3,6 +3,7 @@
  * Keyboard: ↑↓ navigate · Enter select · Esc close. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -36,11 +37,12 @@ export default function MiniAutocomplete<T>({
   displayValue,
   onClear,
   autoFocus = false,
-  emptyLabel = 'NO RESULTS',
+  emptyLabel,
   maxResults = 40,
   className,
   disabled = false,
 }: MiniAutocompleteProps<T>) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -126,7 +128,7 @@ export default function MiniAutocomplete<T>({
         {(displayValue !== undefined && (showing || query)) && onClear && (
           <button
             type="button"
-            aria-label="Clear"
+            aria-label={t('tb.autocomplete.clear')}
             onClick={(e) => {
               e.stopPropagation();
               onClear();
@@ -149,7 +151,7 @@ export default function MiniAutocomplete<T>({
             role="listbox"
           >
             {results.length === 0 && (
-              <li className="tb-micro-gold px-3 py-2.5">{emptyLabel}</li>
+              <li className="tb-micro-gold px-3 py-2.5">{emptyLabel ?? t('tb.autocomplete.noMatch')}</li>
             )}
             {results.map((item, i) => (
               <li key={keyOf(item)} role="option" aria-selected={i === active}>

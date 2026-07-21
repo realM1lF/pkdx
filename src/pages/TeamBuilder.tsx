@@ -332,7 +332,9 @@ export default function TeamBuilder() {
     return team.slots.find((s) => s.id === focusedId && s.pokemon) ?? filledSlots(team)[0] ?? null;
   }, [team, focusedId]);
 
-  const focusSpecies = focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null;
+  /* meta lookup key: the Smogon dump is keyed by EN species names — pass the
+   * slug (parseMetaEntry de-slugifies), never the localized display name */
+  const focusSpecies = focusSlot?.pokemon ?? null;
 
   useEffect(() => {
     if (!focusSpecies) return undefined;

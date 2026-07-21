@@ -1,6 +1,7 @@
 /* SlotEditor — per-slot expander (team-builder.md): 4 version-legal move slots,
  * item · ability · nature (all gen-gated) · compact EV presets + sliders. */
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Eraser } from 'lucide-react';
 import { nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
@@ -39,13 +40,14 @@ interface MoveSlotPickerProps {
 
 function MoveSlotPicker({ value, options, onChange, disabled }: MoveSlotPickerProps) {
   const lang = useLanguage();
+  const { t } = useTranslation();
   return (
     <MiniAutocomplete
       items={options}
       filter={(m, q) => m.label.toLowerCase().includes(q) || m.name.includes(q) || nameOfMove(m.name, lang).toLowerCase().includes(q)}
       onSelect={(m) => onChange(m.name)}
       keyOf={(m) => m.name}
-      placeholder="ADD MOVE…"
+      placeholder={t('tb.editor.addMove')}
       displayValue={value ? nameOfMove(value, lang) : undefined}
       onClear={value ? () => onChange(null) : undefined}
       disabled={disabled}
@@ -93,6 +95,7 @@ interface SlotEditorProps {
 
 export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPatch }: SlotEditorProps) {
   const lang = useLanguage();
+  const { t } = useTranslation();
   const vg = versionGroupById(versionGroup);
   const mech = genHasMechanics(versionGroup);
   const moveOptions = useMemo(() => (pokemon ? legalMoves(pokemon, versionGroup) : []), [pokemon, versionGroup]);
@@ -131,7 +134,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
           {/* ---------- moves (span 6) ---------- */}
           <div className="md:col-span-6">
             <div className="mb-2 flex items-center justify-between">
-              <span className="tb-micro-gold">MOVES · {vg.short} LEGAL</span>
+              <span className="tb-micro-gold">{t('tb.editor.movesLegal', { vg: vg.short })}</span>
               <span className="tb-micro">{slot.moves.filter(Boolean).length}/4</span>
             </div>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -147,15 +150,15 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                 </div>
               ))}
             </div>
-            {!pokemon && <p className="tb-micro mt-2">LOADING MOVE POOL…</p>}
+            {!pokemon && <p className="tb-micro mt-2">{t('tb.editor.loadingPool')}</p>}
             {pokemon && moveOptions.length === 0 && (
-              <p className="tb-micro-gold mt-2">NO MOVES IN THIS VERSION GROUP</p>
+              <p className="tb-micro-gold mt-2">{t('tb.editor.noMoves')}</p>
             )}
             {!legality.legal && (
               <div className="mt-3 rounded-[8px] border border-gold/50 bg-gold/10 p-2">
                 <div className="tb-micro-gold tb-illegal-flag mb-1 flex items-center gap-1">
                   <AlertTriangle size={10} />
-                  ILLEGAL IN {vg.label}
+                  {t('tb.slot.illegalIn', { vg: vg.label })}
                 </div>
                 <ul className="space-y-0.5">
                   {legality.reasons.map((r) => (
@@ -171,7 +174,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
           {/* ---------- item / ability / nature / nickname / level (span 3) ---------- */}
           <div className="space-y-3 md:col-span-3">
             <div>
-              <span className="tb-micro">NICKNAME</span>
+              <span className="tb-micro">{t('tb.editor.nickname')}</span>
               <input
                 value={slot.nickname ?? ''}
                 onChange={(e) => patch({ nickname: e.target.value || null })}
@@ -181,7 +184,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               />
             </div>
             <div>
-              <span className="tb-micro">LEVEL</span>
+              <span className="tb-micro">{t('tb.editor.level')}</span>
               <input
                 type="number"
                 min={1}
@@ -195,50 +198,56 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               />
             </div>
             <div>
-              <span className="tb-micro">ITEM {mech.items ? `· GEN ${vg.gen}` : '· N/A THIS GEN'}</span>
+              <span className="tb-micro">
+                {t('tb.editor.item')} {mech.items ? t('tb.editor.genLabel', { gen: vg.gen }) : t('tb.editor.naThisGen')}
+              </span>
               {mech.items ? (
                 <MiniAutocomplete
                   items={itemOptions}
                   filter={(it, q) => it.toLowerCase().includes(q)}
                   onSelect={(it) => patch({ item: it })}
                   keyOf={(it) => it}
-                  placeholder="ADD ITEM…"
+                  placeholder={t('tb.editor.addItem')}
                   displayValue={slot.item ?? undefined}
                   onClear={slot.item ? () => patch({ item: null }) : undefined}
                   maxResults={40}
                   renderItem={(it) => <span className="truncate">{it}</span>}
                 />
               ) : (
-                <p className="tb-micro mt-1.5">NO HELD ITEMS BEFORE GEN II</p>
+                <p className="tb-micro mt-1.5">{t('tb.editor.noItems')}</p>
               )}
             </div>
             <div>
-              <span className="tb-micro">ABILITY {mech.abilities ? '' : '· N/A THIS GEN'}</span>
+              <span className="tb-micro">
+                {t('tb.editor.ability')} {mech.abilities ? '' : t('tb.editor.naThisGen')}
+              </span>
               {mech.abilities ? (
                 <MiniAutocomplete
                   items={abilityOptions}
                   filter={(a, q) => a.toLowerCase().includes(q)}
                   onSelect={(a) => patch({ ability: a })}
                   keyOf={(a) => a}
-                  placeholder="SELECT ABILITY…"
+                  placeholder={t('tb.editor.selectAbility')}
                   displayValue={slot.ability ?? undefined}
                   onClear={slot.ability ? () => patch({ ability: null }) : undefined}
                   maxResults={4}
                   renderItem={(a) => <span>{a}</span>}
                 />
               ) : (
-                <p className="tb-micro mt-1.5">NO ABILITIES BEFORE GEN III</p>
+                <p className="tb-micro mt-1.5">{t('tb.editor.noAbilities')}</p>
               )}
             </div>
             <div>
-              <span className="tb-micro">NATURE {mech.natures ? '' : '· N/A THIS GEN'}</span>
+              <span className="tb-micro">
+                {t('tb.editor.nature')} {mech.natures ? '' : t('tb.editor.naThisGen')}
+              </span>
               {mech.natures ? (
                 <MiniAutocomplete
                   items={natureOptions}
                   filter={(n, q) => n.name.toLowerCase().includes(q)}
                   onSelect={(n) => patch({ nature: n.name })}
                   keyOf={(n) => n.name}
-                  placeholder="SELECT NATURE…"
+                  placeholder={t('tb.editor.selectNature')}
                   displayValue={slot.nature ?? undefined}
                   onClear={slot.nature ? () => patch({ nature: null }) : undefined}
                   maxResults={30}
@@ -250,13 +259,13 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                           +{STAT_LABELS[statKeyOf(n.plus)]} −{STAT_LABELS[statKeyOf(n.minus)]}
                         </span>
                       ) : (
-                        <span className="tb-micro !text-[8px]">NEUTRAL</span>
+                        <span className="tb-micro !text-[8px]">{t('tb.editor.neutral')}</span>
                       )}
                     </span>
                   )}
                 />
               ) : (
-                <p className="tb-micro mt-1.5">NO NATURES BEFORE GEN III</p>
+                <p className="tb-micro mt-1.5">{t('tb.editor.noNatures')}</p>
               )}
             </div>
           </div>
@@ -264,9 +273,9 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
           {/* ---------- EVs (span 3) ---------- */}
           <div className="md:col-span-3">
             <div className="mb-2 flex items-center justify-between">
-              <span className="tb-micro-gold">EVs</span>
+              <span className="tb-micro-gold">{t('tb.editor.evs')}</span>
               <span className={cn('tb-micro tabular-nums', total > MAX_EV_TOTAL - 4 && 'text-gold')}>
-                {total}/{MAX_EV_TOTAL}
+                {t('tb.editor.evsTotal', { used: total, max: MAX_EV_TOTAL })}
               </span>
             </div>
             {mech.evs ? (
@@ -282,7 +291,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                         step={4}
                         value={slot.evs[k] || 0}
                         onChange={(e) => setEv(k, Number(e.target.value))}
-                        aria-label={`${STAT_LABELS[k]} EVs`}
+                        aria-label={t('tb.editor.evAria', { stat: STAT_LABELS[k] })}
                       />
                       <span className="text-right font-display text-[11px] font-bold tabular-nums text-tx-secondary">
                         {slot.evs[k] || 0}
@@ -300,15 +309,15 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                     type="button"
                     onClick={() => patch({ evs: zeroEvs() })}
                     className="tb-chip transition-all hover:border-gold/60 hover:text-gold"
-                    aria-label="Reset EVs"
+                    aria-label={t('tb.editor.resetEvs')}
                   >
                     <Eraser size={9} />
-                    RESET
+                    {t('tb.editor.reset')}
                   </button>
                 </div>
               </>
             ) : (
-              <p className="tb-micro">NO EVs BEFORE GEN III (STAT EXP)</p>
+              <p className="tb-micro">{t('tb.editor.noEvs')}</p>
             )}
           </div>
         </div>

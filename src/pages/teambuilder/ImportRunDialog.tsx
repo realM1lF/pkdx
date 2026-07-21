@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Cloud, HardDrive, Swords, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
 import Sprite from '@/components/Sprite';
 import { versionChipLabel } from '@/lib/regions';
@@ -25,6 +26,7 @@ type Phase =
   | { kind: 'error'; message: string };
 
 export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDialogProps) {
+  const { t: t8n } = useTranslation();
   const [runs, setRuns] = useState<ImportableRun[]>([]);
   const [phase, setPhase] = useState<Phase>({ kind: 'runs' });
 
@@ -53,7 +55,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
       const teams = await importRunTeams(run.id);
       const alive = teams.filter((t) => t.members.length > 0);
       if (!alive.length) {
-        setPhase({ kind: 'error', message: 'NO ALIVE TEAM MEMBERS IN THIS RUN' });
+        setPhase({ kind: 'error', message: t8n('tb.import.noAlive') });
       } else if (alive.length === 1) {
         onImport(alive[0]);
         onClose();
@@ -61,7 +63,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
         setPhase({ kind: 'players', run, teams: alive });
       }
     } catch {
-      setPhase({ kind: 'error', message: 'COULD NOT LOAD RUN (OFFLINE?)' });
+      setPhase({ kind: 'error', message: t8n('tb.import.loadFail') });
     }
   };
 
@@ -77,7 +79,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
           onClick={onClose}
           role="dialog"
           aria-modal="true"
-          aria-label="Import team from nuzlocke run"
+          aria-label={t8n('tb.import.dialogAria')}
         >
           <motion.div
             initial={{ opacity: 0, y: -16, scale: 0.98 }}
@@ -90,12 +92,12 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
             <div className="tb-panel-head">
               <span className="tb-micro-gold flex items-center gap-1.5">
                 <Swords size={11} />
-                IMPORT FROM RUN
+                {t8n('tb.import.title')}
               </span>
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close"
+                aria-label={t8n('tb.import.close')}
                 className="rounded-sm p-1 text-tx-muted transition-all hover:rotate-90 hover:text-gold"
               >
                 <X size={14} />
@@ -106,7 +108,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
               {phase.kind === 'loading' && (
                 <div className="flex flex-col items-center gap-2 py-6">
                   <PokeballLoader variant="inline" />
-                  <span className="tb-micro">LOADING {phase.run.name.toUpperCase()}…</span>
+                  <span className="tb-micro">{t8n('tb.import.loading', { name: phase.run.name.toUpperCase() })}</span>
                 </div>
               )}
 
@@ -120,8 +122,8 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
                 <>
                   {runs.length === 0 && (
                     <div className="py-6 text-center">
-                      <p className="text-[13px] font-semibold text-tx-secondary">No nuzlocke runs found.</p>
-                      <p className="tb-micro mt-1.5">START A RUN ON /NUZLOCKE FIRST</p>
+                      <p className="text-[13px] font-semibold text-tx-secondary">{t8n('tb.import.empty')}</p>
+                      <p className="tb-micro mt-1.5">{t8n('tb.import.emptyCta')}</p>
                     </div>
                   )}
                   <ul className="space-y-1.5">
@@ -149,7 +151,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
                               r.versionGroup ? 'text-gold' : 'text-tx-muted',
                             )}
                           >
-                            {r.versionGroup ? 'READY' : 'NO MAP'}
+                            {r.versionGroup ? t8n('tb.import.ready') : t8n('tb.import.noMap')}
                           </span>
                         </button>
                       </li>
@@ -160,7 +162,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
 
               {phase.kind === 'players' && (
                 <>
-                  <p className="tb-micro mb-2 px-1">WHOSE TEAM? · {phase.run.name.toUpperCase()}</p>
+                  <p className="tb-micro mb-2 px-1">{t8n('tb.import.whoseTeam')} · {phase.run.name.toUpperCase()}</p>
                   <ul className="space-y-1.5">
                     {phase.teams.map((t) => (
                       <li key={t.player}>
@@ -178,7 +180,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
                           />
                           <span className="min-w-0 flex-1">
                             <span className="block truncate text-[13px] font-semibold text-tx-primary">{t.player}</span>
-                            <span className="tb-micro !text-[7px]">{t.members.length} ALIVE</span>
+                            <span className="tb-micro !text-[7px]">{t8n('tb.import.alive', { count: t.members.length })}</span>
                           </span>
                           <span className="flex shrink-0">
                             {t.members.slice(0, 6).map((m, mi) => (

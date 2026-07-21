@@ -2,6 +2,8 @@
  * (team-builder.md "Speichern/Teilen": Teams in localStorage pdx2.teams). */
 import { motion } from 'framer-motion';
 import { FolderOpen, Plus, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { filledSlots, versionGroupById } from '@/lib/teambuilder';
@@ -14,34 +16,37 @@ interface SavedTeamsHubProps {
   onDelete: (id: string) => void;
 }
 
-function formatWhen(ts: number): string {
+function formatWhen(ts: number, lang: 'en' | 'de'): string {
   const diff = Date.now() - ts;
   const min = Math.floor(diff / 60000);
-  if (min < 1) return 'JUST NOW';
-  if (min < 60) return `${min}M AGO`;
+  if (min < 1) return i18n.t('tb.hub.justNow', { lng: lang });
+  if (min < 60) return i18n.t('nuz.time.minShort', { lng: lang, m: min });
   const h = Math.floor(min / 60);
-  if (h < 24) return `${h}H AGO`;
+  if (h < 24) return i18n.t('nuz.time.hourShort', { lng: lang, h });
   const d = Math.floor(h / 24);
-  if (d < 30) return `${d}D AGO`;
-  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+  if (d < 30) return i18n.t('nuz.time.dayShort', { lng: lang, d });
+  return new Date(ts)
+    .toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-US', { month: 'short', day: 'numeric' })
+    .toUpperCase();
 }
 
 export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedTeamsHubProps) {
+  const { t: t8n } = useTranslation();
   const lang = useLanguage();
   return (
     <div className="mx-auto max-w-[960px]">
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-[26px] font-extrabold uppercase tracking-wide text-tx-primary">
-            Team Builder
+            {t8n('tb.page.title')}
           </h1>
           <p className="tb-micro mt-1.5">
-            {teams.length ? `${teams.length} SAVED TEAM${teams.length > 1 ? 'S' : ''} · LOCAL VAULT` : 'BUILD · ANALYZE · SHARE'}
+            {teams.length ? t8n('tb.hub.vaultCount', { count: teams.length }) : t8n('tb.hub.tagline')}
           </p>
         </div>
         <button type="button" onClick={onNew} className="tb-btn tb-btn-primary">
           <Plus size={13} />
-          NEW TEAM
+          {t8n('tb.hub.newTeam')}
         </button>
       </div>
 
@@ -55,8 +60,8 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
           className="tb-panel group flex w-full flex-col items-center gap-3 border-dashed px-6 py-14 transition-colors hover:border-gold/40"
         >
           <img src="/empty-dex.svg" alt="" className="h-[110px] w-auto opacity-70 transition-opacity group-hover:opacity-100" />
-          <span className="text-[14px] font-semibold text-tx-secondary">No saved teams yet.</span>
-          <span className="tb-micro-gold">START YOUR FIRST SQUAD →</span>
+          <span className="text-[14px] font-semibold text-tx-secondary">{t8n('tb.hub.emptyTitle')}</span>
+          <span className="tb-micro-gold">{t8n('tb.hub.emptyCta')}</span>
         </motion.button>
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -77,7 +82,7 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                       {t.name}
                     </div>
                     <div className="tb-micro mt-1 !text-[7px]">
-                      {vg.short} · {filled.length}/6 · {formatWhen(t.updatedAt)}
+                      {vg.short} · {filled.length}/6 · {formatWhen(t.updatedAt, lang)}
                     </div>
                   </div>
                   <span className="tb-chip shrink-0 !text-[8px] text-gold">{vg.label}</span>
@@ -99,13 +104,13 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                 <div className="flex items-center gap-2">
                   <button type="button" onClick={() => onLoad(t)} className="tb-btn tb-btn-primary flex-1 justify-center !py-2">
                     <FolderOpen size={12} />
-                    OPEN
+                    {t8n('tb.hub.open')}
                   </button>
                   <button
                     type="button"
                     onClick={() => onDelete(t.id)}
                     className="tb-btn tb-btn-icon"
-                    aria-label={`Delete ${t.name}`}
+                    aria-label={t8n('tb.hub.deleteAria', { name: t.name })}
                   >
                     <Trash2 size={13} />
                   </button>

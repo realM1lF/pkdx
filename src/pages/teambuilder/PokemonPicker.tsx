@@ -1,9 +1,11 @@
 /* PokemonPicker — SearchCommand-style add-pokémon autocomplete (local component,
  * does NOT touch the shared SearchCommand). Boots the shared name index. */
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
 import { bootNameIndex, getPokemon } from '@/lib/pokeapi';
+import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import MiniAutocomplete from './MiniAutocomplete';
 
@@ -15,6 +17,7 @@ interface PokemonPickerProps {
 
 /** result row — hydrates its own type badges from the (cached) PokéAPI payload */
 function PokemonRow({ entry }: { entry: DexIndexEntry }) {
+  const lang = useLanguage();
   const [types, setTypes] = useState<PokemonType[] | null>(null);
   useEffect(() => {
     let alive = true;
@@ -31,7 +34,7 @@ function PokemonRow({ entry }: { entry: DexIndexEntry }) {
         <Sprite id={entry.id} name={entry.label} era="default" skeleton={false} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[12px] font-semibold text-tx-primary">{entry.label}</span>
+        <span className="block truncate text-[12px] font-semibold text-tx-primary">{nameOfPokemon(entry.id, lang)}</span>
         <span className="tb-micro !text-[8px]">{entry.num}</span>
       </span>
       <span className="flex shrink-0 gap-1">
@@ -43,7 +46,8 @@ function PokemonRow({ entry }: { entry: DexIndexEntry }) {
   );
 }
 
-export default function PokemonPicker({ onPick, autoFocus = true, placeholder = 'SEARCH POKÉMON…' }: PokemonPickerProps) {
+export default function PokemonPicker({ onPick, autoFocus = true, placeholder }: PokemonPickerProps) {
+  const { t } = useTranslation();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
 
   useEffect(() => {
@@ -59,10 +63,15 @@ export default function PokemonPicker({ onPick, autoFocus = true, placeholder = 
   return (
     <MiniAutocomplete
       items={index}
-      filter={(e, q) => e.label.toLowerCase().includes(q) || e.name.includes(q) || e.num.includes(q)}
+      filter={(e, q) =>
+        e.label.toLowerCase().includes(q) ||
+        e.name.includes(q) ||
+        e.num.includes(q) ||
+        (germanAliasOfPokemon(e.id)?.toLowerCase().includes(q) ?? false)
+      }
       onSelect={onPick}
       keyOf={(e) => String(e.id)}
-      placeholder={placeholder}
+      placeholder={placeholder ?? t('tb.autocomplete.searchPokemon')}
       autoFocus={autoFocus}
       maxResults={10}
       renderItem={(e) => <PokemonRow entry={e} />}
