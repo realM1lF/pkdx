@@ -6,7 +6,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Crown, Shield, Skull, Swords, Users } from 'lucide-react';
+import { Swords, Users } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,9 @@ import type { Pokemon } from '@/lib/types';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
+import type { RegionId } from '@/lib/regions';
+import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
+import { genAbilitiesOf, genHasMechanics, genItems } from '@/lib/teambuilder';
 import {
   TIER_ORDER,
   damageBetween,
@@ -23,12 +26,12 @@ import {
   legalMoveSlugs,
   speedCheck,
   statsOf,
-  trainerIndex,
   wildMoveset,
 } from '@/lib/versus';
-import type { AnswerTier, AnswerVerdict, EnrichedTrainer, MovesetSource, VersusSide } from '@/lib/versus';
-import kantoJson from '@/data/enriched/kanto.json';
+import type { AnswerTier, AnswerVerdict, MovesetSource, VersusField, VersusSide } from '@/lib/versus';
+import { versusContextFromRun, type VersusContext } from '@/lib/versus-context';
 import { Panel, SegmentedControl } from '../detail/ui';
+import TrainerPicker from '../detail/TrainerPicker';
 import { typeRgb } from '../detail/data';
 import {
   DamageMatrix,
@@ -48,9 +51,11 @@ import {
 import type { SideState } from '../detail/VersusPanel';
 import '../detail/versus.css';
 
-const TRAINERS = trainerIndex(kantoJson as unknown as Parameters<typeof trainerIndex>[0]);
-
 /* ---------- own-mon model ---------- */
+
+function isDefaultVersusCtx(ctx: VersusContext): boolean {
+  return ctx.gen === 9 && !ctx.game;
+}
 
 interface OwnMon {
   enc: NuzEncounterRow;
@@ -88,7 +93,23 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const { t } = useTranslation();
   const lang = useLanguage();
   const index = useDexIndex();
-  const isKanto = state.run.region === 'kanto';
+  const ctx = useMemo(() => versusContextFromRun(state), [state]);
+  const runRegion = state.run.region as RegionId;
+  const [trainersReady, setTrainersReady] = useState(runRegion === 'kanto');
+
+  useEffect(() => {
+    let on = true;
+    setTrainersReady(false);
+    loadTrainersForRegion(runRegion)
+      .then(() => on && setTrainersReady(true))
+      .catch(() => on && setTrainersReady(true));
+    return () => {
+      on = false;
+    };
+  }, [runRegion]);
+
+  const trainers = trainersForRegion(runRegion);
+  const hasTrainers = trainers.some((tr) => tr.important);
   const idOf = useMemo(() => {
     const map = new Map<string, number>();
     for (const e of index) map.set(e.name, e.id);
@@ -102,7 +123,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const sel = ownMons.find((m) => m.enc.id === selEncId) ?? ownMons[0] ?? null;
 
   /* ----- foe selection ----- */
-  const [foeMode, setFoeMode] = useState<'trainers' | 'wild'>(isKanto ? 'trainers' : 'wild');
+  const [foeMode, setFoeMode] = useState<'trainers' | 'wild'>(hasTrainers ? 'trainers' : 'wild');
+  const [field] = useState<VersusField>({ weather: 'none', terrain: 'none' });
   const [foeRef, setFoeRef] = useState<FoeRef | null>(null);
   const { pokemon: foePokemon, status: foeStatus } = usePokemonById(foeRef?.slug ?? null);
 
@@ -156,30 +178,36 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   /* wild/assumed default resolution while slots aren't customized */
   useEffect(() => {
     if (youCustom || !youPokemon) return;
-    const def = resolveDefaultSet(youPokemon, you.level, details);
+    const def = resolveDefaultSet(youPokemon, you.level, details, ctx);
     if (def.moves.length) {
       setYou((s) => ({ ...s, slots: def.moves }));
       setYouSource(def.source);
     }
-  }, [youPokemon, you.level, details, youCustom]);
+  }, [youPokemon, you.level, details, youCustom, ctx]);
 
   useEffect(() => {
     if (foeCustom || !foePokemon) return;
-    const def = resolveDefaultSet(foePokemon, foe.level, details);
+    const def = resolveDefaultSet(foePokemon, foe.level, details, ctx);
     if (def.moves.length) {
       setFoe((s) => ({ ...s, slots: def.moves }));
       setFoeSource(def.source);
     }
-  }, [foePokemon, foe.level, details, foeCustom]);
+  }, [foePokemon, foe.level, details, foeCustom, ctx]);
 
   /* ----- computed matchup ----- */
   const youV = useMemo(() => (youPokemon ? sideToVersus(you, youPokemon.name) : null), [you, youPokemon]);
   const foeV = useMemo(() => (foePokemon ? sideToVersus(foe, foePokemon.name) : null), [foe, foePokemon]);
-  const check = useMemo(() => (youV && foeV ? speedCheck(youV, foeV) : null), [youV, foeV]);
-  const youRows = useMemo(() => (youV && foeV ? computeMatrix(youV, foeV, you.slots, details) : []), [youV, foeV, you.slots, details]);
-  const foeRows = useMemo(() => (youV && foeV ? computeMatrix(foeV, youV, foe.slots, details) : []), [youV, foeV, foe.slots, details]);
-  const youStats = useMemo(() => (youV ? statsOf(youV) : null), [youV]);
-  const foeStats = useMemo(() => (foeV ? statsOf(foeV) : null), [foeV]);
+  const check = useMemo(() => (youV && foeV ? speedCheck(youV, foeV, ctx) : null), [youV, foeV, ctx]);
+  const youRows = useMemo(
+    () => (youV && foeV ? computeMatrix(youV, foeV, you.slots, details, ctx, field) : []),
+    [youV, foeV, you.slots, details, ctx, field],
+  );
+  const foeRows = useMemo(
+    () => (youV && foeV ? computeMatrix(foeV, youV, foe.slots, details, ctx, field) : []),
+    [youV, foeV, foe.slots, details, ctx, field],
+  );
+  const youStats = useMemo(() => (youV ? statsOf(youV, ctx) : null), [youV, ctx]);
+  const foeStats = useMemo(() => (foeV ? statsOf(foeV, ctx) : null), [foeV, ctx]);
 
   const youName = sel ? sel.label : '—';
   // label re-resolves live from the slug so language toggles update it
@@ -239,12 +267,17 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
 
       {/* ================= RIGHT — foe + matchup + ranking ================= */}
       <div className="col-span-12 flex min-w-0 flex-col gap-4 lg:col-span-9">
+        {!isDefaultVersusCtx(ctx) && (
+          <div className="rounded-lg border border-gold/40 bg-gold/10 px-3 py-1.5 text-center font-sans text-[10px] font-bold uppercase text-gold">
+            {t('versus.calcBadge', { gen: ctx.gen, label: ctx.game ?? ctx.versionGroup })}
+          </div>
+        )}
         <Panel
           eyebrow={t('versus.opponent')}
           title={foeRef ? foeRef.context : t('versus.pickTarget')}
           className="min-h-[150px]"
           right={
-            isKanto ? (
+            hasTrainers ? (
               <SegmentedControl
                 id="foe-mode"
                 size="xs"
@@ -259,7 +292,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
             ) : undefined
           }
         >
-          {foeMode === 'wild' || !isKanto ? (
+          {foeMode === 'wild' || !hasTrainers ? (
             <div className="p-3">
               <OpponentAutocomplete
                 index={index}
@@ -280,17 +313,23 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                 {t('versus.wildNote')}
               </p>
             </div>
+          ) : !trainersReady ? (
+            <div className="flex h-24 items-center justify-center">
+              <PokeballLoader variant="inline" />
+            </div>
           ) : (
             <TrainerPicker
+              trainers={trainers}
+              region={runRegion}
               idOf={idOf}
-              onPick={(t, member) => {
+              onPick={(tr, member) => {
                 setFoeRef({
                   slug: member.species,
                   label: member.species,
                   level: member.level,
                   moves: member.moves ?? [],
                   source: (member.moves?.length ?? 0) > 0 ? 'trainer' : 'wild',
-                  context: `${t.name.toUpperCase()} · ${t.class}`,
+                  context: `${tr.name.toUpperCase()} · ${tr.class}`,
                 });
               }}
             />
@@ -332,6 +371,10 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
               />
             </div>
 
+            {youPokemon && (
+              <OwnSideTune side={you} onSide={(patch) => setYou((s) => ({ ...s, ...patch }))} pokemon={youPokemon} versionGroup={ctx.versionGroup} />
+            )}
+
             <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName.toUpperCase()} />
 
             {(youStatus === 'loading' || foeStatus === 'loading') && (
@@ -348,7 +391,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={you.slots}
-                        pool={legalMoveSlugs(youPokemon)}
+                        pool={legalMoveSlugs(youPokemon, ctx.versionGroup)}
                         details={details}
                         onChange={(slots) => {
                           setYouCustom(true);
@@ -365,7 +408,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={foe.slots}
-                        pool={legalMoveSlugs(foePokemon)}
+                        pool={legalMoveSlugs(foePokemon, ctx.versionGroup)}
                         details={details}
                         onChange={(slots) => {
                           setFoeCustom(true);
@@ -397,6 +440,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                   mons={ownMons}
                   foe={foeV}
                   foeName={foeName}
+                  ctx={ctx}
+                  field={field}
                   selectedId={sel.enc.id}
                   onSelect={(encId) => setSelEncId(encId)}
                 />
@@ -488,97 +533,62 @@ function SideHeader({
   );
 }
 
-/* ---------- trainer list (gym leaders first, expandable parties) ---------- */
-
-const GROUPS: Array<{ key: string; label: string; icon: ReactNode; match: (t: EnrichedTrainer) => boolean }> = [
-  { key: 'leaders', label: 'GYM LEADERS', icon: <Shield size={9} />, match: (t) => t.class === 'Leader' },
-  { key: 'e4', label: 'ELITE FOUR & CHAMPION', icon: <Crown size={9} />, match: (t) => t.class === 'Elite Four' || t.class === 'Champion' },
-  { key: 'rival', label: 'RIVAL', icon: <Swords size={9} />, match: (t) => t.class === 'Rival' },
-  { key: 'boss', label: 'ROCKET BOSS', icon: <Skull size={9} />, match: (t) => t.class === 'Boss' },
-  { key: 'other', label: 'OTHER KEY TRAINERS', icon: <Users size={9} />, match: (t) => !['Leader', 'Elite Four', 'Champion', 'Rival', 'Boss'].includes(t.class) },
-];
-
-function TrainerPicker({
-  idOf,
-  onPick,
+function OwnSideTune({
+  side,
+  onSide,
+  pokemon,
+  versionGroup,
 }: {
-  idOf: (slug: string) => number;
-  onPick: (t: EnrichedTrainer, member: { species: string; level: number; moves?: string[] }) => void;
+  side: SideState;
+  onSide: (patch: Partial<SideState>) => void;
+  pokemon: Pokemon;
+  versionGroup: string;
 }) {
-  const lang = useLanguage();
-  const [openKey, setOpenKey] = useState<string | null>(null);
-  const important = useMemo(() => TRAINERS.filter((t) => t.important), []);
-  return (
-    <div className="nz-slim-scroll max-h-[300px] overflow-auto" data-lenis-prevent>
-      {GROUPS.map((g) => {
-        const rows = important.filter(g.match);
-        if (!rows.length) return null;
-        return (
-          <div key={g.key}>
-            <div className="flex items-center gap-1.5 border-b border-hairline px-3 py-1.5 text-gold">
-              {g.icon}
-              <span className="pixel-label text-[7px]">{g.label}</span>
-            </div>
-            {rows.map((t, i) => {
-              const key = `${t.node}:${t.name}:${i}`;
-              const open = openKey === key;
-              return (
-                <div key={key}>
-                  <button
-                    type="button"
-                    onClick={() => setOpenKey(open ? null : key)}
-                    className="flex h-[36px] w-full items-center gap-2 border-b border-hairline/60 px-3 text-left transition-colors duration-150 hover:bg-surface2"
-                  >
-                    <span className="min-w-0 flex-1 truncate font-sans text-[12px] font-semibold text-tx-primary">
-                      {t.name}
-                      <span className="ml-2 font-sans text-[9px] font-normal uppercase text-tx-muted">
-                        {t.node.replace(/^kanto-/, '').replace(/-/g, ' ')}
-                      </span>
-                    </span>
-                    <span className="flex shrink-0 -space-x-1.5">
-                      {t.party.slice(0, 6).map((m, j) => (
-                        <PartySprite key={j} id={idOf(m.species)} />
-                      ))}
-                    </span>
-                    <ChevronDown size={11} className={cn('shrink-0 text-tx-muted transition-transform duration-150', open && 'rotate-180')} />
-                  </button>
-                  {open && (
-                    <div className="grid grid-cols-2 gap-1 border-b border-hairline bg-abyss/40 p-2 sm:grid-cols-3">
-                      {t.party.map((m, j) => (
-                        <button
-                          key={j}
-                          type="button"
-                          onClick={() => onPick(t, m)}
-                          className="flex h-[30px] items-center gap-1.5 rounded-md border border-hairline px-1.5 transition-colors duration-150 hover:border-gold/50 hover:bg-gold/15"
-                        >
-                          <PartySprite id={idOf(m.species)} big />
-                          <span className="min-w-0 flex-1 truncate text-left font-sans text-[11px] font-semibold text-tx-primary">
-                            {nameOfPokemon(m.species, lang)}
-                          </span>
-                          <span className="pixel-label shrink-0 text-[7px] text-gold">LV{m.level}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
-    </div>
+  const { t } = useTranslation();
+  const mech = genHasMechanics(versionGroup);
+  const abilities = useMemo(
+    () => (mech.abilities ? genAbilitiesOf(versionGroup, pokemon.name) : []),
+    [mech.abilities, versionGroup, pokemon.name],
   );
-}
-
-function PartySprite({ id, big = false }: { id: number; big?: boolean }) {
-  if (!id) return <span className={cn('inline-block rounded-full bg-surface3', big ? 'h-6 w-6' : 'h-5 w-5')} />;
+  const items = useMemo(() => (mech.items ? genItems(versionGroup) : []), [mech.items, versionGroup]);
+  if (!mech.abilities && !mech.items) return null;
   return (
-    <Sprite
-      id={id}
-      name="party member"
-      className={cn('shrink-0 rounded-full bg-surface2 ring-1 ring-hairline', big ? 'h-6 w-6' : 'h-5 w-5')}
-      skeleton={false}
-    />
+    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
+      {mech.abilities && (
+        <label className="flex items-center gap-1.5">
+          <span className="pixel-label text-[7px] text-tx-muted">{t('tb.ability')}</span>
+          <select
+            className="dx-select h-6 text-[10px]"
+            value={side.ability ?? ''}
+            onChange={(e) => onSide({ ability: e.target.value || null })}
+          >
+            <option value="">{t('versus.neutral')}</option>
+            {abilities.map((a) => (
+              <option key={a} value={a}>
+                {a}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      {mech.items && (
+        <label className="flex items-center gap-1.5">
+          <span className="pixel-label text-[7px] text-tx-muted">{t('tb.item')}</span>
+          <select
+            className="dx-select h-6 text-[10px]"
+            value={side.item ?? ''}
+            onChange={(e) => onSide({ item: e.target.value || null })}
+          >
+            <option value="">{t('versus.neutral')}</option>
+            {items.map((it) => (
+              <option key={it} value={it}>
+                {it}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+    </div>
   );
 }
 
@@ -593,12 +603,16 @@ function BestAnswerRanking({
   mons,
   foe,
   foeName,
+  ctx,
+  field,
   selectedId,
   onSelect,
 }: {
   mons: OwnMon[];
   foe: VersusSide | null;
   foeName: string;
+  ctx: VersusContext;
+  field: VersusField;
   selectedId: string | null;
   onSelect: (encId: string) => void;
 }) {
@@ -635,11 +649,15 @@ function BestAnswerRanking({
         const p = pokeCache.current.get(m.enc.pokemon_id);
         if (!p) continue;
         /* own best answer ≈ current default set (last-4 level-up moves) */
-        const set = wildMoveset(p, m.enc.level);
+        const set = wildMoveset(p, m.enc.level, ctx.versionGroup);
         const side: VersusSide = { slug: p.name, level: m.enc.level, moves: set };
-        const outCells = set.map((s) => damageBetween(side, foe, s)).filter((c): c is NonNullable<typeof c> => Boolean(c));
-        const inCells = foe.moves.map((s) => damageBetween(foe, side, s)).filter((c): c is NonNullable<typeof c> => Boolean(c));
-        const sc = speedCheck(side, foe);
+        const outCells = set
+          .map((s) => damageBetween(side, foe, s, undefined, ctx, field))
+          .filter((c): c is NonNullable<typeof c> => Boolean(c));
+        const inCells = foe.moves
+          .map((s) => damageBetween(foe, side, s, undefined, ctx, field))
+          .filter((c): c is NonNullable<typeof c> => Boolean(c));
+        const sc = speedCheck(side, foe, ctx);
         const verdict = judgeMatchup(outCells, inCells, sc ? sc.delta > 0 : null, lang);
         out.push({ mon: m, verdict });
       }
@@ -651,7 +669,7 @@ function BestAnswerRanking({
     return () => {
       cancelled = true;
     };
-  }, [foe, mons, lang]);
+  }, [foe, mons, lang, ctx, field]);
 
   const tiers = useMemo(() => {
     const counts = new Map<AnswerTier, number>();

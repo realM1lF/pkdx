@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
-import { ChevronRight, Fish, Footprints, Sparkles, Waves, X } from 'lucide-react';
+import { ChevronRight, Fish, Footprints, Sparkles, Swords, Waves, X } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, nodeIndex, nodeName, regionName, versionLabel } from '@/lib/regions';
 import { nameOfItem, nameOfPokemon, nameOfPocket, useLanguage } from '@/lib/i18n-data';
@@ -15,6 +15,7 @@ import { padNum } from '@/lib/pokeapi';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import { cn } from '@/lib/utils';
+import { aceSpeciesForNode, hasTrainersAtNode } from '@/lib/trainer-data';
 
 const METHOD_ICON: Record<MethodBucket, typeof Footprints> = {
   WALK: Footprints,
@@ -127,6 +128,11 @@ export default function DetailDrawer({
   const [tab, setTab] = useState<'encounters' | 'items'>('encounters');
   const [sort, setSort] = useState<SortKey>('rate');
   const items = useMemo(() => itemsForNode(region.region, node.id), [region, node]);
+  const showVersusLink = hasTrainersAtNode(region.region, node.id);
+  const versusAce = useMemo(
+    () => aceSpeciesForNode(region.region, node.id) ?? 'pikachu',
+    [region.region, node.id],
+  );
   const byId = useMemo(() => nodeIndex(region), [region]);
   const rgb = accentRgb(region.accent);
 
@@ -417,14 +423,25 @@ export default function DetailDrawer({
       </div>
 
       {/* footer */}
-      <div className="flex items-center justify-between gap-2 border-t border-hairline px-3 py-2.5">
-        <LocaleLink
-          to={`/nuzlocke/new?region=${region.region}&at=${node.id}`}
-          className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
-        >
-          {t('maps.addToNuzlocke')}
-          <ChevronRight size={13} />
-        </LocaleLink>
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-hairline px-3 py-2.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <LocaleLink
+            to={`/nuzlocke/new?region=${region.region}&at=${node.id}`}
+            className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          >
+            {t('maps.addToNuzlocke')}
+            <ChevronRight size={13} />
+          </LocaleLink>
+          {showVersusLink && (
+            <LocaleLink
+              to={`/pokemon/${versusAce}?tab=versus&versusTrainer=${node.id}&region=${region.region}&game=${region.defaultVersion}`}
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/10"
+            >
+              <Swords size={12} />
+              {t('maps.planVersus')}
+            </LocaleLink>
+          )}
+        </div>
         <span className="text-[9px] font-medium text-tx-muted">{t('maps.dataSource', { version: versionLabel(version) })}</span>
       </div>
     </motion.aside>

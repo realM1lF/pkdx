@@ -1,0 +1,196 @@
+{
+  "source": "Curated from Bulbapedia / pret/pokeplatinum disassembly reference — game data © Nintendo/Game Freak",
+  "game": "platinum",
+  "nodes": {
+    "oreburgh-city": {
+      "trainers": [
+        {
+          "name": "Roark",
+          "class": "Leader",
+          "party": [
+            { "species": "cranidos", "level": 14, "moves": ["headbutt", "pursuit", "leer", "rock-throw"] },
+            { "species": "onix", "level": 12, "moves": ["stealth-rock", "rock-throw", "screech", "rock-tomb"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "eterna-city": {
+      "trainers": [
+        {
+          "name": "Gardenia",
+          "class": "Leader",
+          "party": [
+            { "species": "cherubi", "level": 19, "moves": ["absorb", "leech-seed", "safeguard", "magical-leaf"] },
+            { "species": "turtwig", "level": 20, "moves": ["razor-leaf", "reflect", "leech-seed", "withdraw"] },
+            { "species": "roserade", "level": 22, "moves": ["magical-leaf", "stun-spore", "leech-seed", "giga-drain"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "veilstone-city": {
+      "trainers": [
+        {
+          "name": "Maylene",
+          "class": "Leader",
+          "party": [
+            { "species": "meditite", "level": 18, "moves": ["drain-punch", "detect", "force-palm", "confusion"] },
+            { "species": "lucario", "level": 22, "moves": ["force-palm", "metal-claw", "counter", "work-up"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "pastoria-city": {
+      "trainers": [
+        {
+          "name": "Crasher Wake",
+          "class": "Leader",
+          "party": [
+            { "species": "gyarados", "level": 27, "moves": ["waterfall", "bite", "twister", "ice-fang"] },
+            { "species": "quagsire", "level": 27, "moves": ["water-pulse", "earthquake", "yawn", "ice-punch"] },
+            { "species": "floatzel", "level": 30, "moves": ["waterfall", "ice-punch", "brick-break", "aqua-jet"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "hearthome-city": {
+      "trainers": [
+        {
+          "name": "Fantina",
+          "class": "Leader",
+          "party": [
+            { "species": "duskull", "level": 27, "moves": ["shadow-sneak", "future-sight", "payback", "will-o-wisp"] },
+            { "species": "haunter", "level": 27, "moves": ["shadow-ball", "hypnosis", "sucker-punch", "confuse-ray"] },
+            { "species": "mismagius", "level": 30, "moves": ["shadow-ball", "magical-leaf", "power-gem", "confuse-ray"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "canalave-city": {
+      "trainers": [
+        {
+          "name": "Byron",
+          "class": "Leader",
+          "party": [
+            { "species": "magneton", "level": 37, "moves": ["mirror-shot", "thunderbolt", "magnet-rise", "flash-cannon"] },
+            { "species": "steelix", "level": 38, "moves": ["iron-tail", "earthquake", "sandstorm", "thunder-fang"] },
+            { "species": "bastiodon", "level": 41, "moves": ["iron-head", "ancient-power", "iron-defense", "metal-burst"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "snowpoint-city": {
+      "trainers": [
+        {
+          "name": "Candice",
+          "class": "Leader",
+          "party": [
+            { "species": "snover", "level": 40, "moves": ["ice-shard", "razor-leaf", "water-pulse", "ingrain"] },
+            { "species": "piloswine", "level": 40, "moves": ["earthquake", "ice-shard", "ancient-power", "hail"] },
+            { "species": "abomasnow", "level": 42, "moves": ["energy-ball", "blizzard", "focus-punch", "water-pulse"] },
+            { "species": "froslass", "level": 44, "moves": ["shadow-ball", "hail", "thunder-wave", "destiny-bond"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "sunyshore-city": {
+      "trainers": [
+        {
+          "name": "Volkner",
+          "class": "Leader",
+          "party": [
+            { "species": "jolteon", "level": 46, "moves": ["thunderbolt", "signal-beam", "quick-attack", "charge-beam"] },
+            { "species": "raichu", "level": 47, "moves": ["thunderbolt", "focus-blast", "signal-beam", "charge-beam"] },
+            { "species": "luxray", "level": 49, "moves": ["thunderbolt", "ice-fang", "crunch", "charge-beam"] },
+            { "species": "electivire", "level": 50, "moves": ["thunderbolt", "focus-blast", "fire-punch", "giga-impact"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "sinnoh-victory-road": {
+      "trainers": [
+        {
+          "name": "Aaron",
+          "class": "Elite Four",
+          "party": [
+            { "species": "vespiquen", "level": 53, "moves": ["attack-order", "power-gem", "aerial-ace", "destiny-bond"] },
+            { "species": "heracross", "level": 54, "moves": ["close-combat", "pin-missile", "night-slash", "stone-edge"] },
+            { "species": "vespiquen", "level": 55, "moves": ["attack-order", "power-gem", "aerial-ace", "destiny-bond"] },
+            { "species": "drapion", "level": 55, "moves": ["cross-poison", "aqua-tail", "x-scissor", "night-slash"] },
+            { "species": "drapion", "level": 57, "moves": ["cross-poison", "aqua-tail", "x-scissor", "night-slash"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Bertha",
+          "class": "Elite Four",
+          "party": [
+            { "species": "whiscash", "level": 54, "moves": ["earthquake", "aqua-tail", "stone-edge", "fissure"] },
+            { "species": "gliscor", "level": 55, "moves": ["earthquake", "aerial-ace", "fire-fang", "ice-fang"] },
+            { "species": "hippowdon", "level": 55, "moves": ["earthquake", "stone-edge", "crunch", "slack-off"] },
+            { "species": "golem", "level": 56, "moves": ["earthquake", "stone-edge", "explosion", "rock-polish"] },
+            { "species": "rhyperior", "level": 58, "moves": ["earthquake", "stone-edge", "megahorn", "hammer-arm"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Flint",
+          "class": "Elite Four",
+          "party": [
+            { "species": "houndoom", "level": 55, "moves": ["flamethrower", "dark-pulse", "solar-beam", "nasty-plot"] },
+            { "species": "flareon", "level": 56, "moves": ["flamethrower", "quick-attack", "superpower", "will-o-wisp"] },
+            { "species": "rapidash", "level": 56, "moves": ["flamethrower", "solar-beam", "hypnosis", "iron-tail"] },
+            { "species": "infernape", "level": 57, "moves": ["flamethrower", "close-combat", "u-turn", "stone-edge"] },
+            { "species": "magmortar", "level": 58, "moves": ["flamethrower", "thunderbolt", "focus-blast", "psychic"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Lucian",
+          "class": "Elite Four",
+          "party": [
+            { "species": "mr-mime", "level": 55, "moves": ["psychic", "focus-blast", "shadow-ball", "dazzling-gleam"] },
+            { "species": "espeon", "level": 56, "moves": ["psychic", "shadow-ball", "signal-beam", "calm-mind"] },
+            { "species": "bronzong", "level": 56, "moves": ["psychic", "earthquake", "flash-cannon", "reflect"] },
+            { "species": "alakazam", "level": 57, "moves": ["psychic", "focus-blast", "shadow-ball", "energy-ball"] },
+            { "species": "gallade", "level": 59, "moves": ["close-combat", "psycho-cut", "leaf-blade", "stone-edge"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Cynthia",
+          "class": "Champion",
+          "party": [
+            { "species": "spiritomb", "level": 58, "moves": ["dark-pulse", "psychic", "shadow-ball", "calm-mind"] },
+            { "species": "roserade", "level": 58, "moves": ["energy-ball", "sludge-bomb", "shadow-ball", "extrasensory"] },
+            { "species": "togekiss", "level": 60, "moves": ["air-slash", "aura-sphere", "water-pulse", "flamethrower"] },
+            { "species": "lucario", "level": 60, "moves": ["aura-sphere", "close-combat", "extreme-speed", "shadow-ball"] },
+            { "species": "milotic", "level": 60, "moves": ["surf", "ice-beam", "mirror-coat", "dragon-pulse"] },
+            { "species": "garchomp", "level": 62, "moves": ["dragon-claw", "earthquake", "flamethrower", "giga-impact"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    }
+  }
+}

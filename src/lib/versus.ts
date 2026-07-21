@@ -4,14 +4,32 @@
  * which also orchestrates async fetching (getPokemon/getMove, SWR-cached).
  * No engine/sim: calculation only. */
 
-import { calculate, Generations, Move as CalcMove, Pokemon as CalcPokemon, toID } from '@smogon/calc';
+import { calculate, Field, Generations, Move as CalcMove, Pokemon as CalcPokemon, toID } from '@smogon/calc';
 import type { StatsTable } from '@smogon/calc';
 import type { Move, Pokemon, StatKey } from './types';
 import { STAT_ORDER } from './types';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
+import {
+  defaultVersusContext,
+  type VersusContext,
+  type VersusField,
+  type VersusTerrain,
+  type VersusWeather,
+} from './versus-context';
 
-const GEN = Generations.get(9);
+export type { VersusContext, VersusField, VersusWeather, VersusTerrain } from './versus-context';
+export { defaultVersusContext, versusContextFromGame, versusContextFromRun, VERSUS_GAME_OPTIONS, versusGameOptions, gameDisplayName } from './versus-context';
+
+const genCache = new Map<number, ReturnType<typeof Generations.get>>();
+
+function getGen(ctx: VersusContext = defaultVersusContext()): ReturnType<typeof Generations.get> {
+  const cached = genCache.get(ctx.gen);
+  if (cached) return cached;
+  const gen = Generations.get(ctx.gen as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9);
+  genCache.set(ctx.gen, gen);
+  return gen;
+}
 
 /* PokéAPI slug → calc name when the two datasets disagree (Vise Grip spelling). */
 const CALC_NAME_ALIAS: Record<string, string> = {
@@ -32,6 +50,10 @@ export interface VersusSide {
   ivs?: Partial<Record<StatKey, number>>;
   /** up to 4 PokéAPI move slugs */
   moves: string[];
+  ability?: string | null;
+  item?: string | null;
+  /** UI status names — mapped to calc (brn, par, psn, slp, frz) in buildMon */
+  status?: 'none' | 'burn' | 'par' | 'psn' | 'slp' | 'frz' | null;
 }
 
 export type MovesetSource = 'trainer' | 'wild' | 'assumed' | 'custom';
@@ -54,17 +76,61 @@ const STAT_TO_CALC: Record<StatKey, keyof StatsTable> = {
   speed: 'spe',
 };
 
-function buildMon(side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs'>): CalcPokemon | null {
+const STATUS_TO_CALC: Record<Exclude<NonNullable<VersusSide['status']>, 'none'>, 'brn' | 'par' | 'psn' | 'slp' | 'frz'> = {
+  burn: 'brn',
+  par: 'par',
+  psn: 'psn',
+  slp: 'slp',
+  frz: 'frz',
+};
+
+const WEATHER_TO_CALC: Record<Exclude<VersusWeather, 'none'>, 'Sun' | 'Rain' | 'Sand' | 'Snow' | 'Hail'> = {
+  sun: 'Sun',
+  rain: 'Rain',
+  sand: 'Sand',
+  snow: 'Snow',
+  hail: 'Hail',
+};
+
+const TERRAIN_TO_CALC: Record<Exclude<VersusTerrain, 'none'>, 'Electric' | 'Grassy' | 'Misty' | 'Psychic'> = {
+  electric: 'Electric',
+  grassy: 'Grassy',
+  misty: 'Misty',
+  psychic: 'Psychic',
+};
+
+function calcStatus(side: Pick<VersusSide, 'status'>): 'brn' | 'par' | 'psn' | 'slp' | 'frz' | '' | undefined {
+  if (!side.status || side.status === 'none') return undefined;
+  return STATUS_TO_CALC[side.status];
+}
+
+function buildCalcField(field?: VersusField): Field | undefined {
+  if (!field) return undefined;
+  const weather = field.weather && field.weather !== 'none' ? WEATHER_TO_CALC[field.weather] : undefined;
+  const terrain = field.terrain && field.terrain !== 'none' ? TERRAIN_TO_CALC[field.terrain] : undefined;
+  if (!weather && !terrain) return undefined;
+  return new Field({ weather, terrain });
+}
+
+function buildMon(
+  side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
+  ctx: VersusContext = defaultVersusContext(),
+): CalcPokemon | null {
   try {
+    const gen = getGen(ctx);
     const evs: Partial<StatsTable> = {};
     const ivs: Partial<StatsTable> = {};
     if (side.evs) for (const [k, v] of Object.entries(side.evs)) evs[STAT_TO_CALC[k as StatKey]] = Math.min(252, Math.max(0, v ?? 0));
     if (side.ivs) for (const [k, v] of Object.entries(side.ivs)) ivs[STAT_TO_CALC[k as StatKey]] = Math.min(31, Math.max(0, v ?? 31));
-    return new CalcPokemon(GEN, side.slug, {
+    const status = calcStatus(side);
+    return new CalcPokemon(gen, side.slug, {
       level: clampLevel(side.level),
       nature: side.nature,
       evs: side.evs ? evs : undefined,
       ivs: side.ivs ? ivs : undefined,
+      ability: side.ability ?? undefined,
+      item: side.item ?? undefined,
+      status,
     });
   } catch {
     return null;
@@ -72,16 +138,22 @@ function buildMon(side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | '
 }
 
 /** Fully computed stats (level + nature + EV/IV applied). Keys = PokéAPI StatKey. */
-export function statsOf(side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs'>): Record<StatKey, number> | null {
-  const mon = buildMon(side);
+export function statsOf(
+  side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
+  ctx: VersusContext = defaultVersusContext(),
+): Record<StatKey, number> | null {
+  const mon = buildMon(side, ctx);
   if (!mon) return null;
   const out = {} as Record<StatKey, number>;
   for (const key of STAT_ORDER) out[key] = mon.stats[STAT_TO_CALC[key]];
   return out;
 }
 
-export function speedOf(side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs'>): number | null {
-  return statsOf(side)?.speed ?? null;
+export function speedOf(
+  side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
+  ctx: VersusContext = defaultVersusContext(),
+): number | null {
+  return statsOf(side, ctx)?.speed ?? null;
 }
 
 export interface SpeedCheck {
@@ -91,11 +163,12 @@ export interface SpeedCheck {
 }
 
 export function speedCheck(
-  you: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs'>,
-  foe: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs'>,
+  you: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
+  foe: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
+  ctx: VersusContext = defaultVersusContext(),
 ): SpeedCheck | null {
-  const a = speedOf(you);
-  const b = speedOf(foe);
+  const a = speedOf(you, ctx);
+  const b = speedOf(foe, ctx);
   if (a == null || b == null) return null;
   return { you: a, foe: b, delta: a - b };
 }
@@ -201,16 +274,25 @@ const FIXED_DAMAGE: Record<string, number | 'level' | 'half' | 'psywave'> = {
  * Returns null only when the move/species can't be resolved in calc data.
  * Status moves resolve to a zero cell (koHits 0).
  */
-export function damageBetween(attacker: VersusSide, defender: VersusSide, moveSlug: string, moveDetail?: Move): DamageCell | null {
-  const atk = buildMon(attacker);
-  const def = buildMon(defender);
+export function damageBetween(
+  attacker: VersusSide,
+  defender: VersusSide,
+  moveSlug: string,
+  moveDetail?: Move,
+  ctx: VersusContext = defaultVersusContext(),
+  field?: VersusField,
+): DamageCell | null {
+  const gen = getGen(ctx);
+  const atk = buildMon(attacker, ctx);
+  const def = buildMon(defender, ctx);
   if (!atk || !def) return null;
   let mv: CalcMove;
   try {
-    mv = new CalcMove(GEN, calcId(moveSlug));
+    mv = new CalcMove(gen, calcId(moveSlug));
   } catch {
     return null;
   }
+  const calcField = buildCalcField(field);
   const category = (moveDetail?.damage_class.name ?? mv.category ?? 'status').toLowerCase();
   const moveType = (moveDetail?.type.name ?? mv.type ?? 'normal').toLowerCase();
   const eff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()));
@@ -243,7 +325,7 @@ export function damageBetween(attacker: VersusSide, defender: VersusSide, moveSl
     return { move: moveSlug, range: [0, 0], pct: [0, 0], koHits: 0, koChance: 0, eff };
   }
   try {
-    const res = calculate(GEN, atk, def, mv);
+    const res = calculate(gen, atk, def, mv, calcField);
     const [lo, hi] = res.range();
     const maxHp = def.stats.hp || 1;
     let koHits = 0;
@@ -325,9 +407,9 @@ const VERSION_GROUP_RANK: Record<string, number> = {
   'red-blue': 2,
 };
 
-/** full legal pool in the newest version group (any method), deduped, for autocomplete */
-export function legalMoveSlugs(p: Pokemon, versionGroup?: string): string[] {
-  const vg = versionGroup ?? newestVersionGroup(p);
+/** full legal pool in the given version group (any method), deduped, for autocomplete */
+export function legalMoveSlugs(p: Pokemon, versionGroup?: string, ctx?: VersusContext): string[] {
+  const vg = ctx?.versionGroup ?? versionGroup ?? newestVersionGroup(p);
   const set = new Set<string>();
   for (const m of p.moves) {
     if (m.version_group_details.some((d) => d.version_group.name === vg)) set.add(m.move.name);
@@ -335,9 +417,9 @@ export function legalMoveSlugs(p: Pokemon, versionGroup?: string): string[] {
   return [...set].sort();
 }
 
-/** level-up pool (sorted by learn level) in the newest version group */
-export function levelUpPool(p: Pokemon, versionGroup?: string): PoolEntry[] {
-  const vg = versionGroup ?? newestVersionGroup(p);
+/** level-up pool (sorted by learn level) in the given version group */
+export function levelUpPool(p: Pokemon, versionGroup?: string, ctx?: VersusContext): PoolEntry[] {
+  const vg = ctx?.versionGroup ?? versionGroup ?? newestVersionGroup(p);
   const bySlug = new Map<string, number>();
   for (const m of p.moves) {
     for (const d of m.version_group_details) {
@@ -356,8 +438,8 @@ export function levelUpPool(p: Pokemon, versionGroup?: string): PoolEntry[] {
  * Stage 2 — WILD: the 4 most recently learned level-up moves at `level`
  * (newest version group). Fewer than 4 if the pool is thin.
  */
-export function wildMoveset(p: Pokemon, level: number, versionGroup?: string): string[] {
-  const pool = levelUpPool(p, versionGroup).filter((e) => e.level <= level);
+export function wildMoveset(p: Pokemon, level: number, versionGroup?: string, ctx?: VersusContext): string[] {
+  const pool = levelUpPool(p, versionGroup, ctx).filter((e) => e.level <= level);
   return pool.slice(-4).map((e) => e.slug);
 }
 
@@ -429,9 +511,9 @@ export function preferredCategory(p: Pokemon): 'physical' | 'special' {
  * Stage 3 — ASSUMED SET: best legal moves (STAB + coverage heuristic)
  * over the full legal pool. Requires fetched move details for candidates.
  */
-export function assumedMoveset(p: Pokemon, details: Map<string, Move>): string[] {
-  const vg = newestVersionGroup(p);
-  const candidates = legalMoveSlugs(p, vg)
+export function assumedMoveset(p: Pokemon, details: Map<string, Move>, ctx?: VersusContext): string[] {
+  const vg = ctx?.versionGroup ?? newestVersionGroup(p);
+  const candidates = legalMoveSlugs(p, vg, ctx)
     .map((slug) => ({ slug, detail: details.get(slug) }))
     .filter((c): c is { slug: string; detail: Move } => Boolean(c.detail));
   return pickTopMoves(candidates, p.types.map((t) => t.type.name), { preferCategory: preferredCategory(p) });

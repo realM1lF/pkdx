@@ -24,6 +24,7 @@ interface SlotCardProps {
   pokemon: Pokemon | undefined;
   legality: SlotLegality;
   versionGroup: string;
+  versusOpponentId?: number | null;
   expanded: boolean;
   focused: boolean;
   onPick: (slotId: string, pokemonSlug: string, pokemonId: number) => void;
@@ -38,6 +39,7 @@ export default function SlotCard({
   pokemon,
   legality,
   versionGroup,
+  versusOpponentId,
   expanded,
   focused,
   onPick,
@@ -183,7 +185,7 @@ export default function SlotCard({
       {/* actions: VS link + expander toggle */}
       <div className="mt-2 flex items-center justify-between border-t border-hairline pt-1.5">
         <LocaleLink
-          to={`/pokemon/${slot.pokemonId}?vs=`}
+          to={`/pokemon/${slot.pokemonId}?vs=${versusOpponentId ?? ''}`}
           onClick={(e) => e.stopPropagation()}
           className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
           aria-label={t8n('tb.slot.compare', { name: label })}
