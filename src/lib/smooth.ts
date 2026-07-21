@@ -1,6 +1,5 @@
 /* Lenis smooth-scroll singleton (design.md §8) — disabled for reduced motion. */
 import Lenis from 'lenis';
-import 'lenis/dist/lenis.css';
 
 let lenis: Lenis | null = null;
 let rafId = 0;

@@ -99,6 +99,14 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Lenis overscroll containment without html/body height:auto (breaks hero layout) */
+  html.lenis [data-lenis-prevent],
+  html.lenis [data-lenis-prevent-wheel],
+  html.lenis [data-lenis-prevent-touch],
+  html.lenis .vs-combo {
+    overscroll-behavior: contain;
+  }
+
   ::selection {
     background: rgba(246, 201, 69, 0.28);
     color: var(--text-primary);

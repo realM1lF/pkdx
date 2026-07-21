@@ -824,13 +824,13 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "POKÉDEX 2.0 // PHASE 01 — CORE DEX",
-      "titleA": "EVERY POKÉMON.",
-      "titleB": "ALIVE.",
-      "blurb": "An interactive, breathing companion for trainers. Browse 1,025 Pokémon across nine generations — watch stats come alive, trace evolution chains, and time-travel through every sprite era from 1996 to today.",
+      "eyebrow": "DEX · MAPS · TEAMS · NUZ · VERSUS",
+      "titleA": "PLAN YOUR",
+      "titleB": "SETUP.",
+      "blurb": "Full dex with filters and a sprite museum, region maps with encounter tables, team builder with coverage analysis, Nuzlocke tracker, and 1v1 versus calc — one toolkit for dex runs, team building, and matchup prep.",
       "cta": "Open the Pokédex",
       "surprise": "Surprise me",
-      "stats": "1,025 POKÉMON · 18 TYPES · 9 GENERATIONS",
+      "stats": "1,025 MON · MAPS · TEAMS · NUZ · VERSUS",
       "scrollAria": "Scroll to search",
       "scroll": "SCROLL",
       "artworkAlt": "{{name}} — official artwork"
