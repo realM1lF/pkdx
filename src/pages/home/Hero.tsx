@@ -239,7 +239,7 @@ export default function Hero({ started }: { started: boolean }) {
         </div>
 
         {/* right — spotlight pedestal */}
-        <div className="lg:col-span-5">
+        <div className="overflow-hidden lg:col-span-5">
           <SpotlightPedestal started={started} />
           {/* mobile: static 3-up row instead of orbit */}
           <motion.div

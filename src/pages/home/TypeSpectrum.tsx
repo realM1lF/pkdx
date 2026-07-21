@@ -32,7 +32,7 @@ export default function TypeSpectrum() {
   };
 
   return (
-    <section className="mx-auto max-w-content px-4 py-24 md:px-8">
+    <section className="mx-auto max-w-content overflow-x-clip px-4 py-24 md:px-8">
       <Reveal className="mb-12 flex flex-col items-center gap-4 text-center">
         <span className="pixel-label text-[10px] text-gold">{t8n('home.spectrum.eyebrow')}</span>
         <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
@@ -44,7 +44,7 @@ export default function TypeSpectrum() {
       </Reveal>
 
       {/* desktop grid / mobile snap row */}
-      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-4 sm:grid sm:grid-cols-6 sm:overflow-visible sm:pb-0">
+      <div className="flex w-full min-w-0 snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-4 sm:grid sm:grid-cols-6 sm:overflow-visible sm:pb-0">
         {POKEMON_TYPES.map((t, i) => {
           const row = Math.floor(i / 6);
           const col = i % 6;

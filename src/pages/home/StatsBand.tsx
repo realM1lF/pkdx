@@ -41,7 +41,7 @@ export default function StatsBand() {
   // locale-aware thousands separator (de: 1.025 / en: 1,025)
   const fmt = (v: number, suffix = '') => `${v.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}${suffix}`;
   return (
-    <section className="relative border-y border-hairline bg-surface1">
+    <section className="relative overflow-x-clip border-y border-hairline bg-surface1">
       {/* faint aura blobs — water left, fire right */}
       <div
         aria-hidden

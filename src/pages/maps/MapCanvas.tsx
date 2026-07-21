@@ -112,6 +112,8 @@ export default function MapCanvas({
     return !Object.keys(nd.methodTop).some((m) => methods.has(m as MethodBucket));
   };
 
+  const edgeDimmed = (a: MapNode, b: MapNode): boolean => nodeDimmed(a) || nodeDimmed(b);
+
   const hoveredNode = hoveredId ? byId.get(hoveredId) ?? null : null;
   const tipPos = hoveredNode ? camera.worldToScreen(hoveredNode.x, hoveredNode.y) : null;
   const hoveredEdgeData = hoveredEdge !== null ? edgePaths[hoveredEdge] : null;
@@ -188,9 +190,10 @@ export default function MapCanvas({
           {edgePaths.map((p, i) => {
             if (!p) return null;
             const st = EDGE_STYLE[p.e.kind];
-            const highlighted =
-              hoveredEdge === i || (selectedId !== null && (p.e.from === selectedId || p.e.to === selectedId));
             const drawn = motionOk && p.e.kind === 'land';
+            const dimmed = edgeDimmed(p.a, p.b);
+            const highlighted =
+              !dimmed && (hoveredEdge === i || (selectedId !== null && (p.e.from === selectedId || p.e.to === selectedId)));
             return (
               <g key={`${p.e.from}-${p.e.to}-${i}`}>
                 <path
@@ -206,7 +209,7 @@ export default function MapCanvas({
                       stroke: st.stroke,
                       ['--path-len' as string]: 100,
                       animationDelay: `${i * 25}ms`,
-                      strokeOpacity: highlighted ? 0.7 : 1,
+                      strokeOpacity: dimmed ? 0.05 : highlighted ? 0.7 : 1,
                       transition: 'stroke-opacity 200ms ease',
                     } as CSSProperties
                   }
@@ -229,7 +232,8 @@ export default function MapCanvas({
           {motionOk &&
             landEdgePaths.map(
               (p, i) =>
-                p && (
+                p &&
+                !edgeDimmed(p.a, p.b) && (
                   <g key={`pulse-${i}`} pointerEvents="none">
                     <circle r={5} fill={region.accent} opacity={0.25}>
                       <animateMotion dur="6s" begin={`${i * 0.6}s`} repeatCount="indefinite" path={p.d} />
