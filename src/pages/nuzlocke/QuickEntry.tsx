@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, ChevronDown, Minus, Plus, Search, X } from 'lucide-react';
+import { Check, ChevronDown, Minus, Plus, Search, Star, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import { routeOrder } from '@/lib/regions';
 import { nodeName } from '@/lib/regions';
@@ -12,7 +12,7 @@ import type { RegionMap } from '@/lib/regions';
 import type { RegionDataState } from '@/lib/mapdata';
 import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
-import { isGiftNode } from '@/lib/nuzlocke-rules';
+import { effectiveLevelCap, isGiftNode } from '@/lib/nuzlocke-rules';
 import type { LogValidationError } from '@/lib/nuzlocke-rules';
 import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
@@ -82,6 +82,9 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const [activeIdx, setActiveIdx] = useState(0);
   const [shakeKey, shake] = useShake();
   const [hint, setHint] = useState('');
+  /* level-cap is a warning, not a hard block — first submit warns (shake+gold),
+   * the acknowledged second submit logs anyway (player responsibility) */
+  const [capAck, setCapAck] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const previewRef = useRef<HTMLSpanElement>(null);
   const pokePickerRef = useRef<HTMLDivElement>(null);
@@ -188,9 +191,14 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
 
   const pickRoute = (key: string) => {
     if (player && encounterAt(state, player.id, key)) {
-      setRouteOpen(false);
-      fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
-      return;
+      /* shiny clause: a resolved route stays pickable for shiny catches only */
+      if (!state.run.rules.shiny) {
+        setRouteOpen(false);
+        fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
+        return;
+      }
+      setHint(t('nuz.shinyRouteHint'));
+      window.setTimeout(() => setHint(''), 2600);
     }
     setRouteKey(key);
     setRouteOpen(false);
@@ -200,8 +208,21 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     window.setTimeout(() => searchRef.current?.focus(), 50);
   };
 
+  /* level-cap warning state (auto cap follows run progress) */
+  const cap = effectiveLevelCap(state);
+  const overCap = status === 'caught' && cap !== null && level > cap;
+
+  useEffect(() => {
+    setCapAck(false);
+  }, [level, routeKey, species, status]);
+
   const submit = () => {
     if (!player || !routeKey || !species) return;
+    if (overCap && !capAck) {
+      setCapAck(true);
+      fail(t('nuz.err.levelCap', { level, cap }));
+      return;
+    }
     const fromRect = previewRef.current?.getBoundingClientRect() ?? null;
     const res = logEncounter(state.run.id, {
       playerId: player.id,
@@ -435,7 +456,10 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
 
       {/* LEVEL */}
       <div className="relative">
-        <div className="flex h-10 items-center rounded-md border border-hairline2 bg-surface2" title={t('nuz.levelTip')}>
+        <div
+          className={cn('flex h-10 items-center rounded-md border bg-surface2', overCap ? 'border-gold/70' : 'border-hairline2')}
+          title={overCap && cap !== null ? t('nuz.rules.capTitle', { cap }) : t('nuz.levelTip')}
+        >
           <span className="pl-2 font-pixel text-[7px] tracking-[0.08em] text-tx-muted" aria-hidden>
             {t('nuz.levelShort')}
           </span>
@@ -455,12 +479,18 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             <Plus size={11} />
           </button>
         </div>
+        {overCap && cap !== null && (
+          <span className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gold bg-surface2 px-1.5 font-pixel text-[6px] tracking-[0.06em] text-gold">
+            {t('nuz.overCap', { cap })}
+          </span>
+        )}
       </div>
 
       {state.run.rules.shiny && status === 'caught' && (
         <button
           type="button"
           aria-pressed={isShiny}
+          title={t('nuz.rules.shinyTip')}
           onClick={() => setIsShiny((v) => !v)}
           className={cn(
             'flex h-10 items-center gap-1.5 rounded-md border px-2.5 font-pixel text-[8px] tracking-[0.08em] transition-colors',
@@ -468,7 +498,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             stacked ? 'w-full justify-center' : '',
           )}
         >
-          <img src="/sparkle.svg" alt="" className="h-3 w-3" />
+          <Star size={12} className={isShiny ? 'fill-gold text-gold' : undefined} />
           {t('nuz.shinyCatch')}
         </button>
       )}

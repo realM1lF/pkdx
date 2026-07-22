@@ -71,7 +71,10 @@ function BoxCell({
         <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[40px] w-[40px]" skeleton={false} />
       </span>
       <span className="max-w-full truncate text-[9px] font-semibold leading-tight text-tx-primary">{nick}</span>
-      <span className="font-display text-[7px] font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
+      <span className="font-display text-[7px] font-bold tabular-nums text-tx-muted">
+        LV {enc.level}
+        {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="ml-0.5 inline h-2 w-2 align-[-1px]" />}
+      </span>
       <span className="max-w-full truncate font-pixel text-[6px] uppercase leading-[1.6] text-tx-muted/80">
         {routeLabel(enc.route_key)}
       </span>

@@ -13,6 +13,7 @@ import Sprite from '@/components/Sprite';
 import { routeOrder } from '@/lib/regions';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { youAreHereKey } from '@/lib/nuzlocke-store';
+import { isSlotConsuming } from '@/lib/nuzlocke-rules';
 import type { NuzEncounterRow, RunState, SoulLink } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { PixelLabel, StatusDot, timeAgo } from './ui';
@@ -179,26 +180,48 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
           className="mx-auto h-[30px] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
         />
       ) : enc.status === 'dead' ? (
-        <>
+        <button
+          type="button"
+          className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen(enc, e.clientX, e.clientY);
+          }}
+          aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
+        >
           <span data-slot-enc={enc.id} className="nz-dead-sprite inline-block shrink-0">
             <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[28px] w-[28px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[11px] font-semibold text-tx-muted line-through">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
+            <span className="block truncate text-[11px] font-semibold text-tx-muted line-through">
+              {enc.nickname ?? nameOf(enc.pokemon_id)}
+              {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
+            </span>
             <span className="block font-display text-[9px] font-bold text-tx-muted/70">LV {enc.level}</span>
           </span>
           <span className="h-2 w-2 shrink-0 rounded-full border border-gold/70" aria-label={t('nuz.timeline.fallen')} />
-        </>
+        </button>
       ) : enc.status === 'missed' || enc.status === 'duped' ? (
-        <>
-          <span className="inline-block shrink-0 opacity-30">
+        <button
+          type="button"
+          className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen(enc, e.clientX, e.clientY);
+          }}
+          aria-label={t('nuz.timeline.optionsAria', { name: nameOf(enc.pokemon_id) })}
+        >
+          <span data-slot-enc={enc.id} className="inline-block shrink-0 opacity-30">
             <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[30px] w-[30px]" skeleton={false} />
           </span>
-          <span className="min-w-0 flex-1 truncate text-[10px] text-tx-muted">{nameOf(enc.pokemon_id)}</span>
+          <span className="min-w-0 flex-1 truncate text-[10px] text-tx-muted">
+            {nameOf(enc.pokemon_id)}
+            {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
+          </span>
           <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] tracking-[0.06em] text-gold">
             {t(enc.status === 'missed' ? 'nuz.statusMissed' : 'nuz.statusDuped')}
           </span>
-        </>
+        </button>
       ) : (
         <button
           type="button"
@@ -213,7 +236,10 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
             <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[36px] w-[36px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[11px] font-semibold text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
+            <span className="block truncate text-[11px] font-semibold text-tx-primary">
+              {enc.nickname ?? nameOf(enc.pokemon_id)}
+              {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
+            </span>
             <span className="block font-display text-[9px] font-bold text-tx-muted">LV {enc.level}</span>
           </span>
           {pendingSync && <span className="nz-orbit h-1.5 w-1.5 shrink-0" aria-label={t('nuz.timeline.pendingSync')} />}
@@ -255,8 +281,14 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
   const trackW = nodes.length * STRIDE - GAP;
 
   const encBy = useMemo(() => {
+    /* one slot per (player, route): the slot-consuming row wins; among
+     * non-consuming rows (duped/shiny) the newest one shows */
     const m = new Map<string, NuzEncounterRow>();
-    for (const e of state.encounters) m.set(`${e.player_id}:${e.route_key}`, e);
+    for (const e of state.encounters) {
+      const k = `${e.player_id}:${e.route_key}`;
+      const cur = m.get(k);
+      if (!cur || (!isSlotConsuming(cur) && (isSlotConsuming(e) || e.created_at >= cur.created_at))) m.set(k, e);
+    }
     return m;
   }, [state.encounters]);
 

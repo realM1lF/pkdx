@@ -11,6 +11,9 @@ export interface MenuTarget {
   enc: NuzEncounterRow;
   x: number;
   y: number;
+  /** false when restoring to caught would collide with the route's resolved
+   * encounter (route slot already taken by a later catch) */
+  canRestore?: boolean;
 }
 
 export default function EncounterMenu({
@@ -119,7 +122,7 @@ export default function EncounterMenu({
             )}
           </>
         )}
-        {enc.status !== 'caught' && !noteMode && !nickMode && (
+        {enc.status !== 'caught' && !noteMode && !nickMode && target.canRestore !== false && (
           <button
             type="button"
             onClick={() => {
