@@ -36,11 +36,13 @@ export function useEntityModal() {
   };
 }
 
-const ITEM_ICON = (slug: string) =>
+export const itemIconUrl = (slug: string) =>
   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${slug}.png`;
 
+const ITEM_ICON = itemIconUrl;
+
 /** item sprite with graceful fallback to a gold package glyph */
-function ItemIcon({ slug, name, size = 40 }: { slug: string; name: string; size?: number }) {
+export function ItemIcon({ slug, name, size = 40 }: { slug: string; name: string; size?: number }) {
   const [failed, setFailed] = useState(false);
   if (failed) {
     return (

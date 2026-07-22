@@ -3,7 +3,9 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Eraser } from 'lucide-react';
+import { AlertTriangle, Eraser, Info } from 'lucide-react';
+import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDescModal';
+import { useDescMap } from '@/lib/desc-data';
 import { nameOfAbility, nameOfItem, nameOfMove, nameOfNature, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Lang } from '@/lib/i18n-data';
 import {
@@ -122,6 +124,9 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
   );
   const natureOptions = useMemo(() => (mech.natures ? genNatures(versionGroup) : []), [mech.natures, versionGroup]);
   const itemOptions = useMemo(() => (mech.items ? genItems(versionGroup) : []), [mech.items, versionGroup]);
+  /* lazy desc chunk: powers the picker's 1-line item descriptions (null while loading) */
+  const itemDescs = useDescMap('item');
+  const entityModal = useEntityModal();
 
   const total = evTotal(slot);
   const patch = (p: Partial<TeamSlot>) => onPatch(slot.id, p);
@@ -218,8 +223,19 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               />
             </div>
             <div>
-              <span className="tb-micro">
+              <span className="tb-micro flex items-center gap-1">
                 {t('tb.editor.item')} {mech.items ? t('tb.editor.genLabel', { gen: vg.gen }) : t('tb.editor.naThisGen')}
+                {mech.items && slot.item && (
+                  <button
+                    type="button"
+                    onClick={() => entityModal.open('item', slot.item!)}
+                    aria-label={t('desc.openDesc', { name: localName(slot.item, lang, nameOfItem) })}
+                    title={t('desc.openDesc', { name: localName(slot.item, lang, nameOfItem) })}
+                    className="rounded-sm p-0.5 text-tx-muted transition-colors hover:text-gold"
+                  >
+                    <Info size={10} />
+                  </button>
+                )}
               </span>
               {mech.items ? (
                 <MiniAutocomplete
@@ -231,7 +247,20 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                   displayValue={slot.item ? localName(slot.item, lang, nameOfItem) : undefined}
                   onClear={slot.item ? () => patch({ item: null }) : undefined}
                   maxResults={40}
-                  renderItem={(it) => <span className="truncate">{localName(it, lang, nameOfItem)}</span>}
+                  renderItem={(it) => {
+                    const slug = slugify(it);
+                    const d = itemDescs?.[slug];
+                    const line = d ? (lang === 'de' ? (d.fde ?? d.fen) : (d.fen ?? d.fde)) : null;
+                    return (
+                      <span className="flex min-w-0 items-center gap-2">
+                        <ItemIcon slug={slug} name={it} size={20} />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate">{localName(it, lang, nameOfItem)}</span>
+                          {line && <span className="block truncate text-[10px] font-normal text-tx-muted">{line}</span>}
+                        </span>
+                      </span>
+                    );
+                  }}
                 />
               ) : (
                 <p className="tb-micro mt-1.5">{t('tb.editor.noItems')}</p>
@@ -341,6 +370,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
             )}
           </div>
         </div>
+      <EntityDescModal {...entityModal.props} />
     </motion.div>
   );
 }

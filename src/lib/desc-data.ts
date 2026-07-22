@@ -183,7 +183,31 @@ export function resolveAbilityDesc(raw: AbilityDesc | null, slug: string, lang: 
   };
 }
 
-/* ---------- react hook ---------- */
+/* ---------- react hooks ---------- */
+
+/**
+ * Loads a whole desc chunk (cached after first call) and returns the record
+ * map — null while loading. For pickers/lexica that render many rows.
+ */
+export function useDescMap(kind: 'move'): Record<string, MoveDesc> | null;
+export function useDescMap(kind: 'item'): Record<string, ItemDesc> | null;
+export function useDescMap(kind: 'ability'): Record<string, AbilityDesc> | null;
+export function useDescMap(kind: DescKind): Record<string, AnyDesc> | null {
+  const [map, setMap] = useState<Record<string, AnyDesc> | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    const load =
+      kind === 'move' ? loadMoveDescs : kind === 'item' ? loadItemDescs : loadAbilityDescs;
+    void load().then((m) => {
+      if (!cancelled) setMap(m as Record<string, AnyDesc>);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [kind]);
+  return map;
+}
+
 
 export interface EntityDescState {
   /** null while the chunk is loading */

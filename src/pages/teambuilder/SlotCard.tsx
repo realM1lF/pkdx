@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronDown, Copy, Plus, Sparkles, Swords, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
-import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
+import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDescModal';
 import { padNum } from '@/lib/pokeapi';
 import { nameOfAbility, nameOfItem, nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
@@ -214,9 +214,23 @@ export default function SlotCard({
       <div className="mt-1.5 space-y-0.5 text-[8px] leading-tight">
         <div className="flex items-baseline justify-between gap-1.5">
           <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.item')}</span>
-          <span className={cn('truncate font-semibold', slot.item ? 'text-tx-secondary' : 'text-tx-muted/50')}>
-            {slot.item ? nameOfItem(slugify(slot.item), lang) : '—'}
-          </span>
+          {slot.item ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                entityModal.open('item', slot.item!);
+              }}
+              title={t8n('desc.openDesc', { name: nameOfItem(slugify(slot.item), lang) })}
+              aria-label={t8n('desc.openDesc', { name: nameOfItem(slugify(slot.item), lang) })}
+              className="flex min-w-0 items-center gap-1 truncate font-semibold text-tx-secondary transition-colors hover:text-gold"
+            >
+              <ItemIcon slug={slugify(slot.item)} name={slot.item} size={12} />
+              <span className="truncate">{nameOfItem(slugify(slot.item), lang)}</span>
+            </button>
+          ) : (
+            <span className="truncate font-semibold text-tx-muted/50">—</span>
+          )}
         </div>
         <div className="flex items-baseline justify-between gap-1.5">
           <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.ability')}</span>
