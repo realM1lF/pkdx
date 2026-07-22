@@ -1,0 +1,190 @@
+{
+  "version": "diamond",
+  "image": "/maps/sinnoh-original.jpg",
+  "nodes": {
+    "twinleaf-town": [
+      0.128,
+      0.912
+    ],
+    "sinnoh-route-201": [
+      0.2,
+      0.865
+    ],
+    "sandgem-town": [
+      0.28,
+      0.835
+    ],
+    "sinnoh-route-202": [
+      0.36,
+      0.8
+    ],
+    "jubilife-city": [
+      0.45,
+      0.72
+    ],
+    "sinnoh-route-203": [
+      0.53,
+      0.72
+    ],
+    "oreburgh-city": [
+      0.64,
+      0.72
+    ],
+    "oreburgh-mine": [
+      0.665,
+      0.75
+    ],
+    "sinnoh-route-204": [
+      0.43,
+      0.64
+    ],
+    "ravaged-path": [
+      0.43,
+      0.53
+    ],
+    "floaroma-town": [
+      0.43,
+      0.345
+    ],
+    "sinnoh-route-205": [
+      0.47,
+      0.38
+    ],
+    "valley-windworks": [
+      0.565,
+      0.42
+    ],
+    "eterna-forest": [
+      0.53,
+      0.44
+    ],
+    "eterna-city": [
+      0.59,
+      0.47
+    ],
+    "sinnoh-route-206": [
+      0.595,
+      0.52
+    ],
+    "wayward-cave": [
+      0.63,
+      0.55
+    ],
+    "sinnoh-route-207": [
+      0.6,
+      0.7
+    ],
+    "mt-coronet": [
+      0.45,
+      0.4
+    ],
+    "sinnoh-route-208": [
+      0.625,
+      0.595
+    ],
+    "hearthome-city": [
+      0.565,
+      0.615
+    ],
+    "sinnoh-route-209": [
+      0.685,
+      0.62
+    ],
+    "lost-tower": [
+      0.875,
+      0.385
+    ],
+    "solaceon-town": [
+      0.865,
+      0.335
+    ],
+    "solaceon-ruins": [
+      0.62,
+      0.275
+    ],
+    "sinnoh-route-210": [
+      0.795,
+      0.4
+    ],
+    "celestic-town": [
+      0.615,
+      0.345
+    ],
+    "sinnoh-route-211": [
+      0.675,
+      0.33
+    ],
+    "sinnoh-route-212": [
+      0.575,
+      0.75
+    ],
+    "pastoria-city": [
+      0.625,
+      0.85
+    ],
+    "great-marsh": [
+      0.56,
+      0.875
+    ],
+    "sinnoh-route-213": [
+      0.72,
+      0.81
+    ],
+    "sinnoh-route-214": [
+      0.865,
+      0.67
+    ],
+    "veilstone-city": [
+      0.83,
+      0.46
+    ],
+    "sinnoh-route-215": [
+      0.74,
+      0.55
+    ],
+    "sinnoh-route-218": [
+      0.3,
+      0.655
+    ],
+    "canalave-city": [
+      0.152,
+      0.605
+    ],
+    "iron-island": [
+      0.055,
+      0.43
+    ],
+    "sinnoh-route-216": [
+      0.39,
+      0.19
+    ],
+    "sinnoh-route-217": [
+      0.365,
+      0.14
+    ],
+    "snowpoint-city": [
+      0.423,
+      0.093
+    ],
+    "spear-pillar": [
+      0.465,
+      0.28
+    ],
+    "sunyshore-city": [
+      0.985,
+      0.68
+    ],
+    "sinnoh-victory-road": [
+      0.95,
+      0.435
+    ],
+    "turnback-cave": [
+      0.88,
+      0.607
+    ],
+    "stark-mountain": [
+      0.75,
+      0.07
+    ]
+  }
+}
