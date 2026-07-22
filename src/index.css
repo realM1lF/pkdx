@@ -184,6 +184,36 @@
     image-rendering: pixelated;
   }
 
+  /* Dark native <select> — detail moves, versus game picker, nuzlocke tune */
+  .dx-select {
+    appearance: none;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-hairline);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    height: 28px;
+    padding: 0 26px 0 10px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235E6680' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    cursor: pointer;
+    color-scheme: dark;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+  .dx-select:hover,
+  .dx-select:focus-visible {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    outline: none;
+  }
+  .dx-select option {
+    background: var(--surface-2);
+    color: var(--text-primary);
+  }
+
   /* Global grain overlay (§4.6) */
   .grain-overlay {
     background-image: url('/grain.png');
