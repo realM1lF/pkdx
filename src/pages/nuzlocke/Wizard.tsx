@@ -11,6 +11,7 @@ import { Check, Copy, Minus, Plus } from 'lucide-react';
 import { REGIONS, coverageTier, regionName, versionLabel, viewBoxParts } from '@/lib/regions';
 import type { RegionId } from '@/lib/regions';
 import { isRegionId } from '@/lib/regions';
+import { FREEFORM_REGIONS, anyRegionById } from '@/lib/regions-freeform';
 import {
   DEFAULT_RULES,
   MAX_PLAYERS,
@@ -71,8 +72,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
   const joinMode = !!joinPreset;
 
   const [step, setStep] = useState(0); // join mode starts at 1
-  const [regionId, setRegionId] = useState<RegionId>('kanto');
-  const region = useMemo(() => REGIONS.find((r) => r.region === regionId) ?? REGIONS[0], [regionId]);
+  /* EP5.3 — atlas RegionId or freeform (map-less Gen 6–9) region id */
+  const [regionId, setRegionId] = useState<string>('kanto');
+  const region = useMemo(() => anyRegionById(regionId) ?? REGIONS[0], [regionId]);
   const [game, setGame] = useState(region.defaultVersion);
   const [name, setName] = useState('');
   const [crew, setCrew] = useState<CrewPlayer[]>([{ name: '', color: PLAYER_COLORS[0] }]);
@@ -306,6 +308,42 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       <div className="mt-1 flex items-center justify-between px-0.5">
                         <span className="text-[11px] font-semibold text-tx-primary">{regionName(r, lang)}</span>
                         <span className="font-pixel text-[6px] text-tx-muted">{coverageTier(r)}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              {/* EP5.3 — map-less Gen 6–9 regions: text-mode runs, no map */}
+              <PixelLabel className="mt-3 block !text-[7px] text-tx-muted">{t('nuz.wizard.freeformGroup')}</PixelLabel>
+              <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
+                {FREEFORM_REGIONS.map((r) => {
+                  const active = r.region === regionId;
+                  return (
+                    <button
+                      key={r.region}
+                      type="button"
+                      onClick={() => {
+                        setRegionId(r.region);
+                        setGame(r.defaultVersion);
+                        if (!name || name === autoName) {
+                          const next = t('nuz.wizard.runNameSuggestion', { region: regionName(r, lang), n: runCount + 1 });
+                          setAutoName(next);
+                          setName(next);
+                        }
+                      }}
+                      className={cn(
+                        'rounded-md border p-1.5 text-left transition-all duration-200',
+                        active ? 'border-gold bg-surface2 shadow-[0_0_16px_rgba(246,201,69,0.25)]' : 'border-hairline bg-surface1 hover:border-hairline2',
+                      )}
+                    >
+                      <div className="flex h-[52px] items-center justify-center rounded-sm bg-void/60 p-1">
+                        <span className="font-pixel text-[7px] tracking-[0.12em]" style={{ color: r.accent }}>
+                          {t('nuz.wizard.textMode')}
+                        </span>
+                      </div>
+                      <div className="mt-1 flex items-center justify-between px-0.5">
+                        <span className="text-[11px] font-semibold text-tx-primary">{regionName(r, lang)}</span>
+                        <span className="font-pixel text-[6px] text-tx-muted">{r.gen}</span>
                       </div>
                     </button>
                   );

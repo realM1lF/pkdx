@@ -1,0 +1,920 @@
+{
+  "region": "galar",
+  "name": "Galar",
+  "nameDe": "Galar",
+  "gen": "VIII",
+  "accent": "#9D50BB",
+  "viewBox": "0 0 1200 840",
+  "versions": [
+    "sword-shield"
+  ],
+  "defaultVersion": "sword-shield",
+  "coverage": 0,
+  "speciesCount": 0,
+  "nodes": [
+    {
+      "id": "galar-galar-route-1",
+      "label": "Route 1",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 1,
+      "locationSlug": "galar-route-1"
+    },
+    {
+      "id": "galar-galar-route-2",
+      "label": "Route 2",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 2,
+      "locationSlug": "galar-route-2"
+    },
+    {
+      "id": "galar-galar-route-3",
+      "label": "Route 3",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 3,
+      "locationSlug": "galar-route-3"
+    },
+    {
+      "id": "galar-galar-route-4",
+      "label": "Route 4",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 4,
+      "locationSlug": "galar-route-4"
+    },
+    {
+      "id": "galar-galar-route-5",
+      "label": "Route 5",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 5,
+      "locationSlug": "galar-route-5"
+    },
+    {
+      "id": "galar-galar-route-6",
+      "label": "Route 6",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 6,
+      "locationSlug": "galar-route-6"
+    },
+    {
+      "id": "galar-galar-route-7",
+      "label": "Route 7",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 7,
+      "locationSlug": "galar-route-7"
+    },
+    {
+      "id": "galar-galar-route-8",
+      "label": "Route 8",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 8,
+      "locationSlug": "galar-route-8"
+    },
+    {
+      "id": "galar-galar-route-9",
+      "label": "Route 9",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 9,
+      "locationSlug": "galar-route-9"
+    },
+    {
+      "id": "galar-galar-route-10",
+      "label": "Route 10",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 10,
+      "locationSlug": "galar-route-10"
+    },
+    {
+      "id": "galar-galar-wild-area-max-dens",
+      "label": "All Max Dens in the Galar Wild Area",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 11,
+      "locationSlug": "galar-wild-area-max-dens"
+    },
+    {
+      "id": "galar-axews-eye",
+      "label": "Axew's Eye",
+      "nameDe": "Milza-See (Auge)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 12,
+      "locationSlug": "axews-eye"
+    },
+    {
+      "id": "galar-ballimere-lake",
+      "label": "Ballimere Lake",
+      "nameDe": "Ballsee-Ufer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 13,
+      "locationSlug": "ballimere-lake"
+    },
+    {
+      "id": "galar-ballonlea",
+      "label": "Ballonlea",
+      "nameDe": "Fairballey",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 14,
+      "locationSlug": "ballonlea"
+    },
+    {
+      "id": "galar-brawlers-cave",
+      "label": "Brawlers' Cave",
+      "nameDe": "Kämpfergrotte",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 15,
+      "locationSlug": "brawlers-cave"
+    },
+    {
+      "id": "galar-bridge-field",
+      "label": "Bridge Field",
+      "nameDe": "Brückental",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 16,
+      "locationSlug": "bridge-field"
+    },
+    {
+      "id": "galar-challenge-beach",
+      "label": "Challenge Beach",
+      "nameDe": "Strand der Prüfung",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 17,
+      "locationSlug": "challenge-beach"
+    },
+    {
+      "id": "galar-challenge-road",
+      "label": "Challenge Road",
+      "nameDe": "Pfad der Prüfung",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 18,
+      "locationSlug": "challenge-road"
+    },
+    {
+      "id": "galar-circhester",
+      "label": "Circhester",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 19,
+      "locationSlug": "circhester"
+    },
+    {
+      "id": "galar-courageous-cavern",
+      "label": "Courageous Cavern",
+      "nameDe": "Tapferkeitshöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 20,
+      "locationSlug": "courageous-cavern"
+    },
+    {
+      "id": "galar-crown-shrine",
+      "label": "Crown Shrine",
+      "nameDe": "Kronentempel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 21,
+      "locationSlug": "crown-shrine"
+    },
+    {
+      "id": "galar-dappled-grove",
+      "label": "Dappled Grove",
+      "nameDe": "Wipfelscheinwald",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 22,
+      "locationSlug": "dappled-grove"
+    },
+    {
+      "id": "galar-dusty-bowl",
+      "label": "Dusty Bowl",
+      "nameDe": "Sandsturmkessel",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 23,
+      "locationSlug": "dusty-bowl"
+    },
+    {
+      "id": "galar-dyna-tree-hill",
+      "label": "Dyna Tree Hill",
+      "nameDe": "Hügel des Dyna-Baums",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 24,
+      "locationSlug": "dyna-tree-hill"
+    },
+    {
+      "id": "galar-east-lake-axewell",
+      "label": "East Lake Axewell",
+      "nameDe": "Milza-See (Osten)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 25,
+      "locationSlug": "east-lake-axewell"
+    },
+    {
+      "id": "galar-energy-plant",
+      "label": "Energy Plant",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 26,
+      "locationSlug": "energy-plant"
+    },
+    {
+      "id": "galar-fields-of-honor",
+      "label": "Fields of Honor",
+      "nameDe": "Grußgefilde",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 27,
+      "locationSlug": "fields-of-honor"
+    },
+    {
+      "id": "galar-forest-of-focus",
+      "label": "Forest of Focus",
+      "nameDe": "Fokusforst",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 28,
+      "locationSlug": "forest-of-focus"
+    },
+    {
+      "id": "galar-freezington",
+      "label": "Freezington",
+      "nameDe": "Freezedale",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 29,
+      "locationSlug": "freezington"
+    },
+    {
+      "id": "galar-frigid-sea",
+      "label": "Frigid Sea",
+      "nameDe": "Schollenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 30,
+      "locationSlug": "frigid-sea"
+    },
+    {
+      "id": "galar-frostpoint-field",
+      "label": "Frostpoint Field",
+      "nameDe": "Frostfeld",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 31,
+      "locationSlug": "frostpoint-field"
+    },
+    {
+      "id": "galar-galar-mine",
+      "label": "Galar Mine",
+      "nameDe": "Galar-Mine",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 32,
+      "locationSlug": "galar-mine"
+    },
+    {
+      "id": "galar-galar-mine-no-2",
+      "label": "Galar Mine No. 2",
+      "nameDe": "Galar-Mine 2",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 33,
+      "locationSlug": "galar-mine-no-2"
+    },
+    {
+      "id": "galar-giants-bed",
+      "label": "Giant's Bed",
+      "nameDe": "Bett des Giganten",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 34,
+      "locationSlug": "giants-bed"
+    },
+    {
+      "id": "galar-giants-cap",
+      "label": "Giant's Cap",
+      "nameDe": "Hut des Giganten",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 35,
+      "locationSlug": "giants-cap"
+    },
+    {
+      "id": "galar-giants-foot",
+      "label": "Giant's Foot",
+      "nameDe": "Sohle des Giganten",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 36,
+      "locationSlug": "giants-foot"
+    },
+    {
+      "id": "galar-giants-mirror",
+      "label": "Giant's Mirror",
+      "nameDe": "Spiegel des Giganten",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 37,
+      "locationSlug": "giants-mirror"
+    },
+    {
+      "id": "galar-giants-seat",
+      "label": "Giant's Seat",
+      "nameDe": "Sitz des Giganten",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 38,
+      "locationSlug": "giants-seat"
+    },
+    {
+      "id": "galar-glimwood-tangle",
+      "label": "Glimwood Tangle",
+      "nameDe": "Wirrschein-Wald",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 39,
+      "locationSlug": "glimwood-tangle"
+    },
+    {
+      "id": "galar-hammerlocke",
+      "label": "Hammerlocke",
+      "nameDe": "Claw City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 40,
+      "locationSlug": "hammerlocke"
+    },
+    {
+      "id": "galar-hammerlocke-hills",
+      "label": "Hammerlocke Hills",
+      "nameDe": "Claw-Plateau",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 41,
+      "locationSlug": "hammerlocke-hills"
+    },
+    {
+      "id": "galar-honeycalm-island",
+      "label": "Honeycalm Island",
+      "nameDe": "Wabeninsel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 42,
+      "locationSlug": "honeycalm-island"
+    },
+    {
+      "id": "galar-honeycalm-sea",
+      "label": "Honeycalm Sea",
+      "nameDe": "Wabenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 43,
+      "locationSlug": "honeycalm-sea"
+    },
+    {
+      "id": "galar-hulbury",
+      "label": "Hulbury",
+      "nameDe": "Keelton",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 44,
+      "locationSlug": "hulbury"
+    },
+    {
+      "id": "galar-galar-iceberg-ruins",
+      "label": "Iceberg Ruins",
+      "nameDe": "Eisberg-Ruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 45,
+      "locationSlug": "galar-iceberg-ruins"
+    },
+    {
+      "id": "galar-insular-sea",
+      "label": "Insular Sea",
+      "nameDe": "Fernarchipel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 46,
+      "locationSlug": "insular-sea"
+    },
+    {
+      "id": "galar-galar-iron-ruins",
+      "label": "Iron Ruins",
+      "nameDe": "Eisen-Ruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 47,
+      "locationSlug": "galar-iron-ruins"
+    },
+    {
+      "id": "galar-lake-of-outrage",
+      "label": "Lake of Outrage",
+      "nameDe": "Wutanfall-See",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 48,
+      "locationSlug": "lake-of-outrage"
+    },
+    {
+      "id": "galar-lakeside-cave",
+      "label": "Lakeside Cave",
+      "nameDe": "Ballsee-Höhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 49,
+      "locationSlug": "lakeside-cave"
+    },
+    {
+      "id": "galar-loop-lagoon",
+      "label": "Loop Lagoon",
+      "nameDe": "Ringbucht",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 50,
+      "locationSlug": "loop-lagoon"
+    },
+    {
+      "id": "galar-master-dojo",
+      "label": "Master Dojo",
+      "nameDe": "Master-Dojo",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 51,
+      "locationSlug": "master-dojo"
+    },
+    {
+      "id": "galar-meetup-spot",
+      "label": "Meetup Spot",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 52,
+      "locationSlug": "meetup-spot"
+    },
+    {
+      "id": "galar-motostoke",
+      "label": "Motostoke",
+      "nameDe": "Engine City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 53,
+      "locationSlug": "motostoke"
+    },
+    {
+      "id": "galar-motostoke-outskirts",
+      "label": "Motostoke Outskirts",
+      "nameDe": "Engine-Ortsrand",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 54,
+      "locationSlug": "motostoke-outskirts"
+    },
+    {
+      "id": "galar-motostoke-riverbank",
+      "label": "Motostoke Riverbank",
+      "nameDe": "Engine-Flussufer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 55,
+      "locationSlug": "motostoke-riverbank"
+    },
+    {
+      "id": "galar-north-lake-miloch",
+      "label": "North Lake Miloch",
+      "nameDe": "Milotic-See (Norden)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 56,
+      "locationSlug": "north-lake-miloch"
+    },
+    {
+      "id": "galar-old-cemetery",
+      "label": "Old Cemetery",
+      "nameDe": "Uralter Friedhof",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 57,
+      "locationSlug": "old-cemetery"
+    },
+    {
+      "id": "galar-path-to-the-peak",
+      "label": "Path to the Peak",
+      "nameDe": "Schneegipfelpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 58,
+      "locationSlug": "path-to-the-peak"
+    },
+    {
+      "id": "galar-postwick",
+      "label": "Postwick",
+      "nameDe": "Furlongham",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 59,
+      "locationSlug": "postwick"
+    },
+    {
+      "id": "galar-potbottom-desert",
+      "label": "Potbottom Desert",
+      "nameDe": "Wüstensenke",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 60,
+      "locationSlug": "potbottom-desert"
+    },
+    {
+      "id": "galar-isle-of-armor-caves",
+      "label": "Random caves across the Isle of Armor",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 61,
+      "locationSlug": "isle-of-armor-caves"
+    },
+    {
+      "id": "galar-roaming-galar-wild-area",
+      "label": "Roaming Galar Wild Areas",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 62,
+      "locationSlug": "roaming-galar-wild-area"
+    },
+    {
+      "id": "galar-roaming-crown-tundra",
+      "label": "Roaming the Crown Tundra",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 63,
+      "locationSlug": "roaming-crown-tundra"
+    },
+    {
+      "id": "galar-roaming-isle-of-armor",
+      "label": "Roaming the Isle of Armor",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 64,
+      "locationSlug": "roaming-isle-of-armor"
+    },
+    {
+      "id": "galar-roaring-sea-caves",
+      "label": "Roaring-Sea Caves",
+      "nameDe": "Rauschende Höhlen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 65,
+      "locationSlug": "roaring-sea-caves"
+    },
+    {
+      "id": "galar-galar-rock-peak-ruins",
+      "label": "Rock Peak Ruins",
+      "nameDe": "Gipfelruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": "galar-rock-peak-ruins"
+    },
+    {
+      "id": "galar-rolling-fields",
+      "label": "Rolling Fields",
+      "nameDe": "Wonnewiesen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 67,
+      "locationSlug": "rolling-fields"
+    },
+    {
+      "id": "galar-steamdrift-way",
+      "label": "Route 8",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 68,
+      "locationSlug": "steamdrift-way"
+    },
+    {
+      "id": "galar-slippery-slope",
+      "label": "Slippery Slope",
+      "nameDe": "Schlitterfeld",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 69,
+      "locationSlug": "slippery-slope"
+    },
+    {
+      "id": "galar-snowslide-slope",
+      "label": "Snowslide Slope",
+      "nameDe": "Schneeschlucht",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 70,
+      "locationSlug": "snowslide-slope"
+    },
+    {
+      "id": "galar-soothing-wetlands",
+      "label": "Soothing Wetlands",
+      "nameDe": "Balsamsumpf",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 71,
+      "locationSlug": "soothing-wetlands"
+    },
+    {
+      "id": "galar-south-lake-miloch",
+      "label": "South Lake Miloch",
+      "nameDe": "Milotic-See (Süden)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 72,
+      "locationSlug": "south-lake-miloch"
+    },
+    {
+      "id": "galar-spikemuth",
+      "label": "Spikemuth",
+      "nameDe": "Spikeford",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 73,
+      "locationSlug": "spikemuth"
+    },
+    {
+      "id": "galar-split-decision-ruins",
+      "label": "Split-Decision Ruins",
+      "nameDe": "Zwiespaltruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 74,
+      "locationSlug": "split-decision-ruins"
+    },
+    {
+      "id": "galar-stepping-stone-sea",
+      "label": "Stepping-Stone Sea",
+      "nameDe": "Inselkettenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 75,
+      "locationSlug": "stepping-stone-sea"
+    },
+    {
+      "id": "galar-stony-wilderness",
+      "label": "Stony Wilderness",
+      "nameDe": "Megalithen-Ebene",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 76,
+      "locationSlug": "stony-wilderness"
+    },
+    {
+      "id": "galar-stow-on-side",
+      "label": "Stow-on-Side",
+      "nameDe": "Passbeck",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 77,
+      "locationSlug": "stow-on-side"
+    },
+    {
+      "id": "galar-three-point-pass",
+      "label": "Three-Point Pass",
+      "nameDe": "Dreiwegpass",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 78,
+      "locationSlug": "three-point-pass"
+    },
+    {
+      "id": "galar-tower-of-darkness",
+      "label": "Tower of Darkness",
+      "nameDe": "Turm des Unlichts",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 79,
+      "locationSlug": "tower-of-darkness"
+    },
+    {
+      "id": "galar-tower-of-waters",
+      "label": "Tower of Waters",
+      "nameDe": "Turm des Wassers",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 80,
+      "locationSlug": "tower-of-waters"
+    },
+    {
+      "id": "galar-training-lowlands",
+      "label": "Training Lowlands",
+      "nameDe": "Fleißebene",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 81,
+      "locationSlug": "training-lowlands"
+    },
+    {
+      "id": "galar-tunnel-to-the-top",
+      "label": "Tunnel to the Top",
+      "nameDe": "Aufstiegstunnel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 82,
+      "locationSlug": "tunnel-to-the-top"
+    },
+    {
+      "id": "galar-turffield",
+      "label": "Turffield",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 83,
+      "locationSlug": "turffield"
+    },
+    {
+      "id": "galar-warm-up-tunnel",
+      "label": "Warm-Up Tunnel",
+      "nameDe": "Aufwärmtunnel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 84,
+      "locationSlug": "warm-up-tunnel"
+    },
+    {
+      "id": "galar-watchtower-ruins",
+      "label": "Watchtower Ruins",
+      "nameDe": "Wachturmruine",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 85,
+      "locationSlug": "watchtower-ruins"
+    },
+    {
+      "id": "galar-wedgehurst",
+      "label": "Wedgehurst",
+      "nameDe": "Brassbury",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 86,
+      "locationSlug": "wedgehurst"
+    },
+    {
+      "id": "galar-west-lake-axewell",
+      "label": "West Lake Axewell",
+      "nameDe": "Milza-See (Westen)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 87,
+      "locationSlug": "west-lake-axewell"
+    },
+    {
+      "id": "galar-workout-sea",
+      "label": "Workout Sea",
+      "nameDe": "Fitnessmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 88,
+      "locationSlug": "workout-sea"
+    },
+    {
+      "id": "galar-wyndon",
+      "label": "Wyndon",
+      "nameDe": "Score City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 89,
+      "locationSlug": "wyndon"
+    },
+    {
+      "id": "galar-galar-battle-tower",
+      "label": "Battle Tower",
+      "nameDe": "Duellturm",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 90,
+      "locationSlug": "galar-battle-tower",
+      "postGame": true
+    },
+    {
+      "id": "galar-max-lair",
+      "label": "Max Lair",
+      "nameDe": "Dyna-Riesennest",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 91,
+      "locationSlug": "max-lair",
+      "postGame": true
+    },
+    {
+      "id": "galar-slumbering-weald",
+      "label": "Slumbering Weald",
+      "nameDe": "Schlummerwald",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 92,
+      "locationSlug": "slumbering-weald",
+      "postGame": true
+    }
+  ],
+  "edges": []
+}

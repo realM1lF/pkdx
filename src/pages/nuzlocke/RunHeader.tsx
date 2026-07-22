@@ -8,7 +8,8 @@ import { useLanguage } from '@/lib/i18n-data';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Share2, Skull, SlidersHorizontal, Archive, Swords } from 'lucide-react';
-import { regionById, regionName, versionChipLabel } from '@/lib/regions';
+import { regionName, versionChipLabel } from '@/lib/regions';
+import { anyRegionById } from '@/lib/regions-freeform';
 import {
   archiveRun,
   exportRunSummary,
@@ -45,7 +46,7 @@ export default function RunHeader({
   const [copied, setCopied] = useState(false);
   const [goingOnline, setGoingOnline] = useState(false);
   if (!state) return null;
-  const region = regionById(state.run.region);
+  const region = anyRegionById(state.run.region);
   const owner = isRunOwner(state.run.id);
   const multi = state.mode === 'multi';
 

@@ -24,6 +24,7 @@ import MovesPanel from './detail/MovesPanel';
 import PrevNextStrip from './detail/PrevNextStrip';
 import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
+import TcgGallery from './detail/TcgGallery';
 import WhereToFind from './detail/WhereToFind';
 import type { RegionId } from '@/lib/regions';
 import { versusContextFromGame } from '@/lib/versus-context';
@@ -304,6 +305,10 @@ export default function PokemonDetail() {
           <SpriteMuseum id={pokemon.id} name={pokemon.name} />
         </Panel>
       </div>
+
+      {/* EP4.3 — TCG card wall (lazy, silent fallback when the API is down);
+          EN display name (not the slug) so "Mr. Mime" etc. match card names */}
+      <TcgGallery enName={nameOfPokemon(pokemon.id, 'en')} />
 
       {/* prev / next strip */}
       {pokemon.id >= 1 && pokemon.id <= MAX_DEX_ID && (

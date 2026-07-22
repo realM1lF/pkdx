@@ -190,7 +190,20 @@
       "level": "Lv {{level}}",
       "day": "(day)",
       "night": "(night)",
-      "shed": "Shed"
+      "shed": "Shed",
+      "heldItem": "holding {{item}}",
+      "knownMove": "knowing {{move}}",
+      "beauty": "Beauty",
+      "location": "at {{location}}",
+      "female": "(female)",
+      "male": "(male)",
+      "rain": "(rain)",
+      "partySpecies": "{{name}} in party",
+      "partyType": "{{type}} in party",
+      "atkGtDef": "Atk > Def",
+      "atkLtDef": "Atk < Def",
+      "tradeSpecies": "trade for {{name}}",
+      "upsideDown": "(turn console upside down)"
     },
     "side": {
       "traitsEyebrow": "TRAITS",
@@ -259,6 +272,10 @@
         "BACK GIF": "BACK GIF",
         "SHINY GIF": "SHINY GIF"
       }
+    },
+    "tcg": {
+      "title": "TCG CARDS",
+      "more": "VIEW ALL"
     }
   },
   "missingno": {
@@ -811,7 +828,9 @@
       "failName": "Give your run a name — legend requires it.",
       "failJoinName": "Tell the crew your trainer name.",
       "failJoin": "Could not join — the run may be full.",
-      "you": "You"
+      "you": "You",
+      "freeformGroup": "WITHOUT MAP — TEXT MODE (GEN 6–9)",
+      "textMode": "ROUTES ONLY"
     },
     "card": {
       "options": "Run options",
@@ -1151,6 +1170,8 @@
       "exportAria": "Team in Showdown text format",
       "copy": "COPY TEXT",
       "copied": "COPIED ✓",
+      "pokepaste": "OPEN IN POKÉPASTE",
+      "pokepasteTitle": "Pokédex 2.0 Team",
       "copiedToast": "SHOWDOWN TEXT COPIED",
       "importHint": "Paste a team in Showdown text format (species, item, ability, nature, EVs, level, shiny, moves)",
       "placeholder": "Charizard @ Heavy-Duty Boots\nAbility: Blaze\nEVs: 252 SpA / 4 SpD / 252 Spe\nTimid Nature\n- Fire Blast\n…",

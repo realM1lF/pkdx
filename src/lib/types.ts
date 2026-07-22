@@ -180,6 +180,15 @@ export interface EvolutionDetail {
   known_move_type: NamedAPIResource | null;
   location: NamedAPIResource | null;
   gender: number | null;
+  /* EP4.2 — the remaining PokéAPI evolution_detail fields (all nullable) */
+  known_move: NamedAPIResource | null;
+  min_beauty: number | null;
+  needs_overworld_rain: boolean;
+  party_species: NamedAPIResource | null;
+  party_type: NamedAPIResource | null;
+  relative_physical_stats: number | null;
+  trade_species: NamedAPIResource | null;
+  turn_upside_down: boolean;
 }
 
 export interface ChainLink {

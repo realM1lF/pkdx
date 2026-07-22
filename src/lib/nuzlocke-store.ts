@@ -20,8 +20,8 @@ import type {
   NuzRunRow,
   NuzRunStatus,
 } from './supabase';
-import { nodeIndex, regionById, routeOrder } from './regions';
-import type { RegionId } from './regions';
+import { nodeIndex, routeOrder } from './regions';
+import { anyRegionById } from './regions-freeform';
 import { padNum } from './pokeapi';
 import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
@@ -225,7 +225,7 @@ export function registerRouteNamer(fn: ((run: NuzRunRow, routeKey: string) => st
 
 function routeLabelOf(run: NuzRunRow, routeKey: string): string {
   if (routeNamer) return routeNamer(run, routeKey);
-  const region = regionById(run.region);
+  const region = anyRegionById(run.region);
   return nodeIndex(region ?? { nodes: [] } as never).get(routeKey)?.label ?? routeKey;
 }
 
@@ -330,7 +330,7 @@ export function kpisOf(state: RunState): RunKpis {
   const links = soulLinksOf(state);
   /* duped/shiny rows don't resolve a route — only slot-consuming rows count */
   const routes = new Set(state.encounters.filter(isSlotConsuming).map((e) => e.route_key));
-  const region = regionById(state.run.region);
+  const region = anyRegionById(state.run.region);
   return {
     caught: state.encounters.filter((e) => e.status === 'caught').length,
     dead: state.encounters.filter((e) => e.status === 'dead').length,
@@ -343,7 +343,7 @@ export function kpisOf(state: RunState): RunKpis {
 
 /** First route in canonical order with any pending player slot (§2.3 marker). */
 export function youAreHereKey(state: RunState): string | null {
-  const region = regionById(state.run.region);
+  const region = anyRegionById(state.run.region);
   if (!region) return null;
   const used = new Set(state.encounters.filter(isSlotConsuming).map((e) => `${e.player_id}:${e.route_key}`));
   for (const node of routeOrder(region)) {
@@ -778,7 +778,8 @@ export interface NewRunPlayer {
 
 export interface NewRunConfig {
   name: string;
-  region: RegionId;
+  /** atlas RegionId or freeform region id (kalos/alola/galar/hisui/paldea) */
+  region: string;
   game: string;
   players: NewRunPlayer[];
   rules: NuzRules;
@@ -960,7 +961,7 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return { ok: false };
-  const region = regionById(s.run.region);
+  const region = anyRegionById(s.run.region);
   const node = region ? nodeIndex(region).get(draft.routeKey) : undefined;
   const violation = validateLogDraft(s, draft, node);
   if (violation) return { ok: false, error: violation };

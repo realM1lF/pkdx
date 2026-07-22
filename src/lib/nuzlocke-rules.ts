@@ -1,5 +1,6 @@
 /* Nuzlocke rule helpers — validation, run export (player-ux-audit §Nuzlocke). */
-import { regionById, routeOrder } from '@/lib/regions';
+import { routeOrder } from '@/lib/regions';
+import { anyRegionById } from '@/lib/regions-freeform';
 import type { MapNode, RegionId } from '@/lib/regions';
 import type { LogDraft, NuzEncounterRow, NuzRules, RunState } from '@/lib/nuzlocke-store';
 
@@ -136,7 +137,7 @@ const GYM_ACE: Record<RegionId, Record<string, number>> = {
  * the cheapest ace among gyms whose map node lies beyond the furthest
  * resolved route. Returns null when every gym is behind the crew. */
 export function nextGymCap(state: RunState): number | null {
-  const region = regionById(state.run.region);
+  const region = anyRegionById(state.run.region);
   if (!region) return null;
   const gyms = GYM_ACE[region.region];
   const order = routeOrder(region);

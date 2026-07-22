@@ -158,6 +158,22 @@ export function evoCondition(details: EvolutionDetail[], lang: Lang = 'en'): Evo
   if (d.min_level != null) parts.push(t('detail.evo.level', { level: d.min_level }));
   if (d.time_of_day) parts.push(t(`detail.evo.${d.time_of_day === 'night' ? 'night' : 'day'}`));
   if (d.trigger.name === 'shed') parts.push(t('detail.evo.shed'));
+  /* EP4.2 — remaining condition dimensions */
+  if (d.held_item) {
+    parts.push(t('detail.evo.heldItem', { item: nameOfItem(d.held_item.name, lang) }));
+    if (!itemIcon) itemIcon = `${ITEMS_BASE}/${d.held_item.name}.png`;
+  }
+  if (d.known_move) parts.push(t('detail.evo.knownMove', { move: titleCase(d.known_move.name) }));
+  if (d.min_beauty != null) parts.push(t('detail.evo.beauty'));
+  if (d.location) parts.push(t('detail.evo.location', { location: titleCase(d.location.name) }));
+  if (d.gender != null) parts.push(t(d.gender === 1 ? 'detail.evo.female' : 'detail.evo.male'));
+  if (d.needs_overworld_rain) parts.push(t('detail.evo.rain'));
+  if (d.party_species) parts.push(t('detail.evo.partySpecies', { name: titleCase(d.party_species.name) }));
+  if (d.party_type) parts.push(t('detail.evo.partyType', { type: nameOfType(d.party_type.name, lang) }));
+  if (d.relative_physical_stats != null && d.relative_physical_stats !== 0)
+    parts.push(t(d.relative_physical_stats > 0 ? 'detail.evo.atkGtDef' : 'detail.evo.atkLtDef'));
+  if (d.trade_species) parts.push(t('detail.evo.tradeSpecies', { name: titleCase(d.trade_species.name) }));
+  if (d.turn_upside_down) parts.push(t('detail.evo.upsideDown'));
   // rare triggers (spin, tower-of-darkness, …) fall back to the English slug label
   if (!parts.length) parts.push(titleCase(d.trigger.name));
   return { label: parts.join(' · '), itemIcon };

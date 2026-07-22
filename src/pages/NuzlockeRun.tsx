@@ -8,7 +8,8 @@ import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
-import { REGIONS, nodeIndex, nodeName, regionById } from '@/lib/regions';
+import { REGIONS, nodeIndex, nodeName } from '@/lib/regions';
+import { anyRegionById } from '@/lib/regions-freeform';
 import { useRegionData } from '@/lib/mapdata';
 import {
   isRunOwner,
@@ -55,7 +56,7 @@ export default function NuzlockeRun() {
   const { runId } = useParams<{ runId: string }>();
   const entry = useRunEntry(runId === 'new' ? undefined : runId);
   const state = entry?.state ?? null;
-  const region = regionById(state?.run.region) ?? REGIONS[0];
+  const region = anyRegionById(state?.run.region) ?? REGIONS[0];
   const mapData = useRegionData(region, state?.run.game ?? region.defaultVersion);
 
   const [nameIdx, setNameIdx] = useState<Map<number, DexIndexEntry>>(new Map());
