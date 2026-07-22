@@ -1,0 +1,206 @@
+{
+  "version": "black-2",
+  "image": "/maps/unova-original.jpg",
+  "nodes": {
+    "nuvema-town": [
+      0.84,
+      0.895
+    ],
+    "unova-route-1": [
+      0.841,
+      0.824
+    ],
+    "accumula-town": [
+      0.841,
+      0.696
+    ],
+    "unova-route-2": [
+      0.841,
+      0.567
+    ],
+    "striaton-city": [
+      0.841,
+      0.435
+    ],
+    "dreamyard": [
+      0.918,
+      0.501
+    ],
+    "unova-route-3": [
+      0.752,
+      0.435
+    ],
+    "wellspring-cave": [
+      0.728,
+      0.314
+    ],
+    "nacrene-city": [
+      0.663,
+      0.435
+    ],
+    "pinwheel-forest": [
+      0.549,
+      0.541
+    ],
+    "castelia-city": [
+      0.495,
+      0.84
+    ],
+    "unova-route-4": [
+      0.525,
+      0.58
+    ],
+    "desert-resort": [
+      0.435,
+      0.6
+    ],
+    "relic-castle": [
+      0.4,
+      0.66
+    ],
+    "nimbasa-city": [
+      0.525,
+      0.368
+    ],
+    "unova-route-5": [
+      0.436,
+      0.368
+    ],
+    "driftveil-city": [
+      0.338,
+      0.368
+    ],
+    "unova-route-6": [
+      0.249,
+      0.388
+    ],
+    "chargestone-cave": [
+      0.18,
+      0.475
+    ],
+    "mistralton-city": [
+      0.115,
+      0.375
+    ],
+    "unova-route-7": [
+      0.124,
+      0.246
+    ],
+    "celestial-tower": [
+      0.059,
+      0.137
+    ],
+    "twist-mountain": [
+      0.215,
+      0.2
+    ],
+    "icirrus-city": [
+      0.298,
+      0.116
+    ],
+    "dragonspiral-tower": [
+      0.332,
+      0.03
+    ],
+    "unova-route-8": [
+      0.379,
+      0.13
+    ],
+    "moor-of-icirrus": [
+      0.387,
+      0.26
+    ],
+    "opelucid-city": [
+      0.476,
+      0.137
+    ],
+    "unova-route-9": [
+      0.569,
+      0.144
+    ],
+    "unova-route-11": [
+      0.659,
+      0.164
+    ],
+    "unova-route-12": [
+      0.744,
+      0.192
+    ],
+    "lacunosa-town": [
+      0.813,
+      0.287
+    ],
+    "unova-route-13": [
+      0.857,
+      0.402
+    ],
+    "giant-chasm": [
+      0.925,
+      0.13
+    ],
+    "undella-town": [
+      0.869,
+      0.528
+    ],
+    "unova-route-14": [
+      0.788,
+      0.612
+    ],
+    "abundant-shrine": [
+      0.719,
+      0.716
+    ],
+    "unova-route-16": [
+      0.622,
+      0.422
+    ],
+    "lostlorn-forest": [
+      0.719,
+      0.501
+    ],
+    "unova-route-10": [
+      0.52,
+      0.055
+    ],
+    "unova-victory-road": [
+      0.614,
+      0.032
+    ],
+    "aspertia-city": [
+      0.135,
+      0.865
+    ],
+    "unova-route-19": [
+      0.21,
+      0.885
+    ],
+    "floccesy-ranch": [
+      0.315,
+      0.87
+    ],
+    "unova-route-20": [
+      0.274,
+      0.773
+    ],
+    "virbank-city": [
+      0.257,
+      0.632
+    ],
+    "unova-route-21": [
+      0.176,
+      0.554
+    ],
+    "humilau-city": [
+      0.148,
+      0.472
+    ],
+    "unova-route-22": [
+      0.221,
+      0.294
+    ],
+    "unova-route-23": [
+      0.29,
+      0.26
+    ]
+  }
+}
