@@ -1,6 +1,7 @@
 /* Nuzlocke hub — MISSION CONTROL (nuzlocke.md §1).
  * Header + sync banner + runs grid + join-by-code + New-Run wizard. */
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Info, Plus, X } from 'lucide-react';
@@ -9,6 +10,7 @@ import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { lookupByCode, useHubRuns } from '@/lib/nuzlocke-store';
 import type { JoinLookup } from '@/lib/nuzlocke-store';
 import { isMultiCapable } from '@/lib/supabase';
+import { isRegionId } from '@/lib/regions';
 import { cn } from '@/lib/utils';
 import Wizard from './nuzlocke/Wizard';
 import RunCard from './nuzlocke/RunCard';
@@ -19,12 +21,27 @@ import './nuzlocke/nuzlocke.css';
 export default function Nuzlocke() {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { runs, loading, entries } = useHubRuns();
   const [wizardOpen, setWizardOpen] = useState(false);
+  const presetRegion = useMemo(() => {
+    const raw = searchParams.get('region');
+    return raw && isRegionId(raw) ? raw : null;
+  }, [searchParams]);
+  const presetRouteKey = searchParams.get('at');
   const [joinPreset, setJoinPreset] = useState<JoinLookup | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [bannerOff, setBannerOff] = useState(() => sessionStorage.getItem('pdx2.nuz.banner') === 'off');
   const [nameIdx, setNameIdx] = useState<Map<number, string>>(new Map());
+
+  useEffect(() => {
+    if (searchParams.get('wizard') === '1') {
+      setWizardOpen(true);
+      const next = new URLSearchParams(searchParams);
+      next.delete('wizard');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     void bootNameIndex()
@@ -191,7 +208,14 @@ export default function Nuzlocke() {
         )}
       </section>
 
-      <Wizard open={wizardOpen} onClose={() => setWizardOpen(false)} joinPreset={joinPreset} runCount={runs.length} />
+      <Wizard
+        open={wizardOpen}
+        onClose={() => setWizardOpen(false)}
+        joinPreset={joinPreset}
+        runCount={runs.length}
+        presetRegion={presetRegion}
+        presetRouteKey={presetRouteKey}
+      />
       <NuzToasts />
     </div>
   );

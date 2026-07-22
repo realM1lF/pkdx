@@ -1,10 +1,10 @@
 /* Nuzlocke run view — THE TIMELINE DECK (nuzlocke.md §2).
- * Rules bar → route timeline + SoulLink overlay → team grid / feed →
- * graveyard → sticky Quick Entry. Solo & multi render identically. */
+ * Rules bar → Quick Entry → route timeline + SoulLink overlay → team grid / feed →
+ * graveyard. Solo & multi render identically. */
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import { Navigate, useLocation, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { LocaleLink } from '@/lib/locale-link';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -48,8 +48,10 @@ interface FlyState {
 
 export default function NuzlockeRun() {
   const { t } = useTranslation();
+  const localePath = useLocalePath();
+  const location = useLocation();
   const { runId } = useParams<{ runId: string }>();
-  const entry = useRunEntry(runId);
+  const entry = useRunEntry(runId === 'new' ? undefined : runId);
   const state = entry?.state ?? null;
   const region = regionById(state?.run.region) ?? REGIONS[0];
   const mapData = useRegionData(region, state?.run.game ?? region.defaultVersion);
@@ -91,6 +93,15 @@ export default function NuzlockeRun() {
   const [fly, setFly] = useState<FlyState | null>(null);
   const [pendingFly, setPendingFly] = useState<{ enc: NuzEncounterRow; from: DOMRect } | null>(null);
 
+  useEffect(() => {
+    const st = location.state as { prefillRoute?: string } | null;
+    if (!st?.prefillRoute || !state) return;
+    const playerId = state.players[0]?.id;
+    if (!playerId) return;
+    setPrefill({ routeKey: st.prefillRoute, playerId, key: Date.now() });
+    window.history.replaceState({}, document.title);
+  }, [location.state, state]);
+
   /* SoulLink death-cascade: alive partner of a dead link gets BOX? + shake (§2.3/§2.10) */
   const cascadeIds = useMemo(() => {
     const ids = new Set<string>();
@@ -118,6 +129,12 @@ export default function NuzlockeRun() {
     });
     return () => cancelAnimationFrame(raf);
   }, [pendingFly]);
+
+  if (runId === 'new') {
+    const params = new URLSearchParams(location.search);
+    params.set('wizard', '1');
+    return <Navigate to={`${localePath('/nuzlocke')}?${params.toString()}`} replace />;
+  }
 
   if (!entry || entry.phase === 'loading') {
     return (
@@ -162,8 +179,19 @@ export default function NuzlockeRun() {
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 md:px-8">
-      <RunHeader entry={entry} />
+      <RunHeader entry={entry} nameOf={nameOf} routeLabel={routeLabel} />
       <RulesBar state={state} owner={owner} />
+
+      {deckTab === 'deck' && (
+        <QuickEntry
+          state={state}
+          region={region}
+          mapData={mapData}
+          nameIdx={nameIdx}
+          prefill={prefill}
+          onLogged={onLogged}
+        />
+      )}
 
       {/* deck tab strip — RUN DECK / VERSUS (versus.md UI 2) */}
       <div className="mt-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label={t('nuz.runViewAria')}>
@@ -198,7 +226,7 @@ export default function NuzlockeRun() {
         </div>
       )}
 
-      <div className={deckTab === 'versus' ? 'hidden' : 'mt-4 space-y-8 pb-16'}>
+      <div className={deckTab === 'versus' ? 'hidden' : 'mt-4 space-y-8 pb-8'}>
         {/* timeline (dims on failed run, §2.10) */}
         <div className={failed ? 'opacity-70' : undefined}>
           <Timeline
@@ -239,15 +267,6 @@ export default function NuzlockeRun() {
           <Feed feed={entry.feed} live={entry.status === 'live'} />
         </div>
       </div>
-
-      <QuickEntry
-        state={state}
-        region={region}
-        mapData={mapData}
-        nameIdx={nameIdx}
-        prefill={prefill}
-        onLogged={onLogged}
-      />
 
       <EncounterMenu target={menu} nameOf={nameOf} onClose={() => setMenu(null)} onCascade={onCascade} />
       <NuzToasts />

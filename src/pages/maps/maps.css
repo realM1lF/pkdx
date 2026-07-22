@@ -129,6 +129,22 @@
   animation: maps-shake 0.4s ease;
 }
 
+/* command bar middle rail — horizontal scroll only (no vertical scrollbar / bar growth) */
+.maps-bar-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+.maps-bar-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+.maps-bar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+}
+
 /* scanning dot pulse */
 @keyframes maps-scan-dot {
   0%, 100% { opacity: 0.35; }

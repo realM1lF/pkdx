@@ -15,6 +15,8 @@ const MapRegion = lazy(() => import('./pages/MapRegion'));
 const Nuzlocke = lazy(() => import('./pages/Nuzlocke'));
 const NuzlockeRun = lazy(() => import('./pages/NuzlockeRun'));
 const TeamBuilder = lazy(() => import('./pages/TeamBuilder'));
+const Impressum = lazy(() => import('./pages/Impressum'));
+const Privacy = lazy(() => import('./pages/Privacy'));
 
 function PageFallback() {
   return (
@@ -42,6 +44,8 @@ export default function App() {
                 <Route path="nuzlocke" element={<Nuzlocke />} />
                 <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />
                 <Route path="team" element={<TeamBuilder />} />
+                <Route path="impressum" element={<Impressum />} />
+                <Route path="datenschutz" element={<Privacy />} />
                 <Route path="*" element={<LangHomeRedirect />} />
               </Route>
               <Route path="*" element={<LangRedirect />} />

@@ -123,7 +123,7 @@ function NodeGlyph({
     <g
       className="maps-node"
       transform={`translate(${node.x} ${node.y})`}
-      opacity={dimmed ? 0.28 : node.postGame && state !== 'pending' ? 0.55 : 1}
+      opacity={dimmed ? 0.08 : node.postGame && state !== 'pending' ? 0.55 : 1}
       style={{ '--ac': accentRgb(accent), '--hover-scale': hoverScale, transition: 'opacity 200ms ease' } as CSSProperties}
       role="button"
       tabIndex={0}

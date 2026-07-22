@@ -88,10 +88,12 @@
 
   html {
     scroll-behavior: auto; /* Lenis owns smooth scroll */
+    overflow-x: clip;
   }
 
   body {
     @apply bg-void text-tx-primary font-sans antialiased;
+    overflow-x: clip;
     background-image: var(--bg-vignette);
     background-repeat: no-repeat;
     font-variant-numeric: tabular-nums;

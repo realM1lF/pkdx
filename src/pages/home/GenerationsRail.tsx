@@ -48,7 +48,7 @@ export default function GenerationsRail() {
   };
 
   return (
-    <section className="py-24">
+    <section className="overflow-x-clip py-24">
       <Reveal className="mx-auto mb-10 flex max-w-content flex-wrap items-end justify-between gap-6 px-4 md:px-8">
         <div className="flex flex-col gap-4">
           <span className="pixel-label text-[10px] text-gold">1996 → 2022</span>
@@ -82,6 +82,7 @@ export default function GenerationsRail() {
         whileInView={{ x: 0, opacity: 1 }}
         viewport={{ once: true, margin: '-20% 0px' }}
         transition={{ duration: 0.7, ease: EASE }}
+        className="overflow-x-clip"
       >
         <div ref={viewportRef} className="overflow-hidden">
           <motion.div

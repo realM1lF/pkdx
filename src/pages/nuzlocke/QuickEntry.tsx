@@ -12,6 +12,8 @@ import type { RegionMap } from '@/lib/regions';
 import type { RegionDataState } from '@/lib/mapdata';
 import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
+import { isGiftNode } from '@/lib/nuzlocke-rules';
+import type { LogValidationError } from '@/lib/nuzlocke-rules';
 import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
@@ -76,15 +78,33 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const [routeFilter, setRouteFilter] = useState('');
   const [listOpen, setListOpen] = useState(false);
   const [fullDex, setFullDex] = useState(false);
+  const [isShiny, setIsShiny] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const [shakeKey, shake] = useShake();
   const [hint, setHint] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
   const previewRef = useRef<HTMLSpanElement>(null);
+  const pokePickerRef = useRef<HTMLDivElement>(null);
 
   const player = players.find((p) => p.id === playerId) ?? players[0];
-  const cap = state.run.rules.levelCap;
-  const overCap = !!cap && level > cap && status === 'caught';
+
+  useEffect(() => {
+    if (!listOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (!pokePickerRef.current?.contains(e.target as Node)) setListOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      e.preventDefault();
+      setListOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [listOpen]);
 
   /* prefill from timeline empty slot (§2.3) */
   const [prevPrefill, setPrevPrefill] = useState<Prefill | null>(null);
@@ -156,6 +176,16 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     window.setTimeout(() => setHint(''), 2600);
   };
 
+  const failCode = (code: LogValidationError) => {
+    const map: Record<LogValidationError, string> = {
+      duplicate: t('nuz.err.routeAlready', { player: player?.name ?? '?' }),
+      speciesDupe: t('nuz.err.speciesDupe'),
+      nicknameRequired: t('nuz.err.nicknameRequired'),
+      giftRoute: t('nuz.err.giftRoute'),
+    };
+    fail(map[code]);
+  };
+
   const pickRoute = (key: string) => {
     if (player && encounterAt(state, player.id, key)) {
       setRouteOpen(false);
@@ -180,9 +210,12 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       nickname: status === 'caught' ? nick || null : null,
       level,
       status,
+      isShiny: state.run.rules.shiny ? isShiny : false,
+      offRoute: !!species.custom || fullDex,
     });
     if (!res.ok) {
-      fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
+      if (res.error) failCode(res.error);
+      else fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
       return;
     }
     onLogged({ ...res, fromRect });
@@ -190,14 +223,16 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     setQuery('');
     setNick('');
     setFullDex(false);
+    setIsShiny(false);
     onDone?.();
   };
 
-  const canLog = !!player && !!routeKey && !!species;
+  const needsNick = state.run.rules.nicknames && status === 'caught';
+  const canLog = !!player && !!routeKey && !!species && (!needsNick || !!nick.trim());
   const disabledReason = !routeKey ? t('nuz.pickRouteFirst') : !species ? t('nuz.pickPokemon') : '';
 
-  const routeNode = routeKey ? nodes.find((n) => n.id === routeKey) : undefined;
-  const routeLabel = routeKey ? (routeNode ? nodeName(routeNode, lang) : routeKey) : t('nuz.routePlaceholder');
+  const routeNodeResolved = routeKey ? nodes.find((n) => n.id === routeKey) : undefined;
+  const routeLabel = routeKey ? (routeNodeResolved ? nodeName(routeNodeResolved, lang) : routeKey) : t('nuz.routePlaceholder');
   const routeNeedle = routeFilter.trim().toLowerCase();
   const filteredNodes = nodes.filter(
     (n) => n.label.toLowerCase().includes(routeNeedle) || (n.nameDe?.toLowerCase().includes(routeNeedle) ?? false),
@@ -288,6 +323,9 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               >
                 <span className="w-6 font-display text-[9px] font-bold tabular-nums text-tx-muted">{String(nodes.indexOf(n) + 1).padStart(2, '0')}</span>
                 <span className="min-w-0 flex-1 truncate">{n.label}</span>
+                {isGiftNode(n) && (
+                  <span className="rounded-full border border-gold/50 px-1 font-pixel text-[6px] text-gold">{t('nuz.giftRouteChip')}</span>
+                )}
                 {used && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">{t('nuz.chip.used')}</span>}
                 <span className="font-pixel text-[7px] text-tx-muted">
                   {st === 'caught' ? '✓' : st === 'dead' ? '✕' : st === 'pending' ? '○' : '—'}
@@ -299,7 +337,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       </Popover>
 
       {/* POKÉMON autocomplete */}
-      <div className={cn('relative', stacked ? 'w-full' : 'w-[240px]')}>
+      <div ref={pokePickerRef} className={cn('relative', stacked ? 'w-full' : 'w-[240px]')}>
         <Search size={12} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-tx-muted" />
         <input
           ref={searchRef}
@@ -346,7 +384,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           </span>
         )}
         {listOpen && routeKey && !species && (
-          <div className="absolute bottom-full left-0 z-[62] mb-1.5 w-full overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-[0_8px_32px_rgba(0,0,0,0.45)]" role="listbox">
+          <div className="absolute left-0 top-full z-[70] mt-1.5 w-full overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-[0_8px_32px_rgba(0,0,0,0.45)]" role="listbox">
             {options.length === 0 && (
               <div className="px-3 py-2.5 text-[11px] text-tx-muted">
                 {mapData.data.get(routeKey)?.status === 'loaded' || fullDex ? 'No match — try the full dex below.' : 'Scanning encounter data…'}
@@ -359,6 +397,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 role="option"
                 aria-selected={i === activeIdx}
                 onMouseEnter={() => setActiveIdx(i)}
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
                   setSpecies(o);
                   setListOpen(false);
@@ -380,6 +419,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             {!fullDex && (
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
                   setFullDex(true);
                   setActiveIdx(0);
@@ -395,12 +435,10 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
 
       {/* LEVEL */}
       <div className="relative">
-        <div
-          className={cn(
-            'flex h-10 items-center rounded-md border bg-surface2',
-            overCap ? 'border-gold shadow-[0_0_10px_rgba(246,201,69,0.25)]' : 'border-hairline2',
-          )}
-        >
+        <div className="flex h-10 items-center rounded-md border border-hairline2 bg-surface2" title={t('nuz.levelTip')}>
+          <span className="pl-2 font-pixel text-[7px] tracking-[0.08em] text-tx-muted" aria-hidden>
+            {t('nuz.levelShort')}
+          </span>
           <button type="button" aria-label={t('nuz.levelDown')} onClick={() => setLevel((l) => Math.max(1, l - 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
             <Minus size={11} />
           </button>
@@ -417,8 +455,23 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             <Plus size={11} />
           </button>
         </div>
-        <GoldHint text={`Above cap ${cap} — log anyway?`} show={overCap} />
       </div>
+
+      {state.run.rules.shiny && status === 'caught' && (
+        <button
+          type="button"
+          aria-pressed={isShiny}
+          onClick={() => setIsShiny((v) => !v)}
+          className={cn(
+            'flex h-10 items-center gap-1.5 rounded-md border px-2.5 font-pixel text-[8px] tracking-[0.08em] transition-colors',
+            isShiny ? 'border-gold bg-gold/15 text-gold' : 'border-hairline2 text-tx-muted hover:border-gold/50',
+            stacked ? 'w-full justify-center' : '',
+          )}
+        >
+          <img src="/sparkle.svg" alt="" className="h-3 w-3" />
+          {t('nuz.shinyCatch')}
+        </button>
+      )}
 
       {/* STATUS */}
       <Popover
@@ -429,6 +482,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             type="button"
             onClick={() => setStatusOpen((o) => !o)}
             aria-label={t('nuz.status')}
+            title={t('nuz.statusTip')}
             className={cn('flex h-10 items-center justify-between gap-1 rounded-md border bg-surface2 px-2.5 font-pixel text-[8px] tracking-[0.08em]', STATUS_META[status].cls, stacked ? 'w-full' : 'w-[110px]')}
           >
             {t(STATUS_META[status].labelKey)}
@@ -462,7 +516,12 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           placeholder={t('nuz.nicknamePlaceholder')}
           maxLength={18}
           aria-label={t('nuz.nickname')}
-          className={cn('h-10 rounded-md border border-hairline2 bg-surface2 px-3 text-[12px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold/60', stacked ? 'w-full' : 'w-[160px]')}
+          required={needsNick}
+          className={cn(
+            'h-10 rounded-md border bg-surface2 px-3 text-[12px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold/60',
+            needsNick && !nick.trim() ? 'border-gold/60' : 'border-hairline2',
+            stacked ? 'w-full' : 'w-[160px]',
+          )}
         />
       )}
 
@@ -495,18 +554,36 @@ interface QuickEntryProps extends Omit<FormProps, 'stacked' | 'onDone'> {}
 export default function QuickEntry(props: QuickEntryProps) {
   const { t } = useTranslation();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [highlight, setHighlight] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
 
-  /* prefill on mobile opens the sheet */
+  /* prefill on mobile opens the sheet; desktop pulses the bar */
   const [prevPrefill, setPrevPrefill] = useState<Prefill | null>(null);
   if (props.prefill && props.prefill !== prevPrefill) {
     setPrevPrefill(props.prefill);
-    if (window.innerWidth < 768) setSheetOpen(true);
+    if (window.innerWidth < 768) {
+      setSheetOpen(true);
+    } else {
+      setHighlight(true);
+      window.setTimeout(() => setHighlight(false), 1400);
+      window.setTimeout(() => barRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 30);
+    }
   }
 
   return (
     <>
-      {/* desktop sticky bar */}
-      <div className="sticky bottom-0 z-30 -mx-4 hidden border-t border-hairline bg-[rgba(13,15,22,0.85)] px-4 py-3 backdrop-blur-xl md:-mx-8 md:block md:px-8">
+      {/* desktop entry bar — above timeline */}
+      <div
+        ref={barRef}
+        className={cn(
+          'relative z-40 mt-3 hidden rounded-xl border border-hairline bg-[rgba(13,15,22,0.88)] px-4 py-3 backdrop-blur-xl md:block',
+          highlight && 'nz-entry-highlight',
+        )}
+      >
+        <div className="mb-2 flex items-center gap-2">
+          <PixelLabel className="text-gold">{t('nuz.quickEntry')}</PixelLabel>
+          <span className="text-[10px] text-tx-muted">{t('nuz.quickEntryHint')}</span>
+        </div>
         <div className="mx-auto max-w-[1440px]">
           <EntryForm {...props} />
         </div>

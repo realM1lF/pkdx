@@ -361,7 +361,7 @@ function DemoCard({ titleKey, captionKey, Demo, index }: { titleKey: string; cap
 export default function Features() {
   const { t } = useTranslation();
   return (
-    <section className="mx-auto max-w-content px-4 py-24 md:px-8">
+    <section className="mx-auto max-w-content overflow-x-clip px-4 py-24 md:px-8">
       <div className="mb-12 flex flex-col gap-4">
         <span className="pixel-label text-[10px] text-gold">{t('home.features.eyebrow')}</span>
         <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">

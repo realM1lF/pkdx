@@ -147,7 +147,7 @@ const OriginalMarker = memo(function OriginalMarker({
     <g
       className="maps-node"
       transform={`translate(${x} ${y})`}
-      opacity={dimmed ? 0.3 : node.postGame && state !== 'pending' ? 0.6 : 1}
+      opacity={dimmed ? 0.08 : node.postGame && state !== 'pending' ? 0.6 : 1}
       style={{ '--ac': accentRgb(accent), '--hover-scale': hoverScale, transition: 'opacity 200ms ease' } as CSSProperties}
       role="button"
       tabIndex={0}

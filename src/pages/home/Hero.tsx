@@ -10,6 +10,7 @@ import HeroBackdrop from './HeroBackdrop';
 import ParticleField from './ParticleField';
 import Sprite from '@/components/Sprite';
 import { sprites } from '@/lib/sprites';
+import { getLatestRunId, loadLocalRun } from '@/lib/nuzlocke-store';
 import { MAX_DEX_ID, TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -150,6 +151,7 @@ function SpotlightPedestal({ started }: { started: boolean }) {
 export default function Hero({ started }: { started: boolean }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
+  const latestRun = loadLocalRun(getLatestRunId() ?? '');
   const { t } = useTranslation();
   const lang = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
@@ -226,6 +228,15 @@ export default function Hero({ started }: { started: boolean }) {
               </motion.span>
               {t('home.hero.surprise')}
             </button>
+            {latestRun && (
+              <LocaleLink
+                to={`/nuzlocke/${latestRun.run.id}`}
+                className="inline-flex flex-col rounded-md border border-hairline2 px-5 py-3 text-left transition-colors hover:border-gold/50 hover:text-gold"
+              >
+                <span className="font-display text-[11px] font-bold uppercase tracking-[0.06em] text-tx-primary">{t('nuz.continueRun')}</span>
+                <span className="mt-0.5 text-[11px] text-tx-muted">{t('nuz.continueRunHint', { name: latestRun.run.name })}</span>
+              </LocaleLink>
+            )}
           </motion.div>
 
           <motion.p
@@ -239,7 +250,7 @@ export default function Hero({ started }: { started: boolean }) {
         </div>
 
         {/* right — spotlight pedestal */}
-        <div className="lg:col-span-5">
+        <div className="overflow-hidden lg:col-span-5">
           <SpotlightPedestal started={started} />
           {/* mobile: static 3-up row instead of orbit */}
           <motion.div

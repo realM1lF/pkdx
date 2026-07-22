@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Copy, Minus, Plus } from 'lucide-react';
 import { REGIONS, coverageTier, regionName, versionLabel, viewBoxParts } from '@/lib/regions';
 import type { RegionId } from '@/lib/regions';
+import { isRegionId } from '@/lib/regions';
 import {
   DEFAULT_RULES,
   MAX_PLAYERS,
@@ -52,6 +53,8 @@ interface WizardProps {
   /** set → join-by-code mode (§1.4 valid code springs into step 2) */
   joinPreset?: JoinLookup | null;
   runCount: number;
+  presetRegion?: RegionId | null;
+  presetRouteKey?: string | null;
 }
 
 interface CrewPlayer {
@@ -59,7 +62,7 @@ interface CrewPlayer {
   color: string;
 }
 
-export default function Wizard({ open, onClose, joinPreset, runCount }: WizardProps) {
+export default function Wizard({ open, onClose, joinPreset, runCount, presetRegion, presetRouteKey }: WizardProps) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
   const { t } = useTranslation();
@@ -88,7 +91,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
 
   const reset = () => {
     setStep(joinPreset ? 1 : 0);
-    const suggestion = t('nuz.wizard.runNameSuggestion', { region: regionName(REGIONS[0], lang), n: runCount + 1 });
+    const startRegion = presetRegion && isRegionId(presetRegion) ? presetRegion : 'kanto';
+    setRegionId(startRegion);
+    const startMap = REGIONS.find((r) => r.region === startRegion) ?? REGIONS[0];
+    setGame(startMap.defaultVersion);
+    const suggestion = t('nuz.wizard.runNameSuggestion', { region: regionName(startMap, lang), n: runCount + 1 });
     setAutoName(suggestion);
     setName(suggestion);
     setCrew([{ name: '', color: PLAYER_COLORS[0] }]);
@@ -135,7 +142,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
         setCreatedId(res.state.run.id);
       } else {
         onClose();
-        navigate(localePath(`/nuzlocke/${res.state.run.id}`));
+        navigate(localePath(`/nuzlocke/${res.state.run.id}`), {
+          state: presetRouteKey ? { prefillRoute: presetRouteKey } : undefined,
+        });
       }
     } finally {
       setBusy(false);
@@ -434,32 +443,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount }: WizardPr
                       <GoldSwitch checked={rules.shiny} onChange={(v) => setRules((r) => ({ ...r, shiny: v }))} label={t('nuz.rules.shinyClause')} tip={t('nuz.rules.shinyTip')} />
                     </div>
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
-                      <GoldSwitch checked label={t('nuz.wizard.nicknames')} tip={t('nuz.wizard.nickTip')} disabled />
-                    </div>
-                    <div className="flex items-center justify-between rounded-md border border-hairline bg-surface1 px-3 py-2">
-                      <span className="flex items-center gap-1.5">
-                        <span className="font-pixel text-[8px] uppercase tracking-[0.08em] text-tx-muted">{t('nuz.rules.levelCap')}</span>
-                        <InfoTip text={t('nuz.rules.capTip')} />
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          aria-label={t('nuz.wizard.lowerCap')}
-                          onClick={() => setRules((r) => ({ ...r, levelCap: r.levelCap ? Math.max(1, r.levelCap - 1) : null }))}
-                          className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted hover:border-gold hover:text-gold"
-                        >
-                          <Minus size={11} />
-                        </button>
-                        <span className="w-8 text-center font-display text-[14px] font-bold text-gold">{rules.levelCap ?? '—'}</span>
-                        <button
-                          type="button"
-                          aria-label={t('nuz.wizard.raiseCap')}
-                          onClick={() => setRules((r) => ({ ...r, levelCap: Math.min(100, (r.levelCap ?? 25) + 1) }))}
-                          className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted hover:border-gold hover:text-gold"
-                        >
-                          <Plus size={11} />
-                        </button>
-                      </span>
+                      <GoldSwitch checked={rules.nicknames} onChange={(v) => setRules((r) => ({ ...r, nicknames: v }))} label={t('nuz.wizard.nicknames')} tip={t('nuz.wizard.nickTip')} />
                     </div>
                   </div>
                 </div>

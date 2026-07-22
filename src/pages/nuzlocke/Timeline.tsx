@@ -8,7 +8,7 @@ import { LocaleLink } from '@/lib/locale-link';
 import { nodeName } from '@/lib/regions';
 import { useLanguage } from '@/lib/i18n-data';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import { routeOrder } from '@/lib/regions';
 import type { MapNode, RegionMap } from '@/lib/regions';
@@ -146,7 +146,6 @@ interface SlotProps {
   color: string;
   playerName: string;
   pendingSync: boolean;
-  overCap: boolean;
   flashed: boolean;
   cascade: boolean;
   nameOf: (id: number) => string;
@@ -154,7 +153,7 @@ interface SlotProps {
   onOpen: (enc: NuzEncounterRow, x: number, y: number) => void;
 }
 
-function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cascade, nameOf, onPrefill, onOpen }: SlotProps) {
+function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nameOf, onPrefill, onOpen }: SlotProps) {
   const { t } = useTranslation();
   const tip = enc
     ? t('nuz.timeline.slotTip', {
@@ -177,10 +176,8 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
           type="button"
           onClick={onPrefill}
           aria-label={t('nuz.timeline.logFor', { player: playerName })}
-          className="mx-auto flex h-[30px] w-full items-center justify-center rounded-sm border border-dashed border-hairline2 text-tx-muted transition-colors hover:border-gold/50 hover:text-gold"
-        >
-          <Plus size={12} />
-        </button>
+          className="mx-auto h-[30px] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
+        />
       ) : enc.status === 'dead' ? (
         <>
           <span data-slot-enc={enc.id} className="nz-dead-sprite inline-block shrink-0">
@@ -219,11 +216,6 @@ function PlayerSlot({ enc, color, playerName, pendingSync, overCap, flashed, cas
             <span className="block truncate text-[11px] font-semibold text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
             <span className="block font-display text-[9px] font-bold text-tx-muted">LV {enc.level}</span>
           </span>
-          {overCap && (
-            <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title={t('nuz.timeline.capTip')}>
-              CAP+
-            </span>
-          )}
           {pendingSync && <span className="nz-orbit h-1.5 w-1.5 shrink-0" aria-label={t('nuz.timeline.pendingSync')} />}
         </button>
       )}
@@ -312,7 +304,6 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
   } as CSSProperties;
 
   const empty = state.encounters.length === 0;
-  const cap = state.run.rules.levelCap;
   const cardH = HEADER_H + players.length * SLOT_H + 22;
 
   return (
@@ -397,7 +388,6 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                             color={p.color}
                             playerName={p.name}
                             pendingSync={!!enc && pendingSync.has(enc.id)}
-                            overCap={!!enc && !!cap && enc.level > cap && enc.status === 'caught'}
                             flashed={!!flash && flash.route === node.id && flash.playerId === p.id}
                             cascade={!!enc && cascadeIds.has(enc.id)}
                             nameOf={nameOf}
