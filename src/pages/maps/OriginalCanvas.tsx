@@ -35,7 +35,23 @@ const EMPTY_STROKE = 'rgba(255,255,255,0.14)';
 const GOLD = '#F6C945';
 
 /* authored label nudges for crowded pairs on the original geography */
-const LABEL_TOP = new Set(['kanto-route-22']);
+const LABEL_TOP = new Set([
+  'kanto-route-22',
+  /* sinnoh: jubilife-city and route-203 sit on the same latitude — route
+   * label goes above; route-211/210 cluster near celestic — 211 goes above */
+  'sinnoh-route-203',
+  'sinnoh-route-211',
+]);
+
+/* EP0.5 — region-aware source credit: kanto/johto/hoenn are VGMaps rips,
+ * sinnoh/unova are PokéWiki artwork (see public/maps/CREDITS.txt) */
+const SOURCE_CREDIT: Record<string, string> = {
+  kanto: 'MAP © NINTENDO/GAME FREAK · RIP VIA VGMAPS',
+  johto: 'MAP © NINTENDO/GAME FREAK · RIP VIA VGMAPS',
+  hoenn: 'MAP © NINTENDO/GAME FREAK · RIP VIA VGMAPS',
+  sinnoh: 'MAP © NINTENDO/GAME FREAK · VIA POKÉWIKI',
+  unova: 'MAP © NINTENDO/GAME FREAK · VIA POKÉWIKI',
+};
 
 type NodeDataState = 'pending' | 'loaded' | 'empty' | 'decor';
 
@@ -507,7 +523,7 @@ export default function OriginalCanvas({
 
       {/* source credit (see public/maps/CREDITS.txt) — clears the zoom stack */}
       <div className="pixel-label pointer-events-none absolute bottom-2 right-14 text-[7px] text-tx-muted/60">
-        MAP © NINTENDO/GAME FREAK · RIP VIA VGMAPS
+        {SOURCE_CREDIT[region.region] ?? 'MAP © NINTENDO/GAME FREAK'}
       </div>
     </div>
   );
