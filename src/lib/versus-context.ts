@@ -1,7 +1,7 @@
 /* Versus calc context — ties damage math to game version / region. */
 import type { RegionId } from './regions';
 import type { RunState } from './nuzlocke-store';
-import { VERSION_GROUPS, versionGroupForGame } from './teambuilder';
+import { VERSION_GROUPS, versionGroupForGame } from './version-groups';
 
 export interface VersusContext {
   /** @smogon/calc generation 1–9 */
