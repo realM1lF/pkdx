@@ -35,9 +35,17 @@ function lsGet<T>(key: string): CacheEnvelope<T> | null {
   }
 }
 
+/** Payloads above this size stay memory-cached only (EP1.4): full /pokemon/{id}
+ *  responses are 270–425 KB — a handful of them silently breaks the ~5 MB
+ *  localStorage quota, killing persistence for EVERYTHING else (incl. the
+ *  name index) and forcing expensive JSON.parse round-trips of huge strings. */
+const LS_MAX_PAYLOAD = 150_000;
+
 function lsSet<T>(key: string, data: T): void {
   try {
-    localStorage.setItem(LS_PREFIX + key, JSON.stringify({ t: Date.now(), data } satisfies CacheEnvelope<T>));
+    const raw = JSON.stringify({ t: Date.now(), data } satisfies CacheEnvelope<T>);
+    if (raw.length > LS_MAX_PAYLOAD) return; // memory cache still works
+    localStorage.setItem(LS_PREFIX + key, raw);
   } catch {
     /* quota full — memory cache still works */
   }

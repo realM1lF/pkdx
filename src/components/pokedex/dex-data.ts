@@ -1,11 +1,15 @@
-/* /pokedex page-local data layer — name-index boot, concurrency-limited summary
- * enrichment, /type membership sets, legendary/mythical flags, filter+sort helpers.
- * Wraps src/lib/pokeapi.ts (cachedJson/getPokemon) — does not modify shared libs. */
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
-import { bootNameIndex, cachedJson, displayName, getPokemon } from '@/lib/pokeapi';
+/* /pokedex page-local data layer — build-time summary artifact boot,
+ * legendary/mythical flags, filter+sort helpers.
+ *
+ * EP1.4: summaries (types/stats/height/weight for all 1025) come from the
+ * committed build artifact src/data/summaries.json (ONE chunked fetch, generated
+ * by scripts/build-summaries.mjs) instead of 1025 full /pokemon/{id} payloads
+ * (270–425 KB each). Detail data still loads on demand via getPokemon(). */
+import { useCallback, useEffect, useState } from 'react';
+import { padNum } from '@/lib/pokeapi';
 import { germanAliasOfPokemon, nameOfPokemon, type Lang } from '@/lib/i18n-data';
-import { MAX_DEX_ID, POKEMON_TYPES, genOf } from '@/lib/types';
-import type { DexIndexEntry, Pokemon, PokemonType, StatKey } from '@/lib/types';
+import { POKEMON_TYPES, genOf } from '@/lib/types';
+import type { DexIndexEntry, PokemonType, StatKey } from '@/lib/types';
 
 /* ---------- shared page types ---------- */
 
@@ -53,88 +57,82 @@ export const MYTHICAL_IDS: ReadonlySet<number> = new Set([
   808, 809, 893, 1025,
 ]);
 
-/* ---------- summary enrichment (module store, concurrency-limited queue) ----------
- * Session-global: survives /pokedex remounts, so back-navigation from a detail
- * page re-renders instantly. Subscribed via useSyncExternalStore. */
+/* ---------- summary boot (build artifact, single chunked fetch) ---------- */
 
-const CONCURRENCY = 12;
-
-const summaryStore = new Map<number, DexSummary>();
-const queuedIds = new Set<number>();
-const fetchQueue: number[] = [];
-let activeFetches = 0;
-
-let summarySnapshot: ReadonlyMap<number, DexSummary> = new Map();
-let pendingSnapshot = 0;
-const storeListeners = new Set<() => void>();
-
-function notifyStore(): void {
-  summarySnapshot = new Map(summaryStore);
-  pendingSnapshot = activeFetches + fetchQueue.length;
-  storeListeners.forEach((fn) => fn());
+interface RawSummary {
+  id: number;
+  slug: string;
+  name: string; // EN display name (build-time, mirrors displayName())
+  types: string[];
+  stats: { hp: number; atk: number; def: number; spa: number; spd: number; spe: number };
+  height: number; // decimetres
+  weight: number; // hectograms
 }
 
-function subscribeSummaryStore(fn: () => void): () => void {
-  storeListeners.add(fn);
-  return () => storeListeners.delete(fn);
+const STAT_MAP: ReadonlyArray<readonly [keyof RawSummary['stats'], StatKey]> = [
+  ['hp', 'hp'],
+  ['atk', 'attack'],
+  ['def', 'defense'],
+  ['spa', 'special-attack'],
+  ['spd', 'special-defense'],
+  ['spe', 'speed'],
+];
+
+interface DexBoot {
+  index: DexIndexEntry[];
+  summaries: ReadonlyMap<number, DexSummary>;
+  typeSets: Record<PokemonType, ReadonlySet<number>>;
 }
 
-function toSummary(p: Pokemon): DexSummary {
-  const stats = {} as Record<StatKey, number>;
-  for (const s of p.stats) stats[s.stat.name as StatKey] = s.base_stat;
-  return {
-    id: p.id,
-    label: displayName(p.name),
-    types: [...p.types].sort((a, b) => a.slot - b.slot).map((t) => t.type.name as PokemonType),
-    stats,
-    bst: p.stats.reduce((sum, s) => sum + s.base_stat, 0),
-    height: p.height,
-    weight: p.weight,
-    gen: genOf(p.id).gen,
-    legendary: LEGENDARY_IDS.has(p.id),
-    mythical: MYTHICAL_IDS.has(p.id),
-  };
-}
+let bootPromise: Promise<DexBoot> | null = null;
 
-function pumpQueue(): void {
-  while (activeFetches < CONCURRENCY && fetchQueue.length > 0) {
-    const take = Math.min(CONCURRENCY - activeFetches, fetchQueue.length);
-    const chunk = fetchQueue.splice(0, take);
-    activeFetches += chunk.length;
-    notifyStore();
-    void Promise.all(
-      chunk.map((id) =>
-        getPokemon(id)
-          .then((p) => ({ id, summary: toSummary(p) }))
-          .catch(() => ({ id, summary: null as DexSummary | null })),
-      ),
-    ).then((results) => {
-      for (const { id, summary } of results) {
-        queuedIds.delete(id);
-        if (summary) summaryStore.set(id, summary);
+/** Load + hydrate the summary artifact once per session (idempotent, cached). */
+function bootDex(): Promise<DexBoot> {
+  if (!bootPromise) {
+    bootPromise = import('@/data/summaries.json').then((mod) => {
+      const raw = (mod.default as { pokemon: RawSummary[] }).pokemon;
+      const index: DexIndexEntry[] = [];
+      const summaries = new Map<number, DexSummary>();
+      const typeSets = {} as Record<PokemonType, Set<number>>;
+      for (const t of POKEMON_TYPES) typeSets[t] = new Set<number>();
+      for (const r of raw) {
+        const gen = genOf(r.id).gen;
+        index.push({ id: r.id, name: r.slug, label: r.name, num: padNum(r.id), gen });
+        const stats = {} as Record<StatKey, number>;
+        let bst = 0;
+        for (const [short, key] of STAT_MAP) {
+          stats[key] = r.stats[short];
+          bst += r.stats[short];
+        }
+        const types = r.types as PokemonType[];
+        summaries.set(r.id, {
+          id: r.id,
+          label: r.name,
+          types,
+          stats,
+          bst,
+          height: r.height,
+          weight: r.weight,
+          gen,
+          legendary: LEGENDARY_IDS.has(r.id),
+          mythical: MYTHICAL_IDS.has(r.id),
+        });
+        for (const t of types) typeSets[t]?.add(r.id);
       }
-      activeFetches -= chunk.length;
-      notifyStore();
-      pumpQueue();
+      return { index, summaries, typeSets };
+    });
+    bootPromise.catch(() => {
+      bootPromise = null; // allow retry after a failed boot
     });
   }
+  return bootPromise;
 }
 
-/** queue summaries for the given ids (front-prioritized, deduped) */
-function ensureSummaries(ids: number[]): void {
-  const fresh: number[] = [];
-  for (const id of ids) {
-    if (!summaryStore.has(id) && !queuedIds.has(id)) {
-      queuedIds.add(id);
-      fresh.push(id);
-    }
-  }
-  if (fresh.length > 0) {
-    // latest request wins — prepend so visible/filtered batches jump the queue
-    fetchQueue.unshift(...fresh);
-    notifyStore();
-    pumpQueue();
-  }
+const EMPTY_SUMMARIES: ReadonlyMap<number, DexSummary> = new Map();
+
+/** All summaries are bundled in the artifact — nothing left to fetch on demand. */
+function ensureNoop(_ids: number[]): void {
+  /* no-op (EP1.4) */
 }
 
 export interface DexData {
@@ -142,40 +140,41 @@ export interface DexData {
   bootFailed: boolean;
   retryBoot: () => void;
   summaries: ReadonlyMap<number, DexSummary>;
-  /** queue summaries for the given ids (front-prioritized, deduped) */
+  /** @deprecated no-op — kept for call-site compatibility (artifact is complete) */
   ensure: (ids: number[]) => void;
-  /** number of summaries currently queued or in flight */
+  /** always 0 — no summary requests are in flight anymore */
   pendingCount: number;
 }
 
 export function useDexData(): DexData {
-  const [index, setIndex] = useState<DexIndexEntry[] | null>(null);
+  const [boot, setBoot] = useState<DexBoot | null>(null);
   const [bootFailed, setBootFailed] = useState(false);
-  const summaries = useSyncExternalStore(subscribeSummaryStore, () => summarySnapshot);
-  const pendingCount = useSyncExternalStore(subscribeSummaryStore, () => pendingSnapshot);
 
-  const boot = useCallback(() => {
+  const load = useCallback(() => {
     // async callbacks only — no sync setState (react-hooks/set-state-in-effect)
-    bootNameIndex()
-      .then((entries) => {
-        setIndex(entries);
+    bootDex()
+      .then((b) => {
+        setBoot(b);
         setBootFailed(false);
       })
       .catch(() => setBootFailed(true));
   }, []);
 
   useEffect(() => {
-    boot();
-  }, [boot]);
+    load();
+  }, [load]);
 
-  return { index, bootFailed, retryBoot: boot, summaries, ensure: ensureSummaries, pendingCount };
+  return {
+    index: boot?.index ?? null,
+    bootFailed,
+    retryBoot: load,
+    summaries: boot?.summaries ?? EMPTY_SUMMARIES,
+    ensure: ensureNoop,
+    pendingCount: 0,
+  };
 }
 
-/* ---------- /type membership sets (1 cached request per type) ---------- */
-
-interface TypeResponse {
-  pokemon: Array<{ pokemon: { name: string; url: string }; slot: number }>;
-}
+/* ---------- /type membership sets (derived from the summary artifact) ---------- */
 
 export type TypeMemberSets = Partial<Record<PokemonType, ReadonlySet<number>>>;
 
@@ -186,27 +185,16 @@ export function useTypeMembers(types: PokemonType[]): TypeMemberSets {
     let alive = true;
     const missing = types.filter((t) => !sets[t]);
     if (missing.length === 0) return;
-    void Promise.all(
-      missing.map((t) =>
-        cachedJson<TypeResponse>(`type:${t}`, `https://pokeapi.co/api/v2/type/${t}`)
-          .then((res) => {
-            const ids = new Set<number>();
-            for (const slot of res.pokemon) {
-              const id = Number(slot.pokemon.url.replace(/\/$/, '').split('/').pop());
-              if (Number.isFinite(id) && id >= 1 && id <= MAX_DEX_ID) ids.add(id);
-            }
-            return [t, ids] as const;
-          })
-          .catch(() => [t, new Set<number>()] as const),
-      ),
-    ).then((pairs) => {
-      if (!alive) return;
-      setSets((prev) => {
-        const next = { ...prev };
-        for (const [t, s] of pairs) next[t] = s;
-        return next;
-      });
-    });
+    void bootDex()
+      .then((b) => {
+        if (!alive) return;
+        setSets((prev) => {
+          const next = { ...prev };
+          for (const t of missing) next[t] = b.typeSets[t];
+          return next;
+        });
+      })
+      .catch(() => undefined);
     return () => {
       alive = false;
     };

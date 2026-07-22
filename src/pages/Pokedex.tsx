@@ -183,7 +183,7 @@ export default function Pokedex() {
   }, [searchParams]);
 
   /* data */
-  const { index, bootFailed, retryBoot, summaries, ensure, pendingCount } = useDexData();
+  const { index, bootFailed, retryBoot, summaries, ensure } = useDexData();
   const typeSets = useTypeMembers(filters.types);
   const online = useOnline();
   const [bannerDismissed, setBannerDismissed] = useState(false);
@@ -326,9 +326,6 @@ export default function Pokedex() {
               {t8n('pokedex.showing')} <TweenNumber value={total} lang={lang} /> {t8n('pokedex.of')}{' '}
               <span className="font-bold tabular-nums text-tx-primary">{fmtNum(MAX_DEX_ID, lang)}</span>{' '}
               {t8n('pokedex.species')}
-              {pendingCount > 0 && (
-                <span className="pixel-label ml-2 text-[8px] text-tx-muted">{t8n('pokedex.syncing')}</span>
-              )}
             </p>
           </div>
         </motion.div>
