@@ -272,6 +272,10 @@
         "BACK GIF": "BACK GIF",
         "SHINY GIF": "SHINY GIF"
       }
+    },
+    "tcg": {
+      "title": "TCG CARDS",
+      "more": "VIEW ALL"
     }
   },
   "missingno": {
