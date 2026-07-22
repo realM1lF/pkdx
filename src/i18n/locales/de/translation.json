@@ -190,7 +190,20 @@
       "level": "Lv {{level}}",
       "day": "(Tag)",
       "night": "(Nacht)",
-      "shed": "Häutung"
+      "shed": "Häutung",
+      "heldItem": "trägt {{item}}",
+      "knownMove": "kann {{move}}",
+      "beauty": "Schönheit",
+      "location": "Ort: {{location}}",
+      "female": "(weiblich)",
+      "male": "(männlich)",
+      "rain": "(Regen)",
+      "partySpecies": "{{name}} im Team",
+      "partyType": "{{type}}-Pokémon im Team",
+      "atkGtDef": "Ang > Vert",
+      "atkLtDef": "Ang < Vert",
+      "tradeSpecies": "Tausch gegen {{name}}",
+      "upsideDown": "(Konsole umdrehen)"
     },
     "side": {
       "traitsEyebrow": "MERKMALE",

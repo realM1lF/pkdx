@@ -190,7 +190,20 @@
       "level": "Lv {{level}}",
       "day": "(day)",
       "night": "(night)",
-      "shed": "Shed"
+      "shed": "Shed",
+      "heldItem": "holding {{item}}",
+      "knownMove": "knowing {{move}}",
+      "beauty": "Beauty",
+      "location": "at {{location}}",
+      "female": "(female)",
+      "male": "(male)",
+      "rain": "(rain)",
+      "partySpecies": "{{name}} in party",
+      "partyType": "{{type}} in party",
+      "atkGtDef": "Atk > Def",
+      "atkLtDef": "Atk < Def",
+      "tradeSpecies": "trade for {{name}}",
+      "upsideDown": "(turn console upside down)"
     },
     "side": {
       "traitsEyebrow": "TRAITS",
