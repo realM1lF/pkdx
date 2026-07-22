@@ -5,7 +5,7 @@
  *   Row 3: Evolution + Where to Find (span 5 stack) · SPRITE MUSEUM (span 7)
  *   Prev/Next 40px strip · MISSINGNO 404 · loading skeletons
  * Direct loads crossfade in (400ms — shared-element morph fallback, §6.2-3). */
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
@@ -24,13 +24,16 @@ import MovesPanel from './detail/MovesPanel';
 import PrevNextStrip from './detail/PrevNextStrip';
 import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
-import VersusPanel from './detail/VersusPanel';
 import WhereToFind from './detail/WhereToFind';
 import type { RegionId } from '@/lib/regions';
 import { versusContextFromGame } from '@/lib/versus-context';
 import { Panel } from './detail/ui';
 import { typeRgb } from './detail/data';
 import './detail/detail.css';
+
+/* VERSUS matchup lab is heavy (@pkmn/dex + @smogon/calc, ~2.4MB) and hidden
+ * behind a non-default tab — load it on demand, never on the overview path. */
+const VersusPanel = lazy(() => import('./detail/VersusPanel'));
 
 const REGION_IDS = new Set<RegionId>(['kanto', 'johto', 'hoenn', 'sinnoh', 'unova']);
 
@@ -204,14 +207,28 @@ export default function PokemonDetail() {
       </div>
 
       {tab === 'versus' ? (
-        <VersusPanel
-          initialYou={pokemon.id}
-          initialVs={vsParam}
-          onOpponentChange={writeOpponent}
-          context={versusContext}
-          initialTrainerNode={versusTrainerParam}
-          initialTrainerRegion={trainerRegion}
-        />
+        <Suspense
+          fallback={
+            <div className="dx-panel flex h-[520px] flex-col items-center justify-center gap-4" role="status">
+              <PokeballLoader variant="inline" />
+              <span className="pixel-label text-[9px] text-tx-muted">{t8n('detail.loadingVersus')}</span>
+              <div className="flex w-full max-w-md flex-col gap-3 px-6">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="dx-skel h-2.5 w-full rounded-pill" style={{ animationDelay: `${i * 120}ms` }} />
+                ))}
+              </div>
+            </div>
+          }
+        >
+          <VersusPanel
+            initialYou={pokemon.id}
+            initialVs={vsParam}
+            onOpponentChange={writeOpponent}
+            context={versusContext}
+            initialTrainerNode={versusTrainerParam}
+            initialTrainerRegion={trainerRegion}
+          />
+        </Suspense>
       ) : (
       <>
       <div className="grid grid-cols-12 gap-4">

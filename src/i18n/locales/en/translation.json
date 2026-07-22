@@ -123,6 +123,7 @@
     "versus": "VERSUS",
     "vsTitle": "Open VERSUS matchup lab",
     "syncing": "SYNCING ENTRY {{id}}",
+    "loadingVersus": "LOADING MATCHUP LAB…",
     "panels": {
       "combatEyebrow": "BASE STATS",
       "combatTitle": "Combat Profile",

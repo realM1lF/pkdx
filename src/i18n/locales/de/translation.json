@@ -123,6 +123,7 @@
     "versus": "VERSUS",
     "vsTitle": "VERSUS-Kampflabor öffnen",
     "syncing": "LADE EINTRAG {{id}}",
+    "loadingVersus": "LADE MATCHUP-LAB…",
     "panels": {
       "combatEyebrow": "BASISWERTE",
       "combatTitle": "Kampfprofil",
