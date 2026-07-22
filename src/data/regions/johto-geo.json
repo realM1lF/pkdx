@@ -1,0 +1,178 @@
+{
+  "version": "goldsilver",
+  "image": "/maps/johto-original.jpg",
+  "nodes": {
+    "new-bark-town": [
+      0.73,
+      0.82
+    ],
+    "johto-route-29": [
+      0.655,
+      0.835
+    ],
+    "cherrygrove-city": [
+      0.59,
+      0.823
+    ],
+    "johto-route-30": [
+      0.578,
+      0.66
+    ],
+    "johto-route-31": [
+      0.562,
+      0.552
+    ],
+    "violet-city": [
+      0.482,
+      0.533
+    ],
+    "sprout-tower": [
+      0.466,
+      0.468
+    ],
+    "johto-route-32": [
+      0.405,
+      0.7
+    ],
+    "union-cave": [
+      0.45,
+      0.895
+    ],
+    "ruins-of-alph": [
+      0.415,
+      0.595
+    ],
+    "johto-route-33": [
+      0.435,
+      0.945
+    ],
+    "azalea-town": [
+      0.355,
+      0.95
+    ],
+    "slowpoke-well": [
+      0.4,
+      0.925
+    ],
+    "ilex-forest": [
+      0.34,
+      0.87
+    ],
+    "johto-route-34": [
+      0.318,
+      0.8
+    ],
+    "goldenrod-city": [
+      0.35,
+      0.71
+    ],
+    "johto-route-35": [
+      0.315,
+      0.575
+    ],
+    "national-park": [
+      0.385,
+      0.68
+    ],
+    "johto-route-36": [
+      0.37,
+      0.475
+    ],
+    "ecruteak-city": [
+      0.365,
+      0.335
+    ],
+    "burned-tower": [
+      0.307,
+      0.275
+    ],
+    "johto-route-37": [
+      0.322,
+      0.42
+    ],
+    "johto-route-38": [
+      0.28,
+      0.345
+    ],
+    "johto-route-39": [
+      0.225,
+      0.405
+    ],
+    "olivine-city": [
+      0.19,
+      0.495
+    ],
+    "johto-route-40": [
+      0.185,
+      0.575
+    ],
+    "johto-route-41": [
+      0.12,
+      0.64
+    ],
+    "whirl-islands": [
+      0.125,
+      0.715
+    ],
+    "cianwood-city": [
+      0.05,
+      0.76
+    ],
+    "bell-tower": [
+      0.387,
+      0.27
+    ],
+    "johto-route-42": [
+      0.505,
+      0.35
+    ],
+    "mt-mortar": [
+      0.455,
+      0.35
+    ],
+    "mahogany-town": [
+      0.545,
+      0.325
+    ],
+    "johto-route-43": [
+      0.545,
+      0.17
+    ],
+    "lake-of-rage": [
+      0.545,
+      0.05
+    ],
+    "johto-route-44": [
+      0.615,
+      0.35
+    ],
+    "ice-path": [
+      0.67,
+      0.345
+    ],
+    "blackthorn-city": [
+      0.748,
+      0.355
+    ],
+    "dragons-den": [
+      0.73,
+      0.225
+    ],
+    "johto-route-45": [
+      0.73,
+      0.5
+    ],
+    "dark-cave": [
+      0.591,
+      0.542
+    ],
+    "johto-route-46": [
+      0.715,
+      0.625
+    ],
+    "mt-silver": [
+      0.965,
+      0.38
+    ]
+  }
+}
