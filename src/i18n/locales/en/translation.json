@@ -1151,6 +1151,8 @@
       "exportAria": "Team in Showdown text format",
       "copy": "COPY TEXT",
       "copied": "COPIED ✓",
+      "pokepaste": "OPEN IN POKÉPASTE",
+      "pokepasteTitle": "Pokédex 2.0 Team",
       "copiedToast": "SHOWDOWN TEXT COPIED",
       "importHint": "Paste a team in Showdown text format (species, item, ability, nature, EVs, level, shiny, moves)",
       "placeholder": "Charizard @ Heavy-Duty Boots\nAbility: Blaze\nEVs: 252 SpA / 4 SpD / 252 Spe\nTimid Nature\n- Fire Blast\n…",

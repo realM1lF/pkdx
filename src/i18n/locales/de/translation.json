@@ -1151,6 +1151,8 @@
       "exportAria": "Team im Showdown-Textformat",
       "copy": "TEXT KOPIEREN",
       "copied": "KOPIERT ✓",
+      "pokepaste": "IN POKÉPASTE ÖFFNEN",
+      "pokepasteTitle": "Pokédex 2.0 Team",
       "copiedToast": "SHOWDOWN-TEXT KOPIERT",
       "importHint": "Team im Showdown-Textformat einfügen (Art, Item, Fähigkeit, Wesen, EVs, Level, Shiny, Attacken)",
       "placeholder": "Glurak @ Schwerstiefel\nFähigkeit: Solarkraft\nEVs: 252 SpA / 4 SpV / 252 Ini\nFroh Wesen\n- Feuersturm\n…",

@@ -4,7 +4,7 @@
  * → apply replaces the current slots. All warnings gold, never red. */
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AlertTriangle, ArrowDownToLine, ArrowUpFromLine, Check, Copy, FileDown, X } from 'lucide-react';
+import { AlertTriangle, ArrowDownToLine, ArrowUpFromLine, Check, Copy, ExternalLink, FileDown, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
@@ -64,6 +64,32 @@ export default function ShowdownDialog({ open, initialTab, exportText, onClose, 
     setCopied(true);
     pushToast('sync', t('tb.sd.copiedToast'));
     window.setTimeout(() => setCopied(false), 2200);
+  };
+
+  /* EP4.5 — PokéPaste has no GET prefill scheme; the documented way is a
+   * form POST to /create (title/author/paste → 303 to the new paste).
+   * Submitting a transient form with target=_blank keeps it client-only. */
+  const openPokePaste = () => {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://pokepast.es/create';
+    form.target = '_blank';
+    form.rel = 'noopener';
+    const fields: Record<string, string> = {
+      title: t('tb.sd.pokepasteTitle'),
+      author: 'Pokédex 2.0',
+      paste: exportText,
+    };
+    for (const [name, value] of Object.entries(fields)) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    }
+    document.body.appendChild(form);
+    form.submit();
+    form.remove();
   };
 
   const runParse = async () => {
@@ -155,6 +181,10 @@ export default function ShowdownDialog({ open, initialTab, exportText, onClose, 
                       <button type="button" onClick={() => void copyExport()} className="tb-btn tb-btn-primary mt-2.5 w-full justify-center">
                         {copied ? <Check size={13} /> : <Copy size={13} />}
                         {copied ? t('tb.sd.copied') : t('tb.sd.copy')}
+                      </button>
+                      <button type="button" onClick={openPokePaste} className="tb-btn mt-1.5 w-full justify-center">
+                        <ExternalLink size={13} />
+                        {t('tb.sd.pokepaste')}
                       </button>
                     </>
                   )}
