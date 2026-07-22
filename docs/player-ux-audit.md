@@ -192,7 +192,7 @@ Nur **Home**, **Pokédex**, **Random Pokémon** — **keine** Links zu Maps, Nuz
 | Team Grid / Box / Graveyard | Status caught/dead/missed/duped | |
 | Rules | Dupes, Shiny, SoulLink, Level Cap (manual) | `DEFAULT_RULES` |
 | Feed | Live activity log | |
-| Versus Tab | Best-Answer-Ranking vs Trainers (Kanto) or Wild | `data/enriched/kanto.json` + shared VersusPanel |
+| Versus Tab | Best-Answer-Ranking vs Trainers (all map regions) or Wild | `data/enriched/{region}.json` + shared VersusPanel |
 
 #### Nuzlocke-Regeln — Unterstützung vs. Realität
 
@@ -221,7 +221,19 @@ Zwei Entry Points:
 
 **Math:** durchgehend Gen-9 `@smogon/calc` (`lib/versus.ts`), auch wenn Run-Game FRLG ist.
 
-**Trainer-Daten:** `src/data/enriched/kanto.json` (pret/pokefirered) — nur Kanto, nur Nuzlocke-Versus.
+**Trainer-Daten:** `src/data/enriched/{region}.json` — Kanto (pret/pokefirered, vollständig), Johto–Unova (Gym/E4/Champion kuratiert). Maps-Drawer verlinkt auf Detail-Versus (`?tab=versus&versusTrainer=`).
+
+#### Community-Wünsche (Versus-Overhaul)
+
+| Wunsch | Status |
+|--------|--------|
+| Trainer-Daten Johto–Unova (Gym/E4/Champion) | ✅ `johto.json` … `unova.json` |
+| Maps → „Gegen Leader planen“ | ✅ `DetailDrawer.tsx` |
+| Nuzlocke → Team Builder (sichtbarer Link) | ✅ `RunHeader.tsx` |
+| Detail Trainer-Picker | ⚠️ geplant (Phase 3.2) |
+| Nuzlocke multi-region Trainer-Modus | ⚠️ geplant (Phase 3.4) |
+| Nav/Footer Versus-Auffindbarkeit | ⚠️ geplant (Phase 0.2) |
+| Gen-korrekte Calc pro Run | ⚠️ geplant (Phase 1.x) |
 
 ---
 
@@ -262,7 +274,7 @@ Zwei Entry Points:
 | Vollständiger National Dex Gen I–IX | ✅ stark |
 | Wo finde ich X? | ✅ gut (Detail + Maps), Gen I–V only auf Karten |
 | Typ-Schwächen / Coverage | ✅ Detail + Team Builder |
-| Run planen (Gym/Leader) | ⚠️ nur Kanto-Trainer in Nuzlocke-Versus |
+| Run planen (Gym/Leader) | ✅ Maps-Link + regionale Trainer-Daten Johto–Unova; Detail-Trainer-Picker ⚠️ |
 | Nuzlocke tracken | ✅ solid für Route/Death/SoulLink, schwache Regel-Durchsetzung |
 | Team für In-Game bauen | ✅ gut, Meta eher Competitive-SV |
 | Living / Shiny Dex | ❌ Roadmap Phase 06 |
@@ -294,7 +306,8 @@ Zwei Entry Points:
 
 - Navbar/Footer → Maps, Nuzlocke, Team (Footer)
 - Detail → „Open on map“ / „Add to team“ / „Start Nuzlocke here“
-- Nuzlocke Run → „Import team to builder“ (nur umgekehrt vorhanden)
+- Nuzlocke Run → „Team im Builder öffnen“ im Header ✅ (Overflow-Menü weiterhin)
+- Maps Drawer → „Gegen Leader planen“ wenn Trainer-Daten vorhanden ✅
 - Versus → kein Menüeintrag; nur über Detail-Tab oder Home-Teaser
 - Map Drawer „Add to Nuzlocke“ → broken route statt Wizard mit Prefill
 
@@ -317,6 +330,7 @@ Zwei Entry Points:
 | Team Builder | `src/lib/teambuilder.ts`, `src/pages/TeamBuilder.tsx` |
 | Nuzlocke store | `src/lib/nuzlocke-store.ts`, `src/lib/supabase.ts` |
 | Kanto trainers | `src/data/enriched/kanto.json` |
+| Regional trainers | `src/data/enriched/{johto,hoenn,sinnoh,unova}.json`, `src/lib/trainer-data.ts` |
 | Nuzlocke Versus | `src/pages/nuzlocke/VersusTab.tsx` |
 
 ---

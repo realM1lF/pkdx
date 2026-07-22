@@ -1,0 +1,192 @@
+{
+  "source": "Curated from Bulbapedia / pret/pokeheartgold disassembly reference — game data © Nintendo/Game Freak",
+  "game": "heartgold",
+  "nodes": {
+    "violet-city": {
+      "trainers": [
+        {
+          "name": "Falkner",
+          "class": "Leader",
+          "party": [
+            { "species": "pidgey", "level": 7, "moves": ["tackle", "sand-attack"] },
+            { "species": "pidgeotto", "level": 13, "moves": ["tackle", "sand-attack", "gust"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "azalea-town": {
+      "trainers": [
+        {
+          "name": "Bugsy",
+          "class": "Leader",
+          "party": [
+            { "species": "metapod", "level": 14, "moves": ["tackle", "harden"] },
+            { "species": "scyther", "level": 16, "moves": ["quick-attack", "leer", "focus-energy", "fury-cutter"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "goldenrod-city": {
+      "trainers": [
+        {
+          "name": "Whitney",
+          "class": "Leader",
+          "party": [
+            { "species": "cleffa", "level": 8, "moves": ["pound", "charm", "encore", "attract"] },
+            { "species": "miltank", "level": 18, "moves": ["rollout", "attract", "stomp", "milk-drink"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "ecruteak-city": {
+      "trainers": [
+        {
+          "name": "Morty",
+          "class": "Leader",
+          "party": [
+            { "species": "gastly", "level": 21, "moves": ["hypnosis", "lick", "spite", "mean-look"] },
+            { "species": "haunter", "level": 21, "moves": ["hypnosis", "lick", "spite", "mean-look"] },
+            { "species": "gengar", "level": 25, "moves": ["hypnosis", "shadow-ball", "spite", "mean-look"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "cianwood-city": {
+      "trainers": [
+        {
+          "name": "Chuck",
+          "class": "Leader",
+          "party": [
+            { "species": "primeape", "level": 27, "moves": ["reversal", "rage", "scary-face", "cross-chop"] },
+            { "species": "poliwrath", "level": 30, "moves": ["hypnosis", "mud-slap", "water-pulse", "dynamic-punch"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "olivine-city": {
+      "trainers": [
+        {
+          "name": "Jasmine",
+          "class": "Leader",
+          "party": [
+            { "species": "magnemite", "level": 30, "moves": ["thunder-shock", "supersonic", "thunder-wave", "sonic-boom"] },
+            { "species": "magnemite", "level": 30, "moves": ["thunder-shock", "supersonic", "thunder-wave", "sonic-boom"] },
+            { "species": "steelix", "level": 35, "moves": ["iron-tail", "screech", "rock-throw", "sandstorm"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "mahogany-town": {
+      "trainers": [
+        {
+          "name": "Pryce",
+          "class": "Leader",
+          "party": [
+            { "species": "seel", "level": 30, "moves": ["headbutt", "icy-wind", "growl", "water-pulse"] },
+            { "species": "dewgong", "level": 32, "moves": ["headbutt", "icy-wind", "growl", "water-pulse"] },
+            { "species": "piloswine", "level": 34, "moves": ["ice-shard", "fury-attack", "mud-slap", "blizzard"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "blackthorn-city": {
+      "trainers": [
+        {
+          "name": "Clair",
+          "class": "Leader",
+          "party": [
+            { "species": "dragonair", "level": 37, "moves": ["twister", "thunder-wave", "surf", "dragon-pulse"] },
+            { "species": "dragonair", "level": 37, "moves": ["twister", "thunder-wave", "surf", "dragon-pulse"] },
+            { "species": "kingdra", "level": 40, "moves": ["smokescreen", "twister", "surf", "dragon-pulse"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "mt-silver": {
+      "trainers": [
+        {
+          "name": "Will",
+          "class": "Elite Four",
+          "party": [
+            { "species": "xatu", "level": 48, "moves": ["psychic", "shadow-ball", "air-slash", "calm-mind"] },
+            { "species": "exeggutor", "level": 48, "moves": ["psychic", "sleep-powder", "solar-beam", "ancient-power"] },
+            { "species": "slowbro", "level": 49, "moves": ["psychic", "surf", "calm-mind", "yawn"] },
+            { "species": "jynx", "level": 50, "moves": ["psychic", "ice-punch", "lovely-kiss", "shadow-ball"] },
+            { "species": "xatu", "level": 50, "moves": ["psychic", "shadow-ball", "air-slash", "calm-mind"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Koga",
+          "class": "Elite Four",
+          "party": [
+            { "species": "ariados", "level": 48, "moves": ["toxic", "pin-missile", "spider-web", "shadow-sneak"] },
+            { "species": "venomoth", "level": 49, "moves": ["psychic", "sleep-powder", "bug-buzz", "sludge-bomb"] },
+            { "species": "forretress", "level": 50, "moves": ["spikes", "explosion", "toxic-spikes", "payback"] },
+            { "species": "ariados", "level": 50, "moves": ["toxic", "pin-missile", "spider-web", "shadow-sneak"] },
+            { "species": "muk", "level": 52, "moves": ["gunk-shot", "minimize", "toxic", "shadow-sneak"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Bruno",
+          "class": "Elite Four",
+          "party": [
+            { "species": "hitmontop", "level": 49, "moves": ["close-combat", "sucker-punch", "stone-edge", "fake-out"] },
+            { "species": "hitmonlee", "level": 50, "moves": ["close-combat", "stone-edge", "fake-out", "focus-energy"] },
+            { "species": "hitmonchan", "level": 50, "moves": ["close-combat", "thunder-punch", "ice-punch", "fire-punch"] },
+            { "species": "onix", "level": 52, "moves": ["stone-edge", "earthquake", "explosion", "sandstorm"] },
+            { "species": "machamp", "level": 54, "moves": ["cross-chop", "stone-edge", "bullet-punch", "focus-punch"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Karen",
+          "class": "Elite Four",
+          "party": [
+            { "species": "umbreon", "level": 48, "moves": ["foul-play", "confuse-ray", "moonlight", "payback"] },
+            { "species": "vileplume", "level": 49, "moves": ["giga-drain", "sleep-powder", "sludge-bomb", "stun-spore"] },
+            { "species": "gengar", "level": 50, "moves": ["shadow-ball", "sludge-bomb", "hypnosis", "focus-blast"] },
+            { "species": "murkrow", "level": 51, "moves": ["sucker-punch", "brave-bird", "night-slash", "thunder-wave"] },
+            { "species": "houndoom", "level": 53, "moves": ["flamethrower", "dark-pulse", "solar-beam", "nasty-plot"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Lance",
+          "class": "Champion",
+          "party": [
+            { "species": "gyarados", "level": 48, "moves": ["waterfall", "dragon-dance", "ice-fang", "earthquake"] },
+            { "species": "dragonite", "level": 49, "moves": ["dragon-claw", "fire-punch", "thunder-punch", "roost"] },
+            { "species": "dragonite", "level": 49, "moves": ["dragon-claw", "fire-punch", "thunder-punch", "roost"] },
+            { "species": "aerodactyl", "level": 50, "moves": ["stone-edge", "aerial-ace", "earthquake", "fire-fang"] },
+            { "species": "charizard", "level": 50, "moves": ["flamethrower", "air-slash", "dragon-pulse", "roost"] },
+            { "species": "dragonite", "level": 50, "moves": ["dragon-claw", "fire-punch", "thunder-punch", "roost"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    }
+  }
+}

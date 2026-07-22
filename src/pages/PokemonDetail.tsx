@@ -26,9 +26,13 @@ import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
 import VersusPanel from './detail/VersusPanel';
 import WhereToFind from './detail/WhereToFind';
+import type { RegionId } from '@/lib/regions';
+import { versusContextFromGame } from '@/lib/versus-context';
 import { Panel } from './detail/ui';
 import { typeRgb } from './detail/data';
 import './detail/detail.css';
+
+const REGION_IDS = new Set<RegionId>(['kanto', 'johto', 'hoenn', 'sinnoh', 'unova']);
 
 type Status = 'loading' | 'ready' | 'notfound' | 'error';
 
@@ -84,13 +88,27 @@ export default function PokemonDetail() {
   /* ---------- VERSUS tab + ?vs=<id> deep link (versus.md UI 1) ---------- */
   const [searchParams, setSearchParams] = useSearchParams();
   const vsParam = searchParams.get('vs');
-  const [tab, setTab] = useState<'overview' | 'versus'>(vsParam ? 'versus' : 'overview');
+  const gameParam = searchParams.get('game');
+  const tabParam = searchParams.get('tab');
+  const versusTrainerParam = searchParams.get('versusTrainer');
+  const regionParam = searchParams.get('region');
+  const trainerRegion = regionParam && REGION_IDS.has(regionParam as RegionId) ? (regionParam as RegionId) : null;
+  const versusContext = useMemo(
+    () => versusContextFromGame(gameParam, trainerRegion),
+    [gameParam, trainerRegion],
+  );
+  const [tab, setTab] = useState<'overview' | 'versus'>(vsParam || tabParam === 'versus' ? 'versus' : 'overview');
 
   /* external ?vs= changes (shared link paste / back-forward) open the tab */
   const [prevVs, setPrevVs] = useState(vsParam);
   if (vsParam !== prevVs) {
     setPrevVs(vsParam);
     if (vsParam) setTab('versus');
+  }
+  const [prevTabParam, setPrevTabParam] = useState(tabParam);
+  if (tabParam !== prevTabParam) {
+    setPrevTabParam(tabParam);
+    if (tabParam === 'versus') setTab('versus');
   }
 
   const switchTab = (t: 'overview' | 'versus') => {
@@ -186,7 +204,14 @@ export default function PokemonDetail() {
       </div>
 
       {tab === 'versus' ? (
-        <VersusPanel pokemon={pokemon} initialVs={vsParam} onOpponentChange={writeOpponent} />
+        <VersusPanel
+          initialYou={pokemon.id}
+          initialVs={vsParam}
+          onOpponentChange={writeOpponent}
+          context={versusContext}
+          initialTrainerNode={versusTrainerParam}
+          initialTrainerRegion={trainerRegion}
+        />
       ) : (
       <>
       <div className="grid grid-cols-12 gap-4">

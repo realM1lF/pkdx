@@ -16,7 +16,7 @@ export default function SearchGateway() {
   const { t } = useTranslation();
   const lang = useLanguage();
   return (
-    <section id="search-gateway" className="relative bg-abyss py-24">
+    <section id="search-gateway" className="relative bg-abyss pt-24 pb-12">
       <div
         className="absolute inset-x-0 top-0 h-px"
         style={{

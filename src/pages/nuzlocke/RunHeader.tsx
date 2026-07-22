@@ -145,6 +145,14 @@ export default function RunHeader({
             );
           })}
 
+        {/* team builder */}
+        <LocaleLink
+          to={`/team?fromRun=${state.run.id}`}
+          className="flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-[12px] font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"
+        >
+          <Swords size={13} /> {t('nuz.openInBuilder')}
+        </LocaleLink>
+
         {/* invite / go online */}
         {multi ? (
           <button
