@@ -1,0 +1,196 @@
+{
+  "source": "Curated from Bulbapedia / pret/pokeemerald disassembly reference — game data © Nintendo/Game Freak",
+  "game": "emerald",
+  "nodes": {
+    "rustboro-city": {
+      "trainers": [
+        {
+          "name": "Roxanne",
+          "class": "Leader",
+          "party": [
+            { "species": "geodude", "level": 12, "moves": ["tackle", "defense-curl", "rock-throw"] },
+            { "species": "nosepass", "level": 15, "moves": ["block", "harden", "rock-throw", "tackle"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "dewford-town": {
+      "trainers": [
+        {
+          "name": "Brawly",
+          "class": "Leader",
+          "party": [
+            { "species": "machop", "level": 16, "moves": ["low-kick", "focus-energy", "karate-chop", "seismic-toss"] },
+            { "species": "makuhita", "level": 19, "moves": ["sand-attack", "focus-energy", "arm-thrust", "vital-throw"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "mauville-city": {
+      "trainers": [
+        {
+          "name": "Wattson",
+          "class": "Leader",
+          "party": [
+            { "species": "voltorb", "level": 20, "moves": ["rollout", "spark", "self-destruct"] },
+            { "species": "electrike", "level": 22, "moves": ["quick-attack", "thunder-wave", "spark", "bite"] },
+            { "species": "magneton", "level": 23, "moves": ["supersonic", "thunder-wave", "spark", "sonic-boom"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "lavaridge-town": {
+      "trainers": [
+        {
+          "name": "Flannery",
+          "class": "Leader",
+          "party": [
+            { "species": "slugma", "level": 24, "moves": ["overheat", "smog", "light-screen", "rock-throw"] },
+            { "species": "slugma", "level": 24, "moves": ["overheat", "smog", "light-screen", "rock-throw"] },
+            { "species": "torkoal", "level": 26, "moves": ["overheat", "body-slam", "protect", "flamethrower"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "petalburg-city": {
+      "trainers": [
+        {
+          "name": "Norman",
+          "class": "Leader",
+          "party": [
+            { "species": "slaking", "level": 28, "moves": ["facade", "feint-attack", "encore", "slash"] },
+            { "species": "vigoroth", "level": 30, "moves": ["facade", "feint-attack", "encore", "slash"] },
+            { "species": "linoone", "level": 31, "moves": ["facade", "headbutt", "encore", "rest"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "fortree-city": {
+      "trainers": [
+        {
+          "name": "Winona",
+          "class": "Leader",
+          "party": [
+            { "species": "swellow", "level": 29, "moves": ["aerial-ace", "quick-attack", "double-team", "focus-energy"] },
+            { "species": "pelipper", "level": 29, "moves": ["water-pulse", "protect", "supersonic", "stockpile"] },
+            { "species": "skarmory", "level": 31, "moves": ["aerial-ace", "steel-wing", "sand-attack", "swift"] },
+            { "species": "altaria", "level": 33, "moves": ["dragon-dance", "aerial-ace", "dragon-breath", "earthquake"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "mossdeep-city": {
+      "trainers": [
+        {
+          "name": "Tate & Liza",
+          "class": "Leader",
+          "party": [
+            { "species": "lunatone", "level": 41, "moves": ["psychic", "calm-mind", "light-screen", "hypnosis"] },
+            { "species": "solrock", "level": 41, "moves": ["solar-beam", "sunny-day", "light-screen", "hypnosis"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "sootopolis-city": {
+      "trainers": [
+        {
+          "name": "Wallace",
+          "class": "Leader",
+          "party": [
+            { "species": "luvdisc", "level": 40, "moves": ["water-pulse", "charm", "attract", "flail"] },
+            { "species": "whiscash", "level": 42, "moves": ["water-pulse", "earthquake", "ice-beam", "amnesia"] },
+            { "species": "sealeo", "level": 42, "moves": ["ice-ball", "water-pulse", "body-slam", "rest"] },
+            { "species": "seaking", "level": 43, "moves": ["water-pulse", "ice-beam", "megahorn", "agility"] },
+            { "species": "milotic", "level": 46, "moves": ["water-pulse", "ice-beam", "recover", "toxic"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "ever-grande-city": {
+      "trainers": [
+        {
+          "name": "Sidney",
+          "class": "Elite Four",
+          "party": [
+            { "species": "mightyena", "level": 46, "moves": ["crunch", "swagger", "scary-face", "double-edge"] },
+            { "species": "shiftry", "level": 48, "moves": ["swagger", "feint-attack", "double-team", "leaf-blade"] },
+            { "species": "cacturne", "level": 49, "moves": ["feint-attack", "needle-arm", "leech-seed", "sand-attack"] },
+            { "species": "crawdaunt", "level": 49, "moves": ["crabhammer", "knock-off", "surf", "double-team"] },
+            { "species": "absol", "level": 51, "moves": ["slash", "bite", "swords-dance", "aerial-ace"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Phoebe",
+          "class": "Elite Four",
+          "party": [
+            { "species": "duskull", "level": 48, "moves": ["shadow-ball", "future-sight", "confuse-ray", "double-team"] },
+            { "species": "banette", "level": 49, "moves": ["shadow-ball", "grudge", "will-o-wisp", "double-team"] },
+            { "species": "sableye", "level": 49, "moves": ["shadow-ball", "feint-attack", "recover", "confuse-ray"] },
+            { "species": "banette", "level": 50, "moves": ["shadow-ball", "grudge", "will-o-wisp", "double-team"] },
+            { "species": "dusclops", "level": 51, "moves": ["shadow-ball", "earthquake", "confuse-ray", "double-team"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Glacia",
+          "class": "Elite Four",
+          "party": [
+            { "species": "sealeo", "level": 48, "moves": ["ice-beam", "body-slam", "hail", "rest"] },
+            { "species": "glalie", "level": 49, "moves": ["ice-beam", "crunch", "light-screen", "hail"] },
+            { "species": "sealeo", "level": 50, "moves": ["ice-beam", "body-slam", "hail", "rest"] },
+            { "species": "glalie", "level": 52, "moves": ["ice-beam", "crunch", "light-screen", "hail"] },
+            { "species": "walrein", "level": 53, "moves": ["surf", "ice-beam", "body-slam", "rest"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Drake",
+          "class": "Elite Four",
+          "party": [
+            { "species": "shelgon", "level": 48, "moves": ["dragon-claw", "headbutt", "rock-tomb", "protect"] },
+            { "species": "altaria", "level": 49, "moves": ["dragon-claw", "earthquake", "double-team", "aerial-ace"] },
+            { "species": "kingdra", "level": 50, "moves": ["surf", "dragon-dance", "body-slam", "smokescreen"] },
+            { "species": "flygon", "level": 52, "moves": ["earthquake", "dragon-claw", "sand-attack", "crunch"] },
+            { "species": "salamence", "level": 54, "moves": ["dragon-claw", "flamethrower", "double-team", "aerial-ace"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Steven",
+          "class": "Champion",
+          "party": [
+            { "species": "skarmory", "level": 49, "moves": ["aerial-ace", "steel-wing", "earthquake", "spikes"] },
+            { "species": "claydol", "level": 49, "moves": ["earthquake", "psychic", "light-screen", "reflect"] },
+            { "species": "aggron", "level": 50, "moves": ["iron-tail", "earthquake", "rock-slide", "protect"] },
+            { "species": "cradily", "level": 50, "moves": ["giga-drain", "ancient-power", "ingrain", "confuse-ray"] },
+            { "species": "armaldo", "level": 50, "moves": ["slash", "rock-tomb", "protect", "aerial-ace"] },
+            { "species": "metagross", "level": 52, "moves": ["meteor-mash", "earthquake", "psychic", "hyper-beam"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    }
+  }
+}

@@ -17,10 +17,10 @@ import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-const SPOTLIGHTS: Array<{ id: number; name: string; type: PokemonType }> = [
-  { id: 6, name: 'Charizard', type: 'fire' },
-  { id: 3, name: 'Venusaur', type: 'grass' },
-  { id: 9, name: 'Blastoise', type: 'water' },
+const SPOTLIGHTS: Array<{ id: number; name: string; type: PokemonType; artOffsetX: number }> = [
+  { id: 6, name: 'Charizard', type: 'fire', artOffsetX: -18 },
+  { id: 3, name: 'Venusaur', type: 'grass', artOffsetX: -10 },
+  { id: 9, name: 'Blastoise', type: 'water', artOffsetX: -12 },
 ];
 
 const ORBITERS = [
@@ -75,49 +75,57 @@ function SpotlightPedestal({ started }: { started: boolean }) {
 
   return (
     <motion.div
-      className="relative mx-auto h-[300px] w-[300px] lg:h-[480px] lg:w-[480px]"
+      className="relative mx-auto h-[300px] w-[300px] lg:h-[520px] lg:w-[520px]"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={started ? { scale: 1, opacity: 1 } : {}}
       transition={{ type: 'spring', stiffness: 180, damping: 22, delay: 0.5 }}
     >
-      {/* type aura — breathing, hue crossfades with the spotlight */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={current.type}
-          className="type-aura animate-breathe"
-          style={{
-            background: `radial-gradient(circle at 50% 55%, rgba(${rgb},0.38) 0%, rgba(${rgb},0.12) 42%, transparent 70%)`,
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-        />
-      </AnimatePresence>
+      {/* back — aura + plinth */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={current.type}
+            className="type-aura animate-breathe"
+            style={{
+              background: `radial-gradient(circle at 50% 55%, rgba(${rgb},0.38) 0%, rgba(${rgb},0.12) 42%, transparent 70%)`,
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          />
+        </AnimatePresence>
 
-      {/* gold plinth ring */}
+        <div className="absolute bottom-[8%] left-1/2 w-[58%] -translate-x-1/2">
+          <div
+            className="h-6 w-full animate-breathe rounded-[50%] border border-gold/50"
+            style={{ boxShadow: '0 0 24px rgba(246,201,69,0.25), inset 0 0 18px rgba(246,201,69,0.12)' }}
+          />
+        </div>
+      </div>
+
+      {/* mid — spotlight artwork (fixed box; crossfade images stacked absolutely) */}
       <div
-        className="absolute bottom-[9%] left-1/2 h-7 w-[62%] -translate-x-1/2 animate-breathe rounded-[50%] border border-gold/50"
-        style={{ boxShadow: '0 0 24px rgba(246,201,69,0.25), inset 0 0 18px rgba(246,201,69,0.12)' }}
-      />
+        className="absolute inset-x-0 bottom-[9%] z-10 mx-auto h-[84%] w-[84%] lg:h-[88%] lg:w-[88%]"
+        style={{ transform: `translateX(${current.artOffsetX}px)` }}
+      >
+        <AnimatePresence mode="sync">
+          <motion.img
+            key={current.id}
+            src={sprites.artwork(current.id)}
+            alt={t('home.hero.artworkAlt', { name: nameOfPokemon(current.id, lang) })}
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.5)]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: EASE }}
+          />
+        </AnimatePresence>
+      </div>
 
-      {/* artwork crossfade #6 → #3 → #9 */}
-      <AnimatePresence mode="sync">
-        <motion.img
-          key={current.id}
-          src={sprites.artwork(current.id)}
-          alt={t('home.hero.artworkAlt', { name: nameOfPokemon(current.id, lang) })}
-          draggable={false}
-          className="absolute inset-0 m-auto h-[88%] w-[88%] object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.5)]"
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
-        />
-      </AnimatePresence>
-
-      {/* orbital ring with Gen-V GIFs (desktop) */}
-      <div className="absolute inset-0 hidden animate-spin-slow lg:block" aria-hidden>
+      {/* front — orbital starters above the spotlight */}
+      <div className="absolute inset-0 z-20 hidden animate-spin-slow lg:block" aria-hidden>
         {ORBITERS.map((o, i) => (
           <div
             key={o.id}
@@ -250,7 +258,7 @@ export default function Hero({ started }: { started: boolean }) {
         </div>
 
         {/* right — spotlight pedestal */}
-        <div className="overflow-hidden lg:col-span-5">
+        <div className="overflow-visible lg:col-span-5">
           <SpotlightPedestal started={started} />
           {/* mobile: static 3-up row instead of orbit */}
           <motion.div

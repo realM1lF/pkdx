@@ -1,0 +1,211 @@
+{
+  "source": "Curated from Bulbapedia / pret/pokeblack-white disassembly reference — game data © Nintendo/Game Freak",
+  "game": "black-white",
+  "nodes": {
+    "striaton-city": {
+      "trainers": [
+        {
+          "name": "Cilan",
+          "class": "Leader",
+          "party": [
+            { "species": "lillipup", "level": 12, "moves": ["work-up", "bite", "helping-hand", "take-down"] },
+            { "species": "pansage", "level": 14, "moves": ["vine-whip", "work-up", "leech-seed", "bite"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Chili",
+          "class": "Leader",
+          "party": [
+            { "species": "lillipup", "level": 12, "moves": ["work-up", "bite", "helping-hand", "take-down"] },
+            { "species": "pansear", "level": 14, "moves": ["incinerate", "work-up", "leer", "bite"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Cress",
+          "class": "Leader",
+          "party": [
+            { "species": "lillipup", "level": 12, "moves": ["work-up", "bite", "helping-hand", "take-down"] },
+            { "species": "panpour", "level": 14, "moves": ["water-gun", "work-up", "leer", "bite"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "nacrene-city": {
+      "trainers": [
+        {
+          "name": "Lenora",
+          "class": "Leader",
+          "party": [
+            { "species": "herdier", "level": 18, "moves": ["work-up", "retaliate", "bite", "leer"] },
+            { "species": "watchog", "level": 20, "moves": ["retaliate", "crunch", "hypnosis", "confusion"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "castelia-city": {
+      "trainers": [
+        {
+          "name": "Burgh",
+          "class": "Leader",
+          "party": [
+            { "species": "dwebble", "level": 21, "moves": ["struggle-bug", "sand-attack", "rock-smash", "slash"] },
+            { "species": "whirlipede", "level": 23, "moves": ["struggle-bug", "iron-defense", "poison-tail", "protect"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "nimbasa-city": {
+      "trainers": [
+        {
+          "name": "Elesa",
+          "class": "Leader",
+          "party": [
+            { "species": "emolga", "level": 25, "moves": ["volt-switch", "acrobatics", "thunder-wave", "air-slash"] },
+            { "species": "emolga", "level": 25, "moves": ["volt-switch", "acrobatics", "thunder-wave", "air-slash"] },
+            { "species": "zebstrika", "level": 27, "moves": ["volt-switch", "flame-charge", "wild-charge", "thunder-wave"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "driftveil-city": {
+      "trainers": [
+        {
+          "name": "Clay",
+          "class": "Leader",
+          "party": [
+            { "species": "krokorok", "level": 28, "moves": ["crunch", "dig", "sandstorm", "scary-face"] },
+            { "species": "palpitoad", "level": 30, "moves": ["muddy-water", "earth-power", "bubble-beam", "rain-dance"] },
+            { "species": "excadrill", "level": 31, "moves": ["earthquake", "rock-slide", "swords-dance", "x-scissor"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "mistralton-city": {
+      "trainers": [
+        {
+          "name": "Skyla",
+          "class": "Leader",
+          "party": [
+            { "species": "swoobat", "level": 29, "moves": ["air-slash", "heart-stamp", "attract", "heat-wave"] },
+            { "species": "unfezant", "level": 31, "moves": ["air-slash", "quick-attack", "tailwind", "detect"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "icirrus-city": {
+      "trainers": [
+        {
+          "name": "Brycen",
+          "class": "Leader",
+          "party": [
+            { "species": "vanillish", "level": 29, "moves": ["icicle-spear", "mirror-shot", "acid-armor", "hail"] },
+            { "species": "cryogonal", "level": 33, "moves": ["ice-beam", "reflect", "flash-cannon", "hail"] },
+            { "species": "beartic", "level": 35, "moves": ["icicle-crash", "superpower", "aqua-jet", "grass-knot"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "humilau-city": {
+      "trainers": [
+        {
+          "name": "Drayden",
+          "class": "Leader",
+          "party": [
+            { "species": "fraxure", "level": 37, "moves": ["dragon-claw", "dragon-dance", "dual-chop", "taunt"] },
+            { "species": "haxorus", "level": 40, "moves": ["dragon-claw", "dragon-dance", "dual-chop", "focus-blast"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    },
+    "unova-victory-road": {
+      "trainers": [
+        {
+          "name": "Shauntal",
+          "class": "Elite Four",
+          "party": [
+            { "species": "cofagrigus", "level": 49, "moves": ["shadow-ball", "will-o-wisp", "hidden-power", "energy-ball"] },
+            { "species": "jellicent", "level": 49, "moves": ["shadow-ball", "surf", "energy-ball", "recover"] },
+            { "species": "golurk", "level": 50, "moves": ["shadow-punch", "earthquake", "hammer-arm", "rock-polish"] },
+            { "species": "chandelure", "level": 50, "moves": ["shadow-ball", "flamethrower", "energy-ball", "calm-mind"] },
+            { "species": "cofagrigus", "level": 52, "moves": ["shadow-ball", "will-o-wisp", "hidden-power", "energy-ball"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Marshal",
+          "class": "Elite Four",
+          "party": [
+            { "species": "throh", "level": 50, "moves": ["storm-throw", "payback", "reversal", "bulk-up"] },
+            { "species": "sawk", "level": 50, "moves": ["storm-throw", "payback", "reversal", "bulk-up"] },
+            { "species": "conkeldurr", "level": 51, "moves": ["hammer-arm", "stone-edge", "payback", "bulk-up"] },
+            { "species": "mienshao", "level": 52, "moves": ["high-jump-kick", "stone-edge", "u-turn", "calm-mind"] },
+            { "species": "conkeldurr", "level": 54, "moves": ["hammer-arm", "stone-edge", "payback", "bulk-up"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Grimsley",
+          "class": "Elite Four",
+          "party": [
+            { "species": "scrafty", "level": 50, "moves": ["crunch", "brick-break", "payback", "dragon-claw"] },
+            { "species": "liepard", "level": 51, "moves": ["night-slash", "sucker-punch", "play-rough", "fake-out"] },
+            { "species": "krookodile", "level": 52, "moves": ["crunch", "earthquake", "stone-edge", "fire-fang"] },
+            { "species": "bisharp", "level": 53, "moves": ["night-slash", "iron-head", "x-scissor", "stone-edge"] },
+            { "species": "krookodile", "level": 55, "moves": ["crunch", "earthquake", "stone-edge", "fire-fang"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Caitlin",
+          "class": "Elite Four",
+          "party": [
+            { "species": "gothitelle", "level": 50, "moves": ["psychic", "shadow-ball", "thunderbolt", "calm-mind"] },
+            { "species": "gothorita", "level": 51, "moves": ["psychic", "shadow-ball", "thunderbolt", "calm-mind"] },
+            { "species": "reuniclus", "level": 52, "moves": ["psychic", "focus-blast", "shadow-ball", "calm-mind"] },
+            { "species": "musharna", "level": 53, "moves": ["psychic", "shadow-ball", "energy-ball", "calm-mind"] },
+            { "species": "gothitelle", "level": 55, "moves": ["psychic", "shadow-ball", "thunderbolt", "calm-mind"] }
+          ],
+          "important": true,
+          "pos": null
+        },
+        {
+          "name": "Alder",
+          "class": "Champion",
+          "party": [
+            { "species": "bouffalant", "level": 48, "moves": ["head-charge", "megahorn", "wild-charge", "stone-edge"] },
+            { "species": "vanilluxe", "level": 49, "moves": ["blizzard", "flash-cannon", "explosion", "light-screen"] },
+            { "species": "escavalier", "level": 49, "moves": ["x-scissor", "iron-head", "reversal", "swords-dance"] },
+            { "species": "chandelure", "level": 50, "moves": ["shadow-ball", "flamethrower", "energy-ball", "calm-mind"] },
+            { "species": "accelgor", "level": 51, "moves": ["bug-buzz", "focus-blast", "energy-ball", "calm-mind"] },
+            { "species": "haxorus", "level": 53, "moves": ["outrage", "earthquake", "dragon-dance", "x-scissor"] }
+          ],
+          "important": true,
+          "pos": null
+        }
+      ]
+    }
+  }
+}

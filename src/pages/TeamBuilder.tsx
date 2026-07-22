@@ -384,6 +384,18 @@ export default function TeamBuilder() {
 
   const expandedSlot = team?.slots.find((s) => s.id === expandedId) ?? null;
 
+  /** First filled slot ≠ current slot — default versus opponent for VS link. */
+  const versusOpponentBySlot = useMemo(() => {
+    const map = new Map<string, number | null>();
+    if (!team) return map;
+    const filled = filledSlots(team);
+    for (const slot of team.slots) {
+      const other = filled.find((s) => s.id !== slot.id);
+      map.set(slot.id, other?.pokemonId ?? null);
+    }
+    return map;
+  }, [team]);
+
   useEffect(() => {
     if (!team) setTeams(loadTeams());
   }, [team]);
@@ -452,6 +464,7 @@ export default function TeamBuilder() {
               pokemon={slot.pokemonId != null ? pokemonCache[slot.pokemonId] : undefined}
               legality={legalities.get(slot.id) ?? { legal: true, reasons: [] }}
               versionGroup={team.versionGroup}
+              versusOpponentId={versusOpponentBySlot.get(slot.id) ?? null}
               expanded={expandedId === slot.id}
               focused={focusSlot?.id === slot.id}
               onPick={handlePick}

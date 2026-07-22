@@ -1,10 +1,11 @@
-/* Home — `/` (home.md). First-visit preloader → hero → search gateway →
+/* Home — `/` (home.md). First-visit preloader → hero → search gateway → toolkit →
  * spotlight → type spectrum → generations rail → features → stats band. */
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import PokeballLoader from '@/components/PokeballLoader';
 import Hero from './home/Hero';
 import SearchGateway from './home/SearchGateway';
+import ToolkitSection from './home/ToolkitSection';
 import Spotlight from './home/Spotlight';
 import TypeSpectrum from './home/TypeSpectrum';
 import GenerationsRail from './home/GenerationsRail';
@@ -48,6 +49,7 @@ export default function Home() {
 
       <Hero started={!loading} />
       <SearchGateway />
+      <ToolkitSection />
       <Spotlight />
       <TypeSpectrum />
       <GenerationsRail />

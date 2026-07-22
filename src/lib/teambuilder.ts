@@ -842,6 +842,35 @@ export async function importRunTeams(runId: string): Promise<ImportedRunTeam[]> 
   return out;
 }
 
+/** Prefill slot 0 from a versus side and persist as draft (Versus → Team Builder). */
+export function prefillTeamFromVersus(
+  side: {
+    pokemonId: number;
+    slug: string;
+    level: number;
+    moves: (string | null)[];
+    ability?: string | null;
+    item?: string | null;
+    nature?: string | null;
+    evs?: Record<StatKey, number>;
+  },
+  versionGroup: string,
+): Team {
+  const team = emptyTeam();
+  team.versionGroup = versionGroup;
+  const slot = team.slots[0];
+  slot.pokemonId = side.pokemonId;
+  slot.pokemon = side.slug;
+  slot.level = side.level;
+  slot.moves = side.moves.slice(0, 4) as TeamSlot['moves'];
+  slot.ability = side.ability ?? null;
+  slot.item = side.item ?? null;
+  slot.nature = side.nature ?? null;
+  if (side.evs) slot.evs = side.evs;
+  saveDraft(team);
+  return team;
+}
+
 /** build fresh slots from an imported run team */
 export function slotsFromImport(team: ImportedRunTeam): TeamSlot[] {
   const slots = emptyTeam().slots;
