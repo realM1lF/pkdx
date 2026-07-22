@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
-import { nodeName } from '@/lib/regions';
+import { isRegionId, nodeName } from '@/lib/regions';
 import { useLanguage } from '@/lib/i18n-data';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
@@ -436,16 +436,20 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                     <div className="absolute inset-x-0 bottom-0 flex h-[20px] items-center gap-1 px-2">
                       <KindGlyph kind={node.kind} />
                       <PixelLabel className="text-[6px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}</PixelLabel>
-                      <LocaleLink
-                        to={`/maps/${region.region}?node=${node.id}`}
-                        onClick={(e) => e.stopPropagation()}
-                        title={t('nuz.openInMaps', { label: nodeName(node, lang) })}
-                        aria-label={t('nuz.openInMaps', { label: nodeName(node, lang) })}
-                        className="ml-auto flex items-center gap-0.5 text-tx-muted/50 transition-colors hover:text-gold"
-                      >
-                        <span className="font-pixel text-[6px]">{t('nuz.mapsChip')}</span>
-                        <ExternalLink size={9} />
-                      </LocaleLink>
+                      {/* EP5.3 — map chip only for atlas regions; freeform
+                          (Gen 6–9) runs are decoupled from /maps */}
+                      {isRegionId(region.region) && (
+                        <LocaleLink
+                          to={`/maps/${region.region}?node=${node.id}`}
+                          onClick={(e) => e.stopPropagation()}
+                          title={t('nuz.openInMaps', { label: nodeName(node, lang) })}
+                          aria-label={t('nuz.openInMaps', { label: nodeName(node, lang) })}
+                          className="ml-auto flex items-center gap-0.5 text-tx-muted/50 transition-colors hover:text-gold"
+                        >
+                          <span className="font-pixel text-[6px]">{t('nuz.mapsChip')}</span>
+                          <ExternalLink size={9} />
+                        </LocaleLink>
+                      )}
                     </div>
                   </motion.li>
                 );

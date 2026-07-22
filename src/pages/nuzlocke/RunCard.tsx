@@ -7,7 +7,8 @@ import { useLocalePath } from '@/lib/locale-link';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
 import { CloudUpload, Copy, HardDrive, MoreVertical, Pencil, CopyPlus, Archive } from 'lucide-react';
-import { regionById, routeOrder, versionChipLabel } from '@/lib/regions';
+import { routeOrder, versionChipLabel } from '@/lib/regions';
+import { anyRegionById } from '@/lib/regions-freeform';
 import {
   archiveRun,
   duplicateAsSolo,
@@ -23,7 +24,7 @@ import { PixelLabel, Popover, RunStatusChip, timeAgo } from './ui';
 type NameOf = (id: number) => string;
 
 function MiniTimeline({ state, nameOf }: { state: RunState; nameOf: NameOf }) {
-  const region = regionById(state.run.region);
+  const region = anyRegionById(state.run.region);
   const nodes = useMemo(() => (region ? routeOrder(region) : []), [region]);
   const links = soulLinksOf(state);
   const linkRoutes = new Set(links.map((l) => l.routeKey));
@@ -79,7 +80,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
   const navigate = useNavigate();
   const localePath = useLocalePath();
   const { t } = useTranslation();
-  const region = regionById(state.run.region);
+  const region = anyRegionById(state.run.region);
   const k = kpisOf(state);
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmArchive, setConfirmArchive] = useState(false);

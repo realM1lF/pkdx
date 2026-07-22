@@ -824,7 +824,9 @@
       "failName": "Gib deinem Run einen Namen — die Legende verlangt es.",
       "failJoinName": "Nenne der Crew deinen Trainernamen.",
       "failJoin": "Beitritt fehlgeschlagen — der Run könnte voll sein.",
-      "you": "Du"
+      "you": "Du",
+      "freeformGroup": "OHNE KARTE — TEXT-MODUS (GEN 6–9)",
+      "textMode": "NUR ROUTEN"
     },
     "card": {
       "options": "Run-Optionen",

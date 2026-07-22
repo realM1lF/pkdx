@@ -824,7 +824,9 @@
       "failName": "Give your run a name — legend requires it.",
       "failJoinName": "Tell the crew your trainer name.",
       "failJoin": "Could not join — the run may be full.",
-      "you": "You"
+      "you": "You",
+      "freeformGroup": "WITHOUT MAP — TEXT MODE (GEN 6–9)",
+      "textMode": "ROUTES ONLY"
     },
     "card": {
       "options": "Run options",

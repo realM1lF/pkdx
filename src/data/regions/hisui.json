@@ -1,0 +1,907 @@
+{
+  "region": "hisui",
+  "name": "Hisui",
+  "nameDe": "Hisui",
+  "gen": "VIII",
+  "accent": "#4CA6A8",
+  "viewBox": "0 0 1200 840",
+  "versions": [
+    "legends-arceus"
+  ],
+  "defaultVersion": "legends-arceus",
+  "coverage": 0,
+  "speciesCount": 0,
+  "nodes": [
+    {
+      "id": "hisui-aipom-hill",
+      "label": "Aipom Hill",
+      "nameDe": "Griffel-Hügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 1,
+      "locationSlug": "aipom-hill"
+    },
+    {
+      "id": "hisui-ancient-quarry",
+      "label": "Ancient Quarry",
+      "nameDe": "Uralter Steinbruch",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 2,
+      "locationSlug": "ancient-quarry"
+    },
+    {
+      "id": "hisui-arenas-approach",
+      "label": "Arena's Approach",
+      "nameDe": "Pfad zum Kampffeld",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 3,
+      "locationSlug": "arenas-approach"
+    },
+    {
+      "id": "hisui-aspiration-hill",
+      "label": "Aspiration Hill",
+      "nameDe": "Ambitionshügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 4,
+      "locationSlug": "aspiration-hill"
+    },
+    {
+      "id": "hisui-avalanche-slopes",
+      "label": "Avalanche Slopes",
+      "nameDe": "Lawinenhügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 5,
+      "locationSlug": "avalanche-slopes"
+    },
+    {
+      "id": "hisui-avaluggs-legacy",
+      "label": "Avalugg's Legacy",
+      "nameDe": "Arktilas-Eisblock",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 6,
+      "locationSlug": "avaluggs-legacy"
+    },
+    {
+      "id": "hisui-bathers-lagoon",
+      "label": "Bathers' Lagoon",
+      "nameDe": "Badelagune",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 7,
+      "locationSlug": "bathers-lagoon"
+    },
+    {
+      "id": "hisui-bolderoll-ravine",
+      "label": "Bolderoll Ravine",
+      "nameDe": "Geröllberge",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 8,
+      "locationSlug": "bolderoll-ravine"
+    },
+    {
+      "id": "hisui-bolderoll-slope",
+      "label": "Bolderoll Slope",
+      "nameDe": "Geröllhügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 9,
+      "locationSlug": "bolderoll-slope"
+    },
+    {
+      "id": "hisui-bonechill-wastes",
+      "label": "Bonechill Wastes",
+      "nameDe": "Eisige Ödnis",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 10,
+      "locationSlug": "bonechill-wastes"
+    },
+    {
+      "id": "hisui-brava-arena",
+      "label": "Brava Arena",
+      "nameDe": "Bühnenkampffeld",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 11,
+      "locationSlug": "brava-arena"
+    },
+    {
+      "id": "hisui-castaway-shore",
+      "label": "Castaway Shore",
+      "nameDe": "Küste der Verirrten",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 12,
+      "locationSlug": "castaway-shore"
+    },
+    {
+      "id": "hisui-celestica-ruins",
+      "label": "Celestica Ruins",
+      "nameDe": "Elysien-Tempelruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 13,
+      "locationSlug": "celestica-ruins"
+    },
+    {
+      "id": "hisui-celestica-trail",
+      "label": "Celestica Trail",
+      "nameDe": "Elysien-Bergpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 14,
+      "locationSlug": "celestica-trail"
+    },
+    {
+      "id": "hisui-clamberclaw-cliffs",
+      "label": "Clamberclaw Cliffs",
+      "nameDe": "Kletterklippe",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 15,
+      "locationSlug": "clamberclaw-cliffs"
+    },
+    {
+      "id": "hisui-cloudcap-pass",
+      "label": "Cloudcap Pass",
+      "nameDe": "Gipfelschwadentunnel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 16,
+      "locationSlug": "cloudcap-pass"
+    },
+    {
+      "id": "hisui-cloudpool-ridge",
+      "label": "Cloudpool Ridge",
+      "nameDe": "Wolkenmeerkamm",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 17,
+      "locationSlug": "cloudpool-ridge"
+    },
+    {
+      "id": "hisui-coastlands-camp",
+      "label": "Coastlands Base Camp",
+      "nameDe": "Küstenlandbasis",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 18,
+      "locationSlug": "coastlands-camp"
+    },
+    {
+      "id": "hisui-cottonsedge-prairie",
+      "label": "Cottonsedge Prairie",
+      "nameDe": "Wollgraswiese",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 19,
+      "locationSlug": "cottonsedge-prairie"
+    },
+    {
+      "id": "hisui-crossing-slope",
+      "label": "Crossing Slope",
+      "nameDe": "Übergangshang",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 20,
+      "locationSlug": "crossing-slope"
+    },
+    {
+      "id": "hisui-deadwood-haunt",
+      "label": "Deadwood Haunt",
+      "nameDe": "Schauriger Welkwald",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 21,
+      "locationSlug": "deadwood-haunt"
+    },
+    {
+      "id": "hisui-deertrack-heights",
+      "label": "Deertrack Heights",
+      "nameDe": "Geweihanhöhe",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 22,
+      "locationSlug": "deertrack-heights"
+    },
+    {
+      "id": "hisui-deertrack-path",
+      "label": "Deertrack Path",
+      "nameDe": "Geweihbergweg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 23,
+      "locationSlug": "deertrack-path"
+    },
+    {
+      "id": "hisui-diamond-heath",
+      "label": "Diamond Heath",
+      "nameDe": "Diamant-Ebene",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 24,
+      "locationSlug": "diamond-heath"
+    },
+    {
+      "id": "hisui-diamond-settlement",
+      "label": "Diamond Settlement",
+      "nameDe": "Diamant-Siedlung",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 25,
+      "locationSlug": "diamond-settlement"
+    },
+    {
+      "id": "hisui-droning-meadow",
+      "label": "Droning Meadow",
+      "nameDe": "Surrende Felder",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 26,
+      "locationSlug": "droning-meadow"
+    },
+    {
+      "id": "hisui-fabled-spring",
+      "label": "Fabled Spring",
+      "nameDe": "Feenweiher",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 27,
+      "locationSlug": "fabled-spring"
+    },
+    {
+      "id": "hisui-firespit-island",
+      "label": "Firespit Island",
+      "nameDe": "Feuerspei-Insel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 28,
+      "locationSlug": "firespit-island"
+    },
+    {
+      "id": "hisui-floaro-gardens",
+      "label": "Floaro Gardens",
+      "nameDe": "Flora-Rodefläche",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 29,
+      "locationSlug": "floaro-gardens"
+    },
+    {
+      "id": "hisui-gapejaw-bog",
+      "label": "Gapejaw Bog",
+      "nameDe": "Großmaulmoor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 30,
+      "locationSlug": "gapejaw-bog"
+    },
+    {
+      "id": "hisui-ginkgo-landing",
+      "label": "Ginkgo Landing",
+      "nameDe": "Ginkgo-Strand",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 31,
+      "locationSlug": "ginkgo-landing"
+    },
+    {
+      "id": "hisui-glacier-terrace",
+      "label": "Glacier Terrace",
+      "nameDe": "Gletscherstufen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 32,
+      "locationSlug": "glacier-terrace"
+    },
+    {
+      "id": "hisui-golden-lowlands",
+      "label": "Golden Lowlands",
+      "nameDe": "Güldene Felder",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 33,
+      "locationSlug": "golden-lowlands"
+    },
+    {
+      "id": "hisui-grandtree-arena",
+      "label": "Grandtree Arena",
+      "nameDe": "Baumriesenkampffeld",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 34,
+      "locationSlug": "grandtree-arena"
+    },
+    {
+      "id": "hisui-grueling-grove",
+      "label": "Grueling Grove",
+      "nameDe": "Strapazenhain",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 35,
+      "locationSlug": "grueling-grove"
+    },
+    {
+      "id": "hisui-hearts-crag",
+      "label": "Heart's Crag",
+      "nameDe": "Geistesfelsen",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 36,
+      "locationSlug": "hearts-crag"
+    },
+    {
+      "id": "hisui-heavenward-lookout",
+      "label": "Heavenward Lookout",
+      "nameDe": "Sakralplateau",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 37,
+      "locationSlug": "heavenward-lookout"
+    },
+    {
+      "id": "hisui-heights-camp",
+      "label": "Heights Base Camp",
+      "nameDe": "Anhöhenbasis",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 38,
+      "locationSlug": "heights-camp"
+    },
+    {
+      "id": "hisui-hideaway-bay",
+      "label": "Hideaway Bay",
+      "nameDe": "Versteckte Bucht",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 39,
+      "locationSlug": "hideaway-bay"
+    },
+    {
+      "id": "hisui-holm-of-trials",
+      "label": "Holm of Trials",
+      "nameDe": "Prüfungsbarre",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 40,
+      "locationSlug": "holm-of-trials"
+    },
+    {
+      "id": "hisui-horseshoe-plains",
+      "label": "Horseshoe Plains",
+      "nameDe": "Hufeisenwiesen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 41,
+      "locationSlug": "horseshoe-plains"
+    },
+    {
+      "id": "hisui-ice-column-chamber",
+      "label": "Ice Column Chamber",
+      "nameDe": "Eissäulenkammer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 42,
+      "locationSlug": "ice-column-chamber"
+    },
+    {
+      "id": "hisui-icebound-falls",
+      "label": "Icebound Falls",
+      "nameDe": "Firnfälle",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 43,
+      "locationSlug": "icebound-falls"
+    },
+    {
+      "id": "hisui-icepeak-arena",
+      "label": "Icepeak Arena",
+      "nameDe": "Eisgipfelkampffeld",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 44,
+      "locationSlug": "icepeak-arena"
+    },
+    {
+      "id": "hisui-icepeak-cavern",
+      "label": "Icepeak Cavern",
+      "nameDe": "Eisgipfelhöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 45,
+      "locationSlug": "icepeak-cavern"
+    },
+    {
+      "id": "hisui-islespy-shore",
+      "label": "Islespy Shore",
+      "nameDe": "Inselblickufer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 46,
+      "locationSlug": "islespy-shore"
+    },
+    {
+      "id": "hisui-jubilife-village",
+      "label": "Jubilife Village",
+      "nameDe": "Jubeldorf",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 47,
+      "locationSlug": "jubilife-village"
+    },
+    {
+      "id": "hisui-hisui-lake-acuity",
+      "label": "Lake Acuity",
+      "nameDe": "See der Stärke",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 48,
+      "locationSlug": "hisui-lake-acuity"
+    },
+    {
+      "id": "hisui-hisui-lake-valor",
+      "label": "Lake Valor",
+      "nameDe": "See der Kühnheit",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 49,
+      "locationSlug": "hisui-lake-valor"
+    },
+    {
+      "id": "hisui-hisui-lake-verity",
+      "label": "Lake Verity",
+      "nameDe": "See der Wahrheit",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 50,
+      "locationSlug": "hisui-lake-verity"
+    },
+    {
+      "id": "hisui-lonely-spring",
+      "label": "Lonely Spring",
+      "nameDe": "Einsame Quelle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 51,
+      "locationSlug": "lonely-spring"
+    },
+    {
+      "id": "hisui-lunkers-lair",
+      "label": "Lunker's Lair",
+      "nameDe": "Großfischfelsen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 52,
+      "locationSlug": "lunkers-lair"
+    },
+    {
+      "id": "hisui-molten-arena",
+      "label": "Molten Arena",
+      "nameDe": "Lavakampffeld",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 53,
+      "locationSlug": "molten-arena"
+    },
+    {
+      "id": "hisui-moonview-arena",
+      "label": "Moonview Arena",
+      "nameDe": "Mondgrußkampffeld",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 54,
+      "locationSlug": "moonview-arena"
+    },
+    {
+      "id": "hisui-natures-pantry",
+      "label": "Nature's Pantry",
+      "nameDe": "Waldesküche",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 55,
+      "locationSlug": "natures-pantry"
+    },
+    {
+      "id": "hisui-obsidian-falls",
+      "label": "Obsidian Falls",
+      "nameDe": "Obsidian-Wasserfall",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 56,
+      "locationSlug": "obsidian-falls"
+    },
+    {
+      "id": "hisui-oreburrow-tunnel",
+      "label": "Oreburrow Tunnel",
+      "nameDe": "Erztunnel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 57,
+      "locationSlug": "oreburrow-tunnel"
+    },
+    {
+      "id": "hisui-pearl-settlement",
+      "label": "Pearl Settlement",
+      "nameDe": "Perl-Siedlung",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 58,
+      "locationSlug": "pearl-settlement"
+    },
+    {
+      "id": "hisui-primeval-grotto",
+      "label": "Primeval Grotto",
+      "nameDe": "Urzeitliche Höhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 59,
+      "locationSlug": "primeval-grotto"
+    },
+    {
+      "id": "hisui-ramanas-island",
+      "label": "Ramanas Island",
+      "nameDe": "Hamanasu-Insel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 60,
+      "locationSlug": "ramanas-island"
+    },
+    {
+      "id": "hisui-sacred-plaza",
+      "label": "Sacred Plaza",
+      "nameDe": "Platz der Huldigung",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 61,
+      "locationSlug": "sacred-plaza"
+    },
+    {
+      "id": "hisui-sands-reach",
+      "label": "Sand's Reach",
+      "nameDe": "Sandfinger",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 62,
+      "locationSlug": "sands-reach"
+    },
+    {
+      "id": "hisui-sandgem-flats",
+      "label": "Sandgem Flats",
+      "nameDe": "Sandgemmenheide",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 63,
+      "locationSlug": "sandgem-flats"
+    },
+    {
+      "id": "hisui-scarlet-bog",
+      "label": "Scarlet Bog",
+      "nameDe": "Purpurrotes Moor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 64,
+      "locationSlug": "scarlet-bog"
+    },
+    {
+      "id": "hisui-seagrass-haven",
+      "label": "Seagrass Haven",
+      "nameDe": "Seegrasidyll",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 65,
+      "locationSlug": "seagrass-haven"
+    },
+    {
+      "id": "hisui-seaside-hollow",
+      "label": "Seaside Hollow",
+      "nameDe": "Kleine Meeresgrotte",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": "seaside-hollow"
+    },
+    {
+      "id": "hisui-shrouded-ruins",
+      "label": "Shrouded Ruins",
+      "nameDe": "Nebelruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 67,
+      "locationSlug": "shrouded-ruins"
+    },
+    {
+      "id": "hisui-sludge-mound",
+      "label": "Sludge Mound",
+      "nameDe": "Schlammplateau",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 68,
+      "locationSlug": "sludge-mound"
+    },
+    {
+      "id": "hisui-snowfall-hot-spring",
+      "label": "Snowfall Hot Spring",
+      "nameDe": "Schneeblicktherme",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 69,
+      "locationSlug": "snowfall-hot-spring"
+    },
+    {
+      "id": "hisui-hisui-snowpoint-temple",
+      "label": "Snowpoint Temple",
+      "nameDe": "Blizzach-Tempel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 70,
+      "locationSlug": "hisui-snowpoint-temple"
+    },
+    {
+      "id": "hisui-hisui-solaceon-ruins",
+      "label": "Solaceon Ruins",
+      "nameDe": "Trostu-Ruinen",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 71,
+      "locationSlug": "hisui-solaceon-ruins"
+    },
+    {
+      "id": "hisui-sonorous-path",
+      "label": "Sonorous Path",
+      "nameDe": "Pilgerpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 72,
+      "locationSlug": "sonorous-path"
+    },
+    {
+      "id": "hisui-space-time-distortion",
+      "label": "Space-time distortion",
+      "nameDe": "Raum-Zeit-Verzerrung",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 73,
+      "locationSlug": "space-time-distortion"
+    },
+    {
+      "id": "hisui-hisui-spring-path",
+      "label": "Spring Path",
+      "nameDe": "Quellenpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 74,
+      "locationSlug": "hisui-spring-path"
+    },
+    {
+      "id": "hisui-stonetooth-rows",
+      "label": "Stonetooth Rows",
+      "nameDe": "Steinplattenpass",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 75,
+      "locationSlug": "stonetooth-rows"
+    },
+    {
+      "id": "hisui-temple-of-sinnoh",
+      "label": "Temple of Sinnoh",
+      "nameDe": "Sinnoh-Tempel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 76,
+      "locationSlug": "temple-of-sinnoh"
+    },
+    {
+      "id": "hisui-the-heartwood",
+      "label": "The Heartwood",
+      "nameDe": "Innerwald",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 77,
+      "locationSlug": "the-heartwood"
+    },
+    {
+      "id": "hisui-tidewater-dam",
+      "label": "Tidewater Dam",
+      "nameDe": "Mündungsdamm",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 78,
+      "locationSlug": "tidewater-dam"
+    },
+    {
+      "id": "hisui-tombolo-walk",
+      "label": "Tombolo Walk",
+      "nameDe": "Tombolo-Weg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 79,
+      "locationSlug": "tombolo-walk"
+    },
+    {
+      "id": "hisui-tranquility-cove",
+      "label": "Tranquility Cove",
+      "nameDe": "Stilles Binnenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 80,
+      "locationSlug": "tranquility-cove"
+    },
+    {
+      "id": "hisui-hisui-turnback-cave",
+      "label": "Turnback Cave",
+      "nameDe": "Höhle der Umkehr",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 81,
+      "locationSlug": "hisui-turnback-cave"
+    },
+    {
+      "id": "hisui-ursas-ring",
+      "label": "Ursa's Ring",
+      "nameDe": "Prankenplatz",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 82,
+      "locationSlug": "ursas-ring"
+    },
+    {
+      "id": "hisui-veilstone-cape",
+      "label": "Veilstone Cape",
+      "nameDe": "Schleierkap",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 83,
+      "locationSlug": "veilstone-cape"
+    },
+    {
+      "id": "hisui-hisui-wayward-cave",
+      "label": "Wayward Cave",
+      "nameDe": "Bizarre Höhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 84,
+      "locationSlug": "hisui-wayward-cave"
+    },
+    {
+      "id": "hisui-wayward-wood",
+      "label": "Wayward Wood",
+      "nameDe": "Wirrwald",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 85,
+      "locationSlug": "wayward-wood"
+    },
+    {
+      "id": "hisui-whiteout-valley",
+      "label": "Whiteout Valley",
+      "nameDe": "Blizzardtal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 86,
+      "locationSlug": "whiteout-valley"
+    },
+    {
+      "id": "hisui-windbreak-stand",
+      "label": "Windbreak Stand",
+      "nameDe": "Windbruchwald",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 87,
+      "locationSlug": "windbreak-stand"
+    },
+    {
+      "id": "hisui-windswept-run",
+      "label": "Windswept Run",
+      "nameDe": "Windpassage",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 88,
+      "locationSlug": "windswept-run"
+    },
+    {
+      "id": "hisui-worn-bridge",
+      "label": "Worn Bridge",
+      "nameDe": "Felsenbrücke",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 89,
+      "locationSlug": "worn-bridge"
+    }
+  ],
+  "edges": []
+}

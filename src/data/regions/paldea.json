@@ -1,0 +1,861 @@
+{
+  "region": "paldea",
+  "name": "Paldea",
+  "nameDe": "Paldea",
+  "gen": "IX",
+  "accent": "#E14D6B",
+  "viewBox": "0 0 1200 840",
+  "versions": [
+    "scarlet-violet"
+  ],
+  "defaultVersion": "scarlet-violet",
+  "coverage": 0,
+  "speciesCount": 0,
+  "nodes": [
+    {
+      "id": "paldea-alfornada",
+      "label": "Alfornada",
+      "nameDe": "Asarilla",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 1,
+      "locationSlug": "alfornada"
+    },
+    {
+      "id": "paldea-alfornada-cavern",
+      "label": "Alfornada Cavern",
+      "nameDe": "Asarilla-Grotte",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 2,
+      "locationSlug": "alfornada-cavern"
+    },
+    {
+      "id": "paldea-apple-hills",
+      "label": "Apple Hills",
+      "nameDe": "Apfelhügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 3,
+      "locationSlug": "apple-hills"
+    },
+    {
+      "id": "paldea-artazon",
+      "label": "Artazon",
+      "nameDe": "Bolardin",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 4,
+      "locationSlug": "artazon"
+    },
+    {
+      "id": "paldea-asado-desert",
+      "label": "Asado Desert",
+      "nameDe": "Brutzelwüste",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 5,
+      "locationSlug": "asado-desert"
+    },
+    {
+      "id": "paldea-cabo-poco",
+      "label": "Cabo Poco",
+      "nameDe": "Cucharico",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 6,
+      "locationSlug": "cabo-poco"
+    },
+    {
+      "id": "paldea-canyon-biome",
+      "label": "Canyon Biome",
+      "nameDe": "Canyon-Areal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 7,
+      "locationSlug": "canyon-biome"
+    },
+    {
+      "id": "paldea-canyon-plaza",
+      "label": "Canyon Plaza",
+      "nameDe": "Canyon-Platz",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 8,
+      "locationSlug": "canyon-plaza"
+    },
+    {
+      "id": "paldea-caph-squads-base",
+      "label": "Caph Squad's Base",
+      "nameDe": "Versteck der Caph-Bamde",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 9,
+      "locationSlug": "caph-squads-base"
+    },
+    {
+      "id": "paldea-cascarrafa",
+      "label": "Cascarrafa",
+      "nameDe": "Garrafosa City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 10,
+      "locationSlug": "cascarrafa"
+    },
+    {
+      "id": "paldea-casseroya-lake",
+      "label": "Casseroya Lake",
+      "nameDe": "Caldero-See",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 11,
+      "locationSlug": "casseroya-lake"
+    },
+    {
+      "id": "paldea-central-plaza",
+      "label": "Central Plaza",
+      "nameDe": "Zentralplatz",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 12,
+      "locationSlug": "central-plaza"
+    },
+    {
+      "id": "paldea-chargestone-cavern",
+      "label": "Chargestone Cavern",
+      "nameDe": "Elektrolithgrotte",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 13,
+      "locationSlug": "chargestone-cavern"
+    },
+    {
+      "id": "paldea-chilling-waterhead",
+      "label": "Chilling Waterhead",
+      "nameDe": "Kaltwasserkarst",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 14,
+      "locationSlug": "chilling-waterhead"
+    },
+    {
+      "id": "paldea-coastal-biome",
+      "label": "Coastal Biome",
+      "nameDe": "Küsten-Areal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 15,
+      "locationSlug": "coastal-biome"
+    },
+    {
+      "id": "paldea-coastal-plaza",
+      "label": "Coastal Plaza",
+      "nameDe": "Küsten-Platz",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 16,
+      "locationSlug": "coastal-plaza"
+    },
+    {
+      "id": "paldea-cortondo",
+      "label": "Cortondo",
+      "nameDe": "Moldrid",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 17,
+      "locationSlug": "cortondo"
+    },
+    {
+      "id": "paldea-crystal-pool",
+      "label": "Crystal Pool",
+      "nameDe": "Kristallsee",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 18,
+      "locationSlug": "crystal-pool"
+    },
+    {
+      "id": "paldea-dalizapa-passage",
+      "label": "Dalizapa Passage",
+      "nameDe": "Mesclores-Passage",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 19,
+      "locationSlug": "dalizapa-passage"
+    },
+    {
+      "id": "paldea-dreaded-den",
+      "label": "Dreaded Den",
+      "nameDe": "Schreckenshöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 20,
+      "locationSlug": "dreaded-den"
+    },
+    {
+      "id": "paldea-east-paldean-sea",
+      "label": "East Paldean Sea",
+      "nameDe": "Östliches Meer von Paldea",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 21,
+      "locationSlug": "east-paldean-sea"
+    },
+    {
+      "id": "paldea-paldea-east-province-area-one",
+      "label": "East Province (Area One)",
+      "nameDe": "Östliche Zone 1",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 22,
+      "locationSlug": "paldea-east-province-area-one"
+    },
+    {
+      "id": "paldea-paldea-east-province-area-three",
+      "label": "East Province (Area Three)",
+      "nameDe": "Östliche Zone 3",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 23,
+      "locationSlug": "paldea-east-province-area-three"
+    },
+    {
+      "id": "paldea-paldea-east-province-area-two",
+      "label": "East Province (Area Two)",
+      "nameDe": "Östliche Zone 2",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 24,
+      "locationSlug": "paldea-east-province-area-two"
+    },
+    {
+      "id": "paldea-fellhorn-gorge",
+      "label": "Fellhorn Gorge",
+      "nameDe": "Hornschlucht",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 25,
+      "locationSlug": "fellhorn-gorge"
+    },
+    {
+      "id": "paldea-firescourge-shrine",
+      "label": "Firescourge Shrine",
+      "nameDe": "Schrein der finsteren Flamme",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 26,
+      "locationSlug": "firescourge-shrine"
+    },
+    {
+      "id": "paldea-glaseado-mountain",
+      "label": "Glaseado Mountain",
+      "nameDe": "Montanata",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 27,
+      "locationSlug": "glaseado-mountain"
+    },
+    {
+      "id": "paldea-grasswither-shrine",
+      "label": "Grasswither Shrine",
+      "nameDe": "Schrein des modrigen Holzes",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 28,
+      "locationSlug": "grasswither-shrine"
+    },
+    {
+      "id": "paldea-groundblight-shrine",
+      "label": "Groundblight Shrine",
+      "nameDe": "Schrein der unreinen Erde",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 29,
+      "locationSlug": "groundblight-shrine"
+    },
+    {
+      "id": "paldea-icerend-shrine",
+      "label": "Icerend Shrine",
+      "nameDe": "Schrein des entzweiten Eises",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 30,
+      "locationSlug": "icerend-shrine"
+    },
+    {
+      "id": "paldea-infernal-pass",
+      "label": "Infernal Pass",
+      "nameDe": "Infernopass",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 31,
+      "locationSlug": "infernal-pass"
+    },
+    {
+      "id": "paldea-inlet-grotto",
+      "label": "Inlet Grotto",
+      "nameDe": "Meeresbuchthöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 32,
+      "locationSlug": "inlet-grotto"
+    },
+    {
+      "id": "paldea-league-club-room",
+      "label": "League Club Room",
+      "nameDe": "Liga-AG Raum",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 33,
+      "locationSlug": "league-club-room"
+    },
+    {
+      "id": "paldea-levincia",
+      "label": "Levincia",
+      "nameDe": "Fermanca City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 34,
+      "locationSlug": "levincia"
+    },
+    {
+      "id": "paldea-los-platos",
+      "label": "Los Platos",
+      "nameDe": "Pratolido",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 35,
+      "locationSlug": "los-platos"
+    },
+    {
+      "id": "paldea-loyalty-plaza",
+      "label": "Loyalty Plaza",
+      "nameDe": "Gefährten-Platz",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 36,
+      "locationSlug": "loyalty-plaza"
+    },
+    {
+      "id": "paldea-medali",
+      "label": "Medali",
+      "nameDe": "Mesclarra",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 37,
+      "locationSlug": "medali"
+    },
+    {
+      "id": "paldea-mesagoza",
+      "label": "Mesagoza",
+      "nameDe": "Mesalona City",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 38,
+      "locationSlug": "mesagoza"
+    },
+    {
+      "id": "paldea-montenevera",
+      "label": "Montenevera",
+      "nameDe": "Frigomonta",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 39,
+      "locationSlug": "montenevera"
+    },
+    {
+      "id": "paldea-mossfell-confluence",
+      "label": "Mossfell Confluence",
+      "nameDe": "Mündungsufer",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 40,
+      "locationSlug": "mossfell-confluence"
+    },
+    {
+      "id": "paldea-mossui-town",
+      "label": "Mossui Town",
+      "nameDe": "Midoriya",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 41,
+      "locationSlug": "mossui-town"
+    },
+    {
+      "id": "paldea-naranja-academy",
+      "label": "Naranja Academy",
+      "nameDe": "Orangen-Akademie",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 42,
+      "locationSlug": "naranja-academy"
+    },
+    {
+      "id": "paldea-navi-squads-base",
+      "label": "Navi Squad's Base",
+      "nameDe": "Versteck der Tsih-Bande",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 43,
+      "locationSlug": "navi-squads-base"
+    },
+    {
+      "id": "paldea-north-paldean-sea",
+      "label": "North Paldean Sea",
+      "nameDe": "Nördliches Meer von Paldea",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 44,
+      "locationSlug": "north-paldean-sea"
+    },
+    {
+      "id": "paldea-paldea-north-province-area-one",
+      "label": "North Province (Area One)",
+      "nameDe": "Nördliche Zone 1",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 45,
+      "locationSlug": "paldea-north-province-area-one"
+    },
+    {
+      "id": "paldea-paldea-north-province-area-three",
+      "label": "North Province (Area Three)",
+      "nameDe": "Nördliche Zone 3",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 46,
+      "locationSlug": "paldea-north-province-area-three"
+    },
+    {
+      "id": "paldea-paldea-north-province-area-two",
+      "label": "North Province (Area Two)",
+      "nameDe": "Nördliche Zone 2",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 47,
+      "locationSlug": "paldea-north-province-area-two"
+    },
+    {
+      "id": "paldea-oni-mountain",
+      "label": "Oni Mountain",
+      "nameDe": "Oniyama",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 48,
+      "locationSlug": "oni-mountain"
+    },
+    {
+      "id": "paldea-onis-maw",
+      "label": "Oni's Maw",
+      "nameDe": "Rachen des Oni",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 49,
+      "locationSlug": "onis-maw"
+    },
+    {
+      "id": "paldea-paradise-barrens",
+      "label": "Paradise Barrens",
+      "nameDe": "Paradiesebene",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 50,
+      "locationSlug": "paradise-barrens"
+    },
+    {
+      "id": "paldea-poco-path",
+      "label": "Poco Path",
+      "nameDe": "Cucharico-Pfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 51,
+      "locationSlug": "poco-path"
+    },
+    {
+      "id": "paldea-pokemon-league",
+      "label": "Pokémon League",
+      "nameDe": "Pokémon-Liga",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 52,
+      "locationSlug": "pokemon-league"
+    },
+    {
+      "id": "paldea-polar-biome",
+      "label": "Polar Biome",
+      "nameDe": "Polar-Areal",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 53,
+      "locationSlug": "polar-biome"
+    },
+    {
+      "id": "paldea-polar-plaza",
+      "label": "Polar Plaza",
+      "nameDe": "Polar-Platz",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 54,
+      "locationSlug": "polar-plaza"
+    },
+    {
+      "id": "paldea-porto-marinada",
+      "label": "Porto Marinada",
+      "nameDe": "Puerto Marinedo",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 55,
+      "locationSlug": "porto-marinada"
+    },
+    {
+      "id": "paldea-revelers-road",
+      "label": "Reveler's Road",
+      "nameDe": "Pfad des Tanzes",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 56,
+      "locationSlug": "revelers-road"
+    },
+    {
+      "id": "paldea-ruchbah-squads-base",
+      "label": "Ruchbah Squad's Base",
+      "nameDe": "Versteck der Rukbat-Bande",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 57,
+      "locationSlug": "ruchbah-squads-base"
+    },
+    {
+      "id": "paldea-savanna-biome",
+      "label": "Savanna Biome",
+      "nameDe": "Savannen-Areal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 58,
+      "locationSlug": "savanna-biome"
+    },
+    {
+      "id": "paldea-savanna-plaza",
+      "label": "Savanna Plaza",
+      "nameDe": "Savannen-Platz",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 59,
+      "locationSlug": "savanna-plaza"
+    },
+    {
+      "id": "paldea-schedar-squads-base",
+      "label": "Schedar Squad's Base",
+      "nameDe": "Versteck der Schedir-Bande",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 60,
+      "locationSlug": "schedar-squads-base"
+    },
+    {
+      "id": "paldea-segin-squads-base",
+      "label": "Segin Squad's Base",
+      "nameDe": "Versteck der Segin-Bande",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 61,
+      "locationSlug": "segin-squads-base"
+    },
+    {
+      "id": "paldea-socarrat-trail",
+      "label": "Socarrat Trail",
+      "nameDe": "Knusperwaldweg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 62,
+      "locationSlug": "socarrat-trail"
+    },
+    {
+      "id": "paldea-south-paldean-sea",
+      "label": "South Paldean Sea",
+      "nameDe": "Südliches Meer von Paldea",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 63,
+      "locationSlug": "south-paldean-sea"
+    },
+    {
+      "id": "paldea-paldea-south-province-area-five",
+      "label": "South Province (Area Five)",
+      "nameDe": "Südliche Zone 5",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 64,
+      "locationSlug": "paldea-south-province-area-five"
+    },
+    {
+      "id": "paldea-paldea-south-province-area-four",
+      "label": "South Province (Area Four)",
+      "nameDe": "Südliche Zone 4",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 65,
+      "locationSlug": "paldea-south-province-area-four"
+    },
+    {
+      "id": "paldea-paldea-south-province-area-one",
+      "label": "South Province (Area One)",
+      "nameDe": "Südliche Zone 1",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": "paldea-south-province-area-one"
+    },
+    {
+      "id": "paldea-paldea-south-province-area-six",
+      "label": "South Province (Area Six)",
+      "nameDe": "Südliche Zone 6",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 67,
+      "locationSlug": "paldea-south-province-area-six"
+    },
+    {
+      "id": "paldea-paldea-south-province-area-three",
+      "label": "South Province (Area Three)",
+      "nameDe": "Südliche Zone 3",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 68,
+      "locationSlug": "paldea-south-province-area-three"
+    },
+    {
+      "id": "paldea-paldea-south-province-area-two",
+      "label": "South Province (Area Two)",
+      "nameDe": "Südliche Zone 2",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 69,
+      "locationSlug": "paldea-south-province-area-two"
+    },
+    {
+      "id": "paldea-tagtree-thicket",
+      "label": "Tagtree Thicket",
+      "nameDe": "Schmierhain",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 70,
+      "locationSlug": "tagtree-thicket"
+    },
+    {
+      "id": "paldea-timeless-woods",
+      "label": "Timeless Woods",
+      "nameDe": "Immerwald",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 71,
+      "locationSlug": "timeless-woods"
+    },
+    {
+      "id": "paldea-torchlit-labyrinth",
+      "label": "Torchlit Labyrinth",
+      "nameDe": "Fackellabyrinth",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 72,
+      "locationSlug": "torchlit-labyrinth"
+    },
+    {
+      "id": "paldea-uva-academy",
+      "label": "Uva Academy",
+      "nameDe": "Trauben-Akademie",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 73,
+      "locationSlug": "uva-academy"
+    },
+    {
+      "id": "paldea-west-paldean-sea",
+      "label": "West Paldean Sea",
+      "nameDe": "Westliches Meer von Paldea",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 74,
+      "locationSlug": "west-paldean-sea"
+    },
+    {
+      "id": "paldea-paldea-west-province-area-one",
+      "label": "West Province (Area One)",
+      "nameDe": "Westliche Zone 1",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 75,
+      "locationSlug": "paldea-west-province-area-one"
+    },
+    {
+      "id": "paldea-paldea-west-province-area-three",
+      "label": "West Province (Area Three)",
+      "nameDe": "Westliche Zone 3",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 76,
+      "locationSlug": "paldea-west-province-area-three"
+    },
+    {
+      "id": "paldea-paldea-west-province-area-two",
+      "label": "West Province (Area Two)",
+      "nameDe": "Westliche Zone 2",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 77,
+      "locationSlug": "paldea-west-province-area-two"
+    },
+    {
+      "id": "paldea-wistful-fields",
+      "label": "Wistful Fields",
+      "nameDe": "Wisterienfelder",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 78,
+      "locationSlug": "wistful-fields"
+    },
+    {
+      "id": "paldea-zapapico",
+      "label": "Zapapico",
+      "nameDe": "Pinchores",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 79,
+      "locationSlug": "zapapico"
+    },
+    {
+      "id": "paldea-zero-lab",
+      "label": "Zero Lab",
+      "nameDe": "Labor Null",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 80,
+      "locationSlug": "zero-lab"
+    },
+    {
+      "id": "paldea-area-zero",
+      "label": "Area Zero",
+      "nameDe": "Zone Null",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 81,
+      "locationSlug": "area-zero",
+      "postGame": true
+    },
+    {
+      "id": "paldea-kitakami-hall",
+      "label": "Kitakami Hall",
+      "nameDe": "Kitakami-Kulturzentrum",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 82,
+      "locationSlug": "kitakami-hall",
+      "postGame": true
+    },
+    {
+      "id": "paldea-kitakami-road",
+      "label": "Kitakami Road",
+      "nameDe": "Kitakami-Straße",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 83,
+      "locationSlug": "kitakami-road",
+      "postGame": true
+    },
+    {
+      "id": "paldea-kitakami-wilds",
+      "label": "Kitakami Wilds",
+      "nameDe": "Wildnis von Kitakami",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 84,
+      "locationSlug": "kitakami-wilds",
+      "postGame": true
+    }
+  ],
+  "edges": []
+}

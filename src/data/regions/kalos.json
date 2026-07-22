@@ -1,0 +1,1051 @@
+{
+  "region": "kalos",
+  "name": "Kalos",
+  "nameDe": "Kalos",
+  "gen": "VI",
+  "accent": "#6E7FD7",
+  "viewBox": "0 0 1200 840",
+  "versions": [
+    "x-y"
+  ],
+  "defaultVersion": "x-y",
+  "coverage": 0,
+  "speciesCount": 0,
+  "nodes": [
+    {
+      "id": "kalos-kalos-route-1",
+      "label": "Route 1",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 1,
+      "locationSlug": "kalos-route-1"
+    },
+    {
+      "id": "kalos-kalos-route-2",
+      "label": "Route 2",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 2,
+      "locationSlug": "kalos-route-2"
+    },
+    {
+      "id": "kalos-kalos-route-3",
+      "label": "Route 3",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 3,
+      "locationSlug": "kalos-route-3"
+    },
+    {
+      "id": "kalos-kalos-route-4",
+      "label": "Route 4",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 4,
+      "locationSlug": "kalos-route-4"
+    },
+    {
+      "id": "kalos-kalos-route-5",
+      "label": "Route 5",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 5,
+      "locationSlug": "kalos-route-5"
+    },
+    {
+      "id": "kalos-kalos-route-6",
+      "label": "Route 6",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 6,
+      "locationSlug": "kalos-route-6"
+    },
+    {
+      "id": "kalos-kalos-route-7",
+      "label": "Route 7",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 7,
+      "locationSlug": "kalos-route-7"
+    },
+    {
+      "id": "kalos-kalos-route-8",
+      "label": "Route 8",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 8,
+      "locationSlug": "kalos-route-8"
+    },
+    {
+      "id": "kalos-kalos-route-9",
+      "label": "Route 9",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 9,
+      "locationSlug": "kalos-route-9"
+    },
+    {
+      "id": "kalos-kalos-route-10",
+      "label": "Route 10",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 10,
+      "locationSlug": "kalos-route-10"
+    },
+    {
+      "id": "kalos-kalos-route-11",
+      "label": "Route 11",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 11,
+      "locationSlug": "kalos-route-11"
+    },
+    {
+      "id": "kalos-kalos-route-12",
+      "label": "Route 12",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 12,
+      "locationSlug": "kalos-route-12"
+    },
+    {
+      "id": "kalos-kalos-route-13",
+      "label": "Route 13",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 13,
+      "locationSlug": "kalos-route-13"
+    },
+    {
+      "id": "kalos-kalos-route-14",
+      "label": "Route 14",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 14,
+      "locationSlug": "kalos-route-14"
+    },
+    {
+      "id": "kalos-kalos-route-15",
+      "label": "Route 15",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 15,
+      "locationSlug": "kalos-route-15"
+    },
+    {
+      "id": "kalos-kalos-route-16",
+      "label": "Route 16",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 16,
+      "locationSlug": "kalos-route-16"
+    },
+    {
+      "id": "kalos-kalos-route-17",
+      "label": "Route 17",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 17,
+      "locationSlug": "kalos-route-17"
+    },
+    {
+      "id": "kalos-kalos-route-18",
+      "label": "Route 18",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 18,
+      "locationSlug": "kalos-route-18"
+    },
+    {
+      "id": "kalos-kalos-route-19",
+      "label": "Route 19",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 19,
+      "locationSlug": "kalos-route-19"
+    },
+    {
+      "id": "kalos-kalos-route-20",
+      "label": "Route 20",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 20,
+      "locationSlug": "kalos-route-20"
+    },
+    {
+      "id": "kalos-kalos-route-21",
+      "label": "Route 21",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 21,
+      "locationSlug": "kalos-route-21"
+    },
+    {
+      "id": "kalos-kalos-route-22",
+      "label": "Route 22",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 22,
+      "locationSlug": "kalos-route-22"
+    },
+    {
+      "id": "kalos-ambrette-aquarium",
+      "label": "Ambrette Aquarium",
+      "nameDe": "Petrophia-Aquarium",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 23,
+      "locationSlug": "ambrette-aquarium"
+    },
+    {
+      "id": "kalos-ambrette-gate",
+      "label": "Ambrette Gate",
+      "nameDe": "Petrophia-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 24,
+      "locationSlug": "ambrette-gate"
+    },
+    {
+      "id": "kalos-ambrette-town",
+      "label": "Ambrette Town",
+      "nameDe": "Petrophia",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 25,
+      "locationSlug": "ambrette-town"
+    },
+    {
+      "id": "kalos-anistar-city",
+      "label": "Anistar City",
+      "nameDe": "Fluxia City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 26,
+      "locationSlug": "anistar-city"
+    },
+    {
+      "id": "kalos-anistar-gate",
+      "label": "Anistar Gate",
+      "nameDe": "Fluxia-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 27,
+      "locationSlug": "anistar-gate"
+    },
+    {
+      "id": "kalos-aquacorde-town",
+      "label": "Aquacorde Town",
+      "nameDe": "Aquarellia",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 28,
+      "locationSlug": "aquacorde-town"
+    },
+    {
+      "id": "kalos-avance-trail",
+      "label": "Avance Trail",
+      "nameDe": "Progrès-Weg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 29,
+      "locationSlug": "avance-trail"
+    },
+    {
+      "id": "kalos-azure-bay",
+      "label": "Azure Bay",
+      "nameDe": "Azurbucht",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 30,
+      "locationSlug": "azure-bay"
+    },
+    {
+      "id": "kalos-blazing-chamber",
+      "label": "Blazing Chamber",
+      "nameDe": "Flammen-Saal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 31,
+      "locationSlug": "blazing-chamber"
+    },
+    {
+      "id": "kalos-brun-way",
+      "label": "Brun Way",
+      "nameDe": "Brun-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 32,
+      "locationSlug": "brun-way"
+    },
+    {
+      "id": "kalos-camphrier-town",
+      "label": "Camphrier Town",
+      "nameDe": "Vanitéa",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 33,
+      "locationSlug": "camphrier-town"
+    },
+    {
+      "id": "kalos-chamber-of-emptiness",
+      "label": "Chamber of Emptiness",
+      "nameDe": "Kammer der Leere",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 34,
+      "locationSlug": "chamber-of-emptiness"
+    },
+    {
+      "id": "kalos-connecting-cave",
+      "label": "Connecting Cave",
+      "nameDe": "Geolinkhöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 35,
+      "locationSlug": "connecting-cave"
+    },
+    {
+      "id": "kalos-coumarine-city",
+      "label": "Coumarine City",
+      "nameDe": "Tempera City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 36,
+      "locationSlug": "coumarine-city"
+    },
+    {
+      "id": "kalos-coumarine-gate",
+      "label": "Coumarine Gate",
+      "nameDe": "Tempera-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 37,
+      "locationSlug": "coumarine-gate"
+    },
+    {
+      "id": "kalos-couriway-gate",
+      "label": "Couriway Gate",
+      "nameDe": "Mosaia-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 38,
+      "locationSlug": "couriway-gate"
+    },
+    {
+      "id": "kalos-couriway-town",
+      "label": "Couriway Town",
+      "nameDe": "Mosaia",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 39,
+      "locationSlug": "couriway-town"
+    },
+    {
+      "id": "kalos-cyllage-city",
+      "label": "Cyllage City",
+      "nameDe": "Relievera City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 40,
+      "locationSlug": "cyllage-city"
+    },
+    {
+      "id": "kalos-dendemille-gate",
+      "label": "Dendemille Gate",
+      "nameDe": "Frescora-Tor",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 41,
+      "locationSlug": "dendemille-gate"
+    },
+    {
+      "id": "kalos-dendemille-town",
+      "label": "Dendemille Town",
+      "nameDe": "Frescora",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 42,
+      "locationSlug": "dendemille-town"
+    },
+    {
+      "id": "kalos-derniere-way",
+      "label": "Dernière Way",
+      "nameDe": "Dernier-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 43,
+      "locationSlug": "derniere-way"
+    },
+    {
+      "id": "kalos-detourner-way",
+      "label": "Détourner Way",
+      "nameDe": "Détourné-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 44,
+      "locationSlug": "detourner-way"
+    },
+    {
+      "id": "kalos-dragonmark-chamber",
+      "label": "Dragonmark Chamber",
+      "nameDe": "Draco-Saal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 45,
+      "locationSlug": "dragonmark-chamber"
+    },
+    {
+      "id": "kalos-flood-chamber",
+      "label": "Flood Chamber",
+      "nameDe": "Schleusen-Saal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 46,
+      "locationSlug": "flood-chamber"
+    },
+    {
+      "id": "kalos-fourrage-road",
+      "label": "Fourrage Road",
+      "nameDe": "Fourrage-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 47,
+      "locationSlug": "fourrage-road"
+    },
+    {
+      "id": "kalos-frost-cavern",
+      "label": "Frost Cavern",
+      "nameDe": "Frosthöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 48,
+      "locationSlug": "frost-cavern"
+    },
+    {
+      "id": "kalos-geosenge-town",
+      "label": "Geosenge Town",
+      "nameDe": "Cromlexia",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 49,
+      "locationSlug": "geosenge-town"
+    },
+    {
+      "id": "kalos-glittering-cave",
+      "label": "Glittering Cave",
+      "nameDe": "Leuchthöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 50,
+      "locationSlug": "glittering-cave"
+    },
+    {
+      "id": "kalos-grande-vallee-way",
+      "label": "Grande Vallée Way",
+      "nameDe": "Vallée-Large-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 51,
+      "locationSlug": "grande-vallee-way"
+    },
+    {
+      "id": "kalos-ironworks-chamber",
+      "label": "Ironworks Chamber",
+      "nameDe": "Rüstungs-Saal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 52,
+      "locationSlug": "ironworks-chamber"
+    },
+    {
+      "id": "kalos-roaming-kalos",
+      "label": "Kalos (Roaming)",
+      "nameDe": "Kalos (wandernd)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 53,
+      "locationSlug": "roaming-kalos"
+    },
+    {
+      "id": "kalos-kalos-power-plant",
+      "label": "Kalos Power Plant",
+      "nameDe": "Kalos-Kraftwerk",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 54,
+      "locationSlug": "kalos-power-plant"
+    },
+    {
+      "id": "kalos-kiloude-city",
+      "label": "Kiloude City",
+      "nameDe": "Batika City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 55,
+      "locationSlug": "kiloude-city"
+    },
+    {
+      "id": "kalos-kiloude-station",
+      "label": "Kiloude Station",
+      "nameDe": "Bahnhof von Batika",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 56,
+      "locationSlug": "kiloude-station"
+    },
+    {
+      "id": "kalos-laverre-city",
+      "label": "Laverre City",
+      "nameDe": "Romantia City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 57,
+      "locationSlug": "laverre-city"
+    },
+    {
+      "id": "kalos-laverre-gate",
+      "label": "Laverre Gate",
+      "nameDe": "Romantia-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 58,
+      "locationSlug": "laverre-gate"
+    },
+    {
+      "id": "kalos-laverre-nature-trail",
+      "label": "Laverre Nature Trail",
+      "nameDe": "Romantia-Waldweg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 59,
+      "locationSlug": "laverre-nature-trail"
+    },
+    {
+      "id": "kalos-lost-hotel",
+      "label": "Lost Hotel",
+      "nameDe": "Hotelruine",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 60,
+      "locationSlug": "lost-hotel"
+    },
+    {
+      "id": "kalos-lumiose-badlands",
+      "label": "Lumiose Badlands",
+      "nameDe": "Illumina-Steppe",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 61,
+      "locationSlug": "lumiose-badlands"
+    },
+    {
+      "id": "kalos-lumiose-city",
+      "label": "Lumiose City",
+      "nameDe": "Illumina City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 62,
+      "locationSlug": "lumiose-city"
+    },
+    {
+      "id": "kalos-lumiose-gate",
+      "label": "Lumiose Gate",
+      "nameDe": "Illumina-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 63,
+      "locationSlug": "lumiose-gate"
+    },
+    {
+      "id": "kalos-lumiose-station",
+      "label": "Lumiose Station",
+      "nameDe": "Bahnhof von Illumina",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 64,
+      "locationSlug": "lumiose-station"
+    },
+    {
+      "id": "kalos-lysandre-labs",
+      "label": "Lysandre Labs",
+      "nameDe": "Labor von Flordelis",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 65,
+      "locationSlug": "lysandre-labs"
+    },
+    {
+      "id": "kalos-mamoswine-road",
+      "label": "Mamoswine Road",
+      "nameDe": "Mamutel-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": "mamoswine-road"
+    },
+    {
+      "id": "kalos-melancolie-path",
+      "label": "Mélancolie Path",
+      "nameDe": "Tristesse-Weg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 67,
+      "locationSlug": "melancolie-path"
+    },
+    {
+      "id": "kalos-menhir-trail",
+      "label": "Menhir Trail",
+      "nameDe": "Menhir-Weg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 68,
+      "locationSlug": "menhir-trail"
+    },
+    {
+      "id": "kalos-miroir-way",
+      "label": "Miroir Way",
+      "nameDe": "Miroir-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 69,
+      "locationSlug": "miroir-way"
+    },
+    {
+      "id": "kalos-muraille-coast",
+      "label": "Muraille Coast",
+      "nameDe": "Muraille-Küstenpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 70,
+      "locationSlug": "muraille-coast"
+    },
+    {
+      "id": "kalos-ouvert-way",
+      "label": "Ouvert Way",
+      "nameDe": "Ouvert-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 71,
+      "locationSlug": "ouvert-way"
+    },
+    {
+      "id": "kalos-palais-lane",
+      "label": "Palais Lane",
+      "nameDe": "Palais-Allee",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 72,
+      "locationSlug": "palais-lane"
+    },
+    {
+      "id": "kalos-parfum-palace",
+      "label": "Parfum Palace",
+      "nameDe": "Magnum-Opus-Palast",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 73,
+      "locationSlug": "parfum-palace"
+    },
+    {
+      "id": "kalos-parterre-way",
+      "label": "Parterre Way",
+      "nameDe": "Parterre-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 74,
+      "locationSlug": "parterre-way"
+    },
+    {
+      "id": "kalos-poke-ball-factory",
+      "label": "Poké Ball Factory",
+      "nameDe": "Pokéball-Fabrik",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 75,
+      "locationSlug": "poke-ball-factory"
+    },
+    {
+      "id": "kalos-kalos-pokemon-league",
+      "label": "Pokémon League",
+      "nameDe": "Pokémon Liga",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 76,
+      "locationSlug": "kalos-pokemon-league"
+    },
+    {
+      "id": "kalos-pokemon-league-gate",
+      "label": "Pokémon League Gate",
+      "nameDe": "Tor zur Pokémon Liga",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 77,
+      "locationSlug": "pokemon-league-gate"
+    },
+    {
+      "id": "kalos-pokemon-village",
+      "label": "Pokémon Village",
+      "nameDe": "Pokémon-Dorf",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 78,
+      "locationSlug": "pokemon-village"
+    },
+    {
+      "id": "kalos-prism-tower",
+      "label": "Prism Tower",
+      "nameDe": "Prismaturm",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 79,
+      "locationSlug": "prism-tower"
+    },
+    {
+      "id": "kalos-radiant-chamber",
+      "label": "Radiant Chamber",
+      "nameDe": "Licht-Saal",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 80,
+      "locationSlug": "radiant-chamber"
+    },
+    {
+      "id": "kalos-reflection-cave",
+      "label": "Reflection Cave",
+      "nameDe": "Spiegelhöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 81,
+      "locationSlug": "reflection-cave"
+    },
+    {
+      "id": "kalos-riviere-walk",
+      "label": "Rivière Walk",
+      "nameDe": "Rivière-Promenade",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 82,
+      "locationSlug": "riviere-walk"
+    },
+    {
+      "id": "kalos-santalune-city",
+      "label": "Santalune City",
+      "nameDe": "Nouvaria City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 83,
+      "locationSlug": "santalune-city"
+    },
+    {
+      "id": "kalos-santalune-forest",
+      "label": "Santalune Forest",
+      "nameDe": "Nouvaria-Wald",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 84,
+      "locationSlug": "santalune-forest"
+    },
+    {
+      "id": "kalos-sea-spirits-den",
+      "label": "Sea Spirit’s Den",
+      "nameDe": "Meerestitanenhöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 85,
+      "locationSlug": "sea-spirits-den"
+    },
+    {
+      "id": "kalos-shabboneau-castle",
+      "label": "Shabboneau Castle",
+      "nameDe": "Château Tristesse",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 86,
+      "locationSlug": "shabboneau-castle"
+    },
+    {
+      "id": "kalos-shalour-city",
+      "label": "Shalour City",
+      "nameDe": "Yantara City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 87,
+      "locationSlug": "shalour-city"
+    },
+    {
+      "id": "kalos-shalour-gate",
+      "label": "Shalour Gate",
+      "nameDe": "Yantara-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 88,
+      "locationSlug": "shalour-gate"
+    },
+    {
+      "id": "kalos-snowbelle-city",
+      "label": "Snowbelle City",
+      "nameDe": "Fractalia City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 89,
+      "locationSlug": "snowbelle-city"
+    },
+    {
+      "id": "kalos-snowbelle-gate",
+      "label": "Snowbelle Gate",
+      "nameDe": "Fractalia-Tor",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 90,
+      "locationSlug": "snowbelle-gate"
+    },
+    {
+      "id": "kalos-spikes-passage",
+      "label": "Spikes Passage",
+      "nameDe": "Rihorn-Pass",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 91,
+      "locationSlug": "spikes-passage"
+    },
+    {
+      "id": "kalos-team-flare-secret-hq",
+      "label": "Team Flare Secret HQ",
+      "nameDe": "Flare-Geheimbasis",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 92,
+      "locationSlug": "team-flare-secret-hq"
+    },
+    {
+      "id": "kalos-tower-of-mastery",
+      "label": "Tower of Mastery",
+      "nameDe": "Turm der Erkenntnis",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 93,
+      "locationSlug": "tower-of-mastery"
+    },
+    {
+      "id": "kalos-vallee-etroite-way",
+      "label": "Vallée Étroite Way",
+      "nameDe": "Vallée-Étroite-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 94,
+      "locationSlug": "vallee-etroite-way"
+    },
+    {
+      "id": "kalos-vaniville-pathway",
+      "label": "Vaniville Pathway",
+      "nameDe": "Escissia-Pfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 95,
+      "locationSlug": "vaniville-pathway"
+    },
+    {
+      "id": "kalos-vaniville-town",
+      "label": "Vaniville Town",
+      "nameDe": "Escissia",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 96,
+      "locationSlug": "vaniville-town"
+    },
+    {
+      "id": "kalos-versant-road",
+      "label": "Versant Road",
+      "nameDe": "Coteau-Weg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 97,
+      "locationSlug": "versant-road"
+    },
+    {
+      "id": "kalos-winding-woods",
+      "label": "Winding Woods",
+      "nameDe": "Irrwald",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 98,
+      "locationSlug": "winding-woods"
+    },
+    {
+      "id": "kalos-zubat-roost",
+      "label": "Zubat Roost",
+      "nameDe": "Zubat-Nest",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 99,
+      "locationSlug": "zubat-roost"
+    },
+    {
+      "id": "kalos-battle-chateau",
+      "label": "Battle Chateau",
+      "nameDe": "Kampfschloss",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 100,
+      "locationSlug": "battle-chateau",
+      "postGame": true
+    },
+    {
+      "id": "kalos-battle-maison",
+      "label": "Battle Maison",
+      "nameDe": "Kampfhaus",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 101,
+      "locationSlug": "battle-maison",
+      "postGame": true
+    },
+    {
+      "id": "kalos-friend-safari",
+      "label": "Friend Safari",
+      "nameDe": "Kontaktsafari",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 102,
+      "locationSlug": "friend-safari",
+      "postGame": true
+    },
+    {
+      "id": "kalos-terminus-cave",
+      "label": "Terminus Cave",
+      "nameDe": "Omega-Höhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 103,
+      "locationSlug": "terminus-cave",
+      "postGame": true
+    },
+    {
+      "id": "kalos-unknown-dungeon",
+      "label": "Unknown Dungeon",
+      "nameDe": "Geheimdungeon",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 104,
+      "locationSlug": "unknown-dungeon",
+      "postGame": true
+    },
+    {
+      "id": "kalos-kalos-victory-road",
+      "label": "Victory Road",
+      "nameDe": "Siegesstraße",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 105,
+      "locationSlug": "kalos-victory-road",
+      "postGame": true
+    }
+  ],
+  "edges": []
+}

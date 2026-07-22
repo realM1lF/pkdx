@@ -1,0 +1,1013 @@
+{
+  "region": "alola",
+  "name": "Alola",
+  "nameDe": "Alola",
+  "gen": "VII",
+  "accent": "#F59E4C",
+  "viewBox": "0 0 1200 840",
+  "versions": [
+    "sun-moon",
+    "ultra-sun-ultra-moon"
+  ],
+  "defaultVersion": "sun-moon",
+  "coverage": 0,
+  "speciesCount": 0,
+  "nodes": [
+    {
+      "id": "alola-alola-route-1--hauoli-outskirts",
+      "label": "Route 1",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 1,
+      "locationSlug": "alola-route-1--hauoli-outskirts"
+    },
+    {
+      "id": "alola-alola-route-1",
+      "label": "Route 1",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 2,
+      "locationSlug": "alola-route-1"
+    },
+    {
+      "id": "alola-alola-route-2",
+      "label": "Route 2",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 3,
+      "locationSlug": "alola-route-2"
+    },
+    {
+      "id": "alola-alola-route-3",
+      "label": "Route 3",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 4,
+      "locationSlug": "alola-route-3"
+    },
+    {
+      "id": "alola-alola-route-4",
+      "label": "Route 4",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 5,
+      "locationSlug": "alola-route-4"
+    },
+    {
+      "id": "alola-alola-route-5",
+      "label": "Route 5",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 6,
+      "locationSlug": "alola-route-5"
+    },
+    {
+      "id": "alola-alola-route-6",
+      "label": "Route 6",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 7,
+      "locationSlug": "alola-route-6"
+    },
+    {
+      "id": "alola-alola-route-7",
+      "label": "Route 7",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 8,
+      "locationSlug": "alola-route-7"
+    },
+    {
+      "id": "alola-alola-route-8",
+      "label": "Route 8",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 9,
+      "locationSlug": "alola-route-8"
+    },
+    {
+      "id": "alola-alola-route-9",
+      "label": "Route 9",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 10,
+      "locationSlug": "alola-route-9"
+    },
+    {
+      "id": "alola-alola-route-10",
+      "label": "Route 10",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 11,
+      "locationSlug": "alola-route-10"
+    },
+    {
+      "id": "alola-alola-route-11",
+      "label": "Route 11",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 12,
+      "locationSlug": "alola-route-11"
+    },
+    {
+      "id": "alola-alola-route-12",
+      "label": "Route 12",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 13,
+      "locationSlug": "alola-route-12"
+    },
+    {
+      "id": "alola-alola-route-13",
+      "label": "Route 13",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 14,
+      "locationSlug": "alola-route-13"
+    },
+    {
+      "id": "alola-alola-route-14",
+      "label": "Route 14",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 15,
+      "locationSlug": "alola-route-14"
+    },
+    {
+      "id": "alola-alola-route-15",
+      "label": "Route 15",
+      "nameDe": "Route 15 (Wasserweg)",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 16,
+      "locationSlug": "alola-route-15"
+    },
+    {
+      "id": "alola-alola-route-16",
+      "label": "Route 16",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 17,
+      "locationSlug": "alola-route-16"
+    },
+    {
+      "id": "alola-alola-route-17",
+      "label": "Route 17",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 18,
+      "locationSlug": "alola-route-17"
+    },
+    {
+      "id": "alola-aether-paradise",
+      "label": "Aether Paradise",
+      "nameDe": "Æther-Paradies",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 19,
+      "locationSlug": "aether-paradise"
+    },
+    {
+      "id": "alola-akala-meadow",
+      "label": "Akala Meadow",
+      "nameDe": "Akala-Blumenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 20,
+      "locationSlug": "akala-meadow"
+    },
+    {
+      "id": "alola-akala-outskirts",
+      "label": "Akala Outskirts",
+      "nameDe": "Akala-Küstenstreifen",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 21,
+      "locationSlug": "akala-outskirts"
+    },
+    {
+      "id": "alola-altar-of-the-moone",
+      "label": "Altar of the Moone",
+      "nameDe": "Mondscheiben-Podium",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 22,
+      "locationSlug": "altar-of-the-moone"
+    },
+    {
+      "id": "alola-altar-of-the-sunne",
+      "label": "Altar of the Sunne",
+      "nameDe": "Sonnenkreis-Podium",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 23,
+      "locationSlug": "altar-of-the-sunne"
+    },
+    {
+      "id": "alola-ancient-poni-path",
+      "label": "Ancient Poni Path",
+      "nameDe": "Alter Pfad von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 24,
+      "locationSlug": "ancient-poni-path"
+    },
+    {
+      "id": "alola-berry-fields",
+      "label": "Berry Fields",
+      "nameDe": "Beerenfelder",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 25,
+      "locationSlug": "berry-fields"
+    },
+    {
+      "id": "alola-blush-mountain",
+      "label": "Blush Mountain",
+      "nameDe": "Glühberg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 26,
+      "locationSlug": "blush-mountain"
+    },
+    {
+      "id": "alola-brooklet-hill",
+      "label": "Brooklet Hill",
+      "nameDe": "Plätscherhügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 27,
+      "locationSlug": "brooklet-hill"
+    },
+    {
+      "id": "alola-brooklet-hill--totems-den",
+      "label": "Brooklet Hill",
+      "nameDe": "Plätscherhügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 28,
+      "locationSlug": "brooklet-hill--totems-den"
+    },
+    {
+      "id": "alola-digletts-tunnel",
+      "label": "Diglett’s Tunnel",
+      "nameDe": "Digda-Tunnel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 29,
+      "locationSlug": "digletts-tunnel"
+    },
+    {
+      "id": "alola-dividing-peak-tunnel",
+      "label": "Dividing Peak Tunnel",
+      "nameDe": "Spaltberg-Tunnel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 30,
+      "locationSlug": "dividing-peak-tunnel"
+    },
+    {
+      "id": "alola-exeggutor-island",
+      "label": "Exeggutor Island",
+      "nameDe": "Kokowei-Eiland",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 31,
+      "locationSlug": "exeggutor-island"
+    },
+    {
+      "id": "alola-haina-desert",
+      "label": "Haina Desert",
+      "nameDe": "Haina-Wüste",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 32,
+      "locationSlug": "haina-desert"
+    },
+    {
+      "id": "alola-hano-beach",
+      "label": "Hano Beach",
+      "nameDe": "Hanohano-Strand",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 33,
+      "locationSlug": "hano-beach"
+    },
+    {
+      "id": "alola-hano-grand-resort",
+      "label": "Hano Grand Resort",
+      "nameDe": "Hanohano-Resort",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 34,
+      "locationSlug": "hano-grand-resort"
+    },
+    {
+      "id": "alola-hauoli-cemetery",
+      "label": "Hau’oli Cemetery",
+      "nameDe": "Hauholi-Friedhof",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 35,
+      "locationSlug": "hauoli-cemetery"
+    },
+    {
+      "id": "alola-hauoli-city",
+      "label": "Hau'oli City",
+      "nameDe": "Hauholi City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 36,
+      "locationSlug": "hauoli-city"
+    },
+    {
+      "id": "alola-hauoli-city--beachfront",
+      "label": "Hau’oli City",
+      "nameDe": "Hauholi City",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 37,
+      "locationSlug": "hauoli-city--beachfront"
+    },
+    {
+      "id": "alola-hauoli-city--shopping-district",
+      "label": "Hau’oli City",
+      "nameDe": "Hauholi City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 38,
+      "locationSlug": "hauoli-city--shopping-district"
+    },
+    {
+      "id": "alola-hauoli-city--marina",
+      "label": "Hau’oli City",
+      "nameDe": "Hauholi City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 39,
+      "locationSlug": "hauoli-city--marina"
+    },
+    {
+      "id": "alola-heahea-beach",
+      "label": "Heahea Beach",
+      "nameDe": "Kantai-Strand",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 40,
+      "locationSlug": "heahea-beach"
+    },
+    {
+      "id": "alola-heahea-city",
+      "label": "Heahea City",
+      "nameDe": "Kantai City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 41,
+      "locationSlug": "heahea-city"
+    },
+    {
+      "id": "alola-hokulani-observatory",
+      "label": "Hokulani Observatory",
+      "nameDe": "Hokulani-Sternwarte",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 42,
+      "locationSlug": "hokulani-observatory"
+    },
+    {
+      "id": "alola-iki-town",
+      "label": "Iki Town",
+      "nameDe": "Lili’i",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 43,
+      "locationSlug": "iki-town"
+    },
+    {
+      "id": "alola-kalae-bay",
+      "label": "Kala’e Bay",
+      "nameDe": "Kala’e-Bucht",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 44,
+      "locationSlug": "kalae-bay"
+    },
+    {
+      "id": "alola-konikoni-city",
+      "label": "Konikoni City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 45,
+      "locationSlug": "konikoni-city"
+    },
+    {
+      "id": "alola-lake-of-the-moone",
+      "label": "Lake of the Moone",
+      "nameDe": "Mondscheiben-See",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 46,
+      "locationSlug": "lake-of-the-moone"
+    },
+    {
+      "id": "alola-lake-of-the-sunne",
+      "label": "Lake of the Sunne",
+      "nameDe": "Sonnenkreis-See",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 47,
+      "locationSlug": "lake-of-the-sunne"
+    },
+    {
+      "id": "alola-lush-jungle",
+      "label": "Lush Jungle",
+      "nameDe": "Schattendschungel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 48,
+      "locationSlug": "lush-jungle"
+    },
+    {
+      "id": "alola-mahalo-trail",
+      "label": "Mahalo Trail",
+      "nameDe": "Mahalo-Bergpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 49,
+      "locationSlug": "mahalo-trail"
+    },
+    {
+      "id": "alola-mahalo-trail--plank-bridge",
+      "label": "Mahalo Trail",
+      "nameDe": "Mahalo-Bergpfad",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 50,
+      "locationSlug": "mahalo-trail--plank-bridge"
+    },
+    {
+      "id": "alola-malie-city-proper",
+      "label": "Malie City",
+      "nameDe": "Malihe City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 51,
+      "locationSlug": "malie-city-proper"
+    },
+    {
+      "id": "alola-malie-city--outer-cape",
+      "label": "Malie City",
+      "nameDe": "Malihe City",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 52,
+      "locationSlug": "malie-city--outer-cape"
+    },
+    {
+      "id": "alola-malie-city",
+      "label": "Malie City",
+      "nameDe": "Malihe City",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 53,
+      "locationSlug": "malie-city"
+    },
+    {
+      "id": "alola-malie-garden",
+      "label": "Malie Garden",
+      "nameDe": "Malihe-Ziergarten",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 54,
+      "locationSlug": "malie-garden"
+    },
+    {
+      "id": "alola-melemele-meadow",
+      "label": "Melemele Meadow",
+      "nameDe": "Mele-Mele-Blumenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 55,
+      "locationSlug": "melemele-meadow"
+    },
+    {
+      "id": "alola-melemele-sea",
+      "label": "Melemele Sea",
+      "nameDe": "Meer von Mele-Mele",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 56,
+      "locationSlug": "melemele-sea"
+    },
+    {
+      "id": "alola-memorial-hill",
+      "label": "Memorial Hill",
+      "nameDe": "Hügel des Gedenkens",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 57,
+      "locationSlug": "memorial-hill"
+    },
+    {
+      "id": "alola-mount-hokulani",
+      "label": "Mount Hokulani",
+      "nameDe": "Hokulani-Berg",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 58,
+      "locationSlug": "mount-hokulani"
+    },
+    {
+      "id": "alola-mount-lanakila",
+      "label": "Mount Lanakila",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 59,
+      "locationSlug": "mount-lanakila"
+    },
+    {
+      "id": "alola-paniola-ranch",
+      "label": "Paniola Ranch",
+      "nameDe": "Ohana-Farm",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 60,
+      "locationSlug": "paniola-ranch"
+    },
+    {
+      "id": "alola-paniola-town",
+      "label": "Paniola Town",
+      "nameDe": "Ohana",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 61,
+      "locationSlug": "paniola-town"
+    },
+    {
+      "id": "alola-po-town",
+      "label": "Po Town",
+      "nameDe": "Po’u",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 62,
+      "locationSlug": "po-town"
+    },
+    {
+      "id": "alola-poke-pelago",
+      "label": "Poké Pelago",
+      "nameDe": "Pokémon-Resort",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 63,
+      "locationSlug": "poke-pelago"
+    },
+    {
+      "id": "alola-alola-pokemon-league",
+      "label": "Pokémon League",
+      "nameDe": "Pokémon-Liga",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 64,
+      "locationSlug": "alola-pokemon-league"
+    },
+    {
+      "id": "alola-poni-breaker-coast",
+      "label": "Poni Breaker Coast",
+      "nameDe": "Felsenküste von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 65,
+      "locationSlug": "poni-breaker-coast"
+    },
+    {
+      "id": "alola-poni-coast",
+      "label": "Poni Coast",
+      "nameDe": "Küste von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": "poni-coast"
+    },
+    {
+      "id": "alola-poni-gauntlet",
+      "label": "Poni Gauntlet",
+      "nameDe": "Beschwerlicher Pfad",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 67,
+      "locationSlug": "poni-gauntlet"
+    },
+    {
+      "id": "alola-poni-grove",
+      "label": "Poni Grove",
+      "nameDe": "Wald von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 68,
+      "locationSlug": "poni-grove"
+    },
+    {
+      "id": "alola-poni-meadow",
+      "label": "Poni Meadow",
+      "nameDe": "Poni-Blumenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 69,
+      "locationSlug": "poni-meadow"
+    },
+    {
+      "id": "alola-poni-plains",
+      "label": "Poni Plains",
+      "nameDe": "Ebene von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 70,
+      "locationSlug": "poni-plains"
+    },
+    {
+      "id": "alola-poni-wilds",
+      "label": "Poni Wilds",
+      "nameDe": "Wildnis von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 71,
+      "locationSlug": "poni-wilds"
+    },
+    {
+      "id": "alola-royal-avenue",
+      "label": "Royal Avenue",
+      "nameDe": "Avenue Royale",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 72,
+      "locationSlug": "royal-avenue"
+    },
+    {
+      "id": "alola-thrifty-megamart",
+      "label": "Royal Avenue",
+      "nameDe": "Avenue Royale",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 73,
+      "locationSlug": "thrifty-megamart"
+    },
+    {
+      "id": "alola-ruins-of-abundance",
+      "label": "Ruins of Abundance",
+      "nameDe": "Ruinen des Gedeihens",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 74,
+      "locationSlug": "ruins-of-abundance"
+    },
+    {
+      "id": "alola-ruins-of-conflict",
+      "label": "Ruins of Conflict",
+      "nameDe": "Ruinen des Krieges",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 75,
+      "locationSlug": "ruins-of-conflict"
+    },
+    {
+      "id": "alola-ruins-of-hope",
+      "label": "Ruins of Hope",
+      "nameDe": "Ruinen der Heimkehr",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 76,
+      "locationSlug": "ruins-of-hope"
+    },
+    {
+      "id": "alola-ruins-of-life",
+      "label": "Ruins of Life",
+      "nameDe": "Ruinen des Lebens",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 77,
+      "locationSlug": "ruins-of-life"
+    },
+    {
+      "id": "alola-sandy-cave",
+      "label": "Sandy Cave",
+      "nameDe": "Sandhöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 78,
+      "locationSlug": "sandy-cave"
+    },
+    {
+      "id": "alola-seafolk-village",
+      "label": "Seafolk Village",
+      "nameDe": "Dorf des Seevolkes",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 79,
+      "locationSlug": "seafolk-village"
+    },
+    {
+      "id": "alola-seaward-cave",
+      "label": "Seaward Cave",
+      "nameDe": "Meereshöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 80,
+      "locationSlug": "seaward-cave"
+    },
+    {
+      "id": "alola-secluded-shore",
+      "label": "Secluded Shore",
+      "nameDe": "Küste von Ula-Ula",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 81,
+      "locationSlug": "secluded-shore"
+    },
+    {
+      "id": "alola-shady-house",
+      "label": "Shady House",
+      "nameDe": "Lottervilla",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 82,
+      "locationSlug": "shady-house"
+    },
+    {
+      "id": "alola-tapu-village",
+      "label": "Tapu Village",
+      "nameDe": "Dorf der Kapu",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 83,
+      "locationSlug": "tapu-village"
+    },
+    {
+      "id": "alola-team-rockets-castle",
+      "label": "Team Rocket's Castle",
+      "nameDe": "Rocket-Schloss",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 84,
+      "locationSlug": "team-rockets-castle"
+    },
+    {
+      "id": "alola-ten-carat-hill",
+      "label": "Ten Carat Hill",
+      "nameDe": "Tenkarat-Hügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 85,
+      "locationSlug": "ten-carat-hill"
+    },
+    {
+      "id": "alola-ten-carat-hill--farthest-hollow",
+      "label": "Ten Carat Hill",
+      "nameDe": "Tenkarat-Hügel",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 86,
+      "locationSlug": "ten-carat-hill--farthest-hollow"
+    },
+    {
+      "id": "alola-thrifty-megamart--abandoned-site",
+      "label": "Thrifty Megamart",
+      "nameDe": "Schnäppchenparadies",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 87,
+      "locationSlug": "thrifty-megamart--abandoned-site"
+    },
+    {
+      "id": "alola-ulaula-beach",
+      "label": "Ula'ula Beach",
+      "nameDe": "Strand von Ula-Ula",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 88,
+      "locationSlug": "ulaula-beach"
+    },
+    {
+      "id": "alola-ulaula-meadow",
+      "label": "Ula’ula Meadow",
+      "nameDe": "Ula-Ula-Blumenmeer",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 89,
+      "locationSlug": "ulaula-meadow"
+    },
+    {
+      "id": "alola-ultra-space",
+      "label": "Ultra Space",
+      "nameDe": "Ultradimension",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 90,
+      "locationSlug": "ultra-space"
+    },
+    {
+      "id": "alola-ultra-space-wilds",
+      "label": "Ultra Space Wilds",
+      "nameDe": "Ultradimension Zero",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 91,
+      "locationSlug": "ultra-space-wilds"
+    },
+    {
+      "id": "alola-vast-poni-canyon",
+      "label": "Vast Poni Canyon",
+      "nameDe": "Canyon von Poni",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 92,
+      "locationSlug": "vast-poni-canyon"
+    },
+    {
+      "id": "alola-verdant-cavern--trial-site",
+      "label": "Verdant Cavern",
+      "nameDe": "Vegetationshöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 93,
+      "locationSlug": "verdant-cavern--trial-site"
+    },
+    {
+      "id": "alola-verdant-cavern--totems-den",
+      "label": "Verdant Cavern",
+      "nameDe": "Vegetationshöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 94,
+      "locationSlug": "verdant-cavern--totems-den"
+    },
+    {
+      "id": "alola-verdant-cavern",
+      "label": "Verdant Cavern",
+      "nameDe": "Vegetationshöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 95,
+      "locationSlug": "verdant-cavern"
+    },
+    {
+      "id": "alola-wela-volcano-park",
+      "label": "Wela Volcano Park",
+      "nameDe": "Wela-Vulkanpark",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 96,
+      "locationSlug": "wela-volcano-park"
+    },
+    {
+      "id": "alola-wela-volcano-park--totems-den",
+      "label": "Wela Volcano Park",
+      "nameDe": "Wela-Vulkanpark",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 97,
+      "locationSlug": "wela-volcano-park--totems-den"
+    },
+    {
+      "id": "alola-battle-royal-dome",
+      "label": "Battle Royal Dome",
+      "nameDe": "Dome Royale",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 98,
+      "locationSlug": "battle-royal-dome",
+      "postGame": true
+    },
+    {
+      "id": "alola-battle-tree",
+      "label": "Battle Tree",
+      "nameDe": "Kampfbaum",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 99,
+      "locationSlug": "battle-tree",
+      "postGame": true
+    },
+    {
+      "id": "alola-resolution-cave",
+      "label": "Resolution Cave",
+      "nameDe": "Finalhöhle",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 100,
+      "locationSlug": "resolution-cave",
+      "postGame": true
+    },
+    {
+      "id": "alola-ultra-megalopolis",
+      "label": "Ultra Megalopolis",
+      "nameDe": "Ultrametropolis",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 101,
+      "locationSlug": "ultra-megalopolis",
+      "postGame": true
+    }
+  ],
+  "edges": []
+}
