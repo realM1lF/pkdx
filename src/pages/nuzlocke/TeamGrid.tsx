@@ -140,6 +140,9 @@ function PartySlot({
       {linked && (
         <img src="/sparkle.svg" alt="" className="absolute left-1 top-1 h-1.5 w-1.5" title={partnerName ? t('nuz.team.soulLinkedWith', { name: partnerName }) : t('nuz.team.soulLinked')} />
       )}
+      {enc.is_shiny && (
+        <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="absolute bottom-1 left-1 h-2.5 w-2.5" />
+      )}
       <button
         type="button"
         aria-label={t('nuz.team.options')}

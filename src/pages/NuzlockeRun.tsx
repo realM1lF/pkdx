@@ -16,9 +16,11 @@ import {
   registerRouteNamer,
   registerSpeciesNamer,
   soulLinksOf,
+  updateEncounter,
   useRunEntry,
 } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterRow, UpdateResult } from '@/lib/nuzlocke-store';
+import { isSlotConsuming } from '@/lib/nuzlocke-rules';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { bootNameIndex, padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
@@ -36,7 +38,7 @@ import EncounterMenu from './nuzlocke/EncounterMenu';
 import type { MenuTarget } from './nuzlocke/EncounterMenu';
 import NuzToasts from './nuzlocke/Toasts';
 import VersusTab from './nuzlocke/VersusTab';
-import { PixelLabel } from './nuzlocke/ui';
+import { NuzModal, PixelLabel } from './nuzlocke/ui';
 import './nuzlocke/nuzlocke.css';
 
 interface FlyState {
@@ -88,6 +90,8 @@ export default function NuzlockeRun() {
 
   const [prefill, setPrefill] = useState<Prefill | null>(null);
   const [menu, setMenu] = useState<MenuTarget | null>(null);
+  /* SoulLink death cascade — pending partner confirm (rules.soulLinkCascade) */
+  const [cascade, setCascade] = useState<{ dead: NuzEncounterRow; partner: NuzEncounterRow } | null>(null);
   const [deckTab, setDeckTab] = useState<'deck' | 'versus'>('deck');
   const [flash, setFlash] = useState<{ route: string; playerId: string; key: number } | null>(null);
   const [fly, setFly] = useState<FlyState | null>(null);
@@ -171,10 +175,28 @@ export default function NuzlockeRun() {
     }
   };
 
-  const onCascade = (res: UpdateResult, _enc: NuzEncounterRow) => {
-    void res;
-    void _enc;
-    /* cascade chips derive live from state (cascadeIds) — store already toasted */
+  const openMenu = (enc: NuzEncounterRow, x: number, y: number) => {
+    /* restoring this row to caught is only safe while its route slot is free */
+    const canRestore =
+      enc.status === 'caught' ||
+      !state.encounters.some(
+        (e) => e.id !== enc.id && e.player_id === enc.player_id && e.route_key === enc.route_key && isSlotConsuming(e),
+      );
+    setMenu({ enc, x, y, canRestore });
+  };
+
+  const onCascade = (res: UpdateResult, enc: NuzEncounterRow) => {
+    /* consume the cascade partner: with the cascade rule on, the partner must
+     * fall too — confirm dialog. Rule off → store already auto-boxed it. */
+    if (res.ok && res.cascadePartner && state.run.rules.soulLink && state.run.rules.soulLinkCascade) {
+      setCascade({ dead: enc, partner: res.cascadePartner });
+    }
+  };
+
+  const confirmCascade = () => {
+    if (!cascade) return;
+    updateEncounter(state.run.id, cascade.partner.id, { status: 'dead' });
+    setCascade(null);
   };
 
   return (
@@ -238,7 +260,7 @@ export default function NuzlockeRun() {
             cascadeIds={cascadeIds}
             pendingSync={entry.pendingSync}
             onPrefill={(routeKey, playerId) => setPrefill({ routeKey, playerId, key: Date.now() })}
-            onOpenEncounter={(enc, x, y) => setMenu({ enc, x, y })}
+            onOpenEncounter={openMenu}
           />
         </div>
 
@@ -258,7 +280,7 @@ export default function NuzlockeRun() {
               online={entry.online}
               nameOf={nameOf}
               linkPartner={(encId) => linkPartnerOf(state, encId)}
-              onMenu={(enc, x, y) => setMenu({ enc, x, y })}
+              onMenu={openMenu}
             />
             {/* visible BOX storage — between team grid and graveyard */}
             <BoxSection state={state} nameOf={nameOf} routeLabel={routeLabel} />
@@ -270,6 +292,42 @@ export default function NuzlockeRun() {
 
       <EncounterMenu target={menu} nameOf={nameOf} onClose={() => setMenu(null)} onCascade={onCascade} />
       <NuzToasts />
+
+      {/* SoulLink death cascade — partner must fall too (confirm) */}
+      <NuzModal open={!!cascade} onClose={() => setCascade(null)}>
+        {cascade && (
+          <div className="p-5">
+            <PixelLabel className="text-gold">{t('nuz.cascade.title')}</PixelLabel>
+            <div className="mt-3 flex items-center gap-3">
+              <img src={sprites.front(cascade.dead.pokemon_id)} alt="" className="h-[48px] w-[48px] opacity-50 [image-rendering:pixelated]" />
+              <span className="font-pixel text-[10px] text-gold">⇄</span>
+              <img src={sprites.front(cascade.partner.pokemon_id)} alt="" className="h-[48px] w-[48px] [image-rendering:pixelated]" />
+            </div>
+            <p className="mt-3 text-[13px] leading-relaxed text-tx-secondary">
+              {t('nuz.cascade.body', {
+                fallen: cascade.dead.nickname ?? nameOf(cascade.dead.pokemon_id),
+                partner: cascade.partner.nickname ?? nameOf(cascade.partner.pokemon_id),
+              })}
+            </p>
+            <div className="mt-5 flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setCascade(null)}
+                className="rounded-md border border-hairline2 px-4 py-2.5 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              >
+                {t('nuz.cascade.later')}
+              </button>
+              <button
+                type="button"
+                onClick={confirmCascade}
+                className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+              >
+                {t('nuz.cascade.confirm')}
+              </button>
+            </div>
+          </div>
+        )}
+      </NuzModal>
 
       {/* sprite FLIP flight into the timeline (§2.5) */}
       <AnimatePresence>

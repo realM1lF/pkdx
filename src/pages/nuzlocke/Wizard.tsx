@@ -22,6 +22,7 @@ import {
 import type { JoinLookup, NuzRules } from '@/lib/nuzlocke-store';
 import { isMultiCapable } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
+import { LevelCapStepper } from './RulesBar';
 import { GoldHint, GoldSwitch, InfoTip, NuzModal, PixelLabel, SparkleBurst, useShake } from './ui';
 
 /* ---------- mini region schematic (compact re-render of /maps cards) ---------- */
@@ -444,6 +445,24 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     </div>
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
                       <GoldSwitch checked={rules.nicknames} onChange={(v) => setRules((r) => ({ ...r, nicknames: v }))} label={t('nuz.wizard.nicknames')} tip={t('nuz.wizard.nickTip')} />
+                    </div>
+                    {soulLink && (
+                      <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
+                        <GoldSwitch checked={rules.soulLinkCascade} onChange={(v) => setRules((r) => ({ ...r, soulLinkCascade: v }))} label={t('nuz.rules.soulLinkCascade')} tip={t('nuz.rules.soulLinkCascadeTip')} />
+                      </div>
+                    )}
+                  </div>
+                  {/* level cap: manual number or auto (next gym ace) */}
+                  <div className="mt-2 rounded-md border border-hairline bg-surface1 px-3 py-2.5">
+                    <GoldSwitch
+                      checked={rules.autoLevelCap}
+                      onChange={(v) => setRules((r) => ({ ...r, autoLevelCap: v }))}
+                      label={t('nuz.wizard.autoLevelCap')}
+                      tip={t('nuz.wizard.autoLevelCapTip')}
+                    />
+                    <div className="mt-2 flex items-center justify-between gap-2">
+                      <span className="text-[10px] text-tx-muted">{t('nuz.wizard.manualCapHint')}</span>
+                      <LevelCapStepper value={rules.levelCap} onChange={(v) => setRules((r) => ({ ...r, levelCap: v }))} disabled={rules.autoLevelCap} />
                     </div>
                   </div>
                 </div>

@@ -29,8 +29,15 @@ export interface NuzRules {
   shiny: boolean;
   nicknames: boolean;
   soulLink: boolean;
+  /** SoulLink death cascade: ON = linked partner falls too (UI confirm);
+   * OFF = linked partner is auto-boxed instead */
+  soulLinkCascade: boolean;
   /** remind on death that mon must be released / not used */
   releaseOnDeath: boolean;
+  /** manual level cap for catches (null = off) */
+  levelCap: number | null;
+  /** auto cap: ace level of the next unbeaten gym leader (overrides manual) */
+  autoLevelCap: boolean;
 }
 
 export interface NuzRunRow {
@@ -64,6 +71,9 @@ export interface NuzEncounterRow {
   level: number;
   status: NuzEncounterStatus;
   note: string | null;
+  /** shiny catch — clause-free (bypasses route lock + dupes clause) and never
+   * consumes the route slot; pre-migration rows may lack the flag */
+  is_shiny?: boolean;
   /** explicit party membership (drag & drop team/box); pre-migration rows
    * may lack it → store falls back to derived "6 newest caught = party" */
   in_party?: boolean;

@@ -23,7 +23,7 @@ import type {
 import { nodeIndex, regionById, routeOrder } from './regions';
 import type { RegionId } from './regions';
 import { padNum } from './pokeapi';
-import { formatRunSummary, normalizeRules, validateLogDraft } from './nuzlocke-rules';
+import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 
@@ -46,7 +46,10 @@ export const DEFAULT_RULES: NuzRules = {
   shiny: true,
   nicknames: true,
   soulLink: false,
+  soulLinkCascade: true,
   releaseOnDeath: true,
+  levelCap: null,
+  autoLevelCap: false,
 };
 
 const LS_INDEX = 'pdx2.nuz.runs';
@@ -325,7 +328,8 @@ export interface RunKpis {
 
 export function kpisOf(state: RunState): RunKpis {
   const links = soulLinksOf(state);
-  const routes = new Set(state.encounters.map((e) => e.route_key));
+  /* duped/shiny rows don't resolve a route — only slot-consuming rows count */
+  const routes = new Set(state.encounters.filter(isSlotConsuming).map((e) => e.route_key));
   const region = regionById(state.run.region);
   return {
     caught: state.encounters.filter((e) => e.status === 'caught').length,
@@ -341,7 +345,7 @@ export function kpisOf(state: RunState): RunKpis {
 export function youAreHereKey(state: RunState): string | null {
   const region = regionById(state.run.region);
   if (!region) return null;
-  const used = new Set(state.encounters.map((e) => `${e.player_id}:${e.route_key}`));
+  const used = new Set(state.encounters.filter(isSlotConsuming).map((e) => `${e.player_id}:${e.route_key}`));
   for (const node of routeOrder(region)) {
     if (state.players.some((p) => !used.has(`${p.id}:${node.id}`))) return node.id;
   }
@@ -732,6 +736,30 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
   const partner = linkPartnerOf(s, deadEnc.id);
   if (!partner || partner.status !== 'caught') return;
   const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
+  /* cascade rule off (owner choice): the partner is auto-boxed immediately —
+   * works identically for local and remote (realtime) deaths */
+  if (!s.run.rules.soulLinkCascade) {
+    const idx = s.encounters.findIndex((e) => e.id === partner.id);
+    if (idx >= 0) {
+      s.encounters = s.encounters.map((e) => (e.id === partner.id ? { ...e, in_party: false } : e));
+      saveLocalRun(s);
+      if (s.mode === 'multi') {
+        persistWithRetry(entry, partner.id, () =>
+          nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
+        );
+      }
+    }
+    pushFeed(entry, {
+      kind: 'link',
+      color: '#F6C945',
+      title: i18n.t('nuz.feed.linkCascadeBoxed', { name }),
+      meta: routeLabelOf(s.run, deadEnc.route_key).toUpperCase(),
+    });
+    pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
+    return;
+  }
+  /* cascade rule on: the partner must fall too — the local UI confirms via
+   * UpdateResult.cascadePartner; remote viewers get toast + BOX? chip */
   pushFeed(entry, {
     kind: 'link',
     color: '#F6C945',
@@ -923,8 +951,9 @@ export interface LogResult {
   linkedWith?: NuzEncounterRow | null;
 }
 
+/** The encounter that resolves (player, route) — duped/shiny rows leave the slot open. */
 export function encounterAt(state: RunState, playerId: string, routeKey: string): NuzEncounterRow | undefined {
-  return state.encounters.find((e) => e.player_id === playerId && e.route_key === routeKey);
+  return state.encounters.find((e) => e.player_id === playerId && e.route_key === routeKey && isSlotConsuming(e));
 }
 
 export function logEncounter(runId: string, draft: LogDraft): LogResult {
@@ -946,6 +975,7 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
     level: draft.level,
     status: draft.status,
     note: draft.note ?? null,
+    is_shiny: !!draft.isShiny,
     /* auto-join party while there is a free slot (mirrors the old derived rule) */
     in_party: draft.status === 'caught' && partyOf(s, draft.playerId).length < 6,
     created_at: new Date().toISOString(),
@@ -962,10 +992,49 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
   checkMilestones(entry);
 
   if (s.mode === 'multi') {
-    persistWithRetry(entry, enc.id, () => nuzTables.encounters().insert(enc));
+    persistWithRetry(entry, enc.id, async () => {
+      const res = await nuzTables.encounters().insert(enc);
+      /* unique-violation on the route slot (multi-client race): adopt the
+       * server row instead of staying pendingSync forever (audit P0-5) */
+      if (res.error && isUniqueViolation(res.error) && (await reconcileRouteConflict(entry, enc))) {
+        return { error: null };
+      }
+      return res;
+    });
   }
   emit(entry);
   return { ok: true, encounter: enc, linkedWith };
+}
+
+/* ---------- insert conflict reconcile (unique route slot) ---------- */
+
+function isUniqueViolation(error: unknown): boolean {
+  return !!error && typeof error === 'object' && (error as { code?: string }).code === '23505';
+}
+
+/** Our insert lost the race: fetch the winning server row and replace the
+ * local mirror with it. Returns false when no slot-consuming row exists. */
+async function reconcileRouteConflict(entry: RunEntry, enc: NuzEncounterRow): Promise<boolean> {
+  const s = entry.state;
+  if (!s) return false;
+  try {
+    const { data, error } = await nuzTables
+      .encounters()
+      .select('*')
+      .eq('run_id', enc.run_id)
+      .eq('player_id', enc.player_id)
+      .eq('route_key', enc.route_key)
+      .order('created_at');
+    if (error) return false;
+    const winner = ((data ?? []) as NuzEncounterRow[]).find((r) => r.id !== enc.id && isSlotConsuming(r));
+    if (!winner) return false;
+    s.encounters = s.encounters.filter((e) => e.id !== enc.id);
+    applyRemoteEncounter(entry, winner);
+    pushToast('sync', i18n.t('nuz.toast.routeConflict'));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export interface UpdateResult {
@@ -994,7 +1063,9 @@ export function updateEncounter(
   if (patch.status && patch.status !== prevStatus) {
     pushFeed(entry, encounterFeedEvent(s, enc, false));
     if (patch.status === 'dead') {
-      cascadePartner = linkPartnerOf(s, enc.id);
+      const partner = linkPartnerOf(s, enc.id);
+      /* only a living partner can cascade — consumed by the UI confirm flow */
+      cascadePartner = partner && partner.status === 'caught' ? partner : null;
       checkCascade(entry, enc);
       if (s.run.rules.releaseOnDeath) {
         pushToast('info', i18n.t('nuz.toast.releaseRule', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
