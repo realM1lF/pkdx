@@ -310,14 +310,17 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
   const onPointerDown = (e: ReactPointerEvent) => {
     dragState.current = { x: e.clientX, left: scrollRef.current?.scrollLeft ?? 0 };
     dragged.current = false;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    /* no pointer capture here — capturing on pointerdown retargets the whole
+     * gesture (incl. click) to this container, so card clicks / context menus
+     * never fire. Capture only once the drag threshold is exceeded. */
   };
   const onPointerMove = (e: ReactPointerEvent) => {
     if (e.buttons !== 1) return;
     const dx = e.clientX - dragState.current.x;
-    if (Math.abs(dx) > 5) {
+    if (!dragged.current && Math.abs(dx) > 5) {
       dragged.current = true;
       setDragging(true);
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     }
     if (dragged.current && scrollRef.current) scrollRef.current.scrollLeft = dragState.current.left - dx;
   };
