@@ -948,7 +948,7 @@
     "myTeams": "MEINE TEAMS",
     "clearTeam": "Team leeren",
     "defenseEyebrow": "DEFENSIV-SYNERGIE",
-    "defenseNote": "S · R · I PRO TYP",
+    "defenseNote": "ZEILEN: ANGRIFFSTYP · SPALTEN: TEAM",
     "noCritWeak": "KEINE KRITISCHEN SCHWÄCHEN",
     "worstLine": "{{weak}}× SCHWACH {{type}} · {{resist}} RESISTENT",
     "heatTip": "{{type}} — {{weak}} schwach · {{resist}} resistent · {{immune}} immun",
@@ -961,7 +961,7 @@
     "moreGaps": "+{{count}} WEITERE LÜCKEN",
     "stabCoverage": "STAB-COVERAGE",
     "addDamaging": "SCHADENSATTACKEN HINZUFÜGEN",
-    "metaEyebrow": "META · OU (Smogon)",
+    "metaEyebrow": "META · GEN 9 OU (SMOGON)",
     "usage": "NUTZUNG {{pct}}%",
     "metaUnavailable": "META NICHT VERFÜGBAR",
     "syncingOu": "LADE OU-DATEN…",
@@ -989,7 +989,10 @@
       "removeAria": "{{name}} entfernen",
       "movesSet": "{{count}} von 4 Attacken gesetzt",
       "editAria": "{{name}} bearbeiten",
-      "edit": "BEARB."
+      "edit": "BEARB.",
+      "duplicate": "Duplizieren",
+      "duplicateAria": "{{name}} duplizieren",
+      "shiny": "SHINY"
     },
     "editor": {
       "nickname": "SPITZNAME",
@@ -1086,6 +1089,59 @@
       "noNatures": "Keine Wesen in dieser Gen",
       "nature": "Wesen nicht im Spiel",
       "noEvs": "Keine FP in dieser Gen"
+    },
+    "metaGenNote": "Smogon-Referenzsets (Gen 9 OU) — nicht spielgefiltert",
+    "metaGenMismatch": "GEN-{{gen}}-SPIEL — OU-SETS GGF. NICHT PASSEND",
+    "analysisFor": "ANALYSE FÜR {{game}} · GEN {{gen}}",
+    "cellTip": "{{name}} ERHÄLT ×{{eff}} VON {{type}}",
+    "fixWith": "FIX →",
+    "seVia": "SE DURCH →",
+    "legend": {
+      "weak": "2·4 = SCHWACH",
+      "resist": "½·¼ = RESISTENT",
+      "immune": "0 = IMMUN",
+      "ability": "FÄHIGKEITEN & GEN-CHART EINGERECHNET"
+    },
+    "mech": {
+      "items": "ITEMS",
+      "abilities": "FÄHIGKEITEN",
+      "natures": "WESEN",
+      "evs": "EVS",
+      "naTip": "In dieser Generation nicht verfügbar"
+    },
+    "empty": {
+      "title": "ANALYSE STARTET MIT DEM ERSTEN POKÉMON",
+      "body": "Pokémon über die +-Slots hinzufügen, einen Nuzlocke-Run importieren oder ein Showdown-Team einfügen — Coverage-Matrix, Schwächen-Hinweise und Meta-Sets erscheinen hier.",
+      "ctaShowdown": "SHOWDOWN-TEAM EINFÜGEN"
+    },
+    "sd": {
+      "button": "SHOWDOWN",
+      "buttonTip": "Showdown-Textformat importieren/exportieren",
+      "title": "SHOWDOWN IMPORT · EXPORT",
+      "close": "Schließen",
+      "dialogAria": "Showdown-Format Import/Export",
+      "exportTab": "EXPORT",
+      "importTab": "IMPORT",
+      "exportHint": "In Pokémon Showdown oder PokéPaste einfügen",
+      "exportEmpty": "TEAM IST LEER — NICHTS ZU EXPORTIEREN",
+      "exportAria": "Team im Showdown-Textformat",
+      "copy": "TEXT KOPIEREN",
+      "copied": "KOPIERT ✓",
+      "copiedToast": "SHOWDOWN-TEXT KOPIERT",
+      "importHint": "Team im Showdown-Textformat einfügen (Art, Item, Fähigkeit, Wesen, EVs, Level, Shiny, Attacken)",
+      "placeholder": "Glurak @ Schwerstiefel\nFähigkeit: Solarkraft\nEVs: 252 SpA / 4 SpV / 252 Ini\nFroh Wesen\n- Feuersturm\n…",
+      "importAria": "Showdown-Text einfügen",
+      "parse": "PRÜFEN",
+      "parsing": "PRÜFE…",
+      "parseFailed": "PARSEN FEHLGESCHLAGEN — FORMAT PRÜFEN",
+      "parsedOk": "{{count}} POKÉMON ERKANNT",
+      "apply": "{{count}} POKÉMON ÜBERNEHMEN",
+      "replaceNote": "ERSETZT DIE AKTUELLEN SLOTS — TEAMNAME & SPIEL BLEIBEN",
+      "warn": {
+        "empty": "KEIN POKÉMON GEFUNDEN — FORMAT PRÜFEN",
+        "noSpecies": "NICHT GEFUNDEN: {{name}}",
+        "tooMany": "NUR DIE ERSTEN 6 ÜBERNOMMEN ({{count}} GEFUNDEN)"
+      }
     }
   },
   "legal": {

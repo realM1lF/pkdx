@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { AnimatePresence, Reorder } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { getMove, getPokemon } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import {
@@ -40,11 +41,14 @@ import type {
   TeamSlot,
 } from '@/lib/teambuilder';
 import type { Move, Pokemon, PokemonType } from '@/lib/types';
+import { teamToShowdown } from '@/lib/teambuilder-showdown';
+import type { ShowdownImport } from '@/lib/teambuilder-showdown';
 import AnalysisDeck from './teambuilder/AnalysisDeck';
-import type { MetaState } from './teambuilder/AnalysisDeck';
+import type { MatrixMember, MetaState } from './teambuilder/AnalysisDeck';
 import HeaderStrip from './teambuilder/HeaderStrip';
 import ImportRunDialog from './teambuilder/ImportRunDialog';
 import SavedTeamsHub from './teambuilder/SavedTeamsHub';
+import ShowdownDialog from './teambuilder/ShowdownDialog';
 import SlotCard from './teambuilder/SlotCard';
 import SlotEditor from './teambuilder/SlotEditor';
 import NuzToasts from './nuzlocke/Toasts';
@@ -60,6 +64,7 @@ function slugify(name: string): string {
 
 export default function TeamBuilder() {
   const lang = useLanguage();
+  const { t: t8n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const fromRunHandled = useRef(false);
   /* shared-team hash is consumed once at mount (lazy initializer) */
@@ -69,6 +74,7 @@ export default function TeamBuilder() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [importOpen, setImportOpen] = useState(false);
+  const [showdownTab, setShowdownTab] = useState<'closed' | 'export' | 'import'>('closed');
   const [shareState, setShareState] = useState<'idle' | 'copied'>('idle');
   const [savedFlash, setSavedFlash] = useState(false);
   const [appliedSetName, setAppliedSetName] = useState<string | null>(null);
@@ -206,6 +212,33 @@ export default function TeamBuilder() {
     setExpandedId((cur) => (cur === slotId ? null : cur));
   }, [patchTeam]);
 
+  /* copy a slot into the first free slot (keeps drag keys stable) */
+  const handleDuplicate = useCallback(
+    (slotId: string) => {
+      patchTeam((t) => {
+        const src = t.slots.find((s) => s.id === slotId);
+        const dstIdx = t.slots.findIndex((s) => !s.pokemon);
+        if (!src || dstIdx < 0) return t;
+        const copy: TeamSlot = { ...src, id: t.slots[dstIdx].id, moves: [...src.moves], evs: { ...src.evs } };
+        const slots = [...t.slots];
+        slots[dstIdx] = copy;
+        return { ...t, slots };
+      });
+    },
+    [patchTeam],
+  );
+
+  /* Showdown paste import — replaces slots, keeps team name + game */
+  const handleShowdownImport = useCallback(
+    (result: ShowdownImport) => {
+      patchTeam((t) => ({ ...t, slots: result.slots }));
+      setExpandedId(null);
+      setFocusedId(null);
+      setAppliedSetName(null);
+    },
+    [patchTeam],
+  );
+
   const handleGameChange = useCallback(
     (vgId: string) => {
       patchTeam((t) => ({ ...t, versionGroup: vgId }));
@@ -312,26 +345,29 @@ export default function TeamBuilder() {
     return map;
   }, [team, pokemonCache]);
 
-  const defenseRows = useMemo(() => {
-    if (!team) return defensiveSynergy([], vg.id);
-    const members = filledSlots(team).map((s) => {
+  /* filled slots as matrix columns (gen-correct types, ability slugs) */
+  const members: MatrixMember[] = useMemo(() => {
+    if (!team) return [];
+    return filledSlots(team).map((s) => {
       const p = s.pokemonId != null ? pokemonCache[s.pokemonId] : undefined;
       const fallback = (p?.types.map((t) => t.type.name) ?? []) as PokemonType[];
       return {
+        slotId: s.id,
+        pokemonId: s.pokemonId!,
+        slug: s.pokemon!,
         types: genTypesOf(team.versionGroup, s.pokemon!, fallback),
         ability: s.ability ? slugify(s.ability) : null,
       };
     });
-    return defensiveSynergy(members, team.versionGroup);
-  }, [team, pokemonCache, vg.id]);
+  }, [team, pokemonCache]);
+
+  const defenseRows = useMemo(() => defensiveSynergy(members, vg.id), [members, vg.id]);
 
   const coverage: CoverageResult = useMemo(() => {
     if (!team) return offensiveCoverage([], vg.id);
     const moves: TeamMove[] = [];
     for (const s of filledSlots(team)) {
-      const p = s.pokemonId != null ? pokemonCache[s.pokemonId] : undefined;
-      const fallback = (p?.types.map((t) => t.type.name) ?? []) as PokemonType[];
-      const memberTypes = genTypesOf(team.versionGroup, s.pokemon!, fallback);
+      const memberTypes = members.find((m) => m.slotId === s.id)?.types ?? [];
       for (const m of s.moves) {
         if (!m) continue;
         const d = moveDetails[m];
@@ -341,7 +377,13 @@ export default function TeamBuilder() {
       }
     }
     return offensiveCoverage(moves, team.versionGroup);
-  }, [team, pokemonCache, moveDetails, vg.id]);
+  }, [team, members, moveDetails, vg.id]);
+
+  /* Showdown export text (regenerated on every team change) */
+  const showdownText = useMemo(() => (team ? teamToShowdown(team) : ''), [team]);
+
+  const hasMembers = members.length > 0;
+  const canDuplicate = !!team && filledSlots(team).length < 6;
 
   const coverageLoading = useMemo(() => {
     if (!team) return false;
@@ -433,6 +475,7 @@ export default function TeamBuilder() {
         onName={(name) => patchTeam((t) => ({ ...t, name }))}
         onGameChange={handleGameChange}
         onImport={() => setImportOpen(true)}
+        onShowdown={() => setShowdownTab(filledSlots(team).length ? 'export' : 'import')}
         onShare={() => void handleShare()}
         onSave={handleSave}
         onClear={handleClear}
@@ -465,10 +508,13 @@ export default function TeamBuilder() {
               legality={legalities.get(slot.id) ?? { legal: true, reasons: [] }}
               versionGroup={team.versionGroup}
               versusOpponentId={versusOpponentBySlot.get(slot.id) ?? null}
+              moveDetails={moveDetails}
+              canDuplicate={canDuplicate}
               expanded={expandedId === slot.id}
               focused={focusSlot?.id === slot.id}
               onPick={handlePick}
               onRemove={handleRemove}
+              onDuplicate={handleDuplicate}
               onToggleExpand={(id) => {
                 setExpandedId((cur) => (cur === id ? null : id));
                 setFocusedId(id);
@@ -493,19 +539,43 @@ export default function TeamBuilder() {
         )}
       </AnimatePresence>
 
-      {/* 3-panel analysis deck */}
-      <AnalysisDeck
-        defenseRows={defenseRows}
-        coverage={coverage}
-        coverageLoading={coverageLoading}
-        metaState={metaState}
-        metaEntry={metaEntry}
-        metaFocusLabel={focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null}
-        onApplySet={handleApplySet}
-        appliedSetName={appliedSetName}
-      />
+      {/* analysis deck — or a guidance empty state until the first pick */}
+      {hasMembers ? (
+        <AnalysisDeck
+          versionGroup={team.versionGroup}
+          members={members}
+          defenseRows={defenseRows}
+          coverage={coverage}
+          coverageLoading={coverageLoading}
+          metaState={metaState}
+          metaEntry={metaEntry}
+          metaFocusLabel={focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null}
+          onApplySet={handleApplySet}
+          appliedSetName={appliedSetName}
+        />
+      ) : (
+        <div className="tb-panel mt-4 flex flex-col items-center gap-3 border-dashed px-6 py-10 text-center">
+          <span className="tb-micro-gold">{t8n('tb.empty.title')}</span>
+          <p className="max-w-[420px] text-[12px] leading-relaxed text-tx-secondary">{t8n('tb.empty.body')}</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            <button type="button" onClick={() => setImportOpen(true)} className="tb-btn">
+              {t8n('tb.importFromRun')}
+            </button>
+            <button type="button" onClick={() => setShowdownTab('import')} className="tb-btn tb-btn-primary">
+              {t8n('tb.empty.ctaShowdown')}
+            </button>
+          </div>
+        </div>
+      )}
 
       <ImportRunDialog open={importOpen} onClose={() => setImportOpen(false)} onImport={handleImport} />
+      <ShowdownDialog
+        open={showdownTab !== 'closed'}
+        initialTab={showdownTab === 'closed' ? 'export' : showdownTab}
+        exportText={showdownText}
+        onClose={() => setShowdownTab('closed')}
+        onImport={handleShowdownImport}
+      />
       <NuzToasts />
     </div>
   );

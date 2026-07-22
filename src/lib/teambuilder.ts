@@ -176,6 +176,7 @@ export interface TeamSlot {
   pokemonId: number | null;
   nickname: string | null;
   level: number; // 1..100
+  shiny: boolean;
   moves: [string | null, string | null, string | null, string | null];
   item: string | null;
   ability: string | null;
@@ -213,6 +214,7 @@ export function emptySlot(): TeamSlot {
     pokemonId: null,
     nickname: null,
     level: 50,
+    shiny: false,
     moves: [null, null, null, null],
     item: null,
     ability: null,
@@ -465,6 +467,25 @@ export function worstCases(rows: DefenseRow[]): DefenseRow[] {
     .sort((a, b) => b.severity - a.severity || b.weak - a.weak || a.type.localeCompare(b.type));
 }
 
+/** defending types that resist (mult < 1) or are immune (mult 0) to an attacking type —
+ * basis for "how do I fix this weakness" hints (gen-correct chart) */
+export function coverTypesFor(atk: PokemonType, vgId: string): { resists: PokemonType[]; immunes: PokemonType[] } {
+  const resists: PokemonType[] = [];
+  const immunes: PokemonType[] = [];
+  for (const def of POKEMON_TYPES) {
+    const eff = chartEff(atk, def, vgId);
+    if (eff === 0) immunes.push(def);
+    else if (eff < 1) resists.push(def);
+  }
+  return { resists, immunes };
+}
+
+/** attacking types that hit a defending type super-effectively —
+ * basis for "which move type closes this coverage gap" hints */
+export function seTypesAgainst(def: PokemonType, vgId: string): PokemonType[] {
+  return POKEMON_TYPES.filter((atk) => chartEff(atk, def, vgId) > 1);
+}
+
 /* ------------------------------------------------------------------ */
 /* Offensive coverage                                                  */
 /* ------------------------------------------------------------------ */
@@ -676,6 +697,8 @@ type CompactSlot = [
   ability: string | null,
   nature: string | null,
   evs: number[],
+  /** optional tail (v1 hashes predate it — decode must tolerate absence) */
+  shiny?: boolean,
 ];
 
 type CompactTeam = [version: 1, name: string, versionGroup: string, slots: CompactSlot[]];
@@ -695,6 +718,7 @@ function compactTeam(team: Team): CompactTeam {
       s.ability,
       s.nature,
       STAT_ORDER.map((k) => s.evs[k] || 0),
+      s.shiny === true,
     ]),
   ];
 }
@@ -717,6 +741,7 @@ function expandTeam(c: CompactTeam): Team | null {
     STAT_ORDER.forEach((k, i) => {
       base.evs[k] = typeof evArr[i] === 'number' ? evArr[i] : 0;
     });
+    base.shiny = s[9] === true;
     return base;
   });
   while (slots.length < TEAM_SIZE) slots.push(emptySlot());
