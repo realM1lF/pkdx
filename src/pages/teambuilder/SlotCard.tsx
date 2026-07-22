@@ -168,6 +168,14 @@ export default function SlotCard({
         </div>
       </div>
 
+      {/* legality reasons — always visible (native title-tooltip alone was too hidden) */}
+      {!legality.legal && (
+        <div className="tb-micro mt-0.5 !text-[7px] leading-snug !text-gold/80">
+          {legality.reasons.slice(0, 2).map((r) => legalityReasonText(r, lang)).join(' · ')}
+          {legality.reasons.length > 2 && ` +${legality.reasons.length - 2}`}
+        </div>
+      )}
+
       {/* sprite on aura */}
       <div className="relative mx-auto my-0.5 h-[64px] w-[64px]">
         <span
