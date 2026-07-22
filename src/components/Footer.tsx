@@ -26,6 +26,7 @@ export default function Footer() {
     { to: '/nuzlocke', key: 'footer.nuzlocke' },
     { to: '/team', key: 'footer.team' },
     { to: '/versus', key: 'footer.versus' },
+    { to: '/items', key: 'footer.items' },
   ] as const;
 
   const legalLinks = [

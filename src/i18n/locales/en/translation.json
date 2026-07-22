@@ -15,7 +15,8 @@
     "home": "Pokédex 2.0 home",
     "language": "Language",
     "deCoverageNoteEn": "DE is mostly translated, but not complete.",
-    "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig."
+    "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig.",
+    "items": "Items"
   },
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
@@ -113,7 +114,8 @@
     "data": "DATA",
     "dataCredits": "Data & sprites —",
     "fanProject": "Fan project. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
-    "madeWith": "MADE WITH ♥ & TYPE ENERGY"
+    "madeWith": "MADE WITH ♥ & TYPE ENERGY",
+    "items": "Items"
   },
   "detail": {
     "backAll": "ALL POKÉMON",
@@ -1425,5 +1427,33 @@
       "picnic": "Picnic"
     },
     "openDesc": "Open description: {{name}}"
+  },
+  "items": {
+    "eyebrow": "DATABASE",
+    "title": "Item Lexicon",
+    "blurb": "Every item from the games — sprite, category and a short description. Filter by group or search in English and German; click a tile for the full holo-dex entry.",
+    "total": "items indexed",
+    "searchPlaceholder": "Search items (EN/DE)…",
+    "clearSearch": "Clear search",
+    "filterAria": "Filter by item group",
+    "all": "All",
+    "count": "{{shown}} of {{total}} items",
+    "more": "+{{n}} more — refine the search or pick a group",
+    "empty": "No items match your search.",
+    "gridAria": "Item list",
+    "groups": {
+      "balls": "Poké Balls",
+      "healing": "Healing",
+      "berries": "Berries",
+      "held": "Held Items",
+      "battle": "Battle",
+      "machines": "TMs",
+      "evolution": "Evolution",
+      "boost": "Boosts",
+      "valuables": "Valuables",
+      "key": "Key Items",
+      "picnic": "Ingredients",
+      "other": "Other"
+    }
   }
 }
