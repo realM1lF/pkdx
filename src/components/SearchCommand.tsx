@@ -10,7 +10,7 @@ import { Search, X } from 'lucide-react';
 import Sprite from './Sprite';
 import TypeBadge from './TypeBadge';
 import { bootNameIndex, getPokemon, padNum } from '@/lib/pokeapi';
-import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
 import { useLocalePath } from '@/lib/locale-link';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -53,6 +53,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   const localePath = useLocalePath();
   const { t } = useTranslation();
   const lang = useLanguage();
+  const deReady = useGermanDataReady();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
   const [query, setQuery] = useState('');
   const [debounced, setDebounced] = useState('');
@@ -108,7 +109,8 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
           ignoreLocation: true,
         },
       ),
-    [index],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady rebuilds aliases after the lazy de load
+    [index, deReady],
   );
 
   const results = useMemo(() => {

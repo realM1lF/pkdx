@@ -21,6 +21,7 @@ import {
   nameOfNature,
   nameOfPokemon,
   nameOfType,
+  useGermanDataReady,
   useLanguage,
 } from '@/lib/i18n-data';
 import type { DexIndexEntry, Move, Pokemon, PokemonType, StatKey } from '@/lib/types';
@@ -480,6 +481,7 @@ export function OpponentAutocomplete({
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const deReady = useGermanDataReady();
   const [q, setQ] = useState('');
   const items = useMemo<ComboItem[]>(
     () =>
@@ -492,7 +494,8 @@ export function OpponentAutocomplete({
         // de artifact name → matches "glumanda" against charmander either way
         alias: `${e.name} ${germanAliasOfPokemon(e.id) ?? ''}`,
       })),
-    [index, excludeId, lang],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady rebuilds aliases after the lazy de load
+    [index, excludeId, lang, deReady],
   );
   return (
     <VsCombobox

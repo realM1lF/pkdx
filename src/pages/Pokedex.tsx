@@ -23,7 +23,7 @@ import {
 import type { Density, SortKey, Special } from '@/components/pokedex/dex-data';
 import { padNum } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
-import { fmtNum, useLanguage, nameOfType } from '@/lib/i18n-data';
+import { fmtNum, useGermanDataReady, useLanguage, nameOfType } from '@/lib/i18n-data';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MAX_DEX_ID } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -125,6 +125,7 @@ export default function Pokedex() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
+  const deReady = useGermanDataReady();
   const { shiny, toggleShiny } = useShiny();
   const isMobile = useIsMobile();
 
@@ -190,7 +191,8 @@ export default function Pokedex() {
   /* filter → sort (null while type/stat data loads) */
   const filtered = useMemo(
     () => (index ? filterEntries(index, { ...filters, q: debouncedQ }, typeSets) : null),
-    [index, filters, debouncedQ, typeSets],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady re-runs de-alias matching after the lazy de load
+    [index, filters, debouncedQ, typeSets, deReady],
   );
 
   const statSort = STAT_SORTS.has(filters.sort);
