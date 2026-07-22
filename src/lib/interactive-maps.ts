@@ -1,4 +1,4 @@
-/* External interactive map links — community tools (pkmnmap, pokemoncompletion, …).
+/* External interactive map links — community tools (pkmnmap, Ironmon, Team Synergy).
  * Shown as "INTERACTIVE ↗" in the map command bar; opens in a new tab.
  * URLs are checked periodically — MapGenie HGSS was removed (404/500 as of 2026). */
 import type { RegionId } from './regions';
