@@ -1,0 +1,198 @@
+{
+  "version": "rubysapphire",
+  "image": "/maps/hoenn-original.jpg",
+  "nodes": {
+    "littleroot-town": [
+      0.237,
+      0.76
+    ],
+    "hoenn-route-101": [
+      0.237,
+      0.705
+    ],
+    "oldale-town": [
+      0.237,
+      0.645
+    ],
+    "hoenn-route-102": [
+      0.15,
+      0.64
+    ],
+    "petalburg-city": [
+      0.055,
+      0.61
+    ],
+    "hoenn-route-104": [
+      0.055,
+      0.49
+    ],
+    "petalburg-woods": [
+      0.05,
+      0.555
+    ],
+    "rustboro-city": [
+      0.055,
+      0.375
+    ],
+    "hoenn-route-116": [
+      0.135,
+      0.34
+    ],
+    "rusturf-tunnel": [
+      0.225,
+      0.33
+    ],
+    "hoenn-route-105": [
+      0.115,
+      0.855
+    ],
+    "dewford-town": [
+      0.048,
+      0.735
+    ],
+    "granite-cave": [
+      0.042,
+      0.81
+    ],
+    "hoenn-route-108": [
+      0.15,
+      0.87
+    ],
+    "hoenn-route-109": [
+      0.34,
+      0.71
+    ],
+    "slateport-city": [
+      0.285,
+      0.605
+    ],
+    "hoenn-route-110": [
+      0.315,
+      0.47
+    ],
+    "mauville-city": [
+      0.337,
+      0.39
+    ],
+    "verdanturf-town": [
+      0.262,
+      0.385
+    ],
+    "hoenn-route-117": [
+      0.3,
+      0.385
+    ],
+    "hoenn-route-111": [
+      0.235,
+      0.1
+    ],
+    "hoenn-route-112": [
+      0.185,
+      0.18
+    ],
+    "fiery-path": [
+      0.163,
+      0.175
+    ],
+    "hoenn-route-113": [
+      0.165,
+      0.015
+    ],
+    "fallarbor-town": [
+      0.058,
+      0.155
+    ],
+    "meteor-falls": [
+      0.035,
+      0.11
+    ],
+    "hoenn-route-114": [
+      0.05,
+      0.19
+    ],
+    "mt-chimney": [
+      0.178,
+      0.125
+    ],
+    "lavaridge-town": [
+      0.095,
+      0.035
+    ],
+    "hoenn-route-103": [
+      0.237,
+      0.59
+    ],
+    "hoenn-route-118": [
+      0.366,
+      0.27
+    ],
+    "hoenn-route-119": [
+      0.462,
+      0.14
+    ],
+    "fortree-city": [
+      0.415,
+      0.01
+    ],
+    "hoenn-route-120": [
+      0.5,
+      0.227
+    ],
+    "hoenn-route-121": [
+      0.565,
+      0.227
+    ],
+    "hoenn-safari-zone": [
+      0.598,
+      0.215
+    ],
+    "lilycove-city": [
+      0.66,
+      0.215
+    ],
+    "mt-pyre": [
+      0.51,
+      0.315
+    ],
+    "hoenn-route-124": [
+      0.7,
+      0.255
+    ],
+    "mossdeep-city": [
+      0.745,
+      0.305
+    ],
+    "shoal-cave": [
+      0.645,
+      0.35
+    ],
+    "sootopolis-city": [
+      0.6,
+      0.475
+    ],
+    "hoenn-route-128": [
+      0.9,
+      0.72
+    ],
+    "sky-pillar": [
+      0.757,
+      0.505
+    ],
+    "hoenn-route-129": [
+      0.82,
+      0.645
+    ],
+    "pacifidlog-town": [
+      0.1,
+      0.925
+    ],
+    "hoenn-victory-road": [
+      0.932,
+      0.575
+    ],
+    "ever-grande-city": [
+      0.935,
+      0.5
+    ]
+  }
+}
