@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
+import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { pokemonTypes } from '@/lib/pokeapi';
 import { nameOfAbility, nameOfGrowth, nameOfType, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
@@ -40,6 +41,7 @@ function MiniPanel({
 function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean; pokemonId: number }) {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const entityModal = useEntityModal();
   const [desc, setDesc] = useState<string | null>(null);
   useEffect(() => {
     let on = true;
@@ -56,7 +58,15 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold shadow-[0_0_6px_rgba(246,201,69,0.8)]" aria-hidden />
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <span className="font-sans text-[13px] font-semibold text-tx-primary">{nameOfAbility(name, lang)}</span>
+          <button
+            type="button"
+            onClick={() => entityModal.open('ability', name)}
+            title={t('desc.openDesc', { name: nameOfAbility(name, lang) })}
+            aria-label={t('desc.openDesc', { name: nameOfAbility(name, lang) })}
+            className="font-sans text-[13px] font-semibold text-tx-primary transition-colors hover:text-gold"
+          >
+            {nameOfAbility(name, lang)}
+          </button>
           {hidden && (
             <span className="rounded-pill border border-gold/50 bg-gold-soft px-1.5 font-sans text-[9px] font-bold uppercase text-gold">
               {t('detail.side.hidden')}
@@ -71,6 +81,7 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
           </p>
         )}
       </div>
+      <EntityDescModal {...entityModal.props} />
     </li>
   );
 }

@@ -234,9 +234,22 @@ export default function SlotCard({
         </div>
         <div className="flex items-baseline justify-between gap-1.5">
           <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.ability')}</span>
-          <span className={cn('truncate font-semibold', slot.ability ? 'text-tx-secondary' : 'text-tx-muted/50')}>
-            {slot.ability ? nameOfAbility(slugify(slot.ability), lang) : '—'}
-          </span>
+          {slot.ability ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                entityModal.open('ability', slot.ability!);
+              }}
+              title={t8n('desc.openDesc', { name: nameOfAbility(slugify(slot.ability), lang) })}
+              aria-label={t8n('desc.openDesc', { name: nameOfAbility(slugify(slot.ability), lang) })}
+              className="truncate font-semibold text-tx-secondary transition-colors hover:text-gold"
+            >
+              {nameOfAbility(slugify(slot.ability), lang)}
+            </button>
+          ) : (
+            <span className="truncate font-semibold text-tx-muted/50">—</span>
+          )}
         </div>
       </div>
 

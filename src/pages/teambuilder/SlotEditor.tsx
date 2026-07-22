@@ -267,8 +267,19 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               )}
             </div>
             <div>
-              <span className="tb-micro">
+              <span className="tb-micro flex items-center gap-1">
                 {t('tb.editor.ability')} {mech.abilities ? '' : t('tb.editor.naThisGen')}
+                {mech.abilities && slot.ability && (
+                  <button
+                    type="button"
+                    onClick={() => entityModal.open('ability', slot.ability!)}
+                    aria-label={t('desc.openDesc', { name: localName(slot.ability, lang, nameOfAbility) })}
+                    title={t('desc.openDesc', { name: localName(slot.ability, lang, nameOfAbility) })}
+                    className="rounded-sm p-0.5 text-tx-muted transition-colors hover:text-gold"
+                  >
+                    <Info size={10} />
+                  </button>
+                )}
               </span>
               {mech.abilities ? (
                 <MiniAutocomplete
