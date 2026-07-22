@@ -7,9 +7,11 @@ import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import GameSelect from '@/components/GameSelect';
 import TypeGlyph from '@/components/TypeGlyph';
 import { getMove } from '@/lib/pokeapi';
 import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
+import { VERSION_GROUPS as ALL_VERSION_GROUPS } from '@/lib/version-groups';
 import type { Move, Pokemon } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { VERSION_GROUPS, typeRgb } from './data';
@@ -84,6 +86,12 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
   const activeVersion = availableVersions.some((v) => v.key === version)
     ? version
     : (availableVersions[0]?.key ?? '');
+
+  /* GameSelect options: full version-group info for the groups that teach moves */
+  const versionOptions = useMemo(() => {
+    const present = new Set(availableVersions.map((v) => v.key));
+    return ALL_VERSION_GROUPS.filter((vg) => present.has(vg.id));
+  }, [availableVersions]);
 
   /* rows per method for the active version */
   const byMethod = useMemo(() => {
@@ -178,18 +186,12 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
             ),
           }))}
         />
-        <select
-          className="dx-select"
+        <GameSelect
           value={activeVersion}
-          onChange={(e) => setVersion(e.target.value)}
-          aria-label={t8n('detail.moves.versionGroup')}
-        >
-          {availableVersions.map((v) => (
-            <option key={v.key} value={v.key}>
-              {v.label}
-            </option>
-          ))}
-        </select>
+          onChange={setVersion}
+          options={versionOptions}
+          ariaLabel={t8n('detail.moves.versionGroup')}
+        />
         {/* type filter */}
         <div className="ml-auto flex items-center gap-1">
           {presentTypes.map((t) => (
