@@ -1,0 +1,126 @@
+/* GameSelect — grouped game/version dropdown (dark/gold).
+ * Self-contained so the component works outside the team-builder stylesheet
+ * (detail page MovesPanel, Versus panel). */
+
+.gs-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #171b27;
+  color: #a8b0c4;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 150ms, color 150ms;
+}
+
+.gs-trigger:hover {
+  border-color: rgba(246, 201, 69, 0.45);
+  color: #f4f6fc;
+}
+
+.gs-dropdown {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 280px;
+  background: rgba(13, 15, 22, 0.92);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* scrollable list — gold scrollbar must be VISIBLE so users notice
+ * that the list continues past the first generations */
+.gs-list {
+  max-height: 380px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(246, 201, 69, 0.6) rgba(255, 255, 255, 0.07);
+}
+
+.gs-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.gs-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+}
+
+.gs-list::-webkit-scrollbar-thumb {
+  background: rgba(246, 201, 69, 0.55);
+  border-radius: 4px;
+}
+
+.gs-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(246, 201, 69, 0.8);
+}
+
+/* bottom fade = "more below" affordance; hidden via opacity-0 at list end */
+.gs-fade {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34px;
+  background: linear-gradient(to bottom, rgba(13, 15, 22, 0), rgba(13, 15, 22, 0.96));
+  border-radius: 0 0 12px 12px;
+  transition: opacity 200ms;
+}
+
+.gs-micro {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5e6680;
+}
+
+.gs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #171b27;
+  padding: 2px 6px;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #a8b0c4;
+}
+
+.gs-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #a8b0c4;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background 150ms;
+}
+
+.gs-option:hover,
+.gs-option[data-active='true'] {
+  background: #1f2433;
+  color: #f4f6fc;
+}
+
+.gs-option[data-active='true'] {
+  border-left-color: #f6c945;
+}

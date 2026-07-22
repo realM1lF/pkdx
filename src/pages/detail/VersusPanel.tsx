@@ -11,6 +11,7 @@ import { RotateCcw, Search, SlidersHorizontal, Swords, UserPlus } from 'lucide-r
 import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
 import Sprite from '@/components/Sprite';
+import GameSelect from '@/components/GameSelect';
 import TypeBadge from '@/components/TypeBadge';
 import TypeGlyph from '@/components/TypeGlyph';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -55,8 +56,8 @@ import type { DamageCell, EnrichedTrainer, MovesetSource, SpeedCheck, VersusSide
 import {
   defaultVersusContext,
   versusContextFromGame,
+  versusGameOptions,
   versusWeatherForGen,
-  VERSUS_GAME_OPTIONS,
   type VersusContext,
   type VersusField,
   type VersusWeather,
@@ -1309,6 +1310,18 @@ export default function VersusPanel({
     setCtx(game ? versusContextFromGame(game, trainerRegion) : { ...defaultVersusContext(), region: trainerRegion });
   };
 
+  /* grouped GameSelect options (per game, chip = version-group short) */
+  const gameOptions = useMemo(
+    () =>
+      versusGameOptions().map((o) => ({
+        id: o.game,
+        label: t(`versus.games.${o.game}`, { defaultValue: o.label }),
+        short: versionGroupById(o.versionGroup).short,
+        gen: o.gen,
+      })),
+    [t],
+  );
+
   const pickTrainerMon = (tr: EnrichedTrainer, member: { species: string; level: number; moves?: string[] }) => {
     const id = idOf(member.species);
     if (id) setFoeId(id);
@@ -1361,22 +1374,16 @@ export default function VersusPanel({
     <div className="grid grid-cols-12 gap-4">
       {/* ---------- toolbar: game + field + calc badge ---------- */}
       <div className="col-span-12 flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
-        <label className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5">
           <span className="pixel-label text-[7px] text-tx-muted">{t('versus.gameSelect')}</span>
-          <select
-            className="dx-select h-6 min-w-[160px] max-w-[220px] text-[10px]"
+          <GameSelect
             value={ctx.game ?? ''}
-            onChange={(e) => pickGame(e.target.value)}
-            aria-label={t('versus.gameSelect')}
-          >
-            <option value="">{t('versus.gameDefault')}</option>
-            {VERSUS_GAME_OPTIONS.map((o) => (
-              <option key={o.game} value={o.game}>
-                {t(`versus.games.${o.game}`, { defaultValue: o.label })}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={pickGame}
+            options={gameOptions}
+            ariaLabel={t('versus.gameSelect')}
+            defaultOption={{ id: '', label: t('versus.gameDefault'), short: 'SV', gen: 9 }}
+          />
+        </div>
         {weatherOptions.length > 0 && (
           <div className="flex flex-wrap items-center gap-1">
             <span className="pixel-label text-[7px] text-tx-muted">{t('versus.fieldLabel')}</span>
