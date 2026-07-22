@@ -64,6 +64,9 @@ export interface NuzEncounterRow {
   level: number;
   status: NuzEncounterStatus;
   note: string | null;
+  /** explicit party membership (drag & drop team/box); pre-migration rows
+   * may lack it → store falls back to derived "6 newest caught = party" */
+  in_party?: boolean;
   created_at: string;
 }
 

@@ -2,9 +2,9 @@
  * edit nickname / remove. Fixed-position at pointer, gold-only feedback. */
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, HeartCrack, Pencil, Trash2, Wind } from 'lucide-react';
+import { Archive, Check, HeartCrack, Pencil, Trash2, Wind } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { deleteEncounter, updateEncounter } from '@/lib/nuzlocke-store';
+import { deleteEncounter, pushToast, setEncounterParty, updateEncounter } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, UpdateResult } from '@/lib/nuzlocke-store';
 
 export interface MenuTarget {
@@ -102,6 +102,21 @@ export default function EncounterMenu({
             >
               <Wind size={13} /> {t('nuz.menu.markMissed')}
             </button>
+            {/* non-drag path (touch devices): box this party member */}
+            {enc.in_party !== false && (
+              <button
+                type="button"
+                onClick={() => {
+                  const res = setEncounterParty(enc.run_id, enc.id, false);
+                  if (res.ok) pushToast('info', t('nuz.dnd.movedBox', { name: enc.nickname ?? nameOf(enc.pokemon_id) }));
+                  onClose();
+                }}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+                role="menuitem"
+              >
+                <Archive size={13} /> {t('nuz.dnd.toBox')}
+              </button>
+            )}
           </>
         )}
         {enc.status !== 'caught' && !noteMode && !nickMode && (

@@ -272,19 +272,40 @@ export function isLinked(state: RunState, encId: string): boolean {
   return linkPartnerOf(state, encId) !== null;
 }
 
-/** Party = 6 most recent alive catches (§0.4); the rest are BOXED. */
-export function partyOf(state: RunState, playerId: string): NuzEncounterRow[] {
-  const alive = state.encounters
+/** Party membership: explicit `in_party` flag (drag & drop). Legacy runs
+ * (localStorage from before the flag existed) fall back to the derived rule
+ * "6 most recent alive catches = party" until the first manual move. */
+function hasPartyFlags(state: RunState): boolean {
+  return state.encounters.some((e) => e.in_party !== undefined);
+}
+
+function aliveOf(state: RunState, playerId: string): NuzEncounterRow[] {
+  return state.encounters
     .filter((e) => e.player_id === playerId && e.status === 'caught')
     .sort((a, b) => a.created_at.localeCompare(b.created_at));
-  return alive.slice(-6);
+}
+
+export function partyOf(state: RunState, playerId: string): NuzEncounterRow[] {
+  const alive = aliveOf(state, playerId);
+  if (!hasPartyFlags(state)) return alive.slice(-6);
+  return alive.filter((e) => e.in_party === true);
 }
 
 export function boxedOf(state: RunState, playerId: string): NuzEncounterRow[] {
-  const alive = state.encounters
-    .filter((e) => e.player_id === playerId && e.status === 'caught')
-    .sort((a, b) => a.created_at.localeCompare(b.created_at));
-  return alive.slice(0, Math.max(0, alive.length - 6)).reverse();
+  const alive = aliveOf(state, playerId);
+  if (!hasPartyFlags(state)) return alive.slice(0, Math.max(0, alive.length - 6)).reverse();
+  return alive.filter((e) => e.in_party !== true).reverse();
+}
+
+/** Initialize in_party on legacy rows with the old derived rule (idempotent). */
+function ensurePartyFlags(s: RunState): void {
+  if (hasPartyFlags(s)) return;
+  for (const p of s.players) {
+    const alive = aliveOf(s, p.id);
+    alive.forEach((e, i) => {
+      e.in_party = i >= alive.length - 6;
+    });
+  }
 }
 
 export function graveyardOf(state: RunState): NuzEncounterRow[] {
@@ -925,6 +946,8 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
     level: draft.level,
     status: draft.status,
     note: draft.note ?? null,
+    /* auto-join party while there is a free slot (mirrors the old derived rule) */
+    in_party: draft.status === 'caught' && partyOf(s, draft.playerId).length < 6,
     created_at: new Date().toISOString(),
   };
 
@@ -961,7 +984,11 @@ export function updateEncounter(
   const enc = s?.encounters.find((e) => e.id === encId);
   if (!s || !enc) return { ok: false };
   const prevStatus = enc.status;
+  /* leaving the living world frees the party slot (persisted too) */
+  const freesSlot = Boolean(patch.status && patch.status !== 'caught');
+  if (freesSlot) enc.in_party = false;
   Object.assign(enc, patch);
+  const persistedPatch = freesSlot ? { ...patch, in_party: false } : patch;
   saveLocalRun(s);
   let cascadePartner: NuzEncounterRow | null = null;
   if (patch.status && patch.status !== prevStatus) {
@@ -976,11 +1003,61 @@ export function updateEncounter(
   }
   if (s.mode === 'multi') {
     persistWithRetry(entry, enc.id, () =>
-      nuzTables.encounters().update(patch).eq('id', enc.id),
+      nuzTables.encounters().update(persistedPatch).eq('id', enc.id),
     );
   }
   emit(entry);
   return { ok: true, cascadePartner };
+}
+
+/* ---------- actions: party management (drag & drop / menu) ---------- */
+
+export interface PartyMoveResult {
+  ok: boolean;
+  /** 'full' → target party already has 6 · 'wrong-state' → only living catches can move */
+  reason?: 'full' | 'wrong-state';
+}
+
+/** Move a living catch into the party (inParty=true) or into the box (false). */
+export function setEncounterParty(runId: string, encId: string, inParty: boolean): PartyMoveResult {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  const enc = s?.encounters.find((e) => e.id === encId);
+  if (!s || !enc) return { ok: false };
+  if (enc.status !== 'caught') return { ok: false, reason: 'wrong-state' };
+  ensurePartyFlags(s);
+  if (inParty && !enc.in_party && partyOf(s, enc.player_id).length >= 6) {
+    return { ok: false, reason: 'full' };
+  }
+  if (Boolean(enc.in_party) === inParty) return { ok: true };
+  enc.in_party = inParty;
+  saveLocalRun(s);
+  if (s.mode === 'multi') {
+    persistWithRetry(entry, enc.id, () => nuzTables.encounters().update({ in_party: inParty }).eq('id', enc.id));
+  }
+  emit(entry);
+  return { ok: true };
+}
+
+/** Swap party membership of two living catches (box → party onto a full slot). */
+export function swapParty(runId: string, boxEncId: string, partyEncId: string): PartyMoveResult {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  const a = s?.encounters.find((e) => e.id === boxEncId);
+  const b = s?.encounters.find((e) => e.id === partyEncId);
+  if (!s || !a || !b) return { ok: false };
+  if (a.status !== 'caught' || b.status !== 'caught') return { ok: false, reason: 'wrong-state' };
+  if (a.player_id !== b.player_id) return { ok: false };
+  ensurePartyFlags(s);
+  a.in_party = true;
+  b.in_party = false;
+  saveLocalRun(s);
+  if (s.mode === 'multi') {
+    persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id));
+    persistWithRetry(entry, b.id, () => nuzTables.encounters().update({ in_party: false }).eq('id', b.id));
+  }
+  emit(entry);
+  return { ok: true };
 }
 
 export function deleteEncounter(runId: string, encId: string): void {

@@ -1,6 +1,8 @@
 /* Nuzlocke run — ACTIVE PARTIES team grid (nuzlocke.md §2.6).
  * players × 6 slots; click → /pokemon/:id. Boxed survivors render in the
- * always-visible BOX section below (BoxSection) — no hidden drawer. */
+ * always-visible BOX section below (BoxSection) — no hidden drawer.
+ * Drag & drop: drag a party card onto a BOX row to box it; drop a boxed
+ * card here to add it (onto a card = swap when the party is full). */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -8,13 +10,14 @@ import { useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MoreVertical } from 'lucide-react';
 import Sprite from '@/components/Sprite';
-import { partyOf } from '@/lib/nuzlocke-store';
+import { partyOf, pushToast, setEncounterParty, swapParty } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { getPokemon, pokemonTypes } from '@/lib/pokeapi';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { PixelLabel } from './ui';
+import { ENC_DND_MIME, encDnd } from './dnd';
 
 function useTypes(id: number): string[] {
   const [types, setTypes] = useState<string[]>([]);
@@ -47,6 +50,7 @@ function PartySlot({
   linked,
   partnerName,
   nameOf,
+  encounters,
   onMenu,
 }: {
   enc: NuzEncounterRow;
@@ -54,19 +58,67 @@ function PartySlot({
   linked: boolean;
   partnerName: string | null;
   nameOf: (id: number) => string;
+  encounters: NuzEncounterRow[];
   onMenu: (enc: NuzEncounterRow, x: number, y: number) => void;
 }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
   const { t } = useTranslation();
   const types = useTypes(enc.pokemon_id);
+  const [dragging, setDragging] = useState(false);
+  const [swapTarget, setSwapTarget] = useState(false);
   return (
     <motion.div
       key={enc.id}
       layout
       exit={{ opacity: 0, scale: 0.8, y: -8, filter: 'grayscale(1)' }}
       transition={{ duration: 0.4 }}
-      className="group/cell relative flex h-[72px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-sm border border-hairline bg-surface2 transition-colors"
+      draggable
+      onDragStart={(e: any) => {
+        const payload = { id: enc.id, playerId: enc.player_id, from: 'party' as const };
+        e.dataTransfer.setData(ENC_DND_MIME, JSON.stringify(payload));
+        e.dataTransfer.effectAllowed = 'move';
+        encDnd.start(payload);
+        setDragging(true);
+      }}
+      onDragEnd={() => {
+        encDnd.end();
+        setDragging(false);
+        setSwapTarget(false);
+      }}
+      onDragOver={(e: any) => {
+        const d = encDnd.peek();
+        /* a boxed card hovering this party card = swap offer */
+        if (d && d.from === 'box' && d.playerId === enc.player_id) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          setSwapTarget(true);
+        }
+      }}
+      onDragLeave={() => setSwapTarget(false)}
+      onDrop={(e: any) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setSwapTarget(false);
+        const d = encDnd.peek();
+        encDnd.end();
+        if (!d || d.from !== 'box') return;
+        if (d.playerId !== enc.player_id) {
+          pushToast('info', t('nuz.dnd.wrongPlayer'));
+          return;
+        }
+        const res = swapParty(enc.run_id, d.id, enc.id);
+        if (res.ok) {
+          const dragged = encounters.find((x) => x.id === d.id);
+          const aNick = dragged?.nickname ?? (dragged ? nameOf(dragged.pokemon_id) : '?');
+          pushToast('info', t('nuz.dnd.swapped', { a: aNick, b: enc.nickname ?? nameOf(enc.pokemon_id) }));
+        }
+      }}
+      className={cn(
+        'group/cell relative flex h-[88px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-sm border border-hairline bg-surface2 transition-all',
+        dragging && 'opacity-40',
+        swapTarget && 'border-gold/70 shadow-glow-gold',
+      )}
       style={{ ['--pc' as string]: color }}
       onClick={() => navigate(localePath(`/pokemon/${enc.pokemon_id}`))}
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${color}88`)}
@@ -76,7 +128,7 @@ function PartySlot({
       aria-label={t('nuz.team.openDexAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
     >
       <span className="transition-transform duration-200 group-hover/cell:-translate-y-[6%]">
-        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[36px] w-[36px]" skeleton={false} />
+        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[48px] w-[48px]" skeleton={false} />
       </span>
       <span className="max-w-full truncate px-1 text-[10px] font-semibold leading-tight text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
       <span className="flex items-center gap-1">
@@ -118,6 +170,7 @@ export default function TeamGrid({
 }) {
   const { t } = useTranslation();
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
+  const [dropPlayer, setDropPlayer] = useState<string | null>(null);
 
   return (
     <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label={t('nuz.team.aria')}>
@@ -135,7 +188,40 @@ export default function TeamGrid({
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.35, delay: pi * 0.06 }}
-              className="rounded-md border border-hairline bg-surface2/40 p-2.5"
+              className={cn(
+                'rounded-md border bg-surface2/40 p-2.5 transition-colors',
+                dropPlayer === p.id ? 'border-gold/60' : 'border-hairline',
+              )}
+              onDragOver={(e: any) => {
+                const d = encDnd.peek();
+                if (d && d.from === 'box' && d.playerId === p.id) {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = 'move';
+                  setDropPlayer(p.id);
+                }
+              }}
+              onDragLeave={(e: any) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) setDropPlayer(null);
+              }}
+              onDrop={(e: any) => {
+                e.preventDefault();
+                setDropPlayer(null);
+                const d = encDnd.peek();
+                encDnd.end();
+                if (!d || d.from !== 'box') return;
+                if (d.playerId !== p.id) {
+                  pushToast('info', t('nuz.dnd.wrongPlayer'));
+                  return;
+                }
+                const res = setEncounterParty(p.run_id, d.id, true);
+                if (!res.ok && res.reason === 'full') {
+                  pushToast('info', t('nuz.dnd.teamFull'));
+                } else if (res.ok) {
+                  const dragged = state.encounters.find((x) => x.id === d.id);
+                  const nick = dragged?.nickname ?? (dragged ? nameOf(dragged.pokemon_id) : '?');
+                  pushToast('info', t('nuz.dnd.movedTeam', { name: nick }));
+                }
+              }}
             >
               <div className="flex h-8 items-center gap-1.5">
                 <span className={cn('h-2.5 w-2.5 rounded-full', online[p.id] && 'nz-presence-ring')} style={{ background: p.color }} />
@@ -155,13 +241,20 @@ export default function TeamGrid({
                         linked={!!partner}
                         partnerName={partner ? `${partnerOwner?.name ?? '?'}'s ${partner.nickname ?? nameOf(partner.pokemon_id)}` : null}
                         nameOf={nameOf}
+                        encounters={state.encounters}
                         onMenu={onMenu}
                       />
                     );
                   })}
                 </AnimatePresence>
                 {Array.from({ length: 6 - party.length }).map((_, i) => (
-                  <div key={`e${i}`} className="grid h-[72px] place-items-center rounded-sm border border-dashed border-hairline2">
+                  <div
+                    key={`e${i}`}
+                    className={cn(
+                      'grid h-[88px] place-items-center rounded-sm border border-dashed transition-colors',
+                      dropPlayer === p.id ? 'border-gold/50 bg-gold/5' : 'border-hairline2',
+                    )}
+                  >
                     <span className="h-1.5 w-1.5 rounded-full bg-tx-muted/40" />
                   </div>
                 ))}

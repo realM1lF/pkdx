@@ -636,7 +636,7 @@
     "team": {
       "aria": "Active parties",
       "title": "ACTIVE PARTIES",
-      "note": "LAST 6 ALIVE PER PLAYER · REST ARE BOXED",
+      "note": "DRAG ⇄ BOX TO MANAGE · MAX 6 PER PLAYER",
       "openDex": "{{name}} — open dex entry",
       "openDexAria": "Open {{name}} in the dex",
       "options": "Encounter options",
@@ -646,7 +646,7 @@
     "box": {
       "aria": "Box storage",
       "title": "BOX",
-      "note": "SURVIVORS BEYOND THE PARTY OF 6",
+      "note": "DRAG INTO A PARTY ROW ABOVE · SURVIVORS IN RESERVE",
       "count": "{{count}} BOXED",
       "empty": "BOX EMPTY",
       "cellTip": "{{name}} — LV {{level}} · caught on {{route}} — open dex entry",
@@ -813,7 +813,18 @@
     "customTip": "Not in encounter data — logged manually.",
     "levelDown": "Level down",
     "levelUp": "Level up",
-    "runViewAria": "Run view"
+    "runViewAria": "Run view",
+    "dnd": {
+      "teamFull": "Team full — move a Pokémon to the box first",
+      "wrongPlayer": "Only within the same player",
+      "toBox": "Move to box",
+      "toTeam": "Move to team",
+      "movedBox": "{{name}} → BOX",
+      "movedTeam": "{{name}} → TEAM",
+      "swapped": "{{a}} ⇄ {{b}}",
+      "dropHere": "DROP TO BOX",
+      "dropTeam": "DROP FOR TEAM"
+    }
   },
   "search": {
     "recent": "RECENT",

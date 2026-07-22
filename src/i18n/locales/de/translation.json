@@ -636,7 +636,7 @@
     "team": {
       "aria": "Aktive Teams",
       "title": "AKTIVE TEAMS",
-      "note": "LETZTE 6 LEBENDIGE PRO SPIELER · REST IN DER BOX",
+      "note": "PER DRAG ⇄ BANK VERWALTEN · MAX 6 PRO SPIELER",
       "openDex": "{{name}} — Dex-Eintrag öffnen",
       "openDexAria": "{{name}} im Dex öffnen",
       "options": "Begegnungs-Optionen",
@@ -646,7 +646,7 @@
     "box": {
       "aria": "Box-Lager",
       "title": "BOX",
-      "note": "ÜBERLEBENDE JENSEITS DES 6ER-TEAMS",
+      "note": "IN EINE TEAM-REIHE OBEN ZIEHEN · RESERVE",
       "count": "{{count}} IN BOX",
       "empty": "BOX LEER",
       "cellTip": "{{name}} — LV {{level}} · gefangen auf {{route}} — Dex-Eintrag öffnen",
@@ -813,7 +813,18 @@
     "customTip": "Nicht in den Encounter-Daten — manuell eingetragen.",
     "levelDown": "Level senken",
     "levelUp": "Level erhöhen",
-    "runViewAria": "Run-Ansicht"
+    "runViewAria": "Run-Ansicht",
+    "dnd": {
+      "teamFull": "Team voll — lege zuerst ein Pokémon in die Bank",
+      "wrongPlayer": "Nur innerhalb desselben Spielers",
+      "toBox": "In die Bank legen",
+      "toTeam": "Ins Team holen",
+      "movedBox": "{{name}} → BANK",
+      "movedTeam": "{{name}} → TEAM",
+      "swapped": "{{a}} ⇄ {{b}}",
+      "dropHere": "HIER ABLEGEN = BANK",
+      "dropTeam": "ABLEGEN = TEAM"
+    }
   },
   "search": {
     "recent": "ZULETZT",
