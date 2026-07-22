@@ -11,6 +11,7 @@ import type { MapViewMode } from './maps/CommandBar';
 import LeftRail, { computeRailStats } from './maps/LeftRail';
 import MapCanvas from './maps/MapCanvas';
 import OriginalCanvas from './maps/OriginalCanvas';
+import { originalAvailable } from '@/lib/maps-geo';
 import DetailDrawer from './maps/DetailDrawer';
 import Minimap from './maps/Minimap';
 import { useMapCamera } from './maps/useMapCamera';
@@ -98,7 +99,7 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
     }
   });
   const [origResetSignal, setOrigResetSignal] = useState(0);
-  const effectiveView: MapViewMode = region.region === 'kanto' ? view : 'schematic';
+  const effectiveView: MapViewMode = originalAvailable(region.region) ? view : 'schematic';
   useEffect(() => {
     try {
       window.localStorage.setItem('pdx2.mapview', view);

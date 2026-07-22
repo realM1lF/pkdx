@@ -11,7 +11,8 @@ import { AnimatePresence } from 'framer-motion';
 import { Maximize, Minus, Plus } from 'lucide-react';
 import ScoutTooltip from './ScoutTooltip';
 import { useMapCamera } from './useMapCamera';
-import geoJson from '@/data/regions/kanto-geo.json';
+import { originalGeoFor } from '@/lib/maps-geo';
+import type { RegionGeo } from '@/lib/maps-geo';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/lib/i18n-data';
 import type { MapNode, RegionMap } from '@/lib/regions';
@@ -20,24 +21,15 @@ import type { MethodBucket, NodeMapData } from '@/lib/mapdata';
 import { itemsForNode } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
 
-interface RegionGeo {
-  version: string;
-  image: string;
-  /** node id → [x, y] fractions of image width/height (0..1) */
-  nodes: Record<string, number[]>;
-}
+/* fallback when a region has no geo entry (ORIGINAL view is only offered
+ * when the registry has one — this is a defensive null-guard) */
+const EMPTY_GEO: RegionGeo = { version: '', image: '', nodes: {} };
 
-const GEO = geoJson as RegionGeo;
-
-/* natural pixel dims of public/maps/kanto-original.jpg — the camera world.
- * geo fractions map to it exactly; a re-resolved asset of the same aspect
- * keeps working (fractions are resolution-independent). */
-const IMG_W = 2600;
-const IMG_H = 2549;
-
-/* marker scale vs. the schematic glyphs (world is 2600×2549 vs 1200×840,
- * so glyphs are drawn ~2.1× to read the same on screen at fit zoom) */
-const S = 2.1;
+/* marker scale vs. the schematic glyphs — set per render from the region's
+ * image width (2600-wide world ≈ 2.1× vs 1200×840 schematic; kanto stays
+ * exactly 2.1). Module-level because the marker sub-components read it;
+ * only one OriginalCanvas is mounted at a time. */
+let S = 2.1;
 
 const EMPTY_STROKE = 'rgba(255,255,255,0.14)';
 const GOLD = '#F6C945';
@@ -282,6 +274,14 @@ export default function OriginalCanvas({
 }: OriginalCanvasProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
+  /* registry lookup: natural image dims become the camera world; marker
+   * scale mirrors the schematic glyphs (2600-wide world ≈ 2.1× vs 1200×840
+   * schematic — kanto stays exactly 2.1 via imgW / 1238) */
+  const entry = originalGeoFor(region.region);
+  const GEO = entry?.geo ?? EMPTY_GEO;
+  const IMG_W = entry?.imgW ?? 2600;
+  const IMG_H = entry?.imgH ?? 2549;
+  S = IMG_W / 1238;
   const camera = useMapCamera(IMG_W, IMG_H, `${region.region}-original`);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const rgb = accentRgb(region.accent);

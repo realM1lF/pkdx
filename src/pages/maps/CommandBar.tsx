@@ -2,6 +2,7 @@
  * version chips, SCHEMATIC|ORIGINAL view toggle, WALK/SURF/FISH/OTHER
  * filters, node search, scan status, legend popover, reset view. */
 import { useMemo, useRef, useState } from 'react';
+import { originalAvailable as hasOriginalGeo } from '@/lib/maps-geo';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
@@ -63,7 +64,7 @@ export default function CommandBar({
   const { t } = useTranslation();
   const lang = useLanguage();
   const rgb = accentRgb(region.accent);
-  const originalAvailable = region.region === 'kanto';
+  const originalAvailable = hasOriginalGeo(region.region);
   const interactive = resolveInteractiveMapLink(region.region, version);
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
