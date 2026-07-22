@@ -4,7 +4,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Eraser } from 'lucide-react';
-import { nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { nameOfAbility, nameOfItem, nameOfMove, nameOfNature, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import type { Lang } from '@/lib/i18n-data';
 import {
   MAX_EV_PER_STAT,
   MAX_EV_TOTAL,
@@ -23,6 +24,21 @@ import { STAT_LABELS, STAT_ORDER } from '@/lib/types';
 import type { Pokemon, StatKey } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import MiniAutocomplete from './MiniAutocomplete';
+
+/** 'Aguav Berry' → 'aguav-berry' · "King's Rock" → 'kings-rock'
+ * (items/abilities/natures are stored as EN display names; slugs drop apostrophes) */
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/** picker display: EN shows the stored name untouched, DE resolves via the slug artifact */
+function localName(en: string, lang: Lang, lookup: (slug: string, lang: Lang) => string): string {
+  return lang === 'de' ? lookup(slugify(en), lang) : en;
+}
 
 const METHOD_CHIP: Record<LegalMoveOption['method'], string> = {
   'level-up': 'LV',
@@ -208,14 +224,14 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               {mech.items ? (
                 <MiniAutocomplete
                   items={itemOptions}
-                  filter={(it, q) => it.toLowerCase().includes(q)}
+                  filter={(it, q) => it.toLowerCase().includes(q) || localName(it, lang, nameOfItem).toLowerCase().includes(q)}
                   onSelect={(it) => patch({ item: it })}
                   keyOf={(it) => it}
                   placeholder={t('tb.editor.addItem')}
-                  displayValue={slot.item ?? undefined}
+                  displayValue={slot.item ? localName(slot.item, lang, nameOfItem) : undefined}
                   onClear={slot.item ? () => patch({ item: null }) : undefined}
                   maxResults={40}
-                  renderItem={(it) => <span className="truncate">{it}</span>}
+                  renderItem={(it) => <span className="truncate">{localName(it, lang, nameOfItem)}</span>}
                 />
               ) : (
                 <p className="tb-micro mt-1.5">{t('tb.editor.noItems')}</p>
@@ -228,14 +244,14 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               {mech.abilities ? (
                 <MiniAutocomplete
                   items={abilityOptions}
-                  filter={(a, q) => a.toLowerCase().includes(q)}
+                  filter={(a, q) => a.toLowerCase().includes(q) || localName(a, lang, nameOfAbility).toLowerCase().includes(q)}
                   onSelect={(a) => patch({ ability: a })}
                   keyOf={(a) => a}
                   placeholder={t('tb.editor.selectAbility')}
-                  displayValue={slot.ability ?? undefined}
+                  displayValue={slot.ability ? localName(slot.ability, lang, nameOfAbility) : undefined}
                   onClear={slot.ability ? () => patch({ ability: null }) : undefined}
                   maxResults={4}
-                  renderItem={(a) => <span>{a}</span>}
+                  renderItem={(a) => <span>{localName(a, lang, nameOfAbility)}</span>}
                 />
               ) : (
                 <p className="tb-micro mt-1.5">{t('tb.editor.noAbilities')}</p>
@@ -248,16 +264,16 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
               {mech.natures ? (
                 <MiniAutocomplete
                   items={natureOptions}
-                  filter={(n, q) => n.name.toLowerCase().includes(q)}
+                  filter={(n, q) => n.name.toLowerCase().includes(q) || localName(n.name, lang, nameOfNature).toLowerCase().includes(q)}
                   onSelect={(n) => patch({ nature: n.name })}
                   keyOf={(n) => n.name}
                   placeholder={t('tb.editor.selectNature')}
-                  displayValue={slot.nature ?? undefined}
+                  displayValue={slot.nature ? localName(slot.nature, lang, nameOfNature) : undefined}
                   onClear={slot.nature ? () => patch({ nature: null }) : undefined}
                   maxResults={30}
                   renderItem={(n) => (
                     <span className="flex w-full items-center justify-between gap-2">
-                      <span>{n.name}</span>
+                      <span>{localName(n.name, lang, nameOfNature)}</span>
                       {n.plus && n.minus ? (
                         <span className="tb-chip shrink-0 !px-1.5 !py-0 !text-[8px]">
                           +{STAT_LABELS[statKeyOf(n.plus)]} −{STAT_LABELS[statKeyOf(n.minus)]}
