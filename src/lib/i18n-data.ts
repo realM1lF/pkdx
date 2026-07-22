@@ -7,26 +7,76 @@
  * Reactivity: components must subscribe to language changes via useLanguage()
  * (or useTranslation()) so lookups re-run on toggle. */
 
+import { useSyncExternalStore } from 'react';
 import { useTranslation } from 'react-i18next';
-import pokemonDe from '@/data/i18n/de/pokemon.json';
-import movesDe from '@/data/i18n/de/moves.json';
-import abilitiesDe from '@/data/i18n/de/abilities.json';
-import itemsDe from '@/data/i18n/de/items.json';
-import typesDe from '@/data/i18n/de/types.json';
-import locationsDe from '@/data/i18n/de/locations.json';
-import regionsDe from '@/data/i18n/de/regions.json';
-import searchIndexDe from '@/data/i18n/de/search-index.json';
+import slugsJson from '@/data/pokemon-slugs.json';
 import { displayName } from './pokeapi';
 
 export type Lang = 'en' | 'de';
 
-const POKEMON_DE = pokemonDe as Record<string, { slug: string; name: string; genus: string }>;
-const MOVES_DE = movesDe as Record<string, string>;
-const ABILITIES_DE = abilitiesDe as Record<string, string>;
-const ITEMS_DE = itemsDe as Record<string, string>;
-const TYPES_DE = typesDe as Record<string, string>;
-const LOCATIONS_DE = locationsDe as Record<string, string>;
-const REGIONS_DE = regionsDe as Record<string, string>;
+/** id → slug (index 0 = dex #1) — tiny committed artifact, always bundled so
+ *  the EN data path never needs the de artifacts. */
+const SLUGS = slugsJson as string[];
+
+/* ---------- lazy German artifacts (EP1.2) ----------
+ * The de build-time JSONs (~290 KB) are NOT in the entry chunk. They load via
+ * dynamic import() when the active language is German (wired in src/i18n/index.ts);
+ * until they arrive every lookup falls back to English. After the load completes,
+ * subscribers (onGermanDataLoaded) are notified so the UI re-renders. */
+
+type PokemonDe = Record<string, { slug: string; name: string; genus: string }>;
+
+let POKEMON_DE: PokemonDe | null = null;
+let MOVES_DE: Record<string, string> | null = null;
+let ABILITIES_DE: Record<string, string> | null = null;
+let ITEMS_DE: Record<string, string> | null = null;
+let TYPES_DE: Record<string, string> | null = null;
+let LOCATIONS_DE: Record<string, string> | null = null;
+let REGIONS_DE: Record<string, string> | null = null;
+
+/** slug → dex id, built once the pokemon artifact lands */
+let ID_BY_SLUG: Record<string, number> = {};
+
+const deListeners = new Set<() => void>();
+
+/** Fires once after the German artifacts have been loaded. */
+export function onGermanDataLoaded(fn: () => void): () => void {
+  deListeners.add(fn);
+  return () => deListeners.delete(fn);
+}
+
+let dePromise: Promise<void> | null = null;
+
+/** Load all German name artifacts (idempotent, cached). */
+export function loadGermanData(): Promise<void> {
+  if (!dePromise) {
+    dePromise = Promise.all([
+      import('@/data/i18n/de/pokemon.json'),
+      import('@/data/i18n/de/moves.json'),
+      import('@/data/i18n/de/abilities.json'),
+      import('@/data/i18n/de/items.json'),
+      import('@/data/i18n/de/types.json'),
+      import('@/data/i18n/de/locations.json'),
+      import('@/data/i18n/de/regions.json'),
+    ]).then(([pokemon, moves, abilities, items, types, locations, regions]) => {
+      POKEMON_DE = pokemon.default as PokemonDe;
+      MOVES_DE = moves.default as Record<string, string>;
+      ABILITIES_DE = abilities.default as Record<string, string>;
+      ITEMS_DE = items.default as Record<string, string>;
+      TYPES_DE = types.default as Record<string, string>;
+      LOCATIONS_DE = locations.default as Record<string, string>;
+      REGIONS_DE = regions.default as Record<string, string>;
+      const bySlug: Record<string, number> = {};
+      for (const [id, p] of Object.entries(POKEMON_DE)) bySlug[p.slug] = Number(id);
+      ID_BY_SLUG = bySlug;
+      deListeners.forEach((fn) => fn());
+    });
+    dePromise.catch(() => {
+      dePromise = null; // allow retry after a failed load
+    });
+  }
+  return dePromise;
+}
 
 interface SearchIndex {
   pokemon: Record<string, number>;
@@ -36,11 +86,24 @@ interface SearchIndex {
   types: Record<string, string>;
   locations: Record<string, string>;
 }
-export const SEARCH_INDEX_DE = searchIndexDe as unknown as SearchIndex;
 
-/** slug → dex id, built once from the pokemon artifact */
-const ID_BY_SLUG: Record<string, number> = {};
-for (const [id, p] of Object.entries(POKEMON_DE)) ID_BY_SLUG[p.slug] = Number(id);
+/** Lazily loaded 114 KB de search index — only fetched on first use (de search). */
+let SEARCH_INDEX_DE: SearchIndex | null = null;
+let searchIndexPromise: Promise<SearchIndex> | null = null;
+
+/** Load the German reverse search index (idempotent, cached). */
+export function loadGermanSearchIndex(): Promise<SearchIndex> {
+  if (!searchIndexPromise) {
+    searchIndexPromise = import('@/data/i18n/de/search-index.json').then((m) => {
+      SEARCH_INDEX_DE = m.default as unknown as SearchIndex;
+      return SEARCH_INDEX_DE;
+    });
+    searchIndexPromise.catch(() => {
+      searchIndexPromise = null;
+    });
+  }
+  return searchIndexPromise;
+}
 
 export function currentLang(lng: string | undefined): Lang {
   return lng?.startsWith('de') ? 'de' : 'en';
@@ -52,6 +115,15 @@ export function useLanguage(): Lang {
   return currentLang(i18n.language);
 }
 
+/** True once the lazy German artifacts have arrived — use in memo deps so
+ *  indexes/aliases rebuilt after the async de load (EP1.2). */
+export function useGermanDataReady(): boolean {
+  return useSyncExternalStore(
+    (cb) => onGermanDataLoaded(cb),
+    () => POKEMON_DE !== null,
+  );
+}
+
 function isDe(lang: Lang): boolean {
   return lang === 'de';
 }
@@ -59,55 +131,55 @@ function isDe(lang: Lang): boolean {
 /* ---------- pokemon ---------- */
 
 export function nameOfPokemon(idOrSlug: number | string, lang: Lang): string {
-  if (isDe(lang)) {
+  if (isDe(lang) && POKEMON_DE) {
     const id = typeof idOrSlug === 'number' ? idOrSlug : ID_BY_SLUG[idOrSlug];
     const entry = id ? POKEMON_DE[id] : undefined;
     if (entry) return entry.name;
   }
-  const slug = typeof idOrSlug === 'number' ? POKEMON_DE[idOrSlug]?.slug : idOrSlug;
+  const slug = typeof idOrSlug === 'number' ? SLUGS[idOrSlug - 1] : idOrSlug;
   return displayName(slug ?? String(idOrSlug));
 }
 
 export function slugOfPokemon(id: number): string {
-  return POKEMON_DE[id]?.slug ?? String(id);
+  return SLUGS[id - 1] ?? String(id);
 }
 
 export function genusOfPokemon(id: number, lang: Lang): string {
-  if (isDe(lang)) return POKEMON_DE[id]?.genus ?? '';
+  if (isDe(lang)) return POKEMON_DE?.[id]?.genus ?? '';
   return ''; // EN genus comes from live species data (englishGenus)
 }
 
 /* ---------- moves / abilities / items / types ---------- */
 
 export function nameOfMove(slug: string, lang: Lang): string {
-  if (isDe(lang) && MOVES_DE[slug]) return MOVES_DE[slug];
+  if (isDe(lang) && MOVES_DE?.[slug]) return MOVES_DE[slug];
   return displayName(slug);
 }
 
 export function nameOfAbility(slug: string, lang: Lang): string {
-  if (isDe(lang) && ABILITIES_DE[slug]) return ABILITIES_DE[slug];
+  if (isDe(lang) && ABILITIES_DE?.[slug]) return ABILITIES_DE[slug];
   return displayName(slug);
 }
 
 export function nameOfItem(slug: string, lang: Lang): string {
-  if (isDe(lang) && ITEMS_DE[slug]) return ITEMS_DE[slug];
+  if (isDe(lang) && ITEMS_DE?.[slug]) return ITEMS_DE[slug];
   return displayName(slug);
 }
 
 export function nameOfType(slug: string, lang: Lang): string {
-  if (isDe(lang) && TYPES_DE[slug]) return TYPES_DE[slug];
+  if (isDe(lang) && TYPES_DE?.[slug]) return TYPES_DE[slug];
   return displayName(slug);
 }
 
 /* ---------- locations / regions ---------- */
 
 export function nameOfLocation(slug: string, lang: Lang): string {
-  if (isDe(lang) && LOCATIONS_DE[slug]) return LOCATIONS_DE[slug];
+  if (isDe(lang) && LOCATIONS_DE?.[slug]) return LOCATIONS_DE[slug];
   return displayName(slug);
 }
 
 export function nameOfRegion(slug: string, lang: Lang): string {
-  if (isDe(lang) && REGIONS_DE[slug]) return REGIONS_DE[slug];
+  if (isDe(lang) && REGIONS_DE?.[slug]) return REGIONS_DE[slug];
   return displayName(slug);
 }
 
@@ -249,18 +321,23 @@ export function fmtNum(v: number, lang: Lang): string {
 
 /* ---------- search ---------- */
 
-/** Resolve a (possibly German) query to a dex id via the de reverse index. */
+/** Resolve a (possibly German) query to a dex id via the de reverse index.
+ *  Returns null until the lazy index has loaded (triggers the load on first use). */
 export function pokemonIdForQuery(query: string): number | null {
+  if (!SEARCH_INDEX_DE) {
+    void loadGermanSearchIndex();
+    return null;
+  }
   const hit = SEARCH_INDEX_DE.pokemon[query.trim().toLowerCase()];
   return hit ?? null;
 }
 
 /**
  * German aliases for a dex id: [deName] lowercased — merged into search indexes
- * so "bisasam" and "bulbasaur" both match #1.
+ * so "bisasam" and "bulbasaur" both match #1. Null until de artifacts are loaded.
  */
 export function germanAliasOfPokemon(id: number): string | null {
-  return POKEMON_DE[id]?.name.toLowerCase() ?? null;
+  return POKEMON_DE?.[id]?.name.toLowerCase() ?? null;
 }
 
 /** Bound, reactive lookup bag for components (re-renders on language change). */

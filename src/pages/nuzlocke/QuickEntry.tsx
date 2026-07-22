@@ -14,7 +14,7 @@ import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
 import { effectiveLevelCap, isGiftNode } from '@/lib/nuzlocke-rules';
 import type { LogValidationError } from '@/lib/nuzlocke-rules';
-import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
 import { sprites } from '@/lib/sprites';
@@ -55,6 +55,7 @@ interface FormProps {
 function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked, onDone }: FormProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const deReady = useGermanDataReady();
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const nodes = useMemo(() => routeOrder(region), [region]);
 
@@ -153,7 +154,8 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     }
     const base = routeOptions;
     return (q ? base.filter((o) => o.label.toLowerCase().includes(q) || (germanAliasOfPokemon(o.id)?.includes(q) ?? false)) : base).slice(0, 8);
-  }, [query, fullDex, nameIdx, routeOptions, lang]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady rebuilds aliases after the lazy de load
+  }, [query, fullDex, nameIdx, routeOptions, lang, deReady]);
 
   /* N focuses the bar (route field) */
   useEffect(() => {

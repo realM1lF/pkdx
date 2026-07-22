@@ -10,7 +10,7 @@ import { Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import { bootNameIndex } from '@/lib/pokeapi';
-import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
 import type { DexIndexEntry } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -27,6 +27,7 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
   const localePath = useLocalePath();
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
+  const deReady = useGermanDataReady();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
@@ -58,7 +59,8 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
         ignoreLocation: true,
         },
       ),
-    [index],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady rebuilds aliases after the lazy de load
+    [index, deReady],
   );
 
   const results = useMemo(() => {

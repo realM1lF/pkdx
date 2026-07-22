@@ -2,9 +2,19 @@
 import { useNavigate } from 'react-router';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useTranslation } from 'react-i18next';
-import { REGIONS, regionName } from '@/lib/regions';
 import { currentLang } from '@/lib/i18n-data';
 import { MAX_DEX_ID } from '@/lib/types';
+
+/* Lightweight region link metadata — the full region geometry (src/lib/regions.ts,
+ * ~80 KB of JSON) must stay OUT of the entry chunk (EP1.2); it loads with the
+ * maps/nuzlocke routes. Only id + display names are needed for footer links. */
+const REGION_LINKS = [
+  { id: 'kanto', name: 'Kanto', nameDe: 'Kanto' },
+  { id: 'johto', name: 'Johto', nameDe: 'Johto' },
+  { id: 'hoenn', name: 'Hoenn', nameDe: 'Hoenn' },
+  { id: 'sinnoh', name: 'Sinnoh', nameDe: 'Sinnoh' },
+  { id: 'unova', name: 'Unova', nameDe: 'Einall' },
+] as const;
 
 const HAIRLINE =
   'linear-gradient(90deg, rgba(255,122,69,0.4), rgba(255,214,10,0.4), rgba(99,217,107,0.4), rgba(69,200,255,0.4), rgba(255,92,168,0.4), rgba(255,154,213,0.4))';
@@ -67,9 +77,9 @@ export default function Footer() {
           <LocaleLink to="/maps" className={linkCls}>
             {t('footer.mapsAtlas')}
           </LocaleLink>
-          {REGIONS.map((region) => (
-            <LocaleLink key={region.region} to={`/maps/${region.region}`} className={linkCls}>
-              {regionName(region, lang)}
+          {REGION_LINKS.map((region) => (
+            <LocaleLink key={region.id} to={`/maps/${region.id}`} className={linkCls}>
+              {lang === 'de' ? region.nameDe : region.name}
             </LocaleLink>
           ))}
         </div>
