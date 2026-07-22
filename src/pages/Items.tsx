@@ -102,6 +102,10 @@ export default function Items() {
   const all = useMemo<ItemEntry[]>(() => {
     if (!descs) return [];
     return Object.entries(descs)
+      /* hide placeholder rows: ★ dynamax-crystal stubs (no real name/sprite)
+       * and items without any official sprite — they would only render the
+       * fallback glyph and looked broken (user feedback) */
+      .filter(([, desc]) => !desc.n.startsWith('★') && !desc.nospr)
       .map(([slug, desc]) => ({ slug, desc, group: CATEGORY_GROUP[desc.category] ?? 'other' }))
       .sort((a, b) => a.desc.n.localeCompare(b.desc.n, 'en'));
   }, [descs]);

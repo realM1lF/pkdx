@@ -4,19 +4,18 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
-import { Menu, Search, Sparkles, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useShiny } from '@/lib/shiny';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
 
 const LINKS = [
   { to: '/pokedex', key: 'nav.pokedex' },
+  { to: '/items', key: 'nav.items' },
   { to: '/maps', key: 'nav.maps' },
   { to: '/nuzlocke', key: 'nav.nuzlocke' },
   { to: '/team', key: 'nav.team' },
   { to: '/versus', key: 'nav.versus' },
-  { to: '/items', key: 'nav.items' },
 ];
 
 interface NavbarProps {
@@ -26,7 +25,6 @@ interface NavbarProps {
 export default function Navbar({ onSearchOpen }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [drawer, setDrawer] = useState(false);
-  const { shiny, toggleShiny } = useShiny();
   const { scrollYProgress } = useScroll();
   const { t } = useTranslation();
   const localePath = useLocalePath();
@@ -102,20 +100,6 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               <kbd className="pixel-label hidden rounded-sm border border-hairline2 px-1.5 py-0.5 text-[9px] lg:inline">
                 /
               </kbd>
-            </button>
-            <button
-              type="button"
-              onClick={toggleShiny}
-              aria-pressed={shiny}
-              aria-label={t('nav.toggleShiny')}
-              className={cn(
-                'grid h-10 w-10 place-items-center rounded-md border transition-all duration-200',
-                shiny
-                  ? 'border-gold/60 bg-gold-soft text-gold shadow-glow-gold'
-                  : 'border-hairline bg-surface2 text-tx-muted hover:border-hairline2 hover:text-tx-primary',
-              )}
-            >
-              <Sparkles size={18} strokeWidth={1.75} />
             </button>
             <button
               type="button"
