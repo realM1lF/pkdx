@@ -14,6 +14,7 @@ import { ITEM_SPRITE_BASE, METHOD_BUCKETS, itemsForNode } from '@/lib/mapdata';
 import { padNum } from '@/lib/pokeapi';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
+import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
 import { aceSpeciesForNode, hasTrainersAtNode } from '@/lib/trainer-data';
 
@@ -127,6 +128,7 @@ export default function DetailDrawer({
   const lang = useLanguage();
   const [tab, setTab] = useState<'encounters' | 'items'>('encounters');
   const [sort, setSort] = useState<SortKey>('rate');
+  const entityModal = useEntityModal();
   const items = useMemo(() => itemsForNode(region.region, node.id), [region, node]);
   const showVersusLink = hasTrainersAtNode(region.region, node.id);
   const versusAce = useMemo(
@@ -395,7 +397,14 @@ export default function DetailDrawer({
               </div>
             ) : (
               items.map((it: CuratedItem) => (
-                <div key={`${it.itemSlug}-${it.name}`} className="flex items-center gap-2.5 border-b border-hairline/60 px-3 py-2">
+                <button
+                  key={`${it.itemSlug}-${it.name}`}
+                  type="button"
+                  onClick={() => entityModal.open('item', it.itemSlug)}
+                  title={t('desc.openDesc', { name: nameOfItem(it.itemSlug, lang) })}
+                  aria-label={t('desc.openDesc', { name: nameOfItem(it.itemSlug, lang) })}
+                  className="flex w-full items-center gap-2.5 border-b border-hairline/60 px-3 py-2 text-left transition-colors hover:bg-surface2"
+                >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center">
                     <ItemSprite slug={it.itemSlug} />
                   </span>
@@ -415,7 +424,7 @@ export default function DetailDrawer({
                       {nameOfPocket(it.pocket, lang)}
                     </span>
                   </span>
-                </div>
+                </button>
               ))
             )}
           </div>
@@ -444,6 +453,7 @@ export default function DetailDrawer({
         </div>
         <span className="text-[9px] font-medium text-tx-muted">{t('maps.dataSource', { version: versionLabel(version) })}</span>
       </div>
+      <EntityDescModal {...entityModal.props} />
     </motion.aside>
   );
 }

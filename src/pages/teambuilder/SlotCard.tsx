@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronDown, Copy, Plus, Sparkles, Swords, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
+import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDescModal';
 import { padNum } from '@/lib/pokeapi';
 import { nameOfAbility, nameOfItem, nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
@@ -66,6 +67,7 @@ export default function SlotCard({
   const lang = useLanguage();
   const { t: t8n } = useTranslation();
   const [picking, setPicking] = useState(false);
+  const entityModal = useEntityModal();
 
   /* ---------- empty slot ---------- */
   if (!slot.pokemon || slot.pokemonId == null) {
@@ -114,6 +116,7 @@ export default function SlotCard({
   const vg = versionGroupById(versionGroup);
 
   return (
+    <>
     <motion.div
       layout
       onClick={() => onFocus(slot.id)}
@@ -219,15 +222,42 @@ export default function SlotCard({
       <div className="mt-1.5 space-y-0.5 text-[8px] leading-tight">
         <div className="flex items-baseline justify-between gap-1.5">
           <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.item')}</span>
-          <span className={cn('truncate font-semibold', slot.item ? 'text-tx-secondary' : 'text-tx-muted/50')}>
-            {slot.item ? nameOfItem(slugify(slot.item), lang) : '—'}
-          </span>
+          {slot.item ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                entityModal.open('item', slot.item!);
+              }}
+              title={t8n('desc.openDesc', { name: nameOfItem(slugify(slot.item), lang) })}
+              aria-label={t8n('desc.openDesc', { name: nameOfItem(slugify(slot.item), lang) })}
+              className="flex min-w-0 items-center gap-1 truncate font-semibold text-tx-secondary transition-colors hover:text-gold"
+            >
+              <ItemIcon slug={slugify(slot.item)} name={slot.item} size={12} />
+              <span className="truncate">{nameOfItem(slugify(slot.item), lang)}</span>
+            </button>
+          ) : (
+            <span className="truncate font-semibold text-tx-muted/50">—</span>
+          )}
         </div>
         <div className="flex items-baseline justify-between gap-1.5">
           <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.ability')}</span>
-          <span className={cn('truncate font-semibold', slot.ability ? 'text-tx-secondary' : 'text-tx-muted/50')}>
-            {slot.ability ? nameOfAbility(slugify(slot.ability), lang) : '—'}
-          </span>
+          {slot.ability ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                entityModal.open('ability', slot.ability!);
+              }}
+              title={t8n('desc.openDesc', { name: nameOfAbility(slugify(slot.ability), lang) })}
+              aria-label={t8n('desc.openDesc', { name: nameOfAbility(slugify(slot.ability), lang) })}
+              className="truncate font-semibold text-tx-secondary transition-colors hover:text-gold"
+            >
+              {nameOfAbility(slugify(slot.ability), lang)}
+            </button>
+          ) : (
+            <span className="truncate font-semibold text-tx-muted/50">—</span>
+          )}
         </div>
       </div>
 
@@ -236,25 +266,36 @@ export default function SlotCard({
         {slot.moves.map((m, i) => {
           const mvType = m ? (moveDetails[m]?.type.name as PokemonType | undefined) : undefined;
           const color = mvType ? TYPE_COLORS[mvType] : null;
-          return (
-            <span
+          return m ? (
+            <button
               key={i}
-              className={cn(
-                'flex h-[16px] min-w-0 items-center gap-1 rounded-[5px] border px-1 text-[7.5px] font-semibold',
-                m ? 'border-hairline bg-surface2 text-tx-secondary' : 'border-hairline/50 text-tx-muted/40',
-              )}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                entityModal.open('move', m);
+              }}
+              className="flex h-[16px] min-w-0 items-center gap-1 rounded-[5px] border border-hairline bg-surface2 px-1 text-[7.5px] font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"
               style={color ? ({ '--t': color.rgb } as CSSProperties) : undefined}
-              title={m ? nameOfMove(m, lang) : undefined}
+              title={nameOfMove(m, lang)}
+              aria-label={t8n('desc.openDesc', { name: nameOfMove(m, lang) })}
             >
               <span
                 className="h-1.5 w-1.5 shrink-0 rounded-full"
                 style={
                   color
                     ? { background: `rgb(${color.rgb})`, boxShadow: `0 0 4px rgba(${color.rgb},0.7)` }
-                    : { background: m ? '#F6C945' : '#2a3040' }
+                    : { background: '#F6C945' }
                 }
               />
-              <span className="truncate">{m ? nameOfMove(m, lang) : '—'}</span>
+              <span className="truncate">{nameOfMove(m, lang)}</span>
+            </button>
+          ) : (
+            <span
+              key={i}
+              className="flex h-[16px] min-w-0 items-center gap-1 rounded-[5px] border border-hairline/50 px-1 text-[7.5px] font-semibold text-tx-muted/40"
+            >
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: '#2a3040' }} />
+              <span className="truncate">—</span>
             </span>
           );
         })}
@@ -290,5 +331,7 @@ export default function SlotCard({
         </div>
       </div>
     </motion.div>
+    <EntityDescModal {...entityModal.props} />
+    </>
   );
 }

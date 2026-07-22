@@ -9,6 +9,7 @@ import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import GameSelect from '@/components/GameSelect';
 import TypeGlyph from '@/components/TypeGlyph';
+import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { getMove } from '@/lib/pokeapi';
 import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { VERSION_GROUPS as ALL_VERSION_GROUPS } from '@/lib/version-groups';
@@ -166,6 +167,8 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
   const toggleSort = (key: SortKey) =>
     setSort((s) => (s?.key === key ? (s.dir === 1 ? { key, dir: -1 } : null) : { key, dir: 1 }));
 
+  const entityModal = useEntityModal();
+
   return (
     <div className="flex h-full flex-col">
       {/* compact toolbar row */}
@@ -243,9 +246,11 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
                 return (
                   <motion.tr
                     key={r.name}
-                    className="dx-move-row"
+                    className="dx-move-row cursor-pointer"
                     style={{ '--mt': typeRgb(t) } as CSSProperties}
                     data-type={t}
+                    onClick={() => entityModal.open('move', r.name)}
+                    title={t8n('desc.openDesc', { name: nameOfMove(r.name, lang) })}
                     initial={i < 12 ? { opacity: 0, y: 10 } : false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: i < 12 ? i * 0.02 : 0, ease: EASE }}
@@ -297,6 +302,7 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
           </table>
         )}
       </div>
+      <EntityDescModal {...entityModal.props} />
     </div>
   );
 }

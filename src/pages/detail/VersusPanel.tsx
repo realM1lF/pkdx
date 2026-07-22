@@ -7,7 +7,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
-import { RotateCcw, Search, SlidersHorizontal, Swords, UserPlus } from 'lucide-react';
+import { Info, RotateCcw, Search, SlidersHorizontal, Swords, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
 import Sprite from '@/components/Sprite';
@@ -15,6 +15,7 @@ import GameSelect from '@/components/GameSelect';
 import TypeBadge from '@/components/TypeBadge';
 import TypeGlyph from '@/components/TypeGlyph';
 import PokeballLoader from '@/components/PokeballLoader';
+import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { bootNameIndex, getMove, getPokemon, padNum, pokemonTypes } from '@/lib/pokeapi';
 import {
   germanAliasOfPokemon,
@@ -541,6 +542,7 @@ export function MoveSlots({
   const lang = useLanguage();
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [q, setQ] = useState('');
+  const entityModal = useEntityModal();
   const sourceKey =
     source === 'trainer' && versionGroup && versionGroupById(versionGroup).gen === 1
       ? 'versus.sourceTrainerFrlg'
@@ -604,30 +606,43 @@ export function MoveSlots({
             );
           }
           return (
-            <button
-              key={i}
-              type="button"
-              onClick={() => {
-                setEditIdx(i);
-                setQ('');
-              }}
-              className={cn(
-                'flex h-[22px] items-center gap-1 truncate rounded-md border border-hairline bg-abyss/60 px-1.5 text-left',
-                'font-sans text-[11px] font-semibold transition-colors duration-150 hover:border-hairline2',
-                slug ? 'text-tx-primary' : 'text-tx-muted',
+            <div key={i} className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setEditIdx(i);
+                  setQ('');
+                }}
+                className={cn(
+                  'flex h-[22px] w-full items-center gap-1 truncate rounded-md border border-hairline bg-abyss/60 px-1.5 text-left',
+                  'font-sans text-[11px] font-semibold transition-colors duration-150 hover:border-hairline2',
+                  slug ? 'pr-5 text-tx-primary' : 'text-tx-muted',
+                )}
+                title={slug ? nameOfMove(slug, lang) : t('versus.emptySlot')}
+              >
+                {mv && (
+                  <span style={{ color: `rgb(${typeRgb(mv.type.name)})` }}>
+                    <TypeGlyph type={mv.type.name} size={11} />
+                  </span>
+                )}
+                <span className="truncate">{slug ? nameOfMove(slug, lang) : '—'}</span>
+              </button>
+              {slug && (
+                <button
+                  type="button"
+                  onClick={() => entityModal.open('move', slug)}
+                  aria-label={t('desc.openDesc', { name: nameOfMove(slug, lang) })}
+                  title={t('desc.openDesc', { name: nameOfMove(slug, lang) })}
+                  className="absolute right-0.5 top-1/2 grid h-4 w-4 -translate-y-1/2 place-items-center rounded-sm text-tx-muted transition-colors hover:text-gold"
+                >
+                  <Info size={10} />
+                </button>
               )}
-              title={slug ? nameOfMove(slug, lang) : t('versus.emptySlot')}
-            >
-              {mv && (
-                <span style={{ color: `rgb(${typeRgb(mv.type.name)})` }}>
-                  <TypeGlyph type={mv.type.name} size={11} />
-                </span>
-              )}
-              <span className="truncate">{slug ? nameOfMove(slug, lang) : '—'}</span>
-            </button>
+            </div>
           );
         })}
       </div>
+      <EntityDescModal {...entityModal.props} />
     </div>
   );
 }

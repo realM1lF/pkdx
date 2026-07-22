@@ -16,6 +16,7 @@ const LINKS = [
   { to: '/nuzlocke', key: 'nav.nuzlocke' },
   { to: '/team', key: 'nav.team' },
   { to: '/versus', key: 'nav.versus' },
+  { to: '/items', key: 'nav.items' },
 ];
 
 interface NavbarProps {
