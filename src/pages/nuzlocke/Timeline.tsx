@@ -346,7 +346,7 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
       <div className="nz-player-hairline rounded-t-xl" style={hairlineVars} />
       <div
         className="pointer-events-none absolute inset-0 rounded-xl opacity-[0.04] mix-blend-overlay"
-        style={{ backgroundImage: 'url(/grain.png)' }}
+        style={{ backgroundImage: 'url(/grain.webp)' }}
         aria-hidden
       />
       <div
