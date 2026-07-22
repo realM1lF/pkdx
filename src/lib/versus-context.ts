@@ -1,7 +1,7 @@
 /* Versus calc context — ties damage math to game version / region. */
 import type { RegionId } from './regions';
 import type { RunState } from './nuzlocke-store';
-import { VERSION_GROUPS, versionGroupForGame } from './version-groups';
+import { VERSION_GROUPS, versionGroupById, versionGroupForGame } from './version-groups';
 
 export interface VersusContext {
   /** @smogon/calc generation 1–9 */
@@ -11,36 +11,15 @@ export interface VersusContext {
   region: RegionId | null;
 }
 
-const GAME_GEN: Record<string, number> = {
-  red: 1,
-  blue: 1,
-  yellow: 1,
-  gold: 2,
-  silver: 2,
-  crystal: 2,
-  ruby: 3,
-  sapphire: 3,
-  emerald: 3,
-  firered: 3,
-  leafgreen: 3,
-  diamond: 4,
-  pearl: 4,
-  platinum: 4,
-  heartgold: 4,
-  soulsilver: 4,
-  black: 5,
-  white: 5,
-  'black-2': 5,
-  'white-2': 5,
-};
-
 export function defaultVersusContext(): VersusContext {
   return { gen: 9, versionGroup: 'scarlet-violet', game: null, region: null };
 }
 
 export function versusContextFromGame(game: string | null | undefined, region?: RegionId | null): VersusContext {
   const vg = versionGroupForGame(game) ?? 'scarlet-violet';
-  const gen = game ? (GAME_GEN[game] ?? 9) : 9;
+  /* gen comes from the version-group table — covers gen 1–9 games without
+   * a second hand-maintained map (previously gen 6–9 fell through to 9) */
+  const gen = game ? versionGroupById(vg).gen : 9;
   return { gen, versionGroup: vg, game: game ?? null, region: region ?? null };
 }
 
@@ -74,7 +53,7 @@ export function versusWeatherForGen(gen: number): VersusWeather[] {
   return out;
 }
 
-/* ---------- game selector (gen 1–5 minimum) ---------- */
+/* ---------- game selector (gen 1–9) ---------- */
 
 export interface VersusGameOption {
   game: string;
@@ -84,8 +63,8 @@ export interface VersusGameOption {
   versionGroup: string;
 }
 
-/** Individual game slugs for the versus game picker (default: gens 1–5). */
-export function versusGameOptions(maxGen = 5): VersusGameOption[] {
+/** Individual game slugs for the versus game picker (default: gens 1–9). */
+export function versusGameOptions(maxGen = 9): VersusGameOption[] {
   const out: VersusGameOption[] = [];
   for (const vg of VERSION_GROUPS) {
     if (vg.gen > maxGen) continue;
@@ -128,6 +107,23 @@ const GAME_DISPLAY: Record<string, string> = {
   white: 'Pokémon White',
   'black-2': 'Pokémon Black 2',
   'white-2': 'Pokémon White 2',
+  x: 'Pokémon X',
+  y: 'Pokémon Y',
+  'omega-ruby': 'Pokémon Omega Ruby',
+  'alpha-sapphire': 'Pokémon Alpha Sapphire',
+  sun: 'Pokémon Sun',
+  moon: 'Pokémon Moon',
+  'ultra-sun': 'Pokémon Ultra Sun',
+  'ultra-moon': 'Pokémon Ultra Moon',
+  'lets-go-pikachu': "Pokémon Let's Go Pikachu",
+  'lets-go-eevee': "Pokémon Let's Go Eevee",
+  sword: 'Pokémon Sword',
+  shield: 'Pokémon Shield',
+  'brilliant-diamond': 'Pokémon Brilliant Diamond',
+  'shining-pearl': 'Pokémon Shining Pearl',
+  'legends-arceus': 'Pokémon Legends Arceus',
+  scarlet: 'Pokémon Scarlet',
+  violet: 'Pokémon Violet',
 };
 
-export const VERSUS_GAME_OPTIONS = versusGameOptions(5);
+export const VERSUS_GAME_OPTIONS = versusGameOptions(9);
