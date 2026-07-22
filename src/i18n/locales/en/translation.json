@@ -976,6 +976,7 @@
     "evs": "EVS",
     "applySet": "APPLY SET",
     "applied": "APPLIED",
+    "setApplied": "SET APPLIED",
     "metaAria": "Meta snapshot",
     "defenseAria": "Defensive synergy",
     "offenseAria": "Offensive coverage",

@@ -976,6 +976,7 @@
     "evs": "FP",
     "applySet": "SET ÜBERNEHMEN",
     "applied": "ÜBERNOMMEN",
+    "setApplied": "SET ÜBERNOMMEN",
     "metaAria": "Meta-Schnappschuss",
     "defenseAria": "Defensiv-Synergie",
     "offenseAria": "Offensiv-Coverage",
