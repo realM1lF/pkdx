@@ -1,12 +1,20 @@
 /* MiniAutocomplete — local, SearchCommand-style autocomplete (team-builder.md §E).
  * Compact command-deck variant used by the Pokémon/move/item/ability/nature pickers.
- * Keyboard: ↑↓ navigate · Enter select · Esc close. */
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+ * Keyboard: ↑↓ navigate · Enter select · Esc close.
+ * The dropdown is PORTALED to <body> (fixed position, like the versus combo) so it
+ * escapes overflow-hidden ancestors (SlotCard, SlotEditor expander) and never clips;
+ * data-lenis-prevent keeps wheel scrolling inside the list. */
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+const MAX_MENU_H = 280;
+const MIN_MENU_H = 120;
+const VIEWPORT_GAP = 8;
 
 interface MiniAutocompleteProps<T> {
   items: T[];
@@ -25,6 +33,14 @@ interface MiniAutocompleteProps<T> {
   className?: string;
   /** when false, the dropdown is forced closed (parent-controlled) */
   disabled?: boolean;
+}
+
+interface MenuPos {
+  left: number;
+  width: number;
+  top?: number;
+  bottom?: number;
+  maxHeight: number;
 }
 
 export default function MiniAutocomplete<T>({
@@ -46,8 +62,10 @@ export default function MiniAutocomplete<T>({
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
+  const [pos, setPos] = useState<MenuPos | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -55,19 +73,55 @@ export default function MiniAutocomplete<T>({
     return matched.slice(0, maxResults);
   }, [items, filter, query, maxResults]);
 
-  /* close on outside click */
+  /* fixed-position the portaled menu under the input; flip up near the viewport edge */
+  const syncPos = useCallback(() => {
+    const rect = inputRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const below = window.innerHeight - rect.bottom - VIEWPORT_GAP;
+    const above = rect.top - VIEWPORT_GAP;
+    const flip = below < MIN_MENU_H && above > below;
+    setPos({
+      left: rect.left,
+      width: rect.width,
+      ...(flip
+        ? { bottom: window.innerHeight - rect.top + 6, maxHeight: Math.max(80, Math.min(MAX_MENU_H, above - 6)) }
+        : { top: rect.bottom + 6, maxHeight: Math.max(80, Math.min(MAX_MENU_H, below - 6)) }),
+    });
+  }, []);
+
+  /* close on outside click (list lives in a portal — check both refs) */
   useEffect(() => {
     if (!open) return undefined;
     const onDown = (e: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+      const t = e.target as Node;
+      if (rootRef.current?.contains(t) || listRef.current?.contains(t)) return;
+      setOpen(false);
     };
     document.addEventListener('mousedown', onDown);
     return () => document.removeEventListener('mousedown', onDown);
   }, [open]);
 
+  /* keep the menu glued to the input while open (page scroll, resize) */
+  useEffect(() => {
+    if (!open) return undefined;
+    syncPos();
+    window.addEventListener('resize', syncPos);
+    window.addEventListener('scroll', syncPos, true);
+    return () => {
+      window.removeEventListener('resize', syncPos);
+      window.removeEventListener('scroll', syncPos, true);
+    };
+  }, [open, syncPos]);
+
   useEffect(() => {
     if (autoFocus) inputRef.current?.focus();
   }, [autoFocus]);
+
+  /* scroll the keyboard-active option into view */
+  useEffect(() => {
+    if (!open) return;
+    listRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'nearest' });
+  }, [active, open]);
 
   /* reset keyboard cursor on new query — derived-state-during-render pattern */
   const [prevQuery, setPrevQuery] = useState(query);
@@ -83,6 +137,16 @@ export default function MiniAutocomplete<T>({
   };
 
   const showing = displayValue !== undefined && !open && !query;
+
+  const menuStyle: CSSProperties | undefined = pos
+    ? {
+        left: pos.left,
+        width: pos.width,
+        ...(pos.top !== undefined ? { top: pos.top } : {}),
+        ...(pos.bottom !== undefined ? { bottom: pos.bottom } : {}),
+        maxHeight: pos.maxHeight,
+      }
+    : undefined;
 
   return (
     <div ref={rootRef} className={cn('relative', className)}>
@@ -140,35 +204,41 @@ export default function MiniAutocomplete<T>({
           </button>
         )}
       </div>
-      <AnimatePresence>
-        {open && !disabled && (
-          <motion.ul
-            initial={{ opacity: 0, y: -6, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="tb-dropdown tb-scroll max-h-[280px] overflow-y-auto py-1" data-lenis-prevent
-            role="listbox"
-          >
-            {results.length === 0 && (
-              <li className="tb-micro-gold px-3 py-2.5">{emptyLabel ?? t('tb.autocomplete.noMatch')}</li>
-            )}
-            {results.map((item, i) => (
-              <li key={keyOf(item)} role="option" aria-selected={i === active}>
-                <button
-                  type="button"
-                  data-active={i === active}
-                  className="tb-option"
-                  onMouseEnter={() => setActive(i)}
-                  onClick={() => commit(item)}
-                >
-                  {renderItem(item, i === active)}
-                </button>
-              </li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
+      {createPortal(
+        <AnimatePresence>
+          {open && !disabled && pos && (
+            <motion.ul
+              ref={listRef}
+              initial={{ opacity: 0, y: -6, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -4, scale: 0.98 }}
+              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="tb-dropdown tb-dropdown-portal tb-scroll overflow-y-auto py-1"
+              style={menuStyle}
+              data-lenis-prevent
+              role="listbox"
+            >
+              {results.length === 0 && (
+                <li className="tb-micro-gold px-3 py-2.5">{emptyLabel ?? t('tb.autocomplete.noMatch')}</li>
+              )}
+              {results.map((item, i) => (
+                <li key={keyOf(item)} role="option" aria-selected={i === active}>
+                  <button
+                    type="button"
+                    data-active={i === active}
+                    className="tb-option"
+                    onMouseEnter={() => setActive(i)}
+                    onClick={() => commit(item)}
+                  >
+                    {renderItem(item, i === active)}
+                  </button>
+                </li>
+              ))}
+            </motion.ul>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </div>
   );
 }

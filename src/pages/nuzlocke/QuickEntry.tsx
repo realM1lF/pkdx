@@ -405,10 +405,14 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           </span>
         )}
         {listOpen && routeKey && !species && (
-          <div className="absolute left-0 top-full z-[70] mt-1.5 w-full overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-[0_8px_32px_rgba(0,0,0,0.45)]" role="listbox">
+          <div
+            className="nz-slim-scroll absolute left-0 top-full z-[70] mt-1.5 max-h-[320px] w-full overflow-y-auto rounded-md border border-hairline2 bg-surface2 shadow-[0_8px_32px_rgba(0,0,0,0.45)]"
+            role="listbox"
+            data-lenis-prevent
+          >
             {options.length === 0 && (
               <div className="px-3 py-2.5 text-[11px] text-tx-muted">
-                {mapData.data.get(routeKey)?.status === 'loaded' || fullDex ? 'No match — try the full dex below.' : 'Scanning encounter data…'}
+                {mapData.data.get(routeKey)?.status === 'loaded' || fullDex ? t('nuz.noMatchTryDex') : t('nuz.scanningEncounters')}
               </div>
             )}
             {options.map((o, i) => (
@@ -447,7 +451,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 }}
                 className="flex w-full items-center gap-2 border-t border-hairline px-3 py-2 text-left text-[11px] text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
               >
-                <Search size={11} /> Can’t find it — search full dex
+                <Search size={11} /> {t('nuz.searchFullDex')}
               </button>
             )}
           </div>
@@ -568,7 +572,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               stacked && 'w-full',
             )}
           >
-            Log encounter ⏎
+            {t('nuz.logEncounterEnter')}
           </button>
         </div>
         <GoldHint text={hint} show={!!hint} />
