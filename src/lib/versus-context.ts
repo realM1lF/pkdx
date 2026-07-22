@@ -61,6 +61,19 @@ export type VersusField = {
 export const VERSUS_WEATHER_OPTIONS: VersusWeather[] = ['none', 'sun', 'rain', 'sand', 'snow', 'hail'];
 export const VERSUS_TERRAIN_OPTIONS: VersusTerrain[] = ['none', 'electric', 'grassy', 'misty', 'psychic'];
 
+/**
+ * Weather options the given generation actually knows (UI gating).
+ * Gen 1: no weather at all. Sun/rain/sand from gen 2, hail gen 3–8,
+ * snow replaces hail in gen 9.
+ */
+export function versusWeatherForGen(gen: number): VersusWeather[] {
+  if (gen < 2) return [];
+  const out: VersusWeather[] = ['none', 'sun', 'rain', 'sand'];
+  if (gen >= 9) out.push('snow');
+  else if (gen >= 3) out.push('hail');
+  return out;
+}
+
 /* ---------- game selector (gen 1–5 minimum) ---------- */
 
 export interface VersusGameOption {

@@ -23,7 +23,7 @@ import {
   nameOfType,
   useLanguage,
 } from '@/lib/i18n-data';
-import type { DexIndexEntry, Move, Pokemon, StatKey } from '@/lib/types';
+import type { DexIndexEntry, Move, Pokemon, PokemonType, StatKey } from '@/lib/types';
 import { MAX_DEX_ID, STAT_LABELS, STAT_ORDER } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
@@ -33,11 +33,14 @@ import {
   genAbilitiesOf,
   genHasMechanics,
   genItems,
+  genTypesOf,
   prefillTeamFromVersus,
+  versionGroupById,
 } from '@/lib/teambuilder';
 import {
   NATURES,
   damageBetween,
+  genMatchupsOf,
   koLabel,
   legalMoveSlugs,
   levelUpPool,
@@ -52,12 +55,13 @@ import type { DamageCell, EnrichedTrainer, MovesetSource, SpeedCheck, VersusSide
 import {
   defaultVersusContext,
   versusContextFromGame,
+  versusWeatherForGen,
   VERSUS_GAME_OPTIONS,
   type VersusContext,
   type VersusField,
   type VersusWeather,
 } from '@/lib/versus-context';
-import { computeMatchups, typeRgb } from './data';
+import { typeRgb } from './data';
 import TrainerPicker from './TrainerPicker';
 import { Panel, SegmentedControl } from './ui';
 import './versus.css';
@@ -184,12 +188,14 @@ export function sideToVersus(side: SideState, slug: string): VersusSide {
   };
 }
 
-const FIELD_PRESETS: Array<{ weather: VersusWeather; labelKey: string }> = [
-  { weather: 'none', labelKey: 'versus.field.clear' },
-  { weather: 'sun', labelKey: 'versus.weather.sun' },
-  { weather: 'rain', labelKey: 'versus.weather.rain' },
-  { weather: 'sand', labelKey: 'versus.weather.sand' },
-];
+const WEATHER_LABEL_KEY: Record<VersusWeather, string> = {
+  none: 'versus.field.clear',
+  sun: 'versus.weather.sun',
+  rain: 'versus.weather.rain',
+  sand: 'versus.weather.sand',
+  snow: 'versus.weather.snow',
+  hail: 'versus.weather.hail',
+};
 
 const STATUS_OPTIONS: Array<NonNullable<SideState['status']>> = ['none', 'burn', 'par', 'psn'];
 
@@ -515,6 +521,7 @@ export function MoveSlots({
   onChange,
   onReset,
   source,
+  versionGroup,
 }: {
   slots: string[];
   pool: string[];
@@ -522,11 +529,18 @@ export function MoveSlots({
   onChange: (slots: string[]) => void;
   onReset?: () => void;
   source: MovesetSource;
+  /** version group context — trainer sets come from FRLG data (kanto.json);
+   * in a gen-1 (RBY) context the label is tagged accordingly */
+  versionGroup?: string;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [q, setQ] = useState('');
+  const sourceKey =
+    source === 'trainer' && versionGroup && versionGroupById(versionGroup).gen === 1
+      ? 'versus.sourceTrainerFrlg'
+      : `versus.source${source.charAt(0).toUpperCase() + source.slice(1)}`;
   const items = useMemo<ComboItem[]>(
     () =>
       pool.map((slug) => {
@@ -545,7 +559,7 @@ export function MoveSlots({
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <span className="pixel-label text-[7px] text-tx-muted">
-          {t('versus.movesSource', { source: t(`versus.source${source.charAt(0).toUpperCase() + source.slice(1)}`) })}
+          {t('versus.movesSource', { source: t(sourceKey) })}
         </span>
         {onReset && (
           <button
@@ -645,7 +659,8 @@ export function SideCard({
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
-  const types = pokemonTypes(pokemon);
+  /* gen-correct types (F3): Magnemite pure Electric in gen 1/2, no Fairy retypes in gen ≤5 */
+  const types = genTypesOf(versionGroup, pokemon.name, pokemonTypes(pokemon) as PokemonType[]);
   const [tune, setTune] = useState(false);
   const [shake, setShake] = useState(false);
   const mech = genHasMechanics(versionGroup);
@@ -733,13 +748,17 @@ export function SideCard({
             className="overflow-hidden"
           >
             <div className="flex flex-col gap-1.5 rounded-md border border-hairline bg-abyss/40 p-2">
-              <label className="flex items-center gap-2">
+              <label
+                className={cn('flex items-center gap-2', !mech.natures && 'opacity-40')}
+                title={mech.natures ? undefined : t('versus.genLockedMechanic')}
+              >
                 <span className="pixel-label w-12 text-[7px] text-tx-muted">{t('versus.nature')}</span>
                 <select
                   className="dx-select h-6 flex-1 text-[11px]"
                   value={side.nature ?? ''}
                   onChange={(e) => onSide({ nature: e.target.value || null })}
                   aria-label={t('versus.natureAria')}
+                  disabled={!mech.natures}
                 >
                   <option value="">{t('versus.neutral')}</option>
                   {NATURES.filter((n) => n.plus).map((n) => (
@@ -749,7 +768,10 @@ export function SideCard({
                   ))}
                 </select>
               </label>
-              <div className="grid grid-cols-6 gap-1">
+              <div
+                className={cn('grid grid-cols-6 gap-1', !mech.evs && 'opacity-40')}
+                title={mech.evs ? undefined : t('versus.genLockedMechanic')}
+              >
                 {STAT_ORDER.map((key) => (
                   <label key={key} className="flex flex-col items-center gap-0.5">
                     <span className="pixel-label text-[6px] text-tx-muted">{STAT_LABELS[key]}</span>
@@ -765,6 +787,7 @@ export function SideCard({
                       }}
                       className="vs-input w-full px-1 text-center text-[10px] tabular-nums"
                       aria-label={t('versus.evsAria', { stat: STAT_LABELS[key] })}
+                      disabled={!mech.evs}
                     />
                   </label>
                 ))}
@@ -838,6 +861,7 @@ export function SideCard({
         onChange={onSlotsChange}
         onReset={onSlotsReset}
         source={slotsSource}
+        versionGroup={versionGroup}
       />
     </div>
   );
@@ -872,7 +896,9 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
       {rows.map((row, ri) => {
         const mv = row.detail;
         const type = mv?.type.name ?? 'normal';
-        const cat = mv?.damage_class.name ?? 'status';
+        /* gen-correct category (F4): the calc cell carries the type-based
+         * physical/special split in gen 1–3; SV damage_class only as fallback */
+        const cat = (row.cell?.category ?? mv?.damage_class.name ?? 'status').toLowerCase();
         const cell = row.cell;
         const [lo, hi] = cell?.pct ?? [0, 0];
         const damaging = cell ? cell.range[1] > 0 : false;
@@ -1014,21 +1040,34 @@ export function SpeedCheckBanner({ check, youName, foeName }: { check: SpeedChec
   );
 }
 
-export function DefensiveProfiles({ youTypes, foeTypes, youName, foeName }: { youTypes: string[]; foeTypes: string[]; youName: string; foeName: string }) {
+export function DefensiveProfiles({
+  youTypes,
+  foeTypes,
+  youName,
+  foeName,
+  gen = 9,
+}: {
+  youTypes: string[];
+  foeTypes: string[];
+  youName: string;
+  foeName: string;
+  /** generation for the type chart (F2/F3) — defaults to current */
+  gen?: number;
+}) {
   const { t } = useTranslation();
   const titleFor = (n: string) =>
     n === 'YOU' ? t('versus.youTake') : t('versus.nameTakes', { name: n });
   return (
     <div className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-2">
-      <DefenseColumn title={titleFor(youName)} types={youTypes} />
-      <DefenseColumn title={titleFor(foeName)} types={foeTypes} />
+      <DefenseColumn title={titleFor(youName)} types={youTypes} gen={gen} />
+      <DefenseColumn title={titleFor(foeName)} types={foeTypes} gen={gen} />
     </div>
   );
 }
 
-function DefenseColumn({ title, types }: { title: string; types: string[] }) {
+function DefenseColumn({ title, types, gen }: { title: string; types: string[]; gen: number }) {
   const { t } = useTranslation();
-  const m = computeMatchups(types);
+  const m = genMatchupsOf(types, gen);
   return (
     <div className="flex flex-col gap-1">
       <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
@@ -1132,6 +1171,13 @@ export default function VersusPanel({
   }, [contextProp]);
 
   const [field, setField] = useState<VersusField>({ weather: 'none', terrain: 'none' });
+  /* weather is gen-gated: gen 1 has none, hail gen 3–8, snow gen 9 */
+  const weatherOptions = versusWeatherForGen(ctx.gen);
+  useEffect(() => {
+    const w = field.weather ?? 'none';
+    if (!versusWeatherForGen(ctx.gen).includes(w)) setField({ weather: 'none', terrain: 'none' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ctx.gen]);
   const [foeMode, setFoeMode] = useState<'dex' | 'trainer'>('dex');
   const [trainerRegion, setTrainerRegion] = useState<RegionId>(() => ctx.region ?? 'kanto');
   const [trainerCtx, setTrainerCtx] = useState('');
@@ -1331,25 +1377,27 @@ export default function VersusPanel({
             ))}
           </select>
         </label>
-        <div className="flex flex-wrap items-center gap-1">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('versus.fieldLabel')}</span>
-          {FIELD_PRESETS.map((p) => (
-            <button
-              key={p.weather}
-              type="button"
-              aria-pressed={(field.weather ?? 'none') === p.weather}
-              onClick={() => setField({ weather: p.weather, terrain: 'none' })}
-              className={cn(
-                'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
-                (field.weather ?? 'none') === p.weather
-                  ? 'border-gold/60 bg-gold/10 text-gold'
-                  : 'border-hairline text-tx-muted hover:text-tx-secondary',
-              )}
-            >
-              {t(p.labelKey)}
-            </button>
-          ))}
-        </div>
+        {weatherOptions.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1">
+            <span className="pixel-label text-[7px] text-tx-muted">{t('versus.fieldLabel')}</span>
+            {weatherOptions.map((w) => (
+              <button
+                key={w}
+                type="button"
+                aria-pressed={(field.weather ?? 'none') === w}
+                onClick={() => setField({ weather: w, terrain: 'none' })}
+                className={cn(
+                  'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
+                  (field.weather ?? 'none') === w
+                    ? 'border-gold/60 bg-gold/10 text-gold'
+                    : 'border-hairline text-tx-muted hover:text-tx-secondary',
+                )}
+              >
+                {t(WEATHER_LABEL_KEY[w])}
+              </button>
+            ))}
+          </div>
+        )}
         {!isDefaultVersusCtx(ctx) && (
           <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
             {t('versus.calcBadge', { gen: ctx.gen, label: ctxLabel(ctx, t) })}
@@ -1549,10 +1597,11 @@ export default function VersusPanel({
 
           <Panel eyebrow={t('versus.defenseEyebrow')} title={t('versus.defenseTitle')} className="col-span-12 lg:col-span-7">
             <DefensiveProfiles
-              youTypes={pokemonTypes(youPokemon)}
-              foeTypes={pokemonTypes(foePokemon)}
+              youTypes={genTypesOf(ctx.versionGroup, youPokemon.name, pokemonTypes(youPokemon) as PokemonType[])}
+              foeTypes={genTypesOf(ctx.versionGroup, foePokemon.name, pokemonTypes(foePokemon) as PokemonType[])}
               youName="YOU"
               foeName="FOE"
+              gen={ctx.gen}
             />
           </Panel>
         </>

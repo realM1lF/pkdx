@@ -277,6 +277,7 @@
     "noMatches": "Keine Treffer — Schreibweise prüfen.",
     "movesSource": "ATTACKEN · {{source}}",
     "sourceTrainer": "TRAINER-SET",
+    "sourceTrainerFrlg": "TRAINER-SET (FRBG)",
     "sourceWild": "WILD-SET",
     "sourceAssumed": "ANGENOMMENES SET",
     "sourceCustom": "CUSTOM-SET",
@@ -288,6 +289,7 @@
     "tune": "Tuning",
     "nature": "WESEN",
     "neutral": "Neutral",
+    "genLockedMechanic": "In dieser Generation nicht verfügbar",
     "natureAria": "Wesen",
     "evsAria": "{{stat}} FP",
     "statDeltaEyebrow": "WERTE-DELTA",
@@ -381,7 +383,9 @@
     "weather": {
       "sun": "Sonne",
       "rain": "Regen",
-      "sand": "Sand"
+      "sand": "Sand",
+      "hail": "Hagel",
+      "snow": "Schnee"
     },
     "trainerMode": "TRAINER",
     "dexMode": "DEX",

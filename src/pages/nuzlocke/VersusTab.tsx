@@ -10,15 +10,15 @@ import { Swords, Users } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import { useTranslation } from 'react-i18next';
-import { getPokemon, padNum } from '@/lib/pokeapi';
+import { getPokemon, padNum, pokemonTypes } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
-import type { Pokemon } from '@/lib/types';
+import type { Pokemon, PokemonType } from '@/lib/types';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
 import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
-import { genAbilitiesOf, genHasMechanics, genItems } from '@/lib/teambuilder';
+import { genAbilitiesOf, genHasMechanics, genItems, genTypesOf } from '@/lib/teambuilder';
 import {
   TIER_ORDER,
   damageBetween,
@@ -400,6 +400,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                         }}
                         onReset={() => setYouCustom(false)}
                         source={youSource}
+                        versionGroup={ctx.versionGroup}
                       />
                     </div>
                   </Panel>
@@ -417,6 +418,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                         }}
                         onReset={() => setFoeCustom(false)}
                         source={foeSource}
+                        versionGroup={ctx.versionGroup}
                       />
                     </div>
                   </Panel>
@@ -428,10 +430,11 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                   </Panel>
                   <Panel eyebrow={t('versus.defenseEyebrow')} title={t('versus.defenseTitle')}>
                     <DefensiveProfiles
-                      youTypes={youPokemon.types.map((t) => t.type.name)}
-                      foeTypes={foePokemon.types.map((t) => t.type.name)}
+                      youTypes={genTypesOf(ctx.versionGroup, youPokemon.name, pokemonTypes(youPokemon) as PokemonType[])}
+                      foeTypes={genTypesOf(ctx.versionGroup, foePokemon.name, pokemonTypes(foePokemon) as PokemonType[])}
                       youName="YOU"
                       foeName="FOE"
+                      gen={ctx.gen}
                     />
                   </Panel>
                 </div>

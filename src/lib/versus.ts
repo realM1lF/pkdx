@@ -1,5 +1,6 @@
 /* Pokédex 2.0 — VERSUS matchup math (versus.md §Datengrundlage).
- * Gen-9 mechanics via @smogon/calc (damage ranges, KO chips, speed checks).
+ * Gen-aware mechanics (gen 1–9) via @smogon/calc (damage ranges, KO chips,
+ * speed checks) + the @pkmn/data per-gen type chart for effectiveness.
  * Pure/sync — PokéAPI payloads (Pokemon, Move) are passed in by the caller,
  * which also orchestrates async fetching (getPokemon/getMove, SWR-cached).
  * No engine/sim: calculation only. */
@@ -10,6 +11,8 @@ import type { Move, Pokemon, StatKey } from './types';
 import { STAT_ORDER } from './types';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
+import { genEffectivenessOf, genTypeSlugs } from './teambuilder';
+import type { GenerationNum } from '@pkmn/data';
 import {
   defaultVersusContext,
   type VersusContext,
@@ -104,10 +107,26 @@ function calcStatus(side: Pick<VersusSide, 'status'>): 'brn' | 'par' | 'psn' | '
   return STATUS_TO_CALC[side.status];
 }
 
-function buildCalcField(field?: VersusField): Field | undefined {
+/**
+ * Neutralize field effects the selected generation doesn't know:
+ * weather exists from gen 2, hail gen 3–8 (snow replaces it in gen 9),
+ * snow only gen 9, terrain from gen 6. Gen 1 gets a completely clear field.
+ */
+function sanitizeField(field: VersusField | undefined, genNum: number): VersusField | undefined {
   if (!field) return undefined;
-  const weather = field.weather && field.weather !== 'none' ? WEATHER_TO_CALC[field.weather] : undefined;
-  const terrain = field.terrain && field.terrain !== 'none' ? TERRAIN_TO_CALC[field.terrain] : undefined;
+  let weather: VersusWeather = field.weather ?? 'none';
+  if (genNum < 2) weather = 'none';
+  else if (weather === 'hail' && (genNum < 3 || genNum >= 9)) weather = 'none';
+  else if (weather === 'snow' && genNum < 9) weather = 'none';
+  const terrain: VersusTerrain = genNum >= 6 ? field.terrain ?? 'none' : 'none';
+  return { weather, terrain };
+}
+
+function buildCalcField(field?: VersusField, genNum = 9): Field | undefined {
+  const clean = sanitizeField(field, genNum);
+  if (!clean) return undefined;
+  const weather = clean.weather && clean.weather !== 'none' ? WEATHER_TO_CALC[clean.weather] : undefined;
+  const terrain = clean.terrain && clean.terrain !== 'none' ? TERRAIN_TO_CALC[clean.terrain] : undefined;
   if (!weather && !terrain) return undefined;
   return new Field({ weather, terrain });
 }
@@ -209,33 +228,35 @@ export const NATURES: NatureInfo[] = [
   { name: 'Quirky', plus: null, minus: null },
 ];
 
-/* ---------- type effectiveness (Gen VI+ chart, matches calc) ---------- */
+/* ---------- type effectiveness (per-gen chart via @pkmn/data) ---------- */
 
-const EFF: Record<string, Partial<Record<string, number>>> = {
-  normal: { rock: 0.5, ghost: 0, steel: 0.5 },
-  fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },
-  water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },
-  electric: { water: 2, electric: 0.5, grass: 0.5, ground: 0, flying: 2, dragon: 0.5 },
-  grass: { fire: 0.5, water: 2, grass: 0.5, poison: 0.5, ground: 2, flying: 0.5, bug: 0.5, rock: 2, dragon: 0.5, steel: 0.5 },
-  ice: { fire: 0.5, water: 0.5, grass: 2, ice: 0.5, ground: 2, flying: 2, dragon: 2, steel: 0.5 },
-  fighting: { normal: 2, ice: 2, poison: 0.5, flying: 0.5, psychic: 0.5, bug: 0.5, rock: 2, ghost: 0, dark: 2, steel: 2, fairy: 0.5 },
-  poison: { grass: 2, poison: 0.5, ground: 0.5, rock: 0.5, ghost: 0.5, steel: 0, fairy: 2 },
-  ground: { fire: 2, electric: 2, grass: 0.5, poison: 2, flying: 0, bug: 0.5, rock: 2, steel: 2 },
-  flying: { electric: 0.5, grass: 2, fighting: 2, bug: 2, rock: 0.5, steel: 0.5 },
-  psychic: { fighting: 2, poison: 2, psychic: 0.5, dark: 0, steel: 0.5 },
-  bug: { fire: 0.5, grass: 2, fighting: 0.5, poison: 0.5, flying: 0.5, psychic: 2, ghost: 0.5, dark: 2, steel: 0.5, fairy: 0.5 },
-  rock: { fire: 2, ice: 2, fighting: 0.5, ground: 0.5, flying: 2, bug: 2, steel: 0.5 },
-  ghost: { normal: 0, psychic: 2, ghost: 2, dark: 0.5 },
-  dragon: { dragon: 2, steel: 0.5, fairy: 0 },
-  dark: { fighting: 0.5, psychic: 2, ghost: 2, dark: 0.5, fairy: 0.5 },
-  steel: { fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2 },
-  fairy: { fire: 0.5, fighting: 2, poison: 0.5, dragon: 2, dark: 2, steel: 0.5 },
-};
+/**
+ * Gen-correct effectiveness of an attacking type against defending types.
+ * Defaults to the gen 9 chart when no gen is given.
+ */
+export function effectivenessOf(attackType: string, defendingTypes: string[], gen = 9): number {
+  return genEffectivenessOf(gen as GenerationNum, attackType, defendingTypes);
+}
 
-export function effectivenessOf(attackType: string, defendingTypes: string[]): number {
-  let mult = 1;
-  for (const def of defendingTypes) mult *= EFF[attackType]?.[def] ?? 1;
-  return mult;
+/** gen-aware defensive profile: weak/resist/immune attacking types for `defendingTypes` */
+export interface GenMatchups {
+  weak: string[];
+  resist: string[];
+  immune: string[];
+}
+
+export function genMatchupsOf(defendingTypes: string[], gen = 9): GenMatchups {
+  const g = gen as GenerationNum;
+  const weak: string[] = [];
+  const resist: string[] = [];
+  const immune: string[] = [];
+  for (const atk of genTypeSlugs(g)) {
+    const mult = genEffectivenessOf(g, atk, defendingTypes);
+    if (mult === 0) immune.push(atk);
+    else if (mult >= 2) weak.push(atk);
+    else if (mult < 1) resist.push(atk);
+  }
+  return { weak, resist, immune };
 }
 
 export const EFF_LABEL = (mult: number): string =>
@@ -254,6 +275,8 @@ export interface DamageCell {
   /** guaranteed-KO chance 0–1 (1 = guaranteed) */
   koChance: number;
   eff: number;
+  /** gen-correct damage category (type-based split in gen 1–3, from the calc move) */
+  category?: string;
 }
 
 const DAMAGING_CATS = new Set(['physical', 'special']);
@@ -292,10 +315,12 @@ export function damageBetween(
   } catch {
     return null;
   }
-  const calcField = buildCalcField(field);
-  const category = (moveDetail?.damage_class.name ?? mv.category ?? 'status').toLowerCase();
+  const calcField = buildCalcField(field, ctx.gen);
+  /* gen-correct category: the calc move is type-split in gen 1–3, so prefer it
+   * over the SV-era PokéAPI damage_class (F4). */
+  const category = (mv.category ?? moveDetail?.damage_class.name ?? 'status').toLowerCase();
   const moveType = (moveDetail?.type.name ?? mv.type ?? 'normal').toLowerCase();
-  const eff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()));
+  const eff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()), ctx.gen);
 
   /* fixed-damage legacy moves (immune → 0) */
   const fixed = FIXED_DAMAGE[moveSlug];
@@ -318,11 +343,12 @@ export function damageBetween(
       koHits,
       koChance: lo >= maxHp ? 1 : 0,
       eff,
+      category,
     };
   }
 
   if (!DAMAGING_CATS.has(category) || !mv.bp) {
-    return { move: moveSlug, range: [0, 0], pct: [0, 0], koHits: 0, koChance: 0, eff };
+    return { move: moveSlug, range: [0, 0], pct: [0, 0], koHits: 0, koChance: 0, eff, category };
   }
   try {
     const res = calculate(gen, atk, def, mv, calcField);
@@ -346,6 +372,7 @@ export function damageBetween(
       koHits,
       koChance,
       eff,
+      category,
     };
   } catch {
     return null;

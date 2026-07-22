@@ -140,6 +140,30 @@ export function genHasMechanics(vgId: string): { abilities: boolean; items: bool
   return { abilities: g >= 3, items: g >= 2, natures: g >= 3, evs: g >= 3 };
 }
 
+/* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ---------- */
+
+const capType = (slug: string) => (slug.charAt(0).toUpperCase() + slug.slice(1)) as TypeName;
+
+/**
+ * Gen-correct effectiveness of an attacking type vs defending type slugs.
+ * Uses the per-gen chart from @pkmn/data (gen 1: Ghost vs Psychic ×0,
+ * Bug↔Poison ×2; gen 2–5: Steel resists Dark/Ghost; …).
+ * Types that don't exist in the gen resolve neutral.
+ */
+export function genEffectivenessOf(genNum: GenerationNum, attackType: string, defendingTypes: string[]): number {
+  const types = gens.get(genNum).types;
+  const atk = capType(attackType);
+  if (!types.get(atk)?.exists) return 1;
+  const defs = defendingTypes.map(capType).filter((d) => types.get(d)?.exists);
+  if (!defs.length) return 1;
+  return types.totalEffectiveness(atk, defs);
+}
+
+/** type slugs (lowercase) existing in this gen — attacking side of defensive profiles */
+export function genTypeSlugs(genNum: GenerationNum): string[] {
+  return [...gens.get(genNum).types].map((t) => t.name.toLowerCase());
+}
+
 /* ------------------------------------------------------------------ */
 /* Team state model                                                    */
 /* ------------------------------------------------------------------ */

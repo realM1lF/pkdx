@@ -277,6 +277,7 @@
     "noMatches": "No matches — check spelling.",
     "movesSource": "MOVES · {{source}}",
     "sourceTrainer": "TRAINER SET",
+    "sourceTrainerFrlg": "TRAINER SET (FRLG)",
     "sourceWild": "WILD SET",
     "sourceAssumed": "ASSUMED SET",
     "sourceCustom": "CUSTOM SET",
@@ -288,6 +289,7 @@
     "tune": "Tune",
     "nature": "NATURE",
     "neutral": "Neutral",
+    "genLockedMechanic": "Not available in this generation",
     "natureAria": "Nature",
     "evsAria": "{{stat}} EVs",
     "statDeltaEyebrow": "STAT DELTA",
@@ -381,7 +383,9 @@
     "weather": {
       "sun": "Sun",
       "rain": "Rain",
-      "sand": "Sand"
+      "sand": "Sand",
+      "hail": "Hail",
+      "snow": "Snow"
     },
     "trainerMode": "TRAINER",
     "dexMode": "DEX",
