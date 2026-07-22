@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "i18n:data": "node scripts/build-i18n-data.mjs",
+    "desc:data": "node scripts/build-desc-data.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
