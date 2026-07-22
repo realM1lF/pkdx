@@ -1,4 +1,4 @@
-/* External interactive map links — community tools (pkmnmap, pokemoncompletion, …).
+/* External interactive map links — community tools (pkmnmap, Ironmon, Team Synergy).
  * Shown as "INTERACTIVE ↗" in the map command bar; opens in a new tab.
  * URLs are checked periodically — MapGenie HGSS was removed (404/500 as of 2026). */
 import type { RegionId } from './regions';
@@ -54,25 +54,27 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
   },
   johto: {
     default: {
-      url: 'https://pokemoncompletion.com/completion/Gold',
-      site: 'pokemoncompletion',
-      game: 'Gold & Silver',
+      url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
+      site: 'HGSS Ironmon Map',
+      game: 'HeartGold & SoulSilver',
     },
     byVersion: {
+      /* G/S/C: no interactive GSC map exists — the HGSS Ironmon map is the
+       * only real interactive Johto map, so all versions share it */
       gold: {
-        url: 'https://pokemoncompletion.com/completion/Gold',
-        site: 'pokemoncompletion',
-        game: 'Gold',
+        url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
+        site: 'HGSS Ironmon Map',
+        game: 'HeartGold & SoulSilver',
       },
       silver: {
-        url: 'https://pokemoncompletion.com/completion/Silver',
-        site: 'pokemoncompletion',
-        game: 'Silver',
+        url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
+        site: 'HGSS Ironmon Map',
+        game: 'HeartGold & SoulSilver',
       },
       crystal: {
-        url: 'https://pokemoncompletion.com/completion/Crystal',
-        site: 'pokemoncompletion',
-        game: 'Crystal',
+        url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
+        site: 'HGSS Ironmon Map',
+        game: 'HeartGold & SoulSilver',
       },
       heartgold: {
         url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
@@ -93,15 +95,17 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
       game: 'Emerald',
     },
     byVersion: {
+      /* R/S: no interactive RS map exists — pkmnmap's Emerald map is the
+       * only real interactive Hoenn map, so both versions share it */
       ruby: {
-        url: 'https://pokemoncompletion.com/completion/Ruby',
-        site: 'pokemoncompletion',
-        game: 'Ruby',
+        url: 'https://pkmnmap.com/Maps/Emerald/',
+        site: 'pkmnmap',
+        game: 'Emerald',
       },
       sapphire: {
-        url: 'https://pokemoncompletion.com/completion/Sapphire',
-        site: 'pokemoncompletion',
-        game: 'Sapphire',
+        url: 'https://pkmnmap.com/Maps/Emerald/',
+        site: 'pkmnmap',
+        game: 'Emerald',
       },
       emerald: {
         url: 'https://pkmnmap.com/Maps/Emerald/',
@@ -135,31 +139,34 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
     },
   },
   unova: {
+    /* Team Synergy runs the only interactive Unova map (pan/zoom, spawn
+     * filters). Note: spawn data follows PokeMMO, not retail BW — the chip
+     * labels the site clearly. Verified 200 as of 2026-07-23. */
     default: {
-      url: 'https://pokemoncompletion.com/completion/Black',
-      site: 'pokemoncompletion',
+      url: 'https://synergymmo.com/region-maps/',
+      site: 'Team Synergy',
       game: 'Black & White',
     },
     byVersion: {
       black: {
-        url: 'https://pokemoncompletion.com/completion/Black',
-        site: 'pokemoncompletion',
-        game: 'Black',
+        url: 'https://synergymmo.com/region-maps/',
+        site: 'Team Synergy',
+        game: 'Black & White',
       },
       white: {
-        url: 'https://pokemoncompletion.com/completion/White',
-        site: 'pokemoncompletion',
-        game: 'White',
+        url: 'https://synergymmo.com/region-maps/',
+        site: 'Team Synergy',
+        game: 'Black & White',
       },
       'black-2': {
-        url: 'https://pokemoncompletion.com/completion/Black2',
-        site: 'pokemoncompletion',
-        game: 'Black 2',
+        url: 'https://synergymmo.com/region-maps/',
+        site: 'Team Synergy',
+        game: 'Black 2 & White 2',
       },
       'white-2': {
-        url: 'https://pokemoncompletion.com/completion/White2',
-        site: 'pokemoncompletion',
-        game: 'White 2',
+        url: 'https://synergymmo.com/region-maps/',
+        site: 'Team Synergy',
+        game: 'Black 2 & White 2',
       },
     },
   },

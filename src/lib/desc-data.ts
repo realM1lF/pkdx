@@ -49,6 +49,8 @@ export interface ItemDesc {
   /** item category slug (healing, pokeballs, held-items, berries, …) */
   category: string;
   cost?: number;
+  /** 1 when PokéAPI has NO official sprite — lexicon hides these rows */
+  nospr?: 1;
   fen?: string;
   fde?: string;
 }

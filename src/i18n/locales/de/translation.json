@@ -8,7 +8,6 @@
     "search": "Suchen…",
     "searchDrawer": "Pokédex durchsuchen…",
     "openSearch": "Suche öffnen",
-    "toggleShiny": "Schillernd-Modus umschalten",
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
     "menu": "MENÜ",
@@ -272,10 +271,6 @@
         "BACK GIF": "HINTEN-GIF",
         "SHINY GIF": "SCHILLERND-GIF"
       }
-    },
-    "tcg": {
-      "title": "TCG-KARTEN",
-      "more": "ALLE ANSEHEN"
     }
   },
   "missingno": {

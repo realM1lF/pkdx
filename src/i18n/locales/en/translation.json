@@ -8,7 +8,6 @@
     "search": "Search…",
     "searchDrawer": "Search the dex…",
     "openSearch": "Open search",
-    "toggleShiny": "Toggle shiny mode",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menu": "MENU",
@@ -272,10 +271,6 @@
         "BACK GIF": "BACK GIF",
         "SHINY GIF": "SHINY GIF"
       }
-    },
-    "tcg": {
-      "title": "TCG CARDS",
-      "more": "VIEW ALL"
     }
   },
   "missingno": {

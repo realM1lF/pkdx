@@ -183,6 +183,9 @@ async function collectItems() {
           n: en,
           category: d.category?.name ?? 'items',
         };
+        /* sprite availability — lets the lexicon hide placeholder rows that
+         * would only render the fallback glyph (data cards, tera shards, …) */
+        if (!d.sprites?.default) rec.nospr = 1;
         if (de && de !== en) rec.de = de;
         if (d.cost) rec.cost = d.cost;
         const fen = pickFlavor(d.flavor_text_entries, 'en');
