@@ -932,7 +932,7 @@
     "myTeams": "MY TEAMS",
     "clearTeam": "Clear team",
     "defenseEyebrow": "DEFENSIVE SYNERGY",
-    "defenseNote": "W · R · I PER TYPE",
+    "defenseNote": "ROWS: ATTACKING TYPE · COLUMNS: TEAM",
     "noCritWeak": "NO CRITICAL WEAKNESSES",
     "worstLine": "{{weak}}× WEAK {{type}} · {{resist}} RESIST",
     "heatTip": "{{type}} — {{weak}} weak · {{resist}} resist · {{immune}} immune",
@@ -945,7 +945,7 @@
     "moreGaps": "+{{count}} MORE GAPS",
     "stabCoverage": "STAB COVERAGE",
     "addDamaging": "ADD DAMAGING MOVES",
-    "metaEyebrow": "META · OU (Smogon)",
+    "metaEyebrow": "META · GEN 9 OU (SMOGON)",
     "usage": "USAGE {{pct}}%",
     "metaUnavailable": "META UNAVAILABLE",
     "syncingOu": "SYNCING OU DATA…",
@@ -973,7 +973,10 @@
       "removeAria": "Remove {{name}}",
       "movesSet": "{{count}} of 4 moves set",
       "editAria": "Edit {{name}}",
-      "edit": "EDIT"
+      "edit": "EDIT",
+      "duplicate": "Duplicate",
+      "duplicateAria": "Duplicate {{name}}",
+      "shiny": "SHINY"
     },
     "editor": {
       "nickname": "NICKNAME",
@@ -1070,6 +1073,59 @@
       "noNatures": "No natures in this gen",
       "nature": "Nature not in game",
       "noEvs": "No EVs in this gen"
+    },
+    "metaGenNote": "Smogon gen9 OU reference sets — not filtered by your game",
+    "metaGenMismatch": "GEN {{gen}} GAME — OU SETS MAY NOT APPLY",
+    "analysisFor": "ANALYSIS FOR {{game}} · GEN {{gen}}",
+    "cellTip": "{{name}} TAKES ×{{eff}} FROM {{type}}",
+    "fixWith": "FIX →",
+    "seVia": "SE VIA →",
+    "legend": {
+      "weak": "2·4 = WEAK",
+      "resist": "½·¼ = RESIST",
+      "immune": "0 = IMMUNE",
+      "ability": "ABILITIES & GEN CHART APPLIED"
+    },
+    "mech": {
+      "items": "ITEMS",
+      "abilities": "ABILITIES",
+      "natures": "NATURES",
+      "evs": "EVS",
+      "naTip": "Not available in this generation"
+    },
+    "empty": {
+      "title": "ANALYSIS UNLOCKS WITH YOUR FIRST PICK",
+      "body": "Add pokémon via the + slots, import a nuzlocke run, or paste a Showdown team — the coverage matrix, weakness callouts and meta sets appear here.",
+      "ctaShowdown": "PASTE SHOWDOWN TEAM"
+    },
+    "sd": {
+      "button": "SHOWDOWN",
+      "buttonTip": "Import/export the Showdown text format",
+      "title": "SHOWDOWN IMPORT · EXPORT",
+      "close": "Close",
+      "dialogAria": "Showdown format import/export",
+      "exportTab": "EXPORT",
+      "importTab": "IMPORT",
+      "exportHint": "Paste into Pokémon Showdown or PokéPaste",
+      "exportEmpty": "TEAM IS EMPTY — NOTHING TO EXPORT",
+      "exportAria": "Team in Showdown text format",
+      "copy": "COPY TEXT",
+      "copied": "COPIED ✓",
+      "copiedToast": "SHOWDOWN TEXT COPIED",
+      "importHint": "Paste a team in Showdown text format (species, item, ability, nature, EVs, level, shiny, moves)",
+      "placeholder": "Charizard @ Heavy-Duty Boots\nAbility: Blaze\nEVs: 252 SpA / 4 SpD / 252 Spe\nTimid Nature\n- Fire Blast\n…",
+      "importAria": "Paste Showdown text",
+      "parse": "CHECK",
+      "parsing": "CHECKING…",
+      "parseFailed": "PARSE FAILED — CHECK FORMAT",
+      "parsedOk": "{{count}} POKÉMON RECOGNIZED",
+      "apply": "IMPORT {{count}} POKÉMON",
+      "replaceNote": "REPLACES THE CURRENT SLOTS — TEAM NAME & GAME STAY",
+      "warn": {
+        "empty": "NO POKÉMON FOUND — CHECK FORMAT",
+        "noSpecies": "NOT FOUND: {{name}}",
+        "tooMany": "ONLY THE FIRST 6 IMPORTED ({{count}} FOUND)"
+      }
     }
   },
   "legal": {

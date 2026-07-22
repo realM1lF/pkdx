@@ -2,7 +2,7 @@
  * (team-builder.md "Header-Strip", density-addendum §2 command-bar) */
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, ChevronDown, Download, Gamepad2, Pencil, Save, Share2, Trash2, Users } from 'lucide-react';
+import { ArrowLeftRight, Check, ChevronDown, Download, Gamepad2, Pencil, Save, Share2, Trash2, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { genRegionKey } from '@/lib/i18n-data';
 import { VERSION_GROUPS, versionGroupById } from '@/lib/teambuilder';
@@ -111,6 +111,7 @@ interface HeaderStripProps {
   onName: (name: string) => void;
   onGameChange: (vgId: string) => void;
   onImport: () => void;
+  onShowdown: () => void;
   onShare: () => void;
   onSave: () => void;
   onClear: () => void;
@@ -125,6 +126,7 @@ export default function HeaderStrip({
   onName,
   onGameChange,
   onImport,
+  onShowdown,
   onShare,
   onSave,
   onClear,
@@ -150,6 +152,10 @@ export default function HeaderStrip({
         <button type="button" onClick={onImport} className="tb-btn">
           <Download size={13} />
           {t('tb.importFromRun')}
+        </button>
+        <button type="button" onClick={onShowdown} className="tb-btn" title={t('tb.sd.buttonTip')}>
+          <ArrowLeftRight size={13} />
+          {t('tb.sd.button')}
         </button>
         <button type="button" onClick={onShare} className="tb-btn" aria-live="polite">
           {shareState === 'copied' ? <Check size={13} className="text-gold" /> : <Share2 size={13} />}
