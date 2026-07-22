@@ -14,9 +14,11 @@ import {
   deleteTeam,
   emptySlot,
   emptyTeam,
+  evTotal,
   encodeTeamHash,
   fetchMetaDump,
   filledSlots,
+  genHasMechanics,
   genTypesOf,
   importRunTeams,
   loadDraft,
@@ -29,6 +31,7 @@ import {
   slotsFromImport,
   smogonEvs,
   versionGroupById,
+  zeroEvs,
 } from '@/lib/teambuilder';
 import type {
   CoverageResult,
@@ -78,6 +81,8 @@ export default function TeamBuilder() {
   const [shareState, setShareState] = useState<'idle' | 'copied'>('idle');
   const [savedFlash, setSavedFlash] = useState(false);
   const [appliedSetName, setAppliedSetName] = useState<string | null>(null);
+  /* slot awaiting the Smogon EV auto-apply (armed by handlePick) */
+  const autoEvSlotRef = useRef<string | null>(null);
 
   /* async data caches */
   const [pokemonCache, setPokemonCache] = useState<Record<number, Pokemon>>({});
@@ -196,7 +201,11 @@ export default function TeamBuilder() {
         item: null,
         ability: null,
         nature: null,
+        evs: zeroEvs(),
       });
+      /* EP0.3: arm the Smogon EV auto-apply for this slot (applied once the
+       * meta entry for the freshly picked species resolves; stays 0 without a set) */
+      autoEvSlotRef.current = slotId;
       setExpandedId(slotId);
       setFocusedId(slotId);
       setAppliedSetName(null);
@@ -423,6 +432,27 @@ export default function TeamBuilder() {
   /* derived meta display state (no sync setState in the effect above) */
   const metaState: MetaState = !focusSpecies ? 'idle' : meta.species === focusSpecies ? meta.state : 'loading';
   const metaEntry = focusSpecies && meta.species === focusSpecies ? meta.entry : null;
+
+  /* EP0.3 — auto-apply the primary meta set's EV spread right after a pick.
+   * Only when: the meta lookup resolved for THIS slot's species, the gen has
+   * EVs, a spread exists, and the user hasn't touched the sliders meanwhile
+   * (still all zero). Fully editable afterwards; stays 0 when no set exists. */
+  useEffect(() => {
+    const slotId = autoEvSlotRef.current;
+    if (!slotId || !team) return;
+    if (metaState !== 'ready' && metaState !== 'unavailable') return;
+    autoEvSlotRef.current = null;
+    const slot = team.slots.find((s) => s.id === slotId);
+    if (!slot || slot.id !== focusSlot?.id || !slot.pokemon || slot.pokemon !== focusSpecies) return;
+    if (!genHasMechanics(team.versionGroup).evs) return;
+    if (evTotal(slot) !== 0) return;
+    const set = metaEntry?.sets[0];
+    const spread = set?.evs[0];
+    if (!set || !spread || !Object.keys(spread).length) return;
+    patchSlot(slot.id, { evs: smogonEvs(spread) });
+    setAppliedSetName(set.name);
+    window.setTimeout(() => setAppliedSetName(null), 2600);
+  }, [team, metaState, metaEntry, focusSlot, focusSpecies, patchSlot]);
 
   const expandedSlot = team?.slots.find((s) => s.id === expandedId) ?? null;
 

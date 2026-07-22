@@ -582,6 +582,9 @@
     "on": "on",
     "off": "off",
     "fullDex": "FULL DEX",
+    "noMatchTryDex": "No match — try the full dex below.",
+    "scanningEncounters": "Scanning encounter data…",
+    "searchFullDex": "Can’t find it — search full dex",
     "overCap": "OVER CAP {{cap}}",
     "header": {
       "renameTip": "Click to rename",
@@ -974,6 +977,7 @@
     "evs": "EVS",
     "applySet": "APPLY SET",
     "applied": "APPLIED",
+    "setApplied": "SET APPLIED",
     "metaAria": "Meta snapshot",
     "defenseAria": "Defensive synergy",
     "offenseAria": "Offensive coverage",

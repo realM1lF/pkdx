@@ -582,6 +582,9 @@
     "on": "an",
     "off": "aus",
     "fullDex": "VOLLE DEX",
+    "noMatchTryDex": "Kein Treffer — versuche den vollen Dex unten.",
+    "scanningEncounters": "Encounter-Daten werden geladen…",
+    "searchFullDex": "Nicht gefunden — vollen Dex durchsuchen",
     "overCap": "ÜBER CAP {{cap}}",
     "header": {
       "renameTip": "Klicken zum Umbenennen",
@@ -974,6 +977,7 @@
     "evs": "FP",
     "applySet": "SET ÜBERNEHMEN",
     "applied": "ÜBERNOMMEN",
+    "setApplied": "SET ÜBERNOMMEN",
     "metaAria": "Meta-Schnappschuss",
     "defenseAria": "Defensiv-Synergie",
     "offenseAria": "Offensiv-Coverage",

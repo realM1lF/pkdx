@@ -210,6 +210,19 @@
   overflow: hidden;
 }
 
+/* portaled variant (MiniAutocomplete) — escapes overflow-hidden ancestors;
+ * fixed coords come from inline styles, z sits above cards/dialogs-adjacent
+ * chrome (z-60 popovers) but below full-screen dialogs (z-[90]) */
+.tb-dropdown-portal {
+  position: fixed;
+  z-index: 88;
+  min-width: 0;
+  /* .tb-dropdown sets overflow:hidden (later in cascade than the tailwind
+   * overflow-y-auto utility) — the portaled list MUST scroll */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .tb-option {
   display: flex;
   align-items: center;

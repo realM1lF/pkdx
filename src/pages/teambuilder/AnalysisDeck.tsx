@@ -404,9 +404,14 @@ function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: M
           <Sparkles size={11} />
           {t('tb.metaEyebrow')}
         </span>
-        {entry?.weight != null && (
-          <span className="tb-chip !text-[8px] text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
-        )}
+        <span className="flex items-center gap-1.5">
+          {applied && (
+            <span className="tb-chip !border-gold/60 !bg-gold/10 !text-[8px] !text-gold">{t('tb.setApplied')}</span>
+          )}
+          {entry?.weight != null && (
+            <span className="tb-chip !text-[8px] text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
+          )}
+        </span>
       </div>
       <div className="p-3">
         {/* gen-awareness: the meta data is always gen 9 OU — say so, flag mismatch */}
