@@ -11,11 +11,14 @@
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
     "menu": "MENÜ",
-    "home": "Pokédex 2.0 Startseite",
+    "home": "MyPokePanion Startseite",
     "language": "Sprache",
     "deCoverageNoteEn": "DE is mostly translated, but not complete.",
     "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig.",
-    "items": "Items"
+    "items": "Items",
+    "zoom": "Zoom",
+    "zoomIn": "Vergrößern",
+    "zoomOut": "Verkleinern"
   },
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
@@ -954,6 +957,15 @@
         "versus": {
           "title": "Versus — 1v1-Matchups",
           "caption": "Wähle zwei Pokémon und erhalte die komplette Schadensrechnung: beste Attacken, KO-Bereiche, Initiative. Auf jeder Dex-Seite."
+        },
+        "stats": {
+          "regions": "REGIONEN",
+          "locations": "ORTE",
+          "gens": "GEN",
+          "species": "MON",
+          "mode": "MODUS",
+          "export": "EXPORT",
+          "engine": "ENGINE"
         }
       },
       "roadmap": {
@@ -1166,7 +1178,7 @@
       "copy": "TEXT KOPIEREN",
       "copied": "KOPIERT ✓",
       "pokepaste": "IN POKÉPASTE ÖFFNEN",
-      "pokepasteTitle": "Pokédex 2.0 Team",
+      "pokepasteTitle": "MyPokePanion Team",
       "copiedToast": "SHOWDOWN-TEXT KOPIERT",
       "importHint": "Team im Showdown-Textformat einfügen (Art, Item, Fähigkeit, Wesen, EVs, Level, Shiny, Attacken)",
       "placeholder": "Glurak @ Schwerstiefel\nFähigkeit: Solarkraft\nEVs: 252 SpA / 4 SpV / 252 Ini\nFroh Wesen\n- Feuersturm\n…",
@@ -1182,7 +1194,8 @@
         "noSpecies": "NICHT GEFUNDEN: {{name}}",
         "tooMany": "NUR DIE ERSTEN 6 ÜBERNOMMEN ({{count}} GEFUNDEN)"
       }
-    }
+    },
+    "editing": "IN BEARBEITUNG"
   },
   "legal": {
     "impressum": {
@@ -1231,7 +1244,7 @@
         {
           "heading": "Hinweis zum Fanprojekt",
           "paragraphs": [
-            "Pokédex 2.0 ist ein unabhängiges Fanprojekt und steht in keiner offiziellen Verbindung zu Nintendo, Creatures Inc. oder GAME FREAK inc. Pokémon sowie alle damit verbundenen Namen, Marken und Medien sind Eigentum ihrer jeweiligen Rechteinhaber."
+            "MyPokePanion ist ein unabhängiges Fanprojekt und steht in keiner offiziellen Verbindung zu Nintendo, Creatures Inc. oder GAME FREAK inc. Pokémon sowie alle damit verbundenen Namen, Marken und Medien sind Eigentum ihrer jeweiligen Rechteinhaber."
           ]
         }
       ]
@@ -1287,7 +1300,7 @@
             {
               "heading": "Lokale Speicherung in deinem Browser",
               "paragraphs": [
-                "Viele Funktionen von Pokédex 2.0 speichern Daten ausschließlich lokal in deinem Browser (LocalStorage und SessionStorage), solange du den Solo-Modus nutzt oder keine Multiplayer-Nuzlocke-Runs erstellst. Dazu gehören unter anderem:",
+                "Viele Funktionen von MyPokePanion speichern Daten ausschließlich lokal in deinem Browser (LocalStorage und SessionStorage), solange du den Solo-Modus nutzt oder keine Multiplayer-Nuzlocke-Runs erstellst. Dazu gehören unter anderem:",
                 "Spracheinstellung, PokéAPI-Cache, gespeicherte Teams, Nuzlocke-Solo-Runs, zuletzt genutzte Suche, Pokédex-Ansichtsdichte und Map-Darstellungsmodus.",
                 "Diese lokal gespeicherten Daten werden nicht automatisch an unsere Server übermittelt. Du kannst sie jederzeit in deinen Browser-Einstellungen unter „Website-Daten löschen“ entfernen."
               ]

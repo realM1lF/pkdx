@@ -80,7 +80,7 @@ export default function PokemonDetail() {
   }, [param]);
 
   useEffect(() => {
-    if (pokemon) document.title = `${nameOfPokemon(pokemon.id, lang)} — Pokédex 2.0`;
+    if (pokemon) document.title = `${nameOfPokemon(pokemon.id, lang)} — MyPokePanion`;
   }, [pokemon, lang]);
 
   const types = useMemo(() => (pokemon ? pokemonTypes(pokemon) : []), [pokemon]);

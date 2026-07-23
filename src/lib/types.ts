@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — shared types & constants (design.md §2.4, §10.1) */
+/* MyPokePanion — shared types & constants (design.md §2.4, §10.1) */
 
 export const POKEMON_TYPES = [
   'normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground',

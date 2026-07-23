@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — Showdown text format bridge (community standard #1)
+/* MyPokePanion — Showdown text format bridge (community standard #1)
  * Export/import of the de-facto team interchange format used by Pokémon
  * Showdown, PokéPaste and every calc (smogon/pokemon-showdown sim/TEAMS.md).
  *

@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — sprite URL builder (design.md §10.2)
+/* MyPokePanion — sprite URL builder (design.md §10.2)
  * Base: PokeAPI/sprites repo on raw.githubusercontent. */
 
 const BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon';

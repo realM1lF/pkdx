@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — Team Builder core (team-builder.md, Option A)
+/* MyPokePanion — Team Builder core (team-builder.md, Option A)
  * Pure state/logic module — no React.
  *
  * - 6-slot team model (pokemon, level, moves[4], item, ability, nature, evs)

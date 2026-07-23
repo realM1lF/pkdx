@@ -11,11 +11,14 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menu": "MENU",
-    "home": "Pokédex 2.0 home",
+    "home": "MyPokePanion home",
     "language": "Language",
     "deCoverageNoteEn": "DE is mostly translated, but not complete.",
     "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig.",
-    "items": "Items"
+    "items": "Items",
+    "zoom": "Zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out"
   },
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
@@ -954,6 +957,15 @@
         "versus": {
           "title": "Versus — 1v1 Matchups",
           "caption": "Pick two Pokémon, get the full damage math: best moves, KO ranges, speed tiers. On every dex page."
+        },
+        "stats": {
+          "regions": "REGIONS",
+          "locations": "SPOTS",
+          "gens": "GEN",
+          "species": "MON",
+          "mode": "MODE",
+          "export": "EXPORT",
+          "engine": "ENGINE"
         }
       },
       "roadmap": {
@@ -1166,7 +1178,7 @@
       "copy": "COPY TEXT",
       "copied": "COPIED ✓",
       "pokepaste": "OPEN IN POKÉPASTE",
-      "pokepasteTitle": "Pokédex 2.0 Team",
+      "pokepasteTitle": "MyPokePanion Team",
       "copiedToast": "SHOWDOWN TEXT COPIED",
       "importHint": "Paste a team in Showdown text format (species, item, ability, nature, EVs, level, shiny, moves)",
       "placeholder": "Charizard @ Heavy-Duty Boots\nAbility: Blaze\nEVs: 252 SpA / 4 SpD / 252 Spe\nTimid Nature\n- Fire Blast\n…",
@@ -1182,7 +1194,8 @@
         "noSpecies": "NOT FOUND: {{name}}",
         "tooMany": "ONLY THE FIRST 6 IMPORTED ({{count}} FOUND)"
       }
-    }
+    },
+    "editing": "EDITING"
   },
   "legal": {
     "impressum": {
@@ -1231,7 +1244,7 @@
         {
           "heading": "Fan project notice",
           "paragraphs": [
-            "Pokédex 2.0 is an independent fan project and is not officially affiliated with Nintendo, Creatures Inc., or GAME FREAK inc. Pokémon and all related names, trademarks, and media are the property of their respective rights holders."
+            "MyPokePanion is an independent fan project and is not officially affiliated with Nintendo, Creatures Inc., or GAME FREAK inc. Pokémon and all related names, trademarks, and media are the property of their respective rights holders."
           ]
         }
       ]
@@ -1287,7 +1300,7 @@
             {
               "heading": "Local storage in your browser",
               "paragraphs": [
-                "Many Pokédex 2.0 features store data locally in your browser (LocalStorage and SessionStorage) when you use solo mode or do not create multiplayer Nuzlocke runs. This includes, among other things:",
+                "Many MyPokePanion features store data locally in your browser (LocalStorage and SessionStorage) when you use solo mode or do not create multiplayer Nuzlocke runs. This includes, among other things:",
                 "Language preference, PokéAPI cache, saved teams, solo Nuzlocke runs, recent search history, Pokédex view density, and map display mode.",
                 "This locally stored data is not automatically transmitted to our servers. You can delete it at any time in your browser settings under \"Clear site data\"."
               ]

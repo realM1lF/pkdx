@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — Nuzlocke unified run store (nuzlocke.md §0)
+/* MyPokePanion — Nuzlocke unified run store (nuzlocke.md §0)
  * Solo mode  → localStorage mirror (`pdx2.nuz.*`), instant.
  * Multi mode → Supabase Postgres + Realtime (postgres_changes + presence).
  * Identical UI in both modes. All writes optimistic; failed remote writes

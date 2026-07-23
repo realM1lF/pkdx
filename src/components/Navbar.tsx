@@ -8,6 +8,7 @@ import { Menu, Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
+import ZoomControl from './ZoomControl';
 
 const LINKS = [
   { to: '/pokedex', key: 'nav.pokedex' },
@@ -53,8 +54,9 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               alt=""
               className="h-8 w-8 transition-transform duration-400 ease-out-expo group-hover:rotate-180"
             />
-            <span className="font-display text-lg font-extrabold tracking-wide text-tx-primary">POKÉDEX</span>
-            <span className="pixel-label text-[10px] text-gold">2.0</span>
+            <span className="font-display text-lg font-extrabold tracking-wide text-tx-primary">
+              MYPOKE<span className="text-gold">PANION</span>
+            </span>
           </LocaleLink>
 
           {/* center links (desktop) */}
@@ -88,6 +90,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
 
           {/* right cluster */}
           <div className="flex items-center gap-2">
+            <ZoomControl className="hidden md:flex" />
             <LanguageToggle className="hidden sm:flex" />
             <button
               type="button"

@@ -52,8 +52,9 @@ export default function Footer() {
         <div className="flex flex-col items-start gap-4 sm:col-span-2 lg:col-span-1 xl:col-span-1">
           <div className="flex items-center gap-2.5">
             <img src="/logo.svg" alt="" className="h-8 w-8" />
-            <span className="font-display text-lg font-extrabold tracking-wide">POKÉDEX</span>
-            <span className="pixel-label text-[10px] text-gold">2.0</span>
+            <span className="font-display text-lg font-extrabold tracking-wide">
+              MYPOKE<span className="text-gold">PANION</span>
+            </span>
           </div>
           <p className="font-sans text-sm text-tx-secondary">{t('footer.tagline')}</p>
           <span className="pixel-label text-[9px] text-tx-muted">{t('footer.phase')}</span>

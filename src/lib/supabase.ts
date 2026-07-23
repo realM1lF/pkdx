@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — Nuzlocke multiplayer client (nuzlocke.md §0.2)
+/* MyPokePanion — Nuzlocke multiplayer client (nuzlocke.md §0.2)
  * Client singleton: env override (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)
  * falls back to the baked publishable key (public by design, RLS-gated). */
 import { createClient } from '@supabase/supabase-js';

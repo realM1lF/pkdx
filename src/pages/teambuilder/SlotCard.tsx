@@ -123,6 +123,9 @@ export default function SlotCard({
       className={cn(
         'tb-panel tb-slot-drag relative flex min-h-[172px] flex-col overflow-hidden p-2.5 transition-shadow',
         focused && 'border-gold/40 shadow-[0_0_0_1px_rgba(246,201,69,0.25)]',
+        /* the slot whose editor is open must be unmistakable (user feedback):
+         * strong gold border + glow; subtle focus ring stays for click-focus */
+        expanded && '!border-gold shadow-[0_0_28px_rgba(246,201,69,0.38)] ring-2 ring-gold/70',
         !legality.legal && 'border-gold/50',
       )}
       style={{
@@ -130,6 +133,13 @@ export default function SlotCard({
       }}
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
     >
+      {/* editing badge — which slot the open editor belongs to */}
+      {expanded && (
+        <span className="pixel-label absolute left-1/2 top-1 z-10 -translate-x-1/2 rounded-pill border border-gold/70 bg-void/90 px-2 py-0.5 text-[7px] text-gold shadow-[0_0_12px_rgba(246,201,69,0.4)]">
+          {t8n('tb.editing')}
+        </span>
+      )}
+
       {/* top row: dex num + illegal flag + duplicate/remove */}
       <div className="flex items-center justify-between gap-1">
         <span className="tb-micro !text-[8px]">{padNum(slot.pokemonId)}</span>
@@ -306,7 +316,7 @@ export default function SlotCard({
         <span className="tb-chip !text-[9px]">LV {slot.level}</span>
         <div className="flex items-center gap-1">
           <LocaleLink
-            to={`/pokemon/${slot.pokemonId}?vs=${versusOpponentId ?? ''}`}
+            to={`/versus?you=${slot.pokemonId}&game=${versionGroup}${versusOpponentId ? `&vs=${versusOpponentId}` : ''}`}
             onClick={(e) => e.stopPropagation()}
             className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
             aria-label={t8n('tb.slot.compare', { name: label })}
