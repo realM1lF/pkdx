@@ -572,6 +572,23 @@
     "solo": "SOLO MODE — RUNS SAVE TO THIS DEVICE",
     "dismiss": "Dismiss",
     "activeOps": "Active Operations",
+    "whatIsSection": {
+      "title": "What is a Nuzlocke?",
+      "eyebrow": "CHALLENGE RUN",
+      "intro": "A Nuzlocke is a self-imposed hardcore ruleset for Pokémon games: less safety net, more attachment to your team — and every route matters. The rules are voluntary and not built into the games; you choose how strict the run is.",
+      "rulesHeading": "Core rules",
+      "rules": [
+        "Catch only the first wild Pokémon on each route or area — no second chance if it faints or flees.",
+        "If a team Pokémon faints, it is dead (release or permanently boxed).",
+        "Nickname every Pokémon you catch — that bond is part of the challenge."
+      ],
+      "variants": "Play solo, pair up in a Soul Link, add a randomizer, run Hardcore (no boxing), or use dupes/shiny clauses — most players customize. This tracker supports solo and multiplayer runs including Soul Link.",
+      "linksHeading": "Verified references",
+      "linkOfficial": "Nuzlocke.com (original)",
+      "linkWikiDe": "PokéWiki — Nuzlocke",
+      "linkWikiEn": "Bulbapedia — Nuzlocke Challenge",
+      "externalHint": "External links · opens in a new tab"
+    },
     "runs": "{{count}} RUNS",
     "run": "{{count}} RUN",
     "emptyTitle": "No runs yet",

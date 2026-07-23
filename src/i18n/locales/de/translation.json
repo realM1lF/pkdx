@@ -572,6 +572,23 @@
     "solo": "SOLO-MODUS — RUNS WERDEN LOKAL GESPEICHERT",
     "dismiss": "Schließen",
     "activeOps": "Aktive Operationen",
+    "whatIsSection": {
+      "title": "Was ist Nuzlocke?",
+      "eyebrow": "CHALLENGE-RUN",
+      "intro": "Eine Nuzlocke ist eine selbst gewählte Hardcore-Regel für Pokémon-Spiele: weniger Puffer, mehr Bindung ans Team — und jede Route zählt. Die Regeln sind freiwillig und nicht im Spiel eingebaut; du entscheidest, wie streng der Run wird.",
+      "rulesHeading": "Kernregeln",
+      "rules": [
+        "Pro Route oder Area nur das erste wilde Pokémon fangen — kein zweiter Versuch, wenn es flieht oder kampfunfähig wird.",
+        "Wird ein Team-Pokémon kampfunfähig, gilt es als tot (Release oder dauerhaft in die Box).",
+        "Jedes gefangene Pokémon bekommt einen Spitznamen — so entsteht echte Bindung ans Team."
+      ],
+      "variants": "Allein spielbar, zu zweit als Soul Link, mit Randomizer, Hardcore (kein Boxen), Dupes- oder Shiny-Klausel — viele Spieler passen die Regeln an. Dieser Tracker unterstützt Solo- und Multiplayer-Runs inkl. Soul Link.",
+      "linksHeading": "Offizielle Quellen",
+      "linkOfficial": "Nuzlocke.com (Original)",
+      "linkWikiDe": "PokéWiki — Nuzlocke",
+      "linkWikiEn": "Bulbapedia — Nuzlocke Challenge",
+      "externalHint": "Externe Links · neuer Tab"
+    },
     "runs": "{{count}} RUNS",
     "run": "{{count}} RUN",
     "emptyTitle": "Noch keine Runs",

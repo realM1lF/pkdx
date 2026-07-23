@@ -16,6 +16,7 @@ import Wizard from './nuzlocke/Wizard';
 import RunCard from './nuzlocke/RunCard';
 import NuzToasts from './nuzlocke/Toasts';
 import { GoldHint, InfoTip, PixelLabel, useShake } from './nuzlocke/ui';
+import WhatIsNuzlocke from './nuzlocke/WhatIsNuzlocke';
 import './nuzlocke/nuzlocke.css';
 
 export default function Nuzlocke() {
@@ -207,6 +208,8 @@ export default function Nuzlocke() {
           </>
         )}
       </section>
+
+      <WhatIsNuzlocke />
 
       <Wizard
         open={wizardOpen}
