@@ -1,7 +1,9 @@
 /* ZoomControl — browser-style page zoom next to the language switch.
- * Real browser zoom is not scriptable, so we emulate it with the CSS `zoom`
- * property on <html> (same visual result; layout, media queries and rem
- * units all scale). Persisted in localStorage, range 50–150% in 10% steps. */
+ * Real browser zoom is not scriptable, so we emulate it by scaling the ROOT
+ * FONT SIZE (html { font-size }) — the app is rem-based (Tailwind), so the
+ * whole layout scales proportionally. This is deliberately NOT the CSS
+ * `zoom` property: that one breaks coordinate-measuring UI (portal
+ * dropdowns, sliders, mouse spotlight, evolution arrows) — user-reported. */
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus } from 'lucide-react';
@@ -11,6 +13,7 @@ const KEY = 'pdx2.zoom';
 const MIN = 50;
 const MAX = 150;
 const STEP = 10;
+const BASE_PX = 16;
 
 function readZoom(): number {
   try {
@@ -23,10 +26,7 @@ function readZoom(): number {
 }
 
 function applyZoom(v: number) {
-  /* `zoom` is intentionally NOT TS-typed on CSSStyleDeclaration in older
-   * lib.dom versions — cast. Supported by Chromium/Safari and Firefox 126+. */
-  (document.documentElement.style as CSSStyleDeclaration & { zoom?: string }).zoom =
-    v === 100 ? '' : String(v / 100);
+  document.documentElement.style.fontSize = v === 100 ? '' : `${(BASE_PX * v) / 100}px`;
 }
 
 export default function ZoomControl({ className }: { className?: string }) {

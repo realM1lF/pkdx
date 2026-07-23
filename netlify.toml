@@ -1,7 +1,25 @@
-# Netlify build config — Pokédex 2.0 (Vite SPA)
+# Netlify build config — MyPokePanion (Vite SPA)
 [build]
   command = "npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
+
+# Cache strategy (fixes "MIME type text/html" chunk errors after deploys):
+# hashed assets are immutable, everything else (esp. index.html) must
+# revalidate so browsers never reference deleted chunk hashes.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/sprites/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
