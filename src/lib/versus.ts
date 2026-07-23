@@ -162,6 +162,19 @@ function buildMon(
   }
 }
 
+/** Production CalcPokemon builder — parity tests call this + `calculate()` directly. */
+export function pokemonFromVersusSide(
+  side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
+  ctx: VersusContext = defaultVersusContext(),
+): CalcPokemon | null {
+  return buildMon(side, ctx);
+}
+
+/** Production Field builder — parity tests mirror `damageBetween` field handling. */
+export function fieldFromVersusField(field?: VersusField, genNum = 9): Field | undefined {
+  return buildCalcField(field, genNum);
+}
+
 /** Fully computed stats (level + nature + EV/IV applied). Keys = PokéAPI StatKey. */
 export function statsOf(
   side: Pick<VersusSide, 'slug' | 'level' | 'nature' | 'evs' | 'ivs' | 'ability' | 'item' | 'status'>,
@@ -380,6 +393,50 @@ const FIXED_DAMAGE: Record<string, number | 'level' | 'half' | 'psywave'> = {
   'super-fang': 'half',
   psywave: 'psywave',
 };
+
+/** Independent @smogon/calc range for parity assertions (handles fixed-damage moves). */
+export function smogonReferenceRange(
+  attacker: VersusSide,
+  defender: VersusSide,
+  moveSlug: string,
+  ctx: VersusContext = defaultVersusContext(),
+  field?: VersusField,
+): [number, number] | null {
+  const gen = getGen(ctx);
+  const atk = buildMon(attacker, ctx);
+  const def = buildMon(defender, ctx);
+  if (!atk || !def) return null;
+  let mv: CalcMove;
+  try {
+    mv = new CalcMove(gen, calcId(moveSlug));
+  } catch {
+    return null;
+  }
+  const calcField = buildCalcField(field, ctx.gen);
+  const fixed = FIXED_DAMAGE[moveSlug];
+  if (fixed) {
+    const maxHp = def.stats.hp || 1;
+    const moveType = (mv.type ?? 'normal').toLowerCase();
+    const typeEff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()), ctx.gen);
+    let lo: number;
+    let hi: number;
+    if (fixed === 'level') lo = hi = atk.level;
+    else if (fixed === 'half') lo = hi = Math.max(1, Math.floor(maxHp / 2));
+    else if (fixed === 'psywave') {
+      lo = Math.max(1, Math.floor(atk.level * 0.5));
+      hi = Math.max(1, Math.floor(atk.level * 1.5));
+    } else lo = hi = fixed;
+    if (typeEff === 0) lo = hi = 0;
+    return [lo, hi];
+  }
+  const category = (mv.category ?? 'status').toLowerCase();
+  if (!DAMAGING_CATS.has(category) || !mv.bp) return [0, 0];
+  try {
+    return calculate(gen, atk, def, mv, calcField).range() as [number, number];
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Damage of `moveSlug` from attacker → defender.
