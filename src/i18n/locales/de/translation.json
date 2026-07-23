@@ -421,6 +421,8 @@
       "violet": "Pokémon Purpur"
     },
     "fieldLabel": "FELD",
+    "weatherLabel": "WETTER",
+    "terrainLabel": "TERRAIN",
     "field": {
       "clear": "Klar"
     },
@@ -431,6 +433,12 @@
       "hail": "Hagel",
       "snow": "Schnee"
     },
+    "terrain": {
+      "electric": "Elektro",
+      "grassy": "Gras",
+      "misty": "Nebel",
+      "psychic": "Psycho"
+    },
     "trainerMode": "TRAINER",
     "dexMode": "DEX",
     "statusLabel": "STATUS",
@@ -438,7 +446,9 @@
       "none": "Keiner",
       "burn": "Brand",
       "par": "Par",
-      "psn": "Gift"
+      "psn": "Gift",
+      "slp": "Schlaf",
+      "frz": "Eis"
     },
     "trainerSearch": "Trainer suchen…",
     "trainerGroupLeaders": "ARENALEITER",

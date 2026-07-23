@@ -212,16 +212,19 @@ Nur **Home**, **Pokédex**, **Random Pokémon** — **keine** Links zu Maps, Nuz
 
 ---
 
-### Versus (embedded)
+### Versus (`/versus` + Detail-Tab + Nuzlocke-Tab)
 
-Zwei Entry Points:
+Entry Points:
 
-1. **Detail:** `/pokemon/:id?vs=<foeId>` — freier 1v1-Vergleich
-2. **Nuzlocke Run:** Team/Box vs Kanto-Trainer oder Wild + **SAFE/OK/RISKY/AVOID** Ranking
+1. **Standalone:** `/versus` — Game-Selector, Wetter/Terrain, 1v1-Vergleich
+2. **Detail:** `/pokemon/:id?vs=<foeId>` — gleiche Panel-Komponente
+3. **Nuzlocke Run:** Team/Box vs Trainer oder Wild + **SAFE/OK/RISKY/AVOID** Ranking
 
-**Math:** durchgehend Gen-9 `@smogon/calc` (`lib/versus.ts`), auch wenn Run-Game FRLG ist.
+**Math:** gen-korrekt via `VersusContext` → `@smogon/calc` (Gen 1–9) + `@pkmn/data` Typ-Chart. Move-Pools gefiltert nach `versionGroup`. EFF-Spalte berücksichtigt Verteidiger-Fähigkeiten (z. B. Dickfell). Tests: `src/lib/versus.test.ts` (vitest).
 
-**Trainer-Daten:** `src/data/enriched/{region}.json` — Kanto (pret/pokefirered, vollständig), Johto–Unova (Gym/E4/Champion kuratiert). Maps-Drawer verlinkt auf Detail-Versus (`?tab=versus&versusTrainer=`).
+**Feld:** Wetter (gen-gated) + Terrain ab Gen 6 in `/versus` und Nuzlocke-Versus. Status inkl. Schlaf/Einfrieren (status-abhängige Moves wie Traumfresser).
+
+**Trainer-Daten:** `src/data/enriched/{region}.json` — Kanto (pret/pokefirered, vollständig), Johto–Unova (Gym/E4/Champion kuratiert).
 
 #### Community-Wünsche (Versus-Overhaul)
 
@@ -233,7 +236,7 @@ Zwei Entry Points:
 | Detail Trainer-Picker | ⚠️ geplant (Phase 3.2) |
 | Nuzlocke multi-region Trainer-Modus | ⚠️ geplant (Phase 3.4) |
 | Nav/Footer Versus-Auffindbarkeit | ⚠️ geplant (Phase 0.2) |
-| Gen-korrekte Calc pro Run | ⚠️ geplant (Phase 1.x) |
+| Gen-korrekte Calc pro Run | ✅ `versusContextFromRun` + Game-Select |
 
 ---
 
@@ -255,8 +258,8 @@ Zwei Entry Points:
 
 ## 5. Datenvalidität — konkrete Risiken
 
-1. **Gen-Mismatch Versus:** FRLG-Run, aber Gen-9-Schaden und neueste Move-Pools (`newestVersionGroup`) — irreführend für Story-Runs.
-2. **Doppelte Type-Charts:** `detail/data.ts` und `versus.ts` — Wartungsrisiko, aber konsistent (Gen VI+).
+1. ~~**Gen-Mismatch Versus:**~~ ✅ behoben — Calc/Move-Pools folgen `VersusContext`.
+2. **Doppelte Type-Charts:** `detail/data.ts` (Detail-Seite, Gen VI+) vs `genMatchupsForSide` in `versus.ts` (@pkmn/data, gen-aware) — Versus ist korrekt; Detail-Chart separat.
 3. **Move-Genauigkeit:** Heuristik `power × (acc/100)`; null accuracy = 100 angenommen; Legacy-Moves teils Fixed-Damage-Hacks.
 4. **Where to Find:** Best rate über **alle** Versionen aggregiert — nicht spiel-spezifisch.
 5. **Legendary-Filter:** Hardcoded Sets — können hinter PokéAPI zurückbleiben.

@@ -421,6 +421,8 @@
       "violet": "Pokémon Violet"
     },
     "fieldLabel": "FIELD",
+    "weatherLabel": "WEATHER",
+    "terrainLabel": "TERRAIN",
     "field": {
       "clear": "Clear"
     },
@@ -431,6 +433,12 @@
       "hail": "Hail",
       "snow": "Snow"
     },
+    "terrain": {
+      "electric": "Electric",
+      "grassy": "Grassy",
+      "misty": "Misty",
+      "psychic": "Psychic"
+    },
     "trainerMode": "TRAINER",
     "dexMode": "DEX",
     "statusLabel": "STATUS",
@@ -438,7 +446,9 @@
       "none": "None",
       "burn": "Burn",
       "par": "Par",
-      "psn": "Poison"
+      "psn": "Poison",
+      "slp": "Sleep",
+      "frz": "Freeze"
     },
     "trainerSearch": "Search trainers…",
     "trainerGroupLeaders": "GYM LEADERS",

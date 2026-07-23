@@ -43,7 +43,8 @@ import {
 import {
   NATURES,
   damageBetween,
-  genMatchupsOf,
+  EFF_LABEL,
+  genMatchupsForSide,
   koLabel,
   legalMoveSlugs,
   levelUpPool,
@@ -59,11 +60,10 @@ import {
   defaultVersusContext,
   versusContextFromGame,
   versusGameOptions,
-  versusWeatherForGen,
   type VersusContext,
   type VersusField,
-  type VersusWeather,
 } from '@/lib/versus-context';
+import VersusFieldControls, { defaultVersusField, fieldForGen } from './VersusFieldControls';
 import { typeRgb } from './data';
 import TrainerPicker from './TrainerPicker';
 import { Panel, SegmentedControl } from './ui';
@@ -191,16 +191,7 @@ export function sideToVersus(side: SideState, slug: string): VersusSide {
   };
 }
 
-const WEATHER_LABEL_KEY: Record<VersusWeather, string> = {
-  none: 'versus.field.clear',
-  sun: 'versus.weather.sun',
-  rain: 'versus.weather.rain',
-  sand: 'versus.weather.sand',
-  snow: 'versus.weather.snow',
-  hail: 'versus.weather.hail',
-};
-
-const STATUS_OPTIONS: Array<NonNullable<SideState['status']>> = ['none', 'burn', 'par', 'psn'];
+const STATUS_OPTIONS: Array<NonNullable<SideState['status']>> = ['none', 'burn', 'par', 'psn', 'slp', 'frz'];
 
 /**
  * Default 4 moves for a wild/own Pokémon at `level`:
@@ -956,19 +947,7 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
               <span className="font-sans text-[9px] text-tx-muted">{mv ? (cell ? t('versus.statusMove') : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
             )}
             <span className="vs-eff" data-e={damaging ? String(eff) : '1'}>
-              {damaging
-                ? eff === 1
-                  ? '×1'
-                  : eff === 0
-                    ? '×0'
-                    : eff === 0.5
-                      ? '×½'
-                      : eff === 0.25
-                        ? '×¼'
-                        : eff === 2
-                          ? '×2'
-                          : '×4'
-                : '—'}
+              {damaging ? EFF_LABEL(eff) : '—'}
             </span>
             <span className="text-right">
               <span className="vs-ko" data-n={koN} title={cell && cell.koChance > 0 && cell.koChance < 1 ? t('versus.koChance', { pct: Math.round(cell.koChance * 100) }) : undefined}>
@@ -1065,6 +1044,8 @@ export function DefensiveProfiles({
   youName,
   foeName,
   gen = 9,
+  youAbility,
+  foeAbility,
 }: {
   youTypes: string[];
   foeTypes: string[];
@@ -1072,21 +1053,33 @@ export function DefensiveProfiles({
   foeName: string;
   /** generation for the type chart (F2/F3) — defaults to current */
   gen?: number;
+  youAbility?: string | null;
+  foeAbility?: string | null;
 }) {
   const { t } = useTranslation();
   const titleFor = (n: string) =>
     n === 'YOU' ? t('versus.youTake') : t('versus.nameTakes', { name: n });
   return (
     <div className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-2">
-      <DefenseColumn title={titleFor(youName)} types={youTypes} gen={gen} />
-      <DefenseColumn title={titleFor(foeName)} types={foeTypes} gen={gen} />
+      <DefenseColumn title={titleFor(youName)} types={youTypes} gen={gen} ability={youAbility} />
+      <DefenseColumn title={titleFor(foeName)} types={foeTypes} gen={gen} ability={foeAbility} />
     </div>
   );
 }
 
-function DefenseColumn({ title, types, gen }: { title: string; types: string[]; gen: number }) {
+function DefenseColumn({
+  title,
+  types,
+  gen,
+  ability,
+}: {
+  title: string;
+  types: string[];
+  gen: number;
+  ability?: string | null;
+}) {
   const { t } = useTranslation();
-  const m = genMatchupsOf(types, gen);
+  const m = genMatchupsForSide(types, gen, ability);
   return (
     <div className="flex flex-col gap-1">
       <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
@@ -1189,13 +1182,9 @@ export default function VersusPanel({
     if (contextProp) setCtx(contextProp);
   }, [contextProp]);
 
-  const [field, setField] = useState<VersusField>({ weather: 'none', terrain: 'none' });
-  /* weather is gen-gated: gen 1 has none, hail gen 3–8, snow gen 9 */
-  const weatherOptions = versusWeatherForGen(ctx.gen);
+  const [field, setField] = useState<VersusField>(() => defaultVersusField());
   useEffect(() => {
-    const w = field.weather ?? 'none';
-    if (!versusWeatherForGen(ctx.gen).includes(w)) setField({ weather: 'none', terrain: 'none' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setField((prev) => fieldForGen(prev, ctx.gen));
   }, [ctx.gen]);
   const [foeMode, setFoeMode] = useState<'dex' | 'trainer'>('dex');
   const [trainerRegion, setTrainerRegion] = useState<RegionId>(() => ctx.region ?? 'kanto');
@@ -1402,27 +1391,7 @@ export default function VersusPanel({
             defaultOption={{ id: '', label: t('versus.gameDefault'), short: 'SV', gen: 9 }}
           />
         </div>
-        {weatherOptions.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1">
-            <span className="pixel-label text-[7px] text-tx-muted">{t('versus.fieldLabel')}</span>
-            {weatherOptions.map((w) => (
-              <button
-                key={w}
-                type="button"
-                aria-pressed={(field.weather ?? 'none') === w}
-                onClick={() => setField({ weather: w, terrain: 'none' })}
-                className={cn(
-                  'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
-                  (field.weather ?? 'none') === w
-                    ? 'border-gold/60 bg-gold/10 text-gold'
-                    : 'border-hairline text-tx-muted hover:text-tx-secondary',
-                )}
-              >
-                {t(WEATHER_LABEL_KEY[w])}
-              </button>
-            ))}
-          </div>
-        )}
+        <VersusFieldControls gen={ctx.gen} field={field} onChange={setField} />
         {!isDefaultVersusCtx(ctx) && (
           <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
             {t('versus.calcBadge', { gen: ctx.gen, label: ctxLabel(ctx, t) })}
@@ -1627,6 +1596,8 @@ export default function VersusPanel({
               youName="YOU"
               foeName="FOE"
               gen={ctx.gen}
+              youAbility={you.ability}
+              foeAbility={foe.ability}
             />
           </Panel>
         </>

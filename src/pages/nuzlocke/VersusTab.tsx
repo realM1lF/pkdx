@@ -30,6 +30,7 @@ import {
 } from '@/lib/versus';
 import type { AnswerTier, AnswerVerdict, MovesetSource, VersusField, VersusSide } from '@/lib/versus';
 import { versusContextFromRun, type VersusContext } from '@/lib/versus-context';
+import VersusFieldControls, { defaultVersusField, fieldForGen } from '../detail/VersusFieldControls';
 import { Panel, SegmentedControl } from '../detail/ui';
 import TrainerPicker from '../detail/TrainerPicker';
 import { typeRgb } from '../detail/data';
@@ -124,7 +125,10 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
 
   /* ----- foe selection ----- */
   const [foeMode, setFoeMode] = useState<'trainers' | 'wild'>(hasTrainers ? 'trainers' : 'wild');
-  const [field] = useState<VersusField>({ weather: 'none', terrain: 'none' });
+  const [field, setField] = useState<VersusField>(() => defaultVersusField());
+  useEffect(() => {
+    setField((prev) => fieldForGen(prev, ctx.gen));
+  }, [ctx.gen]);
   const [foeRef, setFoeRef] = useState<FoeRef | null>(null);
   const { pokemon: foePokemon, status: foeStatus } = usePokemonById(foeRef?.slug ?? null);
 
@@ -272,6 +276,9 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
             {t('versus.calcBadge', { gen: ctx.gen, label: ctx.game ?? ctx.versionGroup })}
           </div>
         )}
+        <div className="rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
+          <VersusFieldControls gen={ctx.gen} field={field} onChange={setField} />
+        </div>
         <Panel
           eyebrow={t('versus.opponent')}
           title={foeRef ? foeRef.context : t('versus.pickTarget')}
@@ -435,6 +442,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                       youName="YOU"
                       foeName="FOE"
                       gen={ctx.gen}
+                      youAbility={you.ability}
+                      foeAbility={foe.ability}
                     />
                   </Panel>
                 </div>
