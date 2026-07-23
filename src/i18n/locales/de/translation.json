@@ -18,7 +18,11 @@
     "items": "Items",
     "zoom": "Zoom",
     "zoomIn": "Vergrößern",
-    "zoomOut": "Verkleinern"
+    "zoomOut": "Verkleinern",
+    "about": "About",
+    "feedback": "Feedback",
+    "support": "Support",
+    "more": "MEHR"
   },
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
@@ -117,7 +121,12 @@
     "dataCredits": "Daten & Sprites —",
     "fanProject": "Fanprojekt. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
     "madeWith": "MADE WITH ♥ & TYP-ENERGIE",
-    "items": "Items"
+    "items": "Items",
+    "site": "DIE SEITE",
+    "about": "About",
+    "feedback": "Feedback & Ideen",
+    "support": "Unterstützen",
+    "community": "COMMUNITY & WIKI"
   },
   "detail": {
     "backAll": "ALLE POKÉMON",
@@ -982,6 +991,13 @@
       "types": "TYPEN",
       "generations": "GENERATIONEN",
       "sprites": "SPRITES ARCHIVIERT"
+    },
+    "feedbackTeaser": {
+      "eyebrow": "FEEDBACK",
+      "title": "Deine Ideen formen dieses Projekt.",
+      "text": "MyPokePanion ist ein Hobby-Projekt, das laufend wächst — und das Beste daran sind Bug-Meldungen und Feature-Ideen von echten Spielern.",
+      "bugCta": "BUG MELDEN",
+      "featureCta": "FEATURE WÜNSCHEN"
     }
   },
   "tb": {
@@ -1501,5 +1517,51 @@
       "picnic": "Zutaten",
       "other": "Sonstiges"
     }
+  },
+  "about": {
+    "eyebrow": "ÜBER MYPOKEPANION",
+    "title": "Sechs Tabs weniger.",
+    "lede": "MyPokePanion ist aus einem ganz konkreten Ärger entstanden — und zu einem Toolkit gewachsen, das alles bündelt, was man beim Spielen wirklich braucht.",
+    "story": {
+      "title": "Warum es diese Seite gibt",
+      "text": "Wenn ich selbst Nuzlocke gespielt habe, hatte ich ständig fünf, sechs Tabs offen: ein Wiki für Begegnungen, eins für Attacken, ein Type-Chart, ein Damage-Calculator, eine Routen-Liste, eine Team-Übersicht. Für jede einzelne Entscheidung im Run wurde zwischen Tabs hin- und hergesprungen. MyPokePanion ist die Antwort darauf: ein Ort, der genau diese Infos vereint — schnell, schön und auf Deutsch und Englisch."
+    },
+    "gamers": {
+      "title": "Gemacht für Spieler",
+      "text": "Voller Dex mit Sprite-Museum und Beschreibungen, Regions-Maps mit Encounter-Tabellen und Items, ein Nuzlocke-Tracker mit Soul-Link-Koop, ein Team-Builder mit Legalitäts-Check und Showdown-Export, ein Versus-Labor für Matchups und ein Item-Lexikon. Alles Werkzeuge, die ich mir als Spieler selbst gewünscht hätte."
+    },
+    "hobby": {
+      "title": "Ein Hobby-Projekt",
+      "text": "Diese Seite ist kein Produkt einer Firma, sondern ein Herzensprojekt, das ich in meiner Freizeit stetig weiterentwickele. Neue Features entstehen laufend — und ganz ehrlich: Das Beste daran ist Feedback von echten Spielern."
+    },
+    "feedback": {
+      "text": "Dir fällt ein Bug auf oder du hast eine Idee, die das Tool besser macht? Das hilft mir mehr als alles andere — sag es mir gern.",
+      "cta": "FEEDBACK GEBEN"
+    }
+  },
+  "support": {
+    "eyebrow": "UNTERSTÜTZEN",
+    "title": "Gießkanne für ein Hobby.",
+    "p1": "MyPokePanion ist ein reines Hobby-Projekt — gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
+    "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag — komplett freiwillig, ohne jede Verpflichtung.",
+    "cta": "VIA PAYPAL UNTERSTÜTZEN",
+    "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt."
+  },
+  "feedback": {
+    "eyebrow": "FEEDBACK & IDEEN",
+    "title": "Hilf mit, MyPokePanion besser zu machen.",
+    "intro": "Bugs und Ideen landen als Issue direkt im Projekt — du kannst dort jederzeit den Status verfolgen. Ein (kostenloser) GitHub-Account ist dafür nötig.",
+    "bug": {
+      "title": "Bug melden",
+      "text": "Etwas funktioniert nicht, sieht komisch aus oder wirft Fehler? Ein geführtes Formular fragt Seite, Beschreibung und Schritte ab — Screenshots helfen enorm.",
+      "cta": "BUG MELDEN"
+    },
+    "feature": {
+      "title": "Feature wünschen",
+      "text": "Du hast eine Idee, die das Tool besser macht? Erzähl sie mir — gern mit Beispiel, wie sie dir beim Spielen helfen würde.",
+      "cta": "FEATURE WÜNSCHEN"
+    },
+    "githubNote": "Öffentlich nachverfolgbar:",
+    "browseIssues": "alle offenen Issues ansehen"
   }
 }

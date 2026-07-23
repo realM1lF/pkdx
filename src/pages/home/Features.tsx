@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { AnimatePresence, animate, motion, useInView } from 'framer-motion';
-import { Lock } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import StatBar from '@/components/StatBar';
 import TypeGlyph from '@/components/TypeGlyph';
@@ -320,15 +319,6 @@ const CARDS = [
 ];
 
 /* Toolkit teasers — live features shipped after Phase 01. */
-const ROADMAP: Array<{ labelKey: string; to?: string }> = [
-  { labelKey: 'home.features.roadmap.p2', to: '/pokemon/6?vs=3' },
-  { labelKey: 'home.features.roadmap.p3', to: '/team' },
-  { labelKey: 'home.features.roadmap.p4', to: '/maps' },
-  { labelKey: 'home.features.roadmap.p5', to: '/nuzlocke' },
-  { labelKey: 'home.features.roadmap.p6' },
-  { labelKey: 'home.features.roadmap.p7' },
-];
-
 function DemoCard({ titleKey, captionKey, Demo, index }: { titleKey: string; captionKey: string; Demo: (p: { live: boolean }) => React.JSX.Element; index: number }) {
   const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
@@ -368,35 +358,30 @@ export default function Features() {
         ))}
       </div>
 
-      {/* roadmap marquee — live phases link out, locked stay dimmed */}
-      <div className="group relative mt-10 overflow-hidden border-y border-hairline py-4 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
-        <div className="flex w-max animate-[marquee_60s_linear_infinite] gap-10 group-hover:[animation-play-state:paused] sm:animate-[marquee_40s_linear_infinite]">
-          {[0, 1].map((copy) => (
-            <div key={copy} className="flex gap-10" aria-hidden={copy === 1}>
-              {ROADMAP.map((item) =>
-                item.to ? (
-                  <LocaleLink
-                    key={`${copy}-${item.labelKey}`}
-                    to={item.to}
-                    tabIndex={copy === 1 ? -1 : 0}
-                    className="flex items-center gap-2 opacity-70 transition-opacity hover:opacity-100"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-glow-gold" />
-                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{t(item.labelKey)}</span>
-                    <span className="pixel-label text-[8px] text-gold">{t('home.features.live')}</span>
-                  </LocaleLink>
-                ) : (
-                  <span key={`${copy}-${item.labelKey}`} className="group/item relative flex cursor-default items-center gap-2 opacity-40">
-                    <Lock size={12} strokeWidth={1.75} className="text-tx-muted" />
-                    <span className="pixel-label whitespace-nowrap text-[9px] text-tx-secondary">{t(item.labelKey)}</span>
-                    <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 scale-95 whitespace-nowrap rounded-sm border border-hairline bg-surface2 px-2 py-1 font-sans text-xs text-tx-secondary opacity-0 shadow-elevate transition-all duration-150 group-hover/item:scale-100 group-hover/item:opacity-100">
-                      {t('home.features.lockedTip')}
-                    </span>
-                  </span>
-                ),
-              )}
-            </div>
-          ))}
+      {/* feedback teaser — replaces the roadmap marquee: bugs & ideas wanted */}
+      <div className="mt-10 flex flex-wrap items-center gap-5 rounded-lg border border-gold/35 bg-[linear-gradient(135deg,rgba(246,201,69,0.10),rgba(246,201,69,0.03))] px-6 py-6">
+        <div className="min-w-[220px] flex-1">
+          <p className="pixel-label text-[9px] text-gold">{t('home.feedbackTeaser.eyebrow')}</p>
+          <h3 className="mt-1.5 font-display text-lg font-extrabold uppercase tracking-wide text-tx-primary">
+            {t('home.feedbackTeaser.title')}
+          </h3>
+          <p className="mt-1.5 max-w-[56ch] font-sans text-[13px] leading-relaxed text-tx-secondary">
+            {t('home.feedbackTeaser.text')}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <LocaleLink
+            to="/feedback"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+          >
+            {t('home.feedbackTeaser.bugCta')}
+          </LocaleLink>
+          <LocaleLink
+            to="/feedback"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-secondary transition-colors duration-200 hover:border-gold/50 hover:text-gold"
+          >
+            {t('home.feedbackTeaser.featureCta')}
+          </LocaleLink>
         </div>
       </div>
     </section>

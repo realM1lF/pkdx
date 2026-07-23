@@ -10,6 +10,12 @@ import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
 import ZoomControl from './ZoomControl';
 
+const UTILITY_LINKS = [
+  { to: '/about', key: 'nav.about' },
+  { to: '/feedback', key: 'nav.feedback' },
+  { to: '/support', key: 'nav.support' },
+];
+
 const LINKS = [
   { to: '/pokedex', key: 'nav.pokedex' },
   { to: '/items', key: 'nav.items' },
@@ -42,11 +48,11 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200',
+          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200 md:h-[6.25rem]',
           scrolled ? 'glass border-b border-hairline' : 'border-b border-transparent bg-transparent',
         )}
       >
-        <nav className="mx-auto flex h-full max-w-content items-center justify-between gap-4 px-4 md:px-8">
+        <nav className="mx-auto flex h-16 max-w-content items-center justify-between gap-4 px-4 md:px-8">
           {/* brand */}
           <LocaleLink to="/" className="group flex shrink-0 items-center gap-2.5" aria-label={t('nav.home')}>
             <img
@@ -115,6 +121,27 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
           </div>
         </nav>
 
+        {/* utility bar — second row: about / feedback / support (+ future).
+            desktop only; mobile gets these links in the drawer */}
+        <div className="hidden border-t border-hairline/60 md:block">
+          <div className="mx-auto flex h-9 max-w-content items-center justify-end gap-6 px-8">
+            {UTILITY_LINKS.map((l) => (
+              <NavLink
+                key={l.to}
+                to={localePath(l.to)}
+                className={({ isActive }) =>
+                  cn(
+                    'pixel-label text-[8px] tracking-[0.14em] transition-colors duration-200',
+                    isActive ? 'text-gold' : 'text-tx-muted hover:text-tx-primary',
+                  )
+                }
+              >
+                {t(l.key)}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+
         {/* scroll progress hairline */}
         <motion.div
           className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-gradient-to-r from-gold via-type-fire to-gold"
@@ -180,6 +207,30 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               >
                 <Search size={18} strokeWidth={1.75} /> {t('nav.searchDrawer')}
               </motion.button>
+              {/* utility group (desktop utility bar lives in the drawer on mobile) */}
+              <motion.div
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.10 + LINKS.length * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-6 flex flex-col items-start gap-2 border-t border-hairline pt-4"
+              >
+                <span className="pixel-label text-[8px] text-tx-muted">{t('nav.more')}</span>
+                {UTILITY_LINKS.map((l) => (
+                  <NavLink
+                    key={l.to}
+                    to={localePath(l.to)}
+                    onClick={() => setDrawer(false)}
+                    className={({ isActive }) =>
+                      cn(
+                        'font-display text-xl font-bold uppercase tracking-wide transition-colors',
+                        isActive ? 'text-gold' : 'text-tx-secondary hover:text-gold',
+                      )
+                    }
+                  >
+                    {t(l.key)}
+                  </NavLink>
+                ))}
+              </motion.div>
               <motion.div
                 initial={{ y: 24, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
