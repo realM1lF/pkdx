@@ -208,7 +208,7 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
   const railStats = useMemo(() => computeRailStats(region, data), [region, data]);
 
   return (
-    <div className="flex flex-col lg:h-[calc(100dvh-64px)] lg:overflow-hidden">
+    <div className="flex flex-col lg:h-[calc(100dvh-100px)] lg:overflow-hidden">
       <CommandBar
         region={region}
         version={version}

@@ -1,1 +1,0 @@
-import{j as s}from"./index-opR_Mj-6.js";import{L as e}from"./LegalDocument-BCl5Thxl.js";function t(){return s.jsx(e,{"code-path":"src/pages/Impressum.tsx:4:10",page:"impressum"})}export{t as default};

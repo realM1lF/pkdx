@@ -8,6 +8,7 @@
  * exist an in-modal DE/EN toggle appears. Missing German text falls back to
  * EN with a small gold hint (documented fallback rule, see desc-data.ts). */
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, Coins, Info, Package, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -145,7 +146,11 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
   const move = target?.kind === 'move' ? (raw as MoveDesc | null) : null;
   const item = target?.kind === 'item' ? (raw as ItemDesc | null) : null;
 
-  return (
+  // Portal to <body>: several callers render this modal inside animated
+  // (transformed) containers — e.g. the maps DetailDrawer motion.aside — where
+  // `position: fixed` would resolve against the transformed ancestor and trap
+  // the overlay inside the drawer. Portalling keeps it viewport-fixed.
+  return createPortal(
     <AnimatePresence>
       {target && (
         <motion.div
@@ -276,6 +281,7 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

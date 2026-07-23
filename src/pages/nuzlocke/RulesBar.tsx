@@ -130,7 +130,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
   };
 
   return (
-    <div className="sticky top-16 z-30 -mx-4 border-y border-hairline bg-[rgba(13,15,22,0.78)] px-4 backdrop-blur-xl md:-mx-8 md:px-8">
+    <div className="sticky top-16 md:top-[6.25rem] z-30 -mx-4 border-y border-hairline bg-[rgba(13,15,22,0.78)] px-4 backdrop-blur-xl md:-mx-8 md:px-8">
       <div className="mx-auto flex min-h-[48px] max-w-[1440px] flex-wrap items-center gap-x-4 gap-y-1.5 py-1.5">
         {/* counters */}
         <div className="flex items-center gap-4">

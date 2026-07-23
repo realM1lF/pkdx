@@ -30,6 +30,9 @@ export default function Support() {
         <p className="mt-3 font-sans text-[14.5px] leading-relaxed text-tx-secondary">
           {t('support.p2')}
         </p>
+        <p className="mt-3 font-sans text-[14.5px] leading-relaxed text-tx-secondary">
+          {t('support.p3')}
+        </p>
 
         <motion.a
           href={PAYPAL_ME_URL}

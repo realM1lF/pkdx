@@ -276,4 +276,34 @@
       transform: translateY(0) scaleY(1);
     }
   }
+
+  /* Rainbow attention animation for the Donate nav link (utility bar).
+     Animated gradient text; disabled under prefers-reduced-motion. */
+  @keyframes rainbow-slide {
+    to {
+      background-position: 200% center;
+    }
+  }
+  .rainbow-text {
+    background-image: linear-gradient(
+      90deg,
+      #ff5f6d,
+      #ffc371,
+      #ffe86b,
+      #6bffb8,
+      #6bc5ff,
+      #c58bff,
+      #ff5f6d
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow-slide 3.2s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rainbow-text {
+      animation: none;
+    }
+  }
 }

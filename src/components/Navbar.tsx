@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
-import { Menu, Search, X } from 'lucide-react';
+import { Heart, Info, Menu, MessageSquarePlus, Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
@@ -12,9 +12,9 @@ import ZoomControl from './ZoomControl';
 import AccountButton from './AccountButton';
 
 const UTILITY_LINKS = [
-  { to: '/about', key: 'nav.about' },
-  { to: '/feedback', key: 'nav.feedback' },
-  { to: '/support', key: 'nav.support' },
+  { to: '/about', key: 'nav.about', Icon: Info },
+  { to: '/feedback', key: 'nav.feedback', Icon: MessageSquarePlus },
+  { to: '/support', key: 'nav.support', Icon: Heart },
 ];
 
 const LINKS = [
@@ -133,11 +133,21 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                 to={localePath(l.to)}
                 className={({ isActive }) =>
                   cn(
-                    'pixel-label text-[8px] tracking-[0.14em] transition-colors duration-200',
-                    isActive ? 'text-gold' : 'text-tx-muted hover:text-tx-primary',
+                    'pixel-label inline-flex items-center gap-1.5 text-[8px] tracking-[0.14em] transition-colors duration-200',
+                    l.key === 'nav.support'
+                      ? 'rainbow-text'
+                      : isActive
+                        ? 'text-gold'
+                        : 'text-tx-muted hover:text-tx-primary',
                   )
                 }
               >
+                <l.Icon
+                  size={11}
+                  strokeWidth={2}
+                  className={l.key === 'nav.support' ? 'text-gold' : undefined}
+                  aria-hidden
+                />
                 {t(l.key)}
               </NavLink>
             ))}
@@ -224,11 +234,21 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
                       cn(
-                        'font-display text-xl font-bold uppercase tracking-wide transition-colors',
-                        isActive ? 'text-gold' : 'text-tx-secondary hover:text-gold',
+                        'inline-flex items-center gap-2.5 font-display text-xl font-bold uppercase tracking-wide transition-colors',
+                        l.key === 'nav.support'
+                          ? 'rainbow-text'
+                          : isActive
+                            ? 'text-gold'
+                            : 'text-tx-secondary hover:text-gold',
                       )
                     }
                   >
+                    <l.Icon
+                      size={18}
+                      strokeWidth={1.75}
+                      className={l.key === 'nav.support' ? 'text-gold' : undefined}
+                      aria-hidden
+                    />
                     {t(l.key)}
                   </NavLink>
                 ))}

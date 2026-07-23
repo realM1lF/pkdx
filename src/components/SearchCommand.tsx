@@ -222,7 +222,14 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   );
 
   const resultList = (
-    <div className={cn('glass overflow-hidden border border-hairline', isModal ? 'rounded-b-xl border-t-0' : 'mt-2 rounded-xl')}>
+    <div
+      className={cn(
+        'overflow-hidden border border-hairline',
+        // inline panels float above page content (popular type chips etc.) —
+        // translucent glass lets that content bleed through, so stay solid.
+        isModal ? 'glass rounded-b-xl border-t-0' : 'mt-2 rounded-xl bg-surface1',
+      )}
+    >
       {noResults && (
         <motion.div
           key={`empty-${debounced}`}

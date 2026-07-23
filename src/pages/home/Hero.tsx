@@ -175,7 +175,7 @@ export default function Hero({ started }: { started: boolean }) {
   };
 
   return (
-    <section ref={heroRef} className="relative -mt-16 flex min-h-[100svh] items-center overflow-hidden">
+    <section ref={heroRef} className="relative -mt-16 flex min-h-[100svh] items-center overflow-hidden md:-mt-[6.25rem]">
       <HeroBackdrop />
       <ParticleField />
 
