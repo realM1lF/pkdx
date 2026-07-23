@@ -584,9 +584,8 @@
       ],
       "variants": "Play solo, pair up in a Soul Link, add a randomizer, run Hardcore (no boxing), or use dupes/shiny clauses — most players customize. This tracker supports solo and multiplayer runs including Soul Link.",
       "linksHeading": "Verified references",
-      "linkOfficial": "Nuzlocke.com (original)",
-      "linkWikiDe": "PokéWiki — Nuzlocke",
-      "linkWikiEn": "Bulbapedia — Nuzlocke Challenge",
+      "linkRulesDe": "Rules (DE)",
+      "linkRulesEn": "Rules (EN)",
       "externalHint": "External links · opens in a new tab"
     },
     "runs": "{{count}} RUNS",

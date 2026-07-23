@@ -1,25 +1,22 @@
 /* Nuzlocke hub — explainer under Active Operations (rules + external refs). */
 import { ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/lib/i18n-data';
 import { cn } from '@/lib/utils';
 import { PixelLabel } from './ui';
 
 const LINKS = {
-  official: 'https://www.nuzlocke.com/',
-  wikiDe: 'https://www.pokewiki.de/index.php?title=Nuzlocke',
-  wikiEn: 'https://bulbapedia.bulbagarden.net/wiki/Nuzlocke_Challenge',
+  rulesDe: 'https://www.pokewiki.de/Pok%C3%A9mon-Challenges',
+  rulesEn: 'https://bulbapedia.bulbagarden.net/wiki/Nuzlocke_Challenge',
 } as const;
 
-function ExtLink({ href, label, subdued }: { href: string; label: string; subdued?: boolean }) {
+function ExtLink({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-1 font-sans text-[12px] font-semibold transition-colors hover:text-gold',
-        subdued ? 'text-tx-muted' : 'text-tx-secondary',
+        'inline-flex items-center gap-1 font-sans text-[12px] font-semibold text-tx-secondary transition-colors hover:text-gold',
       )}
     >
       {label}
@@ -30,17 +27,7 @@ function ExtLink({ href, label, subdued }: { href: string; label: string; subdue
 
 export default function WhatIsNuzlocke() {
   const { t } = useTranslation();
-  const lang = useLanguage();
   const rules = t('nuz.whatIsSection.rules', { returnObjects: true }) as string[];
-
-  const wikiPrimary =
-    lang === 'de'
-      ? { href: LINKS.wikiDe, label: t('nuz.whatIsSection.linkWikiDe') }
-      : { href: LINKS.wikiEn, label: t('nuz.whatIsSection.linkWikiEn') };
-  const wikiSecondary =
-    lang === 'de'
-      ? { href: LINKS.wikiEn, label: t('nuz.whatIsSection.linkWikiEn') }
-      : { href: LINKS.wikiDe, label: t('nuz.whatIsSection.linkWikiDe') };
 
   return (
     <section className="mt-10 max-w-3xl" aria-labelledby="nuz-what-is-heading">
@@ -70,9 +57,8 @@ export default function WhatIsNuzlocke() {
       <div className="mt-6">
         <PixelLabel>{t('nuz.whatIsSection.linksHeading')}</PixelLabel>
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <ExtLink href={LINKS.official} label={t('nuz.whatIsSection.linkOfficial')} />
-          <ExtLink href={wikiPrimary.href} label={wikiPrimary.label} />
-          <ExtLink href={wikiSecondary.href} label={wikiSecondary.label} subdued />
+          <ExtLink href={LINKS.rulesDe} label={t('nuz.whatIsSection.linkRulesDe')} />
+          <ExtLink href={LINKS.rulesEn} label={t('nuz.whatIsSection.linkRulesEn')} />
         </div>
         <p className="mt-2 font-pixel text-[7px] tracking-[0.06em] text-tx-muted/70">
           {t('nuz.whatIsSection.externalHint')}
