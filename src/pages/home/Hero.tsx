@@ -197,7 +197,7 @@ export default function Hero({ started }: { started: boolean }) {
           <h1 className="mt-6 font-display text-[clamp(48px,8vw,96px)] font-black uppercase leading-[1.02] tracking-[0.01em]">
             <SplitChars text={t('home.hero.titleA')} started={started} baseDelay={0.15} />
             <br />
-            <SplitChars text={t('home.hero.titleB')} started={started} baseDelay={0.45} gradient />
+            <SplitChars text={t('home.hero.titleB')} started={started} baseDelay={0.45} />
           </h1>
 
           <motion.p
