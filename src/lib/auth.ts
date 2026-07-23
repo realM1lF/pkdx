@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 
-const PSEUDO_DOMAIN = 'users.mypokepanion';
+const PSEUDO_DOMAIN = 'users.mypokepanion.com';
 export const USERNAME_RE = /^[a-z0-9_-]{3,20}$/i;
 const pseudoEmail = (username: string) => `${username.toLowerCase()}@${PSEUDO_DOMAIN}`;
 
@@ -43,12 +43,19 @@ export async function registerAccount(
   if (!USERNAME_RE.test(username) || password.length < 8 || !/^\d{6}$/.test(recoveryCode)) {
     return { error: 'invalid_input' };
   }
-  const available = await usernameAvailable(username);
-  if (!available) return { error: 'username_taken' };
-  const { error } = await supabase.auth.signUp({
+  /* registration goes through the register-account edge function: the
+   * admin API creates the user auto-confirmed (no confirmation mail — the
+   * pseudo-addresses are not real) and enforces username uniqueness. */
+  const code = await invokeFunction('register-account', {
+    username: username.toLowerCase(),
+    password,
+    recoveryCode,
+  });
+  if (code) return { error: code };
+  /* user exists now → sign in directly */
+  const { error } = await supabase.auth.signInWithPassword({
     email: pseudoEmail(username),
     password,
-    options: { data: { username: username.toLowerCase(), recovery_code: recoveryCode } },
   });
   return { error: error ? mapError(error) : null };
 }
@@ -64,24 +71,39 @@ export async function loginAccount(
   return { error: error ? mapError(error) : null };
 }
 
+/** invoke an edge function and map its { error } body — works for non-2xx
+ * too (supabase-js surfaces those as FunctionsHttpError with the Response
+ * attached; data is null in that case) */
+async function invokeFunction(name: string, body: Record<string, unknown>): Promise<AuthErrorCode | null> {
+  try {
+    const { data, error } = await supabase.functions.invoke(name, { body });
+    let payload = data as { error?: string } | null;
+    if (!payload && error && typeof (error as { context?: unknown }).context === 'object') {
+      try {
+        const ctx = (error as { context: Response }).context;
+        payload = (await ctx.json()) as { error?: string };
+      } catch {
+        /* body unreadable → generic below */
+      }
+    }
+    const code = payload?.error;
+    if (code === 'rate_limited') return 'rate_limited';
+    if (code === 'invalid_credentials') return 'invalid_credentials';
+    if (code === 'username_taken') return 'username_taken';
+    if (code === 'invalid_input') return 'invalid_input';
+    if (code) return 'unknown';
+    return error && !payload ? 'unknown' : null;
+  } catch {
+    return 'unknown';
+  }
+}
+
 export async function resetPasswordWithPin(
   username: string,
   pin: string,
   newPassword: string,
 ): Promise<{ error: AuthErrorCode | null }> {
-  try {
-    const { data, error } = await supabase.functions.invoke('reset-with-pin', {
-      body: { username, pin, newPassword },
-    });
-    if (error) return { error: 'unknown' };
-    const code = (data as { error?: string } | null)?.error;
-    if (code === 'rate_limited') return { error: 'rate_limited' };
-    if (code === 'invalid_credentials') return { error: 'invalid_credentials' };
-    if (code) return { error: 'unknown' };
-    return { error: null };
-  } catch {
-    return { error: 'unknown' };
-  }
+  return invokeFunction('reset-with-pin', { username, pin, newPassword });
 }
 
 export async function logoutAccount(): Promise<void> {
