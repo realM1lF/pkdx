@@ -1612,6 +1612,13 @@
       "body": "Without an account, teams & runs are only stored in this browser (localStorage).",
       "ok": "GOT IT",
       "dismiss": "Dismiss hint"
+    },
+    "migrate": {
+      "title": "Adopt local data?",
+      "text": "This device holds {{teams}} team(s) and {{runs}} local Nuzlocke run(s). Upload them to your account so they are available on every device?",
+      "accept": "UPLOAD TO ACCOUNT",
+      "later": "LATER",
+      "never": "DON'T ASK"
     }
   }
 }

@@ -123,6 +123,20 @@ function boot() {
   });
 }
 
+/** Non-react subscription for sync engines. */
+export function onAuthChange(cb: (user: User | null) => void): () => void {
+  boot();
+  const fn = (s: AuthState) => cb(s.user);
+  listeners.push(fn);
+  return () => {
+    listeners = listeners.filter((l) => l !== fn);
+  };
+}
+
+export function getAuthUser(): User | null {
+  return state.user;
+}
+
 /** Reactive auth state: { ready, user, profile }. */
 export function useAuth(): AuthState {
   const [s, setS] = useState(state);

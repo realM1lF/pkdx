@@ -1612,6 +1612,13 @@
       "body": "Ohne Account bleiben Teams & Runs nur in diesem Browser (localStorage) gespeichert.",
       "ok": "VERSTANDEN",
       "dismiss": "Hinweis schließen"
+    },
+    "migrate": {
+      "title": "Lokale Daten übernehmen?",
+      "text": "Auf diesem Gerät liegen {{teams}} Team(s) und {{runs}} lokale(r) Nuzlocke-Run(s). Sollen sie in dein Konto hochgeladen werden? Dann sind sie auf jedem Gerät verfügbar.",
+      "accept": "INS KONTO ÜBERNEHMEN",
+      "later": "SPÄTER",
+      "never": "NICHT FRAGEN"
     }
   }
 }

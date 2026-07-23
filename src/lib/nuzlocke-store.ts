@@ -11,6 +11,7 @@ import {
   isMultiCapable,
   nuzTables,
   runChannel,
+  supabase,
 } from './supabase';
 import type {
   NuzEncounterRow,
@@ -26,6 +27,7 @@ import { padNum } from './pokeapi';
 import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
+import { getAuthUser } from './auth';
 
 export type {
   NuzEncounterRow,
@@ -179,6 +181,13 @@ export function loadLocalRun(id: string): RunState | null {
 function saveLocalRun(state: RunState): void {
   if (!writeJson(LS_RUN(state.run.id), state)) notifyStorageFailure();
   else addToIndex(state.run.id);
+  /* cloud mirror (no-op for guests) — dynamic import keeps the module graph acyclic */
+  void import('./cloud-sync').then((m) => m.cloudPushSoloRun(state));
+}
+
+/** public persistence entry for cloud hydration (cloud-sync) */
+export function saveLocalRunPublic(state: RunState): void {
+  saveLocalRun(state);
 }
 
 export function getMemberships(): Record<string, string> {
@@ -771,6 +780,24 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
 
 /* ---------- actions: create / join / upgrade ---------- */
 
+/** best-effort: link a coop run to the logged-in account (owner or member) */
+function linkRunToAccount(runId: string, role: 'owner' | 'member'): void {
+  const user = getAuthUser();
+  if (!user) return;
+  if (role === 'owner') {
+    void supabase
+      .from('nuz_runs')
+      .update({ owner_id: user.id })
+      .eq('id', runId)
+      .then(({ error }) => error && console.warn('[accounts] owner link failed', error.message));
+  }
+  void supabase
+    .from('nuz_run_members')
+    .upsert({ run_id: runId, user_id: user.id, role }, { onConflict: 'run_id,user_id' })
+    .then(({ error }) => error && console.warn('[accounts] member link failed', error.message));
+}
+
+
 export interface NewRunPlayer {
   name: string;
   color: string;
@@ -827,6 +854,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
     if (!plErr) {
       mode = 'multi';
       baseRun.invite_code = invite;
+      linkRunToAccount(id, 'owner');
     } else {
       offlineFallback = true;
       pushToast('sync', 'OFFLINE — RUN SAVED TO THIS DEVICE');
@@ -885,6 +913,7 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   };
   const { error } = await nuzTables.players().insert(player);
   if (error) return null;
+  linkRunToAccount(lookup.run.id, 'member');
   const state: RunState = {
     run: lookup.run,
     mode: 'multi',
