@@ -52,7 +52,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
           scrolled ? 'glass border-b border-hairline' : 'border-b border-transparent bg-transparent',
         )}
       >
-        <nav className="mx-auto flex h-full max-w-content items-center justify-between gap-4 px-4 md:px-8">
+        <nav className="mx-auto flex h-16 max-w-content items-center justify-between gap-4 px-4 md:px-8">
           {/* brand */}
           <LocaleLink to="/" className="group flex shrink-0 items-center gap-2.5" aria-label={t('nav.home')}>
             <img
@@ -120,6 +120,27 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             </button>
           </div>
         </nav>
+
+        {/* utility bar — second row: about / feedback / support (+ future).
+            desktop only; mobile gets these links in the drawer */}
+        <div className="hidden border-t border-hairline/60 md:block">
+          <div className="mx-auto flex h-9 max-w-content items-center justify-end gap-6 px-8">
+            {UTILITY_LINKS.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) =>
+                  cn(
+                    'pixel-label text-[8px] tracking-[0.14em] transition-colors duration-200',
+                    isActive ? 'text-gold' : 'text-tx-muted hover:text-tx-primary',
+                  )
+                }
+              >
+                {t(l.key)}
+              </NavLink>
+            ))}
+          </div>
+        </div>
 
         {/* scroll progress hairline */}
         <motion.div
