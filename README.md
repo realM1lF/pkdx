@@ -1,3 +1,29 @@
+<p align="center">
+  <img src=".github/social-preview.png" width="100%" alt="MyPokePanion — Every Pokémon. Alive.">
+</p>
+
+<p align="center">
+  <a href="https://github.com/realM1lF/pkdx/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/realM1lF/pkdx/ci.yml?branch=main&style=flat-square&label=build" alt="Build">
+  </a>
+  <a href="https://github.com/realM1lF/pkdx/releases">
+    <img src="https://img.shields.io/github/v/release/realM1lF/pkdx?style=flat-square&label=release" alt="Release">
+  </a>
+  <a href="https://github.com/realM1lF/pkdx/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/realM1lF/pkdx?style=flat-square" alt="License">
+  </a>
+  <a href="https://github.com/realM1lF/pkdx/stargazers">
+    <img src="https://img.shields.io/github/stars/realM1lF/pkdx?style=flat-square" alt="Stars">
+  </a>
+  <a href="https://mypokepanion.com/en">
+    <img src="https://img.shields.io/badge/demo-mypokepanion.com-F6C945?style=flat-square" alt="Live Demo">
+  </a>
+</p>
+
+<p align="center">
+  If this project helps your runs, consider giving it a ⭐ on GitHub.
+</p>
+
 # MyPokePanion
 
 An interactive Pokédex and companion tool for Pokémon players — a dark,
@@ -196,9 +222,11 @@ project; all copyrighted material is used for reference purposes only.
 
 ## License & Legal
 
-The **code** in this repository may be reused under the terms of the
-project's license (see repository root; if none is present, treat it as
-all-rights-reserved by the author and ask before reuse).
+The **code** in this repository is **all rights reserved** (see
+[`LICENSE`](LICENSE)): it may not be copied, modified or used in other
+projects without written permission. You are welcome to **contribute** —
+forks and pull requests for the purpose of contributing back, plus issues
+and feature requests, are explicitly allowed.
 
 The **Pokémon assets** (names, sprites, cries, map artwork, game data) are
 **not** covered by that license: they remain © Nintendo / Creatures Inc. /
