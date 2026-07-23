@@ -957,6 +957,15 @@
         "versus": {
           "title": "Versus — 1v1-Matchups",
           "caption": "Wähle zwei Pokémon und erhalte die komplette Schadensrechnung: beste Attacken, KO-Bereiche, Initiative. Auf jeder Dex-Seite."
+        },
+        "stats": {
+          "regions": "REGIONEN",
+          "locations": "ORTE",
+          "gens": "GEN",
+          "species": "MON",
+          "mode": "MODUS",
+          "export": "EXPORT",
+          "engine": "ENGINE"
         }
       },
       "roadmap": {
