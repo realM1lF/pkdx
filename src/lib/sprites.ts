@@ -4,11 +4,18 @@
 const BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon';
 const CRIES = 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon';
 
+/* Bundled listing sprites (perf/bundle-sprites): the 1025 default front
+ * sprites (+ shiny) ship in public/sprites/pokemon/ so the pokédex listing
+ * is served from our own host with immutable cache headers — GitHub raw
+ * forces revalidation every 5 min (Cache-Control: max-age=300). Remote
+ * URLs stay as onError fallbacks in the Sprite chain. */
+const LOCAL = '/sprites/pokemon';
+
 export const sprites = {
-  /** modern menu-style sprites */
-  front: (id: number) => `${BASE}/${id}.png`,
+  /** modern menu-style sprites — bundled locally (ids 1–1025) */
+  front: (id: number) => (id >= 1 && id <= 1025 ? `${LOCAL}/${id}.png` : `${BASE}/${id}.png`),
   back: (id: number) => `${BASE}/back/${id}.png`,
-  shinyFront: (id: number) => `${BASE}/shiny/${id}.png`,
+  shinyFront: (id: number) => (id >= 1 && id <= 1025 ? `${LOCAL}/shiny/${id}.png` : `${BASE}/shiny/${id}.png`),
   shinyBack: (id: number) => `${BASE}/back/shiny/${id}.png`,
 
   /** detail hero artwork (~475px) */
