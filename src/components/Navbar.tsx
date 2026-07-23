@@ -128,7 +128,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             {UTILITY_LINKS.map((l) => (
               <NavLink
                 key={l.to}
-                to={l.to}
+                to={localePath(l.to)}
                 className={({ isActive }) =>
                   cn(
                     'pixel-label text-[8px] tracking-[0.14em] transition-colors duration-200',

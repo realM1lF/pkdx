@@ -57,7 +57,8 @@ function StageCard({
     <div className="relative flex flex-col items-center">
       {current && (
         <motion.span
-          className="pixel-label absolute -top-4 z-10 whitespace-nowrap rounded-pill border border-gold/40 bg-void/90 px-1.5 py-px text-[8px] text-gold"
+          className="pixel-label absolute -top-4 left-1/2 z-10 whitespace-nowrap rounded-pill border border-gold/40 bg-void/90 px-1.5 py-px text-[8px] text-gold"
+          style={{ x: '-50%' }}
           animate={{ y: [0, -2, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
