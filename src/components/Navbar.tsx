@@ -54,8 +54,9 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               alt=""
               className="h-8 w-8 transition-transform duration-400 ease-out-expo group-hover:rotate-180"
             />
-            <span className="font-display text-lg font-extrabold tracking-wide text-tx-primary">POKÉDEX</span>
-            <span className="pixel-label text-[10px] text-gold">2.0</span>
+            <span className="font-display text-lg font-extrabold tracking-wide text-tx-primary">
+              MYPOKE<span className="text-gold">PANION</span>
+            </span>
           </LocaleLink>
 
           {/* center links (desktop) */}

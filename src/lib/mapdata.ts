@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — map runtime data (maps.md §0)
+/* MyPokePanion — map runtime data (maps.md §0)
  * Per node: /location → areas[] → /location-area → pokemon_encounters,
  * aggregated per selected version. Batched (concurrency 6), cached through
  * the shared cachedJson SWR store (7-day TTL), progressive per-node arrival.

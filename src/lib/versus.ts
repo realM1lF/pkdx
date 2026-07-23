@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — VERSUS matchup math (versus.md §Datengrundlage).
+/* MyPokePanion — VERSUS matchup math (versus.md §Datengrundlage).
  * Gen-aware mechanics (gen 1–9) via @smogon/calc (damage ranges, KO chips,
  * speed checks) + the @pkmn/data per-gen type chart for effectiveness.
  * Pure/sync — PokéAPI payloads (Pokemon, Move) are passed in by the caller,

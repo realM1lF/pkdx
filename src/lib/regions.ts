@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — Shared Region Data Contract (maps.md §0)
+/* MyPokePanion — Shared Region Data Contract (maps.md §0)
  * SINGLE SOURCE OF TRUTH for map geometry AND the Nuzlocke route list.
  * node.id values are stable route keys (`kanto-route-1` …) — do NOT rename.
  * Consumers: /maps pages (Phase 04), Nuzlocke (Phase 05). */

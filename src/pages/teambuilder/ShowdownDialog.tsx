@@ -77,7 +77,7 @@ export default function ShowdownDialog({ open, initialTab, exportText, onClose, 
     form.rel = 'noopener';
     const fields: Record<string, string> = {
       title: t('tb.sd.pokepasteTitle'),
-      author: 'Pokédex 2.0',
+      author: 'MyPokePanion',
       paste: exportText,
     };
     for (const [name, value] of Object.entries(fields)) {

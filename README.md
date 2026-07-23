@@ -1,4 +1,4 @@
-# Pokédex 2.0
+# MyPokePanion
 
 An interactive Pokédex and companion tool for Pokémon players — a dark,
 data-dense single-page app covering all 1025 Pokémon from Generations 1–9.
@@ -173,7 +173,7 @@ all-rights-reserved by the author and ask before reuse).
 
 The **Pokémon assets** (names, sprites, cries, map artwork, game data) are
 **not** covered by that license: they remain © Nintendo / Creatures Inc. /
-GAME FREAK inc. Pokédex 2.0 is a fan-made, non-commercial project and is not
+GAME FREAK inc. MyPokePanion is a fan-made, non-commercial project and is not
 affiliated with, endorsed by, or sponsored by Nintendo, Creatures Inc. or
 GAME FREAK inc.
 
@@ -181,7 +181,7 @@ GAME FREAK inc.
 
 ## Kurzfassung (Deutsch)
 
-**Pokédex 2.0** ist ein interaktiver Pokédex und Begleit-Tool für
+**MyPokePanion** ist ein interaktiver Pokédex und Begleit-Tool für
 Pokémon-Spieler (Generation 1–9, 1025 Pokémon), komplett zweisprachig
 Deutsch/Englisch mit sprachbasiertem URL-Routing (`/de/…`, `/en/…`).
 

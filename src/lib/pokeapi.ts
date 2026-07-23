@@ -1,4 +1,4 @@
-/* Pokédex 2.0 — typed PokéAPI client (design.md §10.1)
+/* MyPokePanion — typed PokéAPI client (design.md §10.1)
  * In-memory + localStorage cache with stale-while-revalidate. */
 
 import type {

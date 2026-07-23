@@ -11,7 +11,7 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menu": "MENU",
-    "home": "Pokédex 2.0 home",
+    "home": "MyPokePanion home",
     "language": "Language",
     "deCoverageNoteEn": "DE is mostly translated, but not complete.",
     "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig.",
@@ -1169,7 +1169,7 @@
       "copy": "COPY TEXT",
       "copied": "COPIED ✓",
       "pokepaste": "OPEN IN POKÉPASTE",
-      "pokepasteTitle": "Pokédex 2.0 Team",
+      "pokepasteTitle": "MyPokePanion Team",
       "copiedToast": "SHOWDOWN TEXT COPIED",
       "importHint": "Paste a team in Showdown text format (species, item, ability, nature, EVs, level, shiny, moves)",
       "placeholder": "Charizard @ Heavy-Duty Boots\nAbility: Blaze\nEVs: 252 SpA / 4 SpD / 252 Spe\nTimid Nature\n- Fire Blast\n…",
@@ -1234,7 +1234,7 @@
         {
           "heading": "Fan project notice",
           "paragraphs": [
-            "Pokédex 2.0 is an independent fan project and is not officially affiliated with Nintendo, Creatures Inc., or GAME FREAK inc. Pokémon and all related names, trademarks, and media are the property of their respective rights holders."
+            "MyPokePanion is an independent fan project and is not officially affiliated with Nintendo, Creatures Inc., or GAME FREAK inc. Pokémon and all related names, trademarks, and media are the property of their respective rights holders."
           ]
         }
       ]
@@ -1290,7 +1290,7 @@
             {
               "heading": "Local storage in your browser",
               "paragraphs": [
-                "Many Pokédex 2.0 features store data locally in your browser (LocalStorage and SessionStorage) when you use solo mode or do not create multiplayer Nuzlocke runs. This includes, among other things:",
+                "Many MyPokePanion features store data locally in your browser (LocalStorage and SessionStorage) when you use solo mode or do not create multiplayer Nuzlocke runs. This includes, among other things:",
                 "Language preference, PokéAPI cache, saved teams, solo Nuzlocke runs, recent search history, Pokédex view density, and map display mode.",
                 "This locally stored data is not automatically transmitted to our servers. You can delete it at any time in your browser settings under \"Clear site data\"."
               ]
