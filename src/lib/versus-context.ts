@@ -53,6 +53,29 @@ export function versusWeatherForGen(gen: number): VersusWeather[] {
   return out;
 }
 
+/**
+ * Terrain options the given generation actually knows (UI gating).
+ * Terrain exists from gen 6 (XY) onward.
+ */
+export function versusTerrainForGen(gen: number): VersusTerrain[] {
+  if (gen < 6) return [];
+  return ['none', 'electric', 'grassy', 'misty', 'psychic'];
+}
+
+/**
+ * Neutralize field effects the selected generation doesn't know.
+ * Exported for tests and field-bar reset logic.
+ */
+export function sanitizeVersusField(field: VersusField | undefined, genNum: number): VersusField {
+  if (!field) return { weather: 'none', terrain: 'none' };
+  let weather: VersusWeather = field.weather ?? 'none';
+  if (genNum < 2) weather = 'none';
+  else if (weather === 'hail' && (genNum < 3 || genNum >= 9)) weather = 'none';
+  else if (weather === 'snow' && genNum < 9) weather = 'none';
+  const terrain: VersusTerrain = genNum >= 6 ? field.terrain ?? 'none' : 'none';
+  return { weather, terrain };
+}
+
 /* ---------- game selector (gen 1–9) ---------- */
 
 export interface VersusGameOption {

@@ -19,10 +19,21 @@ import {
   type VersusField,
   type VersusTerrain,
   type VersusWeather,
+  sanitizeVersusField,
 } from './versus-context';
 
 export type { VersusContext, VersusField, VersusWeather, VersusTerrain } from './versus-context';
-export { defaultVersusContext, versusContextFromGame, versusContextFromRun, VERSUS_GAME_OPTIONS, versusGameOptions, gameDisplayName } from './versus-context';
+export {
+  defaultVersusContext,
+  versusContextFromGame,
+  versusContextFromRun,
+  VERSUS_GAME_OPTIONS,
+  versusGameOptions,
+  gameDisplayName,
+  sanitizeVersusField,
+  versusTerrainForGen,
+  versusWeatherForGen,
+} from './versus-context';
 
 const genCache = new Map<number, ReturnType<typeof Generations.get>>();
 
@@ -114,12 +125,7 @@ function calcStatus(side: Pick<VersusSide, 'status'>): 'brn' | 'par' | 'psn' | '
  */
 function sanitizeField(field: VersusField | undefined, genNum: number): VersusField | undefined {
   if (!field) return undefined;
-  let weather: VersusWeather = field.weather ?? 'none';
-  if (genNum < 2) weather = 'none';
-  else if (weather === 'hail' && (genNum < 3 || genNum >= 9)) weather = 'none';
-  else if (weather === 'snow' && genNum < 9) weather = 'none';
-  const terrain: VersusTerrain = genNum >= 6 ? field.terrain ?? 'none' : 'none';
-  return { weather, terrain };
+  return sanitizeVersusField(field, genNum);
 }
 
 function buildCalcField(field?: VersusField, genNum = 9): Field | undefined {
@@ -165,7 +171,14 @@ export function statsOf(
   if (!mon) return null;
   const out = {} as Record<StatKey, number>;
   for (const key of STAT_ORDER) out[key] = mon.stats[STAT_TO_CALC[key]];
+  if (out.speed != null) out.speed = effectiveSpeed(out.speed, side, ctx.gen);
   return out;
+}
+
+/** Gen-accurate paralysis speed reduction (matches @smogon/calc getFinalSpeed). */
+function effectiveSpeed(rawSpe: number, side: Pick<VersusSide, 'status'>, gen: number): number {
+  if (side.status === 'par') return Math.floor(rawSpe * (gen < 7 ? 0.25 : 0.5));
+  return rawSpe;
 }
 
 export function speedOf(
@@ -259,6 +272,38 @@ export function genMatchupsOf(defendingTypes: string[], gen = 9): GenMatchups {
   return { weak, resist, immune };
 }
 
+/** Ability slugs (lowercase) → attacking types they grant immunity to in calc. */
+const ABILITY_TYPE_IMMUNITIES: Record<string, string[]> = {
+  levitate: ['ground'],
+  'volt absorb': ['electric'],
+  'water absorb': ['water'],
+  'flash fire': ['fire'],
+  'sap sipper': ['grass'],
+  'motor drive': ['electric'],
+  'earth eater': ['ground'],
+  bulbproof: ['grass'],
+};
+
+/**
+ * Defensive profile adjusted for a known held ability (Levitate → Ground immune, etc.).
+ * Typ chart stays gen-correct; ability only moves types between weak and immune.
+ */
+export function genMatchupsForSide(defendingTypes: string[], gen = 9, ability?: string | null): GenMatchups {
+  const base = genMatchupsOf(defendingTypes, gen);
+  if (!ability) return base;
+  const granted = ABILITY_TYPE_IMMUNITIES[ability.toLowerCase()];
+  if (!granted?.length) return base;
+  const immune = new Set(base.immune);
+  const weak = base.weak.filter((t) => {
+    if (granted.includes(t)) {
+      immune.add(t);
+      return false;
+    }
+    return true;
+  });
+  return { weak, resist: base.resist, immune: [...immune].sort() };
+}
+
 export const EFF_LABEL = (mult: number): string =>
   mult === 0 ? '×0' : mult === 0.25 ? '×¼' : mult === 0.5 ? '×½' : mult === 1 ? '×1' : mult === 2 ? '×2' : '×4';
 
@@ -280,6 +325,50 @@ export interface DamageCell {
 }
 
 const DAMAGING_CATS = new Set(['physical', 'special']);
+
+function normalizeEff(eff: number): number {
+  if (eff <= 0) return 0;
+  for (const step of [0.25, 0.5, 1, 2, 4]) {
+    if (Math.abs(eff - step) < 0.08) return step;
+  }
+  return Math.round(eff * 100) / 100;
+}
+
+/**
+ * Combined type × ability effectiveness shown in the EFF column.
+ * Compares calc damage with vs without the defender's ability (Thick Fat → ×2 becomes ×1).
+ */
+function calcEffectiveMultiplier(
+  gen: ReturnType<typeof getGen>,
+  atk: CalcPokemon,
+  def: CalcPokemon,
+  mv: CalcMove,
+  calcField: Field | undefined,
+  typeEff: number,
+): number {
+  if (typeEff === 0) return 0;
+  const cat = (mv.category ?? 'status').toLowerCase();
+  if (!DAMAGING_CATS.has(cat) || !mv.bp) return typeEff;
+  try {
+    const [lo, hi] = calculate(gen, atk, def, mv, calcField).range();
+    if (lo === 0 && hi === 0) return 0;
+    const defBare = new CalcPokemon(gen, def.name, {
+      level: def.level,
+      nature: def.nature,
+      ivs: def.ivs,
+      evs: def.evs,
+      item: def.item,
+      status: def.status,
+      ability: '',
+    });
+    const [blo, bhi] = calculate(gen, atk, defBare, mv, calcField).range();
+    const avgBare = (blo + bhi) / 2;
+    if (avgBare === 0) return typeEff;
+    return normalizeEff(typeEff * ((lo + hi) / 2 / avgBare));
+  } catch {
+    return typeEff;
+  }
+}
 
 /* Fixed-damage legacy moves common in FRLG trainer sets — Gen-9 calc data
  * carries them with bp 0 (removed from SV), so resolve them explicitly. */
@@ -320,7 +409,8 @@ export function damageBetween(
    * over the SV-era PokéAPI damage_class (F4). */
   const category = (mv.category ?? moveDetail?.damage_class.name ?? 'status').toLowerCase();
   const moveType = (moveDetail?.type.name ?? mv.type ?? 'normal').toLowerCase();
-  const eff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()), ctx.gen);
+  const typeEff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()), ctx.gen);
+  const eff = calcEffectiveMultiplier(gen, atk, def, mv, calcField, typeEff);
 
   /* fixed-damage legacy moves (immune → 0) */
   const fixed = FIXED_DAMAGE[moveSlug];
