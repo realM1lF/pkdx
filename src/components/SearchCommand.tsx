@@ -267,7 +267,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
                   onClick={() => pick(r)}
                   className="flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-surface3"
                 >
-                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="gen5" skeleton={false} className="h-8 w-8" />
+                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="default" skeleton={false} className="h-8 w-8" />
                   <span className="flex-1 font-sans text-sm font-medium text-tx-secondary">{nameOfPokemon(r.id, lang)}</span>
                   <span className="pixel-label text-[9px] text-tx-muted">{padNum(r.id)}</span>
                 </button>
@@ -294,7 +294,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
                   )}
                   style={i === active ? { borderColor: tColor } : undefined}
                 >
-                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="gen5" skeleton={false} className="h-10 w-10 shrink-0" />
+                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="default" skeleton={false} className="h-10 w-10 shrink-0" />
                   <span className="min-w-0 flex-1 truncate font-sans text-base font-semibold text-tx-primary">
                     {nameOfPokemon(r.id, lang)}
                   </span>

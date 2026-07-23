@@ -10,7 +10,57 @@ const FALLBACK_KEY = 'sb_publishable_B-cuJFNUAsfLvva9givrcA_m7QWT-fe';
 const URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || FALLBACK_URL;
 const KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) || FALLBACK_KEY;
 
+/* Quota-safe storage for the auth session. If localStorage is full (the
+ * PokéAPI response cache `pdx:*` is the usual consumer), we evict that
+ * re-fetchable cache and retry once; ultimate fallback is in-memory storage
+ * so login keeps working for the tab instead of throwing a raw
+ * QuotaExceededError inside _saveSession. */
+const memStorage = new Map<string, string>();
+
+function evictPokeapiCache(): boolean {
+  const victims: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('pdx:')) victims.push(k);
+  }
+  victims.forEach((k) => localStorage.removeItem(k));
+  return victims.length > 0;
+}
+
+const safeStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      return localStorage.getItem(key) ?? memStorage.get(key) ?? null;
+    } catch {
+      return memStorage.get(key) ?? null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      localStorage.setItem(key, value);
+      return;
+    } catch {
+      /* quota — evict the re-fetchable PokéAPI cache and retry once */
+    }
+    try {
+      if (evictPokeapiCache()) localStorage.setItem(key, value);
+      else memStorage.set(key, value);
+    } catch {
+      memStorage.set(key, value);
+    }
+  },
+  removeItem: (key: string): void => {
+    memStorage.delete(key);
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      /* ignore */
+    }
+  },
+};
+
 export const supabase: SupabaseClient = createClient(URL, KEY, {
+  auth: { storage: safeStorage },
   realtime: { params: { eventsPerSecond: 8 } },
 });
 

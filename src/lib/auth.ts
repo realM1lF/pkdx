@@ -53,22 +53,32 @@ export async function registerAccount(
   });
   if (code) return { error: code };
   /* user exists now → sign in directly */
-  const { error } = await supabase.auth.signInWithPassword({
-    email: pseudoEmail(username),
-    password,
-  });
-  return { error: error ? mapError(error) : null };
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: pseudoEmail(username),
+      password,
+    });
+    return { error: error ? mapError(error) : null };
+  } catch {
+    /* e.g. storage failures must never surface as an unhandled rejection —
+       the account itself was created successfully at this point */
+    return { error: 'unknown' };
+  }
 }
 
 export async function loginAccount(
   username: string,
   password: string,
 ): Promise<{ error: AuthErrorCode | null }> {
-  const { error } = await supabase.auth.signInWithPassword({
-    email: pseudoEmail(username),
-    password,
-  });
-  return { error: error ? mapError(error) : null };
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: pseudoEmail(username),
+      password,
+    });
+    return { error: error ? mapError(error) : null };
+  } catch {
+    return { error: 'unknown' };
+  }
 }
 
 /** invoke an edge function and map its { error } body — works for non-2xx

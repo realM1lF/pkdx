@@ -1610,6 +1610,9 @@
     "reset": {
       "done": "Password reset — you can log in now."
     },
+    "register": {
+      "done": "Account created — welcome, {{name}}! Signing you in …"
+    },
     "guestNote": "Everything works without an account too — data then stays in this browser only.",
     "privacyLink": "More in the privacy policy.",
     "errors": {

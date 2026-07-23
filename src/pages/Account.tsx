@@ -62,8 +62,14 @@ export default function Account() {
         if (password !== password2) return setMsg({ kind: 'err', text: t('account.errors.password_mismatch') });
         if (pin !== pin2) return setMsg({ kind: 'err', text: t('account.errors.pin_mismatch') });
         const { error } = await registerAccount(username.trim(), password, pin);
-        if (error) setMsg({ kind: 'err', text: errText(error)! });
-        else navigate(localePath('/'));
+        if (error) {
+          setMsg({ kind: 'err', text: errText(error)! });
+        } else {
+          /* visible success feedback before heading home */
+          setMsg({ kind: 'ok', text: t('account.register.done', { name: username.trim() }) });
+          await new Promise((r) => setTimeout(r, 1200));
+          navigate(localePath('/'));
+        }
       } else {
         const { error } = await resetPasswordWithPin(username.trim(), pin, password);
         if (error) setMsg({ kind: 'err', text: errText(error)! });
@@ -73,6 +79,9 @@ export default function Account() {
           setPassword('');
         }
       }
+    } catch {
+      /* storage/quota or network exceptions must never die silently */
+      setMsg({ kind: 'err', text: errText('unknown')! });
     } finally {
       setBusy(false);
     }

@@ -1610,6 +1610,9 @@
     "reset": {
       "done": "Passwort zurückgesetzt — du kannst dich jetzt anmelden."
     },
+    "register": {
+      "done": "Account erstellt — willkommen, {{name}}! Du wirst eingeloggt …"
+    },
     "guestNote": "Auch ohne Account funktioniert alles — Daten bleiben dann nur in diesem Browser.",
     "privacyLink": "Mehr im Datenschutz.",
     "errors": {

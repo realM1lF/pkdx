@@ -16,7 +16,10 @@ export default function SearchGateway() {
   const { t } = useTranslation();
   const lang = useLanguage();
   return (
-    <section id="search-gateway" className="relative bg-abyss pt-24 pb-12">
+    <section id="search-gateway" className="relative z-10 bg-abyss pt-24 pb-12">
+      {/* z-10: the inline search dropdown must paint above the following
+          sections (they are `relative` with an identical bg and would
+          otherwise invisibly cover the lower part of the panel). */}
       <div
         className="absolute inset-x-0 top-0 h-px"
         style={{
