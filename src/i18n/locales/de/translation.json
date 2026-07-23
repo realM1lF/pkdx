@@ -1391,6 +1391,19 @@
             "Lokal gespeicherte Daten (Teams, Solo-Nuzlocke-Runs, Cache, Einstellungen) liegen ausschließlich in deinem Browser und kannst du dort jederzeit löschen.",
             "Für Multiplayer-Nuzlocke-Runs kannst du uns per E-Mail kontaktieren, wenn du die Löschung serverseitig gespeicherter Run-Daten wünschst. Bitte nenne dabei den Run-Namen oder Einladungscode, soweit möglich."
           ]
+        },
+        {
+          "heading": "Konto (optional)",
+          "subsections": [
+            {
+              "title": "Registrierung und Anmeldung",
+              "body": "Du kannst freiwillig ein Konto anlegen, um deine Teams und Nuzlocke-Runs geräteübergreifend zu synchronisieren. Dabei speichern wir ausschließlich: deinen gewählten Nutzernamen, einen kryptografischen Hash deines Passworts (über Supabase Auth/bcrypt — das Passwort selbst liegt nie bei uns), einen Hash deines 6-stelligen Recovery-Codes sowie deine Spielstand-Daten (Teams, Nuzlocke-Runs). Eine E-Mail-Adresse wird nicht erhoben."
+            },
+            {
+              "title": "Speicherort und Löschung",
+              "body": "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Du kannst dein Konto und alle damit verbundenen Daten jederzeit per Issue oder Nachricht an den Betreiber löschen lassen. Ohne Konto werden alle Daten ausschließlich lokal in deinem Browser gespeichert."
+            }
+          ]
         }
       ]
     }

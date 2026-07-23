@@ -1391,6 +1391,19 @@
             "Locally stored data (teams, solo Nuzlocke runs, cache, settings) exists only in your browser and can be deleted there at any time.",
             "For multiplayer Nuzlocke runs, you can contact us by email if you want server-side run data deleted. Please include the run name or invite code where possible."
           ]
+        },
+        {
+          "heading": "Account (optional)",
+          "subsections": [
+            {
+              "title": "Registration and sign-in",
+              "body": "You can optionally create an account to sync your teams and Nuzlocke runs across devices. We only store: your chosen username, a cryptographic hash of your password (via Supabase Auth/bcrypt — the password itself is never stored), a hash of your 6-digit recovery code, and your game data (teams, Nuzlocke runs). No email address is collected."
+            },
+            {
+              "title": "Storage location and deletion",
+              "body": "Data is stored in a Supabase database (EU region). You can request deletion of your account and all associated data at any time via a GitHub issue or a message to the operator. Without an account, all data is stored locally in your browser only."
+            }
+          ]
         }
       ]
     }
