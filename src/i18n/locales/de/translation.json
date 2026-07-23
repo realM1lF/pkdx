@@ -381,6 +381,8 @@
     "pickYouPlaceholder": "POKÉMON WÄHLEN…",
     "pickYouHint": "Wähle oben dein Pokémon aus dem Dex.",
     "pickOpponentDexHint": "Wähle oben einen Gegner aus dem Dex.",
+    "openDexEntry": "{{name}} — Dex-Eintrag öffnen",
+    "openOverview": "{{name}} — Übersicht anzeigen",
     "games": {
       "red": "Pokémon Rot",
       "blue": "Pokémon Blau",

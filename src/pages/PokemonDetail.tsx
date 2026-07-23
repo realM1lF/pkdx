@@ -102,25 +102,30 @@ export default function PokemonDetail() {
   );
   const [tab, setTab] = useState<'overview' | 'versus'>(vsParam || tabParam === 'versus' ? 'versus' : 'overview');
 
-  /* external ?vs= changes (shared link paste / back-forward) open the tab */
+  /* external ?vs= / ?tab= changes (shared link, back-forward, sprite navigation) */
   const [prevVs, setPrevVs] = useState(vsParam);
   if (vsParam !== prevVs) {
     setPrevVs(vsParam);
     if (vsParam) setTab('versus');
+    else if (tabParam !== 'versus') setTab('overview');
   }
   const [prevTabParam, setPrevTabParam] = useState(tabParam);
   if (tabParam !== prevTabParam) {
     setPrevTabParam(tabParam);
     if (tabParam === 'versus') setTab('versus');
+    else setTab('overview');
   }
 
   const switchTab = (t: 'overview' | 'versus') => {
     setTab(t);
-    if (t === 'overview' && vsParam) {
-      const next = new URLSearchParams(searchParams);
+    const next = new URLSearchParams(searchParams);
+    if (t === 'overview') {
       next.delete('vs');
-      setSearchParams(next, { replace: true });
+      next.delete('tab');
+    } else {
+      next.set('tab', 'versus');
     }
+    setSearchParams(next, { replace: true });
   };
 
   const writeOpponent = (id: number | null) => {
@@ -227,6 +232,8 @@ export default function PokemonDetail() {
             context={versusContext}
             initialTrainerNode={versusTrainerParam}
             initialTrainerRegion={trainerRegion}
+            hostPokemonId={pokemon.id}
+            onHostOverview={() => switchTab('overview')}
           />
         </Suspense>
       ) : (

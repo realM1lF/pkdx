@@ -643,6 +643,51 @@ export function MoveSlots({
 /* side card (artwork, badges, level, TUNE, move slots)                */
 /* ================================================================== */
 
+const PORTRAIT_LINK =
+  'relative z-20 grid shrink-0 place-items-center rounded-lg transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 [&_img]:pointer-events-none h-[76px] w-[76px] md:h-[104px] md:w-[104px] lg:h-[140px] lg:w-[140px]';
+
+function PokemonDexLink({
+  pokemonId,
+  label,
+  hostPokemonId,
+  onHostOverview,
+  children,
+}: {
+  pokemonId: number;
+  label: string;
+  hostPokemonId?: number;
+  onHostOverview?: () => void;
+  children: ReactNode;
+}) {
+  const { t } = useTranslation();
+  const isHost = hostPokemonId != null && pokemonId === hostPokemonId;
+
+  if (isHost && onHostOverview) {
+    return (
+      <button
+        type="button"
+        onClick={onHostOverview}
+        aria-label={t('versus.openOverview', { name: label })}
+        className={PORTRAIT_LINK}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  return (
+    <LocaleLink
+      to={`/pokemon/${pokemonId}`}
+      aria-label={t('versus.openDexEntry', { name: label })}
+      onMouseEnter={() => prefetchPokemon(pokemonId)}
+      onFocus={() => prefetchPokemon(pokemonId)}
+      className={PORTRAIT_LINK}
+    >
+      {children}
+    </LocaleLink>
+  );
+}
+
 export function SideCard({
   pokemon,
   side,
@@ -656,6 +701,8 @@ export function SideCard({
   gen,
   showAbilityItem = true,
   showStatus = false,
+  hostPokemonId,
+  onHostOverview,
 }: {
   pokemon: Pokemon;
   side: SideState;
@@ -669,10 +716,14 @@ export function SideCard({
   gen: number;
   showAbilityItem?: boolean;
   showStatus?: boolean;
+  hostPokemonId?: number;
+  onHostOverview?: () => void;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const spriteEra = useMemo(() => spriteEraForVersus(gen, pokemon.id), [gen, pokemon.id]);
+  const displayName = nameOfPokemon(pokemon.id, lang);
+  const isHost = hostPokemonId != null && pokemon.id === hostPokemonId;
   /* gen-correct types (F3): Magnemite pure Electric in gen 1/2, no Fairy retypes in gen ≤5 */
   const types = genTypesOf(versionGroup, pokemon.name, pokemonTypes(pokemon) as PokemonType[]);
   const [tune, setTune] = useState(false);
@@ -701,12 +752,11 @@ export function SideCard({
   return (
     <div className="flex flex-col gap-2 overflow-visible p-3">
       <div className="flex items-center gap-3 lg:gap-4">
-        <LocaleLink
-          to={`/pokemon/${pokemon.id}`}
-          aria-label={`${nameOfPokemon(pokemon.id, lang)} — ${padNum(pokemon.id)}`}
-          onMouseEnter={() => prefetchPokemon(pokemon.id)}
-          onFocus={() => prefetchPokemon(pokemon.id)}
-          className="relative grid h-[76px] w-[76px] shrink-0 place-items-center rounded-lg transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 md:h-[104px] md:w-[104px] lg:h-[140px] lg:w-[140px]"
+        <PokemonDexLink
+          pokemonId={pokemon.id}
+          label={displayName}
+          hostPokemonId={hostPokemonId}
+          onHostOverview={onHostOverview}
         >
           {aura && (
             <div
@@ -719,17 +769,32 @@ export function SideCard({
           )}
           <Sprite
             id={pokemon.id}
-            name={nameOfPokemon(pokemon.id, lang)}
+            name={displayName}
             era={spriteEra}
             className="relative z-10 h-[72px] w-[72px] md:h-[96px] md:w-[96px] lg:h-[132px] lg:w-[132px]"
             eager
           />
-        </LocaleLink>
+        </PokemonDexLink>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-1.5">
-            <span className="truncate font-display text-[15px] font-bold uppercase text-tx-primary lg:text-[17px]">
-              {nameOfPokemon(pokemon.id, lang)}
-            </span>
+            {isHost && onHostOverview ? (
+              <button
+                type="button"
+                onClick={onHostOverview}
+                className="truncate text-left font-display text-[15px] font-bold uppercase text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
+              >
+                {displayName}
+              </button>
+            ) : (
+              <LocaleLink
+                to={`/pokemon/${pokemon.id}`}
+                onMouseEnter={() => prefetchPokemon(pokemon.id)}
+                onFocus={() => prefetchPokemon(pokemon.id)}
+                className="truncate font-display text-[15px] font-bold uppercase text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
+              >
+                {displayName}
+              </LocaleLink>
+            )}
             <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(pokemon.id)}</span>
           </div>
           <div className="mt-1 flex flex-wrap gap-1">
@@ -1178,6 +1243,8 @@ export default function VersusPanel({
   context: contextProp,
   initialTrainerNode,
   initialTrainerRegion,
+  hostPokemonId,
+  onHostOverview,
 }: {
   /** Pre-fill your side (e.g. current dex entry). User can still change via picker. */
   initialYou?: number | null;
@@ -1188,6 +1255,9 @@ export default function VersusPanel({
   context?: VersusContext;
   initialTrainerNode?: string | null;
   initialTrainerRegion?: RegionId | null;
+  /** When embedded on /pokemon/:id, the page host — portrait opens overview instead of reloading. */
+  hostPokemonId?: number;
+  onHostOverview?: () => void;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
@@ -1461,6 +1531,8 @@ export default function VersusPanel({
             versionGroup={ctx.versionGroup}
             gen={ctx.gen}
             showStatus
+            hostPokemonId={hostPokemonId}
+            onHostOverview={onHostOverview}
             onSlotsChange={(slots) => {
               setYouCustom(true);
               setYouSource('custom');
@@ -1559,8 +1631,10 @@ export default function VersusPanel({
                 slotsSource={foeSource}
                 details={details}
                 versionGroup={ctx.versionGroup}
-            gen={ctx.gen}
+                gen={ctx.gen}
                 showStatus
+                hostPokemonId={hostPokemonId}
+                onHostOverview={onHostOverview}
                 onSlotsChange={(slots) => {
                   setFoeCustom(true);
                   setFoeSource('custom');
@@ -1581,6 +1655,8 @@ export default function VersusPanel({
             versionGroup={ctx.versionGroup}
             gen={ctx.gen}
             showStatus
+            hostPokemonId={hostPokemonId}
+            onHostOverview={onHostOverview}
             onSlotsChange={(slots) => {
               setFoeCustom(true);
               setFoeSource('custom');

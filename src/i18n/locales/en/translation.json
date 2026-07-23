@@ -381,6 +381,8 @@
     "pickYouPlaceholder": "PICK POKÉMON…",
     "pickYouHint": "Choose your Pokémon from the dex search above.",
     "pickOpponentDexHint": "Choose an opponent from the dex search above.",
+    "openDexEntry": "Open {{name}} dex entry",
+    "openOverview": "Show {{name}} overview",
     "games": {
       "red": "Pokémon Red",
       "blue": "Pokémon Blue",
