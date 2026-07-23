@@ -316,7 +316,7 @@ export default function SlotCard({
         <span className="tb-chip !text-[9px]">LV {slot.level}</span>
         <div className="flex items-center gap-1">
           <LocaleLink
-            to={`/pokemon/${slot.pokemonId}?vs=${versusOpponentId ?? ''}`}
+            to={`/versus?you=${slot.pokemonId}&game=${versionGroup}${versusOpponentId ? `&vs=${versusOpponentId}` : ''}`}
             onClick={(e) => e.stopPropagation()}
             className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
             aria-label={t8n('tb.slot.compare', { name: label })}
