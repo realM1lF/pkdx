@@ -1391,6 +1391,19 @@
             "Lokal gespeicherte Daten (Teams, Solo-Nuzlocke-Runs, Cache, Einstellungen) liegen ausschließlich in deinem Browser und kannst du dort jederzeit löschen.",
             "Für Multiplayer-Nuzlocke-Runs kannst du uns per E-Mail kontaktieren, wenn du die Löschung serverseitig gespeicherter Run-Daten wünschst. Bitte nenne dabei den Run-Namen oder Einladungscode, soweit möglich."
           ]
+        },
+        {
+          "heading": "Konto (optional)",
+          "subsections": [
+            {
+              "title": "Registrierung und Anmeldung",
+              "body": "Du kannst freiwillig ein Konto anlegen, um deine Teams und Nuzlocke-Runs geräteübergreifend zu synchronisieren. Dabei speichern wir ausschließlich: deinen gewählten Nutzernamen, einen kryptografischen Hash deines Passworts (über Supabase Auth/bcrypt — das Passwort selbst liegt nie bei uns), einen Hash deines 6-stelligen Recovery-Codes sowie deine Spielstand-Daten (Teams, Nuzlocke-Runs). Eine E-Mail-Adresse wird nicht erhoben."
+            },
+            {
+              "title": "Speicherort und Löschung",
+              "body": "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Du kannst dein Konto und alle damit verbundenen Daten jederzeit per Issue oder Nachricht an den Betreiber löschen lassen. Ohne Konto werden alle Daten ausschließlich lokal in deinem Browser gespeichert."
+            }
+          ]
         }
       ]
     }
@@ -1564,5 +1577,61 @@
     },
     "githubNote": "Öffentlich nachverfolgbar:",
     "browseIssues": "alle offenen Issues ansehen"
+  },
+  "account": {
+    "eyebrow": "ACCOUNT",
+    "title": "Dein Trainer-Konto.",
+    "lede": "Mit einem Account sind deine Teams und Nuzlocke-Runs sicher in der Datenbank — und von jedem Gerät aus erreichbar. Ohne E-Mail, nur Name und Passwort.",
+    "hi": "Moin, {{name}}.",
+    "synced": "Teams & Runs werden synchronisiert",
+    "dataNote": "Deine Setups liegen jetzt in der Datenbank und sind auf jedem Gerät verfügbar. Gast-Daten bleiben lokal in dem Browser, in dem sie erstellt wurden.",
+    "logout": "ABMELDEN",
+    "tabs": {
+      "login": "ANMELDEN",
+      "register": "REGISTRIEREN",
+      "reset": "RESET"
+    },
+    "username": "NUTZERNAME",
+    "usernameHint": "3–20 Zeichen: a–z, 0–9, - und _",
+    "password": "PASSWORT",
+    "passwordHint": "mind. 8 Zeichen",
+    "newPassword": "NEUES PASSWORT",
+    "passwordConfirm": "PASSWORT BESTÄTIGEN",
+    "pin": "RECOVERY-CODE (6-STELLIG)",
+    "pinHint": "Gut aufschreiben! Damit setzt du dein Passwort zurück, falls du es vergisst.",
+    "pinConfirm": "RECOVERY-CODE BESTÄTIGEN",
+    "pinResetHint": "Dein 6-stelliger Code aus der Registrierung",
+    "submit": {
+      "login": "ANMELDEN",
+      "register": "KONTO ERSTELLEN",
+      "reset": "PASSWORT ZURÜCKSETZEN"
+    },
+    "reset": {
+      "done": "Passwort zurückgesetzt — du kannst dich jetzt anmelden."
+    },
+    "guestNote": "Auch ohne Account funktioniert alles — Daten bleiben dann nur in diesem Browser.",
+    "privacyLink": "Mehr im Datenschutz.",
+    "errors": {
+      "username_taken": "Dieser Name ist schon vergeben.",
+      "invalid_credentials": "Nutzername, Passwort oder Recovery-Code stimmen nicht.",
+      "rate_limited": "Zu viele Versuche — bitte in einer Stunde erneut probieren.",
+      "invalid_input": "Eingaben ungültig (Name 3–20 Zeichen, Passwort min. 8, Code 6-stellig).",
+      "password_mismatch": "Passwörter stimmen nicht überein.",
+      "pin_mismatch": "Recovery-Codes stimmen nicht überein.",
+      "unknown": "Etwas ist schiefgelaufen — bitte erneut versuchen."
+    },
+    "tip": {
+      "title": "Mit einem Account sind deine Setups sicher und von überall erreichbar.",
+      "body": "Ohne Account bleiben Teams & Runs nur in diesem Browser (localStorage) gespeichert.",
+      "ok": "VERSTANDEN",
+      "dismiss": "Hinweis schließen"
+    },
+    "migrate": {
+      "title": "Lokale Daten übernehmen?",
+      "text": "Auf diesem Gerät liegen {{teams}} Team(s) und {{runs}} lokale(r) Nuzlocke-Run(s). Sollen sie in dein Konto hochgeladen werden? Dann sind sie auf jedem Gerät verfügbar.",
+      "accept": "INS KONTO ÜBERNEHMEN",
+      "later": "SPÄTER",
+      "never": "NICHT FRAGEN"
+    }
   }
 }

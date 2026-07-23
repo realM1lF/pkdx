@@ -617,12 +617,14 @@ export function saveTeam(team: Team): Team[] {
     pushToast('sync', i18n.t('tb.toast.storageFailed'));
     return list;
   }
+  void import('./cloud-sync').then((m) => m.cloudPushTeam(next));
   return updated;
 }
 
 export function deleteTeam(id: string): Team[] {
   const list = loadTeams().filter((t) => t.id !== id);
   if (!writeJson(LS_TEAMS, list)) pushToast('sync', i18n.t('tb.toast.storageFailed'));
+  void import('./cloud-sync').then((m) => m.cloudDeleteTeam(id));
   return list;
 }
 

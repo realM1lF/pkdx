@@ -57,6 +57,9 @@ with Nintendo (see [License & Legal](#license--legal)).
 - **Item Lexicon** (`/items`) — 1,000+ items with sprites, categories,
   localized flavor texts; moves/items/abilities open detail modals (German
   and English flavor text) from every part of the app.
+- **Accounts** — optional username+password login (no email) with 6-digit
+  recovery PIN; teams and Nuzlocke runs sync across devices (local-first,
+  guests keep full functionality with browser-only storage). `/account`.
 - **Site pages** — `/about` (why this exists), `/feedback` (bug reports and
   feature requests via GitHub issue forms), `/support` (donations).
 - **Performance details** — listing sprites for all 1025 Pokémon (front +
@@ -249,6 +252,9 @@ Deutsch/Englisch mit sprachbasiertem URL-Routing (`/de/…`, `/en/…`).
   Beschreibungstexten; Attacken-/Item-/Fähigkeits-Modals überall in der App
 - **Nuzlocke auch für Gen 6–9** (Kalos, Alola, Galar, Hisui, Paldea) im
   Text-Modus mit vollständigen Ortslisten
+- **Konto (optional)**: Nutzername + Passwort (ohne E-Mail), 6-stelliger
+  Recovery-Code — Teams und Runs synchronisieren über Geräte; ohne Konto
+  bleibt alles lokal im Browser (`/account`)
 - **Seiten**: `/about` (Story), `/feedback` (Bugs & Ideen via
   GitHub-Formularen), `/support` (Spenden)
 
