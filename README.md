@@ -22,7 +22,9 @@ with Nintendo (see [License & Legal](#license--legal)).
   real-time multiplayer via Supabase: invite codes (`SOUL-XXX`), presence,
   live sync; configurable ruleset including Dupes Clause, Shiny Clause,
   nicknames, SoulLink (with death cascade), release-on-death, and manual or
-  automatic level caps (next gym leader's ace).
+  automatic level caps (next gym leader's ace). Runs work in every region:
+  the five mapped regions plus Gen 6–9 (Kalos, Alola, Galar, Hisui, Paldea)
+  in a map-less text mode with full location lists.
 - **Team Builder** — 6-slot teams with level, moves, item, ability, nature
   and EVs; game/version-group selector (RBY through SV) with gen-aware
   legality checks; defensive synergy and offensive coverage analysis; Smogon
@@ -31,7 +33,17 @@ with Nintendo (see [License & Legal](#license--legal)).
 - **Versus Lab** — 1v1 matchup calculator on `@smogon/calc` with
   generation-correct mechanics for Gen 1–9 (damage ranges, KO chances, speed
   checks) plus per-generation type charts from `@pkmn/data`; field, weather
-  and terrain context.
+  and terrain context. Deep-linkable (`/versus?you=<id>&game=<vg>&vs=<id>`).
+- **Item Lexicon** (`/items`) — 1,000+ items with sprites, categories,
+  localized flavor texts; moves/items/abilities open detail modals (German
+  and English flavor text) from every part of the app.
+- **Site pages** — `/about` (why this exists), `/feedback` (bug reports and
+  feature requests via GitHub issue forms), `/support` (donations).
+- **Performance details** — listing sprites for all 1025 Pokémon (front +
+  shiny) ship with the app instead of being fetched from a third-party CDN;
+  heavy data artifacts load lazily on first use.
+- **Zoom control** — browser-style 50–150 % page zoom next to the language
+  switch (root font-size scaling, persisted).
 - **Bilingual UI (EN/DE)** — every route exists under `/en/…` and `/de/…`
   with hreflang annotations; official German game terminology.
 
@@ -85,7 +97,8 @@ any Supabase reachability, solo mode continues to work (localStorage-only).
 src/
   App.tsx               route table — everything lives under /:lang (en|de)
   pages/                Home, Pokedex, PokemonDetail, Maps, MapRegion,
-                        Nuzlocke, NuzlockeRun, TeamBuilder, Versus, legal pages
+                        Nuzlocke, NuzlockeRun, TeamBuilder, Versus, Items,
+                        About, Feedback, Support, legal pages
   components/           Layout, Navbar, SearchCommand, Sprite, LangGate, ui/
   lib/
     pokeapi.ts          PokéAPI client with SWR cache
@@ -101,12 +114,20 @@ src/
     i18n-data.ts        localized entity-name lookup (render edge only)
   i18n/locales/{en,de}/ UI strings — EN and DE kept at key parity
   data/
-    regions/            per-region map graphs (+ geo variants for original maps)
+    regions/            per-region map graphs (+ geo variants; + Gen 6–9
+                        freeform location lists for text-mode Nuzlocke runs)
+    desc/               move/item/ability flavor-text artifacts (DE+EN)
     i18n/de/            generated German entity-name artifacts (committed)
     enriched/           items/trainers parsed from pret/pokefirered
+    summaries.json      all-1025 dex summaries (types/stats) for the listing
 scripts/
   build-i18n-data.mjs   regenerates German name artifacts from PokéAPI
+  build-desc-data.mjs   regenerates flavor-text artifacts (npm run desc:data)
+  build-summaries.mjs   regenerates summaries.json (npm run summaries)
+  build-freeform-regions.mjs  Gen 6–9 location lists from PokéAPI
+  fetch-sprites.mjs     downloads bundled listing sprites (front + shiny)
 public/maps/            original region map images + CREDITS.txt
+public/sprites/pokemon/ bundled front + shiny sprites for ids 1–1025
 docs/ai/                deep-dive docs (architecture, i18n, design system)
 ```
 
@@ -128,6 +149,14 @@ docs/ai/                deep-dive docs (architecture, i18n, design system)
   ```bash
   npm run i18n:data    # node scripts/build-i18n-data.mjs
   ```
+
+## Deployment
+
+Static SPA — deploys cleanly on **Netlify** out of the box (`netlify.toml`:
+build command, `dist` publish dir, Node 20, cache headers; `public/_redirects`
+adds the SPA fallback). First visit redirects to `/de` or `/en` based on the
+browser language; the switch persists. Community contributions arrive as
+GitHub issues via the templates in `.github/ISSUE_TEMPLATE/`.
 
 ## Data Sources & Credits
 
@@ -194,6 +223,12 @@ Deutsch/Englisch mit sprachbasiertem URL-Routing (`/de/…`, `/en/…`).
 - **TeamBuilder** mit Coverage-Analyse, Smogon-Sets und
   Showdown-Import/Export
 - **Versus-Lab**: generationsgenauer Damage-Calculator (Gen 1–9)
+- **Item-Lexikon** (`/items`) mit Sprites und deutschen/englischen
+  Beschreibungstexten; Attacken-/Item-/Fähigkeits-Modals überall in der App
+- **Nuzlocke auch für Gen 6–9** (Kalos, Alola, Galar, Hisui, Paldea) im
+  Text-Modus mit vollständigen Ortslisten
+- **Seiten**: `/about` (Story), `/feedback` (Bugs & Ideen via
+  GitHub-Formularen), `/support` (Spenden)
 
 **Loslegen:** Node.js 20 installieren, dann `npm install` und
 `npm run dev`. Keine Konfiguration nötig; die optionalen

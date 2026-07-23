@@ -21,7 +21,7 @@
     "zoomOut": "Verkleinern",
     "about": "About",
     "feedback": "Feedback",
-    "support": "Support",
+    "support": "Spende",
     "more": "MEHR"
   },
   "pokedex": {
@@ -125,7 +125,7 @@
     "site": "DIE SEITE",
     "about": "About",
     "feedback": "Feedback & Ideen",
-    "support": "Unterstützen",
+    "support": "Spenden",
     "community": "COMMUNITY & WIKI"
   },
   "detail": {
@@ -1540,12 +1540,13 @@
     }
   },
   "support": {
-    "eyebrow": "UNTERSTÜTZEN",
+    "eyebrow": "SPENDE",
     "title": "Gießkanne für ein Hobby.",
     "p1": "MyPokePanion ist ein reines Hobby-Projekt — gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
     "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag — komplett freiwillig, ohne jede Verpflichtung.",
     "cta": "VIA PAYPAL UNTERSTÜTZEN",
-    "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt."
+    "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt.",
+    "qrCaption": "QR-Code scannen — geht auch direkt im Handy"
   },
   "feedback": {
     "eyebrow": "FEEDBACK & IDEEN",
