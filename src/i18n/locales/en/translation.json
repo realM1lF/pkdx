@@ -1194,7 +1194,8 @@
         "noSpecies": "NOT FOUND: {{name}}",
         "tooMany": "ONLY THE FIRST 6 IMPORTED ({{count}} FOUND)"
       }
-    }
+    },
+    "editing": "EDITING"
   },
   "legal": {
     "impressum": {

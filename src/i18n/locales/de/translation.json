@@ -1194,7 +1194,8 @@
         "noSpecies": "NICHT GEFUNDEN: {{name}}",
         "tooMany": "NUR DIE ERSTEN 6 ÜBERNOMMEN ({{count}} GEFUNDEN)"
       }
-    }
+    },
+    "editing": "IN BEARBEITUNG"
   },
   "legal": {
     "impressum": {
