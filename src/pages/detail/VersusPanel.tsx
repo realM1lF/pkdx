@@ -9,14 +9,15 @@ import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Info, RotateCcw, Search, SlidersHorizontal, Swords, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLocalePath } from '@/lib/locale-link';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import Sprite from '@/components/Sprite';
 import GameSelect from '@/components/GameSelect';
 import TypeBadge from '@/components/TypeBadge';
 import TypeGlyph from '@/components/TypeGlyph';
 import PokeballLoader from '@/components/PokeballLoader';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
-import { bootNameIndex, getMove, getPokemon, padNum, pokemonTypes } from '@/lib/pokeapi';
+import { bootNameIndex, getMove, getPokemon, padNum, pokemonTypes, prefetchPokemon } from '@/lib/pokeapi';
+import { spriteEraForVersus } from '@/lib/sprites';
 import {
   germanAliasOfPokemon,
   nameOfMove,
@@ -652,6 +653,7 @@ export function SideCard({
   onSlotsReset,
   aura = true,
   versionGroup,
+  gen,
   showAbilityItem = true,
   showStatus = false,
 }: {
@@ -664,11 +666,13 @@ export function SideCard({
   onSlotsReset?: () => void;
   aura?: boolean;
   versionGroup: string;
+  gen: number;
   showAbilityItem?: boolean;
   showStatus?: boolean;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const spriteEra = useMemo(() => spriteEraForVersus(gen, pokemon.id), [gen, pokemon.id]);
   /* gen-correct types (F3): Magnemite pure Electric in gen 1/2, no Fairy retypes in gen ≤5 */
   const types = genTypesOf(versionGroup, pokemon.name, pokemonTypes(pokemon) as PokemonType[]);
   const [tune, setTune] = useState(false);
@@ -696,8 +700,14 @@ export function SideCard({
 
   return (
     <div className="flex flex-col gap-2 overflow-visible p-3">
-      <div className="flex items-center gap-3">
-        <div className="relative grid h-[76px] w-[76px] shrink-0 place-items-center">
+      <div className="flex items-center gap-3 lg:gap-4">
+        <LocaleLink
+          to={`/pokemon/${pokemon.id}`}
+          aria-label={`${nameOfPokemon(pokemon.id, lang)} — ${padNum(pokemon.id)}`}
+          onMouseEnter={() => prefetchPokemon(pokemon.id)}
+          onFocus={() => prefetchPokemon(pokemon.id)}
+          className="relative grid h-[76px] w-[76px] shrink-0 place-items-center rounded-lg transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 md:h-[104px] md:w-[104px] lg:h-[140px] lg:w-[140px]"
+        >
           {aura && (
             <div
               aria-hidden
@@ -707,11 +717,17 @@ export function SideCard({
               }}
             />
           )}
-          <Sprite id={pokemon.id} name={nameOfPokemon(pokemon.id, lang)} era="artwork" className="relative z-10 h-[72px] w-[72px]" eager />
-        </div>
+          <Sprite
+            id={pokemon.id}
+            name={nameOfPokemon(pokemon.id, lang)}
+            era={spriteEra}
+            className="relative z-10 h-[72px] w-[72px] md:h-[96px] md:w-[96px] lg:h-[132px] lg:w-[132px]"
+            eager
+          />
+        </LocaleLink>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-1.5">
-            <span className="truncate font-display text-[15px] font-bold uppercase text-tx-primary">
+            <span className="truncate font-display text-[15px] font-bold uppercase text-tx-primary lg:text-[17px]">
               {nameOfPokemon(pokemon.id, lang)}
             </span>
             <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(pokemon.id)}</span>
@@ -1158,6 +1174,7 @@ export default function VersusPanel({
   initialVs,
   onYouChange,
   onOpponentChange,
+  onGameChange,
   context: contextProp,
   initialTrainerNode,
   initialTrainerRegion,
@@ -1167,6 +1184,7 @@ export default function VersusPanel({
   initialVs?: string | null;
   onYouChange?: (id: number | null) => void;
   onOpponentChange?: (id: number | null) => void;
+  onGameChange?: (game: string | null) => void;
   context?: VersusContext;
   initialTrainerNode?: string | null;
   initialTrainerRegion?: RegionId | null;
@@ -1315,6 +1333,7 @@ export default function VersusPanel({
 
   const pickGame = (game: string) => {
     setCtx(game ? versusContextFromGame(game, trainerRegion) : { ...defaultVersusContext(), region: trainerRegion });
+    onGameChange?.(game || null);
   };
 
   /* grouped GameSelect options (per game, chip = version-group short) */
@@ -1440,6 +1459,7 @@ export default function VersusPanel({
             slotsSource={youSource}
             details={details}
             versionGroup={ctx.versionGroup}
+            gen={ctx.gen}
             showStatus
             onSlotsChange={(slots) => {
               setYouCustom(true);
@@ -1539,6 +1559,7 @@ export default function VersusPanel({
                 slotsSource={foeSource}
                 details={details}
                 versionGroup={ctx.versionGroup}
+            gen={ctx.gen}
                 showStatus
                 onSlotsChange={(slots) => {
                   setFoeCustom(true);
@@ -1558,6 +1579,7 @@ export default function VersusPanel({
             slotsSource={foeSource}
             details={details}
             versionGroup={ctx.versionGroup}
+            gen={ctx.gen}
             showStatus
             onSlotsChange={(slots) => {
               setFoeCustom(true);

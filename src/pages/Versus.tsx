@@ -1,10 +1,11 @@
 /* Standalone Versus lab — /versus. Deep-linkable: ?you=<id> pre-fills your
  * side (team-builder VS button lands here), ?vs=<id> the opponent, ?game=
  * the version group — all params stay in the URL for sharing. */
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import VersusPanel from './detail/VersusPanel';
-import { versusContextFromGame } from '@/lib/versus';
+import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
 
 export default function Versus() {
   const { t } = useTranslation();
@@ -24,6 +25,12 @@ export default function Versus() {
     setSearchParams(next, { replace: true });
   };
 
+  /* Persist default game in the URL so /versus links are shareable. */
+  useEffect(() => {
+    if (!gameParam) patchParams({ game: DEFAULT_VERSUS_PAGE_GAME });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount when ?game= is absent
+  }, []);
+
   return (
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <header className="mb-4">
@@ -37,9 +44,10 @@ export default function Versus() {
         key={`${initialYou ?? ''}|${vsParam ?? ''}|${gameParam ?? ''}`}
         initialYou={initialYou}
         initialVs={vsParam}
-        context={gameParam ? versusContextFromGame(gameParam, null) : undefined}
+        context={versusContextFromGame(gameParam ?? DEFAULT_VERSUS_PAGE_GAME, null)}
         onYouChange={(id) => patchParams({ you: id != null ? String(id) : null })}
         onOpponentChange={(id) => patchParams({ vs: id != null ? String(id) : null })}
+        onGameChange={(game) => patchParams({ game: game || null })}
       />
     </div>
   );

@@ -15,6 +15,13 @@ export function defaultVersusContext(): VersusContext {
   return { gen: 9, versionGroup: 'scarlet-violet', game: null, region: null };
 }
 
+/** Default game slug for the standalone /versus lab when no `?game=` param is set. */
+export const DEFAULT_VERSUS_PAGE_GAME = 'firered';
+
+export function defaultVersusPageContext(): VersusContext {
+  return versusContextFromGame(DEFAULT_VERSUS_PAGE_GAME, null);
+}
+
 export function versusContextFromGame(game: string | null | undefined, region?: RegionId | null): VersusContext {
   const vg = versionGroupForGame(game) ?? 'scarlet-violet';
   /* gen comes from the version-group table — covers gen 1–9 games without

@@ -52,6 +52,10 @@ export const sprites = {
   gen5Static: (id: number) => `${BASE}/versions/generation-v/black-white/${id}.png`,
   gen6XY: (id: number) => `${BASE}/versions/generation-vi/x-y/${id}.png`,
   gen7USUM: (id: number) => `${BASE}/versions/generation-vii/ultra-sun-ultra-moon/${id}.png`,
+  /** Gen VIII menu-style icons (SW/SH-era; not every species) */
+  gen8Icon: (id: number) => `${BASE}/versions/generation-viii/icons/${id}.png`,
+  /** Gen IX scarlet/violet renders (SV dex; not every species) */
+  gen9SV: (id: number) => `${BASE}/versions/generation-ix/scarlet-violet/${id}.png`,
 
   /** cries (PokeAPI/cries repo) */
   cry: (id: number) => `${CRIES}/latest/${id}.ogg`,
@@ -70,10 +74,12 @@ export type SpriteEra =
   | 'gen4'
   | 'gen5' // animated GIF
   | 'gen6'
-  | 'gen7';
+  | 'gen7'
+  | 'gen8'
+  | 'gen9';
 
 /** Eras rendered with image-rendering: pixelated (pre-Gen-VI, §10.2 rule a) */
-export const PIXELATED_ERAS: ReadonlySet<SpriteEra> = new Set(['gen1', 'gen2', 'gen3', 'gen4', 'gen5', 'default']);
+export const PIXELATED_ERAS: ReadonlySet<SpriteEra> = new Set(['gen1', 'gen2', 'gen3', 'gen4', 'gen5', 'gen8', 'default']);
 
 function primaryUrl(era: SpriteEra, id: number, shiny: boolean, back: boolean): string {
   switch (era) {
@@ -97,6 +103,10 @@ function primaryUrl(era: SpriteEra, id: number, shiny: boolean, back: boolean): 
       return sprites.gen6XY(id);
     case 'gen7':
       return sprites.gen7USUM(id);
+    case 'gen8':
+      return sprites.gen8Icon(id);
+    case 'gen9':
+      return sprites.gen9SV(id);
     case 'default':
     default:
       return back
@@ -136,4 +146,23 @@ export const ERA_LABELS: Record<SpriteEra, string> = {
   gen5: 'Gen V (2010)',
   gen6: 'Gen VI (2013)',
   gen7: 'Gen VII (2016)',
+  gen8: 'Gen VIII (2019)',
+  gen9: 'Gen IX (2022)',
 };
+
+/**
+ * Versus side-card sprite era: one era per selected calc gen so the portrait
+ * changes with the game picker. Gen 8 → SW/SH icons, Gen 9 → SV renders;
+ * species missing from that gen's set fall back via `spriteFallbackChain`.
+ */
+export function spriteEraForVersus(gen: number, _pokemonId: number): SpriteEra {
+  if (gen <= 1) return 'gen1';
+  if (gen === 2) return 'gen2';
+  if (gen === 3) return 'gen3';
+  if (gen === 4) return 'gen4';
+  if (gen === 5) return 'gen5';
+  if (gen === 6) return 'gen6';
+  if (gen === 7) return 'gen7';
+  if (gen === 8) return 'gen8';
+  return 'gen9';
+}
