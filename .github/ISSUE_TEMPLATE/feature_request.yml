@@ -1,0 +1,30 @@
+name: ✨ Feature Request
+description: Suggest an idea for MyPokePanion
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: What should the site do? Why would it help you?
+      placeholder: As a Nuzlocke player I want …
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Pokédex
+        - Maps
+        - Nuzlocke
+        - Team Builder
+        - Versus
+        - Items
+        - Something new
+  - type: textarea
+    id: extra
+    attributes:
+      label: Examples / references
+      description: Optional — links, screenshots, mockups

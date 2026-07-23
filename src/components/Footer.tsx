@@ -44,10 +44,29 @@ export default function Footer() {
     { to: '/datenschutz', key: 'footer.privacy' },
   ] as const;
 
+  const siteLinks = [
+    { to: '/about', key: 'footer.about' },
+    { to: '/feedback', key: 'footer.feedback' },
+    { to: '/support', key: 'footer.support' },
+  ] as const;
+
+  /* external community wikis — grouped DE/EN (user-curated) */
+  const wikiLinksDe = [
+    { href: 'https://www.bisafans.de', label: 'Bisafans' },
+    { href: 'https://pokewiki.de', label: 'PokéWiki' },
+    { href: 'https://www.prokedex.com', label: 'Prokedex' },
+    { href: 'https://www.pokemon.com/de', label: 'pokemon.com (DE)' },
+  ] as const;
+  const wikiLinksEn = [
+    { href: 'https://bulbapedia.bulbagarden.net', label: 'Bulbapedia' },
+    { href: 'https://pokemon.fandom.com', label: 'Pokémon Wiki' },
+    { href: 'https://www.pokemon.com/us', label: 'pokemon.com (EN)' },
+  ] as const;
+
   return (
     <footer className="relative mt-0">
       <div className="h-px w-full" style={{ background: HAIRLINE }} />
-      <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 md:px-8">
+      <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 md:px-8">
         {/* Brand */}
         <div className="flex flex-col items-start gap-4 sm:col-span-2 lg:col-span-1 xl:col-span-1">
           <div className="flex items-center gap-2.5">
@@ -83,6 +102,33 @@ export default function Footer() {
             <LocaleLink key={region.id} to={`/maps/${region.id}`} className={linkCls}>
               {lang === 'de' ? region.nameDe : region.name}
             </LocaleLink>
+          ))}
+        </div>
+
+        {/* Site: about / feedback / support */}
+        <div className="flex flex-col gap-3">
+          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.site')}</h4>
+          {siteLinks.map(({ to, key }) => (
+            <LocaleLink key={to} to={to} className={linkCls}>
+              {t(key)}
+            </LocaleLink>
+          ))}
+        </div>
+
+        {/* Community wikis (external, DE + EN) */}
+        <div className="flex flex-col gap-3">
+          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.community')}</h4>
+          <span className="pixel-label text-[8px] text-tx-muted/70">DE</span>
+          {wikiLinksDe.map(({ href, label }) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer" className={linkCls}>
+              {label} ↗
+            </a>
+          ))}
+          <span className="pixel-label mt-2 text-[8px] text-tx-muted/70">EN</span>
+          {wikiLinksEn.map(({ href, label }) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer" className={linkCls}>
+              {label} ↗
+            </a>
           ))}
         </div>
 

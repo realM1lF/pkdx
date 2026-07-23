@@ -10,6 +10,12 @@ import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
 import ZoomControl from './ZoomControl';
 
+const UTILITY_LINKS = [
+  { to: '/about', key: 'nav.about' },
+  { to: '/feedback', key: 'nav.feedback' },
+  { to: '/support', key: 'nav.support' },
+];
+
 const LINKS = [
   { to: '/pokedex', key: 'nav.pokedex' },
   { to: '/items', key: 'nav.items' },
@@ -42,7 +48,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200',
+          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200 md:h-[6.25rem]',
           scrolled ? 'glass border-b border-hairline' : 'border-b border-transparent bg-transparent',
         )}
       >
@@ -180,6 +186,30 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               >
                 <Search size={18} strokeWidth={1.75} /> {t('nav.searchDrawer')}
               </motion.button>
+              {/* utility group (desktop utility bar lives in the drawer on mobile) */}
+              <motion.div
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.10 + LINKS.length * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-6 flex flex-col items-start gap-2 border-t border-hairline pt-4"
+              >
+                <span className="pixel-label text-[8px] text-tx-muted">{t('nav.more')}</span>
+                {UTILITY_LINKS.map((l) => (
+                  <NavLink
+                    key={l.to}
+                    to={localePath(l.to)}
+                    onClick={() => setDrawer(false)}
+                    className={({ isActive }) =>
+                      cn(
+                        'font-display text-xl font-bold uppercase tracking-wide transition-colors',
+                        isActive ? 'text-gold' : 'text-tx-secondary hover:text-gold',
+                      )
+                    }
+                  >
+                    {t(l.key)}
+                  </NavLink>
+                ))}
+              </motion.div>
               <motion.div
                 initial={{ y: 24, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

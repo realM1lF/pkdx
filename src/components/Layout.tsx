@@ -137,7 +137,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-void text-tx-primary">
       <Navbar onSearchOpen={() => setSearchOpen(true)} />
-      <main className="relative pt-16">{children}</main>
+      <main className="relative pt-16 md:pt-[6.25rem]">{children}</main>
       <Footer />
       <SearchCommand variant="modal" open={searchOpen} onClose={() => setSearchOpen(false)} />
       <BackToTop />

@@ -18,7 +18,11 @@
     "items": "Items",
     "zoom": "Zoom",
     "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+    "zoomOut": "Zoom out",
+    "about": "About",
+    "feedback": "Feedback",
+    "support": "Support",
+    "more": "MORE"
   },
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
@@ -117,7 +121,12 @@
     "dataCredits": "Data & sprites —",
     "fanProject": "Fan project. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
     "madeWith": "MADE WITH ♥ & TYPE ENERGY",
-    "items": "Items"
+    "items": "Items",
+    "site": "THE SITE",
+    "about": "About",
+    "feedback": "Feedback & ideas",
+    "support": "Support",
+    "community": "COMMUNITY & WIKI"
   },
   "detail": {
     "backAll": "ALL POKÉMON",
@@ -982,6 +991,13 @@
       "types": "TYPES",
       "generations": "GENERATIONS",
       "sprites": "SPRITES ARCHIVED"
+    },
+    "feedbackTeaser": {
+      "eyebrow": "FEEDBACK",
+      "title": "Your ideas shape this project.",
+      "text": "MyPokePanion is a hobby project that keeps growing — and the best part is bug reports and feature ideas from real players.",
+      "bugCta": "REPORT A BUG",
+      "featureCta": "REQUEST A FEATURE"
     }
   },
   "tb": {
@@ -1501,5 +1517,51 @@
       "picnic": "Ingredients",
       "other": "Other"
     }
+  },
+  "about": {
+    "eyebrow": "ABOUT MYPOKEPANION",
+    "title": "Six tabs fewer.",
+    "lede": "MyPokePanion grew out of one very concrete annoyance — and became a toolkit that bundles everything you actually need while playing.",
+    "story": {
+      "title": "Why this site exists",
+      "text": "Whenever I played a Nuzlocke myself, I had five or six tabs open at all times: a wiki for encounters, one for moves, a type chart, a damage calculator, a route list, a team overview. Every single decision in the run meant jumping between tabs. MyPokePanion is the answer: one place that unites exactly this information — fast, beautiful, in German and English."
+    },
+    "gamers": {
+      "title": "Built for players",
+      "text": "A full dex with sprite museum and descriptions, region maps with encounter tables and items, a Nuzlocke tracker with soul-link co-op, a team builder with legality checks and Showdown export, a versus lab for matchups, and an item lexicon. All tools I wished for as a player myself."
+    },
+    "hobby": {
+      "title": "A hobby project",
+      "text": "This site is not a company product but a passion project I keep developing in my free time. New features land regularly — and honestly: the best part is feedback from real players."
+    },
+    "feedback": {
+      "text": "Found a bug or have an idea that would make the tool better? That helps me more than anything — tell me.",
+      "cta": "GIVE FEEDBACK"
+    }
+  },
+  "support": {
+    "eyebrow": "SUPPORT",
+    "title": "Watering can for a hobby.",
+    "p1": "MyPokePanion is a pure hobby project — built across countless evenings and weekends, with a lot of love for detail and the goal that it genuinely feels good to use.",
+    "p2": "The site is and stays free. If it makes your runs easier and you'd still like to support development, I'd be thrilled about a small contribution — completely voluntary, no strings attached.",
+    "cta": "SUPPORT VIA PAYPAL",
+    "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project."
+  },
+  "feedback": {
+    "eyebrow": "FEEDBACK & IDEAS",
+    "title": "Help make MyPokePanion better.",
+    "intro": "Bugs and ideas land as issues directly in the project — you can track their status anytime. A (free) GitHub account is required.",
+    "bug": {
+      "title": "Report a bug",
+      "text": "Something broken, looks off, or throws errors? A guided form asks for page, description and steps — screenshots help a lot.",
+      "cta": "REPORT A BUG"
+    },
+    "feature": {
+      "title": "Request a feature",
+      "text": "Have an idea that would make the tool better? Tell me — ideally with an example of how it would help you while playing.",
+      "cta": "REQUEST A FEATURE"
+    },
+    "githubNote": "Publicly tracked:",
+    "browseIssues": "browse all open issues"
   }
 }

@@ -42,6 +42,9 @@ const Items = lazyWithReload(() => import('./pages/Items'));
 const Versus = lazyWithReload(() => import('./pages/Versus'));
 const Impressum = lazyWithReload(() => import('./pages/Impressum'));
 const Privacy = lazyWithReload(() => import('./pages/Privacy'));
+const About = lazyWithReload(() => import('./pages/About'));
+const Feedback = lazyWithReload(() => import('./pages/Feedback'));
+const Support = lazyWithReload(() => import('./pages/Support'));
 
 function PageFallback() {
   return (
@@ -71,6 +74,9 @@ export default function App() {
                 <Route path="team" element={<TeamBuilder />} />
                 <Route path="items" element={<Items />} />
                 <Route path="versus" element={<Versus />} />
+                <Route path="about" element={<About />} />
+                <Route path="feedback" element={<Feedback />} />
+                <Route path="support" element={<Support />} />
                 <Route path="impressum" element={<Impressum />} />
                 <Route path="datenschutz" element={<Privacy />} />
                 <Route path="*" element={<LangHomeRedirect />} />
