@@ -103,7 +103,8 @@ export async function resetPasswordWithPin(
   pin: string,
   newPassword: string,
 ): Promise<{ error: AuthErrorCode | null }> {
-  return invokeFunction('reset-with-pin', { username, pin, newPassword });
+  const code = await invokeFunction('reset-with-pin', { username, pin, newPassword });
+  return { error: code };
 }
 
 export async function logoutAccount(): Promise<void> {
