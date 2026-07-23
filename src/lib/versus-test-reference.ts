@@ -88,8 +88,8 @@ export function independentPokemonFromSide(
   }
 }
 
-export function independentFieldFromVersus(field: VersusField | undefined, genNum: number): Field | undefined {
-  const clean = sanitizeVersusField(field, genNum);
+export function independentFieldFromVersus(field: VersusField | undefined, ctx: VersusContext): Field | undefined {
+  const clean = sanitizeVersusField(field, ctx);
   const weather = clean.weather && clean.weather !== 'none' ? WEATHER_TO_CALC[clean.weather] : undefined;
   const terrain = clean.terrain && clean.terrain !== 'none' ? TERRAIN_TO_CALC[clean.terrain] : undefined;
   if (!weather && !terrain) return undefined;

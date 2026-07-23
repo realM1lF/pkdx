@@ -40,39 +40,101 @@ export type VersusField = {
 export const VERSUS_WEATHER_OPTIONS: VersusWeather[] = ['none', 'sun', 'rain', 'sand', 'snow', 'hail'];
 export const VERSUS_TERRAIN_OPTIONS: VersusTerrain[] = ['none', 'electric', 'grassy', 'misty', 'psychic'];
 
+const WEATHER_NONE: VersusWeather[] = [];
+const WEATHER_GEN2: VersusWeather[] = ['none', 'sun', 'rain', 'sand'];
+const WEATHER_GEN3_TO_8: VersusWeather[] = ['none', 'sun', 'rain', 'sand', 'hail'];
+const WEATHER_GEN9: VersusWeather[] = ['none', 'sun', 'rain', 'sand', 'snow'];
+const TERRAIN_NONE: VersusTerrain[] = [];
+const TERRAIN_ALL: VersusTerrain[] = ['none', 'electric', 'grassy', 'misty', 'psychic'];
+
+export interface VersusFieldMechanics {
+  weather: VersusWeather[];
+  terrain: VersusTerrain[];
+}
+
 /**
- * Weather options the given generation actually knows (UI gating).
- * Gen 1: no weather at all. Sun/rain/sand from gen 2, hail gen 3–8,
- * snow replaces hail in gen 9.
+ * Battle-field toggles allowed per version group (not just gen number).
+ *
+ * Defaults follow main-series mechanics by generation; overrides cover remakes
+ * and spin-offs where gen in @smogon/calc ≠ in-game field rules:
+ *
+ * - FRLG: no battle abilities → no ability-driven weather; wild fights start
+ *   clear — field toggles would mislead Nuzlocke users (weather moves exist but
+ *   are not a persistent “arena field” like modern gens).
+ * - LGPE / LA: simplified or alternate battle systems — no weather/terrain UI.
+ * - BDSP: Gen-4 weather (incl. hail), but terrain is Gen 6+ only.
  */
+const VERSION_GROUP_FIELD_OVERRIDES: Partial<Record<string, VersusFieldMechanics>> = {
+  'firered-leafgreen': { weather: WEATHER_NONE, terrain: TERRAIN_NONE },
+  'lets-go-pikachu-eevee': { weather: WEATHER_NONE, terrain: TERRAIN_NONE },
+  'legends-arceus': { weather: WEATHER_NONE, terrain: TERRAIN_NONE },
+  'brilliant-diamond-shining-pearl': { weather: WEATHER_GEN3_TO_8, terrain: TERRAIN_NONE },
+};
+
+function defaultFieldMechanicsForGen(gen: number): VersusFieldMechanics {
+  if (gen < 2) return { weather: WEATHER_NONE, terrain: TERRAIN_NONE };
+  const weather = gen >= 9 ? WEATHER_GEN9 : gen >= 3 ? WEATHER_GEN3_TO_8 : WEATHER_GEN2;
+  const terrain = gen >= 6 ? TERRAIN_ALL : TERRAIN_NONE;
+  return { weather, terrain };
+}
+
+/** Resolve weather + terrain toggles for a version-group id. */
+export function fieldMechanicsForVersionGroup(versionGroup: string): VersusFieldMechanics {
+  const override = VERSION_GROUP_FIELD_OVERRIDES[versionGroup];
+  if (override) return override;
+  return defaultFieldMechanicsForGen(versionGroupById(versionGroup).gen);
+}
+
+export function versusWeatherForVersionGroup(versionGroup: string): VersusWeather[] {
+  return fieldMechanicsForVersionGroup(versionGroup).weather;
+}
+
+export function versusTerrainForVersionGroup(versionGroup: string): VersusTerrain[] {
+  return fieldMechanicsForVersionGroup(versionGroup).terrain;
+}
+
+export function versusWeatherForContext(ctx: VersusContext): VersusWeather[] {
+  return versusWeatherForVersionGroup(ctx.versionGroup);
+}
+
+export function versusTerrainForContext(ctx: VersusContext): VersusTerrain[] {
+  return versusTerrainForVersionGroup(ctx.versionGroup);
+}
+
+/** @deprecated Prefer `versusWeatherForContext` / `versusWeatherForVersionGroup`. */
 export function versusWeatherForGen(gen: number): VersusWeather[] {
-  if (gen < 2) return [];
-  const out: VersusWeather[] = ['none', 'sun', 'rain', 'sand'];
-  if (gen >= 9) out.push('snow');
-  else if (gen >= 3) out.push('hail');
-  return out;
+  return defaultFieldMechanicsForGen(gen).weather;
 }
 
-/**
- * Terrain options the given generation actually knows (UI gating).
- * Terrain exists from gen 6 (XY) onward.
- */
+/** @deprecated Prefer `versusTerrainForContext` / `versusTerrainForVersionGroup`. */
 export function versusTerrainForGen(gen: number): VersusTerrain[] {
-  if (gen < 6) return [];
-  return ['none', 'electric', 'grassy', 'misty', 'psychic'];
+  return defaultFieldMechanicsForGen(gen).terrain;
+}
+
+function resolveFieldContext(ctxOrVersionGroup: VersusContext | string): VersusFieldMechanics {
+  const vg = typeof ctxOrVersionGroup === 'string' ? ctxOrVersionGroup : ctxOrVersionGroup.versionGroup;
+  return fieldMechanicsForVersionGroup(vg);
 }
 
 /**
- * Neutralize field effects the selected generation doesn't know.
+ * Neutralize field effects the selected game/version group doesn't support.
  * Exported for tests and field-bar reset logic.
  */
-export function sanitizeVersusField(field: VersusField | undefined, genNum: number): VersusField {
+export function sanitizeVersusField(
+  field: VersusField | undefined,
+  ctxOrVersionGroup: VersusContext | string,
+): VersusField {
+  const mech = resolveFieldContext(ctxOrVersionGroup);
   if (!field) return { weather: 'none', terrain: 'none' };
+
   let weather: VersusWeather = field.weather ?? 'none';
-  if (genNum < 2) weather = 'none';
-  else if (weather === 'hail' && (genNum < 3 || genNum >= 9)) weather = 'none';
-  else if (weather === 'snow' && genNum < 9) weather = 'none';
-  const terrain: VersusTerrain = genNum >= 6 ? field.terrain ?? 'none' : 'none';
+  if (!mech.weather.length) weather = 'none';
+  else if (!mech.weather.includes(weather)) weather = 'none';
+
+  let terrain: VersusTerrain = field.terrain ?? 'none';
+  if (!mech.terrain.length) terrain = 'none';
+  else if (!mech.terrain.includes(terrain)) terrain = 'none';
+
   return { weather, terrain };
 }
 

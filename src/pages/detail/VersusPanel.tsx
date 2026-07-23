@@ -63,7 +63,7 @@ import {
   type VersusContext,
   type VersusField,
 } from '@/lib/versus-context';
-import VersusFieldControls, { defaultVersusField, fieldForGen } from './VersusFieldControls';
+import VersusFieldControls, { defaultVersusField, fieldForContext } from './VersusFieldControls';
 import { typeRgb } from './data';
 import TrainerPicker from './TrainerPicker';
 import { Panel, SegmentedControl } from './ui';
@@ -417,11 +417,11 @@ export function VsCombobox({
 
   return (
     <div ref={rootRef} className="relative min-w-0 flex-1">
-      <div className="relative">
-        {icon && <span className="pointer-events-none absolute left-1.5 top-1/2 -translate-y-1/2 text-tx-muted">{icon}</span>}
+      <div className={cn('vs-input vs-input--combo w-full', compact ? 'h-[22px] text-[11px]' : 'h-7')}>
+        {icon && <span className="pointer-events-none shrink-0 text-tx-muted">{icon}</span>}
         <input
           ref={inputRef}
-          className={cn('vs-input w-full', icon && 'pl-6', compact ? 'h-[22px] text-[11px]' : 'h-7')}
+          className="vs-input-field"
           value={value}
           placeholder={placeholder}
           aria-label={ariaLabel}
@@ -1184,8 +1184,8 @@ export default function VersusPanel({
 
   const [field, setField] = useState<VersusField>(() => defaultVersusField());
   useEffect(() => {
-    setField((prev) => fieldForGen(prev, ctx.gen));
-  }, [ctx.gen]);
+    setField((prev) => fieldForContext(prev, ctx));
+  }, [ctx.versionGroup]);
   const [foeMode, setFoeMode] = useState<'dex' | 'trainer'>('dex');
   const [trainerRegion, setTrainerRegion] = useState<RegionId>(() => ctx.region ?? 'kanto');
   const [trainerCtx, setTrainerCtx] = useState('');
@@ -1391,7 +1391,7 @@ export default function VersusPanel({
             defaultOption={{ id: '', label: t('versus.gameDefault'), short: 'SV', gen: 9 }}
           />
         </div>
-        <VersusFieldControls gen={ctx.gen} field={field} onChange={setField} />
+        <VersusFieldControls ctx={ctx} field={field} onChange={setField} />
         {!isDefaultVersusCtx(ctx) && (
           <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
             {t('versus.calcBadge', { gen: ctx.gen, label: ctxLabel(ctx, t) })}

@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import {
   sanitizeVersusField,
-  versusTerrainForGen,
-  versusWeatherForGen,
+  versusTerrainForContext,
+  versusWeatherForContext,
+  type VersusContext,
   type VersusField,
   type VersusTerrain,
   type VersusWeather,
@@ -31,25 +32,25 @@ export function defaultVersusField(): VersusField {
   return { weather: 'none', terrain: 'none' };
 }
 
-/** Reset field when gen changes — drops weather/terrain the new gen doesn't support. */
-export function fieldForGen(field: VersusField, gen: number): VersusField {
-  return sanitizeVersusField(field, gen);
+/** Reset field when game context changes — drops weather/terrain the game doesn't support. */
+export function fieldForContext(field: VersusField, ctx: VersusContext): VersusField {
+  return sanitizeVersusField(field, ctx);
 }
 
 export default function VersusFieldControls({
-  gen,
+  ctx,
   field,
   onChange,
   className,
 }: {
-  gen: number;
+  ctx: VersusContext;
   field: VersusField;
   onChange: (field: VersusField) => void;
   className?: string;
 }) {
   const { t } = useTranslation();
-  const weatherOptions = versusWeatherForGen(gen);
-  const terrainOptions = versusTerrainForGen(gen);
+  const weatherOptions = versusWeatherForContext(ctx);
+  const terrainOptions = versusTerrainForContext(ctx);
   if (!weatherOptions.length && !terrainOptions.length) return null;
 
   const weather = field.weather ?? 'none';

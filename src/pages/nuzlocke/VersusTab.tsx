@@ -30,7 +30,7 @@ import {
 } from '@/lib/versus';
 import type { AnswerTier, AnswerVerdict, MovesetSource, VersusField, VersusSide } from '@/lib/versus';
 import { versusContextFromRun, type VersusContext } from '@/lib/versus-context';
-import VersusFieldControls, { defaultVersusField, fieldForGen } from '../detail/VersusFieldControls';
+import VersusFieldControls, { defaultVersusField, fieldForContext } from '../detail/VersusFieldControls';
 import { Panel, SegmentedControl } from '../detail/ui';
 import TrainerPicker from '../detail/TrainerPicker';
 import { typeRgb } from '../detail/data';
@@ -127,8 +127,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const [foeMode, setFoeMode] = useState<'trainers' | 'wild'>(hasTrainers ? 'trainers' : 'wild');
   const [field, setField] = useState<VersusField>(() => defaultVersusField());
   useEffect(() => {
-    setField((prev) => fieldForGen(prev, ctx.gen));
-  }, [ctx.gen]);
+    setField((prev) => fieldForContext(prev, ctx));
+  }, [ctx.versionGroup]);
   const [foeRef, setFoeRef] = useState<FoeRef | null>(null);
   const { pokemon: foePokemon, status: foeStatus } = usePokemonById(foeRef?.slug ?? null);
 
@@ -277,7 +277,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
           </div>
         )}
         <div className="rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
-          <VersusFieldControls gen={ctx.gen} field={field} onChange={setField} />
+          <VersusFieldControls ctx={ctx} field={field} onChange={setField} />
         </div>
         <Panel
           eyebrow={t('versus.opponent')}

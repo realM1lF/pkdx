@@ -20,11 +20,12 @@ import {
   sanitizeVersusField,
   versusContextFromGame,
   versusGameOptions,
-  versusTerrainForGen,
-  versusWeatherForGen,
+  versusTerrainForVersionGroup,
+  versusWeatherForVersionGroup,
   type VersusContext,
   type VersusField,
 } from './versus-context';
+import { VERSION_GROUPS } from './version-groups';
 import { independentFieldFromVersus, independentPokemonFromSide } from './versus-test-reference';
 import { sideToVersus, type SideState } from '../pages/detail/VersusPanel';
 
@@ -127,9 +128,9 @@ describe('versus matrix — builder parity (independent vs production)', () => {
       for (const w of VERSUS_WEATHER_OPTIONS) {
         for (const t of VERSUS_TERRAIN_OPTIONS) {
           const f = { weather: w, terrain: t };
-          const clean = sanitizeVersusField(f, gen);
-          const prodField = independentFieldFromVersus(f, gen);
-          const indField = independentFieldFromVersus(clean, gen);
+          const clean = sanitizeVersusField(f, ctx);
+          const prodField = independentFieldFromVersus(f, ctx);
+          const indField = independentFieldFromVersus(clean, ctx);
           expect(JSON.stringify(prodField?.weather ?? null)).toBe(JSON.stringify(indField?.weather ?? null));
           expect(JSON.stringify(prodField?.terrain ?? null)).toBe(JSON.stringify(indField?.terrain ?? null));
         }
@@ -254,7 +255,7 @@ describe('versus matrix — weather × gen (sanitized field)', () => {
     for (const w of VERSUS_WEATHER_OPTIONS) {
       it(`gen ${gen} weather ${w}`, () => {
         const raw = fieldWeather(w);
-        const clean = sanitizeVersusField(raw, gen);
+        const clean = sanitizeVersusField(raw, ctx);
         assertDamageParity(side(sc.atk, 50), side(sc.def, 50), sc.special, ctx, clean);
       });
     }
@@ -268,7 +269,7 @@ describe('versus matrix — terrain × gen (sanitized field)', () => {
     for (const t of VERSUS_TERRAIN_OPTIONS) {
       it(`gen ${gen} terrain ${t}`, () => {
         const raw = fieldTerrain(t);
-        const clean = sanitizeVersusField(raw, gen);
+        const clean = sanitizeVersusField(raw, ctx);
         assertDamageParity(side(sc.atk, 50), side(sc.def, 50), sc.special, ctx, clean);
       });
     }
@@ -386,21 +387,21 @@ describe('versus matrix — fuzz cross-product parity', () => {
       nature: c.gen >= 3 ? 'Hardy' : undefined,
     });
     const def = side(sc.def, c.level, { ability: c.ability === 'Levitate' ? 'Levitate' : undefined });
-    const field = sanitizeVersusField({ weather: c.weather, terrain: c.terrain }, c.gen);
+    const field = sanitizeVersusField({ weather: c.weather, terrain: c.terrain }, ctx);
     assertMonParity(atk, ctx);
     assertDamageParity(atk, def, move, ctx, field);
   });
 });
 
 describe('versus matrix — UI field option gating matches sanitize', () => {
-  for (const gen of [1, 2, 3, 4, 5, 6, 7, 8, 9] as const) {
-    it(`gen ${gen} weather/terrain options are valid after sanitize`, () => {
-      for (const w of versusWeatherForGen(gen)) {
-        const f = sanitizeVersusField({ weather: w, terrain: 'none' }, gen);
+  for (const vg of VERSION_GROUPS) {
+    it(`${vg.id} weather/terrain options are valid after sanitize`, () => {
+      for (const w of versusWeatherForVersionGroup(vg.id)) {
+        const f = sanitizeVersusField({ weather: w, terrain: 'none' }, vg.id);
         expect(f.weather).toBe(w);
       }
-      for (const t of versusTerrainForGen(gen)) {
-        const f = sanitizeVersusField({ weather: 'none', terrain: t }, gen);
+      for (const t of versusTerrainForVersionGroup(vg.id)) {
+        const f = sanitizeVersusField({ weather: 'none', terrain: t }, vg.id);
         expect(f.terrain).toBe(t);
       }
     });

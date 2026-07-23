@@ -144,7 +144,8 @@
   outline: none;
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
-.vs-input:focus {
+.vs-input:focus,
+.vs-input:focus-within {
   border-color: rgba(246, 201, 69, 0.6);
   box-shadow: 0 0 0 2px rgba(246, 201, 69, 0.15);
 }
@@ -156,6 +157,28 @@
 .vs-input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+/* combobox / search — icon + text in a row (avoids padding override on nested input) */
+.vs-input--combo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vs-input--combo .vs-input-field {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  font: inherit;
+  color: inherit;
+}
+.vs-input--combo .vs-input-field::placeholder {
+  color: #5e6680;
 }
 
 /* error feedback — shake + gold, never red (design.md §6.2-9) */

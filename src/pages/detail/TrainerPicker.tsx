@@ -74,15 +74,17 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
 
   return (
     <div>
-      <div className="relative border-b border-hairline px-3 py-2">
-        <Search size={12} className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-tx-muted" />
-        <input
-          className="vs-input h-7 w-full pl-7 text-[11px]"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder={t('versus.trainerSearch')}
-          aria-label={t('versus.trainerSearch')}
-        />
+      <div className="border-b border-hairline px-3 py-2">
+        <div className="vs-input vs-input--combo h-7 w-full text-[11px]">
+          <Search size={12} className="pointer-events-none shrink-0 text-tx-muted" />
+          <input
+            className="vs-input-field"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder={t('versus.trainerSearch')}
+            aria-label={t('versus.trainerSearch')}
+          />
+        </div>
       </div>
       <div className="nz-slim-scroll max-h-[300px] overflow-auto" data-lenis-prevent>
         {GROUPS.map((g) => {

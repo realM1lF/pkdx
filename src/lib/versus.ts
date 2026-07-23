@@ -31,8 +31,13 @@ export {
   versusGameOptions,
   gameDisplayName,
   sanitizeVersusField,
+  versusTerrainForContext,
   versusTerrainForGen,
+  versusTerrainForVersionGroup,
+  versusWeatherForContext,
   versusWeatherForGen,
+  versusWeatherForVersionGroup,
+  fieldMechanicsForVersionGroup,
 } from './versus-context';
 
 const genCache = new Map<number, ReturnType<typeof Generations.get>>();
@@ -119,17 +124,15 @@ function calcStatus(side: Pick<VersusSide, 'status'>): 'brn' | 'par' | 'psn' | '
 }
 
 /**
- * Neutralize field effects the selected generation doesn't know:
- * weather exists from gen 2, hail gen 3–8 (snow replaces it in gen 9),
- * snow only gen 9, terrain from gen 6. Gen 1 gets a completely clear field.
+ * Neutralize field effects the selected game/version group doesn't support.
  */
-function sanitizeField(field: VersusField | undefined, genNum: number): VersusField | undefined {
+function sanitizeField(field: VersusField | undefined, ctx: VersusContext): VersusField | undefined {
   if (!field) return undefined;
-  return sanitizeVersusField(field, genNum);
+  return sanitizeVersusField(field, ctx);
 }
 
-function buildCalcField(field?: VersusField, genNum = 9): Field | undefined {
-  const clean = sanitizeField(field, genNum);
+function buildCalcField(field?: VersusField, ctx: VersusContext = defaultVersusContext()): Field | undefined {
+  const clean = sanitizeField(field, ctx);
   if (!clean) return undefined;
   const weather = clean.weather && clean.weather !== 'none' ? WEATHER_TO_CALC[clean.weather] : undefined;
   const terrain = clean.terrain && clean.terrain !== 'none' ? TERRAIN_TO_CALC[clean.terrain] : undefined;
@@ -171,8 +174,8 @@ export function pokemonFromVersusSide(
 }
 
 /** Production Field builder — parity tests mirror `damageBetween` field handling. */
-export function fieldFromVersusField(field?: VersusField, genNum = 9): Field | undefined {
-  return buildCalcField(field, genNum);
+export function fieldFromVersusField(field?: VersusField, ctx: VersusContext = defaultVersusContext()): Field | undefined {
+  return buildCalcField(field, ctx);
 }
 
 /** Fully computed stats (level + nature + EV/IV applied). Keys = PokéAPI StatKey. */
@@ -412,7 +415,7 @@ export function smogonReferenceRange(
   } catch {
     return null;
   }
-  const calcField = buildCalcField(field, ctx.gen);
+  const calcField = buildCalcField(field, ctx);
   const fixed = FIXED_DAMAGE[moveSlug];
   if (fixed) {
     const maxHp = def.stats.hp || 1;
@@ -461,7 +464,7 @@ export function damageBetween(
   } catch {
     return null;
   }
-  const calcField = buildCalcField(field, ctx.gen);
+  const calcField = buildCalcField(field, ctx);
   /* gen-correct category: the calc move is type-split in gen 1–3, so prefer it
    * over the SV-era PokéAPI damage_class (F4). */
   const category = (mv.category ?? moveDetail?.damage_class.name ?? 'status').toLowerCase();

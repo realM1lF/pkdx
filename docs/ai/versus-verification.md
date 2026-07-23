@@ -25,8 +25,8 @@ npm test   # 1300+ cases — versus.test.ts + versus-matrix.test.ts
 | **Status** | none, burn, par, psn, slp, frz × attacker & defender × all gens |
 | **Ability** | null, Thick Fat, Levitate, Huge Power, Flash Fire, Overgrow × atk/def × all gens |
 | **Item** | null, Choice Band, Life Orb, Assault Vest, Charcoal × all gens |
-| **Weather** | all `VERSUS_WEATHER_OPTIONS` × sanitize per gen |
-| **Terrain** | all `VERSUS_TERRAIN_OPTIONS` × sanitize per gen |
+| **Weather** | all `VERSUS_WEATHER_OPTIONS` × sanitize per **version group** |
+| **Terrain** | all `VERSUS_TERRAIN_OPTIONS` × sanitize per **version group** |
 | **Nature / EV** | Adamant + 252 Atk/Spe (gen 3+) |
 | **Moves** | physical + special + status + fixed-damage (Seismic Toss, Sonic Boom) per gen |
 | **UI wiring** | `sideToVersus()` → calc parity |
@@ -37,7 +37,7 @@ Each case asserts:
 1. `pokemonFromVersusSide()` stats === independent duplicate builder  
 2. `damageBetween().range` === `smogonReferenceRange()` (same @smogon/calc path)  
 3. `pct[]` derived correctly from range / defender HP  
-4. UI weather/terrain options survive `sanitizeVersusField()`
+4. UI weather/terrain options survive `sanitizeVersusField()` per **version group** (FRLG/LGPE/LA: none; BDSP: weather only; …)
 
 ## Explicit non-goals
 

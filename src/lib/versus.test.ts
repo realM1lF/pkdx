@@ -8,11 +8,13 @@ import {
 } from './versus';
 import {
   defaultVersusContext,
+  fieldMechanicsForVersionGroup,
   sanitizeVersusField,
   versusContextFromGame,
-  versusTerrainForGen,
-  versusWeatherForGen,
+  versusTerrainForVersionGroup,
+  versusWeatherForVersionGroup,
 } from './versus-context';
+import { VERSION_GROUPS } from './version-groups';
 
 const ctx9 = defaultVersusContext();
 
@@ -30,48 +32,89 @@ const charmander = (patch: Partial<VersusSide> = {}): VersusSide => ({
   ...patch,
 });
 
-describe('versusWeatherForGen', () => {
-  it('returns no weather options for gen 1', () => {
-    expect(versusWeatherForGen(1)).toEqual([]);
+describe('field mechanics per version group', () => {
+  it('gen 1 games have no weather or terrain', () => {
+    expect(versusWeatherForVersionGroup('red-blue')).toEqual([]);
+    expect(versusTerrainForVersionGroup('yellow')).toEqual([]);
   });
 
-  it('includes hail for gen 3–8 and snow for gen 9', () => {
-    expect(versusWeatherForGen(3)).toContain('hail');
-    expect(versusWeatherForGen(3)).not.toContain('snow');
-    expect(versusWeatherForGen(9)).toContain('snow');
-    expect(versusWeatherForGen(9)).not.toContain('hail');
-  });
-});
-
-describe('versusTerrainForGen', () => {
-  it('returns no terrain before gen 6', () => {
-    expect(versusTerrainForGen(5)).toEqual([]);
+  it('hoenn mainline has weather but no terrain', () => {
+    expect(versusWeatherForVersionGroup('emerald')).toContain('hail');
+    expect(versusTerrainForVersionGroup('ruby-sapphire')).toEqual([]);
   });
 
-  it('includes all terrain types from gen 6 onward', () => {
-    expect(versusTerrainForGen(6)).toEqual(['none', 'electric', 'grassy', 'misty', 'psychic']);
+  it('firered-leafgreen has no field toggles (no battle-field weather in practice)', () => {
+    expect(fieldMechanicsForVersionGroup('firered-leafgreen')).toEqual({
+      weather: [],
+      terrain: [],
+    });
+  });
+
+  it('bdsp has gen-4 weather without terrain', () => {
+    expect(versusWeatherForVersionGroup('brilliant-diamond-shining-pearl')).toContain('hail');
+    expect(versusTerrainForVersionGroup('brilliant-diamond-shining-pearl')).toEqual([]);
+  });
+
+  it('scarlet-violet has snow instead of hail and full terrain', () => {
+    expect(versusWeatherForVersionGroup('scarlet-violet')).toContain('snow');
+    expect(versusWeatherForVersionGroup('scarlet-violet')).not.toContain('hail');
+    expect(versusTerrainForVersionGroup('scarlet-violet')).toContain('grassy');
+  });
+
+  it('lets-go and legends arceus have no field toggles', () => {
+    for (const id of ['lets-go-pikachu-eevee', 'legends-arceus'] as const) {
+      expect(versusWeatherForVersionGroup(id)).toEqual([]);
+      expect(versusTerrainForVersionGroup(id)).toEqual([]);
+    }
   });
 });
 
 describe('sanitizeVersusField', () => {
   it('clears weather for gen 1', () => {
-    expect(sanitizeVersusField({ weather: 'sun', terrain: 'grassy' }, 1)).toEqual({
+    const ctx = versusContextFromGame('red', null);
+    expect(sanitizeVersusField({ weather: 'sun', terrain: 'grassy' }, ctx)).toEqual({
       weather: 'none',
       terrain: 'none',
     });
   });
 
   it('clears snow below gen 9 and hail in gen 9', () => {
-    expect(sanitizeVersusField({ weather: 'snow' }, 8)).toEqual({ weather: 'none', terrain: 'none' });
-    expect(sanitizeVersusField({ weather: 'hail' }, 9)).toEqual({ weather: 'none', terrain: 'none' });
+    const ctx8 = versusContextFromGame('sword', null);
+    const ctx9 = versusContextFromGame('scarlet', null);
+    expect(sanitizeVersusField({ weather: 'snow' }, ctx8)).toEqual({ weather: 'none', terrain: 'none' });
+    expect(sanitizeVersusField({ weather: 'hail' }, ctx9)).toEqual({ weather: 'none', terrain: 'none' });
   });
 
-  it('keeps terrain from gen 6 when weather is clear', () => {
-    expect(sanitizeVersusField({ weather: 'none', terrain: 'grassy' }, 9)).toEqual({
-      weather: 'none',
-      terrain: 'grassy',
+  it('clears terrain for bdsp but keeps weather', () => {
+    const ctx = versusContextFromGame('brilliant-diamond', null);
+    expect(sanitizeVersusField({ weather: 'rain', terrain: 'grassy' }, ctx)).toEqual({
+      weather: 'rain',
+      terrain: 'none',
     });
   });
+
+  it('clears all field effects for firered', () => {
+    const ctx = versusContextFromGame('firered', null);
+    expect(sanitizeVersusField({ weather: 'sun', terrain: 'grassy' }, ctx)).toEqual({
+      weather: 'none',
+      terrain: 'none',
+    });
+  });
+});
+
+describe('UI field options match sanitize for every version group', () => {
+  for (const vg of VERSION_GROUPS) {
+    it(`${vg.id}`, () => {
+      for (const w of versusWeatherForVersionGroup(vg.id)) {
+        const f = sanitizeVersusField({ weather: w, terrain: 'none' }, vg.id);
+        expect(f.weather).toBe(w);
+      }
+      for (const t of versusTerrainForVersionGroup(vg.id)) {
+        const f = sanitizeVersusField({ weather: 'none', terrain: t }, vg.id);
+        expect(f.terrain).toBe(t);
+      }
+    });
+  }
 });
 
 describe('statsOf and speedCheck', () => {
@@ -153,6 +196,15 @@ describe('damageBetween', () => {
       ctx1,
       { weather: 'sun' },
     );
+    expect(sun!.pct).toEqual(clear!.pct);
+  });
+
+  it('ignores weather for firered-leafgreen even when requested', () => {
+    const ctx = versusContextFromGame('firered', null);
+    const clear = damageBetween(venusaur(), charmander(), 'flamethrower', undefined, ctx);
+    const sun = damageBetween(venusaur(), charmander(), 'flamethrower', undefined, ctx, {
+      weather: 'sun',
+    });
     expect(sun!.pct).toEqual(clear!.pct);
   });
 
