@@ -45,6 +45,17 @@ export default function Support() {
           <ExternalLink size={13} className="opacity-70" />
         </motion.a>
 
+        {/* PayPal QR code — scan to donate from the phone */}
+        <motion.figure
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: EASE, delay: 0.15 }}
+          className="mx-auto mt-8 w-44 overflow-hidden rounded-lg border border-hairline bg-white p-2 shadow-elevate"
+        >
+          <img src="/paypal-qr.png" alt="PayPal QR-Code" className="w-full rounded-sm" loading="lazy" />
+        </motion.figure>
+        <p className="mt-2.5 font-sans text-[12px] text-tx-muted">{t('support.qrCaption')}</p>
+
         <p className="mt-6 flex items-center justify-center gap-1.5 font-sans text-[12.5px] text-tx-muted">
           <Sparkles size={13} className="text-gold/70" />
           {t('support.note')}

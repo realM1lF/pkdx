@@ -21,7 +21,7 @@
     "zoomOut": "Zoom out",
     "about": "About",
     "feedback": "Feedback",
-    "support": "Support",
+    "support": "Donate",
     "more": "MORE"
   },
   "pokedex": {
@@ -125,7 +125,7 @@
     "site": "THE SITE",
     "about": "About",
     "feedback": "Feedback & ideas",
-    "support": "Support",
+    "support": "Donate",
     "community": "COMMUNITY & WIKI"
   },
   "detail": {
@@ -1540,12 +1540,13 @@
     }
   },
   "support": {
-    "eyebrow": "SUPPORT",
+    "eyebrow": "DONATE",
     "title": "Watering can for a hobby.",
     "p1": "MyPokePanion is a pure hobby project — built across countless evenings and weekends, with a lot of love for detail and the goal that it genuinely feels good to use.",
     "p2": "The site is and stays free. If it makes your runs easier and you'd still like to support development, I'd be thrilled about a small contribution — completely voluntary, no strings attached.",
     "cta": "SUPPORT VIA PAYPAL",
-    "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project."
+    "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project.",
+    "qrCaption": "Scan the QR code — works right from your phone"
   },
   "feedback": {
     "eyebrow": "FEEDBACK & IDEAS",
