@@ -45,6 +45,7 @@ const Privacy = lazyWithReload(() => import('./pages/Privacy'));
 const About = lazyWithReload(() => import('./pages/About'));
 const Feedback = lazyWithReload(() => import('./pages/Feedback'));
 const Support = lazyWithReload(() => import('./pages/Support'));
+const Account = lazyWithReload(() => import('./pages/Account'));
 
 function PageFallback() {
   /* full-screen pokeball gate while lazy chunks load — same look as the
@@ -80,6 +81,7 @@ export default function App() {
                 <Route path="about" element={<About />} />
                 <Route path="feedback" element={<Feedback />} />
                 <Route path="support" element={<Support />} />
+                <Route path="account" element={<Account />} />
                 <Route path="impressum" element={<Impressum />} />
                 <Route path="datenschutz" element={<Privacy />} />
                 <Route path="*" element={<LangHomeRedirect />} />

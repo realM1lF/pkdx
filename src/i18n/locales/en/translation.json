@@ -1564,5 +1564,54 @@
     },
     "githubNote": "Publicly tracked:",
     "browseIssues": "browse all open issues"
+  },
+  "account": {
+    "eyebrow": "ACCOUNT",
+    "title": "Your trainer account.",
+    "lede": "With an account, your teams and Nuzlocke runs live safely in the database — reachable from any device. No email, just a name and a password.",
+    "hi": "Hey, {{name}}.",
+    "synced": "Teams & runs are being synced",
+    "dataNote": "Your setups now live in the database and are available on every device. Guest data stays local to the browser it was created in.",
+    "logout": "LOG OUT",
+    "tabs": {
+      "login": "LOG IN",
+      "register": "REGISTER",
+      "reset": "RESET"
+    },
+    "username": "USERNAME",
+    "usernameHint": "3–20 characters: a–z, 0–9, - and _",
+    "password": "PASSWORD",
+    "passwordHint": "min. 8 characters",
+    "newPassword": "NEW PASSWORD",
+    "passwordConfirm": "CONFIRM PASSWORD",
+    "pin": "RECOVERY CODE (6 DIGITS)",
+    "pinHint": "Write it down! It resets your password if you forget it.",
+    "pinConfirm": "CONFIRM RECOVERY CODE",
+    "pinResetHint": "Your 6-digit code from registration",
+    "submit": {
+      "login": "LOG IN",
+      "register": "CREATE ACCOUNT",
+      "reset": "RESET PASSWORD"
+    },
+    "reset": {
+      "done": "Password reset — you can log in now."
+    },
+    "guestNote": "Everything works without an account too — data then stays in this browser only.",
+    "privacyLink": "More in the privacy policy.",
+    "errors": {
+      "username_taken": "That name is already taken.",
+      "invalid_credentials": "Username, password or recovery code do not match.",
+      "rate_limited": "Too many attempts — please try again in an hour.",
+      "invalid_input": "Invalid input (name 3–20 chars, password min. 8, 6-digit code).",
+      "password_mismatch": "Passwords do not match.",
+      "pin_mismatch": "Recovery codes do not match.",
+      "unknown": "Something went wrong — please try again."
+    },
+    "tip": {
+      "title": "With an account, your setups are safe and reachable from anywhere.",
+      "body": "Without an account, teams & runs are only stored in this browser (localStorage).",
+      "ok": "GOT IT",
+      "dismiss": "Dismiss hint"
+    }
   }
 }

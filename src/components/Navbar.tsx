@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
 import ZoomControl from './ZoomControl';
+import AccountButton from './AccountButton';
 
 const UTILITY_LINKS = [
   { to: '/about', key: 'nav.about' },
@@ -97,6 +98,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
           {/* right cluster */}
           <div className="flex items-center gap-2">
             <ZoomControl className="hidden md:flex" />
+            <AccountButton />
             <LanguageToggle className="hidden sm:flex" />
             <button
               type="button"
