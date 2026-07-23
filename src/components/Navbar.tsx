@@ -8,6 +8,7 @@ import { Menu, Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
+import ZoomControl from './ZoomControl';
 
 const LINKS = [
   { to: '/pokedex', key: 'nav.pokedex' },
@@ -88,6 +89,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
 
           {/* right cluster */}
           <div className="flex items-center gap-2">
+            <ZoomControl className="hidden md:flex" />
             <LanguageToggle className="hidden sm:flex" />
             <button
               type="button"

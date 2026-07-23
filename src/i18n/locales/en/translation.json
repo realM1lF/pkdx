@@ -15,7 +15,10 @@
     "language": "Language",
     "deCoverageNoteEn": "DE is mostly translated, but not complete.",
     "deCoverageNoteDe": "DE ist weitestgehend übersetzt, aber nicht vollständig.",
-    "items": "Items"
+    "items": "Items",
+    "zoom": "Zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out"
   },
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
