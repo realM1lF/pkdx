@@ -6,12 +6,6 @@
   <a href="https://github.com/realM1lF/pkdx/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/realM1lF/pkdx/ci.yml?branch=main&style=flat-square&label=build" alt="Build">
   </a>
-  <a href="https://github.com/realM1lF/pkdx/releases">
-    <img src="https://img.shields.io/github/v/release/realM1lF/pkdx?style=flat-square&label=release" alt="Release">
-  </a>
-  <a href="https://github.com/realM1lF/pkdx/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/realM1lF/pkdx?style=flat-square" alt="License">
-  </a>
   <a href="https://github.com/realM1lF/pkdx/stargazers">
     <img src="https://img.shields.io/github/stars/realM1lF/pkdx?style=flat-square" alt="Stars">
   </a>

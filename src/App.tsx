@@ -47,9 +47,12 @@ const Feedback = lazyWithReload(() => import('./pages/Feedback'));
 const Support = lazyWithReload(() => import('./pages/Support'));
 
 function PageFallback() {
+  /* full-screen pokeball gate while lazy chunks load — same look as the
+   * initial home loader; covers the previous footer flash (user feedback) */
   return (
-    <div className="grid min-h-[60dvh] place-items-center">
-      <PokeballLoader variant="inline" />
+    <div className="fixed inset-0 z-[90] grid place-items-center bg-void">
+      <div className="grain-overlay absolute inset-0" />
+      <PokeballLoader variant="inline" className="relative h-16 w-16" />
     </div>
   );
 }

@@ -900,13 +900,13 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "DEX · MAPS · TEAMS · NUZ · VERSUS",
+      "eyebrow": "DEX · ITEMS · MAPS · TEAMS · NUZ · VERSUS",
       "titleA": "PLAN YOUR",
       "titleB": "SETUP.",
       "blurb": "Full dex with filters and a sprite museum, region maps with encounter tables, team builder with coverage analysis, Nuzlocke tracker, and 1v1 versus calc — one toolkit for dex runs, team building, and matchup prep.",
       "cta": "Open the Pokédex",
       "surprise": "Surprise me",
-      "stats": "1,025 MON · MAPS · TEAMS · NUZ · VERSUS",
+      "stats": "1,025 MON · ITEMS · MAPS · TEAMS · NUZ · VERSUS",
       "scrollAria": "Scroll to search",
       "scroll": "SCROLL",
       "artworkAlt": "{{name}} — official artwork"
