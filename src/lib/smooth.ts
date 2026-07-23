@@ -21,6 +21,7 @@ export function initLenis(): Lenis | null {
   lenis = new Lenis({
     lerp: 0.1,
     wheelMultiplier: 1,
+    allowNestedScroll: true,
     prevent: lenisPreventNode,
   });
   const loop = (time: number) => {

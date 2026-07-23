@@ -26,7 +26,7 @@ import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
 import WhereToFind from './detail/WhereToFind';
 import type { RegionId } from '@/lib/regions';
-import { versusContextFromGame } from '@/lib/versus-context';
+import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
 import { Panel } from './detail/ui';
 import { typeRgb } from './detail/data';
 import './detail/detail.css';
@@ -97,7 +97,7 @@ export default function PokemonDetail() {
   const regionParam = searchParams.get('region');
   const trainerRegion = regionParam && REGION_IDS.has(regionParam as RegionId) ? (regionParam as RegionId) : null;
   const versusContext = useMemo(
-    () => versusContextFromGame(gameParam, trainerRegion),
+    () => versusContextFromGame(gameParam ?? DEFAULT_VERSUS_PAGE_GAME, trainerRegion),
     [gameParam, trainerRegion],
   );
   const [tab, setTab] = useState<'overview' | 'versus'>(vsParam || tabParam === 'versus' ? 'versus' : 'overview');

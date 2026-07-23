@@ -99,7 +99,15 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Lenis overscroll containment without html/body height:auto (breaks hero layout) */
+  /* Page-embedded scroll panels — chain to Lenis at scroll boundaries */
+  html.lenis .dx-scroll,
+  html.lenis .nz-slim-scroll,
+  html.lenis .maps-drawer-scroll,
+  html.lenis .tb-scroll {
+    overscroll-behavior: auto;
+  }
+
+  /* Modals / combobox portales — keep wheel inside, no page scroll-through */
   html.lenis [data-lenis-prevent],
   html.lenis [data-lenis-prevent-wheel],
   html.lenis [data-lenis-prevent-touch],

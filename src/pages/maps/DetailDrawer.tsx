@@ -281,7 +281,7 @@ export default function DetailDrawer({
       </div>
 
       {/* body */}
-      <div className="maps-drawer-scroll flex-1 overflow-y-auto" data-lenis-prevent>
+      <div className="maps-drawer-scroll flex-1 overflow-y-auto">
         {tab === 'encounters' ? (
           <>
             {/* toolbar */}

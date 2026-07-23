@@ -237,7 +237,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
             </FilterChip>
           ))}
         </div>
-        <div className="nz-slim-scroll min-h-0 flex-1 overflow-auto" data-lenis-prevent>
+        <div className="nz-slim-scroll min-h-0 flex-1 overflow-auto">
           {ownMons.length === 0 && (
             <div className="flex h-32 flex-col items-center justify-center gap-2">
               <img src="/pokeball.svg" alt="" className="h-8 w-8 opacity-50" />
@@ -715,7 +715,7 @@ function BestAnswerRanking({
         </div>
       )}
       {pending === 0 && rows.length > 0 && (
-        <div className="nz-slim-scroll max-h-[320px] overflow-auto" data-lenis-prevent>
+        <div className="nz-slim-scroll max-h-[320px] overflow-auto">
           {rows.map((r, i) => (
             <motion.button
               key={r.mon.enc.id}

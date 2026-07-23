@@ -408,7 +408,7 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
       </div>
 
       {/* dense tile grid */}
-      <div className="dx-scroll grid max-h-[300px] flex-1 grid-cols-4 gap-1.5 overflow-y-auto px-4 pb-3 sm:grid-cols-6 xl:grid-cols-8" data-lenis-prevent>
+      <div className="dx-scroll grid max-h-[300px] flex-1 grid-cols-4 gap-1.5 overflow-y-auto px-4 pb-3 sm:grid-cols-6 xl:grid-cols-8">
         <AnimatePresence mode="popLayout" initial={false}>
           {tiles.map((t, i) => (
             <motion.button

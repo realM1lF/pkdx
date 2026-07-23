@@ -3,7 +3,7 @@
  * Keyboard: ↑↓ navigate · Enter select · Esc close.
  * The dropdown is PORTALED to <body> (fixed position, like the versus combo) so it
  * escapes overflow-hidden ancestors (SlotCard, SlotEditor expander) and never clips;
- * data-lenis-prevent keeps wheel scrolling inside the list. */
+ * Portaled list; data-lenis-prevent keeps wheel inside the dropdown. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';

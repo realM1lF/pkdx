@@ -294,7 +294,7 @@ export default function WhereToFind({ id }: { id: number }) {
 
   return (
     <div>
-      <div className="dx-scroll max-h-[368px] overflow-y-auto" data-lenis-prevent>
+      <div className="dx-scroll max-h-[368px] overflow-y-auto">
         {shown.map((row) => (
           <RowView key={row.key} row={row} />
         ))}
