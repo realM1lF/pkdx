@@ -9,7 +9,8 @@ import { ArrowRight, Sparkles, Volume2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import TypeBadge from '@/components/TypeBadge';
 import { englishGenus, flavorsByVersion, padNum, pokemonTypes } from '@/lib/pokeapi';
-import { genRegionKey, genusOfPokemon, nameOfAbility, nameOfEggGroup, nameOfGrowth, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { genRegionKey, genusOfPokemon, nameOfAbility, nameOfEggGroup, nameOfGrowth, nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
+import { typeDetailPath } from '@/lib/seo-types';
 import { getLenis } from '@/lib/smooth';
 import { useShiny } from '@/lib/shiny';
 import { sprites } from '@/lib/sprites';
@@ -347,7 +348,10 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             data-type={primary}
           >
             {types.map((t) => (
-              <TypeBadge key={t} type={t} glow className="!px-2.5 !py-0.5 !text-[11px]" />
+              /* type badges deep-link to the type SEO pages (/typen/:type) */
+              <LocaleLink key={t} to={typeDetailPath(lang, t)} aria-label={nameOfType(t, lang)}>
+                <TypeBadge type={t} glow className="!px-2.5 !py-0.5 !text-[11px]" />
+              </LocaleLink>
             ))}
             {(species?.is_legendary || species?.is_mythical) && (
               <span className="legendary-ring rounded-pill px-2.5 py-0.5 font-sans text-[10px] font-bold uppercase tracking-wider text-gold">

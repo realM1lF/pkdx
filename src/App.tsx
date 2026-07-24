@@ -40,6 +40,9 @@ const Nuzlocke = lazyWithReload(() => import('./pages/Nuzlocke'));
 const NuzlockeRun = lazyWithReload(() => import('./pages/NuzlockeRun'));
 const TeamBuilder = lazyWithReload(() => import('./pages/TeamBuilder'));
 const Items = lazyWithReload(() => import('./pages/Items'));
+const ItemDetailPage = lazyWithReload(() => import('./pages/items/ItemDetailPage'));
+const TypesOverviewPage = lazyWithReload(() => import('./pages/types/TypesOverviewPage'));
+const TypeDetailPage = lazyWithReload(() => import('./pages/types/TypeDetailPage'));
 const Versus = lazyWithReload(() => import('./pages/Versus'));
 const Impressum = lazyWithReload(() => import('./pages/Impressum'));
 const Privacy = lazyWithReload(() => import('./pages/Privacy'));
@@ -80,6 +83,12 @@ export default function App() {
                 <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />
                 <Route path="team" element={<TeamBuilder />} />
                 <Route path="items" element={<Items />} />
+                <Route path="items/:slug" element={<ItemDetailPage />} />
+                {/* type SEO pages use localized paths: /de/typen/* · /en/types/* */}
+                <Route path="typen" element={<TypesOverviewPage />} />
+                <Route path="typen/:type" element={<TypeDetailPage />} />
+                <Route path="types" element={<TypesOverviewPage />} />
+                <Route path="types/:type" element={<TypeDetailPage />} />
                 <Route path="versus" element={<Versus />} />
                 <Route path="about" element={<About />} />
                 <Route path="feedback" element={<Feedback />} />
