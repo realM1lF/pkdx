@@ -1886,6 +1886,143 @@
         "steel": "The defensive god with ten resistances and an immunity — modest offensively, but every wall in the game loves wearing it.",
         "fairy": "The dragon tamer since Gen 6: immune to Dragon, hits Fighting, Dark and Dragon ×2 — Azumarill shows how scary that is."
       }
+    },
+    "item": {
+      "eyebrow": "ITEM DEX",
+      "altName": "DE: {{name}}",
+      "cost": "Cost: {{cost}} ₽",
+      "intro": "{{effect}} – everything about its effect, locations in FireRed/LeafGreen and whether {{name}} is worth a slot on your team, right here.",
+      "notFoundTitle": "Item not found",
+      "notFoundLink": "Back to the item overview",
+      "effectEyebrow": "EFFECT",
+      "effectTitle": "What does the item do?",
+      "locationsEyebrow": "LOCATIONS — FIRERED/LEAFGREEN",
+      "locationsTitle": "Where do I find it?",
+      "locationsSource": "Locations from our Kanto dataset (FireRed/LeafGreen) — click straight through to the spot on the interactive map.",
+      "kindGiven": "GIFT",
+      "kindHidden": "HIDDEN",
+      "kindBall": "ITEM BALL",
+      "evoEyebrow": "EVOLUTION",
+      "evoTitle": "Which Pokémon does {{name}} evolve?",
+      "evoNote_stone": "Use the stone and the evolution starts immediately — careful: some Pokémon stop learning new level-up moves after a stone evolution.",
+      "evoNote_trade": "The item must be held during a trade — the evolution triggers on the trade itself.",
+      "evoNote_trade-replacement": "The Linking Cord replaces trading entirely: use it instead of trading — perfect for solo players (Legends: Arceus).",
+      "deepLinksEyebrow": "CONTINUE WITH",
+      "versusCta": "Test matchups in the Versus calc",
+      "pokedexCta": "Find holder candidates in the Pokédex",
+      "qa1q": "What does {{name}} do?",
+      "qa2q": "Where do I find {{name}}?",
+      "qa2lead": "In FireRed/LeafGreen you can find {{name}} here: {{locations}}.",
+      "qa2body": "Click through from the location list above straight to the interactive Kanto map — the spot comes with its full encounter table.",
+      "qa2leadNone": "Our Kanto dataset (FireRed/LeafGreen) has no recorded location for {{name}}.",
+      "qa2bodyNone": "That doesn't mean the item doesn't exist — it comes from later games or other regions. As soon as we ship more map data, its locations will show up here automatically.",
+      "qa3q": "Is {{name}} worth it?",
+      "qa4q": "Which Pokémon evolve with {{name}}?",
+      "qa4lead_stone": "These Pokémon evolve via {{name}}:",
+      "qa4lead_trade": "These Pokémon evolve when traded while holding {{name}}:",
+      "qa4lead_trade-replacement": "{{name}} triggers trade evolutions without trading — examples:"
+    },
+    "itemData": {
+      "exp-share": {
+        "verdictLead": "A must-have for every story run.",
+        "verdict": "Your benchwarmers level up without any grinding — perfect for keeping the whole team at gym-leader level. In the older games (including FireRed/LeafGreen) it's a held item; in the newer ones it's automatically active for the whole party. For Nuzlocke runs it's pure gold, because it lets you bring replacements up to speed fast."
+      },
+      "lucky-egg": {
+        "verdictLead": "The best farming item in the entire game.",
+        "verdict": "50% more EXP for the holder sounds modest but saves hours of grinding across a run — especially before the Elite Four. The catch: the Lucky Egg is notoriously rare, with wild Chansey holding it at tiny odds. If you've got one, keep it on whatever you're currently leveling."
+      },
+      "choice-band": {
+        "verdictLead": "One of the strongest damage boosts around — with handcuffs.",
+        "verdict": "+50% Attack is brutal, but you're locked into a single move until you switch. That makes the Choice Band perfect for physical sweepers with one clear job and for U-turn pivoting. Choice Band vs. Life Orb: the Band boosts harder with no HP cost, the Orb lets you switch moves freely — story: Orb, competitive all-in: Band."
+      },
+      "choice-specs": {
+        "verdictLead": "The special-attacking take on the Choice formula.",
+        "verdict": "+50% Special Attack turns any special attacker into a cannon — a Choice Specs Surf or Thunderbolt genuinely hurts. As with every Choice item: one move until you switch. Ideal on fast special sweepers that spam their strongest move anyway."
+      },
+      "choice-scarf": {
+        "verdictLead": "The answer to everything fast.",
+        "verdict": "+50% Speed puts slower star Pokémon ahead of most opponents — suddenly your attacker outspeeds half the metagame. The price is the familiar Choice lock. The Choice Scarf is the best revenge-killer item: switch in, outspeed, remove."
+      },
+      "life-orb": {
+        "verdictLead": "The Choice Band's more flexible sibling.",
+        "verdict": "+30% damage on ALL moves at the cost of 10% max HP per attack. You can switch moves at any time — exactly what sets it apart from the Choice Band. Head to head: Choice Band boosts harder and costs no HP, the Life Orb keeps you nimble. For story play and long fights, the Orb is usually the more relaxed pick."
+      },
+      "eviolite": {
+        "verdictLead": "Turns unevolved Pokémon into tanks.",
+        "verdict": "×1.5 to Defense AND Special Defense as long as the Pokémon can still evolve — suddenly pre-evolutions like Porygon2 or Chansey are bulkier than their final forms. The honest answer to 'Eviolite or just evolve?': most of the time evolving wins — but for the few Eviolite aces, the stone is unmatched."
+      },
+      "focus-sash": {
+        "verdictLead": "Guarantees you one turn — no matter what hits.",
+        "verdict": "At full HP you survive any hit at 1 HP, then the sash is gone. That makes it the standard item for fragile leads: laying hazards once or landing one guaranteed counter is almost always in the cards. Watch out for multi-hit moves, weather chip and entry hazards — they bypass the sash."
+      },
+      "leftovers": {
+        "verdictLead": "The default item for every tank.",
+        "verdict": "1/16 max HP per turn, passively, forever — over a long fight that outheals any berry. Leftovers are why walls like Snorlax or Blastoise are so hard to crack: the longer the fight, the more value. Offensive Pokémon usually want more pressure (Life Orb, Choice Band) — but when in doubt: Leftovers is never wrong."
+      },
+      "sitrus-berry": {
+        "verdictLead": "The most honest berry in the game.",
+        "verdict": "One-time 25% max HP back, automatically at half health — no RNG, no conditions. For story play and Nuzlocke runs the Sitrus Berry is often the best pick, saving you a healing turn. Leftovers wins the long game — but the berry heals instantly, exactly when things get critical."
+      },
+      "lum-berry": {
+        "verdictLead": "Insurance against status nightmares.",
+        "verdict": "Automatically cures any status condition — including confusion. A Will-O-Wisp burn or sleep can kill entire sweeps; with a Lum Berry you shrug once and attack anyway. It's standard on setup sweepers (dance moves!) because it secures your setup turn."
+      },
+      "everstone": {
+        "verdictLead": "A niche item with two clear jobs.",
+        "verdict": "First: the holder never evolves — handy if you want to keep a Pokémon unevolved (cuteness or specific level-up moves). Second: in breeding, the Everstone reliably passes down the holder's Nature in older generations. It does nothing for battle stats — and that's fine, that's not its job."
+      },
+      "master-ball": {
+        "verdictLead": "Catches everything. Always. No rolls.",
+        "verdict": "The Master Ball is a 100% catch rate in ball form — which is exactly why you shouldn't waste it on the first Pidgey. The smart rule: save it for roaming legendaries or a shiny that could knock itself out (Explosion!). In FireRed/LeafGreen there is exactly one — at Silph Co. in Saffron City."
+      },
+      "ultra-ball": {
+        "verdictLead": "The best ball money can buy.",
+        "verdict": "A 2× catch rate at a fair price makes the Ultra Ball the workhorse for every legendary and every stubborn catch. Only when it fails do specialty balls start to shine: Dusk Balls in caves, Timer Balls in long fights, Net Balls against Water/Bug. For 95% of situations the Ultra Ball is the right call."
+      },
+      "sun-stone": {
+        "verdictLead": "The rarest evolution stone.",
+        "verdict": "Only a handful of Pokémon need the Sun Stone — the best known is the Sunflora line. Because its targets are so specific, the stone sits unused in many runs: check first whether your Grass Pokémon actually evolves with it before hoarding it."
+      },
+      "fire-stone": {
+        "verdictLead": "Evolves some of the most beloved Pokémon ever.",
+        "verdict": "Vulpix → Ninetales, Growlithe → Arcanine and Eevee → Flareon: the Fire Stone has a stacked lineup. The key tip: check the moveset first — many stone evolutions barely learn level-up moves afterwards. Learn your target move first, then use the stone."
+      },
+      "water-stone": {
+        "verdictLead": "The most versatile evolution stone.",
+        "verdict": "Several strong evolutions hang on the Water Stone — above all Eevee → Vaporeon and Staryu → Starmie, a speed demon for the Elite Four. As with all stones: wait until the level-up moves you want are learned — Starmie & co. learn almost nothing afterwards."
+      },
+      "thunder-stone": {
+        "verdictLead": "The stone for Pikachu owners.",
+        "verdict": "Pikachu → Raichu and Eevee → Jolteon are the classics. Raichu trades cuteness for raw Speed — in FireRed/LeafGreen it learns no new level-up moves afterwards, so learn Thunderbolt & co. as Pikachu first, then evolve."
+      },
+      "leaf-stone": {
+        "verdictLead": "The fast pass for Grass teams.",
+        "verdict": "The Leaf Stone evolves several solid Grass Pokémon — including Gloom → Vileplume and Weepinbell → Victreebel. In most runs it's the quickest route to a finished Grass sweeper. As always: secure the level-up moveset first, then evolve — almost nothing comes after."
+      },
+      "moon-stone": {
+        "verdictLead": "The stone with the strongest duo.",
+        "verdict": "Nidorina → Nidoqueen and Nidorino → Nidoking make the Moon Stone a power item: both final forms with their huge movepools are legitimate run carriers. Clefairy → Clefable and Jigglypuff → Wigglytuff work too. In FireRed/LeafGreen you find Moon Stones early on Mt. Moon — investing early pays off."
+      },
+      "linking-cord": {
+        "verdictLead": "Trade evolution without the trade.",
+        "verdict": "Kadabra, Machoke, Graveler, Haunter — some of the strongest evolutions were chained to trading for decades. The Linking Cord from Legends: Arceus finally solves it solo: use it, evolve, done. If your game has this item, trade evolutions go straight onto your radar."
+      },
+      "metal-coat": {
+        "verdictLead": "Two jobs: a Steel move boost and two iconic evolutions.",
+        "verdict": "+20% damage on Steel moves makes Metal Coat a solid held item for Steel Pokémon. Its real value is in trading, though: Onix becomes Steelix, Scyther becomes Scizor — both massive upgrades. If you own either one, the answer is clear: hold and trade."
+      },
+      "dragon-scale": {
+        "verdictLead": "Your ticket to Kingdra.",
+        "verdict": "The Dragon Scale has exactly one job: Seadra holds it during a trade and evolves into Kingdra — before Gen 6 the only Water/Dragon Pokémon and a top pick for many teams. Wild Horsea and Seadra lines sometimes carry one — with a bit of patience you can farm it."
+      },
+      "kings-rock": {
+        "verdictLead": "Flinch chance plus two trade evolutions.",
+        "verdict": "Held, King's Rock gives your moves a 10% flinch chance — nice on fast attackers, but no game changer. More important: Poliwhirl evolves into Politoed and Slowpoke into Slowking when traded holding it. Both are strong, underrated final forms — the rock is worth far more than it looks."
+      },
+      "dubious-disc": {
+        "verdictLead": "The final step to the Porygon-Z cannon.",
+        "verdict": "The Dubious Disc has exactly one function: Porygon2 holds it during a trade and becomes Porygon-Z — one of the hardest-hitting special attackers ever. No other use, no other candidate. If you have a Porygon2: get the disc, trade, destroy (your opponents)."
+      }
     }
   }
 }

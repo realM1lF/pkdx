@@ -12,6 +12,8 @@ import PokeballLoader from '@/components/PokeballLoader';
 import { entitySlug, useDescMap } from '@/lib/desc-data';
 import type { ItemDesc } from '@/lib/desc-data';
 import { useLanguage } from '@/lib/i18n-data';
+import { LocaleLink } from '@/lib/locale-link';
+import { hasItemPage, itemDetailPath } from '@/lib/seo-items';
 import { cn } from '@/lib/utils';
 
 /* the 53 PokéAPI item categories folded into 12 filter groups
@@ -223,21 +225,37 @@ export default function Items() {
         ) : (
           <>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
-              {shown.map((e) => (
-                <button
-                  key={e.slug}
-                  type="button"
-                  onClick={() => entityModal.open('item', entitySlug(e.slug))}
-                  title={nameOf(e)}
-                  aria-label={t('desc.openDesc', { name: nameOf(e) })}
-                  className="group flex flex-col items-center gap-1.5 rounded-md border border-hairline bg-surface1 px-1.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-glow-gold"
-                >
-                  <ItemIcon slug={e.slug} name={nameOf(e)} size={32} />
-                  <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[10.5px] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
-                    {nameOf(e)}
-                  </span>
-                </button>
-              ))}
+              {shown.map((e) =>
+                /* items with an SEO detail page link there; the rest keep the desc modal */
+                hasItemPage(e.slug) ? (
+                  <LocaleLink
+                    key={e.slug}
+                    to={itemDetailPath(lang, e.slug)}
+                    title={nameOf(e)}
+                    aria-label={nameOf(e)}
+                    className="group flex flex-col items-center gap-1.5 rounded-md border border-hairline bg-surface1 px-1.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-glow-gold"
+                  >
+                    <ItemIcon slug={e.slug} name={nameOf(e)} size={32} />
+                    <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[10.5px] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
+                      {nameOf(e)}
+                    </span>
+                  </LocaleLink>
+                ) : (
+                  <button
+                    key={e.slug}
+                    type="button"
+                    onClick={() => entityModal.open('item', entitySlug(e.slug))}
+                    title={nameOf(e)}
+                    aria-label={t('desc.openDesc', { name: nameOf(e) })}
+                    className="group flex flex-col items-center gap-1.5 rounded-md border border-hairline bg-surface1 px-1.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-glow-gold"
+                  >
+                    <ItemIcon slug={e.slug} name={nameOf(e)} size={32} />
+                    <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[10.5px] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
+                      {nameOf(e)}
+                    </span>
+                  </button>
+                ),
+              )}
             </div>
             {filtered.length > shown.length && (
               <p className="mt-4 text-center font-sans text-[12px] text-gold">

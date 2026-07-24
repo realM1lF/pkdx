@@ -1886,6 +1886,143 @@
         "steel": "Der Defensiv-Gott mit zehn Resistenzen und einer Immunität – offensiv bescheiden, aber jede Wall im Spiel trägt ihn gern.",
         "fairy": "Der Drachen-Zähmer seit Gen 6: immun gegen Drache, trifft Kampf, Unlicht und Drache ×2 – Azumarill zeigt, wie gefährlich das ist."
       }
+    },
+    "item": {
+      "eyebrow": "ITEM-DEX",
+      "altName": "EN: {{name}}",
+      "cost": "Preis: {{cost}} ₽",
+      "intro": "{{effect}} – alles zu Wirkung, Fundorten in Feuerrot/Blattgrün und ob sich {{name}} für dein Team lohnt, hier im Überblick.",
+      "notFoundTitle": "Item nicht gefunden",
+      "notFoundLink": "Zur Item-Übersicht",
+      "effectEyebrow": "WIRKUNG",
+      "effectTitle": "Was macht das Item?",
+      "locationsEyebrow": "FUNDORTE — FEUERROT/BLATTGRÜN",
+      "locationsTitle": "Wo finde ich es?",
+      "locationsSource": "Fundorte aus unseren Kanto-Daten (Feuerrot/Blattgrün) – klick dich direkt zur Stelle auf der interaktiven Karte.",
+      "kindGiven": "GESCHENKT",
+      "kindHidden": "VERSTECKT",
+      "kindBall": "ITEM-BALL",
+      "evoEyebrow": "ENTWICKLUNG",
+      "evoTitle": "Welche Pokémon entwickelt {{name}}?",
+      "evoNote_stone": "Stein einsetzen, Entwicklung startet sofort – Achtung: Manche Pokémon lernen nach der Stein-Entwicklung keine neuen Level-Attacken mehr.",
+      "evoNote_trade": "Das Item muss beim Tausch getragen werden – die Entwicklung startet beim Tausch-Vorgang.",
+      "evoNote_trade-replacement": "Das Linkkabel ersetzt den Tausch komplett: einsetzen statt tauschen – ideal für Solo-Spieler (Legenden: Arceus).",
+      "deepLinksEyebrow": "WEITER MIT",
+      "versusCta": "Matchups im Versus-Calc testen",
+      "pokedexCta": "Träger-Kandidaten im Pokédex finden",
+      "qa1q": "Was macht {{name}}?",
+      "qa2q": "Wo finde ich {{name}}?",
+      "qa2lead": "In Feuerrot/Blattgrün findest du {{name}} hier: {{locations}}.",
+      "qa2body": "Klick dich oben in der Fundort-Liste direkt auf die interaktive Kanto-Karte – dort siehst du die Stelle samt Encounter-Tabelle.",
+      "qa2leadNone": "In unseren Kanto-Daten (Feuerrot/Blattgrün) ist für {{name}} kein Fundort hinterlegt.",
+      "qa2bodyNone": "Das heißt nicht, dass es das Item nicht gibt – es stammt aus späteren Spielen bzw. anderen Regionen. Sobald wir weitere Karten-Daten ausspielen, erscheinen die Fundorte hier automatisch.",
+      "qa3q": "Lohnt sich {{name}}?",
+      "qa4q": "Welche Pokémon entwickeln sich mit {{name}}?",
+      "qa4lead_stone": "Diese Pokémon entwickeln sich per {{name}}:",
+      "qa4lead_trade": "Diese Pokémon entwickeln sich, wenn sie {{name}} beim Tausch tragen:",
+      "qa4lead_trade-replacement": "{{name}} löst Tausch-Entwicklungen ohne Tausch aus – Beispiele:"
+    },
+    "itemData": {
+      "exp-share": {
+        "verdictLead": "Pflicht-Item für jeden Story-Run.",
+        "verdict": "Deine Bankhocker leveln einfach mit, ohne dass du grinden musst – perfekt, um das ganze Team auf Arenaleiter-Level zu halten. In den alten Spielen (inkl. Feuerrot/Blattgrün) ist es ein Trage-Item, in den neuen automatisch fürs ganze Team aktiv. Für Nuzlocke-Runs ist der EP-Teiler Gold wert, weil du Ersatzspieler schnell nachziehen kannst."
+      },
+      "lucky-egg": {
+        "verdictLead": "Das beste Farm-Item im ganzen Spiel.",
+        "verdict": "50 % mehr EP für den Träger klingt unspektakulär, spart aber über einen Run Stunden an Grind – besonders vor der Top 4. Das Problem: Das Glücks-Ei ist berüchtigt selten, wilde Chaneira tragen es nur mit Mini-Wahrscheinlichkeit. Wenn du eines hast, trage es immer auf dem Pokémon, das du gerade hochziehst."
+      },
+      "choice-band": {
+        "verdictLead": "Einer der stärksten Damage-Boosts überhaupt – mit Handschellen.",
+        "verdict": "+50 % Angriff ist brutal, aber du bist auf eine Attacke festgelegt, bis du wechselst. Das macht das Wahlband perfekt für physische Sweeper mit klarer Aufgabe und für U-Turn-/Kehrtwende-Pivoting. Im Vergleich Wahlband vs. Leben-Orb: Das Band boostet stärker und ohne KP-Verlust, der Orb lässt dich flexibel Attacken wechseln – Story: Orb, Competitive-All-in: Band."
+      },
+      "choice-specs": {
+        "verdictLead": "Die spezielle Variante des Wahlband-Prinzips.",
+        "verdict": "+50 % Spezial-Angriff verwandelt jeden speziellen Angreifer in eine Kanone – ein Wahlbrillen-Surf oder Donnerblitz tut richtig weh. Wie bei allen Wahl-Items gilt: eine Attacke, bis du wechselst. Ideal auf schnellen speziellen Sweepern, die ohnehin nur ihre stärkste Attacke spammen."
+      },
+      "choice-scarf": {
+        "verdictLead": "Das Antwort-Item auf alles Schnelle.",
+        "verdict": "+50 % Initiative holt langsamere Star-Pokémon vor die meisten Gegner – plötzlich outspeedet dein Angreifer halbe Metagame-Teams. Der Preis ist der bekannte Wahl-Lock. Der Wahlschal ist das beste Revenge-Killer-Item: Gegner reinwechseln, outspeeden, ausschalten."
+      },
+      "life-orb": {
+        "verdictLead": "Der flexiblere Bruder des Wahlbandes.",
+        "verdict": "+30 % Schaden auf ALLE Attacken, dafür 10 % max. KP Abzug pro Angriff. Du darfst jederzeit die Attacke wechseln – genau das unterscheidet ihn vom Wahlband. Im direkten Vergleich: Wahlband boostet mehr und kostet keine KP, der Leben-Orb hält dich wendig. Für die Story und lange Kämpfe ist der Orb meist die entspanntere Wahl."
+      },
+      "evolith": {
+        "verdictLead": "Macht NFE-Pokémon zu Panzern.",
+        "verdict": "×1,5 auf Verteidigung UND Spezial-Verteidigung, solange sich das Pokémon noch entwickeln kann – damit werden Vorentwicklungen wie Porygon2 oder Chaneira plötzlich bulkiger als ihre fertigen Formen. Die ehrliche Antwort auf „Evolith oder weiterentwickeln?“: In den meisten Fällen lohnt sich die Entwicklung mehr – aber bei den wenigen Evolith-Aces ist der Stein konkurrenzlos stark."
+      },
+      "focus-sash": {
+        "verdictLead": "Garantiert dir eine Runde – egal was kommt.",
+        "verdict": "Bei vollen KP überstehst du jeden Treffer mit 1 KP, danach ist der Gurt weg. Das macht ihn zum Standard-Item für fragile Leads: einmal Spikes legen oder einen garantierten Gegenangriff landen ist fast immer drin. Achtung vor Mehrfach-Treffern, Wetterschaden und Eintritts-Buden – die umgehen den Gurt."
+      },
+      "leftovers": {
+        "verdictLead": "Das Standard-Item für jeden Tank.",
+        "verdict": "1/16 max. KP pro Runde, passiv, für immer – über einen langen Kampf heilt das mehr als jede Beere. Überreste sind der Grund, warum Wände wie Relaxo oder Turtok so zäh sind: je länger der Kampf, desto mehr Wert. Offensiv-Pokémon wollen meist mehr Druck (Leben-Orb, Wahlband) – aber wenn du nicht weißt, was du tragen sollst: Überreste sind nie falsch."
+      },
+      "sitrus-berry": {
+        "verdictLead": "Die ehrlichste Beere im Spiel.",
+        "verdict": "Einmal 25 % der max. KP zurück, automatisch bei halben KP – kein Zufall, keine Bedingungen. Für die Story und Nuzlocke-Runs ist die Tsitrubeere oft die beste Wahl, weil sie einen Turn Heil-Item spart. Im direkten Duell gegen Überreste gewinnen langfristig die Überreste – aber die Beere heilt sofort und vor allem einmalig genau dann, wenn es kritisch wird."
+      },
+      "lum-berry": {
+        "verdictLead": "Die Versicherung gegen Status-Albträume.",
+        "verdict": "Heilt automatisch jede Statusveränderung – auch Verwirrung. Ein Belegungswechsel, Hypnose oder eine Irrlicht-Verbrennung kann ganze Sweeps killen; mit Prunusbeere weinst du einmal kurz und greifst trotzdem an. Gerade auf Setup-Sweepern (Tanz-Attacken!) ist sie Standard, weil sie dir den Setup-Turn sichert."
+      },
+      "everstone": {
+        "verdictLead": "Ein Nischen-Item mit zwei klaren Jobs.",
+        "verdict": "Erstens: Der Träger entwickelt sich nicht – praktisch, wenn du ein Pokémon unentwickelt lassen willst (Niedlichkeits-Faktor oder bestimmte Level-Attacken). Zweitens: In der Zucht gibt der Ewigstein in älteren Generationen das Wesen des tragenden Elternteils zuverlässig weiter. Für Kampf-Stats bringt er sonst nichts – das ist okay, dafür ist er da."
+      },
+      "master-ball": {
+        "verdictLead": "Fängt alles. Immer. Ohne Würfeln.",
+        "verdict": "Der Meisterball ist die 100-%-Fangrate in Ballform – und genau deshalb solltest du ihn nicht an das erste Taubsi verschwenden. Die kluge Regel: aufheben für wandernde Legendäre oder ein Shiny, das sich selbst zerstören könnte (Explosion!). In Feuerrot/Blattgrün gibt es genau einen – bei der Silph Co. in Saffronia City."
+      },
+      "ultra-ball": {
+        "verdictLead": "Der beste Ball, den du kaufen kannst.",
+        "verdict": "Doppelte Fangrate (2×) zum fairen Preis macht den Hyperball zum Arbeitstier für jedes Legendär und jeden zähen Fang. Erst wenn er versagt, fangen Spezial-Bälle an zu rechnen: Finsterball in Höhlen, Timerball in langen Kämpfen, Netzball gegen Wasser/Käfer. Für 95 % aller Situationen ist der Hyperball die richtige Wahl."
+      },
+      "sun-stone": {
+        "verdictLead": "Der seltenste Entwicklungsstein.",
+        "verdict": "Nur eine Handvoll Pokémon braucht den Sonnenstein – bekanntestes Beispiel ist die Sonnflora-Linie. Weil die Ziel-Arten so speziell sind, liegt der Stein in vielen Runs ungenutzt im Beutel: Check zuerst, ob dein Pflanzen-Pokémon überhaupt damit entwickelt, bevor du ihn hortest."
+      },
+      "fire-stone": {
+        "verdictLead": "Entwickelt einige der beliebtesten Pokémon überhaupt.",
+        "verdict": "Vulpix → Ninetales, Fukano → Arkani und Evoli → Flamara: Der Feuerstein hat ein starkes Lineup. Der wichtigste Tipp: Schau vorher ins Moveset – viele Stein-Entwicklungen lernen danach kaum noch Level-Attacken. Erst die Wunsch-Attacke lernen, dann den Stein einsetzen."
+      },
+      "water-stone": {
+        "verdictLead": "Der vielseitigste Entwicklungsstein.",
+        "verdict": "Gleich mehrere starke Entwicklungen hängen am Wasserstein – allen voran Evoli → Aquana und Sterndu → Starmie, ein Speed-Dämon für die Top 4. Wie bei allen Steinen gilt: Warte mit dem Einsatz, bis die Wunsch-Attacken per Level gelernt sind, denn Starmie & Co. lernen danach fast nichts mehr."
+      },
+      "thunder-stone": {
+        "verdictLead": "Der Stein für Pikachu-Besitzer.",
+        "verdict": "Pikachu → Raichu und Evoli → Blitza sind die Klassiker. Raichu tauscht dabei Niedlichkeit gegen rohe Speed – in Feuerrot/Blattgrün lernt Raichu danach keine neuen Level-Attacken mehr, also erst Donnerblitz & Co. mit Pikachu lernen und dann entwickeln."
+      },
+      "leaf-stone": {
+        "verdictLead": "Der Freifahrtschein für Pflanzen-Teams.",
+        "verdict": "Der Blattstein entwickelt mehrere solide Pflanzen-Pokémon – darunter Knofensa → Sarzenia und Blanas → Giflor. In den meisten Runs ist das die schnellste Route zu einem fertigen Pflanzen-Sweeper. Wie immer: erst das Level-Moveset sichern, dann entwickeln – danach kommt fast nichts mehr nach."
+      },
+      "moon-stone": {
+        "verdictLead": "Der Stein mit dem stärksten Duo.",
+        "verdict": "Nidorina → Nidoqueen und Nidorino → Nidoking machen den Mondstein zum Power-Item: Beide Endformen sind mit ihrem riesigen Movepool legitime Run-Träger. Pii → Pixi und Pummeluff → Knuddeluff gehen auch. In Feuerrot/Blattgrün findest du Mondsteine früh auf dem Mondberg – früh investieren lohnt sich."
+      },
+      "linking-cord": {
+        "verdictLead": "Die Tausch-Entwicklung ohne Tausch.",
+        "verdict": "Kadabra, Machomei, Georok, Alpollo – viele der stärksten Entwicklungen waren jahrzehntelang an den Tausch gebunden. Das Linkkabel aus Legenden: Arceus löst das endlich solo: einsetzen, entwickeln, fertig. Wenn du ein Spiel mit diesem Item spielst, gehören Tausch-Entwicklungen sofort auf deine Radar-Liste."
+      },
+      "metal-coat": {
+        "verdictLead": "Zwei Jobs: Boost für Stahl-Attacken und zwei ikonische Entwicklungen.",
+        "verdict": "+20 % Schaden auf Stahl-Attacken macht den Metallmantel zum soliden Trage-Item für Stahl-Pokémon. Sein eigentlicher Wert steckt aber im Tausch: Onix wird damit zu Stahlos, Sichlor zu Scherox – beides massive Upgrades. Hast du eines der beiden, ist die Antwort klar: tragen und tauschen."
+      },
+      "dragon-scale": {
+        "verdictLead": "Das Ticket zu Seedraking.",
+        "verdict": "Die Drachenhaut hat genau einen Job: Seemon trägt sie beim Tausch und entwickelt sich zu Seedraking – vor Gen 6 das einzige Wasser/Drache-Pokémon und ein Top-Pick für viele Teams. Wilde Pferde- und Seemon-Linien tragen die Drachenhaut manchmal bei sich – mit etwas Geduld farmst du sie dir."
+      },
+      "kings-rock": {
+        "verdictLead": "Zurückschrecken-Chance plus zwei Tausch-Entwicklungen.",
+        "verdict": "Getragen, gibt der King-Stein deinen Attacken eine 10-%-Chance auf Flinch – nett auf schnellen Angreifern, aber kein Gamechanger. Entscheidender: Quaputzi entwickelt sich damit beim Tausch zu Quaxo und Flegmon zu Lahmus. Beide sind starke, unterschätzte Endformen – der Stein ist deutlich mehr wert als er aussieht."
+      },
+      "dubious-disc": {
+        "verdictLead": "Der letzte Schritt zur Porygon-Z-Kanone.",
+        "verdict": "Die Dubiosdisc hat exakt eine Funktion: Porygon2 trägt sie beim Tausch und wird zu Porygon-Z – einem der härtesten speziellen Angreifer überhaupt. Kein anderer Nutzen, kein anderer Kandidat. Wenn du ein Porygon2 hast: Disc besorgen, tauschen, zerstören (die Gegner)."
+      }
     }
   }
 }
