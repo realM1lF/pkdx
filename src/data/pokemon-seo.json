@@ -1,0 +1,2402 @@
+{
+ "ids": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  25,
+  26,
+  133,
+  143,
+  150,
+  151,
+  149,
+  130,
+  94,
+  18,
+  20,
+  24,
+  97,
+  105,
+  65,
+  112
+ ],
+ "pokemon": {
+  "1": {
+   "slug": "bulbasaur",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 1,
+     "to": 2,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 2,
+     "to": 3,
+     "trigger": "level-up",
+     "minLevel": 32,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "2": {
+   "slug": "ivysaur",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 1,
+     "to": 2,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 2,
+     "to": 3,
+     "trigger": "level-up",
+     "minLevel": 32,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "3": {
+   "slug": "venusaur",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 1,
+     "to": 2,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 2,
+     "to": 3,
+     "trigger": "level-up",
+     "minLevel": 32,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "4": {
+   "slug": "charmander",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 4,
+     "to": 5,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 5,
+     "to": 6,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "5": {
+   "slug": "charmeleon",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 4,
+     "to": 5,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 5,
+     "to": 6,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "6": {
+   "slug": "charizard",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 4,
+     "to": 5,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 5,
+     "to": 6,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "7": {
+   "slug": "squirtle",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 7,
+     "to": 8,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 8,
+     "to": 9,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "8": {
+   "slug": "wartortle",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 7,
+     "to": 8,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 8,
+     "to": 9,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "9": {
+   "slug": "blastoise",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 7,
+     "to": 8,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 8,
+     "to": 9,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "18": {
+   "slug": "pidgeot",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 16,
+     "to": 17,
+     "trigger": "level-up",
+     "minLevel": 18,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 17,
+     "to": 18,
+     "trigger": "level-up",
+     "minLevel": 36,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "20": {
+   "slug": "raticate",
+   "catchRate": 127,
+   "locations": {
+    "firered": [
+     {
+      "area": "kanto-route-17-area",
+      "nodeId": "kanto-route-17",
+      "nodeDe": "Route 17",
+      "nodeEn": "Route 17",
+      "method": "WALK",
+      "chance": 25,
+      "minLevel": 25,
+      "maxLevel": 29
+     },
+     {
+      "area": "kanto-route-18-area",
+      "nodeId": "kanto-route-18",
+      "nodeDe": "Route 18",
+      "nodeEn": "Route 18",
+      "method": "WALK",
+      "chance": 15,
+      "minLevel": 25,
+      "maxLevel": 29
+     },
+     {
+      "area": "kanto-route-16-area",
+      "nodeId": "kanto-route-16",
+      "nodeDe": "Route 16",
+      "nodeEn": "Route 16",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 23,
+      "maxLevel": 25
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "kanto-route-17-area",
+      "nodeId": "kanto-route-17",
+      "nodeDe": "Route 17",
+      "nodeEn": "Route 17",
+      "method": "WALK",
+      "chance": 25,
+      "minLevel": 25,
+      "maxLevel": 29
+     },
+     {
+      "area": "kanto-route-18-area",
+      "nodeId": "kanto-route-18",
+      "nodeDe": "Route 18",
+      "nodeEn": "Route 18",
+      "method": "WALK",
+      "chance": 15,
+      "minLevel": 25,
+      "maxLevel": 29
+     },
+     {
+      "area": "kanto-route-16-area",
+      "nodeId": "kanto-route-16",
+      "nodeDe": "Route 16",
+      "nodeEn": "Route 16",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 23,
+      "maxLevel": 25
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 19,
+     "to": 20,
+     "trigger": "level-up",
+     "minLevel": 20,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "24": {
+   "slug": "arbok",
+   "catchRate": 90,
+   "locations": {
+    "firered": [
+     {
+      "area": "kanto-route-23-area",
+      "nodeId": "kanto-route-23",
+      "nodeDe": "Route 23",
+      "nodeEn": "Route 23",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 44
+     },
+     {
+      "area": "kanto-victory-road-2-1f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 44
+     },
+     {
+      "area": "kanto-victory-road-2-2f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 46,
+      "maxLevel": 46
+     },
+     {
+      "area": "kanto-victory-road-2-3f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 44
+     }
+    ],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 23,
+     "to": 24,
+     "trigger": "level-up",
+     "minLevel": 22,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "25": {
+   "slug": "pikachu",
+   "catchRate": 190,
+   "locations": {
+    "firered": [
+     {
+      "area": "kanto-power-plant-area",
+      "nodeId": "power-plant",
+      "nodeDe": "Kraftwerk",
+      "nodeEn": "Power Plant",
+      "method": "WALK",
+      "chance": 25,
+      "minLevel": 22,
+      "maxLevel": 26
+     },
+     {
+      "area": "viridian-forest-area",
+      "nodeId": "viridian-forest",
+      "nodeDe": "Vertania-Wald",
+      "nodeEn": "Viridian Forest",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 3,
+      "maxLevel": 5
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "kanto-power-plant-area",
+      "nodeId": "power-plant",
+      "nodeDe": "Kraftwerk",
+      "nodeEn": "Power Plant",
+      "method": "WALK",
+      "chance": 25,
+      "minLevel": 22,
+      "maxLevel": 26
+     },
+     {
+      "area": "viridian-forest-area",
+      "nodeId": "viridian-forest",
+      "nodeDe": "Vertania-Wald",
+      "nodeEn": "Viridian Forest",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 3,
+      "maxLevel": 5
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 172,
+     "to": 25,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 220,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 25,
+     "to": 26,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "thunder-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "26": {
+   "slug": "raichu",
+   "catchRate": 75,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 172,
+     "to": 25,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 220,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 25,
+     "to": 26,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "thunder-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "65": {
+   "slug": "alakazam",
+   "catchRate": 50,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 63,
+     "to": 64,
+     "trigger": "level-up",
+     "minLevel": 16,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 64,
+     "to": 65,
+     "trigger": "trade",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "94": {
+   "slug": "gengar",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 92,
+     "to": 93,
+     "trigger": "level-up",
+     "minLevel": 25,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 93,
+     "to": 94,
+     "trigger": "trade",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "97": {
+   "slug": "hypno",
+   "catchRate": 75,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 96,
+     "to": 97,
+     "trigger": "level-up",
+     "minLevel": 26,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "105": {
+   "slug": "marowak",
+   "catchRate": 75,
+   "locations": {
+    "firered": [
+     {
+      "area": "kanto-victory-road-2-1f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 46
+     },
+     {
+      "area": "kanto-victory-road-2-2f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 46,
+      "maxLevel": 48
+     },
+     {
+      "area": "kanto-victory-road-2-3f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 46
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "kanto-victory-road-2-1f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 46
+     },
+     {
+      "area": "kanto-victory-road-2-2f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 46,
+      "maxLevel": 48
+     },
+     {
+      "area": "kanto-victory-road-2-3f",
+      "nodeId": "victory-road",
+      "nodeDe": "Siegesstraße",
+      "nodeEn": "Victory Road",
+      "method": "WALK",
+      "chance": 5,
+      "minLevel": 44,
+      "maxLevel": 46
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 104,
+     "to": 105,
+     "trigger": "level-up",
+     "minLevel": 28,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "112": {
+   "slug": "rhydon",
+   "catchRate": 60,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 111,
+     "to": 112,
+     "trigger": "level-up",
+     "minLevel": 42,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "130": {
+   "slug": "gyarados",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "cerulean-cave-b1f",
+      "nodeId": "cerulean-cave",
+      "nodeDe": "Azuria-Höhle",
+      "nodeEn": "Cerulean Cave",
+      "method": "FISH",
+      "chance": 16,
+      "minLevel": 15,
+      "maxLevel": 35
+     },
+     {
+      "area": "seafoam-islands-b3f",
+      "nodeId": "seafoam-islands",
+      "nodeDe": "Seeschauminseln",
+      "nodeEn": "Seafoam Islands",
+      "method": "FISH",
+      "chance": 16,
+      "minLevel": 15,
+      "maxLevel": 35
+     },
+     {
+      "area": "seafoam-islands-b4f",
+      "nodeId": "seafoam-islands",
+      "nodeDe": "Seeschauminseln",
+      "nodeEn": "Seafoam Islands",
+      "method": "FISH",
+      "chance": 16,
+      "minLevel": 15,
+      "maxLevel": 35
+     },
+     {
+      "area": "cerulean-cave-1f",
+      "nodeId": "cerulean-cave",
+      "nodeDe": "Azuria-Höhle",
+      "nodeEn": "Cerulean Cave",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "cerulean-city-area",
+      "nodeId": "cerulean-city",
+      "nodeDe": "Azuria City",
+      "nodeEn": "Cerulean City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "cinnabar-island-area",
+      "nodeId": "cinnabar-island",
+      "nodeDe": "Zinnoberinsel",
+      "nodeEn": "Cinnabar Island",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "fuchsia-city-area",
+      "nodeId": "fuchsia-city",
+      "nodeDe": "Fuchsania City",
+      "nodeEn": "Fuchsia City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-10-area",
+      "nodeId": "kanto-route-10",
+      "nodeDe": "Route 10",
+      "nodeEn": "Route 10",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-11-area",
+      "nodeId": "kanto-route-11",
+      "nodeDe": "Route 11",
+      "nodeEn": "Route 11",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-12-area",
+      "nodeId": "kanto-route-12",
+      "nodeDe": "Route 12",
+      "nodeEn": "Route 12",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-13-area",
+      "nodeId": "kanto-route-13",
+      "nodeDe": "Route 13",
+      "nodeEn": "Route 13",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-22-area",
+      "nodeId": "kanto-route-22",
+      "nodeDe": "Route 22",
+      "nodeEn": "Route 22",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-23-area",
+      "nodeId": "kanto-route-23",
+      "nodeDe": "Route 23",
+      "nodeEn": "Route 23",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-24-area",
+      "nodeId": "kanto-route-24",
+      "nodeDe": "Route 24",
+      "nodeEn": "Route 24",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-25-area",
+      "nodeId": "kanto-route-25",
+      "nodeDe": "Route 25",
+      "nodeEn": "Route 25",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-4-area",
+      "nodeId": "kanto-route-4",
+      "nodeDe": "Route 4",
+      "nodeEn": "Route 4",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-6-area",
+      "nodeId": "kanto-route-6",
+      "nodeDe": "Route 6",
+      "nodeEn": "Route 6",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-sea-route-19-area",
+      "nodeId": "kanto-route-19",
+      "nodeDe": "Route 19",
+      "nodeEn": "Route 19",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-sea-route-20-area",
+      "nodeId": "kanto-route-20",
+      "nodeDe": "Route 20",
+      "nodeEn": "Route 20",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-sea-route-21-area",
+      "nodeId": "kanto-route-21",
+      "nodeDe": "Route 21",
+      "nodeEn": "Route 21",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "vermilion-city-area",
+      "nodeId": "vermilion-city",
+      "nodeDe": "Orania City",
+      "nodeEn": "Vermilion City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "viridian-city-area",
+      "nodeId": "viridian-city",
+      "nodeDe": "Vertania City",
+      "nodeEn": "Viridian City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "cerulean-cave-b1f",
+      "nodeId": "cerulean-cave",
+      "nodeDe": "Azuria-Höhle",
+      "nodeEn": "Cerulean Cave",
+      "method": "FISH",
+      "chance": 16,
+      "minLevel": 15,
+      "maxLevel": 35
+     },
+     {
+      "area": "seafoam-islands-b3f",
+      "nodeId": "seafoam-islands",
+      "nodeDe": "Seeschauminseln",
+      "nodeEn": "Seafoam Islands",
+      "method": "FISH",
+      "chance": 16,
+      "minLevel": 15,
+      "maxLevel": 35
+     },
+     {
+      "area": "seafoam-islands-b4f",
+      "nodeId": "seafoam-islands",
+      "nodeDe": "Seeschauminseln",
+      "nodeEn": "Seafoam Islands",
+      "method": "FISH",
+      "chance": 16,
+      "minLevel": 15,
+      "maxLevel": 35
+     },
+     {
+      "area": "cerulean-cave-1f",
+      "nodeId": "cerulean-cave",
+      "nodeDe": "Azuria-Höhle",
+      "nodeEn": "Cerulean Cave",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "cerulean-city-area",
+      "nodeId": "cerulean-city",
+      "nodeDe": "Azuria City",
+      "nodeEn": "Cerulean City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "cinnabar-island-area",
+      "nodeId": "cinnabar-island",
+      "nodeDe": "Zinnoberinsel",
+      "nodeEn": "Cinnabar Island",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "fuchsia-city-area",
+      "nodeId": "fuchsia-city",
+      "nodeDe": "Fuchsania City",
+      "nodeEn": "Fuchsia City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-10-area",
+      "nodeId": "kanto-route-10",
+      "nodeDe": "Route 10",
+      "nodeEn": "Route 10",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-11-area",
+      "nodeId": "kanto-route-11",
+      "nodeDe": "Route 11",
+      "nodeEn": "Route 11",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-12-area",
+      "nodeId": "kanto-route-12",
+      "nodeDe": "Route 12",
+      "nodeEn": "Route 12",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-13-area",
+      "nodeId": "kanto-route-13",
+      "nodeDe": "Route 13",
+      "nodeEn": "Route 13",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-22-area",
+      "nodeId": "kanto-route-22",
+      "nodeDe": "Route 22",
+      "nodeEn": "Route 22",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-23-area",
+      "nodeId": "kanto-route-23",
+      "nodeDe": "Route 23",
+      "nodeEn": "Route 23",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-24-area",
+      "nodeId": "kanto-route-24",
+      "nodeDe": "Route 24",
+      "nodeEn": "Route 24",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-25-area",
+      "nodeId": "kanto-route-25",
+      "nodeDe": "Route 25",
+      "nodeEn": "Route 25",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-4-area",
+      "nodeId": "kanto-route-4",
+      "nodeDe": "Route 4",
+      "nodeEn": "Route 4",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-route-6-area",
+      "nodeId": "kanto-route-6",
+      "nodeDe": "Route 6",
+      "nodeEn": "Route 6",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-sea-route-19-area",
+      "nodeId": "kanto-route-19",
+      "nodeDe": "Route 19",
+      "nodeEn": "Route 19",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-sea-route-20-area",
+      "nodeId": "kanto-route-20",
+      "nodeDe": "Route 20",
+      "nodeEn": "Route 20",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "kanto-sea-route-21-area",
+      "nodeId": "kanto-route-21",
+      "nodeDe": "Route 21",
+      "nodeEn": "Route 21",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "pallet-town-area",
+      "nodeId": "pallet-town",
+      "nodeDe": "Alabastia",
+      "nodeEn": "Pallet Town",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "vermilion-city-area",
+      "nodeId": "vermilion-city",
+      "nodeDe": "Orania City",
+      "nodeEn": "Vermilion City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     },
+     {
+      "area": "viridian-city-area",
+      "nodeId": "viridian-city",
+      "nodeDe": "Vertania City",
+      "nodeEn": "Viridian City",
+      "method": "FISH",
+      "chance": 15,
+      "minLevel": 15,
+      "maxLevel": 25
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 129,
+     "to": 130,
+     "trigger": "level-up",
+     "minLevel": 20,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "133": {
+   "slug": "eevee",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "celadon-city-celadon-mansion",
+      "nodeId": "celadon-city",
+      "nodeDe": "Prismania City",
+      "nodeEn": "Celadon City",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 25,
+      "maxLevel": 25
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "celadon-city-celadon-mansion",
+      "nodeId": "celadon-city",
+      "nodeDe": "Prismania City",
+      "nodeEn": "Celadon City",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 25,
+      "maxLevel": 25
+     }
+    ]
+   },
+   "evo": [
+    {
+     "from": 133,
+     "to": 134,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "water-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 135,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "thunder-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 136,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "fire-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 196,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "day",
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 197,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "night",
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "143": {
+   "slug": "snorlax",
+   "catchRate": 25,
+   "locations": {
+    "firered": [
+     {
+      "area": "kanto-route-12-area",
+      "nodeId": "kanto-route-12",
+      "nodeDe": "Route 12",
+      "nodeEn": "Route 12",
+      "method": "OTHER",
+      "chance": 100,
+      "minLevel": 30,
+      "maxLevel": 30
+     },
+     {
+      "area": "kanto-route-16-area",
+      "nodeId": "kanto-route-16",
+      "nodeDe": "Route 16",
+      "nodeEn": "Route 16",
+      "method": "OTHER",
+      "chance": 100,
+      "minLevel": 30,
+      "maxLevel": 30
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "kanto-route-12-area",
+      "nodeId": "kanto-route-12",
+      "nodeDe": "Route 12",
+      "nodeEn": "Route 12",
+      "method": "OTHER",
+      "chance": 100,
+      "minLevel": 30,
+      "maxLevel": 30
+     },
+     {
+      "area": "kanto-route-16-area",
+      "nodeId": "kanto-route-16",
+      "nodeDe": "Route 16",
+      "nodeEn": "Route 16",
+      "method": "OTHER",
+      "chance": 100,
+      "minLevel": 30,
+      "maxLevel": 30
+     }
+    ]
+   },
+   "evo": []
+  },
+  "149": {
+   "slug": "dragonite",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 147,
+     "to": 148,
+     "trigger": "level-up",
+     "minLevel": 30,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 148,
+     "to": 149,
+     "trigger": "level-up",
+     "minLevel": 55,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "150": {
+   "slug": "mewtwo",
+   "catchRate": 3,
+   "locations": {
+    "firered": [
+     {
+      "area": "cerulean-cave-b1f",
+      "nodeId": "cerulean-cave",
+      "nodeDe": "Azuria-Höhle",
+      "nodeEn": "Cerulean Cave",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 70,
+      "maxLevel": 70
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "cerulean-cave-b1f",
+      "nodeId": "cerulean-cave",
+      "nodeDe": "Azuria-Höhle",
+      "nodeEn": "Cerulean Cave",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 70,
+      "maxLevel": 70
+     }
+    ]
+   },
+   "evo": []
+  },
+  "151": {
+   "slug": "mew",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": []
+  }
+ },
+ "dex": {
+  "1": {
+   "slug": "bulbasaur",
+   "types": [
+    "grass",
+    "poison"
+   ],
+   "pastTypes": null,
+   "bst": 318
+  },
+  "2": {
+   "slug": "ivysaur",
+   "types": [
+    "grass",
+    "poison"
+   ],
+   "pastTypes": null,
+   "bst": 405
+  },
+  "3": {
+   "slug": "venusaur",
+   "types": [
+    "grass",
+    "poison"
+   ],
+   "pastTypes": null,
+   "bst": 525
+  },
+  "4": {
+   "slug": "charmander",
+   "types": [
+    "fire"
+   ],
+   "pastTypes": null,
+   "bst": 309
+  },
+  "5": {
+   "slug": "charmeleon",
+   "types": [
+    "fire"
+   ],
+   "pastTypes": null,
+   "bst": 405
+  },
+  "6": {
+   "slug": "charizard",
+   "types": [
+    "fire",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 534
+  },
+  "7": {
+   "slug": "squirtle",
+   "types": [
+    "water"
+   ],
+   "pastTypes": null,
+   "bst": 314
+  },
+  "8": {
+   "slug": "wartortle",
+   "types": [
+    "water"
+   ],
+   "pastTypes": null,
+   "bst": 405
+  },
+  "9": {
+   "slug": "blastoise",
+   "types": [
+    "water"
+   ],
+   "pastTypes": null,
+   "bst": 530
+  },
+  "18": {
+   "slug": "pidgeot",
+   "types": [
+    "normal",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 479
+  },
+  "20": {
+   "slug": "raticate",
+   "types": [
+    "normal"
+   ],
+   "pastTypes": null,
+   "bst": 413
+  },
+  "24": {
+   "slug": "arbok",
+   "types": [
+    "poison"
+   ],
+   "pastTypes": null,
+   "bst": 448
+  },
+  "25": {
+   "slug": "pikachu",
+   "types": [
+    "electric"
+   ],
+   "pastTypes": null,
+   "bst": 320
+  },
+  "26": {
+   "slug": "raichu",
+   "types": [
+    "electric"
+   ],
+   "pastTypes": null,
+   "bst": 485
+  },
+  "65": {
+   "slug": "alakazam",
+   "types": [
+    "psychic"
+   ],
+   "pastTypes": null,
+   "bst": 500
+  },
+  "94": {
+   "slug": "gengar",
+   "types": [
+    "ghost",
+    "poison"
+   ],
+   "pastTypes": null,
+   "bst": 500
+  },
+  "97": {
+   "slug": "hypno",
+   "types": [
+    "psychic"
+   ],
+   "pastTypes": null,
+   "bst": 483
+  },
+  "105": {
+   "slug": "marowak",
+   "types": [
+    "ground"
+   ],
+   "pastTypes": null,
+   "bst": 425
+  },
+  "112": {
+   "slug": "rhydon",
+   "types": [
+    "ground",
+    "rock"
+   ],
+   "pastTypes": null,
+   "bst": 485
+  },
+  "130": {
+   "slug": "gyarados",
+   "types": [
+    "water",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 540
+  },
+  "133": {
+   "slug": "eevee",
+   "types": [
+    "normal"
+   ],
+   "pastTypes": null,
+   "bst": 325
+  },
+  "143": {
+   "slug": "snorlax",
+   "types": [
+    "normal"
+   ],
+   "pastTypes": null,
+   "bst": 540
+  },
+  "149": {
+   "slug": "dragonite",
+   "types": [
+    "dragon",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 600
+  },
+  "150": {
+   "slug": "mewtwo",
+   "types": [
+    "psychic"
+   ],
+   "pastTypes": null,
+   "bst": 680
+  },
+  "151": {
+   "slug": "mew",
+   "types": [
+    "psychic"
+   ],
+   "pastTypes": null,
+   "bst": 600
+  }
+ },
+ "names": {
+  "1": {
+   "de": "Bisasam",
+   "en": "Bulbasaur"
+  },
+  "2": {
+   "de": "Bisaknosp",
+   "en": "Ivysaur"
+  },
+  "3": {
+   "de": "Bisaflor",
+   "en": "Venusaur"
+  },
+  "4": {
+   "de": "Glumanda",
+   "en": "Charmander"
+  },
+  "5": {
+   "de": "Glutexo",
+   "en": "Charmeleon"
+  },
+  "6": {
+   "de": "Glurak",
+   "en": "Charizard"
+  },
+  "7": {
+   "de": "Schiggy",
+   "en": "Squirtle"
+  },
+  "8": {
+   "de": "Schillok",
+   "en": "Wartortle"
+  },
+  "9": {
+   "de": "Turtok",
+   "en": "Blastoise"
+  },
+  "18": {
+   "de": "Tauboss",
+   "en": "Pidgeot"
+  },
+  "20": {
+   "de": "Rattikarl",
+   "en": "Raticate"
+  },
+  "24": {
+   "de": "Arbok",
+   "en": "Arbok"
+  },
+  "25": {
+   "de": "Pikachu",
+   "en": "Pikachu"
+  },
+  "26": {
+   "de": "Raichu",
+   "en": "Raichu"
+  },
+  "65": {
+   "de": "Simsala",
+   "en": "Alakazam"
+  },
+  "94": {
+   "de": "Gengar",
+   "en": "Gengar"
+  },
+  "97": {
+   "de": "Hypno",
+   "en": "Hypno"
+  },
+  "105": {
+   "de": "Knogga",
+   "en": "Marowak"
+  },
+  "112": {
+   "de": "Rizeros",
+   "en": "Rhydon"
+  },
+  "130": {
+   "de": "Garados",
+   "en": "Gyarados"
+  },
+  "133": {
+   "de": "Evoli",
+   "en": "Eevee"
+  },
+  "143": {
+   "de": "Relaxo",
+   "en": "Snorlax"
+  },
+  "149": {
+   "de": "Dragoran",
+   "en": "Dragonite"
+  },
+  "150": {
+   "de": "Mewtu",
+   "en": "Mewtwo"
+  },
+  "151": {
+   "de": "Mew",
+   "en": "Mew"
+  }
+ },
+ "evoNames": {
+  "1": {
+   "de": "Bisasam",
+   "en": "Bulbasaur"
+  },
+  "2": {
+   "de": "Bisaknosp",
+   "en": "Ivysaur"
+  },
+  "3": {
+   "de": "Bisaflor",
+   "en": "Venusaur"
+  },
+  "4": {
+   "de": "Glumanda",
+   "en": "Charmander"
+  },
+  "5": {
+   "de": "Glutexo",
+   "en": "Charmeleon"
+  },
+  "6": {
+   "de": "Glurak",
+   "en": "Charizard"
+  },
+  "7": {
+   "de": "Schiggy",
+   "en": "Squirtle"
+  },
+  "8": {
+   "de": "Schillok",
+   "en": "Wartortle"
+  },
+  "9": {
+   "de": "Turtok",
+   "en": "Blastoise"
+  },
+  "10": {
+   "de": "Raupy",
+   "en": "Caterpie"
+  },
+  "11": {
+   "de": "Safcon",
+   "en": "Metapod"
+  },
+  "13": {
+   "de": "Hornliu",
+   "en": "Weedle"
+  },
+  "14": {
+   "de": "Kokuna",
+   "en": "Kakuna"
+  },
+  "16": {
+   "de": "Taubsi",
+   "en": "Pidgey"
+  },
+  "17": {
+   "de": "Tauboga",
+   "en": "Pidgeotto"
+  },
+  "18": {
+   "de": "Tauboss",
+   "en": "Pidgeot"
+  },
+  "19": {
+   "de": "Rattfratz",
+   "en": "Rattata"
+  },
+  "20": {
+   "de": "Rattikarl",
+   "en": "Raticate"
+  },
+  "21": {
+   "de": "Habitak",
+   "en": "Spearow"
+  },
+  "22": {
+   "de": "Ibitak",
+   "en": "Fearow"
+  },
+  "23": {
+   "de": "Rettan",
+   "en": "Ekans"
+  },
+  "24": {
+   "de": "Arbok",
+   "en": "Arbok"
+  },
+  "25": {
+   "de": "Pikachu",
+   "en": "Pikachu"
+  },
+  "26": {
+   "de": "Raichu",
+   "en": "Raichu"
+  },
+  "27": {
+   "de": "Sandan",
+   "en": "Sandshrew"
+  },
+  "28": {
+   "de": "Sandamer",
+   "en": "Sandslash"
+  },
+  "29": {
+   "de": "Nidoran♀",
+   "en": "Nidoran F"
+  },
+  "30": {
+   "de": "Nidorina",
+   "en": "Nidorina"
+  },
+  "32": {
+   "de": "Nidoran♂",
+   "en": "Nidoran M"
+  },
+  "33": {
+   "de": "Nidorino",
+   "en": "Nidorino"
+  },
+  "35": {
+   "de": "Piepi",
+   "en": "Clefairy"
+  },
+  "37": {
+   "de": "Vulpix",
+   "en": "Vulpix"
+  },
+  "39": {
+   "de": "Pummeluff",
+   "en": "Jigglypuff"
+  },
+  "41": {
+   "de": "Zubat",
+   "en": "Zubat"
+  },
+  "42": {
+   "de": "Golbat",
+   "en": "Golbat"
+  },
+  "43": {
+   "de": "Myrapla",
+   "en": "Oddish"
+  },
+  "44": {
+   "de": "Duflor",
+   "en": "Gloom"
+  },
+  "46": {
+   "de": "Paras",
+   "en": "Paras"
+  },
+  "47": {
+   "de": "Parasek",
+   "en": "Parasect"
+  },
+  "48": {
+   "de": "Bluzuk",
+   "en": "Venonat"
+  },
+  "49": {
+   "de": "Omot",
+   "en": "Venomoth"
+  },
+  "50": {
+   "de": "Digda",
+   "en": "Diglett"
+  },
+  "51": {
+   "de": "Digdri",
+   "en": "Dugtrio"
+  },
+  "52": {
+   "de": "Mauzi",
+   "en": "Meowth"
+  },
+  "54": {
+   "de": "Enton",
+   "en": "Psyduck"
+  },
+  "55": {
+   "de": "Entoron",
+   "en": "Golduck"
+  },
+  "56": {
+   "de": "Menki",
+   "en": "Mankey"
+  },
+  "57": {
+   "de": "Rasaff",
+   "en": "Primeape"
+  },
+  "58": {
+   "de": "Fukano",
+   "en": "Growlithe"
+  },
+  "60": {
+   "de": "Quapsel",
+   "en": "Poliwag"
+  },
+  "61": {
+   "de": "Quaputzi",
+   "en": "Poliwhirl"
+  },
+  "63": {
+   "de": "Abra",
+   "en": "Abra"
+  },
+  "64": {
+   "de": "Kadabra",
+   "en": "Kadabra"
+  },
+  "65": {
+   "de": "Simsala",
+   "en": "Alakazam"
+  },
+  "66": {
+   "de": "Machollo",
+   "en": "Machop"
+  },
+  "67": {
+   "de": "Maschock",
+   "en": "Machoke"
+  },
+  "69": {
+   "de": "Knofensa",
+   "en": "Bellsprout"
+  },
+  "70": {
+   "de": "Ultrigaria",
+   "en": "Weepinbell"
+  },
+  "72": {
+   "de": "Tentacha",
+   "en": "Tentacool"
+  },
+  "74": {
+   "de": "Kleinstein",
+   "en": "Geodude"
+  },
+  "75": {
+   "de": "Georok",
+   "en": "Graveler"
+  },
+  "79": {
+   "de": "Flegmon",
+   "en": "Slowpoke"
+  },
+  "80": {
+   "de": "Lahmus",
+   "en": "Slowbro"
+  },
+  "81": {
+   "de": "Magnetilo",
+   "en": "Magnemite"
+  },
+  "82": {
+   "de": "Magneton",
+   "en": "Magneton"
+  },
+  "84": {
+   "de": "Dodu",
+   "en": "Doduo"
+  },
+  "86": {
+   "de": "Jurob",
+   "en": "Seel"
+  },
+  "87": {
+   "de": "Jugong",
+   "en": "Dewgong"
+  },
+  "88": {
+   "de": "Sleima",
+   "en": "Grimer"
+  },
+  "90": {
+   "de": "Muschas",
+   "en": "Shellder"
+  },
+  "92": {
+   "de": "Nebulak",
+   "en": "Gastly"
+  },
+  "93": {
+   "de": "Alpollo",
+   "en": "Haunter"
+  },
+  "94": {
+   "de": "Gengar",
+   "en": "Gengar"
+  },
+  "95": {
+   "de": "Onix",
+   "en": "Onix"
+  },
+  "96": {
+   "de": "Traumato",
+   "en": "Drowzee"
+  },
+  "97": {
+   "de": "Hypno",
+   "en": "Hypno"
+  },
+  "98": {
+   "de": "Krabby",
+   "en": "Krabby"
+  },
+  "99": {
+   "de": "Kingler",
+   "en": "Kingler"
+  },
+  "100": {
+   "de": "Voltobal",
+   "en": "Voltorb"
+  },
+  "101": {
+   "de": "Lektrobal",
+   "en": "Electrode"
+  },
+  "102": {
+   "de": "Owei",
+   "en": "Exeggcute"
+  },
+  "104": {
+   "de": "Tragosso",
+   "en": "Cubone"
+  },
+  "105": {
+   "de": "Knogga",
+   "en": "Marowak"
+  },
+  "106": {
+   "de": "Kicklee",
+   "en": "Hitmonlee"
+  },
+  "107": {
+   "de": "Nockchan",
+   "en": "Hitmonchan"
+  },
+  "109": {
+   "de": "Smogon",
+   "en": "Koffing"
+  },
+  "111": {
+   "de": "Rihorn",
+   "en": "Rhyhorn"
+  },
+  "112": {
+   "de": "Rizeros",
+   "en": "Rhydon"
+  },
+  "113": {
+   "de": "Chaneira",
+   "en": "Chansey"
+  },
+  "114": {
+   "de": "Tangela",
+   "en": "Tangela"
+  },
+  "115": {
+   "de": "Kangama",
+   "en": "Kangaskhan"
+  },
+  "116": {
+   "de": "Seeper",
+   "en": "Horsea"
+  },
+  "117": {
+   "de": "Seemon",
+   "en": "Seadra"
+  },
+  "118": {
+   "de": "Goldini",
+   "en": "Goldeen"
+  },
+  "119": {
+   "de": "Golking",
+   "en": "Seaking"
+  },
+  "120": {
+   "de": "Sterndu",
+   "en": "Staryu"
+  },
+  "123": {
+   "de": "Sichlor",
+   "en": "Scyther"
+  },
+  "125": {
+   "de": "Elektek",
+   "en": "Electabuzz"
+  },
+  "127": {
+   "de": "Pinsir",
+   "en": "Pinsir"
+  },
+  "128": {
+   "de": "Tauros",
+   "en": "Tauros"
+  },
+  "129": {
+   "de": "Karpador",
+   "en": "Magikarp"
+  },
+  "130": {
+   "de": "Garados",
+   "en": "Gyarados"
+  },
+  "131": {
+   "de": "Lapras",
+   "en": "Lapras"
+  },
+  "132": {
+   "de": "Ditto",
+   "en": "Ditto"
+  },
+  "133": {
+   "de": "Evoli",
+   "en": "Eevee"
+  },
+  "134": {
+   "de": "Aquana",
+   "en": "Vaporeon"
+  },
+  "135": {
+   "de": "Blitza",
+   "en": "Jolteon"
+  },
+  "136": {
+   "de": "Flamara",
+   "en": "Flareon"
+  },
+  "137": {
+   "de": "Porygon",
+   "en": "Porygon"
+  },
+  "138": {
+   "de": "Amonitas",
+   "en": "Omanyte"
+  },
+  "140": {
+   "de": "Kabuto",
+   "en": "Kabuto"
+  },
+  "142": {
+   "de": "Aerodactyl",
+   "en": "Aerodactyl"
+  },
+  "143": {
+   "de": "Relaxo",
+   "en": "Snorlax"
+  },
+  "144": {
+   "de": "Arktos",
+   "en": "Articuno"
+  },
+  "145": {
+   "de": "Zapdos",
+   "en": "Zapdos"
+  },
+  "147": {
+   "de": "Dratini",
+   "en": "Dratini"
+  },
+  "148": {
+   "de": "Dragonir",
+   "en": "Dragonair"
+  },
+  "149": {
+   "de": "Dragoran",
+   "en": "Dragonite"
+  },
+  "150": {
+   "de": "Mewtu",
+   "en": "Mewtwo"
+  },
+  "151": {
+   "de": "Mew",
+   "en": "Mew"
+  },
+  "172": {
+   "de": "Pichu",
+   "en": "Pichu"
+  },
+  "196": {
+   "de": "Psiana",
+   "en": "Espeon"
+  },
+  "197": {
+   "de": "Nachtara",
+   "en": "Umbreon"
+  },
+  "202": {
+   "de": "Woingenau",
+   "en": "Wobbuffet"
+  }
+ }
+}
