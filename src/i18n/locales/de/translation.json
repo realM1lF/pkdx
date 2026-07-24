@@ -135,6 +135,19 @@
     "overview": "ÜBERSICHT",
     "versus": "VERSUS",
     "vsTitle": "VERSUS-Kampflabor öffnen",
+    "addToTeam": {
+      "button": "Zu Team hinzufügen",
+      "title": "ZU TEAM HINZUFÜGEN",
+      "close": "Schließen",
+      "empty": "Noch keine Teams gespeichert.",
+      "createNew": "Neues Team anlegen & hinzufügen",
+      "newTeamName": "Mein Team",
+      "adding": "FÜGE ZU {{name}} HINZU…",
+      "full": "{{name}} ist voll (6/6) — wähle ein anderes Team.",
+      "backToList": "Zurück zur Team-Auswahl",
+      "added": "{{pokemon}} ist jetzt in „{{team}}“.",
+      "openTeam": "Team öffnen"
+    },
     "syncing": "LADE EINTRAG {{id}}",
     "loadingVersus": "LADE MATCHUP-LAB…",
     "panels": {
@@ -145,7 +158,7 @@
       "evoEyebrow": "ENTWICKLUNG",
       "evoTitle": "Entwicklungsreihe",
       "findEyebrow": "WILDNIS",
-      "findTitle": "Fundorte",
+      "findTitle": "Begegnungen",
       "museumEyebrow": "ARCHIV",
       "museumTitle": "Sprite-Museum"
     },

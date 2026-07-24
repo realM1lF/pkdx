@@ -135,6 +135,19 @@
     "overview": "OVERVIEW",
     "versus": "VERSUS",
     "vsTitle": "Open VERSUS matchup lab",
+    "addToTeam": {
+      "button": "Add to team",
+      "title": "ADD TO TEAM",
+      "close": "Close",
+      "empty": "No saved teams yet.",
+      "createNew": "Create a new team & add",
+      "newTeamName": "My Team",
+      "adding": "ADDING TO {{name}}…",
+      "full": "{{name}} is full (6/6) — pick another team.",
+      "backToList": "Back to team selection",
+      "added": "{{pokemon}} is now in “{{team}}”.",
+      "openTeam": "Open team"
+    },
     "syncing": "SYNCING ENTRY {{id}}",
     "loadingVersus": "LOADING MATCHUP LAB…",
     "panels": {
@@ -145,7 +158,7 @@
       "evoEyebrow": "EVOLUTION",
       "evoTitle": "Family Tree",
       "findEyebrow": "WILD DATA",
-      "findTitle": "Where to Find",
+      "findTitle": "Encounters",
       "museumEyebrow": "ARCHIVE",
       "museumTitle": "Sprite Museum"
     },

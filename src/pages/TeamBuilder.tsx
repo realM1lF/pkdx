@@ -10,6 +10,7 @@ import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import {
   consumeTeamHash,
   decodeTeamHash,
+  defaultMoveset,
   defensiveSynergy,
   deleteTeam,
   emptySlot,
@@ -83,6 +84,8 @@ export default function TeamBuilder() {
   const [appliedSetName, setAppliedSetName] = useState<string | null>(null);
   /* slot awaiting the Smogon EV auto-apply (armed by handlePick) */
   const autoEvSlotRef = useRef<string | null>(null);
+  /* slot awaiting the default moveset (wild → assumed, armed by handlePick) */
+  const autoMovesSlotRef = useRef<string | null>(null);
 
   /* async data caches */
   const [pokemonCache, setPokemonCache] = useState<Record<number, Pokemon>>({});
@@ -206,6 +209,9 @@ export default function TeamBuilder() {
       /* EP0.3: arm the Smogon EV auto-apply for this slot (applied once the
        * meta entry for the freshly picked species resolves; stays 0 without a set) */
       autoEvSlotRef.current = slotId;
+      /* arm the default moveset (applied once the PokéAPI payload resolves;
+       * wild level-up set at the slot level, padded by the STAB heuristic) */
+      autoMovesSlotRef.current = slotId;
       setExpandedId(slotId);
       setFocusedId(slotId);
       setAppliedSetName(null);
@@ -453,6 +459,43 @@ export default function TeamBuilder() {
     setAppliedSetName(set.name);
     window.setTimeout(() => setAppliedSetName(null), 2600);
   }, [team, metaState, metaEntry, focusSlot, focusSpecies, patchSlot]);
+
+  /* default moveset right after a pick — resolves wild → assumed (STAB +
+   * coverage heuristic) via defaultMoveset once the PokéAPI payload for the
+   * slot is hydrated. Skipped when the user already set moves meanwhile;
+   * fully editable afterwards (only replaces the empty default). */
+  useEffect(() => {
+    const slotId = autoMovesSlotRef.current;
+    if (!slotId || !team) return;
+    const slot = team.slots.find((s) => s.id === slotId);
+    if (!slot?.pokemon || slot.pokemonId == null) return;
+    if (slot.moves.some((m) => m)) {
+      autoMovesSlotRef.current = null;
+      return;
+    }
+    const p = pokemonCache[slot.pokemonId];
+    if (!p) return; // payload still in flight — the hydrate effect re-triggers us
+    autoMovesSlotRef.current = null;
+    const vgId = team.versionGroup;
+    const level = slot.level;
+    let alive = true;
+    void defaultMoveset(p, level, vgId).then((moves) => {
+      if (!alive || !moves.length) return;
+      patchTeam((t) => {
+        const cur = t.slots.find((s) => s.id === slotId);
+        /* user touched the moves meanwhile — keep their input */
+        if (!cur || cur.moves.some((m) => m)) return t;
+        const next: TeamSlot['moves'] = [null, null, null, null];
+        moves.forEach((m, i) => {
+          if (i < 4) next[i] = m;
+        });
+        return { ...t, slots: t.slots.map((s) => (s.id === slotId ? { ...s, moves: next } : s)) };
+      });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [team, pokemonCache, patchTeam]);
 
   const expandedSlot = team?.slots.find((s) => s.id === expandedId) ?? null;
 

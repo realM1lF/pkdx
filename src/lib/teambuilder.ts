@@ -17,10 +17,11 @@ import type { GenerationNum, Nature, Specie, TypeName } from '@pkmn/data';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
 import type { Lang } from './i18n-data';
-import { cachedJson, displayName, getPokemon } from './pokeapi';
-import type { Pokemon } from './types';
+import { cachedJson, displayName, getMove, getPokemon } from './pokeapi';
+import type { Move, Pokemon } from './types';
 import { POKEMON_TYPES, STAT_ORDER } from './types';
 import type { PokemonType, StatKey } from './types';
+import type { VersusContext } from './versus-context';
 import { getRunTeam, loadLocalRun, pushToast, readRunIndex } from './nuzlocke-store';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 
@@ -239,6 +240,211 @@ export function legalMoves(pokemon: Pokemon, vgId: string): LegalMoveOption[] {
   }
   out.sort((a, b) => METHOD_ORDER[a.method] - METHOD_ORDER[b.method] || a.label.localeCompare(b.label));
   return out;
+}
+
+/* ------------------------------------------------------------------ */
+/* Move pools + default movesets (shared with versus.ts — the pure    */
+/* PokéAPI-payload helpers live here so the team builder never pulls   */
+/* @smogon/calc; versus.ts re-exports them)                            */
+/* ------------------------------------------------------------------ */
+
+export const DAMAGING_MOVE_CATS = new Set(['physical', 'special']);
+
+export interface PoolEntry {
+  slug: string;
+  level: number; // level_learned_at (0/1 = start)
+  method: string;
+}
+
+/** version groups newest → oldest (mirrors detail/data.ts ordering, kept lib-local) */
+const VERSION_GROUP_RANK: Record<string, number> = {
+  'scarlet-violet': 22,
+  'sword-shield': 21,
+  'lets-go-pikachu-lets-go-eevee': 20,
+  'ultra-sun-ultra-moon': 19,
+  'sun-moon': 18,
+  'omega-ruby-alpha-sapphire': 17,
+  'x-y': 16,
+  'black-2-white-2': 15,
+  'black-white': 14,
+  'heartgold-soulsilver': 13,
+  platinum: 12,
+  'diamond-pearl': 11,
+  emerald: 10,
+  'firered-leafgreen': 9,
+  'ruby-sapphire': 8,
+  colosseum: 7,
+  xd: 6,
+  crystal: 5,
+  'gold-silver': 4,
+  yellow: 3,
+  'red-blue': 2,
+};
+
+/** newest version group key that teaches this Pokémon anything */
+export function newestVersionGroup(p: Pokemon): string {
+  let best = '';
+  for (const m of p.moves) {
+    for (const d of m.version_group_details) {
+      const vg = d.version_group.name;
+      if (VERSION_GROUP_RANK[vg] != null && (VERSION_GROUP_RANK[vg] ?? 0) > (VERSION_GROUP_RANK[best] ?? -1)) best = vg;
+      else if (!best) best = vg;
+    }
+  }
+  return best;
+}
+
+/** level-up pool (sorted by learn level) in the given version group */
+export function levelUpPool(p: Pokemon, versionGroup?: string, ctx?: VersusContext): PoolEntry[] {
+  const vg = ctx?.versionGroup ?? versionGroup ?? newestVersionGroup(p);
+  const bySlug = new Map<string, number>();
+  for (const m of p.moves) {
+    for (const d of m.version_group_details) {
+      if (d.version_group.name !== vg || d.move_learn_method.name !== 'level-up') continue;
+      const prev = bySlug.get(m.move.name);
+      const lv = d.level_learned_at;
+      if (prev == null || (lv > 0 && lv < prev)) bySlug.set(m.move.name, lv);
+    }
+  }
+  return [...bySlug.entries()]
+    .map(([slug, level]) => ({ slug, level, method: 'level-up' }))
+    .sort((a, b) => a.level - b.level || a.slug.localeCompare(b.slug));
+}
+
+/**
+ * WILD set: the 4 most recently learned level-up moves at `level`
+ * (newest version group). Fewer than 4 if the pool is thin.
+ */
+export function wildMoveset(p: Pokemon, level: number, versionGroup?: string, ctx?: VersusContext): string[] {
+  const pool = levelUpPool(p, versionGroup, ctx).filter((e) => e.level <= level);
+  return pool.slice(-4).map((e) => e.slug);
+}
+
+/* ---------- top-4 heuristic ----------
+ * STAB first · score = base power × accuracy · dedupe per type ·
+ * physical/special by the better attack stat. */
+
+export interface ScoredMove {
+  slug: string;
+  type: string;
+  category: string;
+  power: number;
+  accuracy: number;
+  stab: boolean;
+  score: number;
+}
+
+export function scoreMoves(
+  candidates: Array<{ slug: string; detail: Move }>,
+  ownTypes: string[],
+  opts?: { preferCategory?: 'physical' | 'special' },
+): ScoredMove[] {
+  const out: ScoredMove[] = [];
+  for (const { slug, detail } of candidates) {
+    const cat = detail.damage_class.name;
+    if (!DAMAGING_MOVE_CATS.has(cat)) continue;
+    const power = detail.power ?? 0;
+    if (power <= 0) continue;
+    const acc = detail.accuracy ?? 100;
+    const type = detail.type.name;
+    const stab = ownTypes.includes(type);
+    let score = power * (acc / 100) * (stab ? 1.5 : 1);
+    if (opts?.preferCategory && cat === opts.preferCategory) score *= 1.15;
+    out.push({ slug, type, category: cat, power, accuracy: acc, stab, score });
+  }
+  return out.sort((a, b) => b.score - a.score);
+}
+
+/**
+ * Pick the best 4 damaging moves: dedupe per type (best score wins),
+ * STAB types ranked first, then coverage by score.
+ */
+export function pickTopMoves(
+  candidates: Array<{ slug: string; detail: Move }>,
+  ownTypes: string[],
+  opts?: { preferCategory?: 'physical' | 'special'; count?: number },
+): string[] {
+  const count = opts?.count ?? 4;
+  const scored = scoreMoves(candidates, ownTypes, opts);
+  const byType = new Map<string, ScoredMove>();
+  for (const s of scored) if (!byType.has(s.type)) byType.set(s.type, s);
+  const unique = [...byType.values()].sort((a, b) => Number(b.stab) - Number(a.stab) || b.score - a.score);
+  return unique.slice(0, count).map((s) => s.slug);
+}
+
+/** species types in slot order */
+export function pokemonBaseTypes(p: Pokemon): string[] {
+  return [...p.types].sort((a, b) => a.slot - b.slot).map((t) => t.type.name);
+}
+
+/** which attack stat is stronger on the species' base stats */
+export function preferredCategory(p: Pokemon): 'physical' | 'special' {
+  const atk = p.stats.find((s) => s.stat.name === 'attack')?.base_stat ?? 0;
+  const spa = p.stats.find((s) => s.stat.name === 'special-attack')?.base_stat ?? 0;
+  return atk >= spa ? 'physical' : 'special';
+}
+
+/**
+ * Default 4 moves for a freshly picked team slot (wild → assumed, the same
+ * resolution Versus/Nuzlocke use minus the trainer stage, which has no
+ * meaning for the player's own team): last-4 level-up moves at `level` in
+ * the team's version group; padded by the STAB+coverage heuristic (move
+ * details fetched on demand) when the pool is thin. Fully user-editable
+ * afterwards — this is only the default instead of an empty set.
+ */
+export async function defaultMoveset(p: Pokemon, level: number, vgId: string): Promise<string[]> {
+  const wild = wildMoveset(p, level, vgId);
+  if (wild.length >= 4) return wild.slice(0, 4);
+  const pool = levelUpPool(p, vgId);
+  if (!pool.length) return wild;
+  const details = new Map<string, Move>();
+  await Promise.all(
+    pool.map(async (e) => {
+      try {
+        details.set(e.slug, await getMove(e.slug));
+      } catch {
+        /* offline/thin data — keep whatever the wild stage produced */
+      }
+    }),
+  );
+  const top = pickTopMoves(
+    pool
+      .map((e) => ({ slug: e.slug, detail: details.get(e.slug) }))
+      .filter((c): c is { slug: string; detail: Move } => Boolean(c.detail)),
+    pokemonBaseTypes(p),
+    { preferCategory: preferredCategory(p) },
+  );
+  const merged = [...wild];
+  for (const t of top) {
+    if (merged.length >= 4) break;
+    if (!merged.includes(t)) merged.push(t);
+  }
+  return merged.slice(0, 4);
+}
+
+/**
+ * Insert a Pokémon into the team's first free slot (level stays at the slot
+ * default 50 unless given). Returns null when the team is full (6/6).
+ */
+export function addToFirstFreeSlot(
+  team: Team,
+  entry: { pokemon: string; pokemonId: number; level?: number; moves?: string[] },
+): Team | null {
+  const idx = team.slots.findIndex((s) => !s.pokemon);
+  if (idx < 0) return null;
+  const moves: TeamSlot['moves'] = [null, null, null, null];
+  (entry.moves ?? []).slice(0, 4).forEach((m, i) => {
+    moves[i] = m;
+  });
+  const slots = [...team.slots];
+  slots[idx] = {
+    ...slots[idx],
+    pokemon: entry.pokemon,
+    pokemonId: entry.pokemonId,
+    level: entry.level ?? slots[idx].level,
+    moves,
+  };
+  return { ...team, slots, updatedAt: Date.now() };
 }
 
 /* ------------------------------------------------------------------ */

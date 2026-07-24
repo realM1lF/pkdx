@@ -16,6 +16,7 @@ import { getPokemon, getSpecies, pokemonTypes } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { MAX_DEX_ID } from '@/lib/types';
+import AddToTeam from './detail/AddToTeam';
 import CombatPanel from './detail/CombatPanel';
 import EvolutionPanel from './detail/EvolutionPanel';
 import HeroPanel from './detail/HeroPanel';
@@ -264,16 +265,19 @@ export default function PokemonDetail() {
             }}
           />
           <HeroPanel pokemon={pokemon} species={species} />
-          {/* VS shortcut — opens the VERSUS tab (versus.md §Integration) */}
-          <button
-            type="button"
-            onClick={() => switchTab('versus')}
-            title={t8n('detail.vsTitle')}
-            className="absolute right-3 top-3 z-20 inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold uppercase tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
-          >
-            <Swords size={11} />
-            VS
-          </button>
+          {/* top-right actions: add to a saved team · VS shortcut (opens the VERSUS tab) */}
+          <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5">
+            <AddToTeam pokemon={pokemon} />
+            <button
+              type="button"
+              onClick={() => switchTab('versus')}
+              title={t8n('detail.vsTitle')}
+              className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold uppercase tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
+            >
+              <Swords size={11} />
+              VS
+            </button>
+          </div>
         </Panel>
 
         <Panel
