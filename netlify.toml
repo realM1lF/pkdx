@@ -4,7 +4,9 @@
   # Prerender-Schritt (scripts/prerender.mjs) auch im Netlify-Build läuft.
   # Install dauert ~2-4 min; schlägt sie fehl, skippt prerender.mjs nur mit
   # Warnung — PRERENDER=required macht den Build stattdessen hart fehl.
-  command = "npx playwright install --with-deps chromium && npm run build"
+  # Kein --with-deps: Netlify erlaubt kein root/su im Build-Image.
+  # Die Build-Image-Basis enthaelt die noetigen Chromium-Libs bereits.
+  command = "npx playwright install chromium && npm run build"
   publish = "dist"
 
 [build.environment]
