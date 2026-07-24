@@ -7,6 +7,8 @@
  * { de, en } pair for routes with localized slugs (type pages:
  * /de/typen/wasser ↔ /en/types/water; item pages: /de/items/ep-teiler ↔
  * /en/items/exp-share). */
+import { readFileSync } from 'node:fs';
+
 export const SITE_URL = 'https://mypokepanion.com';
 
 export const LANGS = ['de', 'en'];
@@ -60,13 +62,28 @@ const ITEM_SLUGS = [
   ['dubiosdisc', 'dubious-disc'],
 ];
 
+/* Kanto location pages (SEO rollout 2): localized slugs per node with FRLG
+ * encounter data. The slug table is curated in src/lib/seo-routes-kanto.ts;
+ * the generated snapshot src/data/seo-meta-gen.json carries it per node, so
+ * this list always matches the pages the app actually renders. */
+const META_GEN = JSON.parse(readFileSync(new URL('../src/data/seo-meta-gen.json', import.meta.url), 'utf8'));
+
+const KANTO_ROUTE_ENTRIES = Object.values(META_GEN.routes).map((r) => ({
+  de: `/maps/kanto/${r.slugDe}`,
+  en: `/maps/kanto/${r.slugEn}`,
+}));
+
+/* 25 curated Pokémon detail pages (SEO rollout 2) */
+const POKEMON_SEO_IDS = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 133, 143, 150, 151, 149, 130, 94, 18, 20,
+  24, 97, 105, 65, 112,
+];
+
 export const STATIC_ROUTES = [
   '/',
   '/pokedex',
   '/items',
   '/maps',
-  '/maps/kanto/route-1',
-  '/pokemon/25',
   '/nuzlocke',
   '/team',
   '/versus',
@@ -81,6 +98,10 @@ export const STATIC_ROUTES = [
   })),
   /* 25 item detail pages (localized slugs) */
   ...ITEM_SLUGS.map(([de, en]) => ({ de: `/items/${de}`, en: `/items/${en}` })),
+  /* Kanto location pages (localized slugs) */
+  ...KANTO_ROUTE_ENTRIES,
+  /* curated Pokémon detail pages */
+  ...POKEMON_SEO_IDS.map((id) => `/pokemon/${id}`),
 ];
 
 /** localePath() equivalent: '/pokedex' + 'de' → '/de/pokedex'; '/' → '/de' */

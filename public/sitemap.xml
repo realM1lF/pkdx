@@ -58,34 +58,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps"/>
   </url>
   <url>
-    <loc>https://mypokepanion.com/de/maps/kanto/route-1</loc>
-    <lastmod>2026-07-24</lastmod>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-1"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
-  </url>
-  <url>
-    <loc>https://mypokepanion.com/en/maps/kanto/route-1</loc>
-    <lastmod>2026-07-24</lastmod>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-1"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
-  </url>
-  <url>
-    <loc>https://mypokepanion.com/de/pokemon/25</loc>
-    <lastmod>2026-07-24</lastmod>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/25"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/25"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/25"/>
-  </url>
-  <url>
-    <loc>https://mypokepanion.com/en/pokemon/25</loc>
-    <lastmod>2026-07-24</lastmod>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/25"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/25"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/25"/>
-  </url>
-  <url>
     <loc>https://mypokepanion.com/de/nuzlocke</loc>
     <lastmod>2026-07-24</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/nuzlocke"/>
@@ -784,5 +756,957 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/items/dubiosdisc"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/items/dubious-disc"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/items/dubious-disc"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-1</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-1</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-1"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/alabastia</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/alabastia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/pallet-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/pallet-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/pallet-town</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/alabastia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/pallet-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/pallet-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/digda-hoehle</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/digda-hoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/digletts-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/digletts-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/digletts-cave</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/digda-hoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/digletts-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/digletts-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/vertania-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/vertania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/viridian-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/viridian-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/viridian-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/vertania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/viridian-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/viridian-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/vertania-wald</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/vertania-wald"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/viridian-forest"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/viridian-forest"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/viridian-forest</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/vertania-wald"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/viridian-forest"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/viridian-forest"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-4</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-4"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-4"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-4"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-4</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-4"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-4"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-4"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-3</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-3"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-3"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-3"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-3</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-3"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-3"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-3"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-22</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-22"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-22"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-22"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-22</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-22"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-22"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-22"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-25</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-25"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-25"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-25"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-25</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-25"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-25"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-25"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-24</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-24"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-24"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-24"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-24</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-24"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-24"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-24"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-5</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-5"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-5"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-5"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-5</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-5"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-5"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-5"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/azuria-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/azuria-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/cerulean-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/cerulean-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/cerulean-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/azuria-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/cerulean-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/cerulean-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-6</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-6"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-6"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-6"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-6</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-6"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-6"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-6"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/orania-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/orania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/vermilion-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/vermilion-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/vermilion-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/orania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/vermilion-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/vermilion-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/azuria-hoehle</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/azuria-hoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/cerulean-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/cerulean-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/cerulean-cave</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/azuria-hoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/cerulean-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/cerulean-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-2</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-2"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-2"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-2</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-2"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-2"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/mondberg</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/mondberg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/mt-moon"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/mt-moon"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/mt-moon</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/mondberg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/mt-moon"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/mt-moon"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-9</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-9"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-9"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-9"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-9</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-9"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-9"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-9"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-11</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-11"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-11"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-11"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-11</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-11"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-11"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-11"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/felstunnel</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/felstunnel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/rock-tunnel"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/rock-tunnel"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/rock-tunnel</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/felstunnel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/rock-tunnel"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/rock-tunnel"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-10</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-10"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-10"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-10"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-10</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-10"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-10"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-10"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-8</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-8"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-8"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-8"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-8</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-8"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-8"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-8"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/prismania-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/prismania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/celadon-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/celadon-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/celadon-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/prismania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/celadon-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/celadon-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/kraftwerk</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/kraftwerk"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/power-plant"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/power-plant"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/power-plant</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/kraftwerk"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/power-plant"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/power-plant"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-7</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-7"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-7"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-7"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-7</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-7"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-7"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-7"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-17</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-17"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-17"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-17"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-17</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-17"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-17"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-17"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/fuchsania-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/fuchsania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/fuchsia-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/fuchsia-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/fuchsia-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/fuchsania-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/fuchsia-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/fuchsia-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-18</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-18"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-18"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-18"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-18</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-18"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-18"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-18"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-12</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-12"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-12"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-12"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-12</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-12"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-12"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-12"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-16</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-16"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-16"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-16"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-16</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-16"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-16"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-16"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-19</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-19"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-19"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-19"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-19</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-19"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-19"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-19"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/safari-zone</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/safari-zone"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/safari-zone</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/safari-zone"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-14</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-14"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-14"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-14"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-14</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-14"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-14"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-14"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-13</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-13"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-13"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-13"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-13</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-13"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-13"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-13"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/pokemon-turm</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/pokemon-turm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/pokemon-tower"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/pokemon-tower"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/pokemon-tower</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/pokemon-turm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/pokemon-tower"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/pokemon-tower"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-15</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-15"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-15"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-15"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-15</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-15"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-15"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-15"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/seeschauminseln</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/seeschauminseln"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/seafoam-islands"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/seafoam-islands"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/seafoam-islands</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/seeschauminseln"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/seafoam-islands"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/seafoam-islands"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/zinnoberinsel</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/zinnoberinsel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/cinnabar-island"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/cinnabar-island"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/cinnabar-island</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/zinnoberinsel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/cinnabar-island"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/cinnabar-island"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-20</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-20"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-20"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-20"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-20</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-20"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-20"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-20"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/siegesstrasse</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/siegesstrasse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/victory-road"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/victory-road"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/victory-road</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/siegesstrasse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/victory-road"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/victory-road"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-21</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-21"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-21"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-21"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-21</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-21"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-21"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-21"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/route-23</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-23"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-23"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-23"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/route-23</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/route-23"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/route-23"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/route-23"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/kanto/saffronia-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/saffronia-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/saffron-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/saffron-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/kanto/saffron-city</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/kanto/saffronia-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/kanto/saffron-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/saffron-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/1</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/1"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/1"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/1</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/1"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/1"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/2</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/2"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/2"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/2</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/2"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/2"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/3</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/3"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/3"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/3"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/3</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/3"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/3"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/3"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/4</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/4"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/4"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/4"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/4</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/4"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/4"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/4"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/5</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/5"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/5"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/5"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/5</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/5"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/5"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/5"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/6</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/6"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/6"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/6"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/6</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/6"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/6"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/6"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/7</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/7"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/7"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/7"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/7</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/7"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/7"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/7"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/8</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/8"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/8"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/8"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/8</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/8"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/8"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/8"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/9</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/9"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/9"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/9"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/9</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/9"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/9"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/9"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/25</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/25"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/25"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/25"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/25</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/25"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/25"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/25"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/26</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/26"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/26"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/26"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/26</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/26"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/26"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/26"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/133</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/133"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/133"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/133"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/133</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/133"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/133"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/133"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/143</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/143"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/143"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/143"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/143</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/143"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/143"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/143"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/150</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/150"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/150"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/150"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/150</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/150"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/150"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/150"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/151</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/151"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/151"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/151"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/151</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/151"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/151"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/151"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/149</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/149"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/149"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/149"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/149</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/149"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/149"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/149"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/130</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/130"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/130"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/130"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/130</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/130"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/130"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/130"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/94</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/94"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/94"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/94"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/94</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/94"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/94"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/94"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/18</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/18"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/18"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/18"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/18</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/18"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/18"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/18"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/20</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/20"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/20"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/20"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/20</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/20"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/20"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/20"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/24</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/24"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/24"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/24"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/24</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/24"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/24"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/24"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/97</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/97"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/97"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/97"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/97</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/97"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/97"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/97"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/105</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/105"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/105"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/105"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/105</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/105"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/105"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/105"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/65</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/65"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/65"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/65"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/65</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/65"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/65"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/65"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokemon/112</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/112"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/112"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/112"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokemon/112</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/112"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokemon/112"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokemon/112"/>
   </url>
 </urlset>
