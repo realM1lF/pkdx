@@ -27,6 +27,9 @@ import SpriteMuseum from './detail/SpriteMuseum';
 import WhereToFind from './detail/WhereToFind';
 import type { RegionId } from '@/lib/regions';
 import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
+import { ROUTE_META } from '@/lib/seo';
+import { hasPokemonSeoSections } from '@/lib/seo-pilots';
+import PokemonSeoSections from './detail/PokemonSeoSections';
 import { Panel } from './detail/ui';
 import { typeRgb } from './detail/data';
 import './detail/detail.css';
@@ -80,8 +83,12 @@ export default function PokemonDetail() {
   }, [param]);
 
   useEffect(() => {
-    if (pokemon) document.title = `${nameOfPokemon(pokemon.id, lang)} — MyPokePanion`;
-  }, [pokemon, lang]);
+    if (!pokemon) return;
+    /* SEO pilot routes carry a registry title (src/lib/seo.ts) — keep it
+     * instead of overwriting with the generic "<name> — MyPokePanion". */
+    const seoTitle = ROUTE_META[`/pokemon/${param}`]?.title[lang];
+    document.title = seoTitle ?? `${nameOfPokemon(pokemon.id, lang)} — MyPokePanion`;
+  }, [pokemon, lang, param]);
 
   const types = useMemo(() => (pokemon ? pokemonTypes(pokemon) : []), [pokemon]);
   const primary = types[0] ?? 'normal';
@@ -164,6 +171,13 @@ export default function PokemonDetail() {
           <div className="dx-panel col-span-12 h-[300px] lg:col-span-7" />
           <div className="dx-panel col-span-12 h-[300px] lg:col-span-5" />
         </div>
+        {/* SEO pilot content renders even while PokéAPI data is in flight —
+            the static HTML always carries the Q&A + location tables */}
+        {hasPokemonSeoSections(param) && (
+          <div className="mt-4">
+            <PokemonSeoSections queryId={param} />
+          </div>
+        )}
       </div>
     );
   }
@@ -316,6 +330,13 @@ export default function PokemonDetail() {
       {pokemon.id >= 1 && pokemon.id <= MAX_DEX_ID && (
         <div className="mt-4">
           <PrevNextStrip id={pokemon.id} />
+        </div>
+      )}
+
+      {/* SEO pilot content below the dashboard (pilot: #25 Pikachu) */}
+      {hasPokemonSeoSections(param) && (
+        <div className="mt-4">
+          <PokemonSeoSections queryId={param} />
         </div>
       )}
       </>
