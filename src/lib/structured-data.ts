@@ -99,7 +99,7 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
   ];
   if (rest !== '/') {
     const homeName = lang === 'de' ? 'Startseite' : 'Home';
-    const crumbName = meta.title[lang].split(' — ')[0];
+    const crumbName = meta.title[lang].split(/\s+[—–]\s+/)[0];
     const trail: Array<{ name: string; url: string }> = [{ name: homeName, url: localePath(lang, '/') }];
     /* deeper trails for the SEO pilot pages (keeps parity with the visible
      * breadcrumb on /maps/kanto/route-1) */

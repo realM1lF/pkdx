@@ -1724,7 +1724,7 @@
         {
           "q": "Unterscheiden sich Feuerrot und Blattgrün auf Route 1?",
           "aLead": "Nein – auf Route 1 gibt es keinen Versionsunterschied.",
-          "aBody": "Taubsi und Rattfratz haben in beiden Editionen identische Raten (je 50 %) und Levelbereiche. Versions-exklusive Pokémon wie Fukano (nur FR) oder Smogon (nur BG) spielen erst auf späteren Routen eine Rolle."
+          "aBody": "Taubsi und Rattfratz haben in beiden Editionen identische Raten (je 50 %) und Levelbereiche. Versions-exklusive Pokémon wie Fukano (nur FR) oder Vulpix (nur BG) spielen erst auf späteren Routen eine Rolle."
         },
         {
           "q": "Was ist der beste erste Fang für eine Nuzlocke auf Route 1?",
@@ -1771,7 +1771,7 @@
         {
           "q": "Welche Attacken lernt Pikachu per Level?",
           "aLead": "Die Kern-Reihe in Feuerrot/Blattgrün:",
-          "aBody": "Donnerschock (Lv 1), Rutenschlag (6), Donnerwelle (8), Ruckzuckhieb (11), Doppelteam (15), Bodycheck (20), Donnerblitz (26), Agilität (33), Donner (41) und Lichtschild (50). Donnerwelle + Donnerblitz ist das Standard-Gerüst für den Story-Run."
+          "aBody": "Donnerschock (Lv 1), Rutenschlag (6), Donnerwelle (8), Ruckzuckhieb (11), Doppelteam (15), Slam (20), Donnerblitz (26), Agilität (33), Donner (41) und Lichtschild (50). Donnerwelle + Donnerblitz ist das Standard-Gerüst für den Story-Run."
         },
         {
           "q": "Ist Pikachu gut für eine Nuzlocke?",

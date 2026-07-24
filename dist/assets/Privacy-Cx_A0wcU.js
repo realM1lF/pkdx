@@ -1,0 +1,1 @@
+import{j as r}from"./index-BtW31a31.js";import{L as a}from"./LegalDocument-BhtN5AUj.js";function o(){return r.jsx(a,{"code-path":"src/pages/Privacy.tsx:4:10",page:"privacy"})}export{o as default};
