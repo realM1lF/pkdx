@@ -27,7 +27,7 @@ import SpriteMuseum from './detail/SpriteMuseum';
 import WhereToFind from './detail/WhereToFind';
 import type { RegionId } from '@/lib/regions';
 import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
-import { ROUTE_META } from '@/lib/seo';
+import { pokemonSeoMetaForParam } from '@/lib/seo';
 import { hasPokemonSeoSections } from '@/lib/seo-pilots';
 import PokemonSeoSections from './detail/PokemonSeoSections';
 import { Panel } from './detail/ui';
@@ -86,7 +86,7 @@ export default function PokemonDetail() {
     if (!pokemon) return;
     /* SEO pilot routes carry a registry title (src/lib/seo.ts) — keep it
      * instead of overwriting with the generic "<name> — MyPokePanion". */
-    const seoTitle = ROUTE_META[`/pokemon/${param}`]?.title[lang];
+    const seoTitle = pokemonSeoMetaForParam(param ?? '')?.title[lang];
     document.title = seoTitle ?? `${nameOfPokemon(pokemon.id, lang)} — MyPokePanion`;
   }, [pokemon, lang, param]);
 

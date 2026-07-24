@@ -21,6 +21,7 @@ import { Map as MapIcon, Swords, Users } from 'lucide-react';
 import { LocaleLink } from '@/lib/locale-link';
 import QaSection from '@/components/QaSection';
 import { resolveDexId } from '@/lib/seo-pilots';
+import PokemonSeoGeneric, { POKEMON_SEO_IDS } from './PokemonSeoGeneric';
 import { cn } from '@/lib/utils';
 
 /* ---------- shared bits ---------- */
@@ -166,6 +167,9 @@ function PikachuSeo() {
 
 export default function PokemonSeoSections({ queryId }: { queryId: string }) {
   const id = resolveDexId(queryId);
+  /* Pikachu keeps its curated pilot module; the other 24 curated Pokémon
+   * render the generated sections (PokemonSeoGeneric). */
   if (id === 25) return <PikachuSeo />;
+  if (id !== null && POKEMON_SEO_IDS.has(id)) return <PokemonSeoGeneric id={id} />;
   return null;
 }

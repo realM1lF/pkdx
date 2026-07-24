@@ -16,9 +16,15 @@ export function resolveDexId(queryId: string): number | null {
   return SLUG_TO_ID.get(q) ?? null;
 }
 
-const PILOT_IDS: ReadonlySet<number> = new Set([25]);
+/* SEO rollout 2: Pikachu (25) keeps its curated pilot module; the other 24
+ * render generated sections (src/pages/detail/PokemonSeoGeneric.tsx). Keep in
+ * sync with POKEMON_IDS in scripts/generate-pokemon-seo.mjs. */
+const PILOT_IDS: ReadonlySet<number> = new Set([
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 133, 143, 150, 151, 149, 130, 94, 18, 20,
+  24, 97, 105, 65, 112,
+]);
 
-/** True when the detail route param resolves to a pilot Pokémon with SEO sections. */
+/** True when the detail route param resolves to a Pokémon with SEO sections. */
 export function hasPokemonSeoSections(queryId: string): boolean {
   const id = resolveDexId(queryId);
   return id != null && PILOT_IDS.has(id);
