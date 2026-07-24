@@ -17,6 +17,7 @@ import PokeballLoader from '@/components/PokeballLoader';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
 import { aceSpeciesForNode, hasTrainersAtNode } from '@/lib/trainer-data';
+import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
 
 const METHOD_ICON: Record<MethodBucket, typeof Footprints> = {
   WALK: Footprints,
@@ -450,10 +451,11 @@ export default function DetailDrawer({
               {t('maps.planVersus')}
             </LocaleLink>
           )}
-          {/* SEO pilot: Route 1 has a prerendered content page below the map */}
-          {region.region === 'kanto' && node.id === 'kanto-route-1' && (
+          {/* SEO content page exists for every Kanto node with FRLG
+              encounter data (localized slug from the curated mapping) */}
+          {region.region === 'kanto' && ROUTE_PAGES.has(node.id) && (
             <LocaleLink
-              to="/maps/kanto/route-1"
+              to={routePagePath(lang, node.id)}
               className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />

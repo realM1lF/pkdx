@@ -15,6 +15,13 @@ import type { Lang } from './i18n-data';
 import { resolveTypeParam, typeName } from './seo-types';
 import { ITEMS_SEO, localizeItemPath, resolveItemParam } from './seo-items';
 import { localizeTypePath } from './seo-types';
+import { localizeRoutePath, resolveRouteParam, routeMetaGen } from './seo-routes-kanto';
+import META_GEN from '@/data/seo-meta-gen.json';
+
+const META_POKEMON = META_GEN.pokemon as unknown as Record<
+  string,
+  { nameDe: string; nameEn: string; locDe: string | null; locEn: string | null; topChance: number | null }
+>;
 
 export const SITE_NAME = 'MyPokePanion';
 export const SITE_URL = 'https://mypokepanion.com';
@@ -226,6 +233,60 @@ function itemDetailMeta(slug: string): RouteMeta {
   };
 }
 
+/** Generated meta: Kanto location pages (name + top encounter from the snapshot). */
+function kantoRouteMeta(nodeId: string): RouteMeta {
+  const m = routeMetaGen(nodeId);
+  const nameDe = m?.nameDe ?? nodeId;
+  const nameEn = m?.nameEn ?? nodeId;
+  const topDe = m?.topNameDe ?? '';
+  const topEn = m?.topNameEn ?? '';
+  return {
+    title: {
+      de: `${nameDe} (Kanto) – Pokémon & Fundorte in Feuerrot/Blattgrün`,
+      en: `${nameEn} (Kanto) – Pokémon & Locations in FireRed/LeafGreen`,
+    },
+    description: {
+      de: `Alle Pokémon auf ${nameDe} in Feuerrot/Blattgrün: ${m?.speciesCount ?? ''} Arten mit Fangraten und Levels${topDe ? ` — häufigster Fang: ${topDe}` : ''}. Dazu Items, Trainer und die Unterschiede zwischen beiden Editionen.`,
+      en: `Every Pokémon on ${nameEn} in FireRed/LeafGreen: ${m?.speciesCount ?? ''} species with catch rates and levels${topEn ? ` — most common: ${topEn}` : ''}. Plus items, trainers and the differences between the two versions.`,
+    },
+    ogType: 'article',
+  };
+}
+
+/** Generated meta for the 25 curated Pokémon detail pages. */
+function pokemonSeoMeta(id: number): RouteMeta {
+  const m = META_POKEMON[String(id)];
+  const nameDe = m?.nameDe ?? `#${id}`;
+  const nameEn = m?.nameEn ?? `#${id}`;
+  return {
+    title: {
+      de: `${nameDe} #${id} – Fundorte, Schwächen & Entwicklung (Feuerrot/Blattgrün)`,
+      en: `${nameEn} #${id} – Locations, Weaknesses & Evolution (FireRed/LeafGreen)`,
+    },
+    description: {
+      de: m?.locDe
+        ? `${nameDe} in Feuerrot/Blattgrün: Fundorte (u. a. ${m.locDe}${m.topChance ? ` ${m.topChance} %` : ''}), Schwächen & Resistenzen aus der Typentabelle, Entwicklung und Antworten auf die häufigsten Fragen.`
+        : `${nameDe} in Feuerrot/Blattgrün: Schwächen & Resistenzen aus der Typentabelle, Entwicklung, Verfügbarkeit und Antworten auf die häufigsten Fragen.`,
+      en: m?.locEn
+        ? `${nameEn} in FireRed/LeafGreen: locations (incl. ${m.locEn}${m.topChance ? ` ${m.topChance}%` : ''}), weaknesses & resistances from the type chart, evolution and answers to common questions.`
+        : `${nameEn} in FireRed/LeafGreen: weaknesses & resistances from the type chart, evolution, availability and answers to common questions.`,
+    },
+    ogType: 'article',
+  };
+}
+
+/**
+ * Pokémon detail meta ONLY when the id carries SEO content (curated pilot
+ * ROUTE_META or a generated entry for the 25 rollout Pokémon) — null for
+ * every other dex id, so callers keep their generic title fallback.
+ */
+export function pokemonSeoMetaForParam(param: string): RouteMeta | null {
+  const key = `/pokemon/${param}`;
+  if (ROUTE_META[key]) return ROUTE_META[key];
+  if (/^\d+$/.test(param) && META_POKEMON[param]) return pokemonSeoMeta(Number(param));
+  return null;
+}
+
 /** Registry lookup for a locale-stripped app path; falls back to the default. */
 export function metaForPath(rest: string): RouteMeta {
   const key = rest === '' ? '/' : rest;
@@ -241,6 +302,16 @@ export function metaForPath(rest: string): RouteMeta {
     const slug = resolveItemParam(itemMatch[1]);
     if (slug) return itemDetailMeta(slug);
   }
+  const kantoMatch = key.match(/^\/maps\/kanto\/([^/]+)$/);
+  if (kantoMatch) {
+    const nodeId = resolveRouteParam(kantoMatch[1]);
+    if (nodeId) return kantoRouteMeta(nodeId);
+  }
+  const pokemonMatch = key.match(/^\/pokemon\/(\d+)$/);
+  if (pokemonMatch) {
+    const id = Number(pokemonMatch[1]);
+    if (META_POKEMON[String(id)]) return pokemonSeoMeta(id);
+  }
   return DEFAULT_META;
 }
 
@@ -250,7 +321,7 @@ export function metaForPath(rest: string): RouteMeta {
  * so canonical + hreflang URLs must translate the rest path per locale.
  */
 export function restForLang(rest: string, lang: Lang): string {
-  return localizeItemPath(localizeTypePath(rest, lang), lang);
+  return localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang);
 }
 
 /** Absolute canonical URL for a route + locale. */

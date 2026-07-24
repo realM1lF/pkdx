@@ -9,6 +9,7 @@ import { localePath } from './locale-link';
 import type { Lang } from './i18n-data';
 import { resolveTypeParam, typeName, typeOverviewPath } from './seo-types';
 import { ITEMS_SEO, resolveItemParam } from './seo-items';
+import { resolveRouteParam, routeNodeName } from './seo-routes-kanto';
 
 type JsonLd = Record<string, unknown>;
 
@@ -103,12 +104,14 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
     const homeName = lang === 'de' ? 'Startseite' : 'Home';
     const crumbName = meta.title[lang].split(/\s+[—–]\s+/)[0];
     const trail: Array<{ name: string; url: string }> = [{ name: homeName, url: localePath(lang, '/') }];
-    /* deeper trails for the SEO pilot pages (keeps parity with the visible
-     * breadcrumb on /maps/kanto/route-1) */
-    if (rest === '/maps/kanto/route-1') {
+    /* deeper trails for the SEO location pages (keeps parity with the
+     * visible breadcrumb on /maps/kanto/:slug) */
+    const kantoMatch = rest.match(/^\/maps\/kanto\/([^/]+)$/);
+    if (kantoMatch && resolveRouteParam(kantoMatch[1])) {
+      const nodeId = resolveRouteParam(kantoMatch[1]) as string;
       trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
       trail.push({ name: 'Kanto', url: localePath(lang, '/maps/kanto') });
-      trail.push({ name: 'Route 1', url: localePath(lang, rest) });
+      trail.push({ name: routeNodeName(nodeId, lang), url: localePath(lang, restForLang(rest, lang)) });
     } else if (rest === '/typen' || rest === '/types') {
       trail.push({ name: crumbName, url: localePath(lang, restForLang(rest, lang)) });
     } else if (/^\/(typen|types)\/[^/]+$/.test(rest)) {
