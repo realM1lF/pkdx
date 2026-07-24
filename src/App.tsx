@@ -35,6 +35,7 @@ const Pokedex = lazyWithReload(() => import('./pages/Pokedex'));
 const PokemonDetail = lazyWithReload(() => import('./pages/PokemonDetail'));
 const Maps = lazyWithReload(() => import('./pages/Maps'));
 const MapRegion = lazyWithReload(() => import('./pages/MapRegion'));
+const Route1Page = lazyWithReload(() => import('./pages/maps/Route1Page'));
 const Nuzlocke = lazyWithReload(() => import('./pages/Nuzlocke'));
 const NuzlockeRun = lazyWithReload(() => import('./pages/NuzlockeRun'));
 const TeamBuilder = lazyWithReload(() => import('./pages/TeamBuilder'));
@@ -72,6 +73,8 @@ export default function App() {
                 <Route path="pokedex" element={<Pokedex />} />
                 <Route path="pokemon/:id" element={<PokemonDetail />} />
                 <Route path="maps" element={<Maps />} />
+                {/* static content route outranks maps/:region (React Router ranking) */}
+                <Route path="maps/kanto/route-1" element={<Route1Page />} />
                 <Route path="maps/:region" element={<MapRegion />} />
                 <Route path="nuzlocke" element={<Nuzlocke />} />
                 <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />

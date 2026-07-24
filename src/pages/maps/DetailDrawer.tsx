@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
-import { ChevronRight, Fish, Footprints, Sparkles, Swords, Waves, X } from 'lucide-react';
+import { ChevronRight, ExternalLink, Fish, Footprints, Sparkles, Swords, Waves, X } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, nodeIndex, nodeName, regionName, versionLabel } from '@/lib/regions';
 import { nameOfItem, nameOfPokemon, nameOfPocket, useLanguage } from '@/lib/i18n-data';
@@ -448,6 +448,16 @@ export default function DetailDrawer({
             >
               <Swords size={12} />
               {t('maps.planVersus')}
+            </LocaleLink>
+          )}
+          {/* SEO pilot: Route 1 has a prerendered content page below the map */}
+          {region.region === 'kanto' && node.id === 'kanto-route-1' && (
+            <LocaleLink
+              to="/maps/kanto/route-1"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline px-3 text-[11px] font-semibold text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
+            >
+              <ExternalLink size={12} />
+              {t('maps.openAsPage')}
             </LocaleLink>
           )}
         </div>

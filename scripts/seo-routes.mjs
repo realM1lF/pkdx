@@ -11,6 +11,8 @@ export const STATIC_ROUTES = [
   '/pokedex',
   '/items',
   '/maps',
+  '/maps/kanto/route-1',
+  '/pokemon/25',
   '/nuzlocke',
   '/team',
   '/versus',

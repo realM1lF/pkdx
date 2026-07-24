@@ -100,13 +100,20 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
   if (rest !== '/') {
     const homeName = lang === 'de' ? 'Startseite' : 'Home';
     const crumbName = meta.title[lang].split(' — ')[0];
-    blocks.push({
-      id: 'breadcrumb',
-      data: breadcrumbSchema([
-        { name: homeName, url: localePath(lang, '/') },
-        { name: crumbName, url: localePath(lang, rest) },
-      ]),
-    });
+    const trail: Array<{ name: string; url: string }> = [{ name: homeName, url: localePath(lang, '/') }];
+    /* deeper trails for the SEO pilot pages (keeps parity with the visible
+     * breadcrumb on /maps/kanto/route-1) */
+    if (rest === '/maps/kanto/route-1') {
+      trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
+      trail.push({ name: 'Kanto', url: localePath(lang, '/maps/kanto') });
+      trail.push({ name: 'Route 1', url: localePath(lang, rest) });
+    } else if (rest.startsWith('/pokemon/')) {
+      trail.push({ name: 'Pokédex', url: localePath(lang, '/pokedex') });
+      trail.push({ name: crumbName, url: localePath(lang, rest) });
+    } else {
+      trail.push({ name: crumbName, url: localePath(lang, rest) });
+    }
+    blocks.push({ id: 'breadcrumb', data: breadcrumbSchema(trail) });
   }
   const app = softwareApplicationSchema(rest, lang);
   if (app) blocks.push({ id: 'software-application', data: app });

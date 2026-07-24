@@ -71,6 +71,28 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Interactive maps of the Pokémon regions: routes, locations and encounter tables — see which Pokémon appears where, including Nuzlocke-relevant encounters.',
     },
   },
+  '/maps/kanto/route-1': {
+    title: {
+      de: 'Route 1 (Kanto) – Pokémon & Fundorte in Feuerrot/Blattgrün',
+      en: 'Route 1 (Kanto) – Pokémon & Locations in FireRed/LeafGreen',
+    },
+    description: {
+      de: 'Alle Pokémon auf Route 1 in Feuerrot/Blattgrün: Taubsi & Rattfratz mit Fangraten, Levels, Items, Best-Catch-Tipp und Nuzlocke-Hinweisen.',
+      en: 'Every Pokémon on Kanto Route 1 in FireRed/LeafGreen: Pidgey & Rattata catch rates, levels, items, best-catch advice and Nuzlocke notes.',
+    },
+    ogType: 'article',
+  },
+  '/pokemon/25': {
+    title: {
+      de: 'Pikachu #25 – Fundorte, Attacken & Entwicklung (Feuerrot/Blattgrün)',
+      en: 'Pikachu #25 – Locations, Moves & Evolution (FireRed/LeafGreen)',
+    },
+    description: {
+      de: 'Pikachu in Feuerrot/Blattgrün: Fundorte (Vertania-Wald 5 %, Kraftwerk 25 %), Level-Attacken, Entwicklung zu Raichu und Antworten auf die häufigsten Fragen.',
+      en: 'Pikachu in FireRed/LeafGreen: locations (Viridian Forest 5%, Power Plant 25%), level-up moves, evolution to Raichu and answers to common questions.',
+    },
+    ogType: 'article',
+  },
   '/nuzlocke': {
     title: {
       de: 'Nuzlocke-Tracker — Runs planen, Encounters & Tode tracken',
