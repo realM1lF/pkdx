@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://mypokepanion.com/de</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/pokedex</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokedex"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokedex"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokedex"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/pokedex</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokedex"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/pokedex"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/pokedex"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/items</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/items"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/items"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/items"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/items</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/items"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/items"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/items"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/nuzlocke</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/nuzlocke"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/nuzlocke"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/nuzlocke"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/nuzlocke</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/nuzlocke"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/nuzlocke"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/nuzlocke"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/team</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/team"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/team"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/team"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/team</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/team"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/team"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/team"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/versus</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/versus"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/versus"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/versus"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/versus</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/versus"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/versus"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/versus"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/about</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/about"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/about</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/about"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/feedback</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/feedback"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/feedback"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/feedback"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/feedback</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/feedback"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/feedback"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/feedback"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/support</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/support"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/support"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/support"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/support</loc>
+    <lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/support"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/support"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/support"/>
+  </url>
+</urlset>
