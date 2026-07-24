@@ -2,7 +2,7 @@
  * Shared matchup components reused by Nuzlocke VersusTab.
  * Head-to-head · STAT DELTA · SPEED CHECK · damage matrix · defensive profiles.
  * Gen-aware math from @/lib/versus. */
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router';
@@ -69,6 +69,9 @@ import { typeRgb } from './data';
 import TrainerPicker from './TrainerPicker';
 import { Panel, SegmentedControl } from './ui';
 import './versus.css';
+
+/* lazy battle arena — keeps @pkmn/sim out of the main bundle (async chunk) */
+const BattleView = lazy(() => import('./BattleView'));
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const CAT_COLORS: Record<string, string> = { physical: '#FB923C', special: '#38BDF8', status: '#A8B3C7' };
@@ -1466,6 +1469,40 @@ export default function VersusPanel({
 
   const trainers = trainersForRegion(trainerRegion);
 
+  /* ----- 1:1 micro-battle (lazy arena, takes over the current versus state) ----- */
+  const [battleOpen, setBattleOpen] = useState(false);
+
+  const battleInputOf = useCallback(
+    (pokemon: Pokemon, side: SideState) => {
+      const chosen = side.slots.filter(Boolean);
+      return {
+        pokemonId: pokemon.id,
+        displayName: nameOfPokemon(pokemon.id, lang),
+        setup: {
+          species: pokemon.name,
+          level: side.level,
+          // same defaults the versus view resolves when slots are empty
+          moves: chosen.length ? chosen : resolveDefaultSet(pokemon, side.level, details, ctx).moves,
+          item: side.item ?? null,
+          ability: side.ability ?? null,
+          nature: side.nature ?? null,
+          evs: side.evs,
+          status: side.status && side.status !== 'none' ? side.status : null,
+        },
+      };
+    },
+    [lang, details, ctx],
+  );
+
+  const battleYou = useMemo(
+    () => (youPokemon ? battleInputOf(youPokemon, you) : null),
+    [youPokemon, you, battleInputOf],
+  );
+  const battleFoe = useMemo(
+    () => (foePokemon ? battleInputOf(foePokemon, foe) : null),
+    [foePokemon, foe, battleInputOf],
+  );
+
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* ---------- toolbar: game + field + calc badge ---------- */}
@@ -1486,6 +1523,16 @@ export default function VersusPanel({
             {t('versus.calcBadge', { gen: ctx.gen, label: ctxLabel(ctx, t) })}
           </span>
         )}
+        <button
+          type="button"
+          onClick={() => setBattleOpen(true)}
+          disabled={!youPokemon || !foePokemon}
+          title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : undefined}
+          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[9px] font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <Swords size={10} />
+          {t('versus.battle.startButton')}
+        </button>
         <button
           type="button"
           onClick={addToTeam}
@@ -1666,6 +1713,27 @@ export default function VersusPanel({
           />
         )}
       </Panel>
+
+      {/* ---------- 1:1 battle arena (lazy — engine loads on demand) ---------- */}
+      {battleOpen && battleYou && battleFoe && (
+        <div className="col-span-12">
+          <Suspense
+            fallback={
+              <div className="dx-panel flex items-center justify-center p-8">
+                <PokeballLoader variant="inline" />
+              </div>
+            }
+          >
+            <BattleView
+              player={battleYou}
+              foe={battleFoe}
+              ctx={ctx}
+              field={fieldForContext(field, ctx)}
+              onExit={() => setBattleOpen(false)}
+            />
+          </Suspense>
+        </div>
+      )}
 
       {/* ---------- speed check ---------- */}
       <div className="col-span-12">
