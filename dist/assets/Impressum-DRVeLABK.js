@@ -1,1 +1,0 @@
-import{j as s}from"./index-YzS9slVj.js";import{L as e}from"./LegalDocument-DoPPs3CM.js";function t(){return s.jsx(e,{"code-path":"src/pages/Impressum.tsx:4:10",page:"impressum"})}export{t as default};
