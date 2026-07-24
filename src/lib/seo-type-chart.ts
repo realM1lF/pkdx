@@ -106,6 +106,35 @@ export function exampleMultiplier(example: { types: string[]; counter: string })
   return effectivenessOf(example.counter, example.types, 9);
 }
 
+/**
+ * Number of Pokémon per type as of Gen 9 — Bulbapedia counting method
+ * ("Pokémon that are <type>-type in at least one of their forms, including
+ * Mega Evolutions and regional forms"). Computed from @pkmn/dex: per dex
+ * number (≤ 1025, CAP/Custom/LGPE/Future excluded) the UNION of types across
+ * all formes, one vote per species. Cross-checked against Bulbapedia's
+ * Gen-IX type pages (e.g. Dark 84, Poison 89, Water ~160).
+ */
+export const TYPE_SPECIES_COUNT: Record<string, number> = {
+  normal: 133,
+  fire: 89,
+  water: 161,
+  electric: 75,
+  grass: 132,
+  ice: 60,
+  fighting: 84,
+  poison: 89,
+  ground: 79,
+  flying: 114,
+  psychic: 111,
+  bug: 94,
+  rock: 80,
+  ghost: 75,
+  dragon: 77,
+  dark: 84,
+  steel: 79,
+  fairy: 71,
+};
+
 /** Attack-rating inputs for the "is X a good offensive type?" answer. */
 export interface AttackRating {
   targets2x: number;

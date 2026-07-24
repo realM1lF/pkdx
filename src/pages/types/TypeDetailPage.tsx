@@ -19,6 +19,7 @@ import {
   defenseProfile,
   exampleMultiplier,
   offenseProfile,
+  TYPE_SPECIES_COUNT,
 } from '@/lib/seo-type-chart';
 import { resolveTypeParam, typeName, typeOverviewPath } from '@/lib/seo-types';
 import { TypeChip, TypeChipRow } from './TypeChips';
@@ -81,6 +82,7 @@ export default function TypeDetailPage() {
   const rating = attackRating(slug);
   const example = COUNTER_EXAMPLES[slug];
   const exampleMult = exampleMultiplier(example);
+  const exampleIsDual = example.types.length > 1;
   const exampleName = nameOfPokemon(example.pokemonId, lang);
   const multLabel = (m: number) => (m === 0 ? '×0' : m === 0.5 ? '×½' : m === 2 ? '×2' : m === 4 ? '×4' : `×${m}`);
 
@@ -95,7 +97,7 @@ export default function TypeDetailPage() {
     {
       q: t('seo.type.qa1q', { name }),
       lead: t('seo.type.qa1lead', { name, counters: names(defense.weak) }),
-      body: t('seo.type.qa1body', {
+      body: t(exampleIsDual ? 'seo.type.qa1body' : 'seo.type.qa1bodyMono', {
         example: exampleName,
         types: names(example.types),
         mult: multLabel(exampleMult),
@@ -124,7 +126,7 @@ export default function TypeDetailPage() {
     },
     {
       q: t('seo.type.qa4q', { name }),
-      lead: t('seo.type.qa4lead', { name }),
+      lead: t('seo.type.qa4lead', { name, count: TYPE_SPECIES_COUNT[slug] }),
       body: t('seo.type.qa4body', { name }),
     },
     {
@@ -231,7 +233,7 @@ export default function TypeDetailPage() {
                 <strong className="font-semibold text-tx-primary">
                   {t('seo.type.exampleLead', { example: exampleName, mult: multLabel(exampleMult) })}
                 </strong>{' '}
-                {t('seo.type.exampleBody', {
+                {t(exampleIsDual ? 'seo.type.exampleBody' : 'seo.type.exampleBodyMono', {
                   example: exampleName,
                   types: names(example.types),
                   counter: typeName(example.counter, lang),

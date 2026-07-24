@@ -201,14 +201,24 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang) {
   return useMemo(() => {
     const frRows = (data.versions.firered ?? []).flatMap((g) => g.rows);
     const lgRows = (data.versions.leafgreen ?? []).flatMap((g) => g.rows);
+    /* static gift/bought encounters (e.g. the Magikarp salesman on Route 3)
+     * are excluded from the "most common / rarest catch" math — only wild
+     * grass/surf/fish encounters count there */
+    const frWildRows = frRows.filter((r) => !r.isStatic);
     const species = new Map<number, number>();
     for (const r of frRows) species.set(r.id, Math.max(species.get(r.id) ?? 0, r.chance));
+    const wildSpecies = new Map<number, number>();
+    for (const r of frWildRows) wildSpecies.set(r.id, Math.max(wildSpecies.get(r.id) ?? 0, r.chance));
 
     /* top 3 + rarest (FireRed rates) for the "what can you catch" answer */
-    const sorted = [...species.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
+    const sorted = [...wildSpecies.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
     const fmt = ([id, chance]: [number, number]) => `${pokeName(id, lang)} (${chance} %)`;
     const top3 = sorted.slice(0, 3).map(fmt).join(', ');
-    const rarest = sorted.length ? fmt(sorted[sorted.length - 1]) : '';
+    /* rarest: name ALL species tied at the minimum chance (cap at 3) */
+    const minChance = sorted.length ? sorted[sorted.length - 1][1] : null;
+    const rarestTied = minChance === null ? [] : sorted.filter(([, c]) => c === minChance);
+    const rarest = rarestTied.slice(0, 3).map(fmt).join(', ');
+    const rarestIsTie = rarestTied.length > 1;
 
     /* version diff: per species, best chance per version */
     const lgSpecies = new Map<number, number>();
@@ -246,7 +256,7 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang) {
       .map((n) => (lang === 'de' ? n.nameDe ?? n.label : n.label))
       .slice(0, 3);
 
-    return { speciesCount: sorted.length, top3, rarest, diffs, best, items, itemNames, neighbors };
+    return { speciesCount: species.size, top3, rarest, rarestIsTie, diffs, best, items, itemNames, neighbors };
   }, [nodeId, data, lang, t]);
 }
 
@@ -313,7 +323,10 @@ export default function RoutePage() {
           <strong className="font-semibold text-tx-primary">
             {t('seo.route.qaCatchLead', { count: computed.speciesCount })}
           </strong>{' '}
-          {t('seo.route.qaCatchBody', { top: computed.top3, rare: computed.rarest })}
+          {t(computed.rarestIsTie ? 'seo.route.qaCatchBodyTie' : 'seo.route.qaCatchBody', {
+            top: computed.top3,
+            rare: computed.rarest,
+          })}
         </p>
       ),
     });

@@ -1756,7 +1756,7 @@
         {
           "q": "Gegen was ist Pikachu schwach?",
           "aLead": "Nur gegen Boden – 2× Schaden.",
-          "aBody": "Als reiner Elektro-Typ hat Pikachu genau eine Schwäche (Boden) und drei Resistenzen: Elektro, Flug und Stahl je 0,5×. Immunitäten gibt es nicht; die versteckte Fähigkeit Blitzfänger macht Elektro-Attacken zusätzlich wirkungslos."
+          "aBody": "Als reiner Elektro-Typ hat Pikachu genau eine Schwäche (Boden) und drei Resistenzen: Elektro, Flug und Stahl je 0,5×. Immunitäten gibt es nicht – die versteckte Fähigkeit Blitzfänger, die Elektro-Attacken zusätzlich wirkungslos macht, existiert übrigens erst ab Gen 5; in FR/BG spielt sie noch keine Rolle."
         },
         {
           "q": "Wie entwickelt sich Pikachu?",
@@ -1843,12 +1843,14 @@
       "counterReasonNeutral": "trifft ×2, kassiert aber auch vollen {{name}}-Schaden zurück.",
       "exampleLead": "{{example}} kassiert {{mult}}-Schaden.",
       "exampleBody": "{{example}} ist {{types}} – die Schwächen beider Typen multiplizieren sich. Genau deshalb ist {{counter}} die Antwort, wenn {{example}} auf dem Feld steht.",
+      "exampleBodyMono": "{{example}} ist ein reines {{types}}-Pokémon – {{counter}}-Attacken treffen es mit {{mult}}. Genau deshalb ist {{counter}} die Antwort, wenn {{example}} auf dem Feld steht.",
       "deepLinksEyebrow": "DIREKT TESTEN",
       "versusCta": "{{example}} im Versus-Calc testen",
       "pokedexCta": "Alle {{name}}-Pokémon im Pokédex",
       "qa1q": "Was ist effektiv gegen {{name}}?",
       "qa1lead": "Effektiv gegen {{name}} sind: {{counters}}.",
       "qa1body": "Das berühmteste Opfer: {{example}} ({{types}}) kassiert durch die Doppeltyp-Kombination satte {{mult}}-Schaden von {{counter}}-Attacken – ein Treffer reicht oft.",
+      "qa1bodyMono": "Das berühmteste Opfer: {{example}} ({{types}}) kassiert {{mult}}-Schaden von {{counter}}-Attacken – ein Treffer reicht oft.",
       "qa2q": "Gegen was ist {{name}} schwach?",
       "qa2lead": "{{name}} hat {{n}} Schwächen: {{weak}}.",
       "qa2body": "Resistiert werden dagegen: {{resist}}. Wenn du mit {{name}} defensiv spielst, plane genau diese Matchups ein.",
@@ -1858,7 +1860,7 @@
       "qa3body": "Immun ist niemand – {{name}} trifft also immer wenigstens neutral. Richtig weh tust du {{se}}.",
       "qa3bodyImmune": "Komplett wirkungslos sind {{name}}-Attacken gegen {{zero}} – in dem Matchup brauchst du Coverage. Richtig weh tust du dagegen {{se}}.",
       "qa4q": "Welche Pokémon sind {{name}}?",
-      "qa4lead": "Über 100 Pokémon tragen den {{name}}-Typ – pur oder in Kombination.",
+      "qa4lead": "{{count}} Pokémon tragen den {{name}}-Typ – pur, in Kombination oder über eine Form (Stand Gen 9, inkl. Mega- und Regionalformen).",
       "qa4body": "Die komplette Liste mit Filtern findest du im Pokédex: oben den {{name}}-Filter aktivieren und du siehst jede Art mit Stats, Fundorten und Movesets.",
       "qa5q": "Ist {{name}} ein guter Angriffstyp?",
       "qa5lead_excellent": "Ja – {{name}} ist einer der besten Angriffstypen überhaupt.",
@@ -1947,7 +1949,7 @@
         "verdictLead": "Der flexiblere Bruder des Wahlbandes.",
         "verdict": "+30 % Schaden auf ALLE Attacken, dafür 10 % max. KP Abzug pro Angriff. Du darfst jederzeit die Attacke wechseln – genau das unterscheidet ihn vom Wahlband. Im direkten Vergleich: Wahlband boostet mehr und kostet keine KP, der Leben-Orb hält dich wendig. Für die Story und lange Kämpfe ist der Orb meist die entspanntere Wahl."
       },
-      "evolith": {
+      "eviolite": {
         "verdictLead": "Macht NFE-Pokémon zu Panzern.",
         "verdict": "×1,5 auf Verteidigung UND Spezial-Verteidigung, solange sich das Pokémon noch entwickeln kann – damit werden Vorentwicklungen wie Porygon2 oder Chaneira plötzlich bulkiger als ihre fertigen Formen. Die ehrliche Antwort auf „Evolith oder weiterentwickeln?“: In den meisten Fällen lohnt sich die Entwicklung mehr – aber bei den wenigen Evolith-Aces ist der Stein konkurrenzlos stark."
       },
@@ -2063,8 +2065,10 @@
       "linksEyebrow": "WEITER",
       "openMapCta": "{{name}} in der interaktiven Map",
       "qaCatchQ": "Welche Pokémon kann man auf {{name}} fangen?",
-      "qaCatchLead": "{{count}} Arten.",
+      "qaCatchLead_one": "{{count}} Art.",
+      "qaCatchLead_other": "{{count}} Arten.",
       "qaCatchBody": "Am häufigsten tauchen {{top}} auf. Der seltenste Fang ist {{rare}}. Alle Raten sind die Summe der Encounter-Slots aus der PokéAPI (Feuerrot).",
+      "qaCatchBodyTie": "Am häufigsten tauchen {{top}} auf. Zu den seltensten Fängen gehören {{rare}}. Alle Raten sind die Summe der Encounter-Slots aus der PokéAPI (Feuerrot).",
       "qaDiffQ": "Feuerrot vs. Blattgrün — Unterschiede auf {{name}}?",
       "qaDiffLeadYes": "Ja, es gibt Unterschiede.",
       "qaDiffBodyYes": "Auf {{name}} unterscheiden sich die Editionen so: {{details}}",
@@ -2075,7 +2079,8 @@
       "diffRate": "{{pokemon}}: {{fr}} % (FR) vs. {{lg}} % (BG)",
       "qaItemsQ": "Gibt es Items auf {{name}}?",
       "qaItemsLeadYes": "Ja.",
-      "qaItemsBodyYes": "Auf {{name}} findest du {{count}} Items: {{list}}.",
+      "qaItemsBodyYes_one": "Auf {{name}} findest du {{count}} Item: {{list}}.",
+      "qaItemsBodyYes_other": "Auf {{name}} findest du {{count}} Items: {{list}}.",
       "qaItemsLeadNo": "Nein.",
       "qaItemsBodyNo": "Auf {{name}} sind keine Items verteilt oder versteckt.",
       "qaBestQ": "Was ist der beste Fang auf {{name}}?",
@@ -2125,7 +2130,9 @@
       "qaWhereLead": "Fundorte: {{list}}.",
       "qaWhereBody": "Mehr gibt es nicht — {{name}} ist in FR/BG auf diese Orte beschränkt. Die Kartenansicht mit allen Arealen findest du in den interaktiven Maps.",
       "qaWhereLeadNone": "Gar nicht wild.",
-      "qaWhereBodyNone": "{{name}} ist in Feuerrot/Blattgrün nicht im Gras, beim Surfen oder Angeln fangbar — nur per Event oder Tausch aus anderen Editionen.",
+      "qaWhereBodyNone": "{{name}} ist in Feuerrot/Blattgrün nicht im Gras, beim Surfen oder Angeln fangbar.",
+      "qaWhereBodyEvo": "{{name}} ist in Feuerrot/Blattgrün nicht wild fangbar — du erhältst es nur durch Entwicklung: {{path}}.",
+      "qaWhereBodyEvent": "{{name}} ist in Feuerrot/Blattgrün weder fangbar noch durch Entwicklung erhältlich — nur per Event oder Tausch aus anderen Editionen.",
       "qaNuzQ": "Ist {{name}} gut für eine Nuzlocke?",
       "qaTimingQ": "Wann sollte ich {{name}} entwickeln?",
       "qaNuzLead": "Einschätzung:",

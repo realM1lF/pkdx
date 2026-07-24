@@ -141,7 +141,7 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
 
   /* FRLG evolution steps (no day/night cycle in FRLG → time-gated steps out) */
   const evoSteps = entry.evo.filter((s) => !s.timeOfDay);
-  const evoSentences = evoSteps.map((s) => {
+  const evoSentence = (s: EvoStep) => {
     const from = pokeName(s.from, lang);
     const to = pokeName(s.to, lang);
     if (s.trigger === 'use-item' && s.item)
@@ -150,8 +150,19 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
     if (s.minHappiness) return t('seo.pkmn.evoStepFriendship', { from, to });
     if (s.minLevel) return t('seo.pkmn.evoStepLevel', { from, to, level: s.minLevel });
     return null;
-  });
+  };
+  const evoSentences = evoSteps.map(evoSentence);
   const evoText = [...new Set(evoSentences.filter(Boolean))].join('; ') + (evoSentences.length ? '.' : '');
+
+  /* No wild encounter → WHY: evolution path (direct predecessor step, e.g.
+   * Charizard ← Charmeleon at 36) or genuinely event-only (Mew #151). */
+  const incomingEvo = evoSteps.filter((s) => s.to === id).map(evoSentence).filter(Boolean).join('; ');
+  const whereNoneBody =
+    id === 151
+      ? t('seo.pkmn.qaWhereBodyEvent', { name })
+      : incomingEvo
+        ? t('seo.pkmn.qaWhereBodyEvo', { name, path: incomingEvo })
+        : t('seo.pkmn.qaWhereBodyNone', { name });
 
   const weakText = matchups.weak
     .map((w) => `${typeName(w.type, lang)}${w.mult >= 4 ? ' (×4)' : ' (×2)'}`)
@@ -202,7 +213,7 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
       ) : (
         <p>
           <strong className="font-semibold text-tx-primary">{t('seo.pkmn.qaWhereLeadNone')}</strong>{' '}
-          {t('seo.pkmn.qaWhereBodyNone', { name })}
+          {whereNoneBody}
         </p>
       ),
     },
@@ -287,9 +298,7 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
             })}
           </>
         ) : (
-          <p className="px-4 py-3 font-sans text-[12px] text-tx-secondary sm:px-5">
-            {t('seo.pkmn.qaWhereBodyNone', { name })}
-          </p>
+          <p className="px-4 py-3 font-sans text-[12px] text-tx-secondary sm:px-5">{whereNoneBody}</p>
         )}
         <p className="px-4 py-2.5 text-[11px] font-medium text-tx-muted sm:px-5">
           {t('seo.pkmn.whereNote')}{' '}

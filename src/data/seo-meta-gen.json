@@ -71,10 +71,10 @@
    "slugEn": "route-3",
    "nameDe": "Route 3",
    "nameEn": "Route 3",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
+   "topId": 21,
+   "topNameDe": "Habitak",
+   "topNameEn": "Spearow",
+   "topChance": 35,
    "speciesCount": 7
   },
   "kanto-route-22": {
@@ -258,10 +258,10 @@
    "slugEn": "power-plant",
    "nameDe": "Kraftwerk",
    "nameEn": "Power Plant",
-   "topId": 101,
-   "topNameDe": "Lektrobal",
-   "topNameEn": "Electrode",
-   "topChance": 200,
+   "topId": 81,
+   "topNameDe": "Magnetilo",
+   "topNameEn": "Magnemite",
+   "topChance": 30,
    "speciesCount": 7
   },
   "kanto-route-7": {
@@ -467,10 +467,10 @@
    "slugEn": "saffron-city",
    "nameDe": "Saffronia City",
    "nameEn": "Saffron City",
-   "topId": 106,
-   "topNameDe": "Kicklee",
-   "topNameEn": "Hitmonlee",
-   "topChance": 100,
+   "topId": null,
+   "topNameDe": null,
+   "topNameEn": null,
+   "topChance": null,
    "speciesCount": 3
   }
  },

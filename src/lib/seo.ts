@@ -44,8 +44,8 @@ const DEFAULT_META: RouteMeta = {
     en: 'MyPokePanion — Interactive Pokédex, Team Builder & Nuzlocke Tracker',
   },
   description: {
-    de: 'Ein lebendiger, interaktiver Pokédex: alle 1.025 Pokémon, 18 Typen, 9 Generationen — plus Teambuilder, Nuzlocke-Tracker, Versus-Calc und interaktive Karten.',
-    en: 'A living, breathing Pokédex: 1,025 Pokémon, 18 types, 9 generations — plus team builder, Nuzlocke tracker, Versus calculator and interactive maps.',
+    de: 'Interaktiver Pokédex: alle 1.025 Pokémon, 18 Typen, 9 Generationen — plus Teambuilder, Nuzlocke-Tracker, Versus-Calc und Karten.',
+    en: 'An interactive Pokédex: 1,025 Pokémon, 18 types, 9 generations — plus team builder, Nuzlocke tracker, Versus calculator and maps.',
   },
 };
 
@@ -57,8 +57,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Pokédex — all 1,025 Pokémon with stats, moves & sprites',
     },
     description: {
-      de: 'Der komplette Pokédex: 1.025 Pokémon über 9 Generationen filtern und durchsuchen — Stats, Typen, Fähigkeiten, Attacken, Entwicklungen und jede Sprite-Ära seit 1996.',
-      en: 'The complete Pokédex: filter and search 1,025 Pokémon across 9 generations — stats, types, abilities, moves, evolutions and every sprite era since 1996.',
+      de: 'Der komplette Pokédex: 1.025 Pokémon filtern & durchsuchen — Stats, Typen, Fähigkeiten, Attacken, Entwicklungen und jede Sprite-Ära seit 1996.',
+      en: 'The complete Pokédex: filter and search 1,025 Pokémon across 9 generations — stats, types, abilities, moves and every sprite era since 1996.',
     },
   },
   '/items': {
@@ -139,8 +139,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'About MyPokePanion — unofficial Pokémon fan project',
     },
     description: {
-      de: 'MyPokePanion ist ein inoffizielles Fan-Projekt: ein lebendiger Pokédex mit Teambuilder, Nuzlocke-Tracker, Versus-Calc und interaktiven Karten. Erfahre mehr über das Projekt.',
-      en: 'MyPokePanion is an unofficial fan project: a living Pokédex with team builder, Nuzlocke tracker, Versus calculator and interactive maps. Learn more about the project.',
+      de: 'MyPokePanion ist ein inoffizielles Fan-Projekt: interaktiver Pokédex mit Teambuilder, Nuzlocke-Tracker, Versus-Calc und Karten. Mehr über das Projekt.',
+      en: 'MyPokePanion is an unofficial fan project: an interactive Pokédex with team builder, Nuzlocke tracker, Versus calculator and maps. Learn more.',
     },
   },
   '/feedback': {
@@ -211,11 +211,18 @@ function typeDetailMeta(slug: string): RouteMeta {
       en: `${en} type – strengths, weaknesses & best counters`,
     },
     description: {
-      de: `Was ist effektiv gegen ${de}? Alle Stärken, Schwächen, Resistenzen und Immunitäten des ${de}-Typs — mit den besten Konter-Typen, Beispiel-Pokémon und Versus-Calc.`,
-      en: `What is super effective against ${en}? All strengths, weaknesses, resistances and immunities of the ${en} type — with the best counter types, example Pokémon and the Versus calculator.`,
+      de: `Was ist effektiv gegen ${de}? Stärken, Schwächen, Resistenzen & Immunitäten des ${de}-Typs — plus die besten Konter und Beispiel-Pokémon.`,
+      en: `What is super effective against ${en}? Strengths, weaknesses, resistances & immunities of the ${en} type — plus the best counters.`,
     },
     ogType: 'article',
   };
+}
+
+/** Truncate at a word boundary so generated descriptions stay ≤ 160 chars. */
+function clampDesc(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '…';
 }
 
 function itemDetailMeta(slug: string): RouteMeta {
@@ -226,8 +233,8 @@ function itemDetailMeta(slug: string): RouteMeta {
       en: `${e.nameEn} – effect, locations & whether it’s worth it`,
     },
     description: {
-      de: `${e.nameDe}: ${e.effectDe} Wirkung, Fundorte und Einschätzung — plus Antworten auf die häufigsten Fragen zum Item.`,
-      en: `${e.nameEn}: ${e.effectEn} Effect, locations and our verdict — plus answers to the most common questions about the item.`,
+      de: `${e.nameDe}: ${clampDesc(e.effectDe.replace(/\.$/, ''), 100)}. Wirkung, Fundorte & Einschätzung.`,
+      en: `${e.nameEn}: ${clampDesc(e.effectEn.replace(/\.$/, ''), 100)}. Effect, locations & verdict.`,
     },
     ogType: 'article',
   };
@@ -246,8 +253,8 @@ function kantoRouteMeta(nodeId: string): RouteMeta {
       en: `${nameEn} (Kanto) – Pokémon & Locations in FireRed/LeafGreen`,
     },
     description: {
-      de: `Alle Pokémon auf ${nameDe} in Feuerrot/Blattgrün: ${m?.speciesCount ?? ''} Arten mit Fangraten und Levels${topDe ? ` — häufigster Fang: ${topDe}` : ''}. Dazu Items, Trainer und die Unterschiede zwischen beiden Editionen.`,
-      en: `Every Pokémon on ${nameEn} in FireRed/LeafGreen: ${m?.speciesCount ?? ''} species with catch rates and levels${topEn ? ` — most common: ${topEn}` : ''}. Plus items, trainers and the differences between the two versions.`,
+      de: `Alle Pokémon auf ${nameDe} in Feuerrot/Blattgrün: ${m?.speciesCount ?? ''} Arten mit Fangraten & Levels${topDe ? ` — häufigster Fang: ${topDe}` : ''}. Dazu Items & Trainer.`,
+      en: `Every Pokémon on ${nameEn} in FireRed/LeafGreen: ${m?.speciesCount ?? ''} species with catch rates & levels${topEn ? ` — most common: ${topEn}` : ''}. Plus items & trainers.`,
     },
     ogType: 'article',
   };
@@ -265,11 +272,11 @@ function pokemonSeoMeta(id: number): RouteMeta {
     },
     description: {
       de: m?.locDe
-        ? `${nameDe} in Feuerrot/Blattgrün: Fundorte (u. a. ${m.locDe}${m.topChance ? ` ${m.topChance} %` : ''}), Schwächen & Resistenzen aus der Typentabelle, Entwicklung und Antworten auf die häufigsten Fragen.`
-        : `${nameDe} in Feuerrot/Blattgrün: Schwächen & Resistenzen aus der Typentabelle, Entwicklung, Verfügbarkeit und Antworten auf die häufigsten Fragen.`,
+        ? `${nameDe} in Feuerrot/Blattgrün: Fundorte (u. a. ${m.locDe}${m.topChance ? ` ${m.topChance} %` : ''}), Schwächen, Entwicklung & FAQ.`
+        : `${nameDe} in Feuerrot/Blattgrün: Schwächen, Entwicklung, Verfügbarkeit & FAQ.`,
       en: m?.locEn
-        ? `${nameEn} in FireRed/LeafGreen: locations (incl. ${m.locEn}${m.topChance ? ` ${m.topChance}%` : ''}), weaknesses & resistances from the type chart, evolution and answers to common questions.`
-        : `${nameEn} in FireRed/LeafGreen: weaknesses & resistances from the type chart, evolution, availability and answers to common questions.`,
+        ? `${nameEn} in FireRed/LeafGreen: locations (incl. ${m.locEn}${m.topChance ? ` ${m.topChance}%` : ''}), weaknesses, evolution & FAQ.`
+        : `${nameEn} in FireRed/LeafGreen: weaknesses, evolution, availability & FAQ.`,
     },
     ogType: 'article',
   };

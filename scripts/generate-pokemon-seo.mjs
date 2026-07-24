@@ -418,7 +418,9 @@ const metaRoutes = {};
 for (const [nodeId, nd] of Object.entries(routes)) {
   const fr = nd.versions.firered ?? Object.values(nd.versions)[0];
   const all = fr.flatMap((g) => g.rows);
-  const top = [...all].sort((a, b) => b.chance - a.chance)[0];
+  /* "most common catch" counts wild encounters only — static gift/bought
+   * encounters (e.g. the Magikarp salesman) are excluded */
+  const top = [...all].filter((r) => !r.isStatic).sort((a, b) => b.chance - a.chance)[0];
   const speciesCount = new Set(all.map((r) => r.id)).size;
   const [de, en] = ROUTE_SLUGS[nodeId] ?? [nodeId, nodeId];
   metaRoutes[nodeId] = {
