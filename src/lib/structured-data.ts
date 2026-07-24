@@ -4,9 +4,11 @@
  * <script type="application/ld+json"> into the head. Because injection
  * happens in the same runtime pass the prerender pipeline captures, the
  * static HTML carries identical structured data — no JS required. */
-import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, metaForPath } from './seo';
+import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, metaForPath, restForLang } from './seo';
 import { localePath } from './locale-link';
 import type { Lang } from './i18n-data';
+import { resolveTypeParam, typeName, typeOverviewPath } from './seo-types';
+import { ITEMS_SEO, resolveItemParam } from './seo-items';
 
 type JsonLd = Record<string, unknown>;
 
@@ -107,6 +109,25 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
       trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
       trail.push({ name: 'Kanto', url: localePath(lang, '/maps/kanto') });
       trail.push({ name: 'Route 1', url: localePath(lang, rest) });
+    } else if (rest === '/typen' || rest === '/types') {
+      trail.push({ name: crumbName, url: localePath(lang, restForLang(rest, lang)) });
+    } else if (/^\/(typen|types)\/[^/]+$/.test(rest)) {
+      const slug = resolveTypeParam(rest.split('/').pop());
+      trail.push({
+        name: lang === 'de' ? 'Typen' : 'Types',
+        url: localePath(lang, typeOverviewPath(lang)),
+      });
+      trail.push({
+        name: slug ? typeName(slug, lang) : crumbName,
+        url: localePath(lang, restForLang(rest, lang)),
+      });
+    } else if (/^\/items\/[^/]+$/.test(rest)) {
+      const slug = resolveItemParam(rest.split('/').pop());
+      trail.push({ name: 'Items', url: localePath(lang, '/items') });
+      trail.push({
+        name: slug ? (lang === 'de' ? ITEMS_SEO[slug].nameDe : ITEMS_SEO[slug].nameEn) : crumbName,
+        url: localePath(lang, restForLang(rest, lang)),
+      });
     } else if (rest.startsWith('/pokemon/')) {
       trail.push({ name: 'Pokédex', url: localePath(lang, '/pokedex') });
       trail.push({ name: crumbName, url: localePath(lang, rest) });

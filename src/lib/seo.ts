@@ -12,6 +12,9 @@
  * the host they were rendered on. */
 import { localePath, stripLocalePrefix } from './locale-link';
 import type { Lang } from './i18n-data';
+import { resolveTypeParam, typeName } from './seo-types';
+import { ITEMS_SEO, localizeItemPath, resolveItemParam } from './seo-items';
+import { localizeTypePath } from './seo-types';
 
 export const SITE_NAME = 'MyPokePanion';
 export const SITE_URL = 'https://mypokepanion.com';
@@ -179,10 +182,75 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
 };
 
+/* ---------- generated meta: type pages + item detail pages (SEO rollout) ---------- */
+
+const TYPES_OVERVIEW_META: RouteMeta = {
+  title: {
+    de: 'Alle 18 Pokémon-Typen — Stärken, Schwächen & Konter',
+    en: 'All 18 Pokémon types — strengths, weaknesses & counters',
+  },
+  description: {
+    de: 'Die komplette Typen-Übersicht: alle 18 Pokémon-Typen mit Stärken, Schwächen, Resistenzen und den besten Kontern — berechnet aus der offiziellen Typen-Tabelle.',
+    en: 'The complete type overview: all 18 Pokémon types with strengths, weaknesses, resistances and the best counters — computed from the official type chart.',
+  },
+};
+
+function typeDetailMeta(slug: string): RouteMeta {
+  const de = typeName(slug, 'de');
+  const en = typeName(slug, 'en');
+  return {
+    title: {
+      de: `${de}-Typ – Stärken, Schwächen & beste Konter`,
+      en: `${en} type – strengths, weaknesses & best counters`,
+    },
+    description: {
+      de: `Was ist effektiv gegen ${de}? Alle Stärken, Schwächen, Resistenzen und Immunitäten des ${de}-Typs — mit den besten Konter-Typen, Beispiel-Pokémon und Versus-Calc.`,
+      en: `What is super effective against ${en}? All strengths, weaknesses, resistances and immunities of the ${en} type — with the best counter types, example Pokémon and the Versus calculator.`,
+    },
+    ogType: 'article',
+  };
+}
+
+function itemDetailMeta(slug: string): RouteMeta {
+  const e = ITEMS_SEO[slug];
+  return {
+    title: {
+      de: `${e.nameDe} (${e.nameEn}) – Wirkung, Fundorte & ob es sich lohnt`,
+      en: `${e.nameEn} – effect, locations & whether it’s worth it`,
+    },
+    description: {
+      de: `${e.nameDe}: ${e.effectDe} Wirkung, Fundorte und Einschätzung — plus Antworten auf die häufigsten Fragen zum Item.`,
+      en: `${e.nameEn}: ${e.effectEn} Effect, locations and our verdict — plus answers to the most common questions about the item.`,
+    },
+    ogType: 'article',
+  };
+}
+
 /** Registry lookup for a locale-stripped app path; falls back to the default. */
 export function metaForPath(rest: string): RouteMeta {
   const key = rest === '' ? '/' : rest;
-  return ROUTE_META[key] ?? DEFAULT_META;
+  if (ROUTE_META[key]) return ROUTE_META[key];
+  if (key === '/typen' || key === '/types') return TYPES_OVERVIEW_META;
+  const typeMatch = key.match(/^\/(typen|types)\/([^/]+)$/);
+  if (typeMatch) {
+    const slug = resolveTypeParam(typeMatch[2]);
+    if (slug) return typeDetailMeta(slug);
+  }
+  const itemMatch = key.match(/^\/items\/([^/]+)$/);
+  if (itemMatch) {
+    const slug = resolveItemParam(itemMatch[1]);
+    if (slug) return itemDetailMeta(slug);
+  }
+  return DEFAULT_META;
+}
+
+/**
+ * Locale-aware rest path: type and item pages use localized slugs
+ * ('/typen/wasser' ↔ '/types/water', '/items/ep-teiler' ↔ '/items/exp-share'),
+ * so canonical + hreflang URLs must translate the rest path per locale.
+ */
+export function restForLang(rest: string, lang: Lang): string {
+  return localizeItemPath(localizeTypePath(rest, lang), lang);
 }
 
 /** Absolute canonical URL for a route + locale. */

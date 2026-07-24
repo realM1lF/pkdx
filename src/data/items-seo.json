@@ -1,0 +1,515 @@
+{
+ "exp-share": {
+  "slug": "exp-share",
+  "deSlug": "ep-teiler",
+  "nameEn": "Exp. Share",
+  "nameDe": "EP-Teiler",
+  "category": "training",
+  "flavorEn": "Turning on this special device will allow all the Pokémon on your team to receive Exp. Points from battles.",
+  "flavorDe": "Solange der EP-Teiler angeschaltet ist, erhält jedes Team-Pokémon nach einem Sieg Erfahrungspunkte.",
+  "effectEn": "Half the Exp. Points from a battle are split between Pokémon holding this item.",
+  "effectDe": "Die Hälfte der EP aus einem Kampf wird auf die Pokémon aufgeteilt, die dieses Item tragen.",
+  "locationsFrlg": [
+   {
+    "node": "kanto-route-15",
+    "kind": "given",
+    "nameEn": "Route 15",
+    "nameDe": "Route 15"
+   }
+  ]
+ },
+ "lucky-egg": {
+  "slug": "lucky-egg",
+  "deSlug": "gluecks-ei",
+  "nameEn": "Lucky Egg",
+  "nameDe": "Glücks-Ei",
+  "category": "training",
+  "cost": 10000,
+  "flavorEn": "An item to be held by a Pokémon. It’s an egg filled with happiness that earns the holder extra Exp. Points in battle.",
+  "flavorDe": "Ein Item zum Tragen, das mit Glück gefüllt ist und für zusätzliche Erfahrungspunkte im Kampf sorgt.",
+  "effectEn": "Increases Exp. Points earned in battle by 50%.",
+  "effectDe": "Erhöht die im Kampf erhaltenen EP um 50 %."
+ },
+ "choice-band": {
+  "slug": "choice-band",
+  "deSlug": "wahlband",
+  "nameEn": "Choice Band",
+  "nameDe": "Wahlband",
+  "category": "choice",
+  "cost": 4000,
+  "flavorEn": "An item to be held by a Pokémon. This curious headband boosts Attack but only allows the use of one move.",
+  "flavorDe": "Ein Item, das von einem Pokémon getragen werden kann. Es stärkt den Angriffs-Wert, aber nur eine Attacke ist einsetzbar.",
+  "effectEn": "Increases Attack by 50%, but restricts the holder to only one move.",
+  "effectDe": "Erhöht den Angriff um 50 %, beschränkt den Träger aber auf eine einzige Attacke."
+ },
+ "choice-specs": {
+  "slug": "choice-specs",
+  "deSlug": "wahlbrille",
+  "nameEn": "Choice Specs",
+  "nameDe": "Wahlbrille",
+  "category": "choice",
+  "cost": 4000,
+  "flavorEn": "An item to be held by a Pokémon. These curious glasses boost Sp. Atk but only allow the use of one move.",
+  "flavorDe": "Ein Item zum Tragen. Die Brille erhöht den Spezial-Angriff, aber nur eine Attacke ist einsetzbar.",
+  "effectEn": "Increases Special Attack by 50%, but restricts the holder to only one move.",
+  "effectDe": "Erhöht den Spezial-Angriff um 50 %, beschränkt den Träger aber auf eine einzige Attacke."
+ },
+ "choice-scarf": {
+  "slug": "choice-scarf",
+  "deSlug": "wahlschal",
+  "nameEn": "Choice Scarf",
+  "nameDe": "Wahlschal",
+  "category": "choice",
+  "cost": 4000,
+  "flavorEn": "An item to be held by a Pokémon. This curious scarf boosts Speed but only allows the use of one move.",
+  "flavorDe": "Ein Item zum Tragen. Der Schal erhöht den Initiative-Wert, aber nur eine Attacke ist einsetzbar.",
+  "effectEn": "Increases Speed by 50%, but restricts the holder to only one move.",
+  "effectDe": "Erhöht die Initiative um 50 %, beschränkt den Träger aber auf eine einzige Attacke."
+ },
+ "life-orb": {
+  "slug": "life-orb",
+  "deSlug": "leben-orb",
+  "nameEn": "Life Orb",
+  "nameDe": "Leben-Orb",
+  "category": "held-items",
+  "cost": 4000,
+  "flavorEn": "An item to be held by a Pokémon. It boosts the power of moves but at the cost of some HP on each hit.",
+  "flavorDe": "Ein Item zum Tragen. Verstärkt Attacken, aber jede Attacke kostet den Träger KP.",
+  "effectEn": "Holder’s moves inflict 30% extra damage, but cost 10% max HP per attack.",
+  "effectDe": "Attacken des Trägers verursachen 30 % mehr Schaden, kosten aber pro Angriff 10 % der max. KP."
+ },
+ "eviolite": {
+  "slug": "eviolite",
+  "deSlug": "evolith",
+  "nameEn": "Eviolite",
+  "nameDe": "Evolith",
+  "category": "held-items",
+  "cost": 4000,
+  "flavorEn": "A mysterious evolutionary lump. When held by a Pokémon that can still evolve, it raises both Defense and Sp. Def.",
+  "flavorDe": "Ein mysteriöser Klumpen, der die Verteidigung und Spezial-Verteidigung von Pokémon erhöht, die sich noch entwickeln können.",
+  "effectEn": "Holder has 1.5× Defense and Special Defense, as long as it is not fully evolved.",
+  "effectDe": "Verteidigung und Spezial-Verteidigung des Trägers ×1,5 – solange es sich noch entwickeln kann."
+ },
+ "focus-sash": {
+  "slug": "focus-sash",
+  "deSlug": "fokusgurt",
+  "nameEn": "Focus Sash",
+  "nameDe": "Fokusgurt",
+  "category": "held-items",
+  "cost": 4000,
+  "flavorEn": "An item to be held by a Pokémon. If the holder has full HP, it will endure a potential KO attack with 1 HP. The item then disappears.",
+  "flavorDe": "Ein Item zum Tragen. Bei vollen KP bleibt der Träger nach einer K.O.-Attacke einmalig mit 1 KP im Kampf.",
+  "effectEn": "Holder survives any single-hit attack at 1 HP if at max HP; the item is then consumed.",
+  "effectDe": "Übersteht der Träger bei vollen KP einen Treffer, der ihn kampfunfähig machen würde, mit 1 KP – danach ist das Item verbraucht."
+ },
+ "leftovers": {
+  "slug": "leftovers",
+  "deSlug": "ueberreste",
+  "nameEn": "Leftovers",
+  "nameDe": "Überreste",
+  "category": "held-items",
+  "cost": 4000,
+  "flavorEn": "An item to be held by a Pokémon. The holder’s HP is slowly but steadily restored throughout every battle.",
+  "flavorDe": "Ein Item, das einem Pokémon zum Tragen gegeben werden kann. Es füllt im Kampf stetig KP auf.",
+  "effectEn": "Restores 1/16 of the holder’s max HP at the end of each turn.",
+  "effectDe": "Stellt am Ende jeder Runde 1/16 der max. KP des Trägers wieder her.",
+  "locationsFrlg": [
+   {
+    "node": "kanto-route-16",
+    "kind": "hidden",
+    "nameEn": "Route 16",
+    "nameDe": "Route 16"
+   },
+   {
+    "node": "kanto-route-12",
+    "kind": "hidden",
+    "nameEn": "Route 12",
+    "nameDe": "Route 12"
+   }
+  ]
+ },
+ "sitrus-berry": {
+  "slug": "sitrus-berry",
+  "deSlug": "tsitrubeere",
+  "nameEn": "Sitrus Berry",
+  "nameDe": "Tsitrubeere",
+  "category": "medicine",
+  "cost": 80,
+  "flavorEn": "A Berry to be consumed by Pokémon. If a Pokémon holds one, it can restore its own HP by a small amount during battle.",
+  "flavorDe": "Gibst du die Beere einem Pokémon zum Tragen, füllt diese seine KP ein wenig auf.",
+  "effectEn": "Consumed at half max HP to recover 1/4 max HP.",
+  "effectDe": "Wird bei halben max. KP automatisch verzehrt und stellt 1/4 der max. KP wieder her.",
+  "locationsFrlg": [
+   {
+    "node": "kanto-route-6",
+    "kind": "hidden",
+    "nameEn": "Route 6",
+    "nameDe": "Route 6"
+   },
+   {
+    "node": "kanto-route-23",
+    "kind": "hidden",
+    "nameEn": "Route 23",
+    "nameDe": "Route 23"
+   }
+  ]
+ },
+ "lum-berry": {
+  "slug": "lum-berry",
+  "deSlug": "prunusbeere",
+  "nameEn": "Lum Berry",
+  "nameDe": "Prunusbeere",
+  "category": "medicine",
+  "cost": 80,
+  "flavorEn": "A Berry to be consumed by Pokémon. If a Pokémon holds one, it can recover from any status condition during battle.",
+  "flavorDe": "Gibst du die Beere einem Pokémon zum Tragen, hebt sie alle seine Statusprobleme auf.",
+  "effectEn": "Consumed to cure any status condition or confusion.",
+  "effectDe": "Wird automatisch verzehrt und heilt jede Statusveränderung oder Verwirrung.",
+  "locationsFrlg": [
+   {
+    "node": "kanto-route-8",
+    "kind": "hidden",
+    "nameEn": "Route 8",
+    "nameDe": "Route 8"
+   },
+   {
+    "node": "kanto-route-23",
+    "kind": "hidden",
+    "nameEn": "Route 23",
+    "nameDe": "Route 23"
+   }
+  ]
+ },
+ "everstone": {
+  "slug": "everstone",
+  "deSlug": "ewigstein",
+  "nameEn": "Everstone",
+  "nameDe": "Ewigstein",
+  "category": "training",
+  "cost": 3000,
+  "flavorEn": "An item to be held by a Pokémon. A Pokémon holding this peculiar stone is prevented from evolving.",
+  "flavorDe": "Ein Item, das einem Pokémon zum Tragen gegeben werden kann. Es bewirkt einen Entwicklungsstopp.",
+  "effectEn": "Prevents the holder from evolving.",
+  "effectDe": "Verhindert, dass sich der Träger entwickelt.",
+  "locationsFrlg": [
+   {
+    "node": "kanto-route-10",
+    "kind": "given",
+    "nameEn": "Route 10",
+    "nameDe": "Route 10"
+   }
+  ]
+ },
+ "master-ball": {
+  "slug": "master-ball",
+  "deSlug": "meisterball",
+  "nameEn": "Master Ball",
+  "nameDe": "Meisterball",
+  "category": "standard-balls",
+  "flavorEn": "The best Poké Ball with the ultimate level of performance. With it, you will catch any wild Pokémon without fail.",
+  "flavorDe": "Der beste Ball! Damit fängst du garantiert jedes wilde Pokémon.",
+  "effectEn": "Catches a wild Pokémon every time.",
+  "effectDe": "Fängt ein wildes Pokémon garantiert – ohne Ausnahme.",
+  "locationsFrlg": [
+   {
+    "node": "saffron-city",
+    "kind": "given",
+    "nameEn": "Saffron City",
+    "nameDe": "Saffronia City",
+    "noteEn": "Silph Co. president — 11F",
+    "noteDe": "Präsident der Silph Co. — 11. OG"
+   }
+  ]
+ },
+ "ultra-ball": {
+  "slug": "ultra-ball",
+  "deSlug": "hyperball",
+  "nameEn": "Ultra Ball",
+  "nameDe": "Hyperball",
+  "category": "standard-balls",
+  "cost": 800,
+  "flavorEn": "An ultra-high-performance Poké Ball that provides a higher success rate for catching Pokémon than a Great Ball.",
+  "flavorDe": "Ein Ball mit hoher Erfolgsquote. Dem Superball in allen Punkten überlegen.",
+  "effectEn": "Tries to catch a wild Pokémon with a 2× catch rate.",
+  "effectDe": "Pokéball mit doppelter (2×) Fangrate.",
+  "locationsFrlg": [
+   {
+    "node": "cerulean-cave",
+    "kind": "hidden",
+    "nameEn": "Cerulean Cave",
+    "nameDe": "Azuria-Höhle"
+   },
+   {
+    "node": "seafoam-islands",
+    "kind": "ball",
+    "nameEn": "Seafoam Islands",
+    "nameDe": "Seeschauminseln"
+   },
+   {
+    "node": "kanto-route-23",
+    "kind": "hidden",
+    "nameEn": "Route 23",
+    "nameDe": "Route 23"
+   },
+   {
+    "node": "victory-road",
+    "kind": "hidden",
+    "nameEn": "Victory Road",
+    "nameDe": "Siegesstraße"
+   },
+   {
+    "node": "saffron-city",
+    "kind": "ball",
+    "nameEn": "Saffron City",
+    "nameDe": "Saffronia City"
+   }
+  ]
+ },
+ "sun-stone": {
+  "slug": "sun-stone",
+  "deSlug": "sonnenstein",
+  "nameEn": "Sun Stone",
+  "nameDe": "Sonnenstein",
+  "category": "evolution",
+  "cost": 3000,
+  "flavorEn": "A peculiar stone that can make certain species of Pokémon evolve. It burns as red as the evening sun.",
+  "flavorDe": "Dieser spezielle Stein löst bei bestimmten Pokémon die Entwicklung aus. Er ist rot wie die Abendsonne.",
+  "effectEn": "Evolves certain species of Pokémon.",
+  "effectDe": "Löst bei bestimmten Pokémon-Arten eine Entwicklung aus.",
+  "evolutionTargets": [
+   44,
+   191,
+   546,
+   548
+  ],
+  "evolutionKind": "stone"
+ },
+ "fire-stone": {
+  "slug": "fire-stone",
+  "deSlug": "feuerstein",
+  "nameEn": "Fire Stone",
+  "nameDe": "Feuerstein",
+  "category": "evolution",
+  "cost": 3000,
+  "flavorEn": "A peculiar stone that can make certain species of Pokémon evolve. The stone has a fiery orange heart.",
+  "flavorDe": "Dieser spezielle Stein löst bei bestimmten Pokémon die Entwicklung aus. Er schimmert in den Farben Orange und Gelb.",
+  "effectEn": "Evolves certain species of Pokémon.",
+  "effectDe": "Löst bei bestimmten Pokémon-Arten eine Entwicklung aus.",
+  "evolutionTargets": [
+   37,
+   58,
+   133,
+   513
+  ],
+  "evolutionKind": "stone"
+ },
+ "water-stone": {
+  "slug": "water-stone",
+  "deSlug": "wasserstein",
+  "nameEn": "Water Stone",
+  "nameDe": "Wasserstein",
+  "category": "evolution",
+  "cost": 3000,
+  "flavorEn": "A peculiar stone that can make certain species of Pokémon evolve. It is the blue of a pool of clear water.",
+  "flavorDe": "Dieser spezielle Stein löst bei bestimmten Pokémon die Entwicklung aus. Er ist hellblau.",
+  "effectEn": "Evolves certain species of Pokémon.",
+  "effectDe": "Löst bei bestimmten Pokémon-Arten eine Entwicklung aus.",
+  "locationsFrlg": [
+   {
+    "node": "seafoam-islands",
+    "kind": "ball",
+    "nameEn": "Seafoam Islands",
+    "nameDe": "Seeschauminseln"
+   }
+  ],
+  "evolutionTargets": [
+   61,
+   90,
+   120,
+   133,
+   270,
+   515
+  ],
+  "evolutionKind": "stone"
+ },
+ "thunder-stone": {
+  "slug": "thunder-stone",
+  "deSlug": "donnerstein",
+  "nameEn": "Thunder Stone",
+  "nameDe": "Donnerstein",
+  "category": "evolution",
+  "cost": 3000,
+  "flavorEn": "A peculiar stone that can make certain species of Pokémon evolve. It has a distinct thunderbolt pattern.",
+  "flavorDe": "Dieser spezielle Stein löst bei bestimmten Pokémon die Entwicklung aus. Er hat ein Blitzmuster.",
+  "effectEn": "Evolves certain species of Pokémon.",
+  "effectDe": "Löst bei bestimmten Pokémon-Arten eine Entwicklung aus.",
+  "locationsFrlg": [
+   {
+    "node": "power-plant",
+    "kind": "ball",
+    "nameEn": "Power Plant",
+    "nameDe": "Kraftwerk"
+   }
+  ],
+  "evolutionTargets": [
+   25,
+   133,
+   603
+  ],
+  "evolutionKind": "stone"
+ },
+ "leaf-stone": {
+  "slug": "leaf-stone",
+  "deSlug": "blattstein",
+  "nameEn": "Leaf Stone",
+  "nameDe": "Blattstein",
+  "category": "evolution",
+  "cost": 3000,
+  "flavorEn": "A peculiar stone that can make certain species of Pokémon evolve. It has an unmistakable leaf pattern.",
+  "flavorDe": "Dieser spezielle Stein löst bei bestimmten Pokémon die Entwicklung aus. Er hat ein Blattmuster.",
+  "effectEn": "Evolves certain species of Pokémon.",
+  "effectDe": "Löst bei bestimmten Pokémon-Arten eine Entwicklung aus.",
+  "locationsFrlg": [
+   {
+    "node": "safari-zone",
+    "kind": "hidden",
+    "nameEn": "Safari Zone",
+    "nameDe": "Safari-Zone"
+   }
+  ],
+  "evolutionTargets": [
+   44,
+   69,
+   102,
+   274,
+   511
+  ],
+  "evolutionKind": "stone"
+ },
+ "moon-stone": {
+  "slug": "moon-stone",
+  "deSlug": "mondstein",
+  "nameEn": "Moon Stone",
+  "nameDe": "Mondstein",
+  "category": "evolution",
+  "cost": 3000,
+  "flavorEn": "A peculiar stone that can make certain species of Pokémon evolve. It is as black as the night sky.",
+  "flavorDe": "Dieser spezielle Stein löst bei bestimmten Pokémon die Entwicklung aus. Er ist schwarz wie die Nacht.",
+  "effectEn": "Evolves certain species of Pokémon.",
+  "effectDe": "Löst bei bestimmten Pokémon-Arten eine Entwicklung aus.",
+  "locationsFrlg": [
+   {
+    "node": "mt-moon",
+    "kind": "ball",
+    "nameEn": "Mt. Moon",
+    "nameDe": "Mondberg",
+    "noteEn": "B2F — crater room ×2",
+    "noteDe": "U2 — Kraterraum, 2×"
+   },
+   {
+    "node": "celadon-city",
+    "kind": "ball",
+    "nameEn": "Celadon City",
+    "nameDe": "Prismania City"
+   },
+   {
+    "node": "cinnabar-island",
+    "kind": "hidden",
+    "nameEn": "Cinnabar Island",
+    "nameDe": "Zinnoberinsel"
+   }
+  ],
+  "evolutionTargets": [
+   30,
+   33,
+   35,
+   39,
+   300,
+   517
+  ],
+  "evolutionKind": "stone"
+ },
+ "linking-cord": {
+  "slug": "linking-cord",
+  "deSlug": "linkkabel",
+  "nameEn": "Linking Cord",
+  "nameDe": "Linkkabel",
+  "category": "evolution",
+  "cost": 8000,
+  "effectEn": "Allows a Pokémon whose evolution is usually triggered by trading to evolve.",
+  "effectDe": "Löst die Entwicklung von Pokémon aus, die sich normalerweise nur durch Tausch entwickeln.",
+  "evolutionTargets": [
+   64,
+   67,
+   75,
+   93
+  ],
+  "evolutionKind": "trade-replacement"
+ },
+ "metal-coat": {
+  "slug": "metal-coat",
+  "deSlug": "metallmantel",
+  "nameEn": "Metal Coat",
+  "nameDe": "Metallmantel",
+  "category": "type-enhancement",
+  "cost": 2000,
+  "flavorEn": "An item to be held by a Pokémon. It’s a special metallic film that can boost the power of Steel-type moves.",
+  "flavorDe": "Ein Item, das einem Pokémon zum Tragen gegeben werden kann. Es verstärkt Attacken vom Typ Stahl.",
+  "effectEn": "Steel-type moves from the holder do 20% more damage.",
+  "effectDe": "Stahl-Attacken des Trägers verursachen 20 % mehr Schaden.",
+  "evolutionTargets": [
+   95,
+   123
+  ],
+  "evolutionKind": "trade"
+ },
+ "dragon-scale": {
+  "slug": "dragon-scale",
+  "deSlug": "drachenhaut",
+  "nameEn": "Dragon Scale",
+  "nameDe": "Drachenhaut",
+  "category": "evolution",
+  "cost": 2000,
+  "flavorEn": "A very tough and inflexible scale. Dragon-type Pokémon may be holding this item when caught.",
+  "flavorDe": "Eine dicke und starke Haut. Drachen-Pokémon tragen dieses Item gern bei sich.",
+  "effectEn": "Traded on a Seadra: it evolves into Kingdra.",
+  "effectDe": "Wird Seemon beim Tausch getragen, entwickelt es sich zu Seedraking weiter.",
+  "evolutionTargets": [
+   117
+  ],
+  "evolutionKind": "trade"
+ },
+ "kings-rock": {
+  "slug": "kings-rock",
+  "deSlug": "king-stein",
+  "nameEn": "King’s Rock",
+  "nameDe": "King-Stein",
+  "category": "held-items",
+  "cost": 5000,
+  "flavorEn": "An item to be held by a Pokémon. When the holder successfully inflicts damage, the target may also flinch.",
+  "flavorDe": "Gibst du es einem Pokémon zum Tragen, lässt es mit seinem Angriff das Ziel gelegentlich zurückschrecken.",
+  "effectEn": "Damaging moves gain a 10% chance to make the target flinch. Traded on a Poliwhirl or Slowpoke, it evolves them.",
+  "effectDe": "Schaden verursachende Attacken erhalten eine 10-%-Chance, das Ziel zurückschrecken zu lassen. Beim Tausch getragen, entwickelt es Quaputzi oder Flegmon weiter.",
+  "evolutionTargets": [
+   61,
+   79
+  ],
+  "evolutionKind": "trade"
+ },
+ "dubious-disc": {
+  "slug": "dubious-disc",
+  "deSlug": "dubiosdisc",
+  "nameEn": "Dubious Disc",
+  "nameDe": "Dubiosdisc",
+  "category": "evolution",
+  "cost": 2000,
+  "flavorEn": "A transparent device overflowing with dubious data. Its producer is unknown.",
+  "flavorDe": "Eine Scheibe mit seltsamen Daten. Ihr Ursprung ist unbekannt.",
+  "effectEn": "Traded on a Porygon2: it evolves into Porygon-Z.",
+  "effectDe": "Wird Porygon2 beim Tausch getragen, entwickelt es sich zu Porygon-Z weiter.",
+  "evolutionTargets": [
+   233
+  ],
+  "evolutionKind": "trade"
+ }
+}

@@ -6,19 +6,19 @@
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { SITE_URL, STATIC_ROUTES, localePath } from './seo-routes.mjs';
+import { SITE_URL, STATIC_ROUTES, localePath, restFor } from './seo-routes.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const lastmod = new Date().toISOString().slice(0, 10);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-function urlEntry(lang, rest) {
-  const loc = `${SITE_URL}${localePath(lang, rest)}`;
+function urlEntry(lang, entry) {
+  const loc = `${SITE_URL}${localePath(lang, restFor(entry, lang))}`;
   const alternates = ['de', 'en', 'x-default']
     .map((hl) => {
       const hrefLang = hl === 'x-default' ? 'en' : hl;
-      return `    <xhtml:link rel="alternate" hreflang="${hl}" href="${esc(`${SITE_URL}${localePath(hrefLang, rest)}`)}"/>`;
+      return `    <xhtml:link rel="alternate" hreflang="${hl}" href="${esc(`${SITE_URL}${localePath(hrefLang, restFor(entry, hrefLang))}`)}"/>`;
     })
     .join('\n');
   return `  <url>
@@ -29,9 +29,9 @@ ${alternates}
 }
 
 const urls = [];
-for (const rest of STATIC_ROUTES) {
+for (const entry of STATIC_ROUTES) {
   for (const lang of ['de', 'en']) {
-    urls.push(urlEntry(lang, rest));
+    urls.push(urlEntry(lang, entry));
   }
 }
 
