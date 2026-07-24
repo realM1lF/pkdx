@@ -223,18 +223,24 @@ export function nameOfMethod(slug: string, lang: Lang): string {
   return displayName(slug);
 }
 
+/* PokéAPI egg-group slugs: monster, water1, bug, flying, ground, fairy, plant,
+ * humanshape, water3, mineral, indeterminate, water2, ditto, dragon, no-eggs.
+ * (modern aliases field/grass/human-like/amorph kept for safety) */
 const EGG_GROUPS_DE: Record<string, string> = {
   monster: 'Monster',
   water1: 'Wasser 1',
   bug: 'Käfer',
   flying: 'Flug',
+  ground: 'Feld',
   field: 'Feld',
   fairy: 'Fee',
+  plant: 'Pflanze',
   grass: 'Pflanze',
-  plant: 'Pflanze', // PokéAPI slug for the grass egg group is 'plant'
+  humanshape: 'Humanotyp',
   'human-like': 'Humanotyp',
   water3: 'Wasser 3',
   mineral: 'Mineral',
+  indeterminate: 'Amorph',
   amorph: 'Amorph',
   water2: 'Wasser 2',
   ditto: 'Ditto',
@@ -242,8 +248,28 @@ const EGG_GROUPS_DE: Record<string, string> = {
   'no-eggs': 'Unbekannt',
 };
 
+const EGG_GROUPS_EN: Record<string, string> = {
+  monster: 'Monster',
+  water1: 'Water 1',
+  bug: 'Bug',
+  flying: 'Flying',
+  ground: 'Ground',
+  fairy: 'Fairy',
+  plant: 'Plant',
+  humanshape: 'Humanshape',
+  water3: 'Water 3',
+  mineral: 'Mineral',
+  indeterminate: 'Indeterminate',
+  water2: 'Water 2',
+  ditto: 'Ditto',
+  dragon: 'Dragon',
+  'no-eggs': 'No Eggs',
+};
+
 export function nameOfEggGroup(slug: string, lang: Lang): string {
-  if (isDe(lang) && EGG_GROUPS_DE[slug]) return EGG_GROUPS_DE[slug];
+  const key = slug.toLowerCase();
+  if (isDe(lang) && EGG_GROUPS_DE[key]) return EGG_GROUPS_DE[key];
+  if (!isDe(lang) && EGG_GROUPS_EN[key]) return EGG_GROUPS_EN[key];
   return displayName(slug);
 }
 

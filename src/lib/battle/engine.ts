@@ -236,13 +236,31 @@ export function parseProtocolLine(line: string, p1Name: string, p2Name: string):
       const label = (parts[2] ?? '').replace(/^move:\s*/i, '').replace(/^terrain:\s*/i, '');
       return { kind: 'terrain', terrain: toID(label) || 'none', raw };
     }
+    case '-sidestart':
+    case '-sideend': {
+      // |-sidestart|p1: Player|move: Light Screen — the raw protocol line must
+      // never reach the UI, so map it to a structured event with a clean label
+      const label = (parts[3] ?? '')
+        .replace(/^(move|ability|item):\s*/i, '')
+        .trim();
+      return {
+        kind: verb === '-sidestart' ? 'sideStart' : 'sideEnd',
+        side,
+        effectId: toID(label),
+        effectName: label,
+        raw,
+      };
+    }
     case '-activate': {
       const effect = parts[3] ?? '';
       if (effect.startsWith('item:')) {
         const itemName = effect.slice(5).trim();
         return { kind: 'activate', side, name, itemName, itemId: toID(itemName), raw };
       }
-      return { kind: 'activate', side, name, text: effect, raw };
+      // non-item effect (move/ability/confusion/…) — strip the protocol prefix
+      // so the view can localize a generic sentence instead of raw engine text
+      const label = effect.replace(/^(move|ability):\s*/i, '').trim();
+      return { kind: 'activate', side, name, effectId: toID(label), effectName: label, text: label, raw };
     }
     case '-enditem': {
       const itemName = (parts[3] ?? '').trim();

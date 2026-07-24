@@ -7,6 +7,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { cachedJson } from './pokeapi';
+import { nameOfItem, nameOfMove } from './i18n-data';
+import type { Lang } from './i18n-data';
 import type { RegionMap } from './regions';
 
 import itemsKanto from '@/data/items-kanto.json';
@@ -108,12 +110,34 @@ export interface NodeMapData {
   methodTop: Partial<Record<MethodBucket, number>>;
 }
 
+export interface CuratedItemNote {
+  de?: string;
+  en: string;
+}
+
 export interface CuratedItem {
   itemSlug: string;
   name: string;
-  note: string;
+  /** bilingual curation note (new regions) — legacy entries stay a plain EN string */
+  note: CuratedItemNote | string;
   pocket: string;
   hidden?: boolean;
+  /** TM/HM entries: the taught move — display name comes from the i18n move data */
+  moveSlug?: string;
+}
+
+/** locale-aware curation note; EN fallback when no translation exists */
+export function noteOfItem(item: CuratedItem, lang: Lang): string {
+  if (typeof item.note === 'string') return item.note;
+  return (lang === 'de' && item.note.de) || item.note.en;
+}
+
+/** display name for a curated item — TM/HM machines become "TM18 (Regentanz)"
+ *  from the i18n move data instead of the generic "Tm Water" sprite name */
+export function displayNameOfItem(item: CuratedItem, lang: Lang): string {
+  const machine = /^(?:TM|HM)\d+/.exec(item.name)?.[0];
+  if (machine && item.moveSlug) return `${machine} (${nameOfMove(item.moveSlug, lang)})`;
+  return nameOfItem(item.itemSlug, lang);
 }
 
 /* ---------- curated items ---------- */

@@ -1526,8 +1526,8 @@ export default function VersusPanel({
         <button
           type="button"
           onClick={() => setBattleOpen(true)}
-          disabled={!youPokemon || !foePokemon}
-          title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : undefined}
+          disabled={!youPokemon || !foePokemon || battleOpen}
+          title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : battleOpen ? t('versus.battle.runningHint') : undefined}
           className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[9px] font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Swords size={10} />

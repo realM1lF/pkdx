@@ -209,4 +209,39 @@ describe('protocol parser', () => {
     });
     expect(parseProtocolLine('|tie', 'Player', 'Rival')).toMatchObject({ kind: 'win', winner: 'tie' });
   });
+
+  it('maps side conditions to structured events instead of raw protocol leaks', () => {
+    expect(
+      parseProtocolLine('|-sidestart|p1: Player|move: Light Screen', 'Player', 'Rival'),
+    ).toMatchObject({ kind: 'sideStart', side: 'player', effectId: 'lightscreen', effectName: 'Light Screen' });
+    expect(parseProtocolLine('|-sideend|p2: Rival|move: Tailwind', 'Player', 'Rival')).toMatchObject({
+      kind: 'sideEnd',
+      side: 'ai',
+      effectId: 'tailwind',
+    });
+    expect(parseProtocolLine('|-sidestart|p2: Rival|Stealth Rock', 'Player', 'Rival')).toMatchObject({
+      kind: 'sideStart',
+      side: 'ai',
+      effectId: 'stealthrock',
+    });
+    // non-item -activate: protocol prefix stripped, no raw engine text
+    expect(
+      parseProtocolLine('|-activate|p1a: Pikachu|move: Light Screen', 'Player', 'Rival'),
+    ).toMatchObject({ kind: 'activate', effectId: 'lightscreen', text: 'Light Screen' });
+  });
+
+  it('Light Screen surfaces as a sideStart event in a real battle', async () => {
+    const mb = await MicroBattle.create(
+      setup({
+        player: side({ species: 'alakazam', moves: ['light-screen'] }),
+        ai: side({ species: 'magikarp', level: 5, moves: ['splash'] }),
+      }),
+      { aiMode: 'random', seed: SEED },
+    );
+    mb.playerMove(1);
+    const ev = mb.eventLog.find((e) => e.kind === 'sideStart');
+    expect(ev).toMatchObject({ side: 'player', effectId: 'lightscreen' });
+    // and no raw protocol line leaks through as an unmapped fallback
+    expect(mb.eventLog.some((e) => e.kind === 'raw' && e.raw.includes('sidestart'))).toBe(false);
+  });
 });

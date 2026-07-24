@@ -10,7 +10,7 @@ import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, nodeIndex, nodeName, regionName, versionLabel } from '@/lib/regions';
 import { nameOfItem, nameOfPokemon, nameOfPocket, useLanguage } from '@/lib/i18n-data';
 import type { CuratedItem, EncounterEntry, MethodBucket, NodeMapData } from '@/lib/mapdata';
-import { ITEM_SPRITE_BASE, METHOD_BUCKETS, itemsForNode } from '@/lib/mapdata';
+import { ITEM_SPRITE_BASE, METHOD_BUCKETS, displayNameOfItem, itemsForNode, noteOfItem } from '@/lib/mapdata';
 import { padNum } from '@/lib/pokeapi';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -410,10 +410,10 @@ export default function DetailDrawer({
                     <ItemSprite slug={it.itemSlug} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    {/* item names localize via the de artifact; curated notes stay English
-                        (NON-GOAL — authored EN curation from pret/pokefirered data) */}
-                    <span className="block truncate text-[13px] font-medium text-tx-primary">{nameOfItem(it.itemSlug, lang)}</span>
-                    <span className="block truncate text-[10px] text-tx-muted">{it.note}</span>
+                    {/* TM/HM names derive from the i18n move data ("TM18 (Regentanz)"),
+                        curation notes ship de/en with an EN fallback */}
+                    <span className="block truncate text-[13px] font-medium text-tx-primary">{displayNameOfItem(it, lang)}</span>
+                    <span className="block truncate text-[10px] text-tx-muted">{noteOfItem(it, lang)}</span>
                   </span>
                   <span className="flex shrink-0 items-center gap-1">
                     {it.hidden && (

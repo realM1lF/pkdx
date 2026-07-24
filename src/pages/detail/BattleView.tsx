@@ -92,6 +92,7 @@ function LogLine({
   names,
   moveName,
   itemName,
+  effectName,
   gameLabel,
 }: {
   e: BattleEvent;
@@ -99,6 +100,7 @@ function LogLine({
   names: Record<'player' | 'ai', string>;
   moveName: (e: BattleEvent) => string;
   itemName: (e: BattleEvent) => string;
+  effectName: (e: BattleEvent) => string;
   gameLabel: string;
 }) {
   const name = e.side ? names[e.side] : (e.name ?? '');
@@ -168,6 +170,18 @@ function LogLine({
       else text = t(`${key}.terrain.${SIM_TERRAIN_KEY[tr] ?? tr}`, { defaultValue: e.terrain });
       break;
     }
+    case 'sideStart':
+    case 'sideEnd': {
+      // structured side condition — per-effect i18n, generic localized fallback
+      const group = e.kind === 'sideStart' ? 'sideStart' : 'sideEnd';
+      const team = e.side ? t(`versus.battle.team.${e.side}`) : t('versus.battle.team.generic');
+      const effect = effectName(e);
+      text = t(`versus.battle.${group}.${e.effectId}`, {
+        team,
+        defaultValue: t(`versus.battle.${group}.generic`, { team, effect }),
+      });
+      break;
+    }
     case 'healItem':
       text = t(`${key}.healItem`, { name, item: itemName(e) });
       break;
@@ -186,7 +200,7 @@ function LogLine({
     case 'activate':
       text = e.itemName
         ? t(e.text === 'consumed' ? `${key}.itemConsumed` : `${key}.activateItem`, { name, item: itemName(e) })
-        : t(`${key}.activate`, { name, effect: e.text ?? '' });
+        : t(`${key}.activate`, { name, effect: effectName(e) });
       break;
     case 'cant':
       text = t(`${key}.cant.${e.from}`, { name, defaultValue: t(`${key}.cant.generic`, { name }) });
@@ -250,6 +264,12 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
   const itemName = (e: BattleEvent) => {
     const slug = e.itemId ? maps.itemSlug.get(e.itemId) : undefined;
     return slug ? nameOfItem(slug, lang) : (e.itemName ?? '');
+  };
+  const effectName = (e: BattleEvent) => {
+    // side conditions / non-item activations are usually moves from the
+    // configured sets — localize via the move map, else keep the clean label
+    const slug = e.effectId ? maps.moveSlug.get(e.effectId) : undefined;
+    return slug ? nameOfMove(slug, lang) : (e.effectName ?? e.text ?? '');
   };
   const optionName = (id: string, fallback: string) => {
     const slug = maps.moveSlug.get(id);
@@ -425,16 +445,27 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
             data-lenis-prevent-wheel
           >
             {events.map((e, i) => (
-              <LogLine key={i} e={e} t={t} names={names} moveName={moveName} itemName={itemName} gameLabel={gameLabel} />
+              <LogLine key={i} e={e} t={t} names={names} moveName={moveName} itemName={itemName} effectName={effectName} gameLabel={gameLabel} />
             ))}
           </div>
 
           {/* ---------- controls / result ---------- */}
           {result ? (
-            <div className="flex flex-col items-center gap-2.5 rounded-md border border-gold/30 bg-gold/5 px-3 py-4">
+            <div
+              className={cn(
+                'flex flex-col items-center gap-2.5 rounded-md border px-3 py-4',
+                result === 'ai' ? 'border-red-500/50 bg-red-500/10' : 'border-gold/30 bg-gold/5',
+              )}
+            >
               <span
-                className="font-display text-lg font-black uppercase tracking-widest text-gold"
-                style={{ textShadow: '0 0 20px rgba(246,201,69,0.45)' }}
+                className={cn(
+                  'font-display text-lg font-black uppercase tracking-widest',
+                  result === 'ai' ? 'text-red-500' : 'text-gold',
+                )}
+                style={{
+                  textShadow:
+                    result === 'ai' ? '0 0 20px rgba(239,68,68,0.45)' : '0 0 20px rgba(246,201,69,0.45)',
+                }}
               >
                 {result === 'player'
                   ? t('versus.battle.resultWin')

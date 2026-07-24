@@ -57,6 +57,8 @@ export type BattleEventKind =
   | 'faint'
   | 'weather' // start + clear (upkeep ticks are dropped)
   | 'terrain' // start + end
+  | 'sideStart' // side condition begins (Light Screen, Tailwind, Spikes, …)
+  | 'sideEnd' // side condition ends (expired / blown away / removed)
   | 'healItem' // Leftovers & co: |-heal|...|[from] item: X
   | 'heal' // move-based/other recovery (Recover, draining moves, …)
   | 'damageFrom' // residual damage: burn/poison/sand/recoil/…
@@ -90,6 +92,9 @@ export interface BattleEvent {
   terrain?: string;
   /** residual source, e.g. 'brn', 'psn', 'sandstorm', 'recoil' */
   from?: string;
+  /** side-condition / effect reference for sideStart/sideEnd/activate */
+  effectId?: string;
+  effectName?: string;
   /** turn number for kind 'turn' */
   turn?: number;
   /** winner for kind 'win' */

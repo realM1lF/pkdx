@@ -94,8 +94,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
   '/pokemon/25': {
     title: {
-      de: 'Pikachu #25 – Fundorte, Attacken & Entwicklung (Feuerrot/Blattgrün)',
-      en: 'Pikachu #25 – Locations, Moves & Evolution (FireRed/LeafGreen)',
+      de: 'Pikachu #25 – Begegnungen, Attacken & Entwicklung (Feuerrot/Blattgrün)',
+      en: 'Pikachu #25 – Encounters, Moves & Evolution (FireRed/LeafGreen)',
     },
     description: {
       de: 'Pikachu in Feuerrot/Blattgrün: Fundorte (Vertania-Wald 5 %, Kraftwerk 25 %), Level-Attacken, Entwicklung zu Raichu und Antworten auf die häufigsten Fragen.',
@@ -267,8 +267,8 @@ function pokemonSeoMeta(id: number): RouteMeta {
   const nameEn = m?.nameEn ?? `#${id}`;
   return {
     title: {
-      de: `${nameDe} #${id} – Fundorte, Schwächen & Entwicklung (Feuerrot/Blattgrün)`,
-      en: `${nameEn} #${id} – Locations, Weaknesses & Evolution (FireRed/LeafGreen)`,
+      de: `${nameDe} #${id} – Begegnungen, Schwächen & Entwicklung (Feuerrot/Blattgrün)`,
+      en: `${nameEn} #${id} – Encounters, Weaknesses & Evolution (FireRed/LeafGreen)`,
     },
     description: {
       de: m?.locDe
