@@ -40,18 +40,40 @@
     { "itemSlug": "dowsing-machine", "name": "Itemfinder", "note": "Oak's aide — gate 2F (30 caught)", "pocket": "KEY" }
   ],
   "kanto-route-12": [
-    { "itemSlug": "super-rod", "name": "Super Rod", "note": "Fishing guru — route house", "pocket": "KEY" }
+    { "itemSlug": "super-rod", "name": "Super Rod", "note": "Fishing guru — route house", "pocket": "KEY" },
+    { "itemSlug": "leftovers", "name": "Leftovers", "note": "Hidden — Itemfinder at Snorlax's spot", "pocket": "ITEMS", "hidden": true }
+  ],
+  "kanto-route-15": [
+    { "itemSlug": "exp-share", "name": "Exp. Share", "note": "Oak's aide — gate 2F (50 caught)", "pocket": "ITEMS" },
+    { "itemSlug": "tm-water", "name": "TM18 — Rain Dance", "note": "Northwest area (requires Cut)", "pocket": "TM" }
   ],
   "kanto-route-16": [
-    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "note": "House west of the gate", "pocket": "HM" }
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "note": "House west of the gate", "pocket": "HM" },
+    { "itemSlug": "leftovers", "name": "Leftovers", "note": "Hidden — Itemfinder at Snorlax's spot", "pocket": "ITEMS", "hidden": true }
+  ],
+  "kanto-route-6": [
+    { "itemSlug": "sitrus-berry", "name": "Sitrus Berry", "note": "Hidden — marked square west of the Saffron gate", "pocket": "BERRIES", "hidden": true }
+  ],
+  "kanto-route-8": [
+    { "itemSlug": "lum-berry", "name": "Lum Berry", "note": "Hidden — fenced grass, northwest square (Cut)", "pocket": "BERRIES", "hidden": true }
+  ],
+  "kanto-route-10": [
+    { "itemSlug": "everstone", "name": "Everstone", "note": "Oak's aide — Pokémon Center (20 caught)", "pocket": "ITEMS" }
+  ],
+  "kanto-route-23": [
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Hidden — wall between two statues, NE of the water", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "sitrus-berry", "name": "Sitrus Berry", "note": "Hidden — west of the statues by the Victory Road entrance", "pocket": "BERRIES", "hidden": true },
+    { "itemSlug": "lum-berry", "name": "Lum Berry", "note": "Hidden — north end, south of the statue pair", "pocket": "BERRIES", "hidden": true }
   ],
   "celadon-city": [
     { "itemSlug": "coin-case", "name": "Coin Case", "note": "Diner — man in the corner", "pocket": "KEY" },
-    { "itemSlug": "fresh-water", "name": "Fresh Water", "note": "Dept. Store roof — vending machines", "pocket": "ITEMS" }
+    { "itemSlug": "fresh-water", "name": "Fresh Water", "note": "Dept. Store roof — vending machines", "pocket": "ITEMS" },
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "Rocket Hideout — B2F, spin-tile maze (Game Corner)", "pocket": "ITEMS" }
   ],
   "saffron-city": [
     { "itemSlug": "tm-psychic", "name": "TM29 — Psychic", "note": "Mr. Psychic — southeast house", "pocket": "TM" },
-    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Silph Co. president — 11F", "pocket": "BALLS" }
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Silph Co. president — 11F", "pocket": "BALLS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Silph Co. — 10F, southwest room", "pocket": "BALLS" }
   ],
   "fuchsia-city": [
     { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fishing guru — south house", "pocket": "KEY" },
@@ -59,12 +81,25 @@
   ],
   "safari-zone": [
     { "itemSlug": "hm-water", "name": "HM03 — Surf", "note": "Secret house — Area 3", "pocket": "HM" },
-    { "itemSlug": "gold-teeth", "name": "Gold Teeth", "note": "Area 3 — near the secret house", "pocket": "KEY" }
+    { "itemSlug": "gold-teeth", "name": "Gold Teeth", "note": "Area 3 — near the secret house", "pocket": "KEY" },
+    { "itemSlug": "leaf-stone", "name": "Leaf Stone", "note": "Hidden — center island, east of the Nugget (Surf)", "pocket": "ITEMS", "hidden": true }
   ],
   "cinnabar-island": [
-    { "itemSlug": "tm-normal", "name": "TM35 — Metronome", "note": "Pokémon Lab — research room", "pocket": "TM" }
+    { "itemSlug": "tm-normal", "name": "TM35 — Metronome", "note": "Pokémon Lab — research room", "pocket": "TM" },
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "Hidden — Pokémon Mansion 1F, rock by the pillars", "pocket": "ITEMS", "hidden": true }
+  ],
+  "seafoam-islands": [
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "B4F — south area", "pocket": "BALLS" },
+    { "itemSlug": "water-stone", "name": "Water Stone", "note": "B1F — south area (via B2F) · +1 hidden on B4F", "pocket": "ITEMS" }
+  ],
+  "cerulean-cave": [
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball ×3", "note": "1F (hidden near the Nugget) · 2F (Rock Smash) · B1F", "pocket": "BALLS" }
+  ],
+  "victory-road": [
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Hidden — 1F, rock near the center", "pocket": "BALLS", "hidden": true }
   ],
   "power-plant": [
-    { "itemSlug": "tm-electric", "name": "TM25 — Thunder", "note": "Deep in the plant", "pocket": "TM" }
+    { "itemSlug": "tm-electric", "name": "TM25 — Thunder", "note": "Deep in the plant", "pocket": "TM" },
+    { "itemSlug": "thunder-stone", "name": "Thunder Stone", "note": "Northeast room · +1 hidden near Zapdos", "pocket": "ITEMS" }
   ]
 }

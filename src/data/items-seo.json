@@ -14,7 +14,9 @@
     "node": "kanto-route-15",
     "kind": "given",
     "nameEn": "Route 15",
-    "nameDe": "Route 15"
+    "nameDe": "Route 15",
+    "noteEn": "Gate 2F — Prof. Oak's aide (50 species caught)",
+    "noteDe": "Torhaus 1. OG — Prof. Eichs Assistent (50 Arten gefangen)"
    }
   ]
  },
@@ -410,13 +412,17 @@
     "node": "celadon-city",
     "kind": "ball",
     "nameEn": "Celadon City",
-    "nameDe": "Prismania City"
+    "nameDe": "Prismania City",
+    "noteEn": "Rocket Hideout — B2F, spin-tile maze (below the Game Corner)",
+    "noteDe": "Rocket-Versteck — U2, Drehfeld-Labyrinth (unter der Spielecke)"
    },
    {
     "node": "cinnabar-island",
     "kind": "hidden",
     "nameEn": "Cinnabar Island",
-    "nameDe": "Zinnoberinsel"
+    "nameDe": "Zinnoberinsel",
+    "noteEn": "Pokémon Mansion — 1F, hidden in a rock (Itemfinder)",
+    "noteDe": "Pokémon-Haus — 1. OG, versteckt in einem Felsen (Detektor)"
    }
   ],
   "evolutionTargets": [
