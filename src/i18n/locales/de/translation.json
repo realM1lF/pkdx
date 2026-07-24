@@ -558,7 +558,8 @@
     "minimap": "Minikarte — ziehen zum Verschieben",
     "interactiveCta": "INTERAKTIV",
     "legendInteractive": "INTERAKTIV ↗ öffnet eine externe Zoom-Map ({{site}}) in einem neuen Tab.",
-    "interactiveTitle": "{{site}} — {{game}} (extern)"
+    "interactiveTitle": "{{site}} — {{game}} (extern)",
+    "openAsPage": "Als Seite öffnen"
   },
   "nuz": {
     "eyebrow": "PHASE 05 — ÜBERLEBENSPROTOKOLL",
@@ -1664,6 +1665,147 @@
       "accept": "INS KONTO ÜBERNEHMEN",
       "later": "SPÄTER",
       "never": "NICHT FRAGEN"
+    }
+  },
+  "seo": {
+    "qa": {
+      "label": "FRAGEN & ANTWORTEN"
+    },
+    "route1": {
+      "eyebrow": "KANTO — ROUTE 1",
+      "title": "Route 1 – Pokémon & Fundorte",
+      "intro": "Route 1 ist der erste Schritt aus Alabastia heraus – kurz, ruhig und ohne Trainer. Im Gras warten nur zwei Arten, aber beide sind für deinen Run relevant: Taubsi als früher Flug-Sweeper, Rattfratz als solider Normal-Angreifer. Schnapp dir hier deinen ersten Fang, hol dir den Gratis-Trank vom Markt-Verkäufer und zieh weiter nach Vertania City. Alle Werte stammen aus Feuerrot/Blattgrün – und sind in beiden Editionen identisch.",
+      "crumbMaps": "Maps",
+      "crumbKanto": "Kanto",
+      "encountersEyebrow": "WILDE POKÉMON",
+      "encountersTitle": "Encounter-Tabelle",
+      "colPokemon": "POKÉMON",
+      "colMethod": "METHODE",
+      "colLevel": "LEVEL",
+      "colChance": "RATE",
+      "methodGrass": "Gras",
+      "encounterSource": "Quelle: PokéAPI (Feuerrot/Blattgrün) – Raten sind die Summe der Encounter-Slots.",
+      "versionFR": "Feuerrot",
+      "versionLG": "Blattgrün",
+      "itemsEyebrow": "FUNDORTE",
+      "itemsTitle": "Items auf Route 1",
+      "potionName": "Trank",
+      "potionNote": "Geschenk: Gratisprobe vom Markt-Verkäufer aus Vertania City, der auf der Route steht.",
+      "bestCatchEyebrow": "BEST CATCH",
+      "bestCatchTitle": "Taubsi – der beste erste Fang",
+      "bestCatchBody": "Taubsi (50 %, Lv 2–5) entwickelt sich über Tauboga (Lv 18) zu Tauboss (Lv 36) – eine der stärksten frühen Entwicklungslinien in Feuerrot/Blattgrün. Als Normal/Flug-Typ ist es immun gegen Boden, stark gegen Käfer- und Pflanzen-Teams (Vertania-Wald, Erikas Arena) und später ein zuverlässiger Träger für VM02 Fliegen. Rattfratz ist der Backup-Plan: früh stark als Rattikarl (Lv 20), aber ohne die Flug-Utility.",
+      "nuzlockeEyebrow": "NUZLOCKE",
+      "nuzlockeTitle": "Dein erster Fang des Runs",
+      "nuzlockeBody": "Route 1 ist für fast jeden Kanto-Run die erste Encounter-Route: Was dir hier ins Gras läuft, ist dein erster Fang – ab hier gilt die Dupes-Klausel. Halte den Fang direkt im Tracker fest, bevor es weiter nach Vertania geht.",
+      "nuzlockeCta": "Im Nuzlocke-Tracker eintragen",
+      "linksEyebrow": "WEITER",
+      "linksTitle": "Weiterführende Links",
+      "linkMap": "Kanto-Map (interaktiv)",
+      "route22Note": "Route 22: Eine eigene Seite folgt – bis dahin findest du alle Encounter in der Kanto-Map.",
+      "route22Link": "Route 22 in der Map öffnen",
+      "linkPikachu": "Pikachu – Fundorte & Attacken",
+      "openMapCta": "Route 1 in der interaktiven Map",
+      "qa": [
+        {
+          "q": "Welche Pokémon kann man auf Route 1 fangen?",
+          "aLead": "Nur zwei Arten: Taubsi und Rattfratz.",
+          "aBody": "Beide tauchen im Gras mit je 50 % Rate auf – Taubsi auf Lv 2–5, Rattfratz auf Lv 2–4. Die Tabelle ist in Feuerrot und Blattgrün identisch; Trainer gibt es auf Route 1 nicht."
+        },
+        {
+          "q": "Lohnt sich Taubsi auf Route 1?",
+          "aLead": "Ja – Taubsi ist einer der besten Früh-Catches in FRBG.",
+          "aBody": "Die Linie über Tauboga (Lv 18) zu Tauboss (Lv 36) liefert früh starke Werte und nützliche Flug-Coverage gegen Käfer, Pflanze und Kampf. Dazu ist Tauboss später ein natürlicher Träger für VM02 Fliegen. Wer es bodenständiger mag, nimmt Rattfratz als soliden Normal-Angreifer mit früher Entwicklung (Lv 20)."
+        },
+        {
+          "q": "Gibt es Items auf Route 1?",
+          "aLead": "Ja, genau eines: ein Trank.",
+          "aBody": "Der Verkäufer des Poké-Markts aus Vertania City steht auf der Route und verschenkt eine Gratisprobe. Versteckte oder kaufbare Items gibt es auf Route 1 nicht."
+        },
+        {
+          "q": "Unterscheiden sich Feuerrot und Blattgrün auf Route 1?",
+          "aLead": "Nein – auf Route 1 gibt es keinen Versionsunterschied.",
+          "aBody": "Taubsi und Rattfratz haben in beiden Editionen identische Raten (je 50 %) und Levelbereiche. Versions-exklusive Pokémon wie Fukano (nur FR) oder Smogon (nur BG) spielen erst auf späteren Routen eine Rolle."
+        },
+        {
+          "q": "Was ist der beste erste Fang für eine Nuzlocke auf Route 1?",
+          "aLead": "Taubsi – wegen Entwicklungslinie und Flug-Utility.",
+          "aBody": "Mit 50 % Begegnungschance hast du gute Odds, es als erste Begegnung zu sehen. Tauboss trägt durchs Early-Game und bleibt als Fliegen-Träger nützlich. Rattfratz/Rattikarl ist die brauchbare Alternative mit frühem Power-Spike (Lv 20)."
+        }
+      ]
+    },
+    "pikachu": {
+      "whereEyebrow": "FUNDORTE — FRBG",
+      "whereTitle": "Wo fängt man Pikachu?",
+      "whereIntro": "In Feuerrot/Blattgrün gibt es genau zwei wilde Fundorte – beide mit verifizierten Raten aus der PokéAPI:",
+      "colLocation": "ORT",
+      "colMethod": "METHODE",
+      "colLevel": "LEVEL",
+      "colChance": "RATE",
+      "viridianForest": "Vertania-Wald",
+      "powerPlant": "Kraftwerk",
+      "methodGrass": "Gras",
+      "versionFR": "Feuerrot",
+      "versionLG": "Blattgrün",
+      "whereNote": "Andere Editionen? Alle Fundorte pro Route und Version findest du in den",
+      "whereNoteLink": "interaktiven Maps",
+      "deepLinksEyebrow": "TOOLS",
+      "versusCta": "Pikachu im Versus-Calc",
+      "teamCta": "In den Teambuilder",
+      "mapsCta": "Fundorte in den Maps",
+      "qa": [
+        {
+          "q": "Gegen was ist Pikachu schwach?",
+          "aLead": "Nur gegen Boden – 2× Schaden.",
+          "aBody": "Als reiner Elektro-Typ hat Pikachu genau eine Schwäche (Boden) und drei Resistenzen: Elektro, Flug und Stahl je 0,5×. Immunitäten gibt es nicht; die versteckte Fähigkeit Blitzfänger macht Elektro-Attacken zusätzlich wirkungslos."
+        },
+        {
+          "q": "Wie entwickelt sich Pikachu?",
+          "aLead": "Über einen Donnerstein zu Raichu.",
+          "aBody": "Die Linie beginnt bei Pichu, das sich über hohe Freundschaft zu Pikachu entwickelt. Pikachu + Donnerstein = Raichu; seit Gen 7 entsteht in Alola stattdessen Alola-Raichu (Elektro/Psycho). Ein bestimmtes Level ist bei keinem der Schritte nötig."
+        },
+        {
+          "q": "Wann sollte ich Pikachu entwickeln?",
+          "aLead": "Frühestens nach Lv 26 – wenn Donnerblitz sitzt.",
+          "aBody": "In Gen 3 (Feuerrot/Blattgrün) lernt Raichu per Level-Up keine neuen Attacken mehr: Wer den Stein zu früh einsetzt, verpasst Donnerblitz (Lv 26), Agilität (33) und Donner (41). Empfehlung: Donnerblitz abwarten, dann entwickeln."
+        },
+        {
+          "q": "Welche Attacken lernt Pikachu per Level?",
+          "aLead": "Die Kern-Reihe in Feuerrot/Blattgrün:",
+          "aBody": "Donnerschock (Lv 1), Rutenschlag (6), Donnerwelle (8), Ruckzuckhieb (11), Doppelteam (15), Bodycheck (20), Donnerblitz (26), Agilität (33), Donner (41) und Lichtschild (50). Donnerwelle + Donnerblitz ist das Standard-Gerüst für den Story-Run."
+        },
+        {
+          "q": "Ist Pikachu gut für eine Nuzlocke?",
+          "aLead": "Solide, aber kein Free-Win – mit klaren Stärken und einer harten Schwäche.",
+          "aBody": "Mit 90 Initiative zieht Pikachu fast immer zuerst, und Donnerwelle (Lv 8) lähmt zuverlässig – Gold wert für schwierige Fänge und schnelle Gegner. Donnerblitz ab Lv 26 trifft Wasser- und Flug-Teams hart. Die Kehrseite: 35/40/50-Bulk ist fragil, und die einzige Schwäche Boden ist in Kanto gefährlich präsent (Digda, Georok, Giovannis Team). Faustregel: stark als Paralyse-Support und Anti-Wasser-Antwort, aber nie gegen Boden einwechseln."
+        }
+      ]
+    },
+    "versus": {
+      "explainerEyebrow": "SO FUNKTIONIERT'S",
+      "explainerTitle": "Wer gewinnt? So funktioniert der Versus-Calc",
+      "explainerBody": "Der Versus-Calc stellt zwei Pokémon im direkten Duell gegenüber – mit echter Schadensrechnung statt Bauchgefühl. Für jede Attacke beider Seiten siehst du die Schadensspanne: Typ-Effektivität, STAB und der physische/spezielle Split werden generationengenau berücksichtigt. Dazu vergleichen Stat-Delta und Speed-Check die Basiswerte – wer zuerst angreift, entscheidet viele Duelle. Stell oben beide Pokémon ein und lies das Matchup direkt ab.",
+      "qa": [
+        {
+          "q": "Wer gewinnt: Pikachu vs. Glurak?",
+          "aLead": "Kommt auf Level und Attacken an – genau das rechnet der Calc.",
+          "aBody": "Die Fakten: Pikachus Elektro-Attacken treffen Glurak sehr effektiv (2× über die Flug-Schwäche), aber Glurak ist mit Basis 100 Initiative schneller als Pikachu (90) und greift zuerst an. Stell beide oben ein und vergleiche die Schadensspannen pro Attacke samt Speed-Check."
+        },
+        {
+          "q": "Was ist effektiv gegen Wasser?",
+          "aLead": "Elektro und Pflanze – je 2× Schaden.",
+          "aBody": "Wasser-Pokémon resistieren Feuer, Wasser, Eis und Stahl (je 0,5×). Achtung bei Doppeltypen: Wasser/Boden (z. B. Sumpex) kassiert 4× von Pflanze, ist aber immun gegen Elektro. Die genaue Effektivität pro Matchup zeigt der Calc direkt in der Schadensmatrix."
+        },
+        {
+          "q": "Wie wird Schaden im Versus-Calc berechnet?",
+          "aLead": "Pro Attacke, mit der offiziellen Schadensformel – generationengenau.",
+          "aBody": "Basis sind Level, Angriffs- und Verteidigungswerte sowie die Stärke der Attacke; dazu kommen STAB (gleicher Typ = 1,5×) und die Typ-Effektivität gegen alle Typen des Ziels. Der physische/spezielle Split folgt der gewählten Generation (bis Gen 3 nach Typ, ab Gen 4 pro Attacke). Das Ergebnis ist die Schadensspanne, die du in der Matrix siehst."
+        },
+        {
+          "q": "Stapeln sich Schwächen bei Doppeltypen (4×)?",
+          "aLead": "Ja – multiplikativ, bis zu 4×.",
+          "aBody": "Treffen beide Typen des Ziels eine Schwäche, multiplizieren sich die Faktoren: 2× · 2× = 4× (z. B. Pflanze gegen Wasser/Boden). Umgekehrt können sich Schwäche und Resistenz gegenseitig aufheben (2× · 0,5× = 1×)."
+        }
+      ]
     }
   }
 }

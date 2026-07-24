@@ -558,7 +558,8 @@
     "minimap": "Minimap — drag to pan",
     "interactiveCta": "INTERACTIVE",
     "legendInteractive": "INTERACTIVE ↗ opens a third-party zoom map ({{site}}) in a new tab.",
-    "interactiveTitle": "{{site}} — {{game}} (external)"
+    "interactiveTitle": "{{site}} — {{game}} (external)",
+    "openAsPage": "Open as page"
   },
   "nuz": {
     "eyebrow": "PHASE 05 — SURVIVAL PROTOCOL",
@@ -1664,6 +1665,147 @@
       "accept": "UPLOAD TO ACCOUNT",
       "later": "LATER",
       "never": "DON'T ASK"
+    }
+  },
+  "seo": {
+    "qa": {
+      "label": "Q&A"
+    },
+    "route1": {
+      "eyebrow": "KANTO — ROUTE 1",
+      "title": "Route 1 – Pokémon & Locations",
+      "intro": "Route 1 is your first step out of Pallet Town – short, calm and trainer-free. The grass holds just two species, but both matter for your run: Pidgey as an early Flying sweeper, Rattata as a solid Normal attacker. Grab your first catch, pick up the free Potion from the Poké Mart clerk and head on to Viridian City. All rates are from FireRed/LeafGreen – identical in both versions.",
+      "crumbMaps": "Maps",
+      "crumbKanto": "Kanto",
+      "encountersEyebrow": "WILD POKÉMON",
+      "encountersTitle": "Encounter table",
+      "colPokemon": "POKÉMON",
+      "colMethod": "METHOD",
+      "colLevel": "LEVEL",
+      "colChance": "RATE",
+      "methodGrass": "Grass",
+      "encounterSource": "Source: PokéAPI (FireRed/LeafGreen) – rates are the summed encounter slots.",
+      "versionFR": "FireRed",
+      "versionLG": "LeafGreen",
+      "itemsEyebrow": "LOCATIONS",
+      "itemsTitle": "Items on Route 1",
+      "potionName": "Potion",
+      "potionNote": "Gift: free sample from the Viridian City Poké Mart clerk standing on the route.",
+      "bestCatchEyebrow": "BEST CATCH",
+      "bestCatchTitle": "Pidgey – the best first catch",
+      "bestCatchBody": "Pidgey (50%, Lv 2–5) evolves through Pidgeotto (Lv 18) into Pidgeot (Lv 36) – one of the strongest early evolution lines in FireRed/LeafGreen. As a Normal/Flying type it is immune to Ground, strong against Bug and Grass teams (Viridian Forest, Erika's gym) and later a reliable carrier for HM02 Fly. Rattata is the backup plan: strong early as Raticate (Lv 20), but without the Flying utility.",
+      "nuzlockeEyebrow": "NUZLOCKE",
+      "nuzlockeTitle": "Your first catch of the run",
+      "nuzlockeBody": "Route 1 is the first encounter route of almost every Kanto run: whatever walks into your grass here is your first catch – the dupes clause applies from this point on. Log it in the tracker right away before you move on to Viridian.",
+      "nuzlockeCta": "Log it in the Nuzlocke tracker",
+      "linksEyebrow": "NEXT UP",
+      "linksTitle": "Keep exploring",
+      "linkMap": "Kanto map (interactive)",
+      "route22Note": "Route 22: a dedicated page is coming – until then, all encounters live in the Kanto map.",
+      "route22Link": "Open Route 22 in the map",
+      "linkPikachu": "Pikachu – locations & moves",
+      "openMapCta": "Route 1 on the interactive map",
+      "qa": [
+        {
+          "q": "What Pokémon can you catch on Route 1?",
+          "aLead": "Just two species: Pidgey and Rattata.",
+          "aBody": "Both appear in the grass at a 50% rate each – Pidgey at Lv 2–5, Rattata at Lv 2–4. The table is identical in FireRed and LeafGreen, and there are no trainers on Route 1."
+        },
+        {
+          "q": "Is Pidgey worth it on Route 1?",
+          "aLead": "Yes – Pidgey is one of the best early catches in FRLG.",
+          "aBody": "The line through Pidgeotto (Lv 18) into Pidgeot (Lv 36) delivers strong early stats and useful Flying coverage against Bug, Grass and Fighting. On top of that, Pidgeot is a natural carrier for HM02 Fly later on. If you prefer something more grounded, Rattata is a solid Normal attacker with an early evolution (Lv 20)."
+        },
+        {
+          "q": "Are there items on Route 1?",
+          "aLead": "Yes, exactly one: a Potion.",
+          "aBody": "The clerk from the Viridian City Poké Mart stands on the route and hands out a free sample. There are no hidden or purchasable items on Route 1."
+        },
+        {
+          "q": "Do FireRed and LeafGreen differ on Route 1?",
+          "aLead": "No – there is no version difference on Route 1.",
+          "aBody": "Pidgey and Rattata have identical rates (50% each) and level ranges in both versions. Version-exclusive Pokémon like Growlithe (FR only) or Shellder (LG only) only matter on later routes."
+        },
+        {
+          "q": "What is the best first catch for a Nuzlocke on Route 1?",
+          "aLead": "Pidgey – because of its evolution line and Flying utility.",
+          "aBody": "With a 50% encounter rate you have good odds of seeing it as your first encounter. Pidgeot carries you through the early game and stays useful as a Fly carrier. Rattata/Raticate is the workable alternative with an early power spike (Lv 20)."
+        }
+      ]
+    },
+    "pikachu": {
+      "whereEyebrow": "LOCATIONS — FRLG",
+      "whereTitle": "Where to catch Pikachu",
+      "whereIntro": "In FireRed/LeafGreen there are exactly two wild locations – both with verified rates from PokéAPI:",
+      "colLocation": "LOCATION",
+      "colMethod": "METHOD",
+      "colLevel": "LEVEL",
+      "colChance": "RATE",
+      "viridianForest": "Viridian Forest",
+      "powerPlant": "Power Plant",
+      "methodGrass": "Grass",
+      "versionFR": "FireRed",
+      "versionLG": "LeafGreen",
+      "whereNote": "Other games? Find every location per route and version in the",
+      "whereNoteLink": "interactive maps",
+      "deepLinksEyebrow": "TOOLS",
+      "versusCta": "Pikachu in the Versus Calc",
+      "teamCta": "Open in the Team Builder",
+      "mapsCta": "Locations on the maps",
+      "qa": [
+        {
+          "q": "What is Pikachu weak to?",
+          "aLead": "Only Ground – 2× damage.",
+          "aBody": "As a pure Electric type, Pikachu has exactly one weakness (Ground) and three resistances: Electric, Flying and Steel at 0.5× each. There are no immunities; the hidden ability Lightning Rod additionally nullifies Electric moves."
+        },
+        {
+          "q": "How does Pikachu evolve?",
+          "aLead": "Via a Thunder Stone into Raichu.",
+          "aBody": "The line starts with Pichu, which evolves into Pikachu through high friendship. Pikachu + Thunder Stone = Raichu; since Gen 7 this yields Alolan Raichu (Electric/Psychic) in Alola instead. No specific level is required for any of the steps."
+        },
+        {
+          "q": "When should I evolve Pikachu?",
+          "aLead": "Not before Lv 26 – once Thunderbolt is learned.",
+          "aBody": "In Gen 3 (FireRed/LeafGreen) Raichu learns no new moves by level-up: use the stone too early and you miss Thunderbolt (Lv 26), Agility (33) and Thunder (41). Recommendation: wait for Thunderbolt, then evolve."
+        },
+        {
+          "q": "Which moves does Pikachu learn by level?",
+          "aLead": "The core line-up in FireRed/LeafGreen:",
+          "aBody": "Thunder Shock (Lv 1), Tail Whip (6), Thunder Wave (8), Quick Attack (11), Double Team (15), Slam (20), Thunderbolt (26), Agility (33), Thunder (41) and Light Screen (50). Thunder Wave + Thunderbolt is the standard backbone for a story run."
+        },
+        {
+          "q": "Is Pikachu good for a Nuzlocke?",
+          "aLead": "Solid, but no free win – with clear strengths and one hard weakness.",
+          "aBody": "With 90 Speed Pikachu almost always moves first, and Thunder Wave (Lv 8) paralyzes reliably – worth gold for tough catches and fast opponents. Thunderbolt from Lv 26 hits Water and Flying teams hard. The flip side: 35/40/50 bulk is fragile, and its only weakness, Ground, is dangerously common in Kanto (Diglett, Geodude, Giovanni's team). Rule of thumb: great as paralysis support and the anti-Water answer, but never switch it into Ground."
+        }
+      ]
+    },
+    "versus": {
+      "explainerEyebrow": "HOW IT WORKS",
+      "explainerTitle": "Who wins? How the Versus Calc works",
+      "explainerBody": "The Versus Calc pits two Pokémon against each other in a direct duel – with real damage math instead of gut feeling. For every move on both sides you see the damage range: type effectiveness, STAB and the physical/special split are applied accurately per generation. On top of that, the stat delta and speed check compare base stats – moving first decides many duels. Set both Pokémon above and read the matchup straight off.",
+      "qa": [
+        {
+          "q": "Who wins: Pikachu vs. Charizard?",
+          "aLead": "It depends on levels and moves – exactly what the calc computes.",
+          "aBody": "The facts: Pikachu's Electric moves hit Charizard super effectively (2× via the Flying weakness), but Charizard with base 100 Speed is faster than Pikachu (90) and attacks first. Set both above and compare the damage ranges per move together with the speed check."
+        },
+        {
+          "q": "What is super effective against Water?",
+          "aLead": "Electric and Grass – 2× damage each.",
+          "aBody": "Water Pokémon resist Fire, Water, Ice and Steel (0.5× each). Watch out for dual types: Water/Ground (e.g. Swampert) takes 4× from Grass but is immune to Electric. The exact effectiveness per matchup is shown by the calc right in the damage matrix."
+        },
+        {
+          "q": "How is damage calculated in the Versus Calc?",
+          "aLead": "Per move, using the official damage formula – accurate per generation.",
+          "aBody": "The base is level, attack and defense stats and the move's power; on top come STAB (same type = 1.5×) and type effectiveness against all of the target's types. The physical/special split follows the selected generation (by type up to Gen 3, per move from Gen 4). The result is the damage range you see in the matrix."
+        },
+        {
+          "q": "Do dual-type weaknesses stack (4×)?",
+          "aLead": "Yes – multiplicatively, up to 4×.",
+          "aBody": "If both of the target's types share a weakness, the factors multiply: 2× · 2× = 4× (e.g. Grass against Water/Ground). Conversely, a weakness and a resistance can cancel out (2× · 0.5× = 1×)."
+        }
+      ]
     }
   }
 }
