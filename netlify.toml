@@ -1,10 +1,15 @@
 # Netlify build config — MyPokePanion (Vite SPA)
 [build]
-  command = "npm run build"
+  # Playwright (devDependency) + Chromium installieren, damit der postbuild-
+  # Prerender-Schritt (scripts/prerender.mjs) auch im Netlify-Build läuft.
+  # Install dauert ~2-4 min; schlägt sie fehl, skippt prerender.mjs nur mit
+  # Warnung — PRERENDER=required macht den Build stattdessen hart fehl.
+  command = "npx playwright install --with-deps chromium && npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
+  PRERENDER = "required"
 
 # Cache strategy (fixes "MIME type text/html" chunk errors after deploys):
 # hashed assets are immutable, everything else (esp. index.html) must

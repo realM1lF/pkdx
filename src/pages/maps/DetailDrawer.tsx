@@ -454,7 +454,7 @@ export default function DetailDrawer({
           {region.region === 'kanto' && node.id === 'kanto-route-1' && (
             <LocaleLink
               to="/maps/kanto/route-1"
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline px-3 text-[11px] font-semibold text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />
               {t('maps.openAsPage')}
