@@ -1,26 +1,39 @@
 {
   "rustboro-city": [
-    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Cutter's house", "pocket": "HM" }
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "moveSlug": "cut", "note": "Cutter's house — west of the Pokémon Center", "pocket": "HM" },
+    { "itemSlug": "quick-claw", "name": "Quick Claw", "note": "Teacher — Pokémon Trainers' School", "pocket": "ITEMS" },
+    { "itemSlug": "premier-ball", "name": "Premier Ball", "note": "Boy — southwestern building, 2F", "pocket": "BALLS" }
   ],
   "granite-cave": [
-    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "note": "Hiker — cave entrance", "pocket": "TM" }
+    { "itemSlug": "hm-normal", "name": "HM05 — Flash", "moveSlug": "flash", "note": "Hiker — 1F, near the entrance", "pocket": "HM" },
+    { "itemSlug": "tm-steel", "name": "TM47 — Steel Wing", "moveSlug": "steel-wing", "note": "Steven — thanks for the Letter", "pocket": "TM" }
   ],
   "slateport-city": [
-    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Pokémon Fan Club — back room", "pocket": "ITEMS" }
+    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Pokémon Fan Club — woman in back (150+ friendship)", "pocket": "ITEMS" },
+    { "itemSlug": "tm-dark", "name": "TM41 — Torment", "moveSlug": "torment", "note": "Sailor — Contest Hall (RS) / Battle Tent (E)", "pocket": "TM" }
   ],
   "mauville-city": [
-    { "itemSlug": "hm-fighting", "name": "HM06 — Rock Smash", "note": "Man in the southeast house", "pocket": "HM" }
+    { "itemSlug": "hm-fighting", "name": "HM06 — Rock Smash", "moveSlug": "rock-smash", "note": "Rock Smash Dude — southeastern house", "pocket": "HM" },
+    { "itemSlug": "mach-bike", "name": "Mach Bike", "note": "Rydel's Cycles — swappable with Acro Bike", "pocket": "KEY" },
+    { "itemSlug": "tm-electric", "name": "TM24 — Thunderbolt", "moveSlug": "thunderbolt", "note": "Wattson — after shutting down New Mauville", "pocket": "TM" }
   ],
   "lavaridge-town": [
-    { "itemSlug": "go-goggles", "name": "Go-Goggles", "note": "Rival — Route 111, post-gym", "pocket": "KEY" }
+    { "itemSlug": "go-goggles", "name": "Go-Goggles", "note": "Brendan/May — after defeating Flannery", "pocket": "KEY" },
+    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Old man — Herb Shop", "pocket": "ITEMS" },
+    { "itemSlug": "ice-heal", "name": "Ice Heal", "note": "Hidden — hot spring", "pocket": "ITEMS", "hidden": true }
   ],
   "meteor-falls": [
-    { "itemSlug": "tm-dragon", "name": "TM02 — Dragon Claw", "note": "B1F — dragon chamber", "pocket": "TM" }
+    { "itemSlug": "tm-dragon", "name": "TM02 — Dragon Claw", "moveSlug": "dragon-claw", "note": "B1F back room (Surf + Waterfall)", "pocket": "TM" },
+    { "itemSlug": "tm-steel", "name": "TM23 — Iron Tail", "moveSlug": "iron-tail", "note": "NW hill, main room — via B1F (Surf + Waterfall)", "pocket": "TM" },
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "1F — west hill", "pocket": "ITEMS" }
   ],
   "mossdeep-city": [
-    { "itemSlug": "hm-water", "name": "HM08 — Dive", "note": "Steven — his house", "pocket": "HM" }
+    { "itemSlug": "hm-water", "name": "HM08 — Dive", "moveSlug": "dive", "note": "Steven — his house (E: after the Space Center)", "pocket": "HM" },
+    { "itemSlug": "super-rod", "name": "Super Rod", "note": "Fisherman — house east of the Gym", "pocket": "KEY" },
+    { "itemSlug": "kings-rock", "name": "King's Rock", "note": "Boy — outside Steven's house", "pocket": "ITEMS" }
   ],
   "sootopolis-city": [
-    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "note": "Cave of Origin", "pocket": "HM" }
+    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "moveSlug": "waterfall", "note": "Wallace — in front of the Gym (E); Cave of Origin B3F (RS)", "pocket": "HM" },
+    { "itemSlug": "tm-fighting", "name": "TM31 — Brick Break", "moveSlug": "brick-break", "note": "Black Belt — northwestern house (Surf)", "pocket": "TM" }
   ]
 }
