@@ -8,6 +8,15 @@
         "en": "Player's PC — withdrawn at start"
       },
       "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "town-map",
+      "name": "Town Map",
+      "note": {
+        "de": "Daisy — nach Erhalt des Pokédex",
+        "en": "Daisy — after receiving the Pokédex"
+      },
+      "pocket": "KEY"
     }
   ],
   "kanto-route-1": [
@@ -15,8 +24,8 @@
       "itemSlug": "potion",
       "name": "Potion",
       "note": {
-        "de": "Gratisprobe — Verkäufer im Poké-Markt",
-        "en": "Free sample — Poké Mart clerk"
+        "de": "Gratisprobe — Markt-Mitarbeiter auf der Route",
+        "en": "Free sample — Poké Mart employee on the route"
       },
       "pocket": "ITEMS"
     }
@@ -30,6 +39,24 @@
         "en": "Poké Mart — after Oak's parcel"
       },
       "pocket": "BALLS"
+    },
+    {
+      "itemSlug": "teachy-tv",
+      "name": "Teachy TV",
+      "note": {
+        "de": "Alter Mann — nach Eichs Paket",
+        "en": "Old man — after Oak's Parcel"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "potion",
+      "name": "Potion",
+      "note": {
+        "de": "Nordwesten — hinter dem Zerschneider-Baum",
+        "en": "Northwest — behind the Cut tree"
+      },
+      "pocket": "ITEMS"
     }
   ],
   "kanto-route-2": [
@@ -38,8 +65,8 @@
       "name": "HM05 — Flash",
       "moveSlug": "flash",
       "note": {
-        "de": "Eichs Assistent — Tor, 1. OG (10 gefangen)",
-        "en": "Oak's aide — gate 2F (10 caught)"
+        "de": "Eichs Assistent — Tor, 1. OG (10 gefangen; Zerschneider)",
+        "en": "Oak's aide — gate 2F (10 caught; Cut)"
       },
       "pocket": "HM"
     }
@@ -47,10 +74,10 @@
   "viridian-forest": [
     {
       "itemSlug": "antidote",
-      "name": "Antidote",
+      "name": "Antidote ×2",
       "note": {
-        "de": "Nordwestliche Lichtung",
-        "en": "Northwest clearing"
+        "de": "Nordostbereich, beim Trainer-Tipps-Schild · +1 versteckt nahe dem Südeingang",
+        "en": "Northeast area, by the Trainer Tips sign · +1 hidden near the south entrance"
       },
       "pocket": "ITEMS"
     }
@@ -69,11 +96,11 @@
   "kanto-route-4": [
     {
       "itemSlug": "tm-normal",
-      "name": "TM04 — Whirlwind",
-      "moveSlug": "whirlwind",
+      "name": "TM05 — Roar",
+      "moveSlug": "roar",
       "note": {
-        "de": "Felsvorsprung östlich des Mondberg-Ausgangs",
-        "en": "Ledge east of Mt. Moon exit"
+        "de": "Zweithöchstes Plateau im Nordbereich, östlich des Mondberg-Ausgangs",
+        "en": "Second-highest plateau in the north area, east of the Mt. Moon exit"
       },
       "pocket": "TM"
     }
@@ -83,30 +110,66 @@
       "itemSlug": "moon-stone",
       "name": "Moon Stone",
       "note": {
-        "de": "UG2 — Kraterkammer ×2",
-        "en": "B2F — crater room ×2"
+        "de": "EG — Nordwestbereich · +1 versteckt im UG2 (Felsen beim Super-Nerd)",
+        "en": "1F — northwest area · +1 hidden on B2F (rock by the Super Nerd)"
       },
       "pocket": "ITEMS"
     },
     {
-      "itemSlug": "tm-normal",
-      "name": "TM01 — Mega Punch",
-      "moveSlug": "mega-punch",
+      "itemSlug": "tm-grass",
+      "name": "TM09 — Bullet Seed",
+      "moveSlug": "bullet-seed",
       "note": {
-        "de": "EG — östlicher Vorsprung",
-        "en": "1F — east ledge"
+        "de": "EG — Südwestbereich",
+        "en": "1F — southwest area"
       },
       "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-dark",
+      "name": "TM46 — Thief",
+      "moveSlug": "thief",
+      "note": {
+        "de": "UG2 — abgeschlossener Raum (mittlere Leiter)",
+        "en": "B2F — closed room (middle ladder)"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "star-piece",
+      "name": "Star Piece",
+      "note": {
+        "de": "UG2 — abgeschlossener Raum (östlichste Leiter)",
+        "en": "B2F — closed room (easternmost ladder)"
+      },
+      "pocket": "ITEMS"
     },
     {
       "itemSlug": "rare-candy",
       "name": "Rare Candy",
       "note": {
-        "de": "Versteckt — Felsen im UG2",
-        "en": "Hidden — B2F rock"
+        "de": "EG — nahe der Südostecke",
+        "en": "1F — near the southeast corner"
       },
-      "pocket": "ITEMS",
-      "hidden": true
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "helix-fossil",
+      "name": "Helix Fossil",
+      "note": {
+        "de": "UG2 — Wahl nach Sieg über den Super-Nerd (nur eins)",
+        "en": "B2F — choice after defeating the Super Nerd (only one)"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "dome-fossil",
+      "name": "Dome Fossil",
+      "note": {
+        "de": "UG2 — Wahl nach Sieg über den Super-Nerd (nur eins)",
+        "en": "B2F — choice after defeating the Super Nerd (only one)"
+      },
+      "pocket": "KEY"
     }
   ],
   "cerulean-city": [
@@ -119,6 +182,43 @@
         "en": "Burgled house — defeat the Rocket"
       },
       "pocket": "TM"
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Versteckt — Garten des Orden-Experten",
+        "en": "Hidden — Gym Badge man's backyard garden"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "powder-jar",
+      "name": "Powder Jar",
+      "note": {
+        "de": "Mann im Haus neben dem Orden-Experten",
+        "en": "Old man in the house next to the Badge man's"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "fame-checker",
+      "name": "Fame Checker",
+      "note": {
+        "de": "Rivale — nach dem Kampf in Azuria City",
+        "en": "Rival — after the Cerulean battle"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "bicycle",
+      "name": "Bicycle",
+      "note": {
+        "de": "Radladen — gegen den Fahrrad-Gutschein",
+        "en": "Bike Shop — in exchange for the Bike Voucher"
+      },
+      "pocket": "KEY"
     }
   ],
   "kanto-route-24": [
@@ -126,10 +226,20 @@
       "itemSlug": "nugget",
       "name": "Nugget",
       "note": {
-        "de": "Nuggetbrücke — Bestechung des Rüpels",
-        "en": "Nugget Bridge — grunt's bribe"
+        "de": "Nuggetbrücke — Rüpel nach den fünf Trainern",
+        "en": "Nugget Bridge — grunt after the five Trainers"
       },
       "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "tm-normal",
+      "name": "TM45 — Attract",
+      "moveSlug": "attract",
+      "note": {
+        "de": "Plateau im Nordwesten",
+        "en": "Northwest plateau"
+      },
+      "pocket": "TM"
     }
   ],
   "vermilion-city": [
@@ -160,6 +270,25 @@
         "en": "S.S. Anne — seasick captain"
       },
       "pocket": "HM"
+    },
+    {
+      "itemSlug": "vs-seeker",
+      "name": "Vs. Seeker",
+      "note": {
+        "de": "Trainerin am Pokémon-Center-Tresen",
+        "en": "Ace Trainer at the Pokémon Center counter"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "lava-cookie",
+      "name": "Lava Cookie",
+      "note": {
+        "de": "Versteckt — Hafen, südöstlich des Trucks (Surfer, solange die M.S. Anne liegt)",
+        "en": "Hidden — port, southeast of the truck (Surf, while the S.S. Anne is moored)"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
     }
   ],
   "kanto-route-11": [
@@ -189,6 +318,36 @@
       "note": {
         "de": "Versteckt — Detektor an Relaxos Stelle",
         "en": "Hidden — Itemfinder at Snorlax's spot"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "tm-normal",
+      "name": "TM27 — Return",
+      "moveSlug": "return",
+      "note": {
+        "de": "Mädchen im Lavandia-Tor, 1. OG",
+        "en": "Girl in the Lavender gate, 2F"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-psychic",
+      "name": "TM48 — Skill Swap",
+      "moveSlug": "skill-swap",
+      "note": {
+        "de": "Insel südöstlich des Tors (Surfer)",
+        "en": "Island southeast of the gate (Surf)"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Versteckt — Grasfeld im Süden (Zerschneider)",
+        "en": "Hidden — southern grass patch (Cut)"
       },
       "pocket": "ITEMS",
       "hidden": true
@@ -235,6 +394,15 @@
       },
       "pocket": "ITEMS",
       "hidden": true
+    },
+    {
+      "itemSlug": "amulet-coin",
+      "name": "Amulet Coin",
+      "note": {
+        "de": "Eichs Assistent — Tor (40 gefangen)",
+        "en": "Oak's aide — gate (40 caught)"
+      },
+      "pocket": "ITEMS"
     }
   ],
   "kanto-route-6": [
@@ -246,6 +414,16 @@
         "en": "Hidden — marked square west of the Saffron gate"
       },
       "pocket": "BERRIES",
+      "hidden": true
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Versteckt — östlich des Saffronia-Tors",
+        "en": "Hidden — east of the Saffron gate"
+      },
+      "pocket": "ITEMS",
       "hidden": true
     }
   ],
@@ -324,11 +502,97 @@
       "pocket": "ITEMS"
     },
     {
+      "itemSlug": "tea",
+      "name": "Tea",
+      "note": {
+        "de": "Managerin der Prismania-Apartments (EG)",
+        "en": "Manager of the Celadon Condominiums (1F)"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "pp-up",
+      "name": "PP Up ×2",
+      "note": {
+        "de": "Versteckt — östlich der Rocket-Spielhalle · Rocket-Versteck UG1 (Pflanze)",
+        "en": "Hidden — east of the Rocket Game Corner · Rocket Hideout B1F (plant)"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "silph-scope",
+      "name": "Silph Scope",
+      "note": {
+        "de": "Rocket-Versteck, UG4 — Giovanni besiegen",
+        "en": "Rocket Hideout B4F — defeat Giovanni"
+      },
+      "pocket": "KEY"
+    },
+    {
       "itemSlug": "moon-stone",
       "name": "Moon Stone",
       "note": {
         "de": "Rocket-Versteck — UG2, Drehfeld-Labyrinth (Spielecke)",
         "en": "Rocket Hideout — B2F, spin-tile maze (Game Corner)"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "tm-dark",
+      "name": "TM12 — Taunt",
+      "moveSlug": "taunt",
+      "note": {
+        "de": "Rocket-Versteck — UG2, südöstlich des Mondsteins",
+        "en": "Rocket Hideout — B2F, southeast of the Moon Stone"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-normal",
+      "name": "TM21 — Frustration",
+      "moveSlug": "frustration",
+      "note": {
+        "de": "Rocket-Versteck — UG3, südlich der Treppe zu UG2",
+        "en": "Rocket Hideout — B3F, south of the stairs to B2F"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "black-glasses",
+      "name": "Black Glasses",
+      "note": {
+        "de": "Rocket-Versteck — UG3, südlich der Treppe zu UG4",
+        "en": "Rocket Hideout — B3F, south of the stairs to B4F"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "tm-dark",
+      "name": "TM49 — Snatch",
+      "moveSlug": "snatch",
+      "note": {
+        "de": "Rocket-Versteck — UG4, Nordwestbereich",
+        "en": "Rocket Hideout — B4F, northwest area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "nugget",
+      "name": "Nugget",
+      "note": {
+        "de": "Versteckt — Rocket-Versteck, UG3, Nordwestecke",
+        "en": "Hidden — Rocket Hideout B3F, northwest corner"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Rocket-Versteck — UG3, Ostseite des Drehfeld-Labyrinths",
+        "en": "Rocket Hideout — B3F, east side of the spin maze"
       },
       "pocket": "ITEMS"
     }
@@ -355,12 +619,71 @@
     },
     {
       "itemSlug": "ultra-ball",
-      "name": "Ultra Ball",
+      "name": "Ultra Ball ×2",
       "note": {
-        "de": "Silph Co. — 10. Etage, südwestlicher Raum",
-        "en": "Silph Co. — 10F, southwest room"
+        "de": "Silph Co. — 2. Etage (versteckt, Pflanze im Südwesten) · 10. Etage (Südwestbereich)",
+        "en": "Silph Co. — 2F (hidden, plant in the southwest) · 10F (southwest area)"
       },
       "pocket": "BALLS"
+    },
+    {
+      "itemSlug": "nugget",
+      "name": "Nugget ×2",
+      "note": {
+        "de": "Versteckt — Schreibtisch bei der Nachahmerin · Silph Co., 8. Etage (Pflanze im Osten)",
+        "en": "Hidden — Copycat's desk · Silph Co. 8F (east plant)"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "tm-dark",
+      "name": "TM41 — Torment",
+      "moveSlug": "torment",
+      "note": {
+        "de": "Silph Co. — 4. Etage, Südostbereich",
+        "en": "Silph Co. — 4F, southeast area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-fighting",
+      "name": "TM01 — Focus Punch",
+      "moveSlug": "focus-punch",
+      "note": {
+        "de": "Silph Co. — 5. Etage, Südwestraum",
+        "en": "Silph Co. — 5F, southwest room"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "pp-up",
+      "name": "PP Up",
+      "note": {
+        "de": "Versteckt — Silph Co., 5. Etage, Pflanze südlich der Treppe",
+        "en": "Hidden — Silph Co. 5F, plant south of the stairs"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "tm-fighting",
+      "name": "TM08 — Bulk Up",
+      "moveSlug": "bulk-up",
+      "note": {
+        "de": "Silph Co. — 7. Etage, Ostraum",
+        "en": "Silph Co. — 7F, eastern room"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Silph Co. — 10. Etage, Südwestraum",
+        "en": "Silph Co. — 10F, southwest room"
+      },
+      "pocket": "ITEMS"
     }
   ],
   "fuchsia-city": [
@@ -382,6 +705,15 @@
         "en": "Safari Warden — return his teeth"
       },
       "pocket": "HM"
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Haus des Safari-Wärters (Stärke)",
+        "en": "Safari Warden's house (Strength)"
+      },
+      "pocket": "ITEMS"
     }
   ],
   "safari-zone": [
@@ -405,24 +737,90 @@
       "pocket": "KEY"
     },
     {
-      "itemSlug": "leaf-stone",
-      "name": "Leaf Stone",
+      "itemSlug": "nugget",
+      "name": "Nugget",
       "note": {
-        "de": "Versteckt — Insel in der Mitte, östlich des Nuggets (Surfer)",
-        "en": "Hidden — center island, east of the Nugget (Surf)"
+        "de": "Mitte — Insel im See (Surfer)",
+        "en": "Center Area — lake island (Surf)"
       },
-      "pocket": "ITEMS",
-      "hidden": true
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "leaf-stone",
+      "name": "Leaf Stone ×2",
+      "note": {
+        "de": "Areal 1 — Südplateau · +1 versteckt in der Mitte (Insel, östlich des Nuggets; Surfer)",
+        "en": "Area 1 — southern plateau · +1 hidden in the Center Area (island, east of the Nugget; Surf)"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "tm-fire",
+      "name": "TM11 — Sunny Day",
+      "moveSlug": "sunny-day",
+      "note": {
+        "de": "Areal 1 — Gras am Wasser",
+        "en": "Area 1 — grass beside the water"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "quick-claw",
+      "name": "Quick Claw",
+      "note": {
+        "de": "Areal 2 — Mitte",
+        "en": "Area 2 — near the center"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "tm-steel",
+      "name": "TM47 — Steel Wing",
+      "moveSlug": "steel-wing",
+      "note": {
+        "de": "Areal 2 — südwestlich des Rasthauses",
+        "en": "Area 2 — southwest of the rest house"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-normal",
+      "name": "TM32 — Double Team",
+      "moveSlug": "double-team",
+      "note": {
+        "de": "Areal 3 — südöstlich des Geheimhauses",
+        "en": "Area 3 — southeast of the Secret House"
+      },
+      "pocket": "TM"
     }
   ],
   "cinnabar-island": [
     {
-      "itemSlug": "tm-normal",
-      "name": "TM35 — Metronome",
-      "moveSlug": "metronome",
+      "itemSlug": "secret-key",
+      "name": "Secret Key",
       "note": {
-        "de": "Pokémon-Labor — Forschungsraum",
-        "en": "Pokémon Lab — research room"
+        "de": "Pokémon-Villa, UG1 — Nordwesten (öffnet die Arena)",
+        "en": "Pokémon Mansion B1F — northwest (unlocks the Gym)"
+      },
+      "pocket": "KEY"
+    },
+    {
+      "itemSlug": "tm-ice",
+      "name": "TM14 — Blizzard",
+      "moveSlug": "blizzard",
+      "note": {
+        "de": "Pokémon-Villa, UG1 — Nordbereich",
+        "en": "Pokémon Mansion B1F — north area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-grass",
+      "name": "TM22 — SolarBeam",
+      "moveSlug": "solar-beam",
+      "note": {
+        "de": "Pokémon-Villa, UG1 — Westbereich",
+        "en": "Pokémon Mansion B1F — west area"
       },
       "pocket": "TM"
     },
@@ -432,6 +830,16 @@
       "note": {
         "de": "Versteckt — Pokémon-Villa, EG, Felsen bei den Säulen",
         "en": "Hidden — Pokémon Mansion 1F, rock by the pillars"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "Versteckt — Pokémon-Villa, 2. OG, östliches Weg-Ende",
+        "en": "Hidden — Pokémon Mansion 3F, far east end of the path"
       },
       "pocket": "ITEMS",
       "hidden": true
@@ -455,6 +863,25 @@
         "en": "B1F — south area (via B2F) · +1 hidden on B4F"
       },
       "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "big-pearl",
+      "name": "Big Pearl",
+      "note": {
+        "de": "UG2 — Südbereich",
+        "en": "B2F — south area"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "nugget",
+      "name": "Nugget",
+      "note": {
+        "de": "Versteckt — UG3, Felsen nahe der südwestlichen Leiter",
+        "en": "Hidden — B3F, rock near the southwest ladder"
+      },
+      "pocket": "ITEMS",
+      "hidden": true
     }
   ],
   "cerulean-cave": [
@@ -466,6 +893,24 @@
         "en": "1F (hidden near the Nugget) · 2F (Rock Smash) · B1F"
       },
       "pocket": "BALLS"
+    },
+    {
+      "itemSlug": "nugget",
+      "name": "Nugget",
+      "note": {
+        "de": "EG — Nordwestbereich",
+        "en": "1F — northwest area"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "pp-up",
+      "name": "PP Up",
+      "note": {
+        "de": "1. OG — Südwestbereich (Zertrümmerer)",
+        "en": "2F — southwest area (Rock Smash)"
+      },
+      "pocket": "ITEMS"
     }
   ],
   "victory-road": [
@@ -478,6 +923,55 @@
       },
       "pocket": "BALLS",
       "hidden": true
+    },
+    {
+      "itemSlug": "rare-candy",
+      "name": "Rare Candy",
+      "note": {
+        "de": "EG — Nordbereich",
+        "en": "1F — north area"
+      },
+      "pocket": "ITEMS"
+    },
+    {
+      "itemSlug": "tm-dragon",
+      "name": "TM02 — Dragon Claw",
+      "moveSlug": "dragon-claw",
+      "note": {
+        "de": "EG — Nordbereich",
+        "en": "1F — north area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-rock",
+      "name": "TM37 — Sandstorm",
+      "moveSlug": "sandstorm",
+      "note": {
+        "de": "1. OG — Südwesten",
+        "en": "2F — southwest area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-ice",
+      "name": "TM07 — Hail",
+      "moveSlug": "hail",
+      "note": {
+        "de": "1. OG — Nordostbereich",
+        "en": "2F — northeast area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-fire",
+      "name": "TM50 — Overheat",
+      "moveSlug": "overheat",
+      "note": {
+        "de": "2. OG — Nordwestbereich",
+        "en": "3F — northwest area"
+      },
+      "pocket": "TM"
     }
   ],
   "power-plant": [
@@ -486,8 +980,18 @@
       "name": "TM25 — Thunder",
       "moveSlug": "thunder",
       "note": {
-        "de": "Tief im Kraftwerk",
-        "en": "Deep in the plant"
+        "de": "Südostbereich",
+        "en": "Southeast area"
+      },
+      "pocket": "TM"
+    },
+    {
+      "itemSlug": "tm-normal",
+      "name": "TM17 — Protect",
+      "moveSlug": "protect",
+      "note": {
+        "de": "Langer Mittelbereich",
+        "en": "Long horizontal area near the center"
       },
       "pocket": "TM"
     },
