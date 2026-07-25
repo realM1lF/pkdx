@@ -1,14 +1,22 @@
 {
   "striaton-city": [
-    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Fennel — after the trio badge", "pocket": "HM" }
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "moveSlug": "cut", "note": "Fennel — after the trio badge", "pocket": "HM" },
+    { "itemSlug": "dusk-ball", "name": "Dusk Ball", "note": "Roughneck — eastmost alley", "pocket": "BALLS" },
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Cheren — after his Trainers' School battle (×3)", "pocket": "BERRIES" }
   ],
   "wellspring-cave": [
-    { "itemSlug": "tm-dark", "name": "TM46 — Thief", "note": "1F — near the water", "pocket": "TM" }
+    { "itemSlug": "tm-dark", "name": "TM46 — Thief", "moveSlug": "thief", "note": "1F — south of the entrance", "pocket": "TM" },
+    { "itemSlug": "tm-fighting", "name": "TM47 — Low Sweep", "moveSlug": "low-sweep", "note": "B1F — east side (requires Surf)", "pocket": "TM" },
+    { "itemSlug": "tm-fighting", "name": "TM52 — Focus Blast", "moveSlug": "focus-blast", "note": "B1F — northern end (requires Surf)", "pocket": "TM" }
   ],
   "giant-chasm": [
-    { "itemSlug": "tm-ice", "name": "TM13 — Ice Beam", "note": "Cave — northeast corner", "pocket": "TM" }
+    { "itemSlug": "tm-ice", "name": "TM13 — Ice Beam", "moveSlug": "ice-beam", "note": "Crater forest — southwest of the stairs to Kyurem", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM03 — Psyshock", "moveSlug": "psyshock", "note": "Crater forest — southern part, near the central path", "pocket": "TM" },
+    { "itemSlug": "comet-shard", "name": "Comet Shard", "note": "Cave — behind a Strength boulder, northeast corner", "pocket": "ITEMS" }
   ],
   "undella-town": [
-    { "itemSlug": "hm-water", "name": "HM06 — Dive", "note": "From the man by the bay", "pocket": "HM" }
+    { "itemSlug": "hm-water", "name": "HM06 — Dive", "moveSlug": "dive", "note": "Girl in front of Caitlin's Villa", "pocket": "HM" },
+    { "itemSlug": "big-nugget", "name": "Big Nugget", "note": "Riches' villa — behind the hedges on the right", "pocket": "ITEMS" },
+    { "itemSlug": "prism-scale", "name": "Prism Scale", "note": "From a man in the Pokémon Center", "pocket": "ITEMS" }
   ]
 }
