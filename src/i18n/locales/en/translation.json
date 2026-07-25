@@ -1473,13 +1473,20 @@
                 "Germany",
                 "Email: hallo@adhsleben.org"
               ]
+            },
+            {
+              "heading": "Web analytics",
+              "paragraphs": [
+                "We use Plausible Analytics — cookieless, no ad trackers, no Google Analytics. No cookies are set for statistics."
+              ]
             }
           ]
         },
         {
           "heading": "2. Hosting",
           "paragraphs": [
-            "This website is provided via the hosting provider Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA. When you visit the website, technically necessary data such as IP address, browser type, and access time are processed on Netlify's servers. Personal data may also be transferred to Netlify servers in the USA. Further information can be found in Netlify's privacy policy: https://www.netlify.com/privacy/"
+            "This website is provided via the hosting provider Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA. When you visit the website, technically necessary data such as IP address, browser type, and access time are processed on Netlify's servers. Personal data may also be transferred to Netlify servers in the USA. Further information can be found in Netlify's privacy policy: https://www.netlify.com/privacy/",
+            "The site's typefaces (Orbitron, Press Start 2P, Space Grotesk) are served locally from our own server — no requests are made to Google Fonts."
           ]
         },
         {
@@ -1536,6 +1543,15 @@
         {
           "heading": "5. External services",
           "subsections": [
+            {
+              "heading": "Plausible Analytics (web analytics)",
+              "paragraphs": [
+                "We use Plausible Analytics (Plausible Insights OÜ, Estonia) to measure anonymized trends in website usage — e.g. which pages are visited, where visitors come from, and broad browser/device types.",
+                "Plausible does not set cookies and does not create persistent user profiles. IP addresses are not stored; processing takes place in the EU. No ad trackers or marketing profiles are created.",
+                "Legal basis: Art. 6(1)(f) GDPR (legitimate interest in privacy-friendly reach measurement to improve the service). You can limit collection via browser tracking protection or similar extensions.",
+                "Further information: https://plausible.io/data-policy · Data processing agreement: https://plausible.io/dpa"
+              ]
+            },
             {
               "heading": "PokéAPI",
               "paragraphs": [
@@ -1741,7 +1757,7 @@
     "title": "Support MyPokePanion.",
     "p1": "MyPokePanion is a pure hobby project — built across countless evenings and weekends, with a lot of love for detail and the goal that it genuinely feels good to use.",
     "p2": "The site is and stays free. If it makes your runs easier and you'd still like to support development, I'd be thrilled about a small contribution — completely voluntary, no strings attached.",
-    "p3": "Ads? No. I deliberately want to keep the site free of banners, trackers and pop-ups — donations are exactly what makes that possible without ever having to run ads.",
+    "p3": "Ads? No. I deliberately keep the site free of ad banners, ad trackers, and pop-ups. For anonymous usage statistics I use Plausible (cookieless, no ad profiles) — see the privacy policy for details. Donations help keep it that way without ever running ads.",
     "cta": "SUPPORT VIA PAYPAL",
     "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project.",
     "qrCaption": "Scan the QR code — works right from your phone"
