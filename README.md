@@ -53,7 +53,10 @@ with Nintendo (see [License & Legal](#license--legal)).
 - **Versus Lab** — 1v1 matchup calculator on `@smogon/calc` with
   generation-correct mechanics for Gen 1–9 (damage ranges, KO chances, speed
   checks) plus per-generation type charts from `@pkmn/data`; field, weather
-  and terrain context. Deep-linkable (`/versus?you=<id>&game=<vg>&vs=<id>`).
+  and terrain context. It also includes a **playable 1v1 micro-battle arena**
+  powered by `@pkmn/sim` with turn-based combat, a battle log, two AI modes
+  (random and greedy), HP bars and status/weather/terrain tracking.
+  Deep-linkable (`/versus?you=<id>&game=<vg>&vs=<id>`).
 - **Item Lexicon** (`/items`) — 1,000+ items with sprites, categories,
   localized flavor texts; moves/items/abilities open detail modals (German
   and English flavor text) from every part of the app.
@@ -78,7 +81,7 @@ with Nintendo (see [License & Legal](#license--legal)).
 | UI | React 19 · Tailwind CSS 3.4 · Radix UI / shadcn components |
 | Motion & rendering | framer-motion · GSAP (ScrollTrigger) · Three.js · Lenis smooth scroll |
 | Routing / i18n | react-router 7 · i18next + react-i18next + browser language detector |
-| Game data & math | PokéAPI (REST) · `@pkmn/data` + `@pkmn/dex` · `@smogon/calc` |
+| Game data & math | PokéAPI (REST) · `@pkmn/data` + `@pkmn/dex` · `@smogon/calc` · `@pkmn/sim` (battle simulation) |
 | Multiplayer backend | Supabase (Postgres + Realtime) via `@supabase/supabase-js` |
 | Misc | fuse.js (search) · recharts · zod · lucide-react |
 
@@ -133,6 +136,7 @@ src/
     teambuilder.ts      team model, legality, coverage/synergy, Smogon sets
     teambuilder-showdown.ts  Showdown text format import/export
     versus.ts           gen-aware damage math on @smogon/calc
+    battle/             turn-based 1v1 battle engine wrapper around @pkmn/sim
     supabase.ts         client singleton (env override + publishable fallback)
     i18n-data.ts        localized entity-name lookup (render edge only)
   i18n/locales/{en,de}/ UI strings — EN and DE kept at key parity
@@ -247,7 +251,9 @@ Deutsch/Englisch mit sprachbasiertem URL-Routing (`/de/…`, `/en/…`).
   SoulLink und Level-Caps
 - **TeamBuilder** mit Coverage-Analyse, Smogon-Sets und
   Showdown-Import/Export
-- **Versus-Lab**: generationsgenauer Damage-Calculator (Gen 1–9)
+- **Versus-Lab**: generationsgenauer Damage-Calculator (Gen 1–9) plus
+  spielbare 1v1-Arena mit Rundenkampf, Kampflog, zwei KI-Modi (zufällig/gierig)
+  sowie Status-, Wetter- und Gelände-Effekten
 - **Item-Lexikon** (`/items`) mit Sprites und deutschen/englischen
   Beschreibungstexten; Attacken-/Item-/Fähigkeits-Modals überall in der App
 - **Nuzlocke auch für Gen 6–9** (Kalos, Alola, Galar, Hisui, Paldea) im
