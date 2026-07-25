@@ -90,6 +90,8 @@ export const STATIC_ROUTES = [
   '/about',
   '/feedback',
   '/support',
+  /* battle-simulator landing (localized slugs) */
+  { de: '/kampf-simulator', en: '/battle-simulator' },
   /* type hub + 18 type pages (localized paths) */
   { de: '/typen', en: '/types' },
   ...Object.values(TYPE_SLUGS).map(([de, en]) => ({

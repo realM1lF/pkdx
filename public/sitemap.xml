@@ -142,6 +142,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/support"/>
   </url>
   <url>
+    <loc>https://mypokepanion.com/de/kampf-simulator</loc>
+    <lastmod>2026-07-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/kampf-simulator"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/battle-simulator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/battle-simulator"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/battle-simulator</loc>
+    <lastmod>2026-07-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/kampf-simulator"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/battle-simulator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/battle-simulator"/>
+  </url>
+  <url>
     <loc>https://mypokepanion.com/de/typen</loc>
     <lastmod>2026-07-25</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/typen"/>

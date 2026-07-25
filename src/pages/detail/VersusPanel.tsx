@@ -33,6 +33,7 @@ import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
 import { REGIONS } from '@/lib/regions';
 import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
+import { battleLandingPath } from '@/lib/seo';
 import {
   genAbilitiesOf,
   genHasMechanics,
@@ -1767,6 +1768,16 @@ export default function VersusPanel({
           </Suspense>
         </div>
       )}
+
+      {/* ---------- discreet cross-link to the standalone simulator page ---------- */}
+      <div className="col-span-12 flex justify-center">
+        <LocaleLink
+          to={battleLandingPath(lang)}
+          className="font-sans text-[10px] font-semibold uppercase tracking-wide text-tx-muted transition-colors hover:text-gold"
+        >
+          {t('versus.battle.playOnSimulator')} →
+        </LocaleLink>
+      </div>
 
       {/* ---------- speed check ---------- */}
       <div className="col-span-12">

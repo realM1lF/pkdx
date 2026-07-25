@@ -127,7 +127,8 @@
     "about": "About",
     "feedback": "Feedback & ideas",
     "support": "Donate",
-    "community": "COMMUNITY & WIKI"
+    "community": "COMMUNITY & WIKI",
+    "battleSim": "Battle Simulator"
   },
   "detail": {
     "backAll": "ALL POKÉMON",
@@ -619,8 +620,80 @@
           "confusion": "{{name}} is confused!",
           "generic": "{{name}} couldn't move!"
         }
-      }
+      },
+      "playOnSimulator": "Play it on the simulator page"
     }
+  },
+  "battleLanding": {
+    "h1": "Pokémon Battle Simulator",
+    "eyebrow": "ONLINE TOOL · 1V1 ARENA",
+    "intro": "This Pokémon battle simulator lets two fully customized Pokémon fight a real 1v1 battle right in your browser. Set the level, held item, ability and four moves for each side, pick weather and terrain, and hit start. The engine runs the official damage formulas across Gen 1 to 9. Free to use, no signup, in English and German.",
+    "arenaEyebrow": "ARENA",
+    "arenaTitle": "Fight now",
+    "howEyebrow": "HOW IT WORKS",
+    "howTitle": "How it works",
+    "howSteps": [
+      {
+        "title": "Configure your Pokémon",
+        "body": "Pick both fighters and set the level, held item, ability and up to four moves for each side."
+      },
+      {
+        "title": "Set the conditions",
+        "body": "Weather and terrain are up to you. The ruleset follows the generation you select, from Red and Blue to Scarlet and Violet."
+      },
+      {
+        "title": "Pick the AI mode",
+        "body": "Random plays loose and unpredictable. Merciless runs the damage math on every move each round and takes the hardest-hitting option."
+      },
+      {
+        "title": "Read the battle log",
+        "body": "Every round is logged with damage, critical hits and status effects, in English or German. HP bars and sprites keep track of the fight live."
+      }
+    ],
+    "mechanicsEyebrow": "ENGINE",
+    "mechanicsTitle": "Real battle mechanics",
+    "mechanicsBody": "This simulator doesn't estimate. It runs @pkmn/sim, the battle engine behind Pokémon Showdown, the same mechanics the competitive scene treats as its reference. Every round resolves with the official damage formula of the selected generation. Same-type attack bonus, stat stages, status conditions, critical hits and PP all behave exactly as they do in the console games. Held items and abilities work the way they should, weather and terrain change damage and battle flow in ways you can actually see, and speed decides who moves first using the real stats. Even the rule differences between all nine generations are modeled, from Red and Blue up to Scarlet and Violet. Plenty of browser sims just roll a random winner or guess at damage numbers. Here the battle log shows you round by round which move dealt how much damage and why one Pokémon was still standing at the end.",
+    "usecasesEyebrow": "IN PRACTICE",
+    "usecasesTitle": "What players use it for",
+    "usecases": [
+      {
+        "title": "Nuzlocke prep",
+        "body": "The question that ends runs: does my Pokémon survive the boss's hardest-hitting move? Recreate the matchup, let the attack play out, and check the log before you risk the run."
+      },
+      {
+        "title": "Settling matchup debates",
+        "body": "Who wins, your set or the one from that forum thread? Configure both sides and let them fight instead of arguing. For quick numbers first, the Versus tool on this site gives you a damage matrix and a speed check."
+      },
+      {
+        "title": "Learning the mechanics",
+        "body": "How much does weather actually matter? What does one extra stat stage buy you? Watching those effects play out in a real battle teaches faster than any formula page."
+      }
+    ],
+    "qa": [
+      {
+        "q": "Is the Pokémon battle simulator free?",
+        "a": "Yes, completely. There's no account, no download and no subscription behind it. The battle runs locally in your browser, so there's no server login and no queue. Every AI mode and all nine generation rulesets are included at no cost."
+      },
+      {
+        "q": "Which Pokémon games does the simulator support?",
+        "a": "You choose the ruleset for generations 1 through 9, from Red and Blue up to Scarlet and Violet, and the mechanics adapt to your pick. One example: under FireRed and LeafGreen rules, terrain doesn't exist and weather follows the Gen 3 rules. Moves, stats and turn resolution always match the generation you've selected."
+      },
+      {
+        "q": "How does the simulator calculate damage?",
+        "a": "It uses the official damage formula of the selected generation. Level, the attacker's and defender's stats and the move's power go in first, followed by type effectiveness, same-type attack bonus and a random roll between 85 and 100 percent. Weather, items, abilities and stat stages apply on top. Accuracy and critical hits are rolled fresh every round. The result is the same procedure the console games use, not a ballpark figure."
+      },
+      {
+        "q": "Can I battle against a friend?",
+        "a": "Not directly, at least not yet. The simulator always pairs you against the AI, and there's no player-versus-player mode right now. The workaround: rebuild your friend's set as the opponent and test against it. If you want to compare sets head to head, the Versus tool on mypokepanion puts damage numbers and speed for both Pokémon side by side."
+      }
+    ],
+    "ctaTitle": "Set up your two fighters and start your first battle.",
+    "ctaButton": "Start battle",
+    "linksEyebrow": "MORE TOOLS",
+    "linksVersusLabel": "Versus calc",
+    "linksVersusText": "Quick damage numbers without a full battle: damage matrix and speed check.",
+    "linksTeamLabel": "Team builder",
+    "linksTeamText": "Plan a whole team instead of a single duel, with type coverage."
   },
   "maps": {
     "atlasEyebrow": "PHASE 04 — ATLAS",

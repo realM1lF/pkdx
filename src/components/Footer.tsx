@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useTranslation } from 'react-i18next';
 import { currentLang } from '@/lib/i18n-data';
+import { battleLandingPath } from '@/lib/seo';
 import { MAX_DEX_ID } from '@/lib/types';
 
 /* Lightweight region link metadata — the full region geometry (src/lib/regions.ts,
@@ -88,6 +89,10 @@ export default function Footer() {
               {t(key)}
             </LocaleLink>
           ))}
+          {/* battle-simulator landing — localized slug per locale */}
+          <LocaleLink to={battleLandingPath(lang)} className={linkCls}>
+            {t('footer.battleSim')}
+          </LocaleLink>
           <button type="button" onClick={random} className={`${linkCls} text-left`}>
             {t('footer.random')}
           </button>

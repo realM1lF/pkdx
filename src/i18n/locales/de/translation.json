@@ -127,7 +127,8 @@
     "about": "About",
     "feedback": "Feedback & Ideen",
     "support": "Spenden",
-    "community": "COMMUNITY & WIKI"
+    "community": "COMMUNITY & WIKI",
+    "battleSim": "Kampf-Simulator"
   },
   "detail": {
     "backAll": "ALLE POKÉMON",
@@ -619,8 +620,80 @@
           "confusion": "{{name}} ist verwirrt!",
           "generic": "{{name}} konnte nicht angreifen!"
         }
-      }
+      },
+      "playOnSimulator": "Auf der Simulator-Seite spielen"
     }
+  },
+  "battleLanding": {
+    "h1": "Pokémon Kampf-Simulator",
+    "eyebrow": "ONLINE-TOOL · 1V1-ARENA",
+    "intro": "Der Pokémon Kampf-Simulator lässt zwei frei konfigurierte Pokémon direkt im Browser gegeneinander antreten. Du stellst Level, Item, Fähigkeit und vier Attacken ein, wählst Wetter und Terrain und startest den Kampf. Die Engine rechnet mit den offiziellen Formeln, von Generation 1 bis 9. Kostenlos, ohne Anmeldung, auf Deutsch und Englisch.",
+    "arenaEyebrow": "ARENA",
+    "arenaTitle": "Jetzt kämpfen",
+    "howEyebrow": "ANLEITUNG",
+    "howTitle": "So funktioniert's",
+    "howSteps": [
+      {
+        "title": "Pokémon konfigurieren",
+        "body": "Wähle beide Kämpfer und lege Level, Item, Fähigkeit und bis zu vier Attacken pro Seite fest."
+      },
+      {
+        "title": "Kampfbedingungen setzen",
+        "body": "Wetter und Terrain sind frei wählbar. Das Regelwerk richtet sich nach der Generation, die du einstellst, von der Roten und Blauen Edition bis Karmesin und Purpur."
+      },
+      {
+        "title": "KI-Modus wählen",
+        "body": "Der Zufallsmodus spielt locker und unvorhersehbar. Der Modus Gnadenlos rechnet pro Runde den Schaden aller Attacken durch und nimmt die härteste Option."
+      },
+      {
+        "title": "Kampf auswerten",
+        "body": "Das Kampf-Log zeigt jede Runde mit Schaden, Volltreffern und Statuseffekten, auf Deutsch oder Englisch. KP-Balken und Sprites halten den Stand live fest."
+      }
+    ],
+    "mechanicsEyebrow": "ENGINE",
+    "mechanicsTitle": "Echte Kampfmechanik",
+    "mechanicsBody": "Der Simulator rechnet nicht mit groben Tabellen, sondern mit der echten Kampf-Engine der Competitive-Szene: @pkmn/sim, dem Code hinter Pokémon Showdown. Jede Runde läuft mit der originalen Schadensformel der gewählten Generation. Typbonus, Stat-Stufen, Statusveränderungen, Volltreffer und AP fließen genau so ein wie in den Konsolenspielen. Items und Fähigkeiten wirken wie im Original, Wetter und Terrain verändern Schaden und Ablauf spürbar. Auch die Initiative entscheidet nach den echten Werten, welche Seite zuerst angreift. Sogar die Regelunterschiede zwischen den neun Generationen sind abgebildet, von den ersten Editionen bis zu Karmesin und Purpur. Viele Browser-Sims würfeln nur einen Sieger aus oder schätzen den Schaden grob. Hier siehst du im Kampf-Log Runde für Runde, welche Attacke wie viel Schaden gemacht hat und warum am Ende ein Pokémon gewinnt.",
+    "usecasesEyebrow": "PRAXIS",
+    "usecasesTitle": "Wofür Spieler das nutzen",
+    "usecases": [
+      {
+        "title": "Nuzlocke-Vorbereitung",
+        "body": "Die entscheidende Frage vor jedem Arenakampf: Überlebt mein Pokémon den stärksten Angriff des Gegners? Set nachbauen, Treffer durchrechnen lassen, Ergebnis im Log prüfen, bevor du den Run riskierst."
+      },
+      {
+        "title": "Matchups klären",
+        "body": "Wer gewinnt: dein Set oder das Set aus dem Forum-Thread? Statt ewig zu diskutieren, konfigurierst du beide Seiten und lässt sie kämpfen. Für schnelle Zahlen vorab gibt es den Versus-Vergleich mit Schadens-Matrix und Initiative-Check."
+      },
+      {
+        "title": "Mechanik lernen",
+        "body": "Wie viel bringt Wetter wirklich? Was bewirkt eine Stat-Stufe mehr oder weniger? Wer solche Effekte in einem echten Kampf sieht, lernt sie schneller als aus jeder Formel-Seite."
+      }
+    ],
+    "qa": [
+      {
+        "q": "Ist der Pokémon Kampf-Simulator kostenlos?",
+        "a": "Ja, komplett. Du brauchst weder einen Account noch einen Download, und es gibt kein Abo dahinter. Der Kampf läuft lokal in deinem Browser, ohne Server-Login und ohne Wartezeit. Alle KI-Modi und alle Generations-Regelwerke von 1 bis 9 sind frei nutzbar."
+      },
+      {
+        "q": "Mit welchen Pokémon-Editionen funktioniert der Simulator?",
+        "a": "Du wählst das Regelwerk von Generation 1 bis 9, also von der Roten und Blauen Edition bis Karmesin und Purpur. Die Mechanik passt sich deiner Wahl an. Ein Beispiel: Unter dem Regelwerk von Feuerrot und Blattgrün existiert kein Terrain, und Wetter folgt den Regeln von Generation 3. Attacken, Statuswerte und Kampfablauf richten sich immer nach der eingestellten Generation."
+      },
+      {
+        "q": "Wie berechnet der Simulator den Schaden?",
+        "a": "Mit der offiziellen Schadensformel der eingestellten Generation. Zuerst gehen Level, Angriffs- und Verteidigungswerte sowie die Stärke der Attacke in die Rechnung, dann Typ-Effektivität, Typbonus und ein Zufallsfaktor zwischen 85 und 100 Prozent. Darüber liegen Wetter, Item, Fähigkeit und Stat-Stufen. Genauigkeit und Volltreffer werden pro Runde neu ausgewürfelt. Das Ergebnis ist kein Schätzwert, sondern dasselbe Verfahren wie in den Konsolenspielen."
+      },
+      {
+        "q": "Kann ich gegen einen Freund kämpfen?",
+        "a": "Direkt aktuell nicht. Der Simulator kämpft immer gegen die KI, einen PvP-Modus gegen andere Spieler gibt es noch nicht. Du kannst dir aber behelfen: Konfiguriere das Set deines Freundes als Gegner nach und teste dagegen. Wenn ihr Sets vergleichen wollt, stellt der Versus-Vergleich auf mypokepanion Schaden und Initiative beider Seiten direkt nebeneinander."
+      }
+    ],
+    "ctaTitle": "Stell deine zwei Kämpfer zusammen und starte den ersten Kampf.",
+    "ctaButton": "Kampf starten",
+    "linksEyebrow": "WEITERE TOOLS",
+    "linksVersusLabel": "Versus-Calc",
+    "linksVersusText": "Für schnelle Schadenszahlen ohne Kampf: Schadens-Matrix und Initiative-Check.",
+    "linksTeamLabel": "Team-Builder",
+    "linksTeamText": "Ein ganzes Team statt nur ein Duell planen, mit Typabdeckung."
   },
   "maps": {
     "atlasEyebrow": "PHASE 04 — ATLAS",
