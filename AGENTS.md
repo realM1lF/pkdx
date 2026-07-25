@@ -15,7 +15,7 @@ Node.js 20 · React 19 + TypeScript · Vite 7 · Tailwind CSS v3.4 ·
 framer-motion · GSAP (ScrollTrigger) · Three.js (hero particles) ·
 Lenis (smooth scroll) · fuse.js · lucide-react · i18next + react-i18next +
 i18next-browser-languagedetector · @smogon/calc · @pkmn/data + @pkmn/dex ·
-@supabase/supabase-js
+@supabase/supabase-js · @pkmn/sim (1:1 battle engine, lazy vendor bundle)
 
 ```bash
 npm install          # once
@@ -109,3 +109,58 @@ Load these references only when the task touches their domain:
 - Long ability effect texts (PokéAPI `effect_entries` are English-only)
 - Smogon set names from data.pkmn.cc (Versus "assumed sets")
 - User-generated content (team names, run names, player names)
+
+## 7. Battle simulator (@pkmn/sim) — calc parity is binding
+
+The Versus 1:1 battle (`src/lib/battle/engine.ts`) runs @pkmn/sim; the
+damage matrix (`src/lib/versus.ts`) runs @smogon/calc. Both MUST agree:
+
+- **Gen 1/2 stat-exp**: @smogon/calc forces max stat experience internally.
+  The sim teampack therefore sets EVs 255 for gen < 3 (do not "fix" this).
+- **Ramping moves** (Walzer/rollout, Eisball, Zornklinge, Echostimme):
+  power grows per consecutive hit — the matrix shows per-hit + cumulative
+  KO, never a plain first-hit "xHKO" label.
+- **Multi-hit** shows hit range × hit count + total min/max. **OHKO moves**
+  show an explicit OHKO cell, never `[0,0]`. **Fokusgurt/Sturdy** caps
+  guaranteed-OHKO labels on the defender.
+- Item/ability inputs are normalized slug → display name before calc;
+  @smogon/calc silently ignores non-display names.
+- Sim team packs use base PP (no PP-ups), seedable PRNG only — never
+  `Math.random()` in battle logic. Tests: `npx vitest run src/lib/battle`.
+
+## 8. SEO & content rules (hard-won, apply to every page)
+
+- **Prerendering is the foundation** (`scripts/prerender.mjs`, routes in
+  `scripts/seo-routes.mjs`). Every indexable page must render meaningful
+  content in initial HTML — AI crawlers do not run JS.
+- **Meta descriptions ≤ 160 chars** (script-enforced). Entity = H1,
+  questions = H3 modules. No hidden doorway pages, no programmatic mass
+  pages without unique computed value (Google "scaled content abuse").
+- **No duplicate copy blocks**: description text and Q&A answers must not
+  repeat each other — each block adds NEW information (this defect class
+  already happened once on item pages; guards exist, keep them).
+- **Writing style**: no AI slop. Avoid em-dash chains ("—"), rule-of-three
+  padding, inflated adjectives, "nicht nur X, sondern Y". Write short,
+  factual sentences. See `/app/.agents/skills/humanizer/SKILL.md`.
+  German: official game terminology, short labels.
+- **Facts must be verified** against Bulbapedia/PokéWiki/PokéAPI with the
+  CORRECT GAME VERSION (Kanto=FRLG, Johto=HGSS, Hoenn=RSE, Sinnoh=Platin,
+  Einall=BW). Version mix-ups were our #1 data bug class.
+- **Encounter rates**: PokéAPI `chance` is per slot — sum per species per
+  exact method, then take MAX per bucket (never sum across mutually
+  exclusive fishing rods). Static/gift/trade encounters (pokeflute,
+  npc-trade, gift, only-one, static) are NOT wild spawns — show them in the
+  dedicated section, exclude from "häufigster Fang" leaderboards.
+
+## 9. Build & repo quirks (save yourself an hour)
+
+- `dist/` is committed but gitignored → commit with `git add -f dist`.
+- Build needs `NODE_OPTIONS=--max-old-space-size=3072`.
+- `ENOTEMPTY` on `dist/sprites/**` during build is a known filesystem
+  flake — kill stray processes, retry.
+- `NPM_CONFIG_REGISTRY` env in sandboxes overrides `.npmrc` and writes
+  mirror URLs into `package-lock.json`; `scripts/fix-lockfile-registry.mjs`
+  (postinstall) normalizes them. Netlify cannot reach the mirror.
+- vitest needs the WebSocket stub in `vitest.setup.ts` (supabase import
+  chain throws on Node 20 otherwise). Full suite must stay green.
+- Never push without `git ls-remote github main` verification afterwards.
