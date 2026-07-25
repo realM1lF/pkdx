@@ -12,6 +12,9 @@
 [build.environment]
   NODE_VERSION = "20"
   PRERENDER = "required"
+  # Belt & braces: oeffentliche Registry erzwingen (Lockfile-URLs werden
+  # zusaetzlich per scripts/fix-lockfile-registry.mjs normalisiert).
+  NPM_CONFIG_REGISTRY = "https://registry.npmjs.org/"
 
 # Cache strategy (fixes "MIME type text/html" chunk errors after deploys):
 # hashed assets are immutable, everything else (esp. index.html) must
