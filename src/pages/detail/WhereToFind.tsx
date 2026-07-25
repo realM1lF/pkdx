@@ -2,135 +2,30 @@
  * Data: pokemon/{id}/encounters via cachedJson (SWR). Location-area slugs
  * resolve to shared RegionMap nodes via node.locationSlug — strip '-area',
  * then longest-prefix strip sub-areas ('rock-tunnel-1f' → 'rock-tunnel');
- * kanto victory-road variants → 'kanto-victory-road-2'. Aggregated per node
- * across all versions (best rate wins); rows deep-link /maps/{region}?node=. */
+ * kanto victory-road variants → 'kanto-victory-road-2'.
+ *
+ * Wild rows are aggregated per node across all versions (best rate wins).
+ * Gift / static / trade encounters (STATIC_METHODS — e.g. game-corner
+ * prizes, Poké-Flute Snorlax, in-game trades) are split into their own
+ * "gift & static" section with the specific sub-area ('PRIZE CORNER') and
+ * version chips, so a one-off gift never reads as a wild encounter.
+ * Rows only deep-link /maps/{region}?node= when one of their versions is
+ * actually covered by that map (a Blue-JP-only prize must not link to the
+ * FRLG/RBY Kanto map). */
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { cachedJson, displayName } from '@/lib/pokeapi';
+import { cachedJson } from '@/lib/pokeapi';
 import { nameOfMethod, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
-import { REGIONS, accentRgb, nodeName, regionName } from '@/lib/regions';
-import type { MapNode, RegionId, RegionMap } from '@/lib/regions';
+import { accentRgb, nodeName, regionName, versionChipLabel } from '@/lib/regions';
+import type { RegionId } from '@/lib/regions';
 import { methodBucket } from '@/lib/mapdata';
 import type { MethodBucket } from '@/lib/mapdata';
+import { aggregate } from '@/lib/wherefind';
+import type { EncounterAreaEntry, WhereRow } from '@/lib/wherefind';
 import { cn } from '@/lib/utils';
-
-/* ---------- PokéAPI encounter payload (local shapes — lib types untouched) ---------- */
-
-interface EncounterDetail {
-  chance: number;
-  min_level: number;
-  max_level: number;
-  method: { name: string };
-}
-
-interface EncounterVersionDetail {
-  max_chance: number;
-  version: { name: string };
-  encounter_details: EncounterDetail[];
-}
-
-interface EncounterAreaEntry {
-  location_area: { name: string; url: string };
-  version_details: EncounterVersionDetail[];
-}
-
-/* ---------- area → RegionMap node resolution ---------- */
-
-interface NodeHit {
-  region: RegionMap;
-  nodeId: string;
-  label: string;
-  node: MapNode;
-}
-
-const SLUG_INDEX = new Map<string, NodeHit>();
-for (const region of REGIONS) {
-  for (const node of region.nodes) {
-    if (node.locationSlug)
-      SLUG_INDEX.set(node.locationSlug, { region, nodeId: node.id, label: node.label, node });
-  }
-}
-
-function resolveArea(areaName: string): NodeHit | null {
-  const base = areaName.replace(/-area$/, '');
-  /* special case: all kanto victory-road variants map to the one VR node */
-  if (/^kanto-victory-road-\d/.test(base)) {
-    const vr = SLUG_INDEX.get('kanto-victory-road-2');
-    if (vr) return vr;
-  }
-  let cand = base;
-  for (;;) {
-    const hit = SLUG_INDEX.get(cand);
-    if (hit) return hit;
-    const cut = cand.lastIndexOf('-');
-    if (cut < 0) return null;
-    cand = cand.slice(0, cut);
-  }
-}
-
-/* ---------- aggregation (per node, across versions — best rate) ---------- */
-
-interface WhereRow {
-  key: string;
-  label: string;
-  node: MapNode | null;
-  region: RegionMap | null;
-  regionPrefix: string;
-  nodeId: string | null;
-  methods: string[];
-  maxChance: number;
-  minLevel: number;
-  maxLevel: number;
-}
-
-const BUCKET_ORDER: Record<MethodBucket, number> = { WALK: 0, SURF: 1, FISH: 2, OTHER: 3 };
-
-function aggregate(areas: EncounterAreaEntry[]): WhereRow[] {
-  const byKey = new Map<string, WhereRow & { methodSet: Set<string> }>();
-  for (const area of areas) {
-    const base = area.location_area.name.replace(/-area$/, '');
-    const hit = resolveArea(area.location_area.name);
-    const key = hit ? hit.nodeId : `area:${base}`;
-    let row = byKey.get(key);
-    if (!row) {
-      row = {
-        key,
-        label: hit ? hit.label : displayName(base),
-        node: hit ? hit.node : null,
-        region: hit ? hit.region : null,
-        regionPrefix: base.split('-')[0] ?? '',
-        nodeId: hit ? hit.nodeId : null,
-        methods: [],
-        methodSet: new Set<string>(),
-        maxChance: 0,
-        minLevel: Infinity,
-        maxLevel: -Infinity,
-      };
-      byKey.set(key, row);
-    }
-    for (const vd of area.version_details) {
-      row.maxChance = Math.max(row.maxChance, vd.max_chance);
-      for (const det of vd.encounter_details) {
-        row.methodSet.add(det.method.name);
-        row.minLevel = Math.min(row.minLevel, det.min_level);
-        row.maxLevel = Math.max(row.maxLevel, det.max_level);
-      }
-    }
-  }
-  return [...byKey.values()]
-    .map(({ methodSet, ...row }) => ({
-      ...row,
-      minLevel: Number.isFinite(row.minLevel) ? row.minLevel : 0,
-      maxLevel: Number.isFinite(row.maxLevel) ? row.maxLevel : 0,
-      methods: [...methodSet].sort(
-        (a, b) => BUCKET_ORDER[methodBucket(a)] - BUCKET_ORDER[methodBucket(b)] || a.localeCompare(b),
-      ),
-    }))
-    .sort((a, b) => b.maxChance - a.maxChance || a.label.localeCompare(b.label));
-}
 
 /* ---------- presentation ---------- */
 
@@ -150,7 +45,10 @@ function RowView({ row }: { row: WhereRow }) {
   const lang = useLanguage();
   const region = row.region;
   const nodeId = row.nodeId;
-  const linked = nodeId !== null && region !== null;
+  /* deep-link only when the map actually covers one of the row's versions —
+   * a Blue-JP game-corner prize must not jump to the FRLG/RBY Kanto map */
+  const linked =
+    nodeId !== null && region !== null && row.versions.some((v) => region.versions.includes(v));
   const accent = region?.accent ?? null;
   const abbr = row.region ? REGION_ABBR[row.region.region] : row.regionPrefix.slice(0, 3).toUpperCase();
   const lv =
@@ -158,6 +56,7 @@ function RowView({ row }: { row: WhereRow }) {
       ? t('detail.find.level', { level: row.minLevel })
       : t('detail.find.levelRange', { min: row.minLevel, max: row.maxLevel });
   const label = row.node ? nodeName(row.node, lang) : row.label;
+  const versionTitle = row.versions.map(versionChipLabel).join(' · ');
 
   const body = (
     <>
@@ -175,8 +74,11 @@ function RowView({ row }: { row: WhereRow }) {
       >
         {abbr || '???'}
       </span>
-      {/* route display name */}
-      <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">{label}</span>
+      {/* route display name (+ uniform sub-area like 'PRIZE CORNER') */}
+      <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+        {label}
+        {row.sub && <span className="font-normal text-tx-muted"> · {row.sub}</span>}
+      </span>
       {/* method chips (type-style, bucket-colored) */}
       <span className="hidden shrink-0 items-center gap-1 md:flex">
         {row.methods.slice(0, 3).map((m) => {
@@ -195,21 +97,38 @@ function RowView({ row }: { row: WhereRow }) {
       </span>
       {/* level range */}
       <span className="shrink-0 font-display text-[9px] font-bold tabular-nums text-tx-muted">{lv}</span>
-      {/* best rate: micro-bar + % */}
-      <span className="flex w-[76px] shrink-0 items-center gap-1.5">
-        <span className="h-[3px] flex-1 overflow-hidden rounded-full bg-surface3">
-          <motion.span
-            className="block h-full rounded-full bg-gold"
-            initial={{ width: 0 }}
-            whileInView={{ width: `${Math.min(100, row.maxChance)}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          />
+      {row.special ? (
+        /* gift/static: version chips instead of a misleading "100% rate" bar */
+        <span className="flex w-[76px] shrink-0 flex-wrap justify-end gap-0.5" title={versionTitle}>
+          {row.versions.slice(0, 3).map((v) => (
+            <span
+              key={v}
+              className="rounded-[3px] border border-gold/40 bg-gold/10 px-1 font-pixel text-[7px] leading-[14px] text-gold"
+            >
+              {versionChipLabel(v)}
+            </span>
+          ))}
+          {row.versions.length > 3 && (
+            <span className="text-[8px] font-bold text-tx-muted">+{row.versions.length - 3}</span>
+          )}
         </span>
-        <span className="w-[28px] text-right font-display text-[10px] font-bold tabular-nums text-tx-primary">
-          {Math.min(100, row.maxChance)}%
+      ) : (
+        /* best rate: micro-bar + % */
+        <span className="flex w-[76px] shrink-0 items-center gap-1.5" title={versionTitle}>
+          <span className="h-[3px] flex-1 overflow-hidden rounded-full bg-surface3">
+            <motion.span
+              className="block h-full rounded-full bg-gold"
+              initial={{ width: 0 }}
+              whileInView={{ width: `${Math.min(100, row.maxChance)}%` }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            />
+          </span>
+          <span className="w-[28px] text-right font-display text-[10px] font-bold tabular-nums text-tx-primary">
+            {Math.min(100, row.maxChance)}%
+          </span>
         </span>
-      </span>
+      )}
       {linked && (
         <>
           <ArrowUpRight size={12} className="shrink-0 text-tx-muted transition-colors duration-150 group-hover/wtf:text-gold" />
@@ -226,16 +145,26 @@ function RowView({ row }: { row: WhereRow }) {
     linked && 'hover:bg-surface2',
   );
 
-  return linked ? (
-    <LocaleLink
-      to={`/maps/${region.region}?node=${nodeId}`}
+  if (linked && region) {
+    return (
+      <LocaleLink
+        to={`/maps/${region.region}?node=${nodeId}`}
+        className={cls}
+        title={t('detail.find.openOnMap', { label, region: regionName(region, lang) })}
+      >
+        {body}
+      </LocaleLink>
+    );
+  }
+  return (
+    <div
       className={cls}
-      title={t('detail.find.openOnMap', { label, region: regionName(region, lang) })}
+      title={
+        row.nodeId !== null
+          ? t('detail.find.otherVersions', { versions: versionTitle })
+          : t('detail.find.noCoverage')
+      }
     >
-      {body}
-    </LocaleLink>
-  ) : (
-    <div className={cls} title={t('detail.find.noCoverage')}>
       {body}
     </div>
   );
@@ -265,7 +194,15 @@ export default function WhereToFind({ id }: { id: number }) {
   }, [id]);
 
   const rows = useMemo(() => (areas ? aggregate(areas) : []), [areas]);
-  const shown = showAll ? rows : rows.slice(0, TOP_N);
+  /* wild encounters vs. gift/static/trade — separate sections so a one-off
+   * prize (e.g. Clefable @ Celadon prize corner, Blue JP only) never reads
+   * as a wild encounter */
+  const wild = useMemo(() => rows.filter((r) => !r.special), [rows]);
+  const special = useMemo(
+    () => rows.filter((r) => r.special).sort((a, b) => a.label.localeCompare(b.label)),
+    [rows],
+  );
+  const shown = showAll ? wild : wild.slice(0, TOP_N);
 
   /* loading skeleton rows */
   if (status === 'loading') {
@@ -279,13 +216,14 @@ export default function WhereToFind({ id }: { id: number }) {
   }
 
   /* gold hint states (never red) */
-  if (status === 'empty' || status === 'error') {
+  if (status === 'empty' || status === 'error' || (wild.length === 0 && special.length === 0)) {
+    const nothingWild = status !== 'error';
     return (
       <div className="grid h-[132px] place-items-center px-4">
         <div className="flex flex-col items-center gap-2 text-center">
           <img src="/pokeball.svg" alt="" className="h-8 w-8 opacity-40" />
-          <p className={cn('max-w-[260px] text-[12px] font-semibold leading-snug', status === 'empty' ? 'text-gold' : 'text-tx-muted')}>
-            {status === 'empty' ? t('detail.find.empty') : t('detail.find.error')}
+          <p className={cn('max-w-[260px] text-[12px] font-semibold leading-snug', nothingWild ? 'text-gold' : 'text-tx-muted')}>
+            {nothingWild ? t('detail.find.empty') : t('detail.find.error')}
           </p>
         </div>
       </div>
@@ -295,17 +233,33 @@ export default function WhereToFind({ id }: { id: number }) {
   return (
     <div>
       <div className="dx-scroll max-h-[368px] overflow-y-auto">
+        {wild.length === 0 && (
+          /* species exists only as gift/static/trade (e.g. starters) */
+          <p className="border-b border-hairline px-3 py-2 text-[11px] font-semibold leading-snug text-gold">
+            {t('detail.find.empty')}
+          </p>
+        )}
         {shown.map((row) => (
           <RowView key={row.key} row={row} />
         ))}
+        {special.length > 0 && (
+          <>
+            <p className="border-b border-t border-hairline bg-surface2/60 px-3 py-1 font-pixel text-[7px] uppercase tracking-[0.08em] text-gold">
+              {t('detail.find.special')}
+            </p>
+            {special.map((row) => (
+              <RowView key={row.key} row={row} />
+            ))}
+          </>
+        )}
       </div>
-      {rows.length > TOP_N && (
+      {wild.length > TOP_N && (
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
           className="flex h-8 w-full items-center justify-center gap-1 border-t border-hairline font-pixel text-[8px] uppercase tracking-[0.08em] text-tx-muted transition-colors duration-150 hover:text-gold"
         >
-          {showAll ? t('detail.find.showTop', { count: TOP_N }) : t('detail.find.showAll', { count: rows.length })}
+          {showAll ? t('detail.find.showTop', { count: TOP_N }) : t('detail.find.showAll', { count: wild.length })}
         </button>
       )}
     </div>

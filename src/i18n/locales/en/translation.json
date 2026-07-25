@@ -255,6 +255,8 @@
       "openInMap": "OPEN IN MAP",
       "openOnMap": "Open {{label}} on the {{region}} map",
       "noCoverage": "No map coverage for this area",
+      "special": "GIFT & STATIC",
+      "otherVersions": "Only in {{versions}} — not covered by this map’s versions",
       "showTop": "SHOW TOP {{count}} ↑",
       "showAll": "SHOW ALL ({{count}}) ↓",
       "level": "LV {{level}}",

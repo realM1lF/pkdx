@@ -200,6 +200,18 @@ const METHODS_DE: Record<string, string> = {
   gift: 'Geschenk',
   'gift-egg': 'Ei-Geschenk',
   'only-one': 'Nur einmal',
+  static: 'Statisch',
+  pokeflute: 'Pokéflöte',
+  'npc-trade': 'Tausch',
+  'squirt-bottle': 'Schiggykanne',
+  'devon-scope': 'Devon-Scope',
+  'honey-tree': 'Honigbaum',
+  'headbutt-low': 'Kopfnuss',
+  'headbutt-normal': 'Kopfnuss',
+  'headbutt-high': 'Kopfnuss',
+  'surf-spots': 'Surfen',
+  'super-rod-spots': 'Superangel',
+  'feebas-tile-fishing': 'Angeln (Kachel)',
   'dark-grass': 'Dunkles Gras',
   'rustling-grass': 'Raschelndes Gras',
   'grass-spots': 'Grasstellen',
@@ -218,9 +230,18 @@ const METHODS_DE: Record<string, string> = {
   'honey-trees': 'Honigbäume',
 };
 
+/* EN overrides where the slug→title fallback reads awkwardly. */
+const METHODS_EN: Record<string, string> = {
+  'npc-trade': 'Trade',
+  pokeflute: 'Poké Flute',
+  'squirt-bottle': 'Squirt Bottle',
+  'devon-scope': 'Devon Scope',
+  'feebas-tile-fishing': 'Tile Fishing',
+};
+
 export function nameOfMethod(slug: string, lang: Lang): string {
   if (isDe(lang) && METHODS_DE[slug]) return METHODS_DE[slug];
-  return displayName(slug);
+  return METHODS_EN[slug] ?? displayName(slug);
 }
 
 /* PokéAPI egg-group slugs: monster, water1, bug, flying, ground, fairy, plant,

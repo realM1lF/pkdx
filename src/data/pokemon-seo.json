@@ -1472,7 +1472,7 @@
       "nodeId": "kanto-route-12",
       "nodeDe": "Route 12",
       "nodeEn": "Route 12",
-      "method": "OTHER",
+      "method": "STATIC",
       "chance": 100,
       "minLevel": 30,
       "maxLevel": 30
@@ -1482,7 +1482,7 @@
       "nodeId": "kanto-route-16",
       "nodeDe": "Route 16",
       "nodeEn": "Route 16",
-      "method": "OTHER",
+      "method": "STATIC",
       "chance": 100,
       "minLevel": 30,
       "maxLevel": 30
@@ -1494,7 +1494,7 @@
       "nodeId": "kanto-route-12",
       "nodeDe": "Route 12",
       "nodeEn": "Route 12",
-      "method": "OTHER",
+      "method": "STATIC",
       "chance": 100,
       "minLevel": 30,
       "maxLevel": 30
@@ -1504,7 +1504,7 @@
       "nodeId": "kanto-route-16",
       "nodeDe": "Route 16",
       "nodeEn": "Route 16",
-      "method": "OTHER",
+      "method": "STATIC",
       "chance": 100,
       "minLevel": 30,
       "maxLevel": 30
