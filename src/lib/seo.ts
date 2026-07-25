@@ -16,6 +16,7 @@ import { resolveTypeParam, typeName } from './seo-types';
 import { ITEMS_SEO, localizeItemPath, resolveItemParam } from './seo-items';
 import { localizeTypePath } from './seo-types';
 import { localizeRoutePath, resolveRouteParam, routeMetaGen } from './seo-routes-kanto';
+import { localizeMatchupRest, matchupMeta, resolveMatchupParam } from './seo-matchups';
 import META_GEN from '@/data/seo-meta-gen.json';
 
 const META_POKEMON = META_GEN.pokemon as unknown as Record<
@@ -350,6 +351,12 @@ export function metaForPath(rest: string): RouteMeta {
     const nodeId = resolveRouteParam(kantoMatch[1]);
     if (nodeId) return kantoRouteMeta(nodeId);
   }
+  /* curated matchup pages: '/versus/glurak-gegen-turtok' ↔ '/versus/charizard-vs-blastoise' */
+  const matchupMatch = key.match(/^\/versus\/([^/]+)$/);
+  if (matchupMatch) {
+    const entry = resolveMatchupParam(matchupMatch[1]);
+    if (entry) return matchupMeta(entry);
+  }
   const pokemonMatch = key.match(/^\/pokemon\/(\d+)$/);
   if (pokemonMatch) {
     const id = Number(pokemonMatch[1]);
@@ -364,6 +371,10 @@ export function metaForPath(rest: string): RouteMeta {
  * so canonical + hreflang URLs must translate the rest path per locale.
  */
 export function restForLang(rest: string, lang: Lang): string {
+  /* matchup pages: localized slugs ('/versus/glurak-gegen-turtok' ↔
+   * '/versus/charizard-vs-blastoise') */
+  const matchup = localizeMatchupRest(rest, lang);
+  if (matchup) return matchup;
   const localized = localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang);
   /* battle-simulator landing: '/kampf-simulator' ↔ '/battle-simulator' */
   if (localized === BATTLE_LANDING_RESTS.de || localized === BATTLE_LANDING_RESTS.en) {

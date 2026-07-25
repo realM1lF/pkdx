@@ -361,7 +361,11 @@ export class MicroBattle {
   private logPos = 0;
   private prevLine = '';
   private readonly events: BattleEvent[] = [];
-  private readonly usedAiStatusMoves = new Set<string>();
+  /** status/setup moves already tried, per sim side (each is used at most once) */
+  private readonly usedStatusMoves: Record<'p1' | 'p2', Set<string>> = {
+    p1: new Set<string>(),
+    p2: new Set<string>(),
+  };
   private calcGen: ReturnType<typeof Generations.get> | null = null;
 
   readonly setup: BattleSetup;
@@ -587,6 +591,33 @@ export class MicroBattle {
     return this.snapshot();
   }
 
+  /**
+   * Batch mode for simulations: drive BOTH sides with the greedy heuristic
+   * until the battle ends. Deterministic for a fixed seed — the greedy picker
+   * breaks ties by slot order and only the sim PRNG (seeded) rolls damage,
+   * accuracy and speed ties. `maxTurns` guards against endless stall
+   * (e.g. double recovery loops); a battle cut off this way counts as a tie.
+   */
+  autoBattle(maxTurns = 200): BattleSnapshot {
+    let guard = 0;
+    while (!this.battle.ended && guard++ < maxTurns) {
+      let acted = false;
+      for (const side of ['p1', 'p2'] as const) {
+        if (this.battle.ended) break;
+        const req = choiceRequestOf(this.battle, side);
+        if (req && !req.wait && !req.teamPreview) {
+          const options = this.requestMoves(side).filter((m) => !m.disabled);
+          this.battle.choose(side, `move ${options.length ? this.greedyPick(options, side) : 1}`);
+          acted = true;
+        }
+      }
+      this.drain();
+      if (!acted) break; // no side can move — defensive exit, should not happen
+    }
+    this.drain();
+    return this.snapshot();
+  }
+
   /* ---------- AI ---------- */
 
   private aiOptions(): MoveOption[] {
@@ -601,12 +632,12 @@ export class MicroBattle {
       const pick = this.battle.prng.sample(options);
       return `move ${pick.index}`;
     }
-    return `move ${this.greedyPick(options)}`;
+    return `move ${this.greedyPick(options, 'p2')}`;
   }
 
-  private greedyPick(options: MoveOption[]): number {
-    const foe = this.battle.p1.pokemon[0];
-    const scored = options.map((opt) => ({ opt, expected: this.expectedDamage(opt.id) }));
+  private greedyPick(options: MoveOption[], side: 'p1' | 'p2'): number {
+    const foe = this.battle[side === 'p1' ? 'p2' : 'p1'].pokemon[0];
+    const scored = options.map((opt) => ({ opt, expected: this.expectedDamage(opt.id, side) }));
     let best = scored[0];
     for (const s of scored) if (s.expected > best.expected) best = s;
     // secure the KO whenever an option is expected to finish
@@ -614,23 +645,24 @@ export class MicroBattle {
     // setup/status over pointless chip damage (<10% of max HP) — each status
     // move is tried at most once per battle, then we fall back to best damage
     if (best.expected < foe.maxhp * 0.1) {
-      const status = scored.find((s) => s.expected <= 0 && !this.usedAiStatusMoves.has(s.opt.id));
+      const used = this.usedStatusMoves[side];
+      const status = scored.find((s) => s.expected <= 0 && !used.has(s.opt.id));
       if (status) {
-        this.usedAiStatusMoves.add(status.opt.id);
+        used.add(status.opt.id);
         return status.opt.index;
       }
     }
     return best.opt.index;
   }
 
-  /** mean of the @smogon/calc damage range for an AI move vs the player mon */
-  private expectedDamage(moveId: string): number {
+  /** mean of the @smogon/calc damage range for a move used by `side` vs its foe */
+  private expectedDamage(moveId: string, side: 'p1' | 'p2' = 'p2'): number {
     const gen = this.genForCalc();
     const move = gen.moves.get(moveId as ID);
     if (!move || !move.basePower) return 0; // status / OHKO / unknown
     const genNum = Math.min(9, Math.max(1, this.setup.gen));
-    const attacker = this.calcMon(genNum, 'p2');
-    const defender = this.calcMon(genNum, 'p1');
+    const attacker = this.calcMon(genNum, side);
+    const defender = this.calcMon(genNum, side === 'p1' ? 'p2' : 'p1');
     if (!attacker || !defender) return 0;
     const result = calculate(gen, attacker, defender, new CalcMove(gen, moveId), this.calcField());
     // result.damage: number | number[] | number[][] (multi-hit) — mean of min/max roll

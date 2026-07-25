@@ -79,6 +79,16 @@ const POKEMON_SEO_IDS = [
   24, 97, 105, 65, 112,
 ];
 
+/* 35 curated matchup pages (matchup rollout): localized slugs from the
+ * simulation snapshot src/data/matchups.json (scripts/simulate-matchups.mjs),
+ * e.g. /de/versus/glurak-gegen-turtok ↔ /en/versus/charizard-vs-blastoise */
+const MATCHUPS_JSON = JSON.parse(readFileSync(new URL('../src/data/matchups.json', import.meta.url), 'utf8'));
+
+const MATCHUP_ROUTE_ENTRIES = MATCHUPS_JSON.matchups.map((m) => ({
+  de: `/versus/${m.slugDe}`,
+  en: `/versus/${m.slugEn}`,
+}));
+
 export const STATIC_ROUTES = [
   '/',
   '/pokedex',
@@ -104,6 +114,8 @@ export const STATIC_ROUTES = [
   ...KANTO_ROUTE_ENTRIES,
   /* curated Pokémon detail pages */
   ...POKEMON_SEO_IDS.map((id) => `/pokemon/${id}`),
+  /* curated matchup pages (localized slugs) */
+  ...MATCHUP_ROUTE_ENTRIES,
 ];
 
 /** localePath() equivalent: '/pokedex' + 'de' → '/de/pokedex'; '/' → '/de' */

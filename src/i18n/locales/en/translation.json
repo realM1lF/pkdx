@@ -695,6 +695,43 @@
     "linksTeamLabel": "Team builder",
     "linksTeamText": "Plan a whole team instead of a single duel, with type coverage."
   },
+  "matchup": {
+    "eyebrow": "MATCHUP · SIMULATOR RESULT",
+    "h1": "{{a}} vs. {{b}}: Who wins?",
+    "resultLead": "Of {{battles}} simulated battles (level {{level}}, standard sets), {{a}} wins {{winsA}} and {{b}} {{winsB}}.",
+    "resultTies": "{{ties}} battles end in a tie.",
+    "assumptions": "Assumptions: level {{level}}, no items, neutral nature, last four level-up moves, Gen 9 mechanics, greedy AI on both sides.",
+    "winRateTitle": "WIN RATE",
+    "analysisEyebrow": "WHY IT PLAYS OUT THIS WAY",
+    "anaSpeed": "{{fast}} is faster than {{slow}} ({{fastSpe}} vs. {{slowSpe}} Speed) and moves first.",
+    "anaSpeedTie": "Both have {{spe}} Speed — the move order is a coin flip each turn.",
+    "anaBest": "Best answer of {{attacker}}: {{move}} deals {{pctLo}}–{{pctHi}}% of {{defender}}'s HP per hit.",
+    "anaBestSuper": "Best answer of {{attacker}}: {{move}} hits {{defender}} super effectively ({{eff}}) for {{pctLo}}–{{pctHi}}% HP per hit.",
+    "anaBestImmune": "The strongest move of {{attacker}}, {{move}}, does not affect {{defender}} ({{eff}}).",
+    "speedTitle": "SPEED CHECK",
+    "speedFirst": "{{name}} moves first.",
+    "speedTieNote": "Speed tie — move order is random.",
+    "medianTurnsTitle": "BATTLE LENGTH",
+    "medianTurnsUnit": "turns (median)",
+    "medianTurnsNote": "Half of the {{battles}} battles were over within {{turns}} turns.",
+    "movesVs": "{{attacker}} → {{defender}}",
+    "noDamageMoves": "No damaging moves in the standard set.",
+    "hpUnit": "HP",
+    "setsEyebrow": "TRANSPARENCY",
+    "setsTitle": "Simulated standard sets",
+    "setsNote": "Both sides fought at level {{level}} with their last four level-up moves, no items and neutral natures. {{battles}} seeded battles with greedy AI on both sides — fully reproducible.",
+    "ctaTitle": "Think it goes differently? Simulate it yourself",
+    "ctaBody": "The same pairing is preloaded in the battle simulator — change moves, items, abilities and level, then fight it out turn by turn.",
+    "ctaButton": "Open battle simulator",
+    "qaSpeedQ": "Which is faster, {{a}} or {{b}}?",
+    "qaSpeedA": "{{fast}}. At level 50 {{fast}} reaches {{fastSpe}} Speed, {{slow}} only {{slowSpe}} — so {{fast}} moved first in every simulated battle.",
+    "qaSpeedATie": "Neither — both have {{spe}} Speed, so the move order is a coin flip each turn.",
+    "qaWinQ": "Can {{loser}} beat {{winner}}?",
+    "qaWinA": "Rarely. Of {{battles}} simulated battles (level {{level}}, standard sets), {{winner}} wins {{winnerWins}} and {{loser}} only {{loserWins}}. Custom moves or items can change the picture — try it in the simulator above.",
+    "moreEyebrow": "MORE SIMULATED MATCHUPS",
+    "toVersus": "Open the Versus Calc",
+    "notFound": "This matchup is not part of the curated simulation set."
+  },
   "maps": {
     "atlasEyebrow": "PHASE 04 — ATLAS",
     "atlasTitle": "Interactive Maps",
@@ -2122,7 +2159,10 @@
           "aLead": "Yes – multiplicatively, up to 4×.",
           "aBody": "If both of the target's types share a weakness, the factors multiply: 2× · 2× = 4× (e.g. Grass against Water/Ground). Conversely, a weakness and a resistance can cancel out (2× · 0.5× = 1×)."
         }
-      ]
+      ],
+      "matchupsEyebrow": "SIMULATED MATCHUPS",
+      "matchupsTitle": "Popular matchups — with real results",
+      "matchupsBody": "No gut feeling: each of these pairings was simulated 100 times on the real battle engine (level 50, standard sets). The pages show win rate, damage ranges and speed."
     },
     "types": {
       "eyebrow": "TYPE DEX · ALL 18 TYPES",
