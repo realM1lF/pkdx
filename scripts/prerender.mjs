@@ -107,7 +107,11 @@ const origin = `http://127.0.0.1:${port}`;
 console.log(`[prerender] serving dist on ${origin}`);
 
 /* ---------- render routes ---------- */
-const routes = allLocalizedRoutes();
+const allRoutes = allLocalizedRoutes();
+/* PRERENDER_ONLY=<substring> re-renders only matching paths (copy fixes) */
+const routes = process.env.PRERENDER_ONLY
+  ? allRoutes.filter((r) => r.path.includes(process.env.PRERENDER_ONLY))
+  : allRoutes;
 const SETTLE_MS = 2500;
 
 let browser;

@@ -695,6 +695,43 @@
     "linksTeamLabel": "Team-Builder",
     "linksTeamText": "Ein ganzes Team statt nur ein Duell planen, mit Typabdeckung."
   },
+  "matchup": {
+    "eyebrow": "MATCHUP · SIMULATOR-ERGEBNIS",
+    "h1": "{{a}} vs. {{b}}: Wer gewinnt?",
+    "resultLead": "In {{battles}} simulierten Kämpfen (Level {{level}}, Standard-Sets) gewinnt {{a}} {{winsA}}-mal, {{b}} {{winsB}}-mal.",
+    "resultTies": "{{ties}} Kämpfe enden unentschieden.",
+    "assumptions": "Annahmen: Level {{level}}, keine Items, neutrales Wesen, die zuletzt erlernten Level-Attacken, Gen-9-Mechanik, Greedy-KI auf beiden Seiten.",
+    "winRateTitle": "SIEGQUOTE",
+    "analysisEyebrow": "WARUM ES SO AUSGEHT",
+    "anaSpeed": "{{fast}} ist schneller als {{slow}} ({{fastSpe}} zu {{slowSpe}} Initiative) und greift zuerst an.",
+    "anaSpeedTie": "Beide haben {{spe}} Initiative — die Reihenfolge entscheidet pro Runde der Zufall.",
+    "anaBest": "Beste Antwort von {{attacker}}: {{move}} trifft {{defender}} für {{pctLo}}–{{pctHi}} % der KP pro Treffer.",
+    "anaBestSuper": "Beste Antwort von {{attacker}}: {{move}} trifft {{defender}} sehr effektiv ({{eff}}) für {{pctLo}}–{{pctHi}} % der KP pro Treffer.",
+    "anaBestImmune": "{{attacker}}s stärkste Attacke {{move}} wirkt nicht gegen {{defender}} ({{eff}}).",
+    "speedTitle": "INITIATIVE",
+    "speedFirst": "{{name}} greift zuerst an.",
+    "speedTieNote": "Initiative-Gleichstand — der Zufall entscheidet.",
+    "medianTurnsTitle": "KAMPFLÄNGE",
+    "medianTurnsUnit": "Runden (Median)",
+    "medianTurnsNote": "Die Hälfte der {{battles}} Kämpfe war nach {{turns}} Runden vorbei.",
+    "movesVs": "{{attacker}} → {{defender}}",
+    "noDamageMoves": "Keine Schadensattacken im Standard-Set.",
+    "hpUnit": "KP",
+    "setsEyebrow": "TRANSPARENZ",
+    "setsTitle": "Simulierte Standard-Sets",
+    "setsNote": "Beide Seiten kämpften auf Level {{level}} mit ihren zuletzt erlernten Level-Attacken, ohne Items und mit neutralem Wesen. {{battles}} geseedete Kämpfe mit Greedy-KI auf beiden Seiten — vollständig reproduzierbar.",
+    "ctaTitle": "Geht es auch anders? Selbst simulieren",
+    "ctaBody": "Das gleiche Paar ist im Kampf-Simulator vorgeladen — Attacken, Items, Fähigkeiten und Level ändern und Runde für Runde kämpfen.",
+    "ctaButton": "Kampf-Simulator öffnen",
+    "qaSpeedQ": "Wer ist schneller, {{a}} oder {{b}}?",
+    "qaSpeedA": "{{fast}}. Auf Level 50 erreicht {{fast}} {{fastSpe}} Initiative, {{slow}} nur {{slowSpe}} — {{fast}} griff in jedem simulierten Kampf zuerst an.",
+    "qaSpeedATie": "Keins — beide haben {{spe}} Initiative, die Reihenfolge ist ein Münzwurf.",
+    "qaWinQ": "Kann {{loser}} {{winner}} besiegen?",
+    "qaWinA": "Kaum. In {{battles}} simulierten Kämpfen (Level {{level}}, Standard-Sets) gewinnt {{winner}} {{winnerWins}}-mal, {{loser}} nur {{loserWins}}-mal. Mit eigenen Attacken oder Items kann der Simulator ein anderes Bild zeigen — oben ausprobieren.",
+    "moreEyebrow": "WEITERE SIMULIERTE MATCHUPS",
+    "toVersus": "Zum Versus-Calc",
+    "notFound": "Dieses Matchup gehört nicht zum kuratierten Simulations-Set."
+  },
   "maps": {
     "atlasEyebrow": "PHASE 04 — ATLAS",
     "atlasTitle": "Interaktive Maps",
@@ -2122,7 +2159,10 @@
           "aLead": "Ja – multiplikativ, bis zu 4×.",
           "aBody": "Treffen beide Typen des Ziels eine Schwäche, multiplizieren sich die Faktoren: 2× · 2× = 4× (z. B. Pflanze gegen Wasser/Boden). Umgekehrt können sich Schwäche und Resistenz gegenseitig aufheben (2× · 0,5× = 1×)."
         }
-      ]
+      ],
+      "matchupsEyebrow": "SIMULIERTE MATCHUPS",
+      "matchupsTitle": "Beliebte Matchups — mit echten Ergebnissen",
+      "matchupsBody": "Kein Bauchgefühl: Jedes dieser Paare wurde 100-mal auf der echten Kampf-Engine simuliert (Level 50, Standard-Sets). Die Seiten zeigen Siegquote, Schadensranges und Initiative."
     },
     "types": {
       "eyebrow": "TYPEN-DEX · ALLE 18 TYPEN",

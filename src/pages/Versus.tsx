@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import VersusPanel from './detail/VersusPanel';
 import QaSection from '@/components/QaSection';
+import { LocaleLink } from '@/lib/locale-link';
+import { useLanguage } from '@/lib/i18n-data';
+import { MATCHUPS, matchupNames, matchupRest } from '@/lib/seo-matchups';
 import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
 
 interface QaRaw {
@@ -16,6 +19,7 @@ interface QaRaw {
 
 export default function Versus() {
   const { t } = useTranslation();
+  const lang = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const qa = t('seo.versus.qa', { returnObjects: true }) as QaRaw[];
 
@@ -81,6 +85,34 @@ export default function Versus() {
             ),
           }))}
         />
+      </section>
+
+      {/* popular matchups with real simulation results (internal linking) */}
+      <section className="mx-auto mt-10 max-w-3xl">
+        <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
+          <p className="pixel-label text-[9px] text-gold">{t('seo.versus.matchupsEyebrow')}</p>
+          <h2 className="mt-1 font-display text-lg font-bold uppercase tracking-wide text-tx-primary md:text-xl">
+            {t('seo.versus.matchupsTitle')}
+          </h2>
+          <p className="mt-2 font-sans text-[12.5px] leading-relaxed text-tx-secondary">
+            {t('seo.versus.matchupsBody')}
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-1.5">
+            {MATCHUPS.map((m) => {
+              const n = matchupNames(m, lang);
+              return (
+                <li key={m.slugEn}>
+                  <LocaleLink
+                    to={matchupRest(m, lang)}
+                    className="inline-flex h-7 items-center rounded-pill border border-hairline bg-surface2 px-2.5 font-sans text-[11px] text-tx-secondary transition-colors hover:border-gold/50 hover:text-tx-primary"
+                  >
+                    {n.a} vs. {n.b}
+                  </LocaleLink>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </section>
     </div>
   );

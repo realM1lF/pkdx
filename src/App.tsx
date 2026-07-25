@@ -44,6 +44,7 @@ const ItemDetailPage = lazyWithReload(() => import('./pages/items/ItemDetailPage
 const TypesOverviewPage = lazyWithReload(() => import('./pages/types/TypesOverviewPage'));
 const TypeDetailPage = lazyWithReload(() => import('./pages/types/TypeDetailPage'));
 const Versus = lazyWithReload(() => import('./pages/Versus'));
+const MatchupPage = lazyWithReload(() => import('./pages/MatchupPage'));
 const BattleLanding = lazyWithReload(() => import('./pages/BattleLanding'));
 const Impressum = lazyWithReload(() => import('./pages/Impressum'));
 const Privacy = lazyWithReload(() => import('./pages/Privacy'));
@@ -93,6 +94,9 @@ export default function App() {
                 <Route path="types" element={<TypesOverviewPage />} />
                 <Route path="types/:type" element={<TypeDetailPage />} />
                 <Route path="versus" element={<Versus />} />
+                {/* curated matchup pages with simulated results — localized
+                    slugs (/de/versus/glurak-gegen-turtok ↔ /en/versus/charizard-vs-blastoise) */}
+                <Route path="versus/:slug" element={<MatchupPage />} />
                 {/* battle-simulator landing — localized slugs, one page component */}
                 <Route path="kampf-simulator" element={<BattleLanding />} />
                 <Route path="battle-simulator" element={<BattleLanding />} />

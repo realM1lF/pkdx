@@ -1,0 +1,3519 @@
+{
+  "meta": {
+    "engine": "@pkmn/sim via src/lib/battle/engine.ts (MicroBattle.autoBattle, greedy vs greedy)",
+    "format": "gen9customgame",
+    "level": 50,
+    "battles": 100,
+    "versionGroup": "scarlet-violet",
+    "seedSchema": "seed(j) = splitmix32(fnv1a(slugEn) ^ (j+1)*0x9E3779B9), 4x16-bit words; odd j swaps sim sides; scripts/simulate-matchups.mjs"
+  },
+  "matchups": [
+    {
+      "slugDe": "glurak-gegen-turtok",
+      "slugEn": "charizard-vs-blastoise",
+      "dexA": 6,
+      "dexB": 9,
+      "nameDeA": "Glurak",
+      "nameDeB": "Turtok",
+      "nameEnA": "Charizard",
+      "nameEnB": "Blastoise",
+      "winsA": 1,
+      "winsB": 99,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 120,
+      "speedB": 98,
+      "typesA": [
+        "fire",
+        "flying"
+      ],
+      "typesB": [
+        "water"
+      ],
+      "setsA": [
+        "slash",
+        "flamethrower",
+        "scary-face",
+        "fire-spin"
+      ],
+      "setsB": [
+        "aqua-tail",
+        "shell-smash",
+        "iron-defense",
+        "hydro-pump"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "flamethrower",
+          "range": [
+            26,
+            31
+          ],
+          "pct": [
+            16.9,
+            20.1
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "slash",
+          "range": [
+            23,
+            28
+          ],
+          "pct": [
+            14.9,
+            18.2
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "fire-spin",
+          "range": [
+            10,
+            12
+          ],
+          "pct": [
+            6.5,
+            7.8
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "hydro-pump",
+          "range": [
+            126,
+            150
+          ],
+          "pct": [
+            82.4,
+            98
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "aqua-tail",
+          "range": [
+            108,
+            128
+          ],
+          "pct": [
+            70.6,
+            83.7
+          ],
+          "eff": 2
+        }
+      ]
+    },
+    {
+      "slugDe": "glurak-gegen-bisaflor",
+      "slugEn": "charizard-vs-venusaur",
+      "dexA": 6,
+      "dexB": 3,
+      "nameDeA": "Glurak",
+      "nameDeB": "Bisaflor",
+      "nameEnA": "Charizard",
+      "nameEnB": "Venusaur",
+      "winsA": 100,
+      "winsB": 0,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 120,
+      "speedB": 100,
+      "typesA": [
+        "fire",
+        "flying"
+      ],
+      "typesB": [
+        "grass",
+        "poison"
+      ],
+      "setsA": [
+        "slash",
+        "flamethrower",
+        "scary-face",
+        "fire-spin"
+      ],
+      "setsB": [
+        "take-down",
+        "sweet-scent",
+        "synthesis",
+        "worry-seed"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "flamethrower",
+          "range": [
+            110,
+            132
+          ],
+          "pct": [
+            71,
+            85.2
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "fire-spin",
+          "range": [
+            44,
+            54
+          ],
+          "pct": [
+            28.4,
+            34.8
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "slash",
+          "range": [
+            28,
+            33
+          ],
+          "pct": [
+            18.1,
+            21.3
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "take-down",
+          "range": [
+            36,
+            43
+          ],
+          "pct": [
+            23.5,
+            28.1
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "pikachu-gegen-glurak",
+      "slugEn": "pikachu-vs-charizard",
+      "dexA": 25,
+      "dexB": 6,
+      "nameDeA": "Pikachu",
+      "nameDeB": "Glurak",
+      "nameEnA": "Pikachu",
+      "nameEnB": "Charizard",
+      "winsA": 13,
+      "winsB": 87,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 110,
+      "speedB": 120,
+      "typesA": [
+        "electric"
+      ],
+      "typesB": [
+        "fire",
+        "flying"
+      ],
+      "setsA": [
+        "discharge",
+        "thunderbolt",
+        "light-screen",
+        "thunder"
+      ],
+      "setsB": [
+        "slash",
+        "flamethrower",
+        "scary-face",
+        "fire-spin"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "thunder",
+          "range": [
+            84,
+            102
+          ],
+          "pct": [
+            54.9,
+            66.7
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "thunderbolt",
+          "range": [
+            68,
+            84
+          ],
+          "pct": [
+            44.4,
+            54.9
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "discharge",
+          "range": [
+            62,
+            74
+          ],
+          "pct": [
+            40.5,
+            48.4
+          ],
+          "eff": 2
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "flamethrower",
+          "range": [
+            93,
+            111
+          ],
+          "pct": [
+            84.5,
+            100.9
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "slash",
+          "range": [
+            46,
+            55
+          ],
+          "pct": [
+            41.8,
+            50
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "fire-spin",
+          "range": [
+            37,
+            45
+          ],
+          "pct": [
+            33.6,
+            40.9
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "mewtu-gegen-mew",
+      "slugEn": "mewtwo-vs-mew",
+      "dexA": 150,
+      "dexB": 151,
+      "nameDeA": "Mewtu",
+      "nameDeB": "Mew",
+      "nameEnA": "Mewtwo",
+      "nameEnB": "Mew",
+      "winsA": 82,
+      "winsB": 18,
+      "ties": 0,
+      "medianTurns": 5,
+      "speedA": 150,
+      "speedB": 120,
+      "typesA": [
+        "psychic"
+      ],
+      "typesB": [
+        "psychic"
+      ],
+      "setsA": [
+        "safeguard",
+        "amnesia",
+        "aura-sphere",
+        "psychic"
+      ],
+      "setsB": [
+        "baton-pass",
+        "ancient-power",
+        "life-dew",
+        "nasty-plot"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "psychic",
+          "range": [
+            37,
+            44
+          ],
+          "pct": [
+            21.1,
+            25.1
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "aura-sphere",
+          "range": [
+            22,
+            26
+          ],
+          "pct": [
+            12.6,
+            14.9
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "ancient-power",
+          "range": [
+            25,
+            30
+          ],
+          "pct": [
+            13.8,
+            16.6
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "rayquaza-gegen-mewtu",
+      "slugEn": "rayquaza-vs-mewtwo",
+      "dexA": 384,
+      "dexB": 150,
+      "nameDeA": "Rayquaza",
+      "nameDeB": "Mewtu",
+      "nameEnA": "Rayquaza",
+      "nameEnB": "Mewtwo",
+      "winsA": 6,
+      "winsB": 94,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 115,
+      "speedB": 150,
+      "typesA": [
+        "dragon",
+        "flying"
+      ],
+      "typesB": [
+        "psychic"
+      ],
+      "setsA": [
+        "dragon-dance",
+        "extreme-speed",
+        "dragon-pulse",
+        "hyper-voice"
+      ],
+      "setsB": [
+        "safeguard",
+        "amnesia",
+        "aura-sphere",
+        "psychic"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "dragon-pulse",
+          "range": [
+            75,
+            88
+          ],
+          "pct": [
+            41.4,
+            48.6
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "hyper-voice",
+          "range": [
+            53,
+            63
+          ],
+          "pct": [
+            29.3,
+            34.8
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "extreme-speed",
+          "range": [
+            47,
+            56
+          ],
+          "pct": [
+            26,
+            30.9
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "psychic",
+          "range": [
+            81,
+            96
+          ],
+          "pct": [
+            45,
+            53.3
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "aura-sphere",
+          "range": [
+            24,
+            28
+          ],
+          "pct": [
+            13.3,
+            15.6
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "arceus-gegen-mewtu",
+      "slugEn": "arceus-vs-mewtwo",
+      "dexA": 493,
+      "dexB": 150,
+      "nameDeA": "Arceus",
+      "nameDeB": "Mewtu",
+      "nameEnA": "Arceus",
+      "nameEnB": "Mewtwo",
+      "winsA": 1,
+      "winsB": 99,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 140,
+      "speedB": 150,
+      "typesA": [
+        "normal"
+      ],
+      "typesB": [
+        "psychic"
+      ],
+      "setsA": [
+        "earth-power",
+        "hyper-voice",
+        "extreme-speed",
+        "healing-wish"
+      ],
+      "setsB": [
+        "safeguard",
+        "amnesia",
+        "aura-sphere",
+        "psychic"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "hyper-voice",
+          "range": [
+            66,
+            78
+          ],
+          "pct": [
+            36.5,
+            43.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "extreme-speed",
+          "range": [
+            58,
+            69
+          ],
+          "pct": [
+            32,
+            38.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "earth-power",
+          "range": [
+            44,
+            52
+          ],
+          "pct": [
+            24.3,
+            28.7
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "aura-sphere",
+          "range": [
+            76,
+            90
+          ],
+          "pct": [
+            39,
+            46.2
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "psychic",
+          "range": [
+            64,
+            76
+          ],
+          "pct": [
+            32.8,
+            39
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "garados-gegen-dragoran",
+      "slugEn": "gyarados-vs-dragonite",
+      "dexA": 130,
+      "dexB": 149,
+      "nameDeA": "Garados",
+      "nameDeB": "Dragoran",
+      "nameEnA": "Gyarados",
+      "nameEnB": "Dragonite",
+      "winsA": 0,
+      "winsB": 100,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 101,
+      "speedB": 100,
+      "typesA": [
+        "water",
+        "flying"
+      ],
+      "typesB": [
+        "dragon",
+        "flying"
+      ],
+      "setsA": [
+        "dragon-dance",
+        "hydro-pump",
+        "hurricane",
+        "thrash"
+      ],
+      "setsB": [
+        "aqua-tail",
+        "dragon-rush",
+        "outrage",
+        "safeguard"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "thrash",
+          "range": [
+            57,
+            68
+          ],
+          "pct": [
+            34.3,
+            41
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "hurricane",
+          "range": [
+            42,
+            51
+          ],
+          "pct": [
+            25.3,
+            30.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "hydro-pump",
+          "range": [
+            21,
+            25
+          ],
+          "pct": [
+            12.7,
+            15.1
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "outrage",
+          "range": [
+            106,
+            126
+          ],
+          "pct": [
+            62.4,
+            74.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "dragon-rush",
+          "range": [
+            88,
+            105
+          ],
+          "pct": [
+            51.8,
+            61.8
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "aqua-tail",
+          "range": [
+            26,
+            31
+          ],
+          "pct": [
+            15.3,
+            18.2
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "gengar-gegen-simsala",
+      "slugEn": "gengar-vs-alakazam",
+      "dexA": 94,
+      "dexB": 65,
+      "nameDeA": "Gengar",
+      "nameDeB": "Simsala",
+      "nameEnA": "Gengar",
+      "nameEnB": "Alakazam",
+      "winsA": 100,
+      "winsB": 0,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 130,
+      "speedB": 140,
+      "typesA": [
+        "ghost",
+        "poison"
+      ],
+      "typesB": [
+        "psychic"
+      ],
+      "setsA": [
+        "night-shade",
+        "sucker-punch",
+        "dark-pulse",
+        "shadow-ball"
+      ],
+      "setsB": [
+        "psychic",
+        "role-play",
+        "future-sight",
+        "calm-mind"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "shadow-ball",
+          "range": [
+            116,
+            140
+          ],
+          "pct": [
+            89.2,
+            107.7
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dark-pulse",
+          "range": [
+            78,
+            94
+          ],
+          "pct": [
+            60,
+            72.3
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "sucker-punch",
+          "range": [
+            70,
+            84
+          ],
+          "pct": [
+            53.8,
+            64.6
+          ],
+          "eff": 2
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "future-sight",
+          "range": [
+            222,
+            264
+          ],
+          "pct": [
+            164.4,
+            195.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "psychic",
+          "range": [
+            168,
+            198
+          ],
+          "pct": [
+            124.4,
+            146.7
+          ],
+          "eff": 2
+        }
+      ]
+    },
+    {
+      "slugDe": "lohgock-gegen-gewaldro",
+      "slugEn": "blaziken-vs-sceptile",
+      "dexA": 257,
+      "dexB": 254,
+      "nameDeA": "Lohgock",
+      "nameDeB": "Gewaldro",
+      "nameEnA": "Blaziken",
+      "nameEnB": "Sceptile",
+      "winsA": 99,
+      "winsB": 1,
+      "ties": 0,
+      "medianTurns": 4,
+      "speedA": 100,
+      "speedB": 140,
+      "typesA": [
+        "fire",
+        "fighting"
+      ],
+      "typesB": [
+        "grass"
+      ],
+      "setsA": [
+        "bounce",
+        "focus-energy",
+        "bulk-up",
+        "reversal"
+      ],
+      "setsB": [
+        "slam",
+        "double-team",
+        "screech",
+        "endeavor"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "bounce",
+          "range": [
+            106,
+            126
+          ],
+          "pct": [
+            73.1,
+            86.9
+          ],
+          "eff": 2
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "slam",
+          "range": [
+            36,
+            43
+          ],
+          "pct": [
+            23.2,
+            27.7
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "knakrack-gegen-rihornior",
+      "slugEn": "garchomp-vs-rhyperior",
+      "dexA": 445,
+      "dexB": 464,
+      "nameDeA": "Knakrack",
+      "nameDeB": "Rihornior",
+      "nameEnA": "Garchomp",
+      "nameEnB": "Rhyperior",
+      "winsA": 82,
+      "winsB": 18,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 122,
+      "speedB": 60,
+      "typesA": [
+        "dragon",
+        "ground"
+      ],
+      "typesB": [
+        "ground",
+        "rock"
+      ],
+      "setsA": [
+        "bulldoze",
+        "bite",
+        "slash",
+        "dragon-claw"
+      ],
+      "setsB": [
+        "rock-blast",
+        "drill-run",
+        "take-down",
+        "earthquake"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "bulldoze",
+          "range": [
+            68,
+            84
+          ],
+          "pct": [
+            35.8,
+            44.2
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dragon-claw",
+          "range": [
+            46,
+            55
+          ],
+          "pct": [
+            24.2,
+            28.9
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "bite",
+          "range": [
+            23,
+            28
+          ],
+          "pct": [
+            12.1,
+            14.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "slash",
+          "range": [
+            13,
+            16
+          ],
+          "pct": [
+            6.8,
+            8.4
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "earthquake",
+          "range": [
+            79,
+            94
+          ],
+          "pct": [
+            43.2,
+            51.4
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "drill-run",
+          "range": [
+            63,
+            75
+          ],
+          "pct": [
+            34.4,
+            41
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "take-down",
+          "range": [
+            48,
+            57
+          ],
+          "pct": [
+            26.2,
+            31.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "rock-blast",
+          "range": [
+            30,
+            36
+          ],
+          "pct": [
+            16.4,
+            19.7
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "dialga-gegen-palkia",
+      "slugEn": "dialga-vs-palkia",
+      "dexA": 483,
+      "dexB": 484,
+      "nameDeA": "Dialga",
+      "nameDeB": "Palkia",
+      "nameEnA": "Dialga",
+      "nameEnB": "Palkia",
+      "winsA": 5,
+      "winsB": 95,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 110,
+      "speedB": 120,
+      "typesA": [
+        "steel",
+        "dragon"
+      ],
+      "typesB": [
+        "water",
+        "dragon"
+      ],
+      "setsA": [
+        "slash",
+        "flash-cannon",
+        "dragon-claw",
+        "aura-sphere"
+      ],
+      "setsB": [
+        "ancient-power",
+        "slash",
+        "aqua-ring",
+        "aura-sphere"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "dragon-claw",
+          "range": [
+            108,
+            128
+          ],
+          "pct": [
+            65.5,
+            77.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "aura-sphere",
+          "range": [
+            37,
+            44
+          ],
+          "pct": [
+            22.4,
+            26.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "slash",
+          "range": [
+            31,
+            37
+          ],
+          "pct": [
+            18.8,
+            22.4
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "flash-cannon",
+          "range": [
+            27,
+            33
+          ],
+          "pct": [
+            16.4,
+            20
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "aura-sphere",
+          "range": [
+            86,
+            102
+          ],
+          "pct": [
+            49.1,
+            58.3
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "ancient-power",
+          "range": [
+            16,
+            19
+          ],
+          "pct": [
+            9.1,
+            10.9
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "slash",
+          "range": [
+            13,
+            16
+          ],
+          "pct": [
+            7.4,
+            9.1
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "lucario-gegen-knakrack",
+      "slugEn": "lucario-vs-garchomp",
+      "dexA": 448,
+      "dexB": 445,
+      "nameDeA": "Lucario",
+      "nameDeB": "Knakrack",
+      "nameEnA": "Lucario",
+      "nameEnB": "Garchomp",
+      "winsA": 0,
+      "winsB": 100,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 110,
+      "speedB": 122,
+      "typesA": [
+        "fighting",
+        "steel"
+      ],
+      "typesB": [
+        "dragon",
+        "ground"
+      ],
+      "setsA": [
+        "bone-rush",
+        "swords-dance",
+        "heal-pulse",
+        "meteor-mash"
+      ],
+      "setsB": [
+        "bulldoze",
+        "bite",
+        "slash",
+        "dragon-claw"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "meteor-mash",
+          "range": [
+            58,
+            69
+          ],
+          "pct": [
+            31.7,
+            37.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "bone-rush",
+          "range": [
+            33,
+            42
+          ],
+          "pct": [
+            18,
+            23
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "bulldoze",
+          "range": [
+            116,
+            138
+          ],
+          "pct": [
+            80,
+            95.2
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dragon-claw",
+          "range": [
+            38,
+            45
+          ],
+          "pct": [
+            26.2,
+            31
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "slash",
+          "range": [
+            22,
+            26
+          ],
+          "pct": [
+            15.2,
+            17.9
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "bite",
+          "range": [
+            19,
+            23
+          ],
+          "pct": [
+            13.1,
+            15.9
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "dragoran-gegen-glurak",
+      "slugEn": "dragonite-vs-charizard",
+      "dexA": 149,
+      "dexB": 6,
+      "nameDeA": "Dragoran",
+      "nameDeB": "Glurak",
+      "nameEnA": "Dragonite",
+      "nameEnB": "Charizard",
+      "winsA": 99,
+      "winsB": 1,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 100,
+      "speedB": 120,
+      "typesA": [
+        "dragon",
+        "flying"
+      ],
+      "typesB": [
+        "fire",
+        "flying"
+      ],
+      "setsA": [
+        "aqua-tail",
+        "dragon-rush",
+        "outrage",
+        "safeguard"
+      ],
+      "setsB": [
+        "slash",
+        "flamethrower",
+        "scary-face",
+        "fire-spin"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "aqua-tail",
+          "range": [
+            108,
+            128
+          ],
+          "pct": [
+            70.6,
+            83.7
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "outrage",
+          "range": [
+            106,
+            126
+          ],
+          "pct": [
+            69.3,
+            82.4
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "dragon-rush",
+          "range": [
+            90,
+            106
+          ],
+          "pct": [
+            58.8,
+            69.3
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "flamethrower",
+          "range": [
+            27,
+            33
+          ],
+          "pct": [
+            16.3,
+            19.9
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "slash",
+          "range": [
+            24,
+            29
+          ],
+          "pct": [
+            14.5,
+            17.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "fire-spin",
+          "range": [
+            11,
+            13
+          ],
+          "pct": [
+            6.6,
+            7.8
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "despotar-gegen-metagross",
+      "slugEn": "tyranitar-vs-metagross",
+      "dexA": 248,
+      "dexB": 376,
+      "nameDeA": "Despotar",
+      "nameDeB": "Metagross",
+      "nameEnA": "Tyranitar",
+      "nameEnB": "Metagross",
+      "winsA": 0,
+      "winsB": 100,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 81,
+      "speedB": 90,
+      "typesA": [
+        "rock",
+        "dark"
+      ],
+      "typesB": [
+        "steel",
+        "psychic"
+      ],
+      "setsA": [
+        "earthquake",
+        "stone-edge",
+        "thrash",
+        "sandstorm"
+      ],
+      "setsB": [
+        "flash-cannon",
+        "take-down",
+        "psychic",
+        "scary-face"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "earthquake",
+          "range": [
+            78,
+            94
+          ],
+          "pct": [
+            50.3,
+            60.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "stone-edge",
+          "range": [
+            29,
+            35
+          ],
+          "pct": [
+            18.7,
+            22.6
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "thrash",
+          "range": [
+            23,
+            28
+          ],
+          "pct": [
+            14.8,
+            18.1
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "flash-cannon",
+          "range": [
+            86,
+            104
+          ],
+          "pct": [
+            49.1,
+            59.4
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "take-down",
+          "range": [
+            20,
+            24
+          ],
+          "pct": [
+            11.4,
+            13.7
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "mew-gegen-arceus",
+      "slugEn": "mew-vs-arceus",
+      "dexA": 151,
+      "dexB": 493,
+      "nameDeA": "Mew",
+      "nameDeB": "Arceus",
+      "nameEnA": "Mew",
+      "nameEnB": "Arceus",
+      "winsA": 0,
+      "winsB": 100,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 120,
+      "speedB": 140,
+      "typesA": [
+        "psychic"
+      ],
+      "typesB": [
+        "normal"
+      ],
+      "setsA": [
+        "baton-pass",
+        "ancient-power",
+        "life-dew",
+        "nasty-plot"
+      ],
+      "setsB": [
+        "earth-power",
+        "hyper-voice",
+        "extreme-speed",
+        "healing-wish"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "ancient-power",
+          "range": [
+            20,
+            24
+          ],
+          "pct": [
+            10.3,
+            12.3
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "hyper-voice",
+          "range": [
+            60,
+            72
+          ],
+          "pct": [
+            34.3,
+            41.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "extreme-speed",
+          "range": [
+            54,
+            64
+          ],
+          "pct": [
+            30.9,
+            36.6
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "earth-power",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            22.9,
+            27.4
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "gengar-gegen-giratina",
+      "slugEn": "gengar-vs-giratina",
+      "dexA": 94,
+      "dexB": 487,
+      "nameDeA": "Gengar",
+      "nameDeB": "Giratina",
+      "nameEnA": "Gengar",
+      "nameEnB": "Giratina",
+      "winsA": 15,
+      "winsB": 85,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 130,
+      "speedB": 110,
+      "typesA": [
+        "ghost",
+        "poison"
+      ],
+      "typesB": [
+        "ghost",
+        "dragon"
+      ],
+      "setsA": [
+        "night-shade",
+        "sucker-punch",
+        "dark-pulse",
+        "shadow-ball"
+      ],
+      "setsB": [
+        "slash",
+        "scary-face",
+        "shadow-claw",
+        "pain-split"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "shadow-ball",
+          "range": [
+            98,
+            116
+          ],
+          "pct": [
+            43.6,
+            51.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dark-pulse",
+          "range": [
+            66,
+            78
+          ],
+          "pct": [
+            29.3,
+            34.7
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "sucker-punch",
+          "range": [
+            34,
+            40
+          ],
+          "pct": [
+            15.1,
+            17.8
+          ],
+          "eff": 2
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "shadow-claw",
+          "range": [
+            120,
+            144
+          ],
+          "pct": [
+            88.9,
+            106.7
+          ],
+          "eff": 2
+        }
+      ]
+    },
+    {
+      "slugDe": "necrozma-gegen-endynalos",
+      "slugEn": "necrozma-vs-eternatus",
+      "dexA": 800,
+      "dexB": 890,
+      "nameDeA": "Necrozma",
+      "nameDeB": "Endynalos",
+      "nameEnA": "Necrozma",
+      "nameEnB": "Eternatus",
+      "winsA": 24,
+      "winsB": 76,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 99,
+      "speedB": 150,
+      "typesA": [
+        "psychic"
+      ],
+      "typesB": [
+        "poison",
+        "dragon"
+      ],
+      "setsA": [
+        "night-slash",
+        "psycho-cut",
+        "stored-power",
+        "rock-blast"
+      ],
+      "setsB": [
+        "dragon-dance",
+        "cross-poison",
+        "dragon-pulse",
+        "flamethrower"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "psycho-cut",
+          "range": [
+            90,
+            108
+          ],
+          "pct": [
+            41.9,
+            50.2
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "rock-blast",
+          "range": [
+            33,
+            42
+          ],
+          "pct": [
+            15.3,
+            19.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "stored-power",
+          "range": [
+            32,
+            38
+          ],
+          "pct": [
+            14.9,
+            17.7
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "night-slash",
+          "range": [
+            30,
+            36
+          ],
+          "pct": [
+            14,
+            16.7
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "dragon-pulse",
+          "range": [
+            73,
+            87
+          ],
+          "pct": [
+            42.4,
+            50.6
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "flamethrower",
+          "range": [
+            51,
+            61
+          ],
+          "pct": [
+            29.7,
+            35.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "cross-poison",
+          "range": [
+            34,
+            42
+          ],
+          "pct": [
+            19.8,
+            24.4
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "pikachu-gegen-mewtu",
+      "slugEn": "pikachu-vs-mewtwo",
+      "dexA": 25,
+      "dexB": 150,
+      "nameDeA": "Pikachu",
+      "nameDeB": "Mewtu",
+      "nameEnA": "Pikachu",
+      "nameEnB": "Mewtwo",
+      "winsA": 0,
+      "winsB": 100,
+      "ties": 0,
+      "medianTurns": 1,
+      "speedA": 110,
+      "speedB": 150,
+      "typesA": [
+        "electric"
+      ],
+      "typesB": [
+        "psychic"
+      ],
+      "setsA": [
+        "discharge",
+        "thunderbolt",
+        "light-screen",
+        "thunder"
+      ],
+      "setsB": [
+        "safeguard",
+        "amnesia",
+        "aura-sphere",
+        "psychic"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "thunder",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            22.1,
+            26.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "thunderbolt",
+          "range": [
+            33,
+            40
+          ],
+          "pct": [
+            18.2,
+            22.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "discharge",
+          "range": [
+            30,
+            36
+          ],
+          "pct": [
+            16.6,
+            19.9
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "psychic",
+          "range": [
+            127,
+            150
+          ],
+          "pct": [
+            115.5,
+            136.4
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "aura-sphere",
+          "range": [
+            75,
+            89
+          ],
+          "pct": [
+            68.2,
+            80.9
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "relaxo-gegen-machomei",
+      "slugEn": "snorlax-vs-machamp",
+      "dexA": 143,
+      "dexB": 68,
+      "nameDeA": "Relaxo",
+      "nameDeB": "Machomei",
+      "nameEnA": "Snorlax",
+      "nameEnB": "Machamp",
+      "winsA": 55,
+      "winsB": 45,
+      "ties": 0,
+      "medianTurns": 4,
+      "speedA": 50,
+      "speedB": 75,
+      "typesA": [
+        "normal"
+      ],
+      "typesB": [
+        "fighting"
+      ],
+      "setsA": [
+        "amnesia",
+        "high-horsepower",
+        "hammer-arm",
+        "belly-drum"
+      ],
+      "setsB": [
+        "strength",
+        "dual-chop",
+        "bulk-up",
+        "seismic-toss"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "hammer-arm",
+          "range": [
+            50,
+            59
+          ],
+          "pct": [
+            30.3,
+            35.8
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "high-horsepower",
+          "range": [
+            47,
+            56
+          ],
+          "pct": [
+            28.5,
+            33.9
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "dual-chop",
+          "range": [
+            56,
+            66
+          ],
+          "pct": [
+            23.8,
+            28.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "strength",
+          "range": [
+            54,
+            64
+          ],
+          "pct": [
+            23,
+            27.2
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "bisaflor-gegen-turtok",
+      "slugEn": "venusaur-vs-blastoise",
+      "dexA": 3,
+      "dexB": 9,
+      "nameDeA": "Bisaflor",
+      "nameDeB": "Turtok",
+      "nameEnA": "Venusaur",
+      "nameEnB": "Blastoise",
+      "winsA": 61,
+      "winsB": 39,
+      "ties": 0,
+      "medianTurns": 5,
+      "speedA": 100,
+      "speedB": 98,
+      "typesA": [
+        "grass",
+        "poison"
+      ],
+      "typesB": [
+        "water"
+      ],
+      "setsA": [
+        "take-down",
+        "sweet-scent",
+        "synthesis",
+        "worry-seed"
+      ],
+      "setsB": [
+        "aqua-tail",
+        "shell-smash",
+        "iron-defense",
+        "hydro-pump"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "take-down",
+          "range": [
+            29,
+            35
+          ],
+          "pct": [
+            18.8,
+            22.7
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "hydro-pump",
+          "range": [
+            27,
+            33
+          ],
+          "pct": [
+            17.4,
+            21.3
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "aqua-tail",
+          "range": [
+            25,
+            30
+          ],
+          "pct": [
+            16.1,
+            19.4
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "panferno-gegen-impoleon",
+      "slugEn": "infernape-vs-empoleon",
+      "dexA": 392,
+      "dexB": 395,
+      "nameDeA": "Panferno",
+      "nameDeB": "Impoleon",
+      "nameEnA": "Infernape",
+      "nameEnB": "Empoleon",
+      "winsA": 67,
+      "winsB": 33,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 128,
+      "speedB": 80,
+      "typesA": [
+        "fire",
+        "fighting"
+      ],
+      "typesB": [
+        "water",
+        "steel"
+      ],
+      "setsA": [
+        "feint",
+        "torment",
+        "fire-spin",
+        "flare-blitz"
+      ],
+      "setsB": [
+        "fury-attack",
+        "brine",
+        "whirlpool",
+        "mist"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "flare-blitz",
+          "range": [
+            78,
+            93
+          ],
+          "pct": [
+            49.1,
+            58.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "fire-spin",
+          "range": [
+            21,
+            25
+          ],
+          "pct": [
+            13.2,
+            15.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "feint",
+          "range": [
+            7,
+            8
+          ],
+          "pct": [
+            4.4,
+            5
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "brine",
+          "range": [
+            108,
+            128
+          ],
+          "pct": [
+            71.5,
+            84.8
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "whirlpool",
+          "range": [
+            60,
+            72
+          ],
+          "pct": [
+            39.7,
+            47.7
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "fury-attack",
+          "range": [
+            21,
+            27
+          ],
+          "pct": [
+            13.9,
+            17.9
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "guardevoir-gegen-galagladi",
+      "slugEn": "gardevoir-vs-gallade",
+      "dexA": 282,
+      "dexB": 475,
+      "nameDeA": "Guardevoir",
+      "nameDeB": "Galagladi",
+      "nameEnA": "Gardevoir",
+      "nameEnB": "Gallade",
+      "winsA": 100,
+      "winsB": 0,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 100,
+      "speedB": 100,
+      "typesA": [
+        "psychic",
+        "fairy"
+      ],
+      "typesB": [
+        "psychic",
+        "fighting"
+      ],
+      "setsA": [
+        "wish",
+        "calm-mind",
+        "psychic",
+        "moonblast"
+      ],
+      "setsB": [
+        "protect",
+        "swords-dance",
+        "psycho-cut",
+        "heal-pulse"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "moonblast",
+          "range": [
+            116,
+            138
+          ],
+          "pct": [
+            81.1,
+            96.5
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "psychic",
+          "range": [
+            55,
+            66
+          ],
+          "pct": [
+            38.5,
+            46.2
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "psycho-cut",
+          "range": [
+            33,
+            40
+          ],
+          "pct": [
+            23.1,
+            28
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "scherox-gegen-pinsir",
+      "slugEn": "scizor-vs-pinsir",
+      "dexA": 212,
+      "dexB": 127,
+      "nameDeA": "Scherox",
+      "nameDeB": "Pinsir",
+      "nameEnA": "Scizor",
+      "nameEnB": "Pinsir",
+      "winsA": 100,
+      "winsB": 0,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 85,
+      "speedB": 105,
+      "typesA": [
+        "bug",
+        "steel"
+      ],
+      "typesB": [
+        "bug"
+      ],
+      "setsA": [
+        "iron-defense",
+        "iron-head",
+        "x-scissor",
+        "swords-dance"
+      ],
+      "setsB": [
+        "strength",
+        "swords-dance",
+        "submission",
+        "guillotine"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "iron-head",
+          "range": [
+            58,
+            69
+          ],
+          "pct": [
+            41.4,
+            49.3
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "x-scissor",
+          "range": [
+            58,
+            69
+          ],
+          "pct": [
+            41.4,
+            49.3
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "submission",
+          "range": [
+            37,
+            44
+          ],
+          "pct": [
+            25.5,
+            30.3
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "strength",
+          "range": [
+            18,
+            22
+          ],
+          "pct": [
+            12.4,
+            15.2
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "arkani-gegen-vulnona",
+      "slugEn": "arcanine-vs-ninetales",
+      "dexA": 59,
+      "dexB": 38,
+      "nameDeA": "Arkani",
+      "nameDeB": "Vulnona",
+      "nameEnA": "Arcanine",
+      "nameEnB": "Ninetales",
+      "winsA": 86,
+      "winsB": 14,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 115,
+      "speedB": 120,
+      "typesA": [
+        "fire"
+      ],
+      "typesB": [
+        "fire"
+      ],
+      "setsA": [
+        "reversal",
+        "roar",
+        "take-down",
+        "flamethrower"
+      ],
+      "setsB": [
+        "flamethrower",
+        "quick-attack",
+        "tail-whip"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "take-down",
+          "range": [
+            47,
+            56
+          ],
+          "pct": [
+            31.8,
+            37.8
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "flamethrower",
+          "range": [
+            25,
+            30
+          ],
+          "pct": [
+            15.2,
+            18.2
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "quick-attack",
+          "range": [
+            15,
+            18
+          ],
+          "pct": [
+            9.1,
+            10.9
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "brutalanda-gegen-dragoran",
+      "slugEn": "salamence-vs-dragonite",
+      "dexA": 373,
+      "dexB": 149,
+      "nameDeA": "Brutalanda",
+      "nameDeB": "Dragoran",
+      "nameEnA": "Salamence",
+      "nameEnB": "Dragonite",
+      "winsA": 3,
+      "winsB": 97,
+      "ties": 0,
+      "medianTurns": 1,
+      "speedA": 120,
+      "speedB": 100,
+      "typesA": [
+        "dragon",
+        "flying"
+      ],
+      "typesB": [
+        "dragon",
+        "flying"
+      ],
+      "setsA": [
+        "crunch",
+        "dragon-claw",
+        "zen-headbutt",
+        "focus-energy"
+      ],
+      "setsB": [
+        "aqua-tail",
+        "dragon-rush",
+        "outrage",
+        "safeguard"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "dragon-claw",
+          "range": [
+            122,
+            146
+          ],
+          "pct": [
+            73.5,
+            88
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "crunch",
+          "range": [
+            41,
+            49
+          ],
+          "pct": [
+            24.7,
+            29.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "zen-headbutt",
+          "range": [
+            41,
+            49
+          ],
+          "pct": [
+            24.7,
+            29.5
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "outrage",
+          "range": [
+            210,
+            248
+          ],
+          "pct": [
+            123.5,
+            145.9
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dragon-rush",
+          "range": [
+            174,
+            206
+          ],
+          "pct": [
+            102.4,
+            121.2
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "aqua-tail",
+          "range": [
+            26,
+            31
+          ],
+          "pct": [
+            15.3,
+            18.2
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "knakrack-gegen-brutalanda",
+      "slugEn": "garchomp-vs-salamence",
+      "dexA": 445,
+      "dexB": 373,
+      "nameDeA": "Knakrack",
+      "nameDeB": "Brutalanda",
+      "nameEnA": "Garchomp",
+      "nameEnB": "Salamence",
+      "winsA": 98,
+      "winsB": 2,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 122,
+      "speedB": 120,
+      "typesA": [
+        "dragon",
+        "ground"
+      ],
+      "typesB": [
+        "dragon",
+        "flying"
+      ],
+      "setsA": [
+        "bulldoze",
+        "bite",
+        "slash",
+        "dragon-claw"
+      ],
+      "setsB": [
+        "crunch",
+        "dragon-claw",
+        "zen-headbutt",
+        "focus-energy"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "dragon-claw",
+          "range": [
+            134,
+            162
+          ],
+          "pct": [
+            78.8,
+            95.3
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "slash",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            23.5,
+            28.2
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "bite",
+          "range": [
+            34,
+            41
+          ],
+          "pct": [
+            20,
+            24.1
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "dragon-claw",
+          "range": [
+            122,
+            146
+          ],
+          "pct": [
+            66.7,
+            79.8
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "crunch",
+          "range": [
+            41,
+            49
+          ],
+          "pct": [
+            22.4,
+            26.8
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "zen-headbutt",
+          "range": [
+            41,
+            49
+          ],
+          "pct": [
+            22.4,
+            26.8
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "trikephalo-gegen-dragoran",
+      "slugEn": "hydreigon-vs-dragonite",
+      "dexA": 635,
+      "dexB": 149,
+      "nameDeA": "Trikephalo",
+      "nameDeB": "Dragoran",
+      "nameEnA": "Hydreigon",
+      "nameEnB": "Dragonite",
+      "winsA": 4,
+      "winsB": 96,
+      "ties": 0,
+      "medianTurns": 1,
+      "speedA": 118,
+      "speedB": 100,
+      "typesA": [
+        "dark",
+        "dragon"
+      ],
+      "typesB": [
+        "dragon",
+        "flying"
+      ],
+      "setsA": [
+        "scary-face",
+        "dragon-pulse",
+        "body-slam",
+        "hyper-voice"
+      ],
+      "setsB": [
+        "aqua-tail",
+        "dragon-rush",
+        "outrage",
+        "safeguard"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "dragon-pulse",
+          "range": [
+            116,
+            140
+          ],
+          "pct": [
+            69.9,
+            84.3
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "hyper-voice",
+          "range": [
+            41,
+            49
+          ],
+          "pct": [
+            24.7,
+            29.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "body-slam",
+          "range": [
+            35,
+            42
+          ],
+          "pct": [
+            21.1,
+            25.3
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "outrage",
+          "range": [
+            188,
+            224
+          ],
+          "pct": [
+            112.6,
+            134.1
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dragon-rush",
+          "range": [
+            158,
+            188
+          ],
+          "pct": [
+            94.6,
+            112.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "aqua-tail",
+          "range": [
+            24,
+            28
+          ],
+          "pct": [
+            14.4,
+            16.8
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "lugia-gegen-ho-oh",
+      "slugEn": "lugia-vs-ho-oh",
+      "dexA": 249,
+      "dexB": 250,
+      "nameDeA": "Lugia",
+      "nameDeB": "Ho-Oh",
+      "nameEnA": "Lugia",
+      "nameEnB": "Ho-Oh",
+      "winsA": 100,
+      "winsB": 0,
+      "ties": 0,
+      "medianTurns": 8,
+      "speedA": 130,
+      "speedB": 110,
+      "typesA": [
+        "psychic",
+        "flying"
+      ],
+      "typesB": [
+        "fire",
+        "flying"
+      ],
+      "setsA": [
+        "safeguard",
+        "calm-mind",
+        "extrasensory",
+        "recover"
+      ],
+      "setsB": [
+        "safeguard",
+        "calm-mind",
+        "extrasensory",
+        "recover"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "extrasensory",
+          "range": [
+            30,
+            36
+          ],
+          "pct": [
+            16.6,
+            19.9
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "extrasensory",
+          "range": [
+            11,
+            14
+          ],
+          "pct": [
+            6.1,
+            7.7
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "kyogre-gegen-groudon",
+      "slugEn": "kyogre-vs-groudon",
+      "dexA": 382,
+      "dexB": 383,
+      "nameDeA": "Kyogre",
+      "nameDeB": "Groudon",
+      "nameEnA": "Kyogre",
+      "nameEnB": "Groudon",
+      "winsA": 70,
+      "winsB": 30,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 110,
+      "speedB": 110,
+      "typesA": [
+        "water"
+      ],
+      "typesB": [
+        "ground"
+      ],
+      "setsA": [
+        "calm-mind",
+        "muddy-water",
+        "ice-beam",
+        "sheer-cold"
+      ],
+      "setsB": [
+        "bulk-up",
+        "earthquake",
+        "hammer-arm",
+        "fissure"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "muddy-water",
+          "range": [
+            158,
+            188
+          ],
+          "pct": [
+            90.3,
+            107.4
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "ice-beam",
+          "range": [
+            106,
+            126
+          ],
+          "pct": [
+            60.6,
+            72
+          ],
+          "eff": 2
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "earthquake",
+          "range": [
+            88,
+            105
+          ],
+          "pct": [
+            50.3,
+            60
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "hammer-arm",
+          "range": [
+            59,
+            70
+          ],
+          "pct": [
+            33.7,
+            40
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "reshiram-gegen-zekrom",
+      "slugEn": "reshiram-vs-zekrom",
+      "dexA": 643,
+      "dexB": 644,
+      "nameDeA": "Reshiram",
+      "nameDeB": "Zekrom",
+      "nameEnA": "Reshiram",
+      "nameEnB": "Zekrom",
+      "winsA": 59,
+      "winsB": 41,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 110,
+      "speedB": 110,
+      "typesA": [
+        "dragon",
+        "fire"
+      ],
+      "typesB": [
+        "dragon",
+        "electric"
+      ],
+      "setsA": [
+        "extrasensory",
+        "dragon-pulse",
+        "flamethrower",
+        "fusion-flare"
+      ],
+      "setsB": [
+        "zen-headbutt",
+        "dragon-claw",
+        "thunderbolt",
+        "fusion-bolt"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "dragon-pulse",
+          "range": [
+            134,
+            162
+          ],
+          "pct": [
+            76.6,
+            92.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "extrasensory",
+          "range": [
+            43,
+            51
+          ],
+          "pct": [
+            24.6,
+            29.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "fusion-flare",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            22.9,
+            27.4
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "flamethrower",
+          "range": [
+            36,
+            43
+          ],
+          "pct": [
+            20.6,
+            24.6
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "dragon-claw",
+          "range": [
+            128,
+            152
+          ],
+          "pct": [
+            73.1,
+            86.9
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "zen-headbutt",
+          "range": [
+            43,
+            51
+          ],
+          "pct": [
+            24.6,
+            29.1
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "fusion-bolt",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            22.9,
+            27.4
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "thunderbolt",
+          "range": [
+            25,
+            30
+          ],
+          "pct": [
+            14.3,
+            17.1
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "quajutsu-gegen-lucario",
+      "slugEn": "greninja-vs-lucario",
+      "dexA": 658,
+      "dexB": 448,
+      "nameDeA": "Quajutsu",
+      "nameDeB": "Lucario",
+      "nameEnA": "Greninja",
+      "nameEnB": "Lucario",
+      "winsA": 84,
+      "winsB": 16,
+      "ties": 0,
+      "medianTurns": 4,
+      "speedA": 142,
+      "speedB": 110,
+      "typesA": [
+        "water",
+        "dark"
+      ],
+      "typesB": [
+        "fighting",
+        "steel"
+      ],
+      "setsA": [
+        "spikes",
+        "aerial-ace",
+        "substitute",
+        "extrasensory"
+      ],
+      "setsB": [
+        "bone-rush",
+        "swords-dance",
+        "heal-pulse",
+        "meteor-mash"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "extrasensory",
+          "range": [
+            42,
+            50
+          ],
+          "pct": [
+            29,
+            34.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "aerial-ace",
+          "range": [
+            29,
+            35
+          ],
+          "pct": [
+            20,
+            24.1
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "bone-rush",
+          "range": [
+            45,
+            54
+          ],
+          "pct": [
+            30.6,
+            36.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "meteor-mash",
+          "range": [
+            38,
+            45
+          ],
+          "pct": [
+            25.9,
+            30.6
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "pikachu-gegen-raichu",
+      "slugEn": "pikachu-vs-raichu",
+      "dexA": 25,
+      "dexB": 26,
+      "nameDeA": "Pikachu",
+      "nameDeB": "Raichu",
+      "nameEnA": "Pikachu",
+      "nameEnB": "Raichu",
+      "winsA": 1,
+      "winsB": 99,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 110,
+      "speedB": 130,
+      "typesA": [
+        "electric"
+      ],
+      "typesB": [
+        "electric"
+      ],
+      "setsA": [
+        "discharge",
+        "thunderbolt",
+        "light-screen",
+        "thunder"
+      ],
+      "setsB": [
+        "thunder",
+        "thunder-shock",
+        "thunder-wave",
+        "thunderbolt"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "thunder",
+          "range": [
+            21,
+            26
+          ],
+          "pct": [
+            15.6,
+            19.3
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "thunderbolt",
+          "range": [
+            18,
+            21
+          ],
+          "pct": [
+            13.3,
+            15.6
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "discharge",
+          "range": [
+            16,
+            19
+          ],
+          "pct": [
+            11.9,
+            14.1
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "thunder",
+          "range": [
+            49,
+            58
+          ],
+          "pct": [
+            44.5,
+            52.7
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "thunderbolt",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            36.4,
+            43.6
+          ],
+          "eff": 0.5
+        },
+        {
+          "slug": "thunder-shock",
+          "range": [
+            18,
+            21
+          ],
+          "pct": [
+            16.4,
+            19.1
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "lapras-gegen-relaxo",
+      "slugEn": "lapras-vs-snorlax",
+      "dexA": 131,
+      "dexB": 143,
+      "nameDeA": "Lapras",
+      "nameDeB": "Relaxo",
+      "nameEnA": "Lapras",
+      "nameEnB": "Snorlax",
+      "winsA": 11,
+      "winsB": 89,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 80,
+      "speedB": 50,
+      "typesA": [
+        "water",
+        "ice"
+      ],
+      "typesB": [
+        "normal"
+      ],
+      "setsA": [
+        "brine",
+        "body-slam",
+        "ice-beam",
+        "rain-dance"
+      ],
+      "setsB": [
+        "amnesia",
+        "high-horsepower",
+        "hammer-arm",
+        "belly-drum"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "ice-beam",
+          "range": [
+            42,
+            49
+          ],
+          "pct": [
+            17.9,
+            20.9
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "body-slam",
+          "range": [
+            40,
+            48
+          ],
+          "pct": [
+            17,
+            20.4
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "brine",
+          "range": [
+            31,
+            37
+          ],
+          "pct": [
+            13.2,
+            15.7
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "hammer-arm",
+          "range": [
+            100,
+            118
+          ],
+          "pct": [
+            48.8,
+            57.6
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "high-horsepower",
+          "range": [
+            47,
+            56
+          ],
+          "pct": [
+            22.9,
+            27.3
+          ],
+          "eff": 1
+        }
+      ]
+    },
+    {
+      "slugDe": "milotic-gegen-garados",
+      "slugEn": "milotic-vs-gyarados",
+      "dexA": 350,
+      "dexB": 130,
+      "nameDeA": "Milotic",
+      "nameDeB": "Garados",
+      "nameEnA": "Milotic",
+      "nameEnB": "Gyarados",
+      "winsA": 2,
+      "winsB": 98,
+      "ties": 0,
+      "medianTurns": 3,
+      "speedA": 101,
+      "speedB": 101,
+      "typesA": [
+        "water"
+      ],
+      "typesB": [
+        "water",
+        "flying"
+      ],
+      "setsA": [
+        "safeguard",
+        "surf",
+        "rain-dance",
+        "coil"
+      ],
+      "setsB": [
+        "dragon-dance",
+        "hydro-pump",
+        "hurricane",
+        "thrash"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "surf",
+          "range": [
+            25,
+            30
+          ],
+          "pct": [
+            14.7,
+            17.6
+          ],
+          "eff": 0.5
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "thrash",
+          "range": [
+            67,
+            79
+          ],
+          "pct": [
+            39.4,
+            46.5
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "hurricane",
+          "range": [
+            34,
+            42
+          ],
+          "pct": [
+            20,
+            24.7
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "hydro-pump",
+          "range": [
+            17,
+            21
+          ],
+          "pct": [
+            10,
+            12.4
+          ],
+          "eff": 0.5
+        }
+      ]
+    },
+    {
+      "slugDe": "despotar-gegen-dragoran",
+      "slugEn": "tyranitar-vs-dragonite",
+      "dexA": 248,
+      "dexB": 149,
+      "nameDeA": "Despotar",
+      "nameDeB": "Dragoran",
+      "nameEnA": "Tyranitar",
+      "nameEnB": "Dragonite",
+      "winsA": 62,
+      "winsB": 38,
+      "ties": 0,
+      "medianTurns": 2,
+      "speedA": 81,
+      "speedB": 100,
+      "typesA": [
+        "rock",
+        "dark"
+      ],
+      "typesB": [
+        "dragon",
+        "flying"
+      ],
+      "setsA": [
+        "earthquake",
+        "stone-edge",
+        "thrash",
+        "sandstorm"
+      ],
+      "setsB": [
+        "aqua-tail",
+        "dragon-rush",
+        "outrage",
+        "safeguard"
+      ],
+      "setSourceA": "wild",
+      "setSourceB": "wild",
+      "movesA": [
+        {
+          "slug": "stone-edge",
+          "range": [
+            152,
+            180
+          ],
+          "pct": [
+            91.6,
+            108.4
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "thrash",
+          "range": [
+            61,
+            72
+          ],
+          "pct": [
+            36.7,
+            43.4
+          ],
+          "eff": 1
+        }
+      ],
+      "movesB": [
+        {
+          "slug": "outrage",
+          "range": [
+            81,
+            96
+          ],
+          "pct": [
+            46.3,
+            54.9
+          ],
+          "eff": 1
+        },
+        {
+          "slug": "aqua-tail",
+          "range": [
+            80,
+            96
+          ],
+          "pct": [
+            45.7,
+            54.9
+          ],
+          "eff": 2
+        },
+        {
+          "slug": "dragon-rush",
+          "range": [
+            67,
+            81
+          ],
+          "pct": [
+            38.3,
+            46.3
+          ],
+          "eff": 1
+        }
+      ]
+    }
+  ]
+}

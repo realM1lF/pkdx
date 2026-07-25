@@ -7,6 +7,7 @@
  * in the main bundle. */
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router';
 import { ArrowRight, Swords } from 'lucide-react';
 import GameSelect from '@/components/GameSelect';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -41,10 +42,17 @@ import './detail/versus.css';
 /* lazy battle arena — keeps @pkmn/sim out of the route chunk (async chunk) */
 const BattleView = lazy(() => import('./detail/BattleView'));
 
-/* default matchup: Glurak vs Turtok (Charizard vs Blastoise), level 50 */
+/* default matchup: Glurak vs Turtok (Charizard vs Blastoise), level 50.
+ * ?a=<dex>&b=<dex> preselects both sides (matchup-page replay CTA). */
 const DEFAULT_YOU_ID = 6;
 const DEFAULT_FOE_ID = 9;
 const DEFAULT_LEVEL = 50;
+const MAX_DEX = 1025;
+
+function dexParam(value: string | null): number | null {
+  const n = Number(value);
+  return Number.isInteger(n) && n >= 1 && n <= MAX_DEX ? n : null;
+}
 
 interface TextPair {
   title: string;
@@ -71,9 +79,11 @@ function BattleArena() {
     setField((prev) => fieldForContext(prev, ctx));
   }, [ctx.versionGroup]);
 
-  /* ----- side selection (defaults: two popular fighters, ready to start) ----- */
-  const [youId, setYouId] = useState<number>(DEFAULT_YOU_ID);
-  const [foeId, setFoeId] = useState<number>(DEFAULT_FOE_ID);
+  /* ----- side selection (defaults: two popular fighters, ready to start;
+   *       ?a=/?b= preselect from the matchup-page replay CTA) ----- */
+  const [searchParams] = useSearchParams();
+  const [youId, setYouId] = useState<number>(() => dexParam(searchParams.get('a')) ?? DEFAULT_YOU_ID);
+  const [foeId, setFoeId] = useState<number>(() => dexParam(searchParams.get('b')) ?? DEFAULT_FOE_ID);
   const { pokemon: youPokemon, status: youStatus } = usePokemonById(youId);
   const { pokemon: foePokemon, status: foeStatus } = usePokemonById(foeId);
 
