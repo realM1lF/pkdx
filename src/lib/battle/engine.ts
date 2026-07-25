@@ -318,6 +318,12 @@ export function randomSeed(): [number, number, number, number] {
 }
 
 function buildSet(side: BattleSideSetup, gen: number): PokemonSet {
+  /* Gen 1/2: "EVs" represent stat experience. @smogon/calc enforces max stat
+   * exp (+63) internally for gen 1/2 stats; the sim instead derives stat exp
+   * from set.evs (trunc(evs/4), see battle.statModify). evs 255 → +63, so the
+   * packed team matches the calc exactly (e.g. lv50 Gyarados HP 201, not 170).
+   * DVs are already max: the sim masks ivs to even (30 = DV 15) in gen ≤2. */
+  const statExpMaxed = gen < 3;
   const set: PokemonSet = {
     name: '',
     species: side.species,
@@ -327,7 +333,9 @@ function buildSet(side: BattleSideSetup, gen: number): PokemonSet {
     gender: '',
     level: clampLevel(side.level),
     moves: side.moves.filter(Boolean).slice(0, 4),
-    evs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+    evs: statExpMaxed
+      ? { hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255 }
+      : { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
     ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
   };
   if (!set.moves.length) set.moves = ['tackle'];
@@ -434,8 +442,44 @@ export class MicroBattle {
       if (code) this.battle[sideKey].pokemon[0].setStatus(code, null, null, true);
     }
 
+    this.resetPPUps();
+
     this.emit({ kind: 'info', text: 'start', from: this.formatId, raw: '' });
     this.drain();
+  }
+
+  /**
+   * @pkmn/sim hardcodes 3 PP-Ups per move in the Pokemon constructor (there is
+   * no per-set ppUps mechanism — Teams.pack can't carry it). Wild mons and the
+   * versus trainer sets use no PP-Ups, so rewrite every slot to the base PP
+   * (Thunderbolt 15 instead of 24) for wild fidelity.
+   */
+  private resetPPUps() {
+    for (const side of [this.battle.p1, this.battle.p2]) {
+      for (const mon of side.pokemon) {
+        for (const slots of [mon.baseMoveSlots, mon.moveSlots]) {
+          for (const slot of slots) {
+            const move = this.battle.dex.moves.get(slot.id);
+            if (!move?.pp) continue;
+            const base = this.battle.calculatePP(move, 0);
+            slot.maxpp = base;
+            slot.pp = Math.min(slot.pp, base);
+          }
+        }
+      }
+      /* the initial choice request was already built with PP-Up values —
+       * patch it too; later requests are rebuilt from the fixed move slots */
+      const reqMoves = (side.activeRequest as SimChoiceRequest | null)?.active?.[0]?.moves;
+      if (reqMoves) {
+        for (const m of reqMoves) {
+          const move = this.battle.dex.moves.get(m.id);
+          if (!move?.pp) continue;
+          const base = this.battle.calculatePP(move, 0);
+          m.maxpp = base;
+          m.pp = Math.min(m.pp, base);
+        }
+      }
+    }
   }
 
   private emitInfo(text: string, from?: string) {

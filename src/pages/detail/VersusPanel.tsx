@@ -996,8 +996,30 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
         const cell = row.cell;
         const [lo, hi] = cell?.pct ?? [0, 0];
         const damaging = cell ? cell.range[1] > 0 : false;
+        const isOhko = Boolean(cell?.ohko);
         const koN = damaging && cell ? Math.min(4, cell.koHits) : 0;
         const eff = cell?.eff ?? 1;
+        /* multi-hit: per-hit HP range × hit count, full total via tooltip;
+         * ramping: hit-1 range + growth note; OHKO: explicit label */
+        const rangeText = cell?.multihit
+          ? `${cell.multihit.hitRange[0]}–${cell.multihit.hitRange[1]} ×${cell.multihit.hits[0]}–${cell.multihit.hits[1]}`
+          : `${Math.round(lo)}–${Math.round(hi)}%${cell?.ramp ? ' ↗' : ''}`;
+        const rangeTitle = cell?.multihit
+          ? t('versus.multiHitTitle', {
+              hmin: cell.multihit.hits[0],
+              hmax: cell.multihit.hits[1],
+              lo: cell.multihit.total[0],
+              hi: cell.multihit.total[1],
+            })
+          : cell?.ramp
+            ? t('versus.rampNote')
+            : undefined;
+        const koText = cell?.ramp?.koHits ? t('versus.rampHits', { n: cell.koHits }) : koLabel(cell);
+        const koTitle = cell?.survivesFirstHit && cell.koHits > 1
+          ? t('versus.sashSurvive')
+          : cell && cell.koChance > 0 && cell.koChance < 1
+            ? t('versus.koChance', { pct: Math.round(cell.koChance * 100) })
+            : undefined;
         return (
           <div key={row.slug || `row-${ri}`} className="vs-row" style={{ '--mt': typeRgb(type) } as CSSProperties}>
             <span style={{ color: `rgb(${typeRgb(type)})` }}>
@@ -1023,19 +1045,30 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
                   <i style={{ width: `${Math.min(100, hi)}%` }} />
                   <b style={{ left: `${Math.min(100, lo)}%` }} />
                 </span>
-                <span className="font-sans text-[8px] font-semibold tabular-nums text-tx-muted">
-                  {Math.round(lo)}–{Math.round(hi)}%
+                <span className="font-sans text-[8px] font-semibold tabular-nums text-tx-muted" title={rangeTitle}>
+                  {rangeText}
                 </span>
+              </span>
+            ) : isOhko ? (
+              <span
+                className="font-sans text-[9px] font-semibold text-tx-secondary"
+                title={t('versus.ohkoMove', { acc: cell!.ohko!.accuracy })}
+              >
+                {t('versus.ohkoShort', { acc: cell!.ohko!.accuracy })}
               </span>
             ) : (
               <span className="font-sans text-[9px] text-tx-muted">{mv ? (cell ? t('versus.statusMove') : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
             )}
-            <span className="vs-eff" data-e={damaging ? String(eff) : '1'}>
-              {damaging ? EFF_LABEL(eff) : '—'}
+            <span className="vs-eff" data-e={damaging || isOhko ? String(eff) : '1'}>
+              {damaging || isOhko ? EFF_LABEL(eff) : '—'}
             </span>
             <span className="text-right">
-              <span className="vs-ko" data-n={koN} title={cell && cell.koChance > 0 && cell.koChance < 1 ? t('versus.koChance', { pct: Math.round(cell.koChance * 100) }) : undefined}>
-                {koLabel(cell)}
+              <span
+                className="vs-ko"
+                data-n={koN}
+                title={isOhko ? t('versus.ohkoMove', { acc: cell!.ohko!.accuracy }) : koTitle}
+              >
+                {isOhko ? 'OHKO' : koText}
               </span>
             </span>
           </div>
