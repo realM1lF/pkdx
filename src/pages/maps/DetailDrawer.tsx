@@ -88,12 +88,12 @@ function EncounterRow({ e, region, node }: { e: EncounterEntry; region: RegionMa
       </span>
       <span className="flex w-[64px] shrink-0 items-center justify-end gap-1.5">
         <span className={cn('font-display text-[12px] font-bold tabular-nums', rare ? 'text-gold' : 'text-tx-primary')}>
-          {e.maxChance}%
+          {Math.min(100, e.maxChance)}%
         </span>
         <span className="h-[3px] w-10 overflow-hidden rounded-pill bg-surface3">
           <span
             className="block h-full rounded-pill"
-            style={{ width: `${e.maxChance}%`, background: rare ? '#F6C945' : region.accent }}
+            style={{ width: `${Math.min(100, e.maxChance)}%`, background: rare ? '#F6C945' : region.accent }}
           />
         </span>
       </span>
@@ -206,9 +206,18 @@ export default function DetailDrawer({
             <span className="pixel-label rounded-sm border border-hairline px-1.5 py-0.5 text-[7px] text-tx-muted">
               {t('maps.order', { n: node.order })}
             </span>
-            <span className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[7px] text-gold">
-              {versionLabel(version)}
-            </span>
+            <button
+              type="button"
+              title={t('maps.editionHint')}
+              onClick={() => {
+                const el = document.getElementById('maps-version-switcher');
+                el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                el?.querySelector('button')?.focus();
+              }}
+              className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[7px] text-gold transition-colors hover:bg-gold/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+            >
+              {t('maps.edition', { version: versionLabel(version) })}
+            </button>
             {node.postGame && (
               <span className="pixel-label rounded-sm border border-dashed border-gold/50 px-1.5 py-0.5 text-[7px] text-gold">
                 {t('maps.postGame')}

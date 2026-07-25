@@ -428,7 +428,15 @@ export default function RoutePage() {
                 <EncounterTable rows={g.rows} lang={lang} />
               </div>
             ))}
-            <p className="px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">{t('seo.route.encounterSource')}</p>
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
+              {t('seo.route.encounterSource')}
+              <LocaleLink
+                to={`/maps/kanto?node=${nodeId}&v=${version}`}
+                className="text-gold/80 underline-offset-2 transition-colors hover:text-gold hover:underline"
+              >
+                {t('maps.viewOnMapHint')}
+              </LocaleLink>
+            </p>
           </SectionCard>
 
           {/* items (curated enrichment) */}

@@ -1505,6 +1505,16 @@ export default function VersusPanel({
 
   /* ----- 1:1 micro-battle (lazy arena, takes over the current versus state) ----- */
   const [battleOpen, setBattleOpen] = useState(false);
+  const arenaRef = useRef<HTMLDivElement>(null);
+
+  /* mobile: the arena mounts below the fold — bring it into view */
+  useEffect(() => {
+    if (!battleOpen) return;
+    const timer = window.setTimeout(() => {
+      arenaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+    return () => window.clearTimeout(timer);
+  }, [battleOpen]);
 
   const battleInputOf = useCallback(
     (pokemon: Pokemon, side: SideState) => {
@@ -1750,7 +1760,7 @@ export default function VersusPanel({
 
       {/* ---------- 1:1 battle arena (lazy — engine loads on demand) ---------- */}
       {battleOpen && battleYou && battleFoe && (
-        <div className="col-span-12">
+        <div ref={arenaRef} className="col-span-12 scroll-mt-24">
           <Suspense
             fallback={
               <div className="dx-panel flex items-center justify-center p-8">

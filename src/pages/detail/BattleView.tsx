@@ -320,7 +320,15 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
 
   const result = snap?.winner ?? null;
 
+  /* mobile: the battle phase renders below the fold — scroll it into view */
+  const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (phase !== 'battle') return;
+    rootRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [phase]);
+
   return (
+    <div ref={rootRef} className="scroll-mt-24">
     <Panel
       eyebrow={t('versus.battle.eyebrow')}
       title={t('versus.battle.title')}
@@ -535,5 +543,6 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
         </div>
       )}
     </Panel>
+    </div>
   );
 }

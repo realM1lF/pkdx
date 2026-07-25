@@ -5,7 +5,7 @@
  * the embedded arena reuses the Versus machinery (pickers, SideCard, field
  * controls) and lazy-loads BattleView/@pkmn/sim only on demand — no sim code
  * in the main bundle. */
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import { ArrowRight, Swords } from 'lucide-react';
@@ -156,6 +156,16 @@ function BattleArena() {
 
   /* ----- 1:1 micro-battle (lazy arena, takes over the current setup) ----- */
   const [battleOpen, setBattleOpen] = useState(false);
+  const arenaRef = useRef<HTMLDivElement>(null);
+
+  /* mobile: the arena mounts below the fold — bring it into view */
+  useEffect(() => {
+    if (!battleOpen) return;
+    const timer = window.setTimeout(() => {
+      arenaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+    return () => window.clearTimeout(timer);
+  }, [battleOpen]);
 
   const battleInputOf = useCallback(
     (pokemon: Pokemon, side: SideState) => {
@@ -318,7 +328,7 @@ function BattleArena() {
 
       {/* ---------- 1:1 battle arena (lazy — engine loads on demand) ---------- */}
       {battleOpen && battleYou && battleFoe && (
-        <div className="col-span-12">
+        <div ref={arenaRef} className="col-span-12 scroll-mt-24">
           <Suspense
             fallback={
               <div className="dx-panel flex items-center justify-center p-8">

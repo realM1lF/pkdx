@@ -85,6 +85,22 @@ export const STATIC_METHODS = new Set([
   'squirt-bottle', 'devon-scope',
 ]);
 
+/** Chance aggregation key: PokéAPI `chance` is per slot, so sum per species
+ * per exact method, then take MAX across method buckets — never sum across
+ * mutually exclusive methods (old/good/super rod), or rates exceed 100 %
+ * (Horsea 170 %, Seeper 144 % before this fix). */
+function chanceBucketKey(method: string): string {
+  if (SURF_METHODS.has(method)) return 'surf';
+  if (method === 'old-rod') return 'old-rod';
+  if (method === 'good-rod') return 'good-rod';
+  if (method === 'super-rod') return 'super-rod';
+  if (FISH_METHODS.has(method)) return 'fish';
+  if (method === 'rock-smash') return 'rock-smash';
+  if (method.startsWith('headbutt')) return 'headbutt';
+  if (WALK_METHODS.has(method)) return 'walk';
+  return method;
+}
+
 export function methodBucket(method: string): MethodBucket {
   if (SURF_METHODS.has(method)) return 'SURF';
   if (FISH_METHODS.has(method)) return 'FISH';
@@ -217,7 +233,8 @@ export function areaShortLabel(areaName: string, locationSlug: string): string {
   return rest.replace(/-/g, ' ').toUpperCase();
 }
 
-function aggregateArea(
+/** exported for tests — per-area encounter aggregation */
+export function aggregateArea(
   area: LocationAreaResponse,
   locationSlug: string,
   version: string,
@@ -236,10 +253,13 @@ function aggregateArea(
     let minL = Infinity;
     let maxL = -Infinity;
     const buckets = new Set<MethodBucket>();
+    const chanceByMethod = new Map<string, number>();
     let isStatic = false;
     for (const det of vd.encounter_details) {
       buckets.add(methodBucket(det.method.name));
       if (STATIC_METHODS.has(det.method.name)) isStatic = true;
+      const key = chanceBucketKey(det.method.name);
+      chanceByMethod.set(key, (chanceByMethod.get(key) ?? 0) + det.chance);
       minL = Math.min(minL, det.min_level);
       maxL = Math.max(maxL, det.max_level);
     }
@@ -247,11 +267,12 @@ function aggregateArea(
       minL = 0;
       maxL = 0;
     }
+    const maxChance = Math.min(100, Math.max(0, ...chanceByMethod.values()));
 
     const prev = bySpecies.get(id);
     if (prev) {
       buckets.forEach((b) => prev.methods.add(b));
-      prev.maxChance = Math.max(prev.maxChance, vd.max_chance);
+      prev.maxChance = Math.max(prev.maxChance, maxChance);
       prev.minLevel = Math.min(prev.minLevel, minL);
       prev.maxLevel = Math.max(prev.maxLevel, maxL);
       prev.isStatic = prev.isStatic || isStatic;
@@ -259,7 +280,7 @@ function aggregateArea(
       bySpecies.set(id, {
         slug: enc.pokemon.name,
         methods: buckets,
-        maxChance: vd.max_chance,
+        maxChance,
         minLevel: minL,
         maxLevel: maxL,
         isStatic,
