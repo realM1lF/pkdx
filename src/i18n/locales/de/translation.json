@@ -730,7 +730,8 @@
     "qaWinA": "Kaum. In {{battles}} simulierten Kämpfen (Level {{level}}, Standard-Sets) gewinnt {{winner}} {{winnerWins}}-mal, {{loser}} nur {{loserWins}}-mal. Mit eigenen Attacken oder Items kann der Simulator ein anderes Bild zeigen — oben ausprobieren.",
     "moreEyebrow": "WEITERE SIMULIERTE MATCHUPS",
     "toVersus": "Zum Versus-Calc",
-    "notFound": "Dieses Matchup gehört nicht zum kuratierten Simulations-Set."
+    "notFound": "Dieses Matchup gehört nicht zum kuratierten Simulations-Set.",
+    "varianceNote": "Bei ausgeglichenen Duellen kann die Quote je nach Simulationslauf um rund 10 bis 15 Punkte schwanken."
   },
   "maps": {
     "atlasEyebrow": "PHASE 04 — ATLAS",

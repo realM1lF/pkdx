@@ -171,6 +171,7 @@ export default function MatchupPage() {
         </p>
         <p className="mt-1.5 font-sans text-[11.5px] text-tx-muted">
           {tt('matchup.assumptions', { level })}
+          {Math.min(m.winsA, m.winsB) >= 30 ? ` ${tt('matchup.varianceNote')}` : ''}
         </p>
       </header>
 

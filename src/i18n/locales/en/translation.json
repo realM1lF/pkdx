@@ -730,7 +730,8 @@
     "qaWinA": "Rarely. Of {{battles}} simulated battles (level {{level}}, standard sets), {{winner}} wins {{winnerWins}} and {{loser}} only {{loserWins}}. Custom moves or items can change the picture — try it in the simulator above.",
     "moreEyebrow": "MORE SIMULATED MATCHUPS",
     "toVersus": "Open the Versus Calc",
-    "notFound": "This matchup is not part of the curated simulation set."
+    "notFound": "This matchup is not part of the curated simulation set.",
+    "varianceNote": "For close matchups the win rate can vary by roughly 10 to 15 points between simulation runs."
   },
   "maps": {
     "atlasEyebrow": "PHASE 04 — ATLAS",
