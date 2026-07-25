@@ -1446,6 +1446,13 @@
           "paragraphs": [
             "MyPokePanion is an independent fan project and is not officially affiliated with Nintendo, Creatures Inc., or GAME FREAK inc. Pokémon and all related names, trademarks, and media are the property of their respective rights holders."
           ]
+        },
+        {
+          "heading": "Voluntary support",
+          "paragraphs": [
+            "On /support you can voluntarily contribute. This is not a purchase of services and not a tax-deductible donation under tax law. There is no entitlement to a refund, consideration, or special features.",
+            "Payments are processed via PayPal; PayPal's terms and privacy policy apply."
+          ]
         }
       ]
     },
@@ -1471,7 +1478,7 @@
                 "Hauptstraße 51",
                 "97204 Höchberg",
                 "Germany",
-                "Email: hallo@adhsleben.org"
+                "Email: sapple.schwerdhoefer@gmail.com"
               ]
             },
             {
@@ -1550,6 +1557,14 @@
                 "Plausible does not set cookies and does not create persistent user profiles. IP addresses are not stored; processing takes place in the EU. No ad trackers or marketing profiles are created.",
                 "Legal basis: Art. 6(1)(f) GDPR (legitimate interest in privacy-friendly reach measurement to improve the service). You can limit collection via browser tracking protection or similar extensions.",
                 "Further information: https://plausible.io/data-policy · Data processing agreement: https://plausible.io/dpa"
+              ]
+            },
+            {
+              "heading": "PayPal (voluntary support)",
+              "paragraphs": [
+                "If you voluntarily contribute via /support, you are redirected to PayPal or scan a PayPal QR code. Payment takes place exclusively on PayPal — not on our servers.",
+                "PayPal (PayPal Pte. Ltd.) is responsible for payment processing. Personal data may be processed (e.g. PayPal account information, transaction data). Legal basis: Art. 6(1)(b) GDPR (processing to carry out the payment you explicitly initiate) and, where applicable, Art. 6(1)(f) GDPR for technical connection data before you reach PayPal.",
+                "Further information: https://www.paypal.com/us/webapps/mpp/ua/privacy-full"
               ]
             },
             {
@@ -1760,6 +1775,8 @@
     "p3": "Ads? No. I deliberately keep the site free of ad banners, ad trackers, and pop-ups. For anonymous usage statistics I use Plausible (cookieless, no ad profiles) — see the privacy policy for details. Donations help keep it that way without ever running ads.",
     "cta": "SUPPORT VIA PAYPAL",
     "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project.",
+    "legal": "This is voluntary support for a free hobby project — not a purchase and not consideration (no premium features, no donation receipt). Contributions are not tax-deductible for supporters. When you click PayPal or scan the QR code, you leave MyPokePanion; payment is processed exclusively by PayPal.",
+    "legalLinks": "Further details:",
     "qrCaption": "Scan the QR code — works right from your phone"
   },
   "feedback": {

@@ -1446,6 +1446,13 @@
           "paragraphs": [
             "MyPokePanion ist ein unabhängiges Fanprojekt und steht in keiner offiziellen Verbindung zu Nintendo, Creatures Inc. oder GAME FREAK inc. Pokémon sowie alle damit verbundenen Namen, Marken und Medien sind Eigentum ihrer jeweiligen Rechteinhaber."
           ]
+        },
+        {
+          "heading": "Freiwillige Unterstützung",
+          "paragraphs": [
+            "Unter /support kannst du freiwillig einen Beitrag leisten. Dabei handelt es sich nicht um den Kauf einer Leistung und nicht um eine steuerlich absetzbare Spende im Sinne des Steuerrechts. Es entsteht kein Anspruch auf Rückerstattung, Gegenleistung oder besondere Funktionen.",
+            "Zahlungen werden über PayPal abgewickelt; es gelten die Bedingungen und Datenschutzhinweise von PayPal."
+          ]
         }
       ]
     },
@@ -1471,7 +1478,7 @@
                 "Hauptstraße 51",
                 "97204 Höchberg",
                 "Deutschland",
-                "E-Mail: hallo@adhsleben.org"
+                "E-Mail: sapple.schwerdhoefer@gmail.com"
               ]
             },
             {
@@ -1550,6 +1557,14 @@
                 "Plausible setzt keine Cookies und erstellt keine dauerhaften Nutzerprofile. IP-Adressen werden nicht gespeichert; die Verarbeitung erfolgt in der EU. Es werden keine Werbe-Tracker oder Marketing-Profile erstellt.",
                 "Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datenschutzfreundlichen Reichweitenmessung zur Verbesserung des Angebots). Du kannst die Erfassung durch Browser-Tracking-Schutz oder entsprechende Erweiterungen einschränken.",
                 "Weitere Informationen: https://plausible.io/data-policy · Auftragsverarbeitung: https://plausible.io/dpa"
+              ]
+            },
+            {
+              "heading": "PayPal (freiwillige Unterstützung)",
+              "paragraphs": [
+                "Wenn du über /support freiwillig einen Beitrag leistest, wirst du zu PayPal weitergeleitet oder scannst einen PayPal-QR-Code. Die Zahlung erfolgt ausschließlich bei PayPal — nicht auf unseren Servern.",
+                "Verantwortlich für die Zahlungsabwicklung ist PayPal (PayPal Pte. Ltd.). Dabei können personenbezogene Daten verarbeitet werden (z. B. PayPal-Kontoinformationen, Transaktionsdaten). Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Verarbeitung zur Durchführung der von dir ausdrücklich angeforderten Zahlung) bzw. lit. f DSGVO, soweit technische Verbindungsdaten anfallen, bevor du PayPal erreichst.",
+                "Weitere Informationen: https://www.paypal.com/de/webapps/mpp/ua/privacy-full"
               ]
             },
             {
@@ -1760,6 +1775,8 @@
     "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Für anonyme Nutzungsstatistik nutze ich Plausible (cookieless, ohne Werbeprofile) — Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
     "cta": "VIA PAYPAL UNTERSTÜTZEN",
     "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt.",
+    "legal": "Das ist eine freiwillige Unterstützung für ein kostenloses Hobby-Projekt — kein Kauf und keine Gegenleistung (keine Premium-Funktionen, keine Spendenquittung). Unterstützungen sind für Spender steuerlich nicht absetzbar. Beim Klick auf PayPal oder beim Scan des QR-Codes verlässt du MyPokePanion; die Zahlung wird ausschließlich von PayPal verarbeitet.",
+    "legalLinks": "Weitere Angaben:",
     "qrCaption": "QR-Code scannen — geht auch direkt im Handy"
   },
   "feedback": {

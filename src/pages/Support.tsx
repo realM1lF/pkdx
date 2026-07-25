@@ -2,6 +2,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Coffee, ExternalLink, Heart, Sparkles } from 'lucide-react';
+import { LocaleLink } from '@/lib/locale-link';
 import { PAYPAL_ME_URL } from '@/lib/support';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -48,14 +49,14 @@ export default function Support() {
           <ExternalLink size={13} className="opacity-70" />
         </motion.a>
 
-        {/* PayPal QR code — scan to donate from the phone */}
+        {/* PayPal QR code — scan to donate from the phone (SVG, dark-theme) */}
         <motion.figure
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE, delay: 0.15 }}
-          className="mx-auto mt-8 w-44 overflow-hidden rounded-lg border border-hairline bg-white p-2 shadow-elevate"
+          className="mx-auto mt-8 w-44 rounded-lg border border-hairline bg-surface2 p-3 shadow-elevate"
         >
-          <img src="/paypal-qr.png" alt="PayPal QR-Code" className="w-full rounded-sm" loading="lazy" />
+          <img src="/paypal-qr.svg" alt="PayPal QR-Code" className="w-full" loading="lazy" decoding="async" />
         </motion.figure>
         <p className="mt-2.5 font-sans text-[12px] text-tx-muted">{t('support.qrCaption')}</p>
 
@@ -63,6 +64,20 @@ export default function Support() {
           <Sparkles size={13} className="text-gold/70" />
           {t('support.note')}
         </p>
+
+        <div className="mt-8 border-t border-hairline pt-6 text-left">
+          <p className="font-sans text-[11.5px] leading-relaxed text-tx-muted">{t('support.legal')}</p>
+          <p className="mt-2.5 font-sans text-[11.5px] text-tx-muted">
+            {t('support.legalLinks')}{' '}
+            <LocaleLink to="/impressum" className="text-gold underline-offset-2 hover:underline">
+              {t('footer.impressum')}
+            </LocaleLink>
+            {' · '}
+            <LocaleLink to="/datenschutz" className="text-gold underline-offset-2 hover:underline">
+              {t('footer.privacy')}
+            </LocaleLink>
+          </p>
+        </div>
       </motion.div>
     </div>
   );
