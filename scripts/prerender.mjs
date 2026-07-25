@@ -125,7 +125,7 @@ const failures = [];
 async function renderRoute(browserContext, { lang, rest, path: routePath }) {
   const page = await browserContext.newPage();
   try {
-    await page.goto(`${origin}${routePath}`, { waitUntil: 'load', timeout: 30_000 });
+    await page.goto(`${origin}${routePath}`, { waitUntil: 'load', timeout: 120_000 });
     /* SPA rendered? */
     await page.waitForFunction(
       () => document.getElementById('root')?.childElementCount > 0,
