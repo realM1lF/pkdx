@@ -1,27 +1,40 @@
 {
   "violet-city": [
-    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "note": "Sprout Tower elder — defeat the sages", "pocket": "TM" }
+    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "moveSlug": "flash", "note": "Sprout Tower — defeat Elder Li", "pocket": "TM" },
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Hidden — island between the bridges to Sprout Tower", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Poké Mart — man in a suit, after the Zephyr Badge", "pocket": "ITEMS" }
   ],
   "azalea-town": [
-    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Charcoal maker — after Slowpoke Well", "pocket": "ITEMS" }
+    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Charcoal maker's apprentice — after the Farfetch'd errand", "pocket": "ITEMS" },
+    { "itemSlug": "fast-ball", "name": "Fast Ball", "note": "Kurt — after Team Rocket leaves Slowpoke Well", "pocket": "BALLS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden — log pile by the charcoal kiln", "pocket": "ITEMS", "hidden": true }
   ],
   "ilex-forest": [
-    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "note": "Charcoal maker's apprentice", "pocket": "HM" }
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "moveSlug": "cut", "note": "Farfetch'd's owner — after the herding errand", "pocket": "HM" },
+    { "itemSlug": "tm-dark", "name": "TM12 — Taunt", "moveSlug": "taunt", "note": "Gate — attendant on the way out", "pocket": "TM" }
   ],
   "goldenrod-city": [
-    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Game Corner — hidden on the floor", "pocket": "KEY", "hidden": true },
-    { "itemSlug": "squirt-bottle", "name": "Squirt Bottle", "note": "Flower shop — after Sudowoodo", "pocket": "KEY" }
+    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Game Corner — from Mr. Game", "pocket": "KEY" },
+    { "itemSlug": "squirt-bottle", "name": "Squirt Bottle", "note": "Flower shop — after the Plain Badge", "pocket": "KEY" },
+    { "itemSlug": "bicycle", "name": "Bicycle", "note": "Bike Shop owner — yours to keep after his call", "pocket": "KEY" }
   ],
   "ecruteak-city": [
-    { "itemSlug": "hm-water", "name": "HM03 — Surf", "note": "Kimono Girl — dance theater", "pocket": "HM" }
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "moveSlug": "surf", "note": "Dance theater — old man after the Rocket grunt", "pocket": "HM" },
+    { "itemSlug": "dowsing-machine", "name": "Itemfinder", "note": "Ace Trainer — house east of the Gym", "pocket": "KEY" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — southeast corner of the north lake", "pocket": "ITEMS", "hidden": true }
   ],
   "olivine-city": [
-    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "note": "Sailor — harbor café", "pocket": "HM" }
+    { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fishing Guru — house north of the Pokémon Center", "pocket": "KEY" },
+    { "itemSlug": "tm-electric", "name": "TM57 — Charge Beam", "moveSlug": "charge-beam", "note": "Beach northeast of the lighthouse (Surf)", "pocket": "TM" }
   ],
   "cianwood-city": [
-    { "itemSlug": "secret-potion", "name": "Secret Potion", "note": "Pharmacy — for Jasmine's Ampharos", "pocket": "KEY" }
+    { "itemSlug": "secret-potion", "name": "Secret Potion", "note": "Pharmacy — for Jasmine's Ampharos", "pocket": "KEY" },
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "moveSlug": "fly", "note": "Chuck's wife — outside the Gym after beating Chuck", "pocket": "HM" }
   ],
   "lake-of-rage": [
-    { "itemSlug": "red-scale", "name": "Red Scale", "note": "After the red Gyarados", "pocket": "KEY" }
+    { "itemSlug": "red-scale", "name": "Red Scale", "note": "After the red Gyarados", "pocket": "KEY" },
+    { "itemSlug": "tm-normal", "name": "TM10 — Hidden Power", "moveSlug": "hidden-power", "note": "Man in the hidden northwest house (Surf)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM43 — Secret Power", "moveSlug": "secret-power", "note": "Land strip north of the lake — flooded lake (Surf)", "pocket": "TM" },
+    { "itemSlug": "choice-specs", "name": "Choice Specs", "note": "Northeast shore — flooded lake (Surf)", "pocket": "ITEMS" }
   ]
 }
