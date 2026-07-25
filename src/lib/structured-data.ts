@@ -66,6 +66,8 @@ export function softwareApplicationSchema(rest: string, lang: Lang): JsonLd | nu
     '/nuzlocke': 'Nuzlocke Tracker',
     '/versus': 'Pokémon Versus Damage Calculator',
     '/maps': 'Interactive Pokémon Maps',
+    '/kampf-simulator': 'Pokémon Kampf-Simulator',
+    '/battle-simulator': 'Pokémon Battle Simulator',
   };
   const name = names[rest];
   if (!name) return null;
@@ -129,6 +131,12 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
       trail.push({ name: 'Items', url: localePath(lang, '/items') });
       trail.push({
         name: slug ? (lang === 'de' ? ITEMS_SEO[slug].nameDe : ITEMS_SEO[slug].nameEn) : crumbName,
+        url: localePath(lang, restForLang(rest, lang)),
+      });
+    } else if (rest === '/kampf-simulator' || rest === '/battle-simulator') {
+      /* battle-simulator landing — short crumb + localized slug */
+      trail.push({
+        name: lang === 'de' ? 'Kampf-Simulator' : 'Battle Simulator',
         url: localePath(lang, restForLang(rest, lang)),
       });
     } else if (rest.startsWith('/pokemon/')) {

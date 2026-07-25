@@ -38,6 +38,29 @@ export interface RouteMeta {
   ogType?: 'website' | 'article';
 }
 
+/** Localized slugs of the battle-simulator landing page. */
+export const BATTLE_LANDING_RESTS: Record<Lang, string> = {
+  de: '/kampf-simulator',
+  en: '/battle-simulator',
+};
+
+/** Locale-aware path of the battle-simulator landing (for internal links). */
+export function battleLandingPath(lang: Lang): string {
+  return BATTLE_LANDING_RESTS[lang];
+}
+
+const BATTLE_LANDING_META: RouteMeta = {
+  title: {
+    de: 'Pokémon Kampf-Simulator: 1v1-Kämpfe online simulieren',
+    en: 'Pokémon Battle Simulator: Fight 1v1 Battles Online',
+  },
+  description: {
+    de: 'Konfiguriere zwei Pokémon mit Level, Item, Fähigkeit und Attacken und lass sie mit echter Kampfmechanik von Gen 1 bis 9 kämpfen. Kostenlos im Browser.',
+    en: 'Build two Pokémon with custom level, item, ability and moves, then simulate a full battle with real mechanics from Gen 1 to 9. Free, right in your browser.',
+  },
+  ogType: 'article',
+};
+
 const DEFAULT_META: RouteMeta = {
   title: {
     de: 'MyPokePanion · Interaktiver Pokédex, Teambuilder & Nuzlocke-Tracker',
@@ -133,6 +156,11 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Who wins the duel? The Versus calculator compares two Pokémon: damage calculator, type matchups, speed tiers and bulk, accurate per generation.',
     },
   },
+  /* battle-simulator landing — localized slugs (/de/kampf-simulator ↔
+   * /en/battle-simulator), both rests registered so meta resolves regardless
+   * of which slug variant the URL carries */
+  '/kampf-simulator': BATTLE_LANDING_META,
+  '/battle-simulator': BATTLE_LANDING_META,
   '/about': {
     title: {
       de: 'Über MyPokePanion · inoffizielles Pokémon-Fan-Projekt',
@@ -336,7 +364,12 @@ export function metaForPath(rest: string): RouteMeta {
  * so canonical + hreflang URLs must translate the rest path per locale.
  */
 export function restForLang(rest: string, lang: Lang): string {
-  return localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang);
+  const localized = localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang);
+  /* battle-simulator landing: '/kampf-simulator' ↔ '/battle-simulator' */
+  if (localized === BATTLE_LANDING_RESTS.de || localized === BATTLE_LANDING_RESTS.en) {
+    return BATTLE_LANDING_RESTS[lang];
+  }
+  return localized;
 }
 
 /** Absolute canonical URL for a route + locale. */
