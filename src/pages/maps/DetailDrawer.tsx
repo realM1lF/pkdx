@@ -1,7 +1,7 @@
 /* DetailDrawer — 400px node readout (maps.md §2.6): dense encounter table
  * (sprite / name / method chip / level range / rate micro-bar, multi-area
  * sub-headers, statics pinned to SPECIAL) + curated items tab + Nuzlocke link. */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
@@ -153,6 +153,20 @@ export default function DetailDrawer({
 
   const methodCount = nd ? Object.keys(nd.methodTop).length : 0;
 
+  /* mobile: dock the sheet below the sticky CommandBar (two rows tall since
+     the mobile toolbar wraps) so the header chips stay tappable */
+  const [barBottom, setBarBottom] = useState(0);
+  useEffect(() => {
+    if (!isMobile) return;
+    const measure = () => {
+      const el = document.getElementById('maps-command-bar');
+      if (el) setBarBottom(Math.round(el.getBoundingClientRect().bottom));
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [isMobile]);
+
   const { staticEntries, areas, totalShown, totalAll } = useMemo(() => {
     if (!nd || nd.status !== 'loaded') return { staticEntries: [], areas: [], totalShown: 0, totalAll: 0 };
     const sorter = (a: EncounterEntry, b: EncounterEntry) =>
@@ -187,9 +201,10 @@ export default function DetailDrawer({
       className={cn(
         'z-40 flex flex-col border-hairline bg-surface1 shadow-elevate',
         isMobile
-          ? 'fixed inset-x-0 bottom-0 h-[85dvh] rounded-t-2xl border-t'
+          ? cn('fixed inset-x-0 bottom-0 rounded-t-2xl border-t', barBottom === 0 && 'h-[85dvh]')
           : 'absolute bottom-0 right-0 top-0 w-[400px] border-l',
       )}
+      style={isMobile && barBottom > 0 ? { top: barBottom } : undefined}
       role="dialog"
       aria-label={t('maps.drawerAria', { label: nodeName(node, lang) })}
     >

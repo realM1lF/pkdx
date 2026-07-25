@@ -89,6 +89,7 @@ export default function CommandBar({
   return (
     <div
       key={shakeKey}
+      id="maps-command-bar"
       className={cn(
         'sticky top-0 z-50 shrink-0 border-b border-hairline',
         shakeKey > 0 && 'maps-shake',
