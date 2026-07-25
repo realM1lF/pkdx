@@ -1,0 +1,24 @@
+# MyPokePanion
+
+> MyPokePanion is an unofficial Pokémon fan project: an interactive, living
+> Pokédex with team builder, Nuzlocke tracker, Versus damage calculator and
+> interactive region maps. Free to use, available in German and English
+> (URL prefixes /de and /en). Not affiliated with Nintendo, Game Freak or
+> The Pokémon Company.
+
+## Sections
+
+- [Pokédex](https://mypokepanion.com/en/pokedex): all 1,025 Pokémon across 9 generations — stats, types, abilities, moves, evolutions, sprites
+- [Items](https://mypokepanion.com/en/items): every item with effects, prices and locations
+- [Interactive Maps](https://mypokepanion.com/en/maps): regions, routes and encounter tables
+- [Nuzlocke Tracker](https://mypokepanion.com/en/nuzlocke): track encounters, teams and deaths for challenge runs
+- [Team Builder](https://mypokepanion.com/en/team): build teams with type coverage and weakness analysis
+- [Versus Calculator](https://mypokepanion.com/en/versus): damage calculator and 1v1 Pokémon comparison
+- [About](https://mypokepanion.com/en/about): project background
+- [Feedback](https://mypokepanion.com/en/feedback): bug reports and feature requests
+- [Donate](https://mypokepanion.com/en/support): support the project
+
+## Notes
+
+- German versions of all pages live under https://mypokepanion.com/de/…
+- Pokémon and Pokémon character names are trademarks of Nintendo.

@@ -62,13 +62,28 @@ export type MethodBucket = 'WALK' | 'SURF' | 'FISH' | 'OTHER';
 
 export const METHOD_BUCKETS: MethodBucket[] = ['WALK', 'SURF', 'FISH', 'OTHER'];
 
-const SURF_METHODS = new Set(['surf']);
-const FISH_METHODS = new Set(['old-rod', 'good-rod', 'super-rod', 'fish', 'fishing']);
+/* Method census across all 5 region versions (PokéAPI scan, 2024):
+ * water variants ('surf-spots', 'super-rod-spots', 'feebas-tile-fishing'),
+ * tree variants ('honey-tree' singular, gen-2 'headbutt-low/normal/high')
+ * and one-off event methods ('pokeflute', 'npc-trade', 'squirt-bottle',
+ * 'devon-scope') all exist in the mapped areas — classify them correctly
+ * or they leak into the OTHER bucket / the wild leaderboards. */
+const SURF_METHODS = new Set(['surf', 'surf-spots']);
+const FISH_METHODS = new Set([
+  'old-rod', 'good-rod', 'super-rod', 'fish', 'fishing',
+  'super-rod-spots', 'feebas-tile-fishing',
+]);
 const WALK_METHODS = new Set([
   'walk', 'dark-grass', 'rustling-grass', 'grass-spots', 'cave-spots', 'bridge-spots',
-  'swarm', 'pokeradar', 'roaming', 'seaweed', 'honey-trees',
+  'swarm', 'pokeradar', 'roaming', 'seaweed', 'honey-trees', 'honey-tree',
+  'headbutt', 'headbutt-low', 'headbutt-normal', 'headbutt-high',
 ]);
-const STATIC_METHODS = new Set(['gift', 'only-one']);
+/** gift / one-off static / trade encounters — never wild (Poké Flute Snorlax,
+ * in-game trades, Sudowoodo, Devon-Scope Kecleon included). */
+export const STATIC_METHODS = new Set([
+  'gift', 'gift-egg', 'only-one', 'static', 'pokeflute', 'npc-trade',
+  'squirt-bottle', 'devon-scope',
+]);
 
 export function methodBucket(method: string): MethodBucket {
   if (SURF_METHODS.has(method)) return 'SURF';
@@ -198,7 +213,7 @@ function idFromUrl(url: string): number {
 export function areaShortLabel(areaName: string, locationSlug: string): string {
   let rest = areaName.startsWith(locationSlug) ? areaName.slice(locationSlug.length) : areaName;
   rest = rest.replace(/^-+|-+$/g, '').replace(/-area$/, '');
-  if (!rest) return 'MAIN';
+  if (!rest || rest === 'area') return 'MAIN';
   return rest.replace(/-/g, ' ').toUpperCase();
 }
 

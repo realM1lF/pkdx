@@ -5,10 +5,10 @@
  * pages — the prerendered HTML must carry every table without JS):
  *
  *   src/data/routes-kanto.json   encounter tables per Kanto node + version
- *                                (SLOT-SUMMED per species × method bucket —
- *                                PokéAPI max_chance equals the sum of the
- *                                encounter_details slot chances; we sum the
- *                                slots explicitly so the invariant is checked)
+ *                                (slot chances summed per species × exact
+ *                                method, then MAX across methods inside a
+ *                                bucket — mutually exclusive rods must not
+ *                                be summed, see bucketsFromDetails)
  *   src/data/pokemon-seo.json    FRLG locations, evolution steps, types, BST
  *                                and catch rate for the 25 curated Pokémon
  *   src/data/seo-meta-gen.json   tiny summary consumed by src/lib/seo.ts
@@ -96,9 +96,15 @@ const title = (slug) =>
 const nameDe = (id) => NAMES_DE[String(id)]?.name ?? null;
 const nameEn = (id, slug) => title(slug);
 
-const SURF = new Set(['surf']);
-const FISH = new Set(['old-rod', 'good-rod', 'super-rod', 'fish', 'fishing']);
-const STATIC = new Set(['gift', 'only-one', 'static']);
+const SURF = new Set(['surf', 'surf-spots']);
+const FISH = new Set(['old-rod', 'good-rod', 'super-rod', 'fish', 'fishing', 'super-rod-spots', 'feebas-tile-fishing']);
+/* gift / one-off static / trade — never wild (Poké Flute Snorlax, in-game
+ * trades, Sudowoodo, Devon-Scope Kecleon). Keep in sync with
+ * STATIC_METHODS in src/lib/mapdata.ts. */
+const STATIC = new Set([
+  'gift', 'gift-egg', 'only-one', 'static', 'pokeflute', 'npc-trade',
+  'squirt-bottle', 'devon-scope',
+]);
 /* PokéAPI junk entries (e.g. 'colosseum-bonus-disc-jpn' on kanto-pokecenter-area)
  * are not real FRLG encounters — excluded everywhere. */
 const isJunkMethod = (m) => m.includes('colosseum') || m.includes('bonus-disc');
@@ -110,6 +116,38 @@ function bucket(method) {
   return 'OTHER';
 }
 const BUCKET_ORDER = ['STATIC', 'WALK', 'SURF', 'FISH', 'OTHER'];
+
+/**
+ * Slot-summation done right: sum slot chances per EXACT method (the real
+ * probability for one rod / one method), then take the MAX across methods
+ * inside a bucket. Rods are mutually exclusive — summing them produced
+ * impossible values like 120% (Magikarp old+good rod) or 299%.
+ */
+function bucketsFromDetails(details) {
+  const byMethod = new Map();
+  for (const det of details) {
+    const m = det.method.name;
+    if (isJunkMethod(m)) continue;
+    if (!byMethod.has(m)) byMethod.set(m, { chance: 0, min: Infinity, max: -Infinity });
+    const g = byMethod.get(m);
+    g.chance += det.chance;
+    g.min = Math.min(g.min, det.min_level);
+    g.max = Math.max(g.max, det.max_level);
+  }
+  const byBucket = new Map();
+  for (const [m, g] of byMethod) {
+    const b = bucket(m);
+    const prev = byBucket.get(b);
+    if (prev) {
+      prev.chance = Math.max(prev.chance, g.chance);
+      prev.min = Math.min(prev.min, g.min);
+      prev.max = Math.max(prev.max, g.max);
+    } else {
+      byBucket.set(b, { chance: g.chance, min: g.min, max: g.max });
+    }
+  }
+  return byBucket;
+}
 
 function areaShortLabel(areaName, locationSlug) {
   let rest = areaName.startsWith(locationSlug) ? areaName.slice(locationSlug.length) : areaName;
@@ -150,9 +188,9 @@ async function get(url) {
 /* ---------- routes: aggregate encounters per node × version ---------- */
 
 /**
- * Slot-summation: per species × method bucket the chance is the SUM of the
- * encounter_details slot chances (== PokéAPI max_chance per method group).
- * Levels are min/max across the summed slots.
+ * Per species × method bucket the chance is the best single-method slot sum
+ * (== PokéAPI max_chance per method group; buckets take the MAX across
+ * methods). Levels span all contributing slots.
  */
 function aggregateArea(area, locationSlug, version) {
   /* key: pokemonId|bucket */
@@ -162,17 +200,8 @@ function aggregateArea(area, locationSlug, version) {
     if (!vd || vd.encounter_details.length === 0) continue;
     const id = idFromUrl(enc.pokemon.url);
     if (!Number.isFinite(id) || id < 1 || id > 1025) continue;
-    /* group slots by method bucket first, then sum slot chances per bucket */
-    const byBucket = new Map();
-    for (const det of vd.encounter_details) {
-      if (isJunkMethod(det.method.name)) continue;
-      const b = bucket(det.method.name);
-      if (!byBucket.has(b)) byBucket.set(b, { chance: 0, min: Infinity, max: -Infinity });
-      const g = byBucket.get(b);
-      g.chance += det.chance;
-      g.min = Math.min(g.min, det.min_level);
-      g.max = Math.max(g.max, det.max_level);
-    }
+    /* slot chances summed per exact method, then MAX per bucket */
+    const byBucket = bucketsFromDetails(vd.encounter_details);
     if (byBucket.size === 0) continue;
     for (const [b, g] of byBucket) {
       const key = `${id}|${b}`;
@@ -294,16 +323,7 @@ async function buildPokemon(locationSlugs) {
       for (const v of VERSIONS) {
         const vd = e.version_details.find((x) => x.version.name === v);
         if (!vd || vd.encounter_details.length === 0) continue;
-        const byBucket = new Map();
-        for (const det of vd.encounter_details) {
-          if (isJunkMethod(det.method.name)) continue;
-          const b = bucket(det.method.name);
-          if (!byBucket.has(b)) byBucket.set(b, { chance: 0, min: Infinity, max: -Infinity });
-          const g = byBucket.get(b);
-          g.chance += det.chance;
-          g.min = Math.min(g.min, det.min_level);
-          g.max = Math.max(g.max, det.max_level);
-        }
+        const byBucket = bucketsFromDetails(vd.encounter_details);
         /* map the area back to our Kanto node (longest locationSlug prefix) */
         const nodeSlug = locationSlugs
           .filter((s) => areaName === s || areaName.startsWith(`${s}-`))
