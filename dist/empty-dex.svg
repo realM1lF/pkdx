@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
+  <defs>
+    <radialGradient id="eglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#F6C945" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#F6C945" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="240" cy="302" rx="130" ry="14" fill="#000000" opacity="0.4"/>
+  <g opacity="0.45">
+    <path d="M168 268 A72 72 0 0 0 312 268 Z" fill="#A8B0C4" stroke="#14161E" stroke-width="3"/>
+    <line x1="168" y1="268" x2="312" y2="268" stroke="#14161E" stroke-width="8"/>
+    <circle cx="240" cy="268" r="13" fill="#A8B0C4" stroke="#14161E" stroke-width="6"/>
+    <g transform="rotate(-26 176 258)">
+      <path d="M104 258 A72 72 0 0 1 248 258 Z" fill="#E8403C" stroke="#14161E" stroke-width="3"/>
+      <line x1="104" y1="258" x2="248" y2="258" stroke="#14161E" stroke-width="8"/>
+      <circle cx="176" cy="258" r="13" fill="#F4F6FC" stroke="#14161E" stroke-width="6"/>
+      <ellipse cx="150" cy="212" rx="18" ry="8" fill="#FFFFFF" opacity="0.3" transform="rotate(-20 150 212)"/>
+    </g>
+  </g>
+  <ellipse cx="240" cy="246" rx="64" ry="30" fill="url(#eglow)"/>
+  <path d="M226 250 L214 160 L266 160 L254 250 Z" fill="url(#eglow)" opacity="0.5"/>
+  <g fill="#F6C945">
+    <circle cx="200" cy="140" r="3" opacity="0.7"/>
+    <circle cx="268" cy="112" r="2.4" opacity="0.5"/>
+    <circle cx="232" cy="84" r="2" opacity="0.4"/>
+    <circle cx="176" cy="188" r="2.2" opacity="0.5"/>
+    <circle cx="296" cy="180" r="2.6" opacity="0.6"/>
+    <circle cx="252" cy="150" r="1.6" opacity="0.45"/>
+  </g>
+</svg>

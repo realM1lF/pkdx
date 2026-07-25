@@ -74,13 +74,16 @@ export function independentPokemonFromSide(
     if (side.ivs)
       for (const [k, v] of Object.entries(side.ivs))
         ivs[STAT_TO_CALC[k as StatKey]] = Math.min(31, Math.max(0, v ?? 31));
+    // slug → display-name normalization mirrors buildMon in versus.ts
+    const ability = side.ability ? (gen.abilities.get(toID(side.ability))?.name ?? side.ability) : undefined;
+    const item = side.item ? (gen.items.get(toID(side.item))?.name ?? side.item) : undefined;
     return new CalcPokemon(gen, calcId(side.slug), {
       level: clampLevel(side.level),
       nature: side.nature,
       evs: side.evs ? evs : undefined,
       ivs: side.ivs ? ivs : undefined,
-      ability: side.ability ?? undefined,
-      item: side.item ?? undefined,
+      ability,
+      item,
       status: calcStatus(side),
     });
   } catch {

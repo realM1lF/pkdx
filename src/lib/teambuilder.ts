@@ -92,9 +92,19 @@ export function genNatures(vgId: string): Nature[] {
   return out;
 }
 
+/* Version-group overrides where game mechanics diverge from the plain
+ * generation rules (analogous to fieldMechanicsForVersionGroup in
+ * versus-context.ts): LGPE has no abilities and no held items in battle;
+ * Legends: Arceus has neither abilities nor held items. */
+const MECHANICS_OVERRIDES: Partial<Record<string, Partial<Record<'abilities' | 'items' | 'natures' | 'evs', boolean>>>> = {
+  'lets-go-pikachu-eevee': { abilities: false, items: false },
+  'legends-arceus': { abilities: false, items: false },
+};
+
 export function genHasMechanics(vgId: string): { abilities: boolean; items: boolean; natures: boolean; evs: boolean } {
   const g = versionGroupById(vgId).gen;
-  return { abilities: g >= 3, items: g >= 2, natures: g >= 3, evs: g >= 3 };
+  const base = { abilities: g >= 3, items: g >= 2, natures: g >= 3, evs: g >= 3 };
+  return { ...base, ...MECHANICS_OVERRIDES[vgId] };
 }
 
 /* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ---------- */

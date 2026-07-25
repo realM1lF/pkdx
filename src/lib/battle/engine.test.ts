@@ -245,3 +245,66 @@ describe('protocol parser', () => {
     expect(mb.eventLog.some((e) => e.kind === 'raw' && e.raw.includes('sidestart'))).toBe(false);
   });
 });
+
+/* ================================================================== */
+/* calc parity: gen 1/2 stat experience + PP fidelity                   */
+/* ================================================================== */
+import { Generations, Pokemon as CalcPokemon } from '@smogon/calc';
+
+describe('gen 1/2 stat-exp parity with @smogon/calc', () => {
+  /* @smogon/calc enforces max stat exp (+63) internally for gen 1/2; the sim
+   * derives stat exp from set.evs. The teampack must max it (evs 255 → +63)
+   * so sim stats == calc stats — otherwise the versus matrix undershoots
+   * gen 1/2 damage by ~7–10 points (KO-label flips). */
+  it.each([1, 2] as const)('gen %i: sim HP == calc HP (lv50 Gyarados 201, not 170)', async (gen) => {
+    const mb = await MicroBattle.create(
+      {
+        gen,
+        player: side({ species: 'gyarados', moves: ['surf'] }),
+        ai: side({ species: 'zapdos', moves: ['thunder'] }),
+      },
+      { aiMode: 'random', seed: SEED },
+    );
+    const calcGy = new CalcPokemon(Generations.get(gen), 'gyarados', { level: 50 });
+    expect(mb.snapshot().player.maxHp).toBe(201);
+    expect(mb.snapshot().player.maxHp).toBe(calcGy.stats.hp);
+  });
+
+  it('gen 3+ keeps EV 0 default (lv50 Gyarados 170-ish, no stat exp)', async () => {
+    const mb = await MicroBattle.create(
+      {
+        gen: 3,
+        player: side({ species: 'gyarados', moves: ['surf'] }),
+        ai: side({ species: 'zapdos', moves: ['thunder'] }),
+      },
+      { aiMode: 'random', seed: SEED },
+    );
+    const calcGy = new CalcPokemon(Generations.get(3), 'gyarados', { level: 50 });
+    expect(mb.snapshot().player.maxHp).toBe(calcGy.stats.hp);
+    expect(mb.snapshot().player.maxHp).toBeLessThan(201);
+  });
+});
+
+describe('move PP fidelity', () => {
+  /* @pkmn/sim hardcodes 3 PP-Ups per move (no per-set mechanism); wild/versus
+   * mons use none, so the controller rewrites slots to base PP. */
+  it('Thunderbolt uses base PP 15, not the PP-Up 24', async () => {
+    const mb = await MicroBattle.create(
+      setup({ player: side({ moves: ['thunderbolt'] }) }),
+      { aiMode: 'random', seed: SEED },
+    );
+    const tb = mb.snapshot().moves.find((m) => m.id === 'thunderbolt');
+    expect(tb).toBeTruthy();
+    expect(tb!.maxPp).toBe(15);
+    expect(tb!.pp).toBe(15);
+  });
+
+  it('base PP also holds in gen 1 (Thunderbolt 15)', async () => {
+    const mb = await MicroBattle.create(
+      { gen: 1, player: side({ moves: ['thunderbolt'] }), ai: side({ species: 'charizard', moves: ['slash'] }) },
+      { aiMode: 'random', seed: SEED },
+    );
+    const tb = mb.snapshot().moves.find((m) => m.id === 'thunderbolt');
+    expect(tb!.maxPp).toBe(15);
+  });
+});

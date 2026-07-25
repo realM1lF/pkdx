@@ -172,13 +172,18 @@ function buildMon(
     if (side.evs) for (const [k, v] of Object.entries(side.evs)) evs[STAT_TO_CALC[k as StatKey]] = Math.min(252, Math.max(0, v ?? 0));
     if (side.ivs) for (const [k, v] of Object.entries(side.ivs)) ivs[STAT_TO_CALC[k as StatKey]] = Math.min(31, Math.max(0, v ?? 31));
     const status = calcStatus(side);
+    /* callers pass either display names ('Life Orb') or PokéAPI slugs
+     * ('life-orb') — the calc only resolves display names and silently drops
+     * unknown ones, so normalize slugs via the gen dex first */
+    const ability = side.ability ? (gen.abilities.get(toID(side.ability))?.name ?? side.ability) : undefined;
+    const item = side.item ? (gen.items.get(toID(side.item))?.name ?? side.item) : undefined;
     return new CalcPokemon(gen, side.slug, {
       level: clampLevel(side.level),
       nature: side.nature,
       evs: side.evs ? evs : undefined,
       ivs: side.ivs ? ivs : undefined,
-      ability: side.ability ?? undefined,
-      item: side.item ?? undefined,
+      ability,
+      item,
       status,
     });
   } catch {
@@ -348,17 +353,33 @@ export const EFF_LABEL = (mult: number): string =>
 
 export interface DamageCell {
   move: string; // slug
-  /** min/max roll in HP */
+  /** min/max roll in HP (multi-hit: total across all hits) */
   range: [number, number];
   /** min/max as % of defender max HP (0–100+) */
   pct: [number, number];
-  /** hits to KO (0 for status/non-damaging) */
+  /** hits to KO (0 for status/non-damaging; ramping moves: cumulative hits) */
   koHits: number;
   /** guaranteed-KO chance 0–1 (1 = guaranteed) */
   koChance: number;
   eff: number;
   /** gen-correct damage category (type-based split in gen 1–3, from the calc move) */
   category?: string;
+  /** OHKO move (Fissure & co): no range — KOs when it hits, at this accuracy */
+  ohko?: { accuracy: number };
+  /** multi-hit move (Bullet Seed & co): hits per use + per-hit damage + total */
+  multihit?: {
+    hits: [number, number];
+    hitRange: [number, number];
+    total: [number, number];
+  };
+  /** progressive move (Rollout, Fury Cutter…): damage grows each consecutive
+   * hit; `koHits` = consecutive hits until the cumulative damage KOs */
+  ramp?: {
+    perHit: Array<[number, number]>;
+    koHits: number | null;
+  };
+  /** defender survives the first hit from full HP (Focus Sash / Sturdy gen 5+) */
+  survivesFirstHit?: boolean;
 }
 
 function normalizeEff(eff: number): number {
@@ -415,6 +436,30 @@ const FIXED_DAMAGE: Record<string, number | 'level' | 'half' | 'psywave'> = {
   'super-fang': 'half',
   psywave: 'psywave',
 };
+
+/* OHKO moves — no damage range; they KO when they hit (30% accuracy). */
+const OHKO_MOVES = new Set(['fissure', 'guillotine', 'horn-drill', 'sheer-cold']);
+
+/* Progressive moves: every consecutive hit is stronger. power(base, k) gives
+ * the base power of hit #k; the base power itself is already gen-aware via
+ * the calc move data (Fury Cutter: 10 in gen 2–4, 20 in gen 5, 40 in gen 6+). */
+const RAMPING_MOVES: Record<string, { power: (bp: number, hit: number) => number; maxHits: number }> = {
+  rollout: { power: (bp, k) => bp * 2 ** (k - 1), maxHits: 5 },
+  'ice-ball': { power: (bp, k) => bp * 2 ** (k - 1), maxHits: 5 },
+  'fury-cutter': { power: (bp, k) => Math.min(160, bp * 2 ** (k - 1)), maxHits: 9 },
+  'echoed-voice': { power: (bp, k) => Math.min(200, bp + 40 * (k - 1)), maxHits: 9 },
+};
+
+/**
+ * Defender survives any single hit from full HP: Focus Sash (gen 4+),
+ * Sturdy (gen 5+; in gen 3–4 Sturdy only blocks OHKO moves).
+ * The versus matrix always assumes full HP.
+ */
+function survivesFirstHit(defender: Pick<VersusSide, 'item' | 'ability'>, gen: number): boolean {
+  if (gen >= 4 && toID(defender.item ?? '') === 'focussash') return true;
+  if (gen >= 5 && toID(defender.ability ?? '') === 'sturdy') return true;
+  return false;
+}
 
 /** Independent @smogon/calc range for parity assertions (handles fixed-damage moves). */
 export function smogonReferenceRange(
@@ -483,6 +528,8 @@ export function damageBetween(
   } catch {
     return null;
   }
+  /* raw dex entry for gen-correct multihit data */
+  const moveData = gen.moves.get(calcId(moveSlug));
   const calcField = buildCalcField(field, ctx);
   /* gen-correct category: the calc move is type-split in gen 1–3, so prefer it
    * over the SV-era PokéAPI damage_class (F4). */
@@ -516,6 +563,13 @@ export function damageBetween(
     };
   }
 
+  /* OHKO moves (Fissure & co): no damage range — an explicit cell instead.
+   * Accuracy is 30% in every generation for all four OHKO moves (the calc
+   * move data doesn't carry an accuracy field, so it's constant here). */
+  if (OHKO_MOVES.has(moveSlug)) {
+    return { move: moveSlug, range: [0, 0], pct: [0, 0], koHits: 0, koChance: 0, eff, category, ohko: { accuracy: 30 } };
+  }
+
   if (!DAMAGING_MOVE_CATS.has(category) || !mv.bp) {
     return { move: moveSlug, range: [0, 0], pct: [0, 0], koHits: 0, koChance: 0, eff, category };
   }
@@ -523,6 +577,53 @@ export function damageBetween(
     const res = calculate(gen, atk, def, mv, calcField);
     const [lo, hi] = res.range();
     const maxHp = def.stats.hp || 1;
+
+    /* multi-hit (Bullet Seed & co): the calc sums damage over a default hit
+     * count (min+1) — expose the per-hit range and the full hit-count span */
+    let multihit: DamageCell['multihit'];
+    const mhData = moveData?.multihit;
+    if (mhData && hi > 0) {
+      const rows =
+        Array.isArray(res.damage) && Array.isArray((res.damage as unknown[])[0])
+          ? (res.damage as number[][])
+          : null;
+      const hitLo = rows ? Math.min(...rows.map((r) => r[0])) : Math.round(lo / mv.hits);
+      const hitHi = rows ? Math.max(...rows.map((r) => r[r.length - 1])) : Math.round(hi / mv.hits);
+      let hits: [number, number] = typeof mhData === 'number' ? [mhData, mhData] : [mhData[0], mhData[1]];
+      if (toID(atk.ability ?? '') === 'skilllink') hits = [hits[1], hits[1]];
+      multihit = { hits, hitRange: [hitLo, hitHi], total: [hitLo * hits[0], hitHi * hits[1]] };
+    }
+
+    /* progressive moves (Rollout, Fury Cutter…): per-hit ranges + cumulative
+     * hits to KO ("3 hits" when 30/60/120 cumulative damage suffices) */
+    let ramp: DamageCell['ramp'];
+    const rampRule = RAMPING_MOVES[moveSlug];
+    if (rampRule && mv.bp && hi > 0) {
+      const perHit: Array<[number, number]> = [[lo, hi]];
+      let cumLo = lo;
+      let cumHi = hi;
+      let guaranteed: number | null = cumLo >= maxHp ? 1 : null;
+      let possible: number | null = cumHi >= maxHp ? 1 : null;
+      for (let k = 2; k <= rampRule.maxHits && guaranteed === null; k++) {
+        let kRange: [number, number];
+        try {
+          const kmv = new CalcMove(gen, calcId(moveSlug), { overrides: { basePower: rampRule.power(mv.bp, k) } });
+          kRange = calculate(gen, atk, def, kmv, calcField).range();
+        } catch {
+          break;
+        }
+        perHit.push(kRange);
+        cumLo += kRange[0];
+        cumHi += kRange[1];
+        if (possible === null && cumHi >= maxHp) possible = k;
+        if (cumLo >= maxHp) guaranteed = k;
+      }
+      ramp = { perHit, koHits: guaranteed ?? possible };
+    }
+
+    /* the matrix shows the full per-use total for multi-hit moves */
+    const range: [number, number] = multihit ? multihit.total : [lo, hi];
+
     let koHits = 0;
     let koChance = 0;
     try {
@@ -534,14 +635,33 @@ export function damageBetween(
     }
     /* kochance gives up (n=0) on very weak moves — derive hits from the average roll */
     if (koHits === 0 && hi > 0) koHits = Math.min(9, Math.max(1, Math.ceil(maxHp / ((lo + hi) / 2))));
+    if (ramp?.koHits) koHits = ramp.koHits;
+
+    /* Focus Sash / Sturdy: at full HP the defender always survives the first
+     * hit of a single-hit move — never claim a guaranteed OHKO. Multi-hit
+     * moves break the sash with their later hits and stay unaffected. */
+    const sashLike = survivesFirstHit(defender, ctx.gen);
+    if (sashLike && !multihit && !ramp && hi > 0 && koHits <= 1) {
+      if (lo >= maxHp) {
+        koHits = 2;
+        koChance = 1; // sash leaves the defender at 1 HP → any second hit finishes
+      } else {
+        koChance = 0; // a one-hit KO is impossible
+        if (hi >= maxHp) koHits = Math.min(9, Math.max(2, Math.ceil(maxHp / ((lo + hi) / 2))));
+      }
+    }
+
     return {
       move: moveSlug,
-      range: [lo, hi],
-      pct: [(lo / maxHp) * 100, (hi / maxHp) * 100],
+      range,
+      pct: [(range[0] / maxHp) * 100, (range[1] / maxHp) * 100],
       koHits,
       koChance,
       eff,
       category,
+      multihit,
+      ramp,
+      survivesFirstHit: sashLike || undefined,
     };
   } catch {
     return null;
