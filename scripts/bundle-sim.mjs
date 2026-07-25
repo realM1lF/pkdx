@@ -52,6 +52,16 @@ export function ensureSimBundle() {
     // class/function .name semantics stay intact (the sim resolves effects via
     // data ids, but keepNames is cheap insurance)
     keepNames: true,
+    /* MIT license compliance: keep the copyright/license banners of the
+     * bundled @pkmn/* / @smogon/calc packages, collected at end-of-file,
+     * plus the copyright line from the packages' LICENSE file (the per-file
+     * headers only carry "@license MIT", not the copyright itself). */
+    legalComments: 'eof',
+    footer: {
+      js: '/* @pkmn/sim, @pkmn/dex, @pkmn/data, @smogon/calc — The MIT License (MIT)\n'
+        + ' * Copyright (c) 2011-2026 Guangcong Luo and other contributors\n'
+        + ' * http://pokemonshowdown.com/ */',
+    },
     logLevel: 'silent',
   });
   return SIM_BUNDLE_FILE;

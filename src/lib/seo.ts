@@ -187,6 +187,14 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Privacy policy of MyPokePanion: which data is stored and which is not.',
     },
   },
+  /* deliberately NOT in scripts/seo-routes.mjs — no prerender, no sitemap */
+  '/lizenzen': {
+    title: { de: 'Lizenzen & Credits · MyPokePanion', en: 'Licenses & credits · MyPokePanion' },
+    description: {
+      de: 'Lizenzen und Credits von MyPokePanion: @pkmn/* und @smogon/calc (MIT), PokéAPI (BSD-3-Clause) und der Fan-Projekt-Disclaimer.',
+      en: 'Licenses and credits of MyPokePanion: @pkmn/* and @smogon/calc (MIT), PokéAPI (BSD 3-Clause) and the fan project disclaimer.',
+    },
+  },
 };
 
 /* ---------- generated meta: type pages + item detail pages (SEO rollout) ---------- */

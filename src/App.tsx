@@ -46,6 +46,7 @@ const TypeDetailPage = lazyWithReload(() => import('./pages/types/TypeDetailPage
 const Versus = lazyWithReload(() => import('./pages/Versus'));
 const Impressum = lazyWithReload(() => import('./pages/Impressum'));
 const Privacy = lazyWithReload(() => import('./pages/Privacy'));
+const Licenses = lazyWithReload(() => import('./pages/Licenses'));
 const About = lazyWithReload(() => import('./pages/About'));
 const Feedback = lazyWithReload(() => import('./pages/Feedback'));
 const Support = lazyWithReload(() => import('./pages/Support'));
@@ -97,6 +98,9 @@ export default function App() {
                 <Route path="account" element={<Account />} />
                 <Route path="impressum" element={<Impressum />} />
                 <Route path="datenschutz" element={<Privacy />} />
+                {/* licenses/credits page — same path in both locales,
+                    deliberately NOT in seo-routes.mjs (no prerender/sitemap) */}
+                <Route path="lizenzen" element={<Licenses />} />
                 <Route path="*" element={<LangHomeRedirect />} />
               </Route>
               <Route path="*" element={<LangRedirect />} />

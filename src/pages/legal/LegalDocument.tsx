@@ -21,7 +21,7 @@ function linkify(text: string) {
   );
 }
 
-export type LegalPageId = 'impressum' | 'privacy';
+export type LegalPageId = 'impressum' | 'privacy' | 'licenses';
 
 interface LegalSection {
   heading?: string;

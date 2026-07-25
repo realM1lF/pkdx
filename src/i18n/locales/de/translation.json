@@ -117,6 +117,7 @@
     "legal": "RECHTLICHES",
     "impressum": "Impressum",
     "privacy": "Datenschutz",
+    "licenses": "Lizenzen",
     "data": "DATEN",
     "dataCredits": "Daten & Sprites —",
     "fanProject": "Fanprojekt. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
@@ -1626,6 +1627,53 @@
               "title": "Speicherort und Löschung",
               "body": "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Du kannst dein Konto und alle damit verbundenen Daten jederzeit per Issue oder Nachricht an den Betreiber löschen lassen. Ohne Konto werden alle Daten ausschließlich lokal in deinem Browser gespeichert."
             }
+          ]
+        }
+      ]
+    },
+    "licenses": {
+      "eyebrow": "RECHTLICHES",
+      "title": "Lizenzen & Credits",
+      "intro": "MyPokePanion steht auf den Schultern großartiger Open-Source-Projekte und offener Datenquellen. Hier findest du alle Lizenzen, Copyright-Vermerke und Credits.",
+      "sections": [
+        {
+          "heading": "Kampf-Simulator & Dex-Daten (Battle-Engine)",
+          "paragraphs": [
+            "Die Battle-Engine und die Dex-Daten von MyPokePanion basieren auf den Open-Source-Paketen des Pokémon-Showdown-Projekts: @pkmn/sim, @pkmn/dex und @pkmn/data (Version 0.10.11).",
+            "Lizenz: The MIT License (MIT) — Copyright (c) 2011-2026 Guangcong Luo and other contributors — https://pokemonshowdown.com/",
+            "Die Copyright- und Lizenzvermerke sind auch im ausgelieferten Vendor-Bundle (/vendor/pkmn-sim.mjs) am Dateiende enthalten."
+          ],
+          "list": [
+            "@pkmn/sim — Kampf-Simulator (Battle-Engine)",
+            "@pkmn/dex — Pokédex-Datenmodell",
+            "@pkmn/data — Dex-Datensätze für alle Generationen"
+          ]
+        },
+        {
+          "heading": "Schadensberechnung (Versus-Calc)",
+          "paragraphs": [
+            "Der Versus-Calc nutzt @smogon/calc (Version 0.11.0) für die generationengenaue Schadensberechnung.",
+            "Lizenz: The MIT License (MIT) — Copyright (c) 2011-2026 Guangcong Luo and other contributors — https://pokemonshowdown.com/"
+          ]
+        },
+        {
+          "heading": "MIT-Lizenz (Kurzfassung)",
+          "paragraphs": [
+            "Hiermit wird unentgeltlich jeder Person, die eine Kopie der Software und der zugehörigen Dokumentationen erhält, die Erlaubnis erteilt, die Software uneingeschränkt zu nutzen, zu kopieren, zu verändern, zusammenzuführen und zu verbreiten, unter der Bedingung, dass der obige Copyright-Vermerk und dieser Genehmigungsvermerk in allen Kopien oder wesentlichen Teilen der Software enthalten sind. Die Software wird „wie besehen“ ohne jegliche Gewährleistung bereitgestellt.",
+            "Volltext: https://opensource.org/licenses/MIT"
+          ]
+        },
+        {
+          "heading": "Datenquelle PokéAPI",
+          "paragraphs": [
+            "Pokémon-Stammdaten und Sprites stammen von der PokéAPI — https://pokeapi.co — die unter der BSD-3-Clause-Lizenz veröffentlicht wird. Sprites zusätzlich aus dem PokeAPI-Sprites-Repository: https://github.com/PokeAPI/sprites"
+          ]
+        },
+        {
+          "heading": "Fan-Projekt & Marken",
+          "paragraphs": [
+            "Pokémon und alle Pokémon-Namen sind Marken von Nintendo, Creatures Inc. und GAME FREAK inc.",
+            "MyPokePanion ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Nintendo, Creatures Inc. oder GAME FREAK inc."
           ]
         }
       ]

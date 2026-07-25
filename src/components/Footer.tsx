@@ -42,6 +42,7 @@ export default function Footer() {
   const legalLinks = [
     { to: '/impressum', key: 'footer.impressum' },
     { to: '/datenschutz', key: 'footer.privacy' },
+    { to: '/lizenzen', key: 'footer.licenses' },
   ] as const;
 
   const siteLinks = [
@@ -178,6 +179,9 @@ export default function Footer() {
             </LocaleLink>
             <LocaleLink to="/datenschutz" className="pixel-label text-[9px] text-tx-muted transition-colors hover:text-gold">
               {t('footer.privacy')}
+            </LocaleLink>
+            <LocaleLink to="/lizenzen" className="pixel-label text-[9px] text-tx-muted transition-colors hover:text-gold">
+              {t('footer.licenses')}
             </LocaleLink>
             <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] text-gold">
               v1.0-phase-01
