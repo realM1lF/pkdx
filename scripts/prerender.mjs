@@ -108,9 +108,11 @@ console.log(`[prerender] serving dist on ${origin}`);
 
 /* ---------- render routes ---------- */
 const allRoutes = allLocalizedRoutes();
-/* PRERENDER_ONLY=<substring> re-renders only matching paths (copy fixes) */
-const routes = process.env.PRERENDER_ONLY
-  ? allRoutes.filter((r) => r.path.includes(process.env.PRERENDER_ONLY))
+/* PRERENDER_ONLY=<substring> re-renders only matching paths (copy fixes);
+ * prefix '=' for an exact path match (single-page re-render) */
+const only = process.env.PRERENDER_ONLY;
+const routes = only
+  ? allRoutes.filter((r) => (only.startsWith('=') ? r.path === only.slice(1) : r.path.includes(only)))
   : allRoutes;
 const SETTLE_MS = 2500;
 
