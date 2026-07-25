@@ -123,6 +123,16 @@ export default function Layout({ children }: { children: ReactNode }) {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  /* Plausible: SPA route changes (initial pageview is sent by plausible.init in index.html). */
+  const plausibleBoot = useRef(true);
+  useEffect(() => {
+    if (plausibleBoot.current) {
+      plausibleBoot.current = false;
+      return;
+    }
+    window.plausible?.('pageview');
+  }, [pathname]);
+
   /* "/" hotkey opens global search */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

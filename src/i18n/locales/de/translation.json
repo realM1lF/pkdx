@@ -1473,13 +1473,20 @@
                 "Deutschland",
                 "E-Mail: hallo@adhsleben.org"
               ]
+            },
+            {
+              "heading": "Webanalyse",
+              "paragraphs": [
+                "Wir nutzen Plausible Analytics — cookieless, ohne Werbe-Tracker, ohne Google Analytics. Für die Statistik werden keine Cookies gesetzt."
+              ]
             }
           ]
         },
         {
           "heading": "2. Hosting",
           "paragraphs": [
-            "Diese Website wird über den Hosting-Anbieter Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA, bereitgestellt. Beim Besuch der Website werden technisch notwendige Daten wie IP-Adresse, Browsertyp und Zugriffszeit auf den Servern von Netlify verarbeitet. Hierbei können auch personenbezogene Daten an Server von Netlify in den USA übermittelt werden. Weitere Informationen findest du in der Datenschutzerklärung von Netlify: https://www.netlify.com/privacy/"
+            "Diese Website wird über den Hosting-Anbieter Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA, bereitgestellt. Beim Besuch der Website werden technisch notwendige Daten wie IP-Adresse, Browsertyp und Zugriffszeit auf den Servern von Netlify verarbeitet. Hierbei können auch personenbezogene Daten an Server von Netlify in den USA übermittelt werden. Weitere Informationen findest du in der Datenschutzerklärung von Netlify: https://www.netlify.com/privacy/",
+            "Die Schriftarten der Website (Orbitron, Press Start 2P, Space Grotesk) werden lokal von unserem Server ausgeliefert — es erfolgt kein Abruf bei Google Fonts."
           ]
         },
         {
@@ -1536,6 +1543,15 @@
         {
           "heading": "5. Externe Dienste",
           "subsections": [
+            {
+              "heading": "Plausible Analytics (Webanalyse)",
+              "paragraphs": [
+                "Wir nutzen Plausible Analytics (Plausible Insights OÜ, Estland), um anonymisierte Trends in der Website-Nutzung zu messen — z. B. welche Seiten besucht werden, von welcher Quelle Besucher kommen und welche Browser- bzw. Gerätetypen grob genutzt werden.",
+                "Plausible setzt keine Cookies und erstellt keine dauerhaften Nutzerprofile. IP-Adressen werden nicht gespeichert; die Verarbeitung erfolgt in der EU. Es werden keine Werbe-Tracker oder Marketing-Profile erstellt.",
+                "Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datenschutzfreundlichen Reichweitenmessung zur Verbesserung des Angebots). Du kannst die Erfassung durch Browser-Tracking-Schutz oder entsprechende Erweiterungen einschränken.",
+                "Weitere Informationen: https://plausible.io/data-policy · Auftragsverarbeitung: https://plausible.io/dpa"
+              ]
+            },
             {
               "heading": "PokéAPI",
               "paragraphs": [
@@ -1741,7 +1757,7 @@
     "title": "MyPokePanion unterstützen.",
     "p1": "MyPokePanion ist ein reines Hobby-Projekt — gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
     "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag — komplett freiwillig, ohne jede Verpflichtung.",
-    "p3": "Werbung? Nein. Ich möchte die Seite bewusst frei von Bannern, Trackern und Pop-ups halten — Spenden helfen genau dabei, das so beizubehalten, ohne dass ich jemals Werbung schalten muss.",
+    "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Für anonyme Nutzungsstatistik nutze ich Plausible (cookieless, ohne Werbeprofile) — Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
     "cta": "VIA PAYPAL UNTERSTÜTZEN",
     "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt.",
     "qrCaption": "QR-Code scannen — geht auch direkt im Handy"
