@@ -40,12 +40,12 @@ export interface RouteMeta {
 
 const DEFAULT_META: RouteMeta = {
   title: {
-    de: 'MyPokePanion — Interaktiver Pokédex, Teambuilder & Nuzlocke-Tracker',
-    en: 'MyPokePanion — Interactive Pokédex, Team Builder & Nuzlocke Tracker',
+    de: 'MyPokePanion · Interaktiver Pokédex, Teambuilder & Nuzlocke-Tracker',
+    en: 'MyPokePanion · Interactive Pokédex, Team Builder & Nuzlocke Tracker',
   },
   description: {
-    de: 'Interaktiver Pokédex: alle 1.025 Pokémon, 18 Typen, 9 Generationen — plus Teambuilder, Nuzlocke-Tracker, Versus-Calc und Karten.',
-    en: 'An interactive Pokédex: 1,025 Pokémon, 18 types, 9 generations — plus team builder, Nuzlocke tracker, Versus calculator and maps.',
+    de: 'Interaktiver Pokédex: alle 1.025 Pokémon, 18 Typen, 9 Generationen, dazu Teambuilder, Nuzlocke-Tracker, Versus-Calc und Karten.',
+    en: 'An interactive Pokédex: 1,025 Pokémon, 18 types, 9 generations, plus team builder, Nuzlocke tracker, Versus calculator and maps.',
   },
 };
 
@@ -53,32 +53,32 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   '/': DEFAULT_META,
   '/pokedex': {
     title: {
-      de: 'Pokédex — alle 1.025 Pokémon mit Stats, Moves & Sprites',
-      en: 'Pokédex — all 1,025 Pokémon with stats, moves & sprites',
+      de: 'Pokédex · alle 1.025 Pokémon mit Stats, Moves & Sprites',
+      en: 'Pokédex · all 1,025 Pokémon with stats, moves & sprites',
     },
     description: {
-      de: 'Der komplette Pokédex: 1.025 Pokémon filtern & durchsuchen — Stats, Typen, Fähigkeiten, Attacken, Entwicklungen und jede Sprite-Ära seit 1996.',
-      en: 'The complete Pokédex: filter and search 1,025 Pokémon across 9 generations — stats, types, abilities, moves and every sprite era since 1996.',
+      de: 'Der komplette Pokédex: 1.025 Pokémon filtern & durchsuchen: Stats, Typen, Fähigkeiten, Attacken, Entwicklungen und jede Sprite-Ära seit 1996.',
+      en: 'The complete Pokédex: filter and search 1,025 Pokémon across 9 generations: stats, types, abilities, moves and every sprite era since 1996.',
     },
   },
   '/items': {
     title: {
-      de: 'Pokémon-Items — alle Items mit Effekten & Fundorten',
-      en: 'Pokémon Items — every item with effects & locations',
+      de: 'Pokémon-Items · alle Items mit Effekten & Fundorten',
+      en: 'Pokémon Items · every item with effects & locations',
     },
     description: {
-      de: 'Alle Pokémon-Items im Überblick: Bälle, Heilitems, Kampfitems und mehr — mit Effekten, Preisen und Fundorten, durchsuchbar und filterbar.',
-      en: 'Every Pokémon item at a glance: Poké Balls, healing items, battle items and more — with effects, prices and locations, searchable and filterable.',
+      de: 'Alle Pokémon-Items im Überblick: Bälle, Heilitems, Kampfitems und mehr, mit Effekten, Preisen und Fundorten, durchsuchbar und filterbar.',
+      en: 'Every Pokémon item at a glance: Poké Balls, healing items, battle items and more, with effects, prices and locations, searchable and filterable.',
     },
   },
   '/maps': {
     title: {
-      de: 'Interaktive Pokémon-Karten — Regionen, Routen & Encounter-Tabellen',
-      en: 'Interactive Pokémon Maps — regions, routes & encounter tables',
+      de: 'Interaktive Pokémon-Karten · Regionen, Routen & Encounter-Tabellen',
+      en: 'Interactive Pokémon Maps · regions, routes & encounter tables',
     },
     description: {
-      de: 'Interaktive Karten der Pokémon-Regionen: Routen, Orte und Encounter-Tabellen — sieh, welches Pokémon wo auftaucht, inklusive Nuzlocke-relevanter Begegnungen.',
-      en: 'Interactive maps of the Pokémon regions: routes, locations and encounter tables — see which Pokémon appears where, including Nuzlocke-relevant encounters.',
+      de: 'Interaktive Karten der Pokémon-Regionen: Routen, Orte und Encounter-Tabellen. Sieh, welches Pokémon wo auftaucht, inklusive Nuzlocke-relevanter Begegnungen.',
+      en: 'Interactive maps of the Pokémon regions: routes, locations and encounter tables. See which Pokémon appears where, including Nuzlocke-relevant encounters.',
     },
   },
   '/maps/kanto/route-1': {
@@ -105,38 +105,38 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
   '/nuzlocke': {
     title: {
-      de: 'Nuzlocke-Tracker — Runs planen, Encounters & Tode tracken',
-      en: 'Nuzlocke Tracker — plan runs, track encounters & deaths',
+      de: 'Nuzlocke-Tracker · Runs planen, Encounters & Tode tracken',
+      en: 'Nuzlocke Tracker · plan runs, track encounters & deaths',
     },
     description: {
-      de: 'Der Nuzlocke-Tracker für deine Challenge-Runs: Encounters pro Route festhalten, Teams verwalten, Tode dokumentieren — mit Regel-Referenz und Encounter-Tabellen.',
-      en: 'The Nuzlocke tracker for your challenge runs: record encounters per route, manage teams, log deaths — with rule reference and encounter tables.',
+      de: 'Der Nuzlocke-Tracker für deine Challenge-Runs: Encounters pro Route festhalten, Teams verwalten, Tode dokumentieren, mit Regel-Referenz und Encounter-Tabellen.',
+      en: 'The Nuzlocke tracker for your challenge runs: record encounters per route, manage teams, log deaths, with rule reference and encounter tables.',
     },
   },
   '/team': {
     title: {
-      de: 'Pokémon-Teambuilder — Teams bauen & Typabdeckung prüfen',
-      en: 'Pokémon Team Builder — build teams & check type coverage',
+      de: 'Pokémon-Teambuilder · Teams bauen & Typabdeckung prüfen',
+      en: 'Pokémon Team Builder · build teams & check type coverage',
     },
     description: {
-      de: 'Baue dein Pokémon-Team: Typabdeckung, Schwächen und Resistenzen im Blick, Movesets planen und das Team exportieren — für alle 9 Generationen.',
-      en: 'Build your Pokémon team: keep type coverage, weaknesses and resistances in view, plan movesets and export your team — for all 9 generations.',
+      de: 'Baue dein Pokémon-Team: Typabdeckung, Schwächen und Resistenzen im Blick, Movesets planen und das Team exportieren, für alle 9 Generationen.',
+      en: 'Build your Pokémon team: keep type coverage, weaknesses and resistances in view, plan movesets and export your team, for all 9 generations.',
     },
   },
   '/versus': {
     title: {
-      de: 'Versus-Calc — Pokémon Damage Calculator & 1v1-Vergleich',
-      en: 'Versus Calc — Pokémon damage calculator & 1v1 comparison',
+      de: 'Versus-Calc · Pokémon Damage Calculator & 1v1-Vergleich',
+      en: 'Versus Calc · Pokémon damage calculator & 1v1 comparison',
     },
     description: {
-      de: 'Wer gewinnt das Duell? Der Versus-Calc vergleicht zwei Pokémon: Damage-Calculator, Typ-Matchups, Speed-Tiers und Bulk — generationengenau.',
-      en: 'Who wins the duel? The Versus calculator compares two Pokémon: damage calculator, type matchups, speed tiers and bulk — accurate per generation.',
+      de: 'Wer gewinnt das Duell? Der Versus-Calc vergleicht zwei Pokémon: Damage-Calculator, Typ-Matchups, Speed-Tiers und Bulk, generationengenau.',
+      en: 'Who wins the duel? The Versus calculator compares two Pokémon: damage calculator, type matchups, speed tiers and bulk, accurate per generation.',
     },
   },
   '/about': {
     title: {
-      de: 'Über MyPokePanion — inoffizielles Pokémon-Fan-Projekt',
-      en: 'About MyPokePanion — unofficial Pokémon fan project',
+      de: 'Über MyPokePanion · inoffizielles Pokémon-Fan-Projekt',
+      en: 'About MyPokePanion · unofficial Pokémon fan project',
     },
     description: {
       de: 'MyPokePanion ist ein inoffizielles Fan-Projekt: interaktiver Pokédex mit Teambuilder, Nuzlocke-Tracker, Versus-Calc und Karten. Mehr über das Projekt.',
@@ -145,18 +145,18 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
   '/feedback': {
     title: {
-      de: 'Feedback — MyPokePanion mitgestalten',
-      en: 'Feedback — help shape MyPokePanion',
+      de: 'Feedback · MyPokePanion mitgestalten',
+      en: 'Feedback · help shape MyPokePanion',
     },
     description: {
-      de: 'Dein Feedback zählt: Melde Fehler, schlage Features vor und hilf, MyPokePanion — den interaktiven Pokédex — besser zu machen.',
-      en: 'Your feedback matters: report bugs, suggest features and help make MyPokePanion — the interactive Pokédex — even better.',
+      de: 'Dein Feedback zählt: Melde Fehler, schlage Features vor und hilf, MyPokePanion (den interaktiven Pokédex) besser zu machen.',
+      en: 'Your feedback matters: report bugs, suggest features and help make MyPokePanion (the interactive Pokédex) even better.',
     },
   },
   '/support': {
     title: {
-      de: 'Spenden — MyPokePanion unterstützen',
-      en: 'Donate — support MyPokePanion',
+      de: 'Spenden · MyPokePanion unterstützen',
+      en: 'Donate · support MyPokePanion',
     },
     description: {
       de: 'MyPokePanion ist ein kostenloses, inoffizielles Fan-Projekt. Mit einer kleinen Spende hilfst du bei Serverkosten und Weiterentwicklung.',
@@ -165,8 +165,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
   '/account': {
     title: {
-      de: 'Account — MyPokePanion',
-      en: 'Account — MyPokePanion',
+      de: 'Account · MyPokePanion',
+      en: 'Account · MyPokePanion',
     },
     description: {
       de: 'Verwalte deinen MyPokePanion-Account: Teams und Nuzlocke-Runs geräteübergreifend synchronisieren.',
@@ -174,14 +174,14 @@ export const ROUTE_META: Record<string, RouteMeta> = {
     },
   },
   '/impressum': {
-    title: { de: 'Impressum — MyPokePanion', en: 'Legal notice — MyPokePanion' },
+    title: { de: 'Impressum · MyPokePanion', en: 'Legal notice · MyPokePanion' },
     description: {
       de: 'Impressum und Anbieterkennzeichnung von MyPokePanion, einem inoffiziellen Pokémon-Fan-Projekt.',
       en: 'Legal notice and imprint of MyPokePanion, an unofficial Pokémon fan project.',
     },
   },
   '/datenschutz': {
-    title: { de: 'Datenschutz — MyPokePanion', en: 'Privacy policy — MyPokePanion' },
+    title: { de: 'Datenschutz · MyPokePanion', en: 'Privacy policy · MyPokePanion' },
     description: {
       de: 'Datenschutzerklärung von MyPokePanion: welche Daten gespeichert werden und welche nicht.',
       en: 'Privacy policy of MyPokePanion: which data is stored and which is not.',
@@ -193,12 +193,12 @@ export const ROUTE_META: Record<string, RouteMeta> = {
 
 const TYPES_OVERVIEW_META: RouteMeta = {
   title: {
-    de: 'Alle 18 Pokémon-Typen — Stärken, Schwächen & Konter',
-    en: 'All 18 Pokémon types — strengths, weaknesses & counters',
+    de: 'Alle 18 Pokémon-Typen · Stärken, Schwächen & Konter',
+    en: 'All 18 Pokémon types · strengths, weaknesses & counters',
   },
   description: {
-    de: 'Die komplette Typen-Übersicht: alle 18 Pokémon-Typen mit Stärken, Schwächen, Resistenzen und den besten Kontern — berechnet aus der offiziellen Typen-Tabelle.',
-    en: 'The complete type overview: all 18 Pokémon types with strengths, weaknesses, resistances and the best counters — computed from the official type chart.',
+    de: 'Die komplette Typen-Übersicht: alle 18 Pokémon-Typen mit Stärken, Schwächen, Resistenzen und den besten Kontern, berechnet aus der offiziellen Typen-Tabelle.',
+    en: 'The complete type overview: all 18 Pokémon types with strengths, weaknesses, resistances and the best counters, computed from the official type chart.',
   },
 };
 
@@ -211,8 +211,8 @@ function typeDetailMeta(slug: string): RouteMeta {
       en: `${en} type – strengths, weaknesses & best counters`,
     },
     description: {
-      de: `Was ist effektiv gegen ${de}? Stärken, Schwächen, Resistenzen & Immunitäten des ${de}-Typs — plus die besten Konter und Beispiel-Pokémon.`,
-      en: `What is super effective against ${en}? Strengths, weaknesses, resistances & immunities of the ${en} type — plus the best counters.`,
+      de: `Was ist effektiv gegen ${de}? Stärken, Schwächen, Resistenzen & Immunitäten des ${de}-Typs, plus die besten Konter und Beispiel-Pokémon.`,
+      en: `What is super effective against ${en}? Strengths, weaknesses, resistances & immunities of the ${en} type, plus the best counters.`,
     },
     ogType: 'article',
   };
@@ -253,8 +253,8 @@ function kantoRouteMeta(nodeId: string): RouteMeta {
       en: `${nameEn} (Kanto) – Pokémon & Locations in FireRed/LeafGreen`,
     },
     description: {
-      de: `Alle Pokémon auf ${nameDe} in Feuerrot/Blattgrün: ${m?.speciesCount ?? ''} Arten mit Fangraten & Levels${topDe ? ` — häufigster Fang: ${topDe}` : ''}. Dazu Items & Trainer.`,
-      en: `Every Pokémon on ${nameEn} in FireRed/LeafGreen: ${m?.speciesCount ?? ''} species with catch rates & levels${topEn ? ` — most common: ${topEn}` : ''}. Plus items & trainers.`,
+      de: `Alle Pokémon auf ${nameDe} in Feuerrot/Blattgrün: ${m?.speciesCount ?? ''} Arten mit Fangraten & Levels${topDe ? `. Häufigster Fang: ${topDe}` : ''}. Dazu Items & Trainer.`,
+      en: `Every Pokémon on ${nameEn} in FireRed/LeafGreen: ${m?.speciesCount ?? ''} species with catch rates & levels${topEn ? `. Most common: ${topEn}` : ''}. Plus items & trainers.`,
     },
     ogType: 'article',
   };
