@@ -2089,7 +2089,6 @@
       "eyebrow": "ITEM DEX",
       "altName": "DE: {{name}}",
       "cost": "Cost: {{cost}} ₽",
-      "intro": "{{effect}} – everything about its effect, locations in FireRed/LeafGreen and whether {{name}} is worth a slot on your team, right here.",
       "notFoundTitle": "Item not found",
       "notFoundLink": "Back to the item overview",
       "effectEyebrow": "EFFECT",
@@ -2111,9 +2110,7 @@
       "qa1q": "What does {{name}} do?",
       "qa2q": "Where do I find {{name}}?",
       "qa2lead": "In FireRed/LeafGreen you can find {{name}} here: {{locations}}.",
-      "qa2body": "Click through from the location list above straight to the interactive Kanto map — the spot comes with its full encounter table.",
       "qa2leadNone": "Our Kanto dataset (FireRed/LeafGreen) has no recorded location for {{name}}.",
-      "qa2bodyNone": "That doesn't mean the item doesn't exist — it comes from later games or other regions. As soon as we ship more map data, its locations will show up here automatically.",
       "qa3q": "Is {{name}} worth it?",
       "qa4q": "Which Pokémon evolve with {{name}}?",
       "qa4lead_stone": "These Pokémon evolve via {{name}}:",
@@ -2122,104 +2119,204 @@
     },
     "itemData": {
       "exp-share": {
-        "verdictLead": "A must-have for every story run.",
-        "verdict": "Your benchwarmers level up without any grinding — perfect for keeping the whole team at gym-leader level. In the older games (including FireRed/LeafGreen) it's a held item; in the newer ones it's automatically active for the whole party. For Nuzlocke runs it's pure gold, because it lets you bring replacements up to speed fast."
+        "intro": "Exp. Share spreads experience points across your whole team, even to Pokémon that never entered the battle. In FireRed/LeafGreen it is a held item handed to you on Route 15. It is the easiest way to keep weaker team members at a usable level.",
+        "qa1Lead": "50% of battle experience goes to the holders, the rest to the battlers.",
+        "qa1Body": "In Generation 3 the math works like this: half the Exp. Points are split evenly between every Pokémon holding an Exp. Share, the other half between the Pokémon that actually fought. If your starter battles while a bench Pokémon holds the item, both get half. The holder never has to see the fight and takes no damage. The only real cost is the held-item slot. From Generation 6 onward, Exp. Share is a key item that covers the whole team automatically.",
+        "qa2Body": "The gate stands east of Fuchsia City, and Prof. Oak's aide waits on the second floor. The requirement is 50 caught species in the Pokédex. If you have been catching regularly on the way to Fuchsia, you are usually already past that mark.",
+        "verdictLead": "Worth a slot in every story run.",
+        "verdict": "Exp. Share shines in Nuzlocke runs because replacements from the box catch up without grinding. Modern games turn it on for the whole team by default; FireRed/LeafGreen makes you spend a held-item slot on it. Before the Pokémon League at the latest, it pays to bring the full team up to gym-leader level."
       },
       "lucky-egg": {
-        "verdictLead": "The best farming item in the entire game.",
-        "verdict": "50% more EXP for the holder sounds modest but saves hours of grinding across a run — especially before the Elite Four. The catch: the Lucky Egg is notoriously rare, with wild Chansey holding it at tiny odds. If you've got one, keep it on whatever you're currently leveling."
+        "intro": "Lucky Egg is a held item that raises its holder's experience points by 50%. It is the strongest training item in the series and famously rare: in FireRed/LeafGreen only wild Chansey carry it.",
+        "qa1Lead": "+50% Exp. Points for the holder, no condition and no downside in battle.",
+        "qa1Body": "The boost applies to every source of battle experience and stacks with other bonuses like the 1.5× bonus for traded Pokémon. Combined, that is a 2.25× multiplier. Only the holder benefits, not the team. Because the item gives no combat advantage, you swap it out before the Elite Four when the slot matters more for Leftovers or a berry.",
+        "qa2Body": "Our Kanto dataset tracks field locations, not items held by wild Pokémon. In the Safari Zone, a wild Chansey holds a Lucky Egg with a 5% chance. Catch every Chansey you see or use Thief, and bring patience.",
+        "verdictLead": "Rare, but worth every Safari round.",
+        "verdict": "Over a full run the bonus saves hours of grinding, especially before the Pokémon League. The odds were 2% in Gold/Silver and are 5% in FireRed/LeafGreen. Once you own one, it always sits on the Pokémon you are currently raising."
       },
       "choice-band": {
-        "verdictLead": "One of the strongest damage boosts around — with handcuffs.",
-        "verdict": "+50% Attack is brutal, but you're locked into a single move until you switch. That makes the Choice Band perfect for physical sweepers with one clear job and for U-turn pivoting. Choice Band vs. Life Orb: the Band boosts harder with no HP cost, the Orb lets you switch moves freely — story: Orb, competitive all-in: Band."
+        "intro": "Choice Band is a held item for physical attackers. It raises Attack sharply but locks the Pokémon into a single move. The item debuted in Ruby/Sapphire and is a classic in battles against other players.",
+        "qa1Lead": "Attack ×1.5, locked into one move until you switch out.",
+        "qa1Body": "The boost applies to the Attack stat, so it affects every physical move. The chosen move stays locked until the Pokémon switches; after switching you pick again. A status move as your only option is usually a wasted slot. The band is played on fast physical sweepers and on U-turn users who switch after attacking anyway. It is the wrong choice on Pokémon that need flexible coverage.",
+        "qa2Body": "No Choice Band lies in the field in FireRed/LeafGreen. The item comes from the Hoenn games (Ruby/Sapphire/Emerald) and can reach Kanto through trading. That is why our Kanto dataset lists no location.",
+        "verdictLead": "Maximum damage for a clearly defined job.",
+        "verdict": "Against Life Orb, the band wins on raw power (+50% instead of +30%) and costs no HP. The Orb lets you change moves in return. The lock is annoying in a story run because you want flexibility against changing opponents. In player-versus-player matches, Choice Band is standard on physical attackers."
       },
       "choice-specs": {
-        "verdictLead": "The special-attacking take on the Choice formula.",
-        "verdict": "+50% Special Attack turns any special attacker into a cannon — a Choice Specs Surf or Thunderbolt genuinely hurts. As with every Choice item: one move until you switch. Ideal on fast special sweepers that spam their strongest move anyway."
+        "intro": "Choice Specs is the special counterpart to Choice Band. It raises the holder's Special Attack sharply but allows only one move per stay on the field. It was introduced in Generation 4.",
+        "qa1Lead": "Special Attack ×1.5, locked into one move until you switch.",
+        "qa1Body": "All Choice rules apply: one move until you switch, a new pick afterwards. The boost is one of the strongest legal damage increases in the game and turns coverage moves like Surf or Thunderbolt into safe answers against weaker opponents. Typical holders are fast special attackers that spam their strongest move anyway. Against opponents who resist that move, the lock gets punished fast.",
+        "qa2Body": "Choice Specs arrived with Generation 4 (Diamond/Pearl). It does not exist in FireRed/LeafGreen and cannot be traded in, because the GBA games have no data for it.",
+        "verdictLead": "The glasses for glass cannons.",
+        "verdict": "For special sweepers, Choice Specs is the most direct damage boost available. Life Orb is the more flexible alternative with less power. The lock rarely pays off in a story run; in versus matches the specs belong on attackers with one dominant move."
       },
       "choice-scarf": {
-        "verdictLead": "The answer to everything fast.",
-        "verdict": "+50% Speed puts slower star Pokémon ahead of most opponents — suddenly your attacker outspeeds half the metagame. The price is the familiar Choice lock. The Choice Scarf is the best revenge-killer item: switch in, outspeed, remove."
+        "intro": "Choice Scarf is a held item that raises its holder's Speed while locking in one move. It comes from Generation 4 and is the standard way to make slower attackers faster than the opposing team.",
+        "qa1Lead": "Speed ×1.5, one move until you switch.",
+        "qa1Body": "The Speed boost decides who moves first. An attacker with average Speed suddenly outruns most unboosted opponents. The classic use is the revenge kill: switch in after a KO, outspeed, and remove the threat. Priority moves still go before you, and if you misjudge the opponent you are stuck with a useless move.",
+        "qa2Body": "Choice Scarf arrived with Generation 4 and does not exist in FireRed/LeafGreen, not even through trading.",
+        "verdictLead": "The answer to anything faster.",
+        "verdict": "No other item shifts Speed this directly. The price is the Choice lock, so the scarf fits attackers with one dominant move. In a story run it is unnecessary because a level lead handles Speed for you. In versus matches it regularly decides games."
       },
       "life-orb": {
-        "verdictLead": "The Choice Band's more flexible sibling.",
-        "verdict": "+30% damage on ALL moves at the cost of 10% max HP per attack. You can switch moves at any time — exactly what sets it apart from the Choice Band. Head to head: Choice Band boosts harder and costs no HP, the Life Orb keeps you nimble. For story play and long fights, the Orb is usually the more relaxed pick."
+        "intro": "Life Orb boosts every move its holder uses but costs HP on each attack. It comes from Generation 4 and is considered the most flexible offensive item because you keep full freedom of move choice.",
+        "qa1Lead": "+30% damage on every move, minus 10% of max HP per attack.",
+        "qa1Body": "The HP cost only applies to damaging moves; status moves are free. The boost covers physical and special moves alike. In rough numbers the holder survives about ten of its own attacks without healing. A missed move costs nothing. Compared to Choice Band: less power, full freedom to switch moves.",
+        "qa2Body": "Life Orb arrived with Generation 4 and does not exist in FireRed/LeafGreen.",
+        "verdictLead": "The best all-rounder among offensive items.",
+        "verdict": "In versus matches, Life Orb is standard on mixed attackers and setup sweepers because it strengthens every move in the set. In a story run the HP loss is noticeable if you rarely heal. If you do not need the 30%, Leftovers is the calmer pick."
       },
       "eviolite": {
-        "verdictLead": "Turns unevolved Pokémon into tanks.",
-        "verdict": "×1.5 to Defense AND Special Defense as long as the Pokémon can still evolve — suddenly pre-evolutions like Porygon2 or Chansey are bulkier than their final forms. The honest answer to 'Eviolite or just evolve?': most of the time evolving wins — but for the few Eviolite aces, the stone is unmatched."
+        "intro": "Eviolite is a held item for Pokémon that can still evolve. It raises their defensive stats and makes some pre-evolutions tougher than their final forms. It was introduced in Generation 5.",
+        "qa1Lead": "Defense and Special Defense ×1.5, only for not-fully-evolved Pokémon.",
+        "qa1Body": "The condition is strict: the holder must have a possible evolution left. On fully evolved species the item does nothing and the slot is wasted. The factor applies to both defensive stats at once, which turns bulky pre-evolutions like Porygon2 or Chansey into serious walls. The winners are Pokémon whose evolution adds little bulk anyway.",
+        "qa2Body": "Eviolite arrived with Generation 5 and does not exist in FireRed/LeafGreen.",
+        "verdictLead": "Unmatched on the few right holders.",
+        "verdict": "The honest math: most Pokémon should just evolve, because offense and new moves outweigh the defensive boost. The exceptions like Porygon2 and Chansey rank among the toughest Pokémon anywhere. Eviolite rarely makes sense in a story run, but it stars in formats that allow pre-evolutions."
       },
       "focus-sash": {
-        "verdictLead": "Guarantees you one turn — no matter what hits.",
-        "verdict": "At full HP you survive any hit at 1 HP, then the sash is gone. That makes it the standard item for fragile leads: laying hazards once or landing one guaranteed counter is almost always in the cards. Watch out for multi-hit moves, weather chip and entry hazards — they bypass the sash."
+        "intro": "Focus Sash saves its holder once per battle from a guaranteed knockout. It comes from Generation 4 and is the classic item for fragile Pokémon that need one guaranteed turn.",
+        "qa1Lead": "At full HP the holder survives any hit with 1 HP, then the sash is gone.",
+        "qa1Body": "The condition is strict: the holder must be at full HP before the hit. Multi-strike moves break the sash because only the first hit is absorbed. Damage from weather, poison, or entry hazards like Spikes before the attack ruins it as well. Typical holders are fast, fragile leads that use the guaranteed turn to set hazards or land a counterattack.",
+        "qa2Body": "Focus Sash arrived with Generation 4 and does not exist in FireRed/LeafGreen.",
+        "verdictLead": "One guaranteed turn, nothing more.",
+        "verdict": "Its value depends on what you do with that one turn. On setup leads and fragile attackers, the answer is a lot. Players who switch often or play with hazards should use the sash actively instead of parking it as insurance. For long story battles, Leftovers is the calmer choice."
       },
       "leftovers": {
-        "verdictLead": "The default item for every tank.",
-        "verdict": "1/16 max HP per turn, passively, forever — over a long fight that outheals any berry. Leftovers are why walls like Snorlax or Blastoise are so hard to crack: the longer the fight, the more value. Offensive Pokémon usually want more pressure (Life Orb, Choice Band) — but when in doubt: Leftovers is never wrong."
+        "intro": "Leftovers is a held item that heals its holder turn after turn during battle. It is the standard item for defensive Pokémon, and in FireRed/LeafGreen two of them are hidden in the field.",
+        "qa1Lead": "1/16 of max HP back at the end of every turn, permanently and without conditions.",
+        "qa1Body": "That is 6.25% per turn, a full health bar over sixteen turns. The healing runs even when the holder does not attack, and it pairs with protection moves like Protect for slow grind-down plans. Hail or sandstorm can cancel the gain. No other common item delivers value this reliably over long fights, which is why walls and tanks carry it almost by default.",
+        "qa2Body": "Both Leftovers are hidden on the exact tiles where the two Snorlax slept: Route 12 and Route 16. You need the Itemfinder, which Prof. Oak's aide hands out on Route 11 once you have 30 species, and the Poké Flute to wake Snorlax.",
+        "verdictLead": "The safest item in the game.",
+        "verdict": "On tanks there is rarely a better choice, because the passive healing works every single turn. Offensive Pokémon want more pressure and reach for Life Orb or a Choice item. If you are unsure what a Pokémon should hold, Leftovers is almost never wrong."
       },
       "sitrus-berry": {
-        "verdictLead": "The most honest berry in the game.",
-        "verdict": "One-time 25% max HP back, automatically at half health — no RNG, no conditions. For story play and Nuzlocke runs the Sitrus Berry is often the best pick, saving you a healing turn. Leftovers wins the long game — but the berry heals instantly, exactly when things get critical."
+        "intro": "Sitrus Berry is a berry a Pokémon eats on its own during battle to heal HP. It is the most reliable healing berry, and in FireRed/LeafGreen it hides at secret berry spots.",
+        "qa1Lead": "Eaten automatically at half max HP, heals a quarter of max HP.",
+        "qa1Body": "The trigger is 50% of max HP, the heal is 25%. In Generation 3, which includes FireRed/LeafGreen, the berry heals a flat 30 HP instead; the 25% rule starts in Generation 4. Once eaten, the berry is gone. Compared to Leftovers it heals instantly at the critical moment, while Leftovers returns more total HP over long fights.",
+        "qa2Body": "The spots on Route 6 and Route 23 are hidden in the field. The Itemfinder from Prof. Oak's aide on Route 11 (30 species required) reveals them reliably.",
+        "verdictLead": "The best berry for a story run.",
+        "verdict": "No luck involved and no tricky condition: the heal arrives exactly when things get tight. In Nuzlocke runs it is strong because it saves a healing turn. In versus play it has lost ground to Leftovers and the bigger berries of newer generations, but it stays a solid pick on almost any holder."
       },
       "lum-berry": {
-        "verdictLead": "Insurance against status nightmares.",
-        "verdict": "Automatically cures any status condition — including confusion. A Will-O-Wisp burn or sleep can kill entire sweeps; with a Lum Berry you shrug once and attack anyway. It's standard on setup sweepers (dance moves!) because it secures your setup turn."
+        "intro": "Lum Berry cures any status condition the moment the holder is hit by one. It is the universal answer to sleep, burn, and the rest, and in FireRed/LeafGreen it is hidden in the field.",
+        "qa1Lead": "Eaten automatically on any status condition, including confusion.",
+        "qa1Body": "It covers everything: sleep, paralysis, burn, poison, freeze, and confusion. Single-purpose berries like Cheri heal one condition only; Lum replaces all of them in one slot. It is consumed the moment the status lands, before damage or a lost turn applies. On setup sweepers it secures the exact turn in which the opponent tries to stop the setup with Hypnosis or Thunder Wave.",
+        "qa2Body": "Same rule here: hidden spots, the Itemfinder helps. Route 8 sits east of Saffron City and is reachable early, Route 23 only in the endgame on the way to the Indigo Plateau.",
+        "verdictLead": "Insurance for your carry.",
+        "verdict": "A badly timed Hypnosis kills whole sweeps, and Lum Berry cancels exactly that moment. In versus it is standard on dance sweepers; in a story run it saves healing items against status-heavy gyms. Because it works once, it is no replacement for real healing over long fights."
       },
       "everstone": {
-        "verdictLead": "A niche item with two clear jobs.",
-        "verdict": "First: the holder never evolves — handy if you want to keep a Pokémon unevolved (cuteness or specific level-up moves). Second: in breeding, the Everstone reliably passes down the holder's Nature in older generations. It does nothing for battle stats — and that's fine, that's not its job."
+        "intro": "Everstone is a held item that stops its holder from evolving. It is useful when a Pokémon should stay unevolved, and it plays a role in breeding. In FireRed/LeafGreen you receive it on Route 10.",
+        "qa1Lead": "Blocks every evolution of the holder for as long as it is held.",
+        "qa1Body": "The block covers level-up and trade evolutions, but not stones: a Fire Stone still works through an Everstone. Breeding adds a second use. Since Emerald, a parent holding it passes down its Nature with a 50% chance; from Black 2/White 2 onward the pass-down is guaranteed. In battle itself the stone does nothing.",
+        "qa2Body": "Prof. Oak's aide waits in the Pokémon Center on Route 10 at the entrance to Rock Tunnel. The requirement is 20 caught species in the Pokédex, which you usually have by then.",
+        "verdictLead": "A niche item, exactly right in two cases.",
+        "verdict": "Case one: you want a Pokémon to stay unevolved, for example because it learns certain moves earlier. Case two: breeding with Nature inheritance. The stone contributes nothing in battle, so the slot is a deliberate choice. On a normal run it can stay in the bag."
       },
       "master-ball": {
-        "verdictLead": "Catches everything. Always. No rolls.",
-        "verdict": "The Master Ball is a 100% catch rate in ball form — which is exactly why you shouldn't waste it on the first Pidgey. The smart rule: save it for roaming legendaries or a shiny that could knock itself out (Explosion!). In FireRed/LeafGreen there is exactly one — at Silph Co. in Saffron City."
+        "intro": "The Master Ball is the strongest ball in the game and catches any wild Pokémon without fail. FireRed/LeafGreen contains exactly one, so the question is not whether to use it, but on what.",
+        "qa1Lead": "Guaranteed catch: the throw never fails, no conditions attached.",
+        "qa1Body": "The Master Ball skips the entire catch formula of HP, status, and the target's catch rate. It works on any wild Pokémon, from a fleeing encounter up to a legendary. The only limits: throwing is forbidden in trainer battles, and scripted encounters like the Marowak ghost in Pokémon Tower refuse every ball.",
+        "qa2Body": "The president of Silph Co. hands you the ball in person after you drive Team Rocket out of the company building in Saffron City. His office is on the top floor.",
+        "verdictLead": "Too valuable for almost everything, exactly right for one target.",
+        "verdict": "The smart rule: save it for a roaming legendary or a Shiny that might blow itself up. Everything else falls to Ultra Balls and patience. Anyone who spends the Master Ball on a Route 1 Pokémon will regret it when Entei or Raikou shows up."
       },
       "ultra-ball": {
-        "verdictLead": "The best ball money can buy.",
-        "verdict": "A 2× catch rate at a fair price makes the Ultra Ball the workhorse for every legendary and every stubborn catch. Only when it fails do specialty balls start to shine: Dusk Balls in caves, Timer Balls in long fights, Net Balls against Water/Bug. For 95% of situations the Ultra Ball is the right call."
+        "intro": "The Ultra Ball is the best ball money can buy. With double the catch rate it is the workhorse for legendaries and stubborn catches once shops start stocking it.",
+        "qa1Lead": "Catch rate ×2 compared to a standard Poké Ball.",
+        "qa1Body": "For comparison: the Great Ball sits at ×1.5, the Ultra Ball at ×2. That sounds like a small gap, but against the standard ball it doubles your real success chance per throw. Against legendaries with a catch rate of 3, every throw stays a gamble, so sleep or freeze helps on top and doubles the odds again. No ball replaces status support.",
+        "qa2Body": "The five field locations all sit in endgame territory, from Cerulean Cave to Victory Road. Hidden balls show up with the Itemfinder. In FireRed/LeafGreen you can also buy Ultra Balls in most shops once you are far enough into the story.",
+        "verdictLead": "The standard for every serious catch.",
+        "verdict": "Only when the Ultra Ball hits its limits do specialty balls start to pay off: Dusk Ball in caves at night, Timer Ball after ten turns, Net Ball against Water and Bug Pokémon. For everything else, the Ultra Ball is the right call."
       },
       "sun-stone": {
-        "verdictLead": "The rarest evolution stone.",
-        "verdict": "Only a handful of Pokémon need the Sun Stone — the best known is the Sunflora line. Because its targets are so specific, the stone sits unused in many runs: check first whether your Grass Pokémon actually evolves with it before hoarding it."
+        "intro": "Sun Stone is an evolution stone for a small list of specific Pokémon. It arrived in Generation 2 and is the rarest of the stones because so few species need it.",
+        "qa1Lead": "Evolves a handful of species the moment you use it.",
+        "qa1Body": "Stone evolutions happen instantly, with no level requirement. In FireRed/LeafGreen exactly one Kanto Pokémon is affected: Gloom becomes Bellossom, and only after you own the National Pokédex. The other target species like Sunkern come from later games. The usual stone rule applies: after evolving, the new form learns few or no level-up moves, so secure the moves you want first.",
+        "qa2Body": "In FireRed/LeafGreen one Sun Stone lies in Ruin Valley in the Sevii Islands. Our Kanto map does not cover the Sevii Islands, so no location appears above. The stone is not sold anywhere in the game.",
+        "verdictLead": "Check first, then stash.",
+        "verdict": "The target list is short. Without a Gloom or Sunkern on the team, the stone stays in the bag. If you run a Grass team, Bellossom is the more defensive alternative to Vileplume via Leaf Stone."
       },
       "fire-stone": {
-        "verdictLead": "Evolves some of the most beloved Pokémon ever.",
-        "verdict": "Vulpix → Ninetales, Growlithe → Arcanine and Eevee → Flareon: the Fire Stone has a stacked lineup. The key tip: check the moveset first — many stone evolutions barely learn level-up moves afterwards. Learn your target move first, then use the stone."
+        "intro": "Fire Stone evolves some of the most popular Fire Pokémon on the spot. In FireRed/LeafGreen you simply buy it in the Celadon City department store.",
+        "qa1Lead": "Use it, the evolution starts immediately, no level requirement.",
+        "qa1Body": "In Kanto the stone affects Vulpix, Growlithe, and Eevee, which become Ninetales, Arcanine, and Flareon. All three learn almost no level-up moves afterwards. The standard advice: exhaust the pre-evolution's level-up moveset first, then use the stone. Arcanine, for example, learns nothing at all by level after evolving.",
+        "qa2Body": "The Celadon City department store sells the Fire Stone on the fourth floor for 2100 Pokédollars. The purchase is repeatable, so you never have to wait for a field find.",
+        "verdictLead": "A strong lineup, but timing is everything.",
+        "verdict": "Ninetales, Arcanine, and Flareon are legitimate run carriers. The mistake happens at the timing: evolve too early and the level-up moveset is gone, recoverable only through TMs. Patience until the desired move pays off."
       },
       "water-stone": {
-        "verdictLead": "The most versatile evolution stone.",
-        "verdict": "Several strong evolutions hang on the Water Stone — above all Eevee → Vaporeon and Staryu → Starmie, a speed demon for the Elite Four. As with all stones: wait until the level-up moves you want are learned — Starmie & co. learn almost nothing afterwards."
+        "intro": "Water Stone evolves several strong Water Pokémon, including Eevee into Vaporeon. In FireRed/LeafGreen you can buy it in the department store or find one on the Seafoam Islands.",
+        "qa1Lead": "Use the stone, the evolution runs immediately.",
+        "qa1Body": "In Kanto the targets are Poliwhirl, Shellder, Staryu, and Eevee. Starmie stands out: high Speed, a strong Special Attack, and good coverage make it a fixture for the Elite Four. As with every stone, the new forms learn few level-up moves afterwards, so secure the important moves of the pre-evolution first.",
+        "qa2Body": "The Celadon department store sells the stone for 2100 Pokédollars on the fourth floor. If you want to save money, two more stones lie in the field on the Seafoam Islands.",
+        "verdictLead": "The best stone for Eevee fans.",
+        "verdict": "Poliwrath, Cloyster, Starmie, and Vaporeon: the selection is large, and Starmie is among the strongest Water Pokémon in the game. For the Elite Four, a Water Stone is almost always a good investment."
       },
       "thunder-stone": {
-        "verdictLead": "The stone for Pikachu owners.",
-        "verdict": "Pikachu → Raichu and Eevee → Jolteon are the classics. Raichu trades cuteness for raw Speed — in FireRed/LeafGreen it learns no new level-up moves afterwards, so learn Thunderbolt & co. as Pikachu first, then evolve."
+        "intro": "Thunder Stone evolves Electric Pokémon, most famously Pikachu into Raichu. In FireRed/LeafGreen you buy it in the Celadon department store or find one in the Power Plant.",
+        "qa1Lead": "Instant evolution without a level requirement, but with a moveset trap.",
+        "qa1Body": "Pikachu and Eevee are the Kanto targets. The trap: in FireRed/LeafGreen, Raichu learns no new level-up moves after evolving. Strong Electric attacks then come only from TMs, and Jolteon barely learns anything either. Secure the moveset first, then use the stone.",
+        "qa2Body": "The Celadon department store sells the stone for 2100 Pokédollars on the fourth floor. A free one lies in the Power Plant, which you reach from Route 10 with Surf.",
+        "verdictLead": "A must for Pikachu owners, with patience.",
+        "verdict": "Raichu and Jolteon are both fast attackers that hold their own in a story run. Timing decides everything: evolve too early and the pre-evolution's moveset is lost. A stock of Thunderbolt TMs makes the decision easier."
       },
       "leaf-stone": {
-        "verdictLead": "The fast pass for Grass teams.",
-        "verdict": "The Leaf Stone evolves several solid Grass Pokémon — including Gloom → Vileplume and Weepinbell → Victreebel. In most runs it's the quickest route to a finished Grass sweeper. As always: secure the level-up moveset first, then evolve — almost nothing comes after."
+        "intro": "Leaf Stone evolves several Grass Pokémon on the spot. In FireRed/LeafGreen you buy it in the Celadon department store or find it hidden in the Safari Zone.",
+        "qa1Lead": "Instant evolution, no level requirement.",
+        "qa1Body": "In Kanto the targets are Gloom, Weepinbell, and Exeggcute. Victreebel and Exeggutor become physical attackers, Vileplume plays special. The familiar stone rule applies here too: after evolving, few new level-up moves arrive, so learn the moves you want first.",
+        "qa2Body": "The Celadon department store sells the stone for 2100 Pokédollars on the fourth floor. The free one in the Safari Zone is hidden, so bring the Itemfinder.",
+        "verdictLead": "The fastest route to a finished Grass attacker.",
+        "verdict": "Victreebel and Exeggutor cover physical work, Vileplume plays the special side. Compared to the Sun Stone, the Leaf Stone is the more flexible pick because more species use it. Moveset timing stays the only real trap."
       },
       "moon-stone": {
-        "verdictLead": "The stone with the strongest duo.",
-        "verdict": "Nidorina → Nidoqueen and Nidorino → Nidoking make the Moon Stone a power item: both final forms with their huge movepools are legitimate run carriers. Clefairy → Clefable and Jigglypuff → Wigglytuff work too. In FireRed/LeafGreen you find Moon Stones early on Mt. Moon — investing early pays off."
+        "intro": "Moon Stone evolves six Kanto Pokémon, including both Nidoran lines. In FireRed/LeafGreen you find it early on Mt. Moon and at two more spots.",
+        "qa1Lead": "Instant evolution, and it arrives early in the game.",
+        "qa1Body": "Nidorina and Nidorino become Nidoqueen and Nidoking, both with a huge TM movepool. Clefairy and Jigglypuff also evolve, and later games add Skitty and Munna. Mt. Moon delivers the stones before the second gym, which makes Nidoking and Nidoqueen some of the strongest early investments in any run. As usual, stone evolutions learn few level-up moves afterwards.",
+        "qa2Body": "Mt. Moon holds two stones in the crater room, with more in the Rocket Hideout under the Game Corner and hidden in the Pokémon Mansion on Cinnabar Island. The hidden one needs the Itemfinder. The stone is not sold in FireRed/LeafGreen.",
+        "verdictLead": "The earliest big power boost in a run.",
+        "verdict": "Nidoking and Nidoqueen carry half a team through the game with their movepool, and you reach the stones before gym two. Clefairy and Jigglypuff are more of a collector's project. Anyone starting with a Nidoran should not skip Mt. Moon."
       },
       "linking-cord": {
-        "verdictLead": "Trade evolution without the trade.",
-        "verdict": "Kadabra, Machoke, Graveler, Haunter — some of the strongest evolutions were chained to trading for decades. The Linking Cord from Legends: Arceus finally solves it solo: use it, evolve, done. If your game has this item, trade evolutions go straight onto your radar."
+        "intro": "The Linking Cord triggers trade evolutions without trading. It comes from Legends: Arceus and answers one of the series' oldest problems for solo players.",
+        "qa1Lead": "Use instead of trade, the evolution starts immediately.",
+        "qa1Body": "The item replaces the trade entirely: you use it from the bag on a Pokémon like Kadabra, and the evolution runs without a second player. It covers the four classic trade species that need no extra item: Kadabra, Machoke, Graveler, and Haunter. In Legends: Arceus there are no held items, so item-based trade evolutions simply use their item directly instead.",
+        "qa2Body": "The Linking Cord exists only in Legends: Arceus, where you get it at the Trading Post in Jubilife Village and in space-time distortions. FireRed/LeafGreen and every other Kanto game do not have the item.",
+        "verdictLead": "A blessing for solo players.",
+        "verdict": "Alakazam, Machamp, Golem, and Gengar are among the strongest Pokémon of their games but were chained to trading for decades. With the cord you can plan them into your team for real. In games without the item, the classic two-console trade remains the only way."
       },
       "metal-coat": {
-        "verdictLead": "Two jobs: a Steel move boost and two iconic evolutions.",
-        "verdict": "+20% damage on Steel moves makes Metal Coat a solid held item for Steel Pokémon. Its real value is in trading, though: Onix becomes Steelix, Scyther becomes Scizor — both massive upgrades. If you own either one, the answer is clear: hold and trade."
+        "intro": "Metal Coat is a held item that boosts Steel-type moves and triggers two evolutions during a trade. It arrived in Generation 2 and turns Onix and Scyther into their Steel forms.",
+        "qa1Lead": "Steel moves ×1.2 in battle, plus a trade evolution for Onix and Scyther.",
+        "qa1Body": "The battle bonus has been 20% since Generation 4; in the older games, including FireRed/LeafGreen, it is only 10%. Its real value sits in the evolutions: held during a trade, Onix becomes Steelix and Scyther becomes Scizor, and the item is consumed. In Legends: Arceus you use the coat directly on the Pokémon instead. As a pure battle item it only makes sense for Steel Pokémon with no better option.",
+        "qa2Body": "In FireRed/LeafGreen one Metal Coat lies at the Memorial Pillar in the Sevii Islands, and another is a prize in the Trainer Tower. Our Kanto map covers neither place, which is why no location appears above.",
+        "verdictLead": "Belongs on Onix or Scyther, period.",
+        "verdict": "Steelix and Scizor are massive upgrades over their pre-evolutions. With either one on your team, the answer is clear: hold, trade, done. As a pure battle item for Steel moves, the coat is solid but replaceable."
       },
       "dragon-scale": {
-        "verdictLead": "Your ticket to Kingdra.",
-        "verdict": "The Dragon Scale has exactly one job: Seadra holds it during a trade and evolves into Kingdra — before Gen 6 the only Water/Dragon Pokémon and a top pick for many teams. Wild Horsea and Seadra lines sometimes carry one — with a bit of patience you can farm it."
+        "intro": "Dragon Scale is an evolution item from Generation 2 with exactly one job: Seadra holds it during a trade and evolves into Kingdra.",
+        "qa1Lead": "Seadra plus Dragon Scale plus a trade makes Kingdra.",
+        "qa1Body": "The evolution triggers on the trade and consumes the item. Until Generation 6, Kingdra was the only Pokémon with the Water/Dragon typing and hard to crack defensively, because only Dragon moves hit it super effectively. Generation 6 added the Fairy weakness. In Legends: Arceus you use the scale directly, no trade needed.",
+        "qa2Body": "In FireRed/LeafGreen the scale lies on the Water Path in the Sevii Islands (Surf required) and is also a Trainer Tower prize. Neither place is on our Kanto map, so no location is listed above. Wild Horsea only carry it from Generation 4 onward, not here.",
+        "verdictLead": "One job, but a good one.",
+        "verdict": "Kingdra is a strong pick in almost every game it appears in, with good bulk and few weaknesses. The path there costs a trade partner. Without a Seadra on the team, the scale is pure inventory."
       },
       "kings-rock": {
-        "verdictLead": "Flinch chance plus two trade evolutions.",
-        "verdict": "Held, King's Rock gives your moves a 10% flinch chance — nice on fast attackers, but no game changer. More important: Poliwhirl evolves into Politoed and Slowpoke into Slowking when traded holding it. Both are strong, underrated final forms — the rock is worth far more than it looks."
+        "intro": "King's Rock is a held item from Generation 2 with two jobs: it makes opponents flinch and triggers the trade evolutions of Poliwhirl and Slowpoke.",
+        "qa1Lead": "10% flinch chance per hit, plus two trade evolutions.",
+        "qa1Body": "Flinching only pays off when the holder is faster than the target, otherwise the effect is wasted. In Generations 3 and 4 the chance applies to a fixed list of moves; since Generation 5 it covers all damaging moves without their own flinch effect. Held during a trade, the rock evolves Poliwhirl into Politoed and Slowpoke into Slowking and is consumed. In FireRed/LeafGreen both evolutions need the National Pokédex.",
+        "qa2Body": "In FireRed/LeafGreen one King's Rock lies in the canyon area on Seven Island in the Sevii Islands, and a second is a Trainer Tower prize. Our Kanto map does not cover either area.",
+        "verdictLead": "The evolutions are the main prize.",
+        "verdict": "Politoed and Slowking are strong, underrated final forms. As a battle item the rock is nice on fast attackers, but not something you build a team around. In a story run it mostly stays trade material."
       },
       "dubious-disc": {
-        "verdictLead": "The final step to the Porygon-Z cannon.",
-        "verdict": "The Dubious Disc has exactly one function: Porygon2 holds it during a trade and becomes Porygon-Z — one of the hardest-hitting special attackers ever. No other use, no other candidate. If you have a Porygon2: get the disc, trade, destroy (your opponents)."
+        "intro": "Dubious Disc is an evolution item from Generation 4. Porygon2 holds it during a trade and becomes Porygon-Z, one of the strongest special attackers of its generation.",
+        "qa1Lead": "Porygon2 plus Dubious Disc plus a trade makes Porygon-Z.",
+        "qa1Body": "The evolution triggers on the trade and consumes the disc. Porygon-Z reaches base 135 Special Attack, one of the highest values outside legendaries, and plays with the Adaptability or Download abilities. The pre-evolution Porygon2 with Eviolite remains the better tank, so the decision is real: offense or bulk.",
+        "qa2Body": "Dubious Disc arrived with Generation 4 and does not exist in FireRed/LeafGreen. Porygon2 itself is reachable there by trading Porygon with an Up-Grade, but the final stage stays locked out of the game.",
+        "verdictLead": "The final piece of the Porygon cannon.",
+        "verdict": "Porygon-Z is almost always worth it if you want a special cannon. Defensive players keep Porygon2 with Eviolite instead. Without the Porygon line on your team, the disc is inventory."
       }
     },
     "route": {

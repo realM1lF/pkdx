@@ -3,8 +3,11 @@
  * All displayed facts come from src/data/items-seo.json (provenance documented
  * in src/lib/seo-items.ts): official flavor texts, PokéAPI-verified effects,
  * FRLG locations from our enriched Kanto dataset. Items WITHOUT location
- * data simply render no location section — nothing is invented. Editorial
- * verdict lines live in translation.json (seo.itemData.<slug>.*). */
+ * data simply render no location section — nothing is invented. All editorial
+ * copy (intro, per-item Q&A answers, verdict) lives in translation.json under
+ * seo.itemData.<slug>.* so no two text blocks on the page repeat each other:
+ * intro = casual overview, qa1 = mechanics with numbers, qa2 = location
+ * conditions, qa3 = worth-it verdict. */
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { ChevronRight, Crosshair, MapPin, Package, Swords } from 'lucide-react';
@@ -68,6 +71,10 @@ export default function ItemDetailPage() {
   const altName = lang === 'de' ? item.nameEn : item.nameDe;
   const flavor = (lang === 'de' ? item.flavorDe : item.flavorEn) ?? item.flavorEn;
   const effect = lang === 'de' ? item.effectDe : item.effectEn;
+  const intro = t(`seo.itemData.${slug}.intro`);
+  const qa1Lead = t(`seo.itemData.${slug}.qa1Lead`);
+  const qa1Body = t(`seo.itemData.${slug}.qa1Body`);
+  const qa2Body = t(`seo.itemData.${slug}.qa2Body`);
   const verdict = t(`seo.itemData.${slug}.verdict`);
   const verdictLead = t(`seo.itemData.${slug}.verdictLead`);
   const evolutionNames = (item.evolutionTargets ?? []).map((id) => nameOfPokemon(id, lang));
@@ -75,8 +82,8 @@ export default function ItemDetailPage() {
   const qa: Array<{ q: string; lead: string; body: string }> = [
     {
       q: t('seo.item.qa1q', { name }),
-      lead: effect,
-      body: flavor ?? '',
+      lead: qa1Lead,
+      body: qa1Body,
     },
     item.locationsFrlg?.length
       ? {
@@ -87,12 +94,12 @@ export default function ItemDetailPage() {
               .map((l) => (lang === 'de' ? l.nameDe : l.nameEn))
               .join(lang === 'de' ? ' und ' : ' and '),
           }),
-          body: t('seo.item.qa2body'),
+          body: qa2Body,
         }
       : {
           q: t('seo.item.qa2q', { name }),
           lead: t('seo.item.qa2leadNone', { name }),
-          body: t('seo.item.qa2bodyNone'),
+          body: qa2Body,
         },
     {
       q: t('seo.item.qa3q', { name }),
@@ -148,7 +155,7 @@ export default function ItemDetailPage() {
             </div>
           </div>
           <p className="mt-4 font-sans text-[14px] leading-relaxed text-tx-secondary">
-            {t('seo.item.intro', { name, effect })}
+            {intro}
           </p>
         </header>
 
