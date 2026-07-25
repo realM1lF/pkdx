@@ -3,7 +3,45 @@
  * Squirt Bottle, Devon Scope) must stay out of the wild buckets, and the
  * fishing/surfing/walking variants must land in their proper bucket. */
 import { describe, expect, it } from 'vitest';
-import { areaShortLabel, methodBucket, STATIC_METHODS } from './mapdata';
+import { aggregateArea, areaShortLabel, methodBucket, STATIC_METHODS } from './mapdata';
+
+describe('aggregateArea chance semantics', () => {
+  const area = {
+    id: 1,
+    name: 'kanto-route-19-area',
+    pokemon_encounters: [
+      {
+        pokemon: { name: 'horsea', url: 'https://pokeapi.co/api/v2/pokemon/116/' },
+        version_details: [
+          {
+            version: { name: 'firered', url: '' },
+            /* raw PokéAPI max_chance would be 170 — summing across mutually
+               exclusive methods must never happen */
+            max_chance: 170,
+            encounter_details: [
+              { chance: 40, min_level: 5, max_level: 10, method: { name: 'old-rod', url: '' } },
+              { chance: 60, min_level: 5, max_level: 15, method: { name: 'good-rod', url: '' } },
+              { chance: 60, min_level: 15, max_level: 25, method: { name: 'super-rod', url: '' } },
+              { chance: 10, min_level: 20, max_level: 30, method: { name: 'super-rod', url: '' } },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  it('sums slots per method, then takes the max across methods (never > 100)', () => {
+    const g = aggregateArea(area, 'kanto-route-19', 'firered');
+    const horsea = g.entries.find((e) => e.slug === 'horsea');
+    expect(horsea).toBeDefined();
+    /* super-rod 60+10=70 is the best bucket; old-rod 40, good-rod 60 */
+    expect(horsea!.maxChance).toBe(70);
+    expect(horsea!.maxChance).toBeLessThanOrEqual(100);
+    expect(horsea!.minLevel).toBe(5);
+    expect(horsea!.maxLevel).toBe(30);
+    expect(horsea!.methods).toEqual(['FISH']);
+  });
+});
 
 describe('methodBucket', () => {
   it('classifies the rod family as FISH', () => {

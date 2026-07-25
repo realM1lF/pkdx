@@ -89,18 +89,19 @@ export default function CommandBar({
   return (
     <div
       key={shakeKey}
+      id="maps-command-bar"
       className={cn(
         'sticky top-0 z-50 shrink-0 border-b border-hairline',
         shakeKey > 0 && 'maps-shake',
       )}
       style={{ background: 'rgba(13,15,22,0.72)', backdropFilter: 'blur(16px) saturate(1.4)' }}
     >
-      <div className="flex h-14 min-h-14 max-h-14 items-center gap-2.5 px-3 sm:px-4">
+      <div className="flex flex-wrap items-center gap-2 px-3 py-2 sm:h-14 sm:min-h-14 sm:max-h-14 sm:flex-nowrap sm:gap-2.5 sm:px-4 sm:py-0">
         {/* pinned left */}
         <LocaleLink
           to="/maps"
           aria-label={t('maps.backAtlas')}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold sm:h-8 sm:w-8"
         >
           <ChevronLeft size={16} />
         </LocaleLink>
@@ -113,16 +114,22 @@ export default function CommandBar({
 
         <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
-        {/* scrollable middle — horizontal only, fixed 56px height */}
-        <div className="maps-bar-scroll flex h-14 min-w-0 flex-1 items-center gap-2.5">
-          <div className="flex shrink-0 rounded-pill border border-hairline bg-surface1 p-0.5" role="group" aria-label={t('maps.version')}>
+        {/* scrollable middle — full-width second row on mobile, fixed 56px height on sm+ */}
+        <div className="maps-bar-scroll order-last flex h-11 w-full min-w-0 flex-1 items-center gap-2.5 sm:order-none sm:h-14 sm:w-auto">
+          <div
+            id="maps-version-switcher"
+            className="flex shrink-0 rounded-pill border border-hairline bg-surface1 p-0.5"
+            role="group"
+            aria-label={t('maps.version')}
+            tabIndex={-1}
+          >
             {region.versions.map((v) => (
               <button
                 key={v}
                 type="button"
                 onClick={() => onVersion(v)}
                 aria-pressed={version === v}
-                className="relative rounded-pill px-2 py-1"
+                className="relative rounded-pill px-2.5 py-2.5 sm:px-2 sm:py-1"
               >
                 {version === v && (
                   <motion.span
@@ -146,7 +153,7 @@ export default function CommandBar({
           <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
           <div
-            className="flex h-7 shrink-0 items-center rounded-pill border border-hairline bg-surface1 p-0.5"
+            className="flex h-11 shrink-0 items-center rounded-pill border border-hairline bg-surface1 p-0.5 sm:h-7"
             role="group"
             aria-label={t('maps.view')}
           >
@@ -214,7 +221,7 @@ export default function CommandBar({
                   aria-pressed={active}
                   onClick={() => onToggleMethod(m.bucket)}
                   className={cn(
-                    'inline-flex h-8 shrink-0 items-center gap-1 rounded-pill border px-2 text-[10px] font-semibold leading-none transition-all duration-150',
+                    'inline-flex h-11 shrink-0 items-center gap-1 rounded-pill border px-2.5 text-[10px] font-semibold leading-none transition-all duration-150 sm:h-8 sm:px-2',
                     active ? 'border-current' : 'border-hairline text-tx-muted hover:text-tx-secondary',
                   )}
                   style={
@@ -232,9 +239,9 @@ export default function CommandBar({
         </div>
 
         {/* pinned right — search + status + actions (outside scroll so dropdown is not clipped) */}
-        <div className="flex shrink-0 items-center gap-2.5">
-          <div className="relative w-[132px] sm:w-[150px]">
-            <div className="flex h-8 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-2 transition-colors focus-within:border-hairline2">
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:ml-0 sm:gap-2.5">
+          <div className="relative w-[120px] sm:w-[150px]">
+            <div className="flex h-11 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-2 transition-colors focus-within:border-hairline2 sm:h-8">
               <Search size={13} className="shrink-0 text-tx-muted" />
               <input
                 value={q}
@@ -314,7 +321,7 @@ export default function CommandBar({
               aria-label={t('maps.legend')}
               aria-expanded={legend}
               onClick={() => setLegend((s) => !s)}
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold"
+              className="flex h-11 w-11 items-center justify-center rounded-md border border-hairline bg-surface2 text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold sm:h-8 sm:w-8"
             >
               <Info size={14} />
             </button>
@@ -343,7 +350,7 @@ export default function CommandBar({
           <button
             type="button"
             onClick={onResetView}
-            className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-2.5 text-[11px] font-semibold leading-none text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold"
+            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-3 text-[11px] font-semibold leading-none text-tx-secondary transition-colors hover:border-hairline2 hover:text-gold sm:h-8 sm:px-2.5"
           >
             <RotateCcw size={13} />
             <span className="hidden sm:inline">{t('maps.resetView')}</span>

@@ -263,7 +263,9 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
           aria-pressed={shiny}
           aria-label={t('detail.hero.shinyArtwork')}
           className={cn(
-            'absolute right-1 top-1 z-20 grid h-10 w-10 place-items-center rounded-md border backdrop-blur-sm transition-all duration-200',
+            /* mobile: the add-to-team/VS action row sits at the panel's top-right
+               corner — drop the shiny toggle below it so nothing overlaps */
+            'absolute right-1 top-12 z-20 grid h-10 w-10 place-items-center rounded-md border backdrop-blur-sm transition-all duration-200 sm:top-1',
             shiny
               ? 'border-gold/70 bg-gold-soft text-gold shadow-glow-gold'
               : 'border-hairline bg-abyss/50 text-tx-muted hover:border-hairline2 hover:text-gold',

@@ -124,13 +124,17 @@ export function aggregate(areas: EncounterAreaEntry[]): WhereRow[] {
     }
     if (hit) row.subSet.add(areaShortLabel(area.location_area.name, hit.node.locationSlug ?? base));
     for (const vd of area.version_details) {
-      row.maxChance = Math.max(row.maxChance, vd.max_chance);
+      /* PokéAPI max_chance sums across mutually exclusive methods (can exceed
+         100) — sum slots per exact method, then take the max (mapdata parity) */
+      const byMethod = new Map<string, number>();
       if (vd.encounter_details.length > 0) row.versionSet.add(vd.version.name);
       for (const det of vd.encounter_details) {
+        byMethod.set(det.method.name, (byMethod.get(det.method.name) ?? 0) + det.chance);
         row.methodSet.add(det.method.name);
         row.minLevel = Math.min(row.minLevel, det.min_level);
         row.maxLevel = Math.max(row.maxLevel, det.max_level);
       }
+      if (byMethod.size > 0) row.maxChance = Math.max(row.maxChance, Math.min(100, Math.max(...byMethod.values())));
     }
   }
   return [...byKey.values()]
