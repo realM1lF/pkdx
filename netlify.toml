@@ -38,3 +38,33 @@
   for = "/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+    # --- Security headers ---------------------------------------------------
+    # HSTS: two years + subdomains, preload-eligible.
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    # Stop MIME sniffing (also hardens the "chunk served as text/html" case).
+    X-Content-Type-Options = "nosniff"
+    # No framing anywhere — mirrored by frame-ancestors for modern browsers.
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-site"
+
+    # CSP — every source below is actually used; verified against the built
+    # bundle (see the source map of allowances):
+    #   script      self (app chunks + /plausible-init.js) + plausible.io tracker
+    #   style       'unsafe-inline' is REQUIRED: framer-motion/GSAP animate via
+    #               inline style attributes on almost every element
+    #   img         raw.githubusercontent.com = PokeAPI/sprites fallback chain
+    #               (src/lib/sprites.ts); data:/blob: for generated canvases
+    #   media       raw.githubusercontent.com = PokeAPI/cries .ogg (HeroPanel)
+    #   connect     pokeapi.co, data.pkmn.cc (Smogon sets), Supabase REST +
+    #               Realtime websocket, plausible event endpoint.
+    #               pkmn.github.io is required too: data.pkmn.cc answers with a
+    #               301 there and CSP validates the redirect target, not just
+    #               the initial host (verified via scripts/check-csp.mjs).
+    #   worker/blob CompressionStream + lazy @pkmn/sim vendor bundle
+    # NOTE: if VITE_SUPABASE_URL is ever pointed at another project, its host
+    # must be added to connect-src or all multiplayer calls will be blocked.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://raw.githubusercontent.com; media-src 'self' https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com https://data.pkmn.cc https://pkmn.github.io https://plausible.io https://iqsdojzyqznmcirypdnk.supabase.co wss://iqsdojzyqznmcirypdnk.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"

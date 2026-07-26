@@ -27,7 +27,7 @@ import { padNum } from './pokeapi';
 import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
-import { getAuthUser } from './auth';
+import { ensureRunIdentity, getAuthUser } from './auth';
 
 export type {
   NuzEncounterRow,
@@ -211,11 +211,62 @@ function setRunOwner(runId: string): void {
   if (!owners.includes(runId) && !writeJson(LS_OWNERS, [...owners, runId])) notifyStorageFailure();
 }
 
+/* The invite code is the only credential guarding a multiplayer run, so it
+ * must be unguessable: 8 symbols from a 31-char alphabet ≈ 2^39.6, drawn from
+ * the CSPRNG instead of Math.random(). The alphabet drops I/L/O/0/1 so codes
+ * stay dictatable over voice chat. Shorter legacy codes (SOUL-XXX) keep
+ * working — only minting changes, lookup is length-agnostic. */
+const INVITE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const INVITE_LENGTH = 8;
+
 function mintInviteCode(): string {
-  const abc = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-  let s = '';
-  for (let i = 0; i < 3; i++) s += abc[Math.floor(Math.random() * abc.length)];
-  return `SOUL-${s}`;
+  const n = INVITE_ALPHABET.length;
+  /* largest multiple of n that fits in a byte — values above it are rejected
+   * so every symbol stays equally likely (no modulo bias) */
+  const limit = 256 - (256 % n);
+  let out = '';
+  const buf = new Uint8Array(INVITE_LENGTH);
+  while (out.length < INVITE_LENGTH) {
+    crypto.getRandomValues(buf);
+    for (const b of buf) {
+      if (b >= limit) continue;
+      out += INVITE_ALPHABET[b % n];
+      if (out.length === INVITE_LENGTH) break;
+    }
+  }
+  return `SOUL-${out}`;
+}
+
+/** Postgres unique_violation — a minted code already exists, mint another. */
+const PG_UNIQUE_VIOLATION = '23505';
+/** PostgREST: RPC not found — the DB has not had the RLS migration applied
+ * yet, so callers fall back to their previous direct-table behaviour. This
+ * is what lets the same build run against both schema states. */
+const PG_MISSING_FUNCTION = 'PGRST202';
+
+/* Multiplayer rows are scoped to run membership. Runs created before that
+ * existed — and sessions whose browser storage was cleared — hold no
+ * membership, so re-establish it from the invite code kept in the local run
+ * state. Idempotent server-side; tracked per run so it costs one call. */
+const accessClaimed = new Set<string>();
+/* Set once when the RPCs turn out to be absent, so a pre-migration database
+ * costs exactly one probe per page load instead of one per action. */
+let membershipRpcsMissing = false;
+
+async function ensureRunAccess(run: NuzRunRow): Promise<void> {
+  if (!isMultiCapable()) return;
+  await ensureRunIdentity();
+  const code = run.invite_code;
+  if (!code || membershipRpcsMissing || accessClaimed.has(run.id)) return;
+  accessClaimed.add(run.id);
+  try {
+    const { error } = await supabase.rpc('nuz_claim_access', { p_code: code });
+    if (error?.code === PG_MISSING_FUNCTION) membershipRpcsMissing = true;
+    /* keep it retryable unless the function is simply absent */
+    else if (error) accessClaimed.delete(run.id);
+  } catch {
+    accessClaimed.delete(run.id);
+  }
 }
 
 /* ---------- species / route label lookup (registered by pages) ---------- */
@@ -504,6 +555,8 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
     return;
   }
   try {
+    /* membership must exist before the reads below return anything */
+    if (local?.run) await ensureRunAccess(local.run);
     const remote = await fetchRemoteRun(entry.id);
     if (remote) {
       entry.state = remote;
@@ -820,6 +873,22 @@ export interface CreatedRun {
   offlineFallback: boolean;
 }
 
+/* Insert the run row, re-minting the invite code when the unique index
+ * rejects it. Without the retry a collision downgraded the run to offline. */
+async function insertRunWithFreshInvite(
+  baseRun: NuzRunRow,
+): Promise<{ invite: string | null; error: { message: string } | null }> {
+  let last: { code?: string; message: string } | null = null;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const invite = mintInviteCode();
+    const { error } = await nuzTables.runs().insert({ ...baseRun, invite_code: invite });
+    if (!error) return { invite, error: null };
+    last = error;
+    if (error.code !== PG_UNIQUE_VIOLATION) break;
+  }
+  return { invite: null, error: last };
+}
+
 export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   const id = uuid();
   const now = new Date().toISOString();
@@ -847,11 +916,13 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   let offlineFallback = false;
 
   if (cfg.online && isMultiCapable()) {
-    invite = mintInviteCode();
-    const runRow = { ...baseRun, invite_code: invite };
-    const { error: runErr } = await nuzTables.runs().insert(runRow);
-    const { error: plErr } = runErr ? { error: runErr } : await nuzTables.players().insert(players);
-    if (!plErr) {
+    /* the insert policy requires an identity; the DB trigger then records
+     * this session as the run's owner */
+    await ensureRunIdentity();
+    const inserted = await insertRunWithFreshInvite(baseRun);
+    invite = inserted.invite;
+    const { error: plErr } = inserted.error ? { error: inserted.error } : await nuzTables.players().insert(players);
+    if (!plErr && invite) {
       mode = 'multi';
       baseRun.invite_code = invite;
       linkRunToAccount(id, 'owner');
@@ -883,8 +954,37 @@ export interface JoinLookup {
 
 export async function lookupByCode(code: string): Promise<JoinLookup | null> {
   if (!isMultiCapable()) return null;
-  const clean = code.trim().toUpperCase();
+  /* tolerate whitespace pasted along with the code */
+  const clean = code.replace(/\s+/g, '').toUpperCase();
   if (!clean) return null;
+
+  /* The invite code is the credential, so redeeming it happens server-side:
+   * nuz_join_by_code records the membership and hands back the run. Reading
+   * nuz_runs directly cannot work once rows are membership-scoped — an
+   * outsider must not be able to filter by invite_code at all. */
+  await ensureRunIdentity();
+  if (!membershipRpcsMissing) {
+    try {
+      const { data, error } = await supabase.rpc('nuz_join_by_code', { p_code: clean });
+      if (!error) {
+        if (!data) return null;
+        const payload = data as { run: NuzRunRow; players: NuzPlayerRow[] } | null;
+        if (!payload?.run) return null;
+        accessClaimed.add(payload.run.id);
+        return {
+          run: { ...payload.run, rules: normalizeRules(payload.run.rules as Partial<NuzRules>) },
+          players: payload.players ?? [],
+        };
+      }
+      if (error.code === PG_MISSING_FUNCTION) membershipRpcsMissing = true;
+      /* any other error is a genuine failure, not a reason to fall back */
+      else return null;
+    } catch {
+      /* fall through to the pre-migration path */
+    }
+  }
+
+  /* legacy path — DB without the RLS migration */
   try {
     const { data, error } = await nuzTables.runs().select('*').eq('invite_code', clean).maybeSingle();
     if (error || !data) return null;
@@ -939,13 +1039,24 @@ export async function goOnline(runId: string): Promise<boolean> {
   if (!s) return false;
   if (s.mode === 'multi') return true;
   if (!isMultiCapable()) return false;
-  const invite = s.run.invite_code ?? mintInviteCode();
-  const runRow = { ...s.run, invite_code: invite };
-  const { error: rErr } = await nuzTables.runs().upsert(runRow);
+  /* covers both cases: a brand-new online run (identity for the insert
+   * policy) and a run that already carries a code from an earlier attempt
+   * (membership for the update policy) */
+  await ensureRunAccess(s.run);
+  /* an already-issued code stays valid; a freshly minted one is re-rolled if
+   * the unique index rejects it */
+  const existing = s.run.invite_code;
+  let runRow = { ...s.run, invite_code: existing ?? mintInviteCode() };
+  let rErr = (await nuzTables.runs().upsert(runRow)).error;
+  for (let attempt = 0; !existing && rErr?.code === PG_UNIQUE_VIOLATION && attempt < 4; attempt++) {
+    runRow = { ...s.run, invite_code: mintInviteCode() };
+    rErr = (await nuzTables.runs().upsert(runRow)).error;
+  }
   if (rErr) {
     pushToast('sync', 'RETRYING SYNC…');
     return false;
   }
+  const invite = runRow.invite_code;
   if (s.players.length > 0) await nuzTables.players().upsert(s.players);
   if (s.encounters.length > 0) await nuzTables.encounters().upsert(s.encounters);
   s.mode = 'multi';
