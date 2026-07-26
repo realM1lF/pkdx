@@ -164,3 +164,44 @@ damage matrix (`src/lib/versus.ts`) runs @smogon/calc. Both MUST agree:
 - vitest needs the WebSocket stub in `vitest.setup.ts` (supabase import
   chain throws on Node 20 otherwise). Full suite must stay green.
 - Never push without `git ls-remote github main` verification afterwards.
+- **`netlify.toml` header order is load-bearing.** Netlify merges all
+  matching rules, but on a duplicate header name the rule declared LAST
+  wins. The `/*` catch-all therefore comes FIRST (it carries the security
+  headers), and the `Cache-Control` overrides for `/assets|/sprites|/fonts`
+  come after it. With `/*` at the bottom it silently overrode `immutable`
+  and every asset was served `max-age=0`. Verify with
+  `npm run check:headers` after a deploy — precedence cannot be reproduced
+  locally.
+
+## 10. Security — binding
+
+1. **The Supabase publishable key is public by design** (it ships in the
+   bundle). Therefore RLS is the *only* thing protecting data. Never assume
+   a table is safe because the UI does not expose it — verify with
+   `node scripts/check-rls.mjs`, which audits the live project using
+   nothing but that public key.
+2. **Multiplayer rows are membership-scoped.** `nuz_runs` / `nuz_players` /
+   `nuz_encounters` are readable and writable only for members of the run
+   (`public.nuz_is_member`). Membership comes from creating a run (DB
+   trigger) or redeeming an invite code (`nuz_join_by_code` RPC). Never add
+   a policy with `using (true)` — policies are OR-ed, so one permissive
+   policy silently reopens everything. Schema in `supabase/migrations/`.
+3. **Guests need an anonymous identity.** `ensureRunIdentity()` in
+   `src/lib/auth.ts` signs guests in anonymously, lazily, only for
+   multiplayer actions. Anonymous sessions must never count as accounts:
+   `isRealUser()` filters them out so the account UI and cloud-sync are
+   unaffected. Do not remove that filter.
+4. **Invite codes are credentials.** 8 symbols from `crypto.getRandomValues`
+   (~2^40), unique-indexed, re-minted on 23505. Never shorten them, never
+   use `Math.random()`, and keep the join input's `maxLength` ≥ 16.
+5. **The CSP in `netlify.toml` has no `unsafe-inline` for scripts.** Any new
+   inline `<script>` breaks silently — put it in a file under `public/`
+   instead (see `public/plausible-init.js`). A new external data source
+   needs its host in the matching directive, and CSP validates *redirect
+   targets* (`data.pkmn.cc` → `pkmn.github.io` is why both are listed).
+   After touching `index.html`, `netlify.toml` or adding an external
+   dependency, run `npm run build && node scripts/check-csp.mjs` — it
+   serves `dist/` with the real production headers and must report
+   0 violations.
+6. **No `dangerouslySetInnerHTML`.** React escaping is the XSS defence;
+   user content (run/team/player names) is rendered as text only.

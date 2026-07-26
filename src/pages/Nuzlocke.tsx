@@ -262,11 +262,11 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
             onKeyDown={(e) => {
               if (e.key === 'Enter') void submit();
             }}
-            placeholder="SOUL-····"
-            maxLength={12}
+            placeholder="SOUL-········"
+            maxLength={16}
             aria-label={t('nuz.inviteAria')}
             className={cn(
-              'h-9 w-[150px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold uppercase tracking-[0.14em] text-gold outline-none placeholder:text-tx-muted/50',
+              'h-9 w-[190px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold uppercase tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
               'border-hairline2 focus:border-gold',
             )}
           />

@@ -15,6 +15,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "check:csp": "node scripts/check-csp.mjs",
+    "check:rls": "node scripts/check-rls.mjs",
+    "check:headers": "node scripts/check-headers.mjs",
     "postinstall": "node scripts/fix-lockfile-registry.mjs"
   },
   "dependencies": {
@@ -73,7 +76,6 @@
     "react-i18next": "^17.0.10",
     "react-resizable-panels": "^4.2.2",
     "react-router": "^7.6.1",
-    "recharts": "^2.15.4",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "three": "^0.185.1",

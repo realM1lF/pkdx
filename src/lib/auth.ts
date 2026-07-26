@@ -121,6 +121,48 @@ export async function logoutAccount(): Promise<void> {
   await supabase.auth.signOut();
 }
 
+/* ---------- anonymous identity for multiplayer ----------
+ * The hardened Nuzlocke policies scope every row to run membership, which
+ * needs an auth.uid(). Guests have no account, so they get an anonymous
+ * Supabase identity — created lazily, only when a multiplayer action really
+ * happens, so ordinary visitors never produce an auth.users row.
+ *
+ * An anonymous session is deliberately NOT treated as "logged in" anywhere
+ * else (see isRealUser below): the account UI, cloud-sync and the profile
+ * lookup must keep behaving exactly as before.
+ *
+ * If anonymous sign-ins are disabled in the project, this resolves without
+ * a session and callers fall back to their previous behaviour. */
+let identityInFlight: Promise<void> | null = null;
+/* Remembered per page load: once the provider has refused, stop asking.
+ * Otherwise every multiplayer action would fire another failing request and
+ * log a console error. */
+let anonSignInUnavailable = false;
+
+export function ensureRunIdentity(): Promise<void> {
+  if (identityInFlight) return identityInFlight;
+  identityInFlight = (async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      if (data.session || anonSignInUnavailable) return;
+      const { error } = await supabase.auth.signInAnonymously();
+      if (error) anonSignInUnavailable = true;
+    } catch {
+      /* offline or storage blocked — not fatal, callers degrade gracefully */
+      anonSignInUnavailable = true;
+    } finally {
+      identityInFlight = null;
+    }
+  })();
+  return identityInFlight;
+}
+
+/** Anonymous sessions exist only to satisfy RLS; they are not accounts. */
+function isRealUser(user: User | null): User | null {
+  if (!user) return null;
+  return (user as User & { is_anonymous?: boolean }).is_anonymous ? null : user;
+}
+
 export async function fetchProfile(userId: string): Promise<Profile | null> {
   const { data } = await supabase.from('profiles').select('id, username').eq('id', userId).maybeSingle();
   return (data as Profile | null) ?? null;
@@ -141,7 +183,9 @@ function emit() {
   for (const fn of listeners) fn(state);
 }
 
-async function refreshProfile(user: User | null) {
+async function refreshProfile(rawUser: User | null) {
+  /* anonymous multiplayer identities must never surface as an account */
+  const user = isRealUser(rawUser);
   const profile = user ? await fetchProfile(user.id) : null;
   state = { ...state, user, profile, ready: true };
   emit();
