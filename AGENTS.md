@@ -164,6 +164,14 @@ damage matrix (`src/lib/versus.ts`) runs @smogon/calc. Both MUST agree:
 - vitest needs the WebSocket stub in `vitest.setup.ts` (supabase import
   chain throws on Node 20 otherwise). Full suite must stay green.
 - Never push without `git ls-remote github main` verification afterwards.
+- **`netlify.toml` header order is load-bearing.** Netlify merges all
+  matching rules, but on a duplicate header name the rule declared LAST
+  wins. The `/*` catch-all therefore comes FIRST (it carries the security
+  headers), and the `Cache-Control` overrides for `/assets|/sprites|/fonts`
+  come after it. With `/*` at the bottom it silently overrode `immutable`
+  and every asset was served `max-age=0`. Verify with
+  `npm run check:headers` after a deploy — precedence cannot be reproduced
+  locally.
 
 ## 10. Security — binding
 

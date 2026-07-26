@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "check:csp": "node scripts/check-csp.mjs",
     "check:rls": "node scripts/check-rls.mjs",
+    "check:headers": "node scripts/check-headers.mjs",
     "postinstall": "node scripts/fix-lockfile-registry.mjs"
   },
   "dependencies": {

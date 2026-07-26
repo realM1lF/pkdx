@@ -27,8 +27,10 @@ if (!existsSync(path.join(dist, 'index.html'))) {
 
 /* ---------- pull the real headers out of netlify.toml ---------- */
 const toml = readFileSync(path.join(root, 'netlify.toml'), 'utf8');
-/* the catch-all block: everything after `for = "/*"` up to the next section */
-const catchAll = toml.split('for = "/*"')[1] ?? '';
+/* The catch-all block only: start after `for = "/*"` and stop at the next
+ * [[headers]] section. Cutting at the boundary matters — the Cache-Control
+ * overrides for /assets, /sprites and /fonts are declared after it. */
+const catchAll = (toml.split('for = "/*"')[1] ?? '').split('[[headers]]')[0];
 const headers = {};
 for (const line of catchAll.split('\n')) {
   const m = line.match(/^\s*([A-Za-z-]+)\s*=\s*"([\s\S]*)"\s*$/);

@@ -16,24 +16,20 @@
   # zusaetzlich per scripts/fix-lockfile-registry.mjs normalisiert).
   NPM_CONFIG_REGISTRY = "https://registry.npmjs.org/"
 
+# ORDER MATTERS — do not move the "/*" block back below the specific ones.
+#
+# Netlify merges the headers of every matching rule, but when two rules set
+# the SAME header, the one declared LAST wins. With "/*" at the bottom its
+# Cache-Control overrode the immutable values above it, and /assets, /sprites
+# and /fonts were served with max-age=0 (verified against production). The
+# catch-all therefore has to come first: it supplies the security headers to
+# every response, and the specific rules below only override Cache-Control.
+#
 # Cache strategy (fixes "MIME type text/html" chunk errors after deploys):
 # hashed assets are immutable, everything else (esp. index.html) must
-# revalidate so browsers never reference deleted chunk hashes.
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/sprites/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/fonts/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
+# revalidate so browsers never reference deleted chunk hashes. Note that
+# /vendor/* is deliberately NOT immutable — pkmn-sim.mjs has no hash in its
+# filename, so it must revalidate to pick up a rebuild.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -68,3 +64,20 @@
     # NOTE: if VITE_SUPABASE_URL is ever pointed at another project, its host
     # must be added to connect-src or all multiplayer calls will be blocked.
     Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://raw.githubusercontent.com; media-src 'self' https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com https://data.pkmn.cc https://pkmn.github.io https://plausible.io https://iqsdojzyqznmcirypdnk.supabase.co wss://iqsdojzyqznmcirypdnk.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+
+# --- Cache-Control overrides (must stay AFTER the catch-all, see note above)
+# Content-addressed or immutable-by-nature files only.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/sprites/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
