@@ -1941,21 +1941,21 @@
     "eyebrow": "SPENDE",
     "title": "MyPokePanion unterstützen.",
     "p1": "MyPokePanion ist ein reines Hobby-Projekt — gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
-    "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag — komplett freiwillig, ohne jede Verpflichtung.",
-    "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Für anonyme Nutzungsstatistik nutze ich Plausible (cookieless, ohne Werbeprofile) — Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
+    "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag , komplett freiwillig, ohne jede Verpflichtung.",
+    "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Für anonyme Nutzungsstatistik nutze ich Plausible (cookieless, ohne Werbeprofile). Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
     "cta": "VIA PAYPAL UNTERSTÜTZEN",
     "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt.",
-    "legal": "Das ist eine freiwillige Unterstützung für ein kostenloses Hobby-Projekt — kein Kauf und keine Gegenleistung (keine Premium-Funktionen, keine Spendenquittung). Unterstützungen sind für Spender steuerlich nicht absetzbar. Beim Klick auf PayPal oder beim Scan des QR-Codes verlässt du MyPokePanion; die Zahlung wird ausschließlich von PayPal verarbeitet.",
+    "legal": "Das ist eine freiwillige Unterstützung für ein kostenloses Hobby-Projekt, kein Kauf und keine Gegenleistung (keine Premium-Funktionen, keine Spendenquittung). Unterstützungen sind für Spender steuerlich nicht absetzbar. Beim Klick auf PayPal oder beim Scan des QR-Codes verlässt du MyPokePanion; die Zahlung wird ausschließlich von PayPal verarbeitet.",
     "legalLinks": "Weitere Angaben:",
     "qrCaption": "QR-Code scannen — geht auch direkt im Handy"
   },
   "feedback": {
     "eyebrow": "FEEDBACK & IDEEN",
     "title": "Hilf mit, MyPokePanion besser zu machen.",
-    "intro": "Bugs und Ideen landen als Issue direkt im Projekt — du kannst dort jederzeit den Status verfolgen. Ein (kostenloser) GitHub-Account ist dafür nötig.",
+    "intro": "Bugs und Ideen landen als Issue direkt im Projekt: du kannst dort jederzeit den Status verfolgen. Ein (kostenloser) GitHub-Account ist dafür nötig.",
     "bug": {
       "title": "Bug melden",
-      "text": "Etwas funktioniert nicht, sieht komisch aus oder wirft Fehler? Ein geführtes Formular fragt Seite, Beschreibung und Schritte ab — Screenshots helfen enorm.",
+      "text": "Etwas funktioniert nicht, sieht komisch aus oder wirft Fehler? Ein geführtes Formular fragt Seite, Beschreibung und Schritte ab. Screenshots helfen enorm.",
       "cta": "BUG MELDEN"
     },
     "feature": {
