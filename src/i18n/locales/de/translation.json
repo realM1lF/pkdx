@@ -964,7 +964,8 @@
       "cascadeBoxed": "SEELENLINK — {{name}} AUTO-GEBOXT (KASKADE)",
       "routeConflict": "ROUTE BEREITS GELOGGT — SERVERSTAND ÜBERNOMMEN",
       "releaseRule": "NUZLOCKE-REGEL — {{name}} ist tot und muss freigelassen werden.",
-      "storageFailed": "SPEICHER VOLL — Run konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen."
+      "storageFailed": "SPEICHER VOLL — Run konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen.",
+      "linkLost": "SEELENLINK — {{name}} LINK-VERLUST"
     },
     "rules": {
       "dupesTip": "Ist die erste Begegnung eine Art, die du bereits hast, darfst du sie überspringen und die nächste versuchen.",
@@ -1009,18 +1010,25 @@
     "box": {
       "aria": "Box-Lager",
       "title": "BOX",
-      "note": "IN EINE TEAM-REIHE OBEN ZIEHEN · RESERVE",
+      "note": "LEBENDE INS TEAM ZIEHEN · GEFALLENE & VERPASSTE HIER ARCHIVIERT",
       "count": "{{count}} IN BOX",
       "empty": "BOX LEER",
       "cellTip": "{{name}} — LV {{level}} · gefangen auf {{route}} — Dex-Eintrag öffnen",
-      "openDexAria": "{{name}} im Dex öffnen"
+      "openDexAria": "{{name}} im Dex öffnen",
+      "filter": {
+        "all": "Alle",
+        "alive": "Lebend",
+        "fallen": "Gefallene",
+        "missed": "Verpasst"
+      },
+      "badge": {
+        "dead": "TOT",
+        "missed": "VERPASST",
+        "lost": "LINK-VERLUST"
+      },
+      "cellTipLost": "{{name}} — LV {{level}} · {{status}} · {{route}}"
     },
     "statusPending": "OFFEN",
-    "graveyard": {
-      "aria": "Die Gefallenen",
-      "title": "DIE GEFALLENEN",
-      "empty": "Keine Verluste. Noch."
-    },
     "timeline": {
       "aria": "Routen-Timeline",
       "youAreHere": "DU BIST HIER",
@@ -1073,7 +1081,10 @@
       "msCompleteMeta": "Champions.",
       "linkFormed": "Soul-Link geschmiedet — {{a}} ⇄ {{b}}",
       "linkCascade": "SoulLink-Kaskade — {{name}} muss ebenfalls fallen",
-      "linkCascadeBoxed": "Seelenlink-Kaskade — {{name}} wurde automatisch geboxt"
+      "linkCascadeBoxed": "Seelenlink-Kaskade — {{name}} wurde automatisch geboxt",
+      "verbLost": "verlor per Link",
+      "linkLost": "SoulLink-Verpasst — {{name}} ist Link-Verlust",
+      "linkMissBoxed": "SoulLink-Verpasst — {{name}} wurde automatisch geboxt"
     },
     "time": {
       "now": "JETZT",
@@ -1195,8 +1206,10 @@
       "movedTeam": "{{name}} → TEAM",
       "swapped": "{{a}} ⇄ {{b}}",
       "dropHere": "HIER ABLEGEN = BANK",
-      "dropTeam": "ABLEGEN = TEAM"
-    }
+      "dropTeam": "ABLEGEN = TEAM",
+      "lockedState": "Nur lebende Pokémon können ins Team"
+    },
+    "statusLost": "LINK-VERLUST"
   },
   "search": {
     "recent": "ZULETZT",

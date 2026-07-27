@@ -108,6 +108,10 @@ function PartySlot({
           return;
         }
         const res = swapParty(enc.run_id, d.id, enc.id);
+        if (!res.ok && res.reason === 'wrong-state') {
+          pushToast('info', t('nuz.dnd.lockedState'));
+          return;
+        }
         if (res.ok) {
           const dragged = encounters.find((x) => x.id === d.id);
           const aNick = dragged?.nickname ?? (dragged ? nameOf(dragged.pokemon_id) : '?');
@@ -219,6 +223,10 @@ export default function TeamGrid({
                 const res = setEncounterParty(p.run_id, d.id, true);
                 if (!res.ok && res.reason === 'full') {
                   pushToast('info', t('nuz.dnd.teamFull'));
+                } else if (!res.ok) {
+                  /* dead/missed/lost rows are locked — double-safety next to
+                   * the box cell not being draggable */
+                  pushToast('info', t('nuz.dnd.lockedState'));
                 } else if (res.ok) {
                   const dragged = state.encounters.find((x) => x.id === d.id);
                   const nick = dragged?.nickname ?? (dragged ? nameOf(dragged.pokemon_id) : '?');

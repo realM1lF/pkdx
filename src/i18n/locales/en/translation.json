@@ -964,7 +964,8 @@
       "cascadeBoxed": "SOULLINK — {{name}} AUTO-BOXED (CASCADE)",
       "routeConflict": "ROUTE ALREADY LOGGED — SERVER STATE SYNCED",
       "releaseRule": "NUZLOCKE RULE — {{name}} fainted and must be released.",
-      "storageFailed": "STORAGE FULL — could not save run. Old PokéAPI cache was trimmed; please try again."
+      "storageFailed": "STORAGE FULL — could not save run. Old PokéAPI cache was trimmed; please try again.",
+      "linkLost": "SOULLINK — {{name}} LINK-LOST"
     },
     "rules": {
       "dupesTip": "If your first encounter is a species you already have, you may skip it and try the next.",
@@ -1009,18 +1010,25 @@
     "box": {
       "aria": "Box storage",
       "title": "BOX",
-      "note": "DRAG INTO A PARTY ROW ABOVE · SURVIVORS IN RESERVE",
+      "note": "DRAG LIVING MONS INTO A PARTY ROW · FALLEN & MISSED ARCHIVED HERE",
       "count": "{{count}} BOXED",
       "empty": "BOX EMPTY",
       "cellTip": "{{name}} — LV {{level}} · caught on {{route}} — open dex entry",
-      "openDexAria": "Open {{name}} in the dex"
+      "openDexAria": "Open {{name}} in the dex",
+      "filter": {
+        "all": "All",
+        "alive": "Alive",
+        "fallen": "Fallen",
+        "missed": "Missed"
+      },
+      "badge": {
+        "dead": "DEAD",
+        "missed": "MISSED",
+        "lost": "LINK-LOST"
+      },
+      "cellTipLost": "{{name}} — LV {{level}} · {{status}} · {{route}}"
     },
     "statusPending": "PENDING",
-    "graveyard": {
-      "aria": "The fallen",
-      "title": "THE FALLEN",
-      "empty": "No losses. Yet."
-    },
     "timeline": {
       "aria": "Route timeline",
       "youAreHere": "YOU ARE HERE",
@@ -1073,7 +1081,10 @@
       "msCompleteMeta": "champions.",
       "linkFormed": "Soul link formed — {{a}} ⇄ {{b}}",
       "linkCascade": "SoulLink cascade — {{name}} must fall too",
-      "linkCascadeBoxed": "SoulLink cascade — {{name}} was auto-boxed"
+      "linkCascadeBoxed": "SoulLink cascade — {{name}} was auto-boxed",
+      "verbLost": "lost to the link",
+      "linkLost": "SoulLink miss — {{name}} is link-lost",
+      "linkMissBoxed": "SoulLink miss — {{name}} was auto-boxed"
     },
     "time": {
       "now": "NOW",
@@ -1195,8 +1206,10 @@
       "movedTeam": "{{name}} → TEAM",
       "swapped": "{{a}} ⇄ {{b}}",
       "dropHere": "DROP TO BOX",
-      "dropTeam": "DROP FOR TEAM"
-    }
+      "dropTeam": "DROP FOR TEAM",
+      "lockedState": "Only living Pokémon can join the team"
+    },
+    "statusLost": "LINK-LOST"
   },
   "search": {
     "recent": "RECENT",

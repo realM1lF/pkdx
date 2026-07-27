@@ -2,7 +2,7 @@
  * event glyphs, player-color left flash, milestone rows. */
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Plus, SlidersHorizontal } from 'lucide-react';
+import { Link2, Plus, SlidersHorizontal } from 'lucide-react';
 import type { FeedEvent } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { PixelLabel, timeAgo } from './ui';
@@ -10,6 +10,7 @@ import { PixelLabel, timeAgo } from './ui';
 function FeedGlyph({ ev }: { ev: FeedEvent }) {
   if (ev.kind === 'catch') return <img src="/pokeball.svg" alt="" className="h-2.5 w-2.5" />;
   if (ev.kind === 'death') return <span className="h-2 w-2 rounded-full border border-gold/70" />;
+  if (ev.kind === 'lost') return <Link2 size={10} className="text-gold" />;
   if (ev.kind === 'link' || ev.kind === 'milestone') return <img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />;
   if (ev.kind === 'join') return <Plus size={10} className="text-tx-muted" />;
   if (ev.kind === 'rule' || ev.kind === 'status') return <SlidersHorizontal size={10} className="text-tx-muted" />;

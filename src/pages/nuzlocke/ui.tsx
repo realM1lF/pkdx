@@ -87,6 +87,9 @@ export function StatusDot({ status, color, size = 8, className }: { status: NuzE
       </svg>
     );
   }
+  if (status === 'lost') {
+    return <span className={cn('shrink-0 rounded-full border border-gold/70 bg-gold/20', className)} style={{ width: size, height: size }} aria-label={statusLabel('lost')} />;
+  }
   if (status === 'missed' || status === 'duped') {
     return <span className={cn('shrink-0 rounded-full border border-gold/70', className)} style={{ width: size, height: size }} aria-label={statusLabel(status)} />;
   }
