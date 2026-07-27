@@ -75,6 +75,7 @@ export type FeedKind =
   | 'death'
   | 'missed'
   | 'duped'
+  | 'lost'
   | 'link'
   | 'join'
   | 'rule'
@@ -371,9 +372,13 @@ function ensurePartyFlags(s: RunState): void {
   }
 }
 
-export function graveyardOf(state: RunState): NuzEncounterRow[] {
+/** Unified box: EVERY non-team encounter of a player — boxed survivors plus
+ * dead / missed / duped / lost rows (the box replaces the old graveyard).
+ * Newest first; UI badges + locks by status. */
+export function boxEntriesOf(state: RunState, playerId: string): NuzEncounterRow[] {
+  const party = new Set(partyOf(state, playerId).map((e) => e.id));
   return state.encounters
-    .filter((e) => e.status === 'dead')
+    .filter((e) => e.player_id === playerId && !party.has(e.id))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
@@ -459,6 +464,11 @@ function emit(entry: RunEntry): void {
   entry.listeners.forEach((fn) => fn());
 }
 
+/** Current in-memory run state (live entry preferred, local mirror fallback). */
+export function getRunState(runId: string): RunState | null {
+  return entries.get(runId)?.state ?? loadLocalRun(runId);
+}
+
 function ensureEntry(runId: string): RunEntry {
   let e = entries.get(runId);
   if (!e) {
@@ -499,12 +509,18 @@ const FEED_VERB_KEY: Record<NuzEncounterStatus, string> = {
   dead: 'nuz.feed.verbDead',
   missed: 'nuz.feed.verbMissed',
   duped: 'nuz.feed.verbDuped',
+  lost: 'nuz.feed.verbLost',
 };
 
 function encounterFeedEvent(state: RunState, enc: NuzEncounterRow, _live: boolean): FeedEvent {
   const p = state.players.find((pl) => pl.id === enc.player_id);
   const species = enc.nickname ?? speciesNamer(enc.pokemon_id);
-  const kind: FeedKind = enc.status === 'caught' ? 'catch' : enc.status === 'dead' ? 'death' : enc.status === 'duped' ? 'duped' : 'missed';
+  const kind: FeedKind =
+    enc.status === 'caught' ? 'catch'
+    : enc.status === 'dead' ? 'death'
+    : enc.status === 'duped' ? 'duped'
+    : enc.status === 'lost' ? 'lost'
+    : 'missed';
   const route = routeLabelOf(state.run, enc.route_key).toUpperCase();
   return {
     id: `enc-${enc.id}`,
@@ -600,6 +616,7 @@ function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
     if (prev.status !== enc.status) {
       pushFeed(entry, encounterFeedEvent(s, enc, true));
       if (enc.status === 'dead') checkCascade(entry, enc);
+      if (enc.status === 'missed') checkMissCascade(entry, enc);
     }
   }
   entry.pendingSync.delete(enc.id);
@@ -829,6 +846,67 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
     meta: routeLabelOf(s.run, deadEnc.route_key).toUpperCase(),
   });
   pushToast('info', i18n.t('nuz.toast.cascade', { name: name.toUpperCase() }));
+}
+
+/* ---------- SoulLink missed cascade ----------
+ * Mirror of the death cascade (§2.3): when a player MISSES the encounter on a
+ * route, the linked partner loses that route too.
+ * - Partner has a LIVING catch on the route → cascade rule on: the catch
+ *   becomes 'lost' (unusable, not dead) and leaves the party; rule off: it is
+ *   auto-boxed like in the death cascade.
+ * - Partner has NOT played the route yet → the route is locked for them; see
+ *   the route-lock check in logEncounter (a later catch there logs as 'lost').
+ * Cascade only ever fires FROM a missed row AT living ('caught') partners —
+ * dead/lost/missed partners are untouched, so a realtime double-miss race
+ * cannot loop. */
+function livingPartnersOnRoute(s: RunState, enc: NuzEncounterRow): NuzEncounterRow[] {
+  return s.encounters.filter(
+    (e) => e.id !== enc.id && e.route_key === enc.route_key && e.player_id !== enc.player_id && e.status === 'caught',
+  );
+}
+
+function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): void {
+  const s = entry.state;
+  if (!s || !s.run.rules.soulLink || missedEnc.status !== 'missed') return;
+  const route = routeLabelOf(s.run, missedEnc.route_key).toUpperCase();
+  for (const partner of livingPartnersOnRoute(s, missedEnc)) {
+    const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
+    if (s.run.rules.soulLinkCascade) {
+      /* link-lost: NOT dead — own 'lost' status, out of the party */
+      s.encounters = s.encounters.map((e) =>
+        e.id === partner.id ? { ...e, status: 'lost' as const, in_party: false } : e,
+      );
+      saveLocalRun(s);
+      if (s.mode === 'multi') {
+        persistWithRetry(entry, partner.id, () =>
+          nuzTables.encounters().update({ status: 'lost', in_party: false }).eq('id', partner.id),
+        );
+      }
+      pushFeed(entry, { kind: 'lost', color: '#F6C945', title: i18n.t('nuz.feed.linkLost', { name }), meta: route });
+      pushToast('info', i18n.t('nuz.toast.linkLost', { name: name.toUpperCase() }));
+    } else {
+      /* cascade rule off: partner stays alive but is auto-boxed immediately */
+      s.encounters = s.encounters.map((e) => (e.id === partner.id ? { ...e, in_party: false } : e));
+      saveLocalRun(s);
+      if (s.mode === 'multi') {
+        persistWithRetry(entry, partner.id, () =>
+          nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
+        );
+      }
+      pushFeed(entry, { kind: 'link', color: '#F6C945', title: i18n.t('nuz.feed.linkMissBoxed', { name }), meta: route });
+      pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
+    }
+  }
+}
+
+/** SoulLink route lock: a linked partner already MISSED this route, so any
+ * catch logged here is link-lost from the start. Only applies with the
+ * cascade rule on (rule off keeps partners usable, hence no lock). */
+export function isRouteLinkLocked(state: RunState, playerId: string, routeKey: string): boolean {
+  if (!state.run.rules.soulLink || !state.run.rules.soulLinkCascade) return false;
+  return state.encounters.some(
+    (e) => e.route_key === routeKey && e.player_id !== playerId && e.status === 'missed' && !e.is_shiny,
+  );
 }
 
 /* ---------- actions: create / join / upgrade ---------- */
@@ -1122,6 +1200,13 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
     created_at: new Date().toISOString(),
   };
 
+  /* SoulLink route lock: the linked partner missed this route — a catch
+   * logged now is link-lost from the start (never enters the party). */
+  if (enc.status === 'caught' && isRouteLinkLocked(s, draft.playerId, draft.routeKey)) {
+    enc.status = 'lost';
+    enc.in_party = false;
+  }
+
   const before = soulLinksOf(s).length;
   s.encounters = [...s.encounters, enc];
   saveLocalRun(s);
@@ -1130,6 +1215,10 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
   const linkedWith = after > before ? linkPartnerOf(s, enc.id) : null;
   if (after > before) announceLink(entry, s, enc);
   if (enc.status === 'dead') checkCascade(entry, enc);
+  if (enc.status === 'missed') checkMissCascade(entry, enc);
+  if (enc.status === 'lost' && draft.status === 'caught') {
+    pushToast('info', i18n.t('nuz.toast.linkLost', { name: (enc.nickname ?? speciesNamer(enc.pokemon_id)).toUpperCase() }));
+  }
   checkMilestones(entry);
 
   if (s.mode === 'multi') {
@@ -1211,6 +1300,8 @@ export function updateEncounter(
       if (s.run.rules.releaseOnDeath) {
         pushToast('info', i18n.t('nuz.toast.releaseRule', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
       }
+    } else if (patch.status === 'missed') {
+      checkMissCascade(entry, enc);
     }
   }
   if (s.mode === 'multi') {

@@ -39,7 +39,12 @@ const STATUS_META: Record<NuzEncounterStatus, { labelKey: string; cls: string }>
   dead: { labelKey: 'nuz.statusDead', cls: 'border-hairline2 text-tx-muted' },
   missed: { labelKey: 'nuz.statusMissed', cls: 'border-gold/60 text-gold' },
   duped: { labelKey: 'nuz.statusDuped', cls: 'border-gold/40 text-gold/80 border-dashed' },
+  /* 'lost' is cascade-only — display meta exists, but it is not loggable */
+  lost: { labelKey: 'nuz.statusLost', cls: 'border-gold/60 text-gold' },
 };
+
+/** statuses the user may pick in quick entry ('lost' comes from the SoulLink cascade only) */
+const LOGGABLE_STATUS: NuzEncounterStatus[] = ['caught', 'dead', 'missed', 'duped'];
 
 interface FormProps {
   state: RunState;
@@ -527,7 +532,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
         }
         className="w-[140px] py-1"
       >
-        {(Object.keys(STATUS_META) as NuzEncounterStatus[]).map((s) => (
+        {LOGGABLE_STATUS.map((s) => (
           <button
             key={s}
             type="button"

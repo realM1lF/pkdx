@@ -179,7 +179,7 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
           aria-label={t('nuz.timeline.logFor', { player: playerName })}
           className="mx-auto h-[30px] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
         />
-      ) : enc.status === 'dead' ? (
+      ) : enc.status === 'dead' || enc.status === 'lost' ? (
         <button
           type="button"
           className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
@@ -199,7 +199,13 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
             </span>
             <span className="block font-display text-[9px] font-bold text-tx-muted/70">LV {enc.level}</span>
           </span>
-          <span className="h-2 w-2 shrink-0 rounded-full border border-gold/70" aria-label={t('nuz.timeline.fallen')} />
+          {enc.status === 'lost' ? (
+            <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] tracking-[0.06em] text-gold" aria-label={t('nuz.statusLost')}>
+              🔗
+            </span>
+          ) : (
+            <span className="h-2 w-2 shrink-0 rounded-full border border-gold/70" aria-label={t('nuz.timeline.fallen')} />
+          )}
         </button>
       ) : enc.status === 'missed' || enc.status === 'duped' ? (
         <button

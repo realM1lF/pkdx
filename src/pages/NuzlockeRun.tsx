@@ -31,7 +31,6 @@ import RulesBar from './nuzlocke/RulesBar';
 import Timeline from './nuzlocke/Timeline';
 import TeamGrid from './nuzlocke/TeamGrid';
 import BoxSection from './nuzlocke/BoxSection';
-import Graveyard from './nuzlocke/Graveyard';
 import Feed from './nuzlocke/Feed';
 import QuickEntry from './nuzlocke/QuickEntry';
 import type { Prefill } from './nuzlocke/QuickEntry';
@@ -283,9 +282,8 @@ export default function NuzlockeRun() {
               linkPartner={(encId) => linkPartnerOf(state, encId)}
               onMenu={openMenu}
             />
-            {/* visible BOX storage — between team grid and graveyard */}
+            {/* unified BOX storage — all non-team encounters incl. fallen/missed */}
             <BoxSection state={state} nameOf={nameOf} routeLabel={routeLabel} />
-            <Graveyard state={state} nameOf={nameOf} routeLabel={routeLabel} />
           </div>
           <Feed feed={entry.feed} live={entry.status === 'live'} />
         </div>

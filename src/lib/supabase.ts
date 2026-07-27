@@ -71,7 +71,9 @@ export function isMultiCapable(): boolean {
 
 /* ---------- row shapes (mirror of nuzlocke.md §0.2 schema) ---------- */
 
-export type NuzEncounterStatus = 'caught' | 'dead' | 'missed' | 'duped';
+/* `lost` = SoulLink-verloren (Partner hat die Route verpasst): nicht selbst
+ * gefallen, aber unbrauchbar. Zählt in KPIs weder zu dead noch missed. */
+export type NuzEncounterStatus = 'caught' | 'dead' | 'missed' | 'duped' | 'lost';
 export type NuzRunStatus = 'active' | 'complete' | 'failed';
 
 export interface NuzRules {

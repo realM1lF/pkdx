@@ -189,3 +189,6 @@ ${team}`);break;case"show-openteamsheets":this.battle.showOpenTeamSheets();break
    * @license MIT
    *)
 */
+/* @pkmn/sim, @pkmn/dex, @pkmn/data, @smogon/calc — The MIT License (MIT)
+ * Copyright (c) 2011-2026 Guangcong Luo and other contributors
+ * http://pokemonshowdown.com/ */
