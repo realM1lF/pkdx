@@ -170,11 +170,10 @@ export default function BoxSection({
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const [filter, setFilter] = useState<BoxFilter>('all');
   const [dropPlayer, setDropPlayer] = useState<string | null>(null);
-  const entriesOf = useMemo(() => {
-    const m = new Map<string, NuzEncounterRow[]>();
-    for (const p of players) m.set(p.id, boxEntriesOf(state, p.id).filter((e) => matchesFilter(e, filter)));
-    return m;
-  }, [state, players, filter]);
+  /* no useMemo: the store mutates state in place, so memoized derivations
+   * would go stale (same object reference after every store update) */
+  const entriesOf = new Map<string, NuzEncounterRow[]>();
+  for (const p of players) entriesOf.set(p.id, boxEntriesOf(state, p.id).filter((e) => matchesFilter(e, filter)));
   const total = players.reduce((n, p) => n + (entriesOf.get(p.id)?.length ?? 0), 0);
 
   return (
