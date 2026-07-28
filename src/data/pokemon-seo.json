@@ -1946,6 +1946,10 @@
    "de": "Safcon",
    "en": "Metapod"
   },
+  "12": {
+   "de": "Smettbo",
+   "en": "Butterfree"
+  },
   "13": {
    "de": "Hornliu",
    "en": "Weedle"
@@ -1953,6 +1957,10 @@
   "14": {
    "de": "Kokuna",
    "en": "Kakuna"
+  },
+  "15": {
+   "de": "Bibor",
+   "en": "Beedrill"
   },
   "16": {
    "de": "Taubsi",
@@ -2078,6 +2086,10 @@
    "de": "Mauzi",
    "en": "Meowth"
   },
+  "53": {
+   "de": "Snobilikat",
+   "en": "Persian"
+  },
   "54": {
    "de": "Enton",
    "en": "Psyduck"
@@ -2138,6 +2150,10 @@
    "de": "Tentacha",
    "en": "Tentacool"
   },
+  "73": {
+   "de": "Tentoxa",
+   "en": "Tentacruel"
+  },
   "74": {
    "de": "Kleinstein",
    "en": "Geodude"
@@ -2145,6 +2161,14 @@
   "75": {
    "de": "Georok",
    "en": "Graveler"
+  },
+  "77": {
+   "de": "Ponita",
+   "en": "Ponyta"
+  },
+  "78": {
+   "de": "Gallopa",
+   "en": "Rapidash"
   },
   "79": {
    "de": "Flegmon",
@@ -2177,6 +2201,10 @@
   "88": {
    "de": "Sleima",
    "en": "Grimer"
+  },
+  "89": {
+   "de": "Sleimok",
+   "en": "Muk"
   },
   "90": {
    "de": "Muschas",
@@ -2286,9 +2314,17 @@
    "de": "Sterndu",
    "en": "Staryu"
   },
+  "122": {
+   "de": "Pantimos",
+   "en": "Mr Mime"
+  },
   "123": {
    "de": "Sichlor",
    "en": "Scyther"
+  },
+  "124": {
+   "de": "Rossana",
+   "en": "Jynx"
   },
   "125": {
    "de": "Elektek",
@@ -2382,9 +2418,69 @@
    "de": "Mew",
    "en": "Mew"
   },
+  "161": {
+   "de": "Wiesor",
+   "en": "Sentret"
+  },
+  "162": {
+   "de": "Wiesenior",
+   "en": "Furret"
+  },
+  "163": {
+   "de": "Hoothoot",
+   "en": "Hoothoot"
+  },
+  "164": {
+   "de": "Noctuh",
+   "en": "Noctowl"
+  },
+  "165": {
+   "de": "Ledyba",
+   "en": "Ledyba"
+  },
+  "166": {
+   "de": "Ledian",
+   "en": "Ledian"
+  },
+  "167": {
+   "de": "Webarak",
+   "en": "Spinarak"
+  },
+  "168": {
+   "de": "Ariados",
+   "en": "Ariados"
+  },
+  "170": {
+   "de": "Lampi",
+   "en": "Chinchou"
+  },
+  "171": {
+   "de": "Lanturn",
+   "en": "Lanturn"
+  },
   "172": {
    "de": "Pichu",
    "en": "Pichu"
+  },
+  "178": {
+   "de": "Xatu",
+   "en": "Xatu"
+  },
+  "187": {
+   "de": "Hoppspross",
+   "en": "Hoppip"
+  },
+  "188": {
+   "de": "Hubelupf",
+   "en": "Skiploom"
+  },
+  "191": {
+   "de": "Sonnkern",
+   "en": "Sunkern"
+  },
+  "195": {
+   "de": "Morlord",
+   "en": "Quagsire"
   },
   "196": {
    "de": "Psiana",
@@ -2394,9 +2490,209 @@
    "de": "Nachtara",
    "en": "Umbreon"
   },
+  "198": {
+   "de": "Kramurx",
+   "en": "Murkrow"
+  },
   "202": {
    "de": "Woingenau",
    "en": "Wobbuffet"
+  },
+  "204": {
+   "de": "Tannza",
+   "en": "Pineco"
+  },
+  "209": {
+   "de": "Snubbull",
+   "en": "Snubbull"
+  },
+  "210": {
+   "de": "Granbull",
+   "en": "Granbull"
+  },
+  "211": {
+   "de": "Baldorfish",
+   "en": "Qwilfish"
+  },
+  "213": {
+   "de": "Pottrott",
+   "en": "Shuckle"
+  },
+  "214": {
+   "de": "Skaraborn",
+   "en": "Heracross"
+  },
+  "218": {
+   "de": "Schneckmag",
+   "en": "Slugma"
+  },
+  "222": {
+   "de": "Corasonn",
+   "en": "Corsola"
+  },
+  "228": {
+   "de": "Hunduster",
+   "en": "Houndour"
+  },
+  "245": {
+   "de": "Suicune",
+   "en": "Suicune"
+  },
+  "246": {
+   "de": "Larvitar",
+   "en": "Larvitar"
+  },
+  "252": {
+   "de": "Geckarbor",
+   "en": "Treecko"
+  },
+  "255": {
+   "de": "Flemmli",
+   "en": "Torchic"
+  },
+  "258": {
+   "de": "Hydropi",
+   "en": "Mudkip"
+  },
+  "261": {
+   "de": "Fiffyen",
+   "en": "Poochyena"
+  },
+  "264": {
+   "de": "Geradaks",
+   "en": "Linoone"
+  },
+  "265": {
+   "de": "Waumpel",
+   "en": "Wurmple"
+  },
+  "273": {
+   "de": "Samurzel",
+   "en": "Seedot"
+  },
+  "278": {
+   "de": "Wingull",
+   "en": "Wingull"
+  },
+  "285": {
+   "de": "Knilz",
+   "en": "Shroomish"
+  },
+  "287": {
+   "de": "Bummelz",
+   "en": "Slakoth"
+  },
+  "293": {
+   "de": "Flurmel",
+   "en": "Whismur"
+  },
+  "296": {
+   "de": "Makuhita",
+   "en": "Makuhita"
+  },
+  "302": {
+   "de": "Zobiris",
+   "en": "Sableye"
+  },
+  "303": {
+   "de": "Flunkifer",
+   "en": "Mawile"
+  },
+  "311": {
+   "de": "Plusle",
+   "en": "Plusle"
+  },
+  "312": {
+   "de": "Minun",
+   "en": "Minun"
+  },
+  "316": {
+   "de": "Schluppuck",
+   "en": "Gulpin"
+  },
+  "322": {
+   "de": "Camaub",
+   "en": "Numel"
+  },
+  "325": {
+   "de": "Spoink",
+   "en": "Spoink"
+  },
+  "343": {
+   "de": "Puppance",
+   "en": "Baltoy"
+  },
+  "345": {
+   "de": "Liliep",
+   "en": "Lileep"
+  },
+  "347": {
+   "de": "Anorith",
+   "en": "Anorith"
+  },
+  "359": {
+   "de": "Absol",
+   "en": "Absol"
+  },
+  "366": {
+   "de": "Perlu",
+   "en": "Clamperl"
+  },
+  "369": {
+   "de": "Relicanth",
+   "en": "Relicanth"
+  },
+  "396": {
+   "de": "Staralili",
+   "en": "Starly"
+  },
+  "399": {
+   "de": "Bidiza",
+   "en": "Bidoof"
+  },
+  "401": {
+   "de": "Zirpurze",
+   "en": "Kricketot"
+  },
+  "403": {
+   "de": "Sheinux",
+   "en": "Shinx"
+  },
+  "406": {
+   "de": "Knospi",
+   "en": "Budew"
+  },
+  "408": {
+   "de": "Koknodon",
+   "en": "Cranidos"
+  },
+  "410": {
+   "de": "Schilterus",
+   "en": "Shieldon"
+  },
+  "415": {
+   "de": "Wadribie",
+   "en": "Combee"
+  },
+  "418": {
+   "de": "Bamelin",
+   "en": "Buizel"
+  },
+  "427": {
+   "de": "Haspiror",
+   "en": "Buneary"
+  },
+  "433": {
+   "de": "Klingplim",
+   "en": "Chingling"
+  },
+  "436": {
+   "de": "Bronzel",
+   "en": "Bronzor"
+  },
+  "455": {
+   "de": "Venuflibis",
+   "en": "Carnivine"
   }
  }
 }

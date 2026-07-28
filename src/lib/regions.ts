@@ -143,6 +143,8 @@ const SHORT_VERSIONS: Record<string, string> = {
   leafgreen: 'LG',
   heartgold: 'HG',
   soulsilver: 'SS',
+  'omega-ruby': 'OR',
+  'alpha-sapphire': 'AS',
   'black-2': 'BLK 2',
   'white-2': 'WHT 2',
 };

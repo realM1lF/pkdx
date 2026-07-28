@@ -10,7 +10,7 @@
  * Canonical + hreflang URLs always use the production origin (never
  * window.location.origin) so prerendered pages are valid regardless of
  * the host they were rendered on. */
-import { localePath, stripLocalePrefix } from './locale-link';
+import { localePath, stripLocalePrefix, withTrailingSlash } from './locale-link';
 import type { Lang } from './i18n-data';
 import { resolveTypeParam, typeName } from './seo-types';
 import { ITEMS_SEO, localizeItemPath, resolveItemParam } from './seo-items';
@@ -412,9 +412,11 @@ export function restForLang(rest: string, lang: Lang): string {
   return localized;
 }
 
-/** Absolute canonical URL for a route + locale. */
+/** Absolute canonical URL for a route + locale (trailing-slash form — the
+ * canonical URL form site-wide, because Netlify's CDN normalizes every
+ * prerendered page to the slash form via 301). */
 export function canonicalUrl(lang: Lang, rest: string): string {
-  return `${SITE_URL}${localePath(lang, rest)}`;
+  return withTrailingSlash(`${SITE_URL}${localePath(lang, rest)}`);
 }
 
-export { stripLocalePrefix };
+export { stripLocalePrefix, withTrailingSlash };

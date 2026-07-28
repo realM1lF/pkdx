@@ -52,12 +52,12 @@ describe('seo-routes-hoenn', () => {
     }
   });
 
-  it('every generated node has encounter rows for at least one RSE version', () => {
+  it('every generated node has encounter rows for at least one RSE/ORAS version', () => {
     for (const [nodeId, data] of Object.entries(NODES)) {
       const versions = Object.keys(data.versions);
       expect(versions.length, nodeId).toBeGreaterThan(0);
       for (const v of versions) {
-        expect(['ruby', 'sapphire', 'emerald'], `${nodeId} version ${v}`).toContain(v);
+        expect(['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire'], `${nodeId} version ${v}`).toContain(v);
         expect(data.versions[v].length, `${nodeId} ${v}`).toBeGreaterThan(0);
         for (const g of data.versions[v]) expect(g.rows.length, `${nodeId} ${v}`).toBeGreaterThan(0);
       }
@@ -79,7 +79,11 @@ describe('seo-routes-hoenn', () => {
 
   it('rendered pages = slug table ∩ generated meta (routesHoenn)', () => {
     const meta = (metaGen as unknown as { routesHoenn: Record<string, unknown> }).routesHoenn;
-    expect(Object.keys(meta).sort()).toEqual(Object.keys(NODES).sort());
+    /* the snapshot may carry ORAS-only nodes (no SEO page — page framing is
+     * Smaragd, same rule as Kanto); every paged node must have data */
+    for (const nodeId of Object.keys(meta)) {
+      expect(NODES[nodeId], `meta node ${nodeId}`).toBeDefined();
+    }
     expect([...HOENN_ROUTE_PAGES].sort()).toEqual(
       Object.keys(HOENN_ROUTE_SLUGS)
         .filter((id) => meta[id])

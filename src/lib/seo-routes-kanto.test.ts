@@ -5,6 +5,8 @@
  * generated Kanto route pages must not change. This test pins both. */
 import { describe, expect, it } from 'vitest';
 import routesKantoJson from '@/data/routes-kanto.json';
+import kantoJson from '@/data/regions/kanto.json';
+import hoennJson from '@/data/regions/hoenn.json';
 import { KANTO_ROUTE_SLUGS, ROUTE_PAGES } from './seo-routes-kanto';
 
 /** Pinned slug table (de + en) per Kanto node — byte-level contract. */
@@ -62,13 +64,50 @@ describe('seo-routes-kanto (regression snapshot)', () => {
     expect(KANTO_ROUTE_SLUGS).toEqual(EXPECTED_SLUGS);
   });
 
-  it('generated route nodes are unchanged (43 nodes with FRLG encounters)', () => {
+  it('generated route pages are unchanged (43 nodes with FRLG encounters)', () => {
     /* slug table minus the three nodes without FRLG wild encounters
-     * (Pewter City, Lavender Town, Indigo Plateau have no encounter data) */
+     * (Pewter City, Lavender Town, Indigo Plateau have no FRLG data) */
     const expectedNodes = Object.keys(EXPECTED_SLUGS)
       .filter((id) => !['pewter-city', 'lavender-town', 'indigo-plateau'].includes(id))
       .sort();
-    expect(Object.keys(routesKantoJson.nodes).sort()).toEqual(expectedNodes);
+    /* the snapshot may carry additional cross-gen-only nodes (HGSS/GSC
+     * headbutt trees in Pewter City) — they feed the map data but get no
+     * SEO page, because the page framing is FRLG */
     expect([...ROUTE_PAGES].sort()).toEqual(expectedNodes);
+    for (const id of expectedNodes) {
+      expect(Object.keys(routesKantoJson.nodes), id).toContain(id);
+    }
+  });
+
+  /* cross-gen rollout: Kanto is the HGSS/GSC post-game, so the map contract
+   * and the SEO snapshot must carry those editions (LGPE deliberately out —
+   * different catch system, see cross-gen analysis AP5) */
+  it('kanto.json offers GSC + HGSS editions (map toggle / deep-link / Nuzlocke)', () => {
+    for (const v of ['gold', 'silver', 'crystal', 'heartgold', 'soulsilver']) {
+      expect(kantoJson.versions, v).toContain(v);
+    }
+  });
+
+  it('hoenn.json offers ORAS editions', () => {
+    for (const v of ['omega-ruby', 'alpha-sapphire']) {
+      expect(hoennJson.versions, v).toContain(v);
+    }
+  });
+
+  it('snapshot carries HGSS/GSC tables where the editions have encounters', () => {
+    interface NodeData { versions: Record<string, Array<{ rows: Array<{ id: number }> }>> }
+    const nodes = routesKantoJson.nodes as unknown as Record<string, NodeData>;
+    /* Route 1: HGSS table with the documented cross-gen additions
+     * (Sentret/Furret/Hoothoot — Bulbapedia, "Differences among generations") */
+    const r1 = nodes['kanto-route-1'];
+    expect(Object.keys(r1.versions).sort()).toEqual(
+      ['crystal', 'firered', 'gold', 'heartgold', 'leafgreen', 'silver', 'soulsilver'].sort(),
+    );
+    const hgSpecies = new Set(r1.versions.heartgold.flatMap((g) => g.rows.map((r) => r.id)));
+    for (const id of [163, 161, 162, 16, 19]) expect(hgSpecies.has(id), `HGSS species ${id}`).toBe(true);
+    /* Cerulean Cave did not exist in GSC — no GSC chips on that page */
+    const cc = nodes['cerulean-cave'];
+    expect(cc.versions.gold).toBeUndefined();
+    expect(cc.versions.heartgold).toBeDefined();
   });
 });

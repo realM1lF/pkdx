@@ -1,331 +1,41 @@
 {
  "nodes": {
-  "hoenn-route-101": {
-   "nameDe": "Route 101",
-   "nameEn": "Route 101",
-   "kind": "route",
-   "versions": {
-    "ruby": [
-     {
-      "areaSlug": "hoenn-route-101-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 252,
-        "slug": "treecko",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 255,
-        "slug": "torchic",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 258,
-        "slug": "mudkip",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 2,
-        "maxLevel": 3
-       },
-       {
-        "id": 265,
-        "slug": "wurmple",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 2,
-        "maxLevel": 3
-       },
-       {
-        "id": 261,
-        "slug": "poochyena",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 2,
-        "maxLevel": 3
-       }
-      ]
-     }
-    ],
-    "sapphire": [
-     {
-      "areaSlug": "hoenn-route-101-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 252,
-        "slug": "treecko",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 255,
-        "slug": "torchic",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 258,
-        "slug": "mudkip",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 2,
-        "maxLevel": 3
-       },
-       {
-        "id": 265,
-        "slug": "wurmple",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 2,
-        "maxLevel": 3
-       },
-       {
-        "id": 261,
-        "slug": "poochyena",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 2,
-        "maxLevel": 3
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "hoenn-route-101-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 252,
-        "slug": "treecko",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 255,
-        "slug": "torchic",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 258,
-        "slug": "mudkip",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       },
-       {
-        "id": 261,
-        "slug": "poochyena",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 2,
-        "maxLevel": 3
-       },
-       {
-        "id": 265,
-        "slug": "wurmple",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 2,
-        "maxLevel": 3
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 2,
-        "maxLevel": 3
-       }
-      ]
-     }
-    ]
-   }
-  },
-  "petalburg-city": {
-   "nameDe": "Blütenburg City",
-   "nameEn": "Petalburg City",
+  "littleroot-town": {
+   "nameDe": "Wurzelheim",
+   "nameEn": "Littleroot Town",
    "kind": "city",
    "versions": {
-    "ruby": [
-     {
-      "areaSlug": "petalburg-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 183,
-        "slug": "marill",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 341,
-        "slug": "corphish",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 118,
-        "slug": "goldeen",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ],
-    "sapphire": [
-     {
-      "areaSlug": "petalburg-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 183,
-        "slug": "marill",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 341,
-        "slug": "corphish",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 118,
-        "slug": "goldeen",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ],
     "emerald": [
      {
-      "areaSlug": "petalburg-city-area",
+      "areaSlug": "littleroot-town-area",
       "label": "MAIN",
       "rows": [
        {
-        "id": 183,
-        "slug": "marill",
-        "method": "SURF",
-        "isStatic": false,
+        "id": 152,
+        "slug": "chikorita",
+        "method": "STATIC",
+        "isStatic": true,
         "chance": 100,
         "minLevel": 5,
-        "maxLevel": 35
+        "maxLevel": 5
        },
        {
-        "id": 341,
-        "slug": "corphish",
-        "method": "FISH",
-        "isStatic": false,
+        "id": 155,
+        "slug": "cyndaquil",
+        "method": "STATIC",
+        "isStatic": true,
         "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
+        "minLevel": 5,
+        "maxLevel": 5
        },
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
+        "id": 158,
+        "slug": "totodile",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
         "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 118,
-        "slug": "goldeen",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
+        "maxLevel": 5
        }
       ]
      }
@@ -657,17 +367,273 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-102-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 273,
+        "slug": "seedot",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 280,
+        "slug": "ralts",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-102-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 270,
+        "slug": "lotad",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 280,
+        "slug": "ralts",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
+       }
+      ]
+     }
     ]
    }
   },
-  "littleroot-town": {
-   "nameDe": "Wurzelheim",
-   "nameEn": "Littleroot Town",
-   "kind": "city",
+  "hoenn-route-101": {
+   "nameDe": "Route 101",
+   "nameEn": "Route 101",
+   "kind": "route",
    "versions": {
+    "ruby": [
+     {
+      "areaSlug": "hoenn-route-101-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 252,
+        "slug": "treecko",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 255,
+        "slug": "torchic",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 258,
+        "slug": "mudkip",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 45,
+        "minLevel": 2,
+        "maxLevel": 3
+       },
+       {
+        "id": 265,
+        "slug": "wurmple",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 45,
+        "minLevel": 2,
+        "maxLevel": 3
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 2,
+        "maxLevel": 3
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "hoenn-route-101-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 252,
+        "slug": "treecko",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 255,
+        "slug": "torchic",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 258,
+        "slug": "mudkip",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 45,
+        "minLevel": 2,
+        "maxLevel": 3
+       },
+       {
+        "id": 265,
+        "slug": "wurmple",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 45,
+        "minLevel": 2,
+        "maxLevel": 3
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 2,
+        "maxLevel": 3
+       }
+      ]
+     }
+    ],
     "emerald": [
      {
-      "areaSlug": "littleroot-town-area",
+      "areaSlug": "hoenn-route-101-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 252,
+        "slug": "treecko",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 255,
+        "slug": "torchic",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 258,
+        "slug": "mudkip",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 45,
+        "minLevel": 2,
+        "maxLevel": 3
+       },
+       {
+        "id": 265,
+        "slug": "wurmple",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 45,
+        "minLevel": 2,
+        "maxLevel": 3
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 2,
+        "maxLevel": 3
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-101-area",
       "label": "MAIN",
       "rows": [
        {
@@ -696,6 +662,378 @@
         "chance": 100,
         "minLevel": 5,
         "maxLevel": 5
+       },
+       {
+        "id": 252,
+        "slug": "treecko",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 255,
+        "slug": "torchic",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 258,
+        "slug": "mudkip",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 387,
+        "slug": "turtwig",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 390,
+        "slug": "chimchar",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 393,
+        "slug": "piplup",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 495,
+        "slug": "snivy",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 498,
+        "slug": "tepig",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 501,
+        "slug": "oshawott",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-101-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 152,
+        "slug": "chikorita",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 155,
+        "slug": "cyndaquil",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 158,
+        "slug": "totodile",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 252,
+        "slug": "treecko",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 255,
+        "slug": "torchic",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 258,
+        "slug": "mudkip",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 387,
+        "slug": "turtwig",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 390,
+        "slug": "chimchar",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 393,
+        "slug": "piplup",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 495,
+        "slug": "snivy",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 498,
+        "slug": "tepig",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 501,
+        "slug": "oshawott",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "petalburg-city": {
+   "nameDe": "Blütenburg City",
+   "nameEn": "Petalburg City",
+   "kind": "city",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "petalburg-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 341,
+        "slug": "corphish",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 118,
+        "slug": "goldeen",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "petalburg-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 341,
+        "slug": "corphish",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 118,
+        "slug": "goldeen",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "petalburg-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 341,
+        "slug": "corphish",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 118,
+        "slug": "goldeen",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
        }
       ]
      }
@@ -916,6 +1254,433 @@
         "chance": 5,
         "minLevel": 5,
         "maxLevel": 6
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "petalburg-woods-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 265,
+        "slug": "wurmple",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 3,
+        "maxLevel": 3
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 3,
+        "maxLevel": 3
+       },
+       {
+        "id": 285,
+        "slug": "shroomish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 3,
+        "maxLevel": 3
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "petalburg-woods-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 265,
+        "slug": "wurmple",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 3,
+        "maxLevel": 3
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 3,
+        "maxLevel": 3
+       },
+       {
+        "id": 285,
+        "slug": "shroomish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 3,
+        "maxLevel": 3
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "rustboro-city": {
+   "nameDe": "Metarost City",
+   "nameEn": "Rustboro City",
+   "kind": "city",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "rustboro-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 296,
+        "slug": "makuhita",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 100
+       },
+       {
+        "id": 345,
+        "slug": "lileep",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       },
+       {
+        "id": 347,
+        "slug": "anorith",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "rustboro-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 296,
+        "slug": "makuhita",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 100
+       },
+       {
+        "id": 345,
+        "slug": "lileep",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       },
+       {
+        "id": 347,
+        "slug": "anorith",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "rustboro-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 273,
+        "slug": "seedot",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 4,
+        "maxLevel": 100
+       },
+       {
+        "id": 345,
+        "slug": "lileep",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       },
+       {
+        "id": 347,
+        "slug": "anorith",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "hoenn-route-116": {
+   "nameDe": "Route 116",
+   "nameEn": "Route 116",
+   "kind": "route",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "hoenn-route-116-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 293,
+        "slug": "whismur",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 6,
+        "maxLevel": 7
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 28,
+        "minLevel": 6,
+        "maxLevel": 8
+       },
+       {
+        "id": 276,
+        "slug": "taillow",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 8
+       },
+       {
+        "id": 290,
+        "slug": "nincada",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 7
+       },
+       {
+        "id": 300,
+        "slug": "skitty",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 2,
+        "minLevel": 7,
+        "maxLevel": 8
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "hoenn-route-116-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 293,
+        "slug": "whismur",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 6,
+        "maxLevel": 7
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 28,
+        "minLevel": 6,
+        "maxLevel": 8
+       },
+       {
+        "id": 276,
+        "slug": "taillow",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 8
+       },
+       {
+        "id": 290,
+        "slug": "nincada",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 7
+       },
+       {
+        "id": 300,
+        "slug": "skitty",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 2,
+        "minLevel": 7,
+        "maxLevel": 8
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "hoenn-route-116-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 28,
+        "minLevel": 6,
+        "maxLevel": 8
+       },
+       {
+        "id": 276,
+        "slug": "taillow",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 8
+       },
+       {
+        "id": 290,
+        "slug": "nincada",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 7
+       },
+       {
+        "id": 293,
+        "slug": "whismur",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 63,
+        "slug": "abra",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 300,
+        "slug": "skitty",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 2,
+        "minLevel": 7,
+        "maxLevel": 8
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-116-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 4,
+        "maxLevel": 4
+       },
+       {
+        "id": 290,
+        "slug": "nincada",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 4,
+        "maxLevel": 4
+       },
+       {
+        "id": 300,
+        "slug": "skitty",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 4,
+        "maxLevel": 4
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-116-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 4,
+        "maxLevel": 4
+       },
+       {
+        "id": 290,
+        "slug": "nincada",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 4,
+        "maxLevel": 4
+       },
+       {
+        "id": 300,
+        "slug": "skitty",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 4,
+        "maxLevel": 4
        }
       ]
      }
@@ -1148,290 +1913,103 @@
        }
       ]
      }
-    ]
-   }
-  },
-  "hoenn-route-116": {
-   "nameDe": "Route 116",
-   "nameEn": "Route 116",
-   "kind": "route",
-   "versions": {
-    "ruby": [
+    ],
+    "omega-ruby": [
      {
-      "areaSlug": "hoenn-route-116-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-route-104-north-oras",
+      "label": "NORTH ORAS",
       "rows": [
-       {
-        "id": 293,
-        "slug": "whismur",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 6,
-        "maxLevel": 7
-       },
        {
         "id": 263,
         "slug": "zigzagoon",
-        "method": "WALK",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 28,
-        "minLevel": 6,
-        "maxLevel": 8
+        "chance": 95,
+        "minLevel": 2,
+        "maxLevel": 2
        },
        {
         "id": 276,
         "slug": "taillow",
-        "method": "WALK",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 8
-       },
-       {
-        "id": 290,
-        "slug": "nincada",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 7
-       },
-       {
-        "id": 300,
-        "slug": "skitty",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 2,
-        "minLevel": 7,
-        "maxLevel": 8
+        "chance": 5,
+        "minLevel": 3,
+        "maxLevel": 3
        }
       ]
-     }
-    ],
-    "sapphire": [
+     },
      {
-      "areaSlug": "hoenn-route-116-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-route-104-south-oras",
+      "label": "SOUTH ORAS",
       "rows": [
-       {
-        "id": 293,
-        "slug": "whismur",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 6,
-        "maxLevel": 7
-       },
        {
         "id": 263,
         "slug": "zigzagoon",
-        "method": "WALK",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 28,
-        "minLevel": 6,
-        "maxLevel": 8
+        "chance": 95,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-104-north-oras",
+      "label": "NORTH ORAS",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 2,
+        "maxLevel": 2
        },
        {
         "id": 276,
         "slug": "taillow",
-        "method": "WALK",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 8
-       },
-       {
-        "id": 290,
-        "slug": "nincada",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 7
-       },
-       {
-        "id": 300,
-        "slug": "skitty",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 2,
-        "minLevel": 7,
-        "maxLevel": 8
+        "chance": 5,
+        "minLevel": 3,
+        "maxLevel": 3
        }
       ]
-     }
-    ],
-    "emerald": [
+     },
      {
-      "areaSlug": "hoenn-route-116-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-route-104-south-oras",
+      "label": "SOUTH ORAS",
       "rows": [
        {
-        "id": 261,
-        "slug": "poochyena",
-        "method": "WALK",
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 28,
-        "minLevel": 6,
-        "maxLevel": 8
+        "chance": 95,
+        "minLevel": 2,
+        "maxLevel": 2
        },
        {
-        "id": 276,
-        "slug": "taillow",
-        "method": "WALK",
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 8
-       },
-       {
-        "id": 290,
-        "slug": "nincada",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 7
-       },
-       {
-        "id": 293,
-        "slug": "whismur",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 6,
-        "maxLevel": 6
-       },
-       {
-        "id": 63,
-        "slug": "abra",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 7,
-        "maxLevel": 7
-       },
-       {
-        "id": 300,
-        "slug": "skitty",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 2,
-        "minLevel": 7,
-        "maxLevel": 8
-       }
-      ]
-     }
-    ]
-   }
-  },
-  "rustboro-city": {
-   "nameDe": "Metarost City",
-   "nameEn": "Rustboro City",
-   "kind": "city",
-   "versions": {
-    "ruby": [
-     {
-      "areaSlug": "rustboro-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 296,
-        "slug": "makuhita",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 100
-       },
-       {
-        "id": 345,
-        "slug": "lileep",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 20,
-        "maxLevel": 20
-       },
-       {
-        "id": 347,
-        "slug": "anorith",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 20,
-        "maxLevel": 20
-       }
-      ]
-     }
-    ],
-    "sapphire": [
-     {
-      "areaSlug": "rustboro-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 296,
-        "slug": "makuhita",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 100
-       },
-       {
-        "id": 345,
-        "slug": "lileep",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 20,
-        "maxLevel": 20
-       },
-       {
-        "id": 347,
-        "slug": "anorith",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 20,
-        "maxLevel": 20
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "rustboro-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 273,
-        "slug": "seedot",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 4,
-        "maxLevel": 100
-       },
-       {
-        "id": 345,
-        "slug": "lileep",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 20,
-        "maxLevel": 20
-       },
-       {
-        "id": 347,
-        "slug": "anorith",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 20,
-        "maxLevel": 20
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
        }
       ]
      }
@@ -1490,6 +2068,233 @@
         "chance": 100,
         "minLevel": 5,
         "maxLevel": 8
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "rusturf-tunnel-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 293,
+        "slug": "whismur",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "rusturf-tunnel-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 293,
+        "slug": "whismur",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "hoenn-route-105": {
+   "nameDe": "Route 105",
+   "nameEn": "Route 105",
+   "kind": "route",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "hoenn-route-105-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "hoenn-route-105-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "hoenn-route-105-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
        }
       ]
      }
@@ -2075,207 +2880,14 @@
     ]
    }
   },
-  "slateport-city": {
-   "nameDe": "Graphitport City",
-   "nameEn": "Slateport City",
-   "kind": "city",
-   "versions": {
-    "ruby": [
-     {
-      "areaSlug": "slateport-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ],
-    "sapphire": [
-     {
-      "areaSlug": "slateport-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "slateport-city-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ]
-   }
-  },
-  "hoenn-route-105": {
-   "nameDe": "Route 105",
-   "nameEn": "Route 105",
+  "hoenn-route-110": {
+   "nameDe": "Route 110",
+   "nameEn": "Route 110",
    "kind": "route",
    "versions": {
     "ruby": [
      {
-      "areaSlug": "hoenn-route-105-area",
+      "areaSlug": "hoenn-route-110-area",
       "label": "MAIN",
       "rows": [
        {
@@ -2324,6 +2936,60 @@
         "maxLevel": 30
        },
        {
+        "id": 309,
+        "slug": "electrike",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 12,
+        "maxLevel": 13
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 312,
+        "slug": "minun",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 316,
+        "slug": "gulpin",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 12,
+        "maxLevel": 13
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 8,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
         "id": 279,
         "slug": "pelipper",
         "method": "SURF",
@@ -2331,13 +2997,22 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
+       },
+       {
+        "id": 311,
+        "slug": "plusle",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 2,
+        "minLevel": 12,
+        "maxLevel": 13
        }
       ]
      }
     ],
     "sapphire": [
      {
-      "areaSlug": "hoenn-route-105-area",
+      "areaSlug": "hoenn-route-110-area",
       "label": "MAIN",
       "rows": [
        {
@@ -2386,6 +3061,60 @@
         "maxLevel": 30
        },
        {
+        "id": 309,
+        "slug": "electrike",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 12,
+        "maxLevel": 13
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 311,
+        "slug": "plusle",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 316,
+        "slug": "gulpin",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 12,
+        "maxLevel": 13
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 8,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
         "id": 279,
         "slug": "pelipper",
         "method": "SURF",
@@ -2393,13 +3122,22 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
+       },
+       {
+        "id": 312,
+        "slug": "minun",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 2,
+        "minLevel": 12,
+        "maxLevel": 13
        }
       ]
      }
     ],
     "emerald": [
      {
-      "areaSlug": "hoenn-route-105-area",
+      "areaSlug": "hoenn-route-110-area",
       "label": "MAIN",
       "rows": [
        {
@@ -2448,6 +3186,60 @@
         "maxLevel": 30
        },
        {
+        "id": 309,
+        "slug": "electrike",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 12,
+        "maxLevel": 13
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 20,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 312,
+        "slug": "minun",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 316,
+        "slug": "gulpin",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 12,
+        "maxLevel": 13
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 8,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
         "id": 279,
         "slug": "pelipper",
         "method": "SURF",
@@ -2455,6 +3247,85 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
+       },
+       {
+        "id": 311,
+        "slug": "plusle",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 2,
+        "minLevel": 12,
+        "maxLevel": 13
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-110-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 81,
+        "slug": "magnemite",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 312,
+        "slug": "minun",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 311,
+        "slug": "plusle",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-110-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 81,
+        "slug": "magnemite",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 311,
+        "slug": "plusle",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 312,
+        "slug": "minun",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 6,
+        "maxLevel": 6
        }
       ]
      }
@@ -3056,385 +3927,228 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "granite-cave-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 296,
+        "slug": "makuhita",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 74,
+        "slug": "geodude",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     },
+     {
+      "areaSlug": "granite-cave-b1f",
+      "label": "B1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     },
+     {
+      "areaSlug": "granite-cave-b2f",
+      "label": "B2F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 303,
+        "slug": "mawile",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "granite-cave-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 296,
+        "slug": "makuhita",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 74,
+        "slug": "geodude",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     },
+     {
+      "areaSlug": "granite-cave-b1f",
+      "label": "B1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     },
+     {
+      "areaSlug": "granite-cave-b2f",
+      "label": "B2F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 6,
+        "maxLevel": 6
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 6,
+        "maxLevel": 6
+       }
+      ]
+     }
     ]
    }
   },
-  "hoenn-route-110": {
-   "nameDe": "Route 110",
-   "nameEn": "Route 110",
-   "kind": "route",
+  "verdanturf-town": {
+   "nameDe": "Wiesenflur",
+   "nameEn": "Verdanturf Town",
+   "kind": "city",
    "versions": {
-    "ruby": [
+    "omega-ruby": [
      {
-      "areaSlug": "hoenn-route-110-area",
-      "label": "MAIN",
+      "areaSlug": "verdanturf-town-contest-hall",
+      "label": "CONTEST HALL",
       "rows": [
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
+        "id": 25,
+        "slug": "pikachu",
+        "method": "STATIC",
+        "isStatic": true,
         "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 309,
-        "slug": "electrike",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 12,
-        "maxLevel": 13
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 12,
-        "maxLevel": 12
-       },
-       {
-        "id": 312,
-        "slug": "minun",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 13,
-        "maxLevel": 13
-       },
-       {
-        "id": 316,
-        "slug": "gulpin",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 12,
-        "maxLevel": 13
-       },
-       {
-        "id": 43,
-        "slug": "oddish",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 13,
-        "maxLevel": 13
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 8,
-        "minLevel": 12,
-        "maxLevel": 12
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 311,
-        "slug": "plusle",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 2,
-        "minLevel": 12,
-        "maxLevel": 13
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
     ],
-    "sapphire": [
+    "alpha-sapphire": [
      {
-      "areaSlug": "hoenn-route-110-area",
-      "label": "MAIN",
+      "areaSlug": "verdanturf-town-contest-hall",
+      "label": "CONTEST HALL",
       "rows": [
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
+        "id": 25,
+        "slug": "pikachu",
+        "method": "STATIC",
+        "isStatic": true,
         "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 309,
-        "slug": "electrike",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 12,
-        "maxLevel": 13
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 12,
-        "maxLevel": 12
-       },
-       {
-        "id": 311,
-        "slug": "plusle",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 13,
-        "maxLevel": 13
-       },
-       {
-        "id": 316,
-        "slug": "gulpin",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 12,
-        "maxLevel": 13
-       },
-       {
-        "id": 43,
-        "slug": "oddish",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 13,
-        "maxLevel": 13
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 8,
-        "minLevel": 12,
-        "maxLevel": 12
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 312,
-        "slug": "minun",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 2,
-        "minLevel": 12,
-        "maxLevel": 13
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "hoenn-route-110-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 100,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 309,
-        "slug": "electrike",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 12,
-        "maxLevel": 13
-       },
-       {
-        "id": 261,
-        "slug": "poochyena",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 20,
-        "minLevel": 12,
-        "maxLevel": 12
-       },
-       {
-        "id": 312,
-        "slug": "minun",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 13,
-        "maxLevel": 13
-       },
-       {
-        "id": 316,
-        "slug": "gulpin",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 12,
-        "maxLevel": 13
-       },
-       {
-        "id": 43,
-        "slug": "oddish",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 13,
-        "maxLevel": 13
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 8,
-        "minLevel": 12,
-        "maxLevel": 12
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 311,
-        "slug": "plusle",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 2,
-        "minLevel": 12,
-        "maxLevel": 13
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
@@ -3736,6 +4450,40 @@
         "chance": 1,
         "minLevel": 20,
         "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-111-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 27,
+        "slug": "sandshrew",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 11,
+        "maxLevel": 11
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-111-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 27,
+        "slug": "sandshrew",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 11,
+        "maxLevel": 11
        }
       ]
      }
@@ -4085,6 +4833,321 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-117-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 315,
+        "slug": "roselia",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 7,
+        "maxLevel": 7
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-117-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 315,
+        "slug": "roselia",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 7,
+        "maxLevel": 7
+       },
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 7,
+        "maxLevel": 7
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "slateport-city": {
+   "nameDe": "Graphitport City",
+   "nameEn": "Slateport City",
+   "kind": "city",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "slateport-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "slateport-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "slateport-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "slateport-city-contest-hall",
+      "label": "CONTEST HALL",
+      "rows": [
+       {
+        "id": 25,
+        "slug": "pikachu",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "slateport-city-contest-hall",
+      "label": "CONTEST HALL",
+      "rows": [
+       {
+        "id": 25,
+        "slug": "pikachu",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
     ]
    }
   },
@@ -4167,6 +5230,58 @@
         "chance": 25,
         "minLevel": 14,
         "maxLevel": 16
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-112-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 322,
+        "slug": "numel",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 65,
+        "minLevel": 8,
+        "maxLevel": 8
+       },
+       {
+        "id": 66,
+        "slug": "machop",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 8,
+        "maxLevel": 8
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-112-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 322,
+        "slug": "numel",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 65,
+        "minLevel": 8,
+        "maxLevel": 8
+       },
+       {
+        "id": 66,
+        "slug": "machop",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 8,
+        "maxLevel": 8
        }
       ]
      }
@@ -4363,6 +5478,76 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "fiery-path-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 322,
+        "slug": "numel",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 8,
+        "maxLevel": 8
+       },
+       {
+        "id": 109,
+        "slug": "koffing",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 8,
+        "maxLevel": 8
+       },
+       {
+        "id": 218,
+        "slug": "slugma",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 8,
+        "maxLevel": 8
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "fiery-path-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 322,
+        "slug": "numel",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 8,
+        "maxLevel": 8
+       },
+       {
+        "id": 88,
+        "slug": "grimer",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 8,
+        "maxLevel": 8
+       },
+       {
+        "id": 218,
+        "slug": "slugma",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 8,
+        "maxLevel": 8
+       }
+      ]
+     }
     ]
    }
   },
@@ -4475,61 +5660,96 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-113-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 327,
+        "slug": "spinda",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 9,
+        "maxLevel": 9
+       },
+       {
+        "id": 227,
+        "slug": "skarmory",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 9,
+        "maxLevel": 9
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-113-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 327,
+        "slug": "spinda",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 9,
+        "maxLevel": 9
+       },
+       {
+        "id": 227,
+        "slug": "skarmory",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 9,
+        "maxLevel": 9
+       }
+      ]
+     }
     ]
    }
   },
-  "lavaridge-town": {
-   "nameDe": "Bad Lavastadt",
-   "nameEn": "Lavaridge Town",
+  "fallarbor-town": {
+   "nameDe": "Laubwechselfeld",
+   "nameEn": "Fallarbor Town",
    "kind": "city",
    "versions": {
-    "ruby": [
+    "omega-ruby": [
      {
-      "areaSlug": "lavaridge-town-area",
-      "label": "MAIN",
+      "areaSlug": "fallarbor-town-contest-hall",
+      "label": "CONTEST HALL",
       "rows": [
        {
-        "id": 360,
-        "slug": "wynaut",
+        "id": 25,
+        "slug": "pikachu",
         "method": "STATIC",
         "isStatic": true,
         "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
     ],
-    "sapphire": [
+    "alpha-sapphire": [
      {
-      "areaSlug": "lavaridge-town-area",
-      "label": "MAIN",
+      "areaSlug": "fallarbor-town-contest-hall",
+      "label": "CONTEST HALL",
       "rows": [
        {
-        "id": 360,
-        "slug": "wynaut",
+        "id": 25,
+        "slug": "pikachu",
         "method": "STATIC",
         "isStatic": true,
         "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "lavaridge-town-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 360,
-        "slug": "wynaut",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
@@ -5482,6 +6702,148 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "meteor-falls-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 9,
+        "maxLevel": 9
+       }
+      ]
+     },
+     {
+      "areaSlug": "meteor-falls-back",
+      "label": "BACK",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     },
+     {
+      "areaSlug": "meteor-falls-b1f",
+      "label": "B1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     },
+     {
+      "areaSlug": "meteor-falls-backsmall-room",
+      "label": "BACKSMALL ROOM",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 20,
+        "maxLevel": 20
+       },
+       {
+        "id": 371,
+        "slug": "bagon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "meteor-falls-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 9,
+        "maxLevel": 9
+       }
+      ]
+     },
+     {
+      "areaSlug": "meteor-falls-back",
+      "label": "BACK",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     },
+     {
+      "areaSlug": "meteor-falls-b1f",
+      "label": "B1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     },
+     {
+      "areaSlug": "meteor-falls-backsmall-room",
+      "label": "BACKSMALL ROOM",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 95,
+        "minLevel": 20,
+        "maxLevel": 20
+       },
+       {
+        "id": 371,
+        "slug": "bagon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
     ]
    }
   },
@@ -5810,6 +7172,638 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-114-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 9,
+        "maxLevel": 9
+       },
+       {
+        "id": 273,
+        "slug": "seedot",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 9,
+        "maxLevel": 9
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-114-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 9,
+        "maxLevel": 9
+       },
+       {
+        "id": 270,
+        "slug": "lotad",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 9,
+        "maxLevel": 9
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "lavaridge-town": {
+   "nameDe": "Bad Lavastadt",
+   "nameEn": "Lavaridge Town",
+   "kind": "city",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "lavaridge-town-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 360,
+        "slug": "wynaut",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "lavaridge-town-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 360,
+        "slug": "wynaut",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "lavaridge-town-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 360,
+        "slug": "wynaut",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "lavaridge-town-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 175,
+        "slug": "togepi",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 1,
+        "maxLevel": 1
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 40,
+        "maxLevel": 40
+       },
+       {
+        "id": 360,
+        "slug": "wynaut",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 1,
+        "maxLevel": 1
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "lavaridge-town-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 175,
+        "slug": "togepi",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 1,
+        "maxLevel": 1
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 40,
+        "maxLevel": 40
+       },
+       {
+        "id": 360,
+        "slug": "wynaut",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 1,
+        "maxLevel": 1
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "hoenn-route-118": {
+   "nameDe": "Route 118",
+   "nameEn": "Route 118",
+   "kind": "route",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "hoenn-route-118-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 318,
+        "slug": "carvanha",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 24,
+        "maxLevel": 26
+       },
+       {
+        "id": 309,
+        "slug": "electrike",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 24,
+        "maxLevel": 26
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 19,
+        "minLevel": 25,
+        "maxLevel": 27
+       },
+       {
+        "id": 264,
+        "slug": "linoone",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 26,
+        "maxLevel": 26
+       },
+       {
+        "id": 310,
+        "slug": "manectric",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 26,
+        "maxLevel": 26
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 1,
+        "minLevel": 25,
+        "maxLevel": 25
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "hoenn-route-118-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 318,
+        "slug": "carvanha",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 24,
+        "maxLevel": 26
+       },
+       {
+        "id": 309,
+        "slug": "electrike",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 24,
+        "maxLevel": 26
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 19,
+        "minLevel": 25,
+        "maxLevel": 27
+       },
+       {
+        "id": 264,
+        "slug": "linoone",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 26,
+        "maxLevel": 26
+       },
+       {
+        "id": 310,
+        "slug": "manectric",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 26,
+        "maxLevel": 26
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 1,
+        "minLevel": 25,
+        "maxLevel": 25
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "hoenn-route-118-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 318,
+        "slug": "carvanha",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 24,
+        "maxLevel": 26
+       },
+       {
+        "id": 309,
+        "slug": "electrike",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 24,
+        "maxLevel": 26
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 19,
+        "minLevel": 25,
+        "maxLevel": 27
+       },
+       {
+        "id": 264,
+        "slug": "linoone",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 26,
+        "maxLevel": 26
+       },
+       {
+        "id": 310,
+        "slug": "manectric",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 10,
+        "minLevel": 26,
+        "maxLevel": 26
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 1,
+        "minLevel": 25,
+        "maxLevel": 25
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-118-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 309,
+        "slug": "electrike",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 12,
+        "maxLevel": 12
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-118-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 309,
+        "slug": "electrike",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 12,
+        "maxLevel": 12
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 12,
+        "maxLevel": 12
+       }
+      ]
+     }
     ]
    }
   },
@@ -6108,6 +8102,76 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-103-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-103-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 263,
+        "slug": "zigzagoon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 261,
+        "slug": "poochyena",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 2,
+        "maxLevel": 2
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 2,
+        "maxLevel": 2
        }
       ]
      }
@@ -6538,385 +8602,85 @@
        }
       ]
      }
-    ]
-   }
-  },
-  "hoenn-route-118": {
-   "nameDe": "Route 118",
-   "nameEn": "Route 118",
-   "kind": "route",
-   "versions": {
-    "ruby": [
+    ],
+    "omega-ruby": [
      {
-      "areaSlug": "hoenn-route-118-area",
+      "areaSlug": "hoenn-route-119-area",
       "label": "MAIN",
       "rows": [
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 318,
-        "slug": "carvanha",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 24,
-        "maxLevel": 26
-       },
-       {
-        "id": 309,
-        "slug": "electrike",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 24,
-        "maxLevel": 26
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 19,
-        "minLevel": 25,
-        "maxLevel": 27
-       },
-       {
-        "id": 264,
-        "slug": "linoone",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 26,
-        "maxLevel": 26
-       },
-       {
-        "id": 310,
-        "slug": "manectric",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 26,
-        "maxLevel": 26
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
         "id": 352,
         "slug": "kecleon",
-        "method": "WALK",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 30,
+        "maxLevel": 30
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 1,
-        "minLevel": 25,
-        "maxLevel": 25
+        "chance": 100,
+        "minLevel": 12,
+        "maxLevel": 12
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-route-119-weather-institute",
+      "label": "WEATHER INSTITUTE",
+      "rows": [
+       {
+        "id": 351,
+        "slug": "castform",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 30,
+        "maxLevel": 30
        }
       ]
      }
     ],
-    "sapphire": [
+    "alpha-sapphire": [
      {
-      "areaSlug": "hoenn-route-118-area",
+      "areaSlug": "hoenn-route-119-area",
       "label": "MAIN",
       "rows": [
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 318,
-        "slug": "carvanha",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 24,
-        "maxLevel": 26
-       },
-       {
-        "id": 309,
-        "slug": "electrike",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 24,
-        "maxLevel": 26
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 19,
-        "minLevel": 25,
-        "maxLevel": 27
-       },
-       {
-        "id": 264,
-        "slug": "linoone",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 26,
-        "maxLevel": 26
-       },
-       {
-        "id": 310,
-        "slug": "manectric",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 26,
-        "maxLevel": 26
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
         "id": 352,
         "slug": "kecleon",
-        "method": "WALK",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 30,
+        "maxLevel": 30
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 1,
-        "minLevel": 25,
-        "maxLevel": 25
+        "chance": 100,
+        "minLevel": 12,
+        "maxLevel": 12
        }
       ]
-     }
-    ],
-    "emerald": [
+     },
      {
-      "areaSlug": "hoenn-route-118-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-route-119-weather-institute",
+      "label": "WEATHER INSTITUTE",
       "rows": [
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 318,
-        "slug": "carvanha",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
+        "id": 351,
+        "slug": "castform",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
         "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
         "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 263,
-        "slug": "zigzagoon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 24,
-        "maxLevel": 26
-       },
-       {
-        "id": 309,
-        "slug": "electrike",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 24,
-        "maxLevel": 26
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 19,
-        "minLevel": 25,
-        "maxLevel": 27
-       },
-       {
-        "id": 264,
-        "slug": "linoone",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 26,
-        "maxLevel": 26
-       },
-       {
-        "id": 310,
-        "slug": "manectric",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 10,
-        "minLevel": 26,
-        "maxLevel": 26
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 352,
-        "slug": "kecleon",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 1,
-        "minLevel": 25,
-        "maxLevel": 25
        }
       ]
      }
@@ -7360,6 +9124,94 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-120-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 300,
+        "minLevel": 30,
+        "maxLevel": 30
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "OTHER",
+        "isStatic": true,
+        "chance": 5,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 13,
+        "maxLevel": 13
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-120-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 300,
+        "minLevel": 30,
+        "maxLevel": 30
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "OTHER",
+        "isStatic": true,
+        "chance": 5,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 13,
+        "maxLevel": 13
+       },
+       {
+        "id": 183,
+        "slug": "marill",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 13,
+        "maxLevel": 13
+       }
+      ]
+     }
     ]
    }
   },
@@ -7742,6 +9594,76 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "hoenn-route-121-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "hoenn-route-121-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 352,
+        "slug": "kecleon",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     }
     ]
    }
   },
@@ -7959,6 +9881,40 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "lilycove-city-contest-hall",
+      "label": "CONTEST HALL",
+      "rows": [
+       {
+        "id": 25,
+        "slug": "pikachu",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "lilycove-city-contest-hall",
+      "label": "CONTEST HALL",
+      "rows": [
+       {
+        "id": 25,
+        "slug": "pikachu",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
@@ -9247,322 +11203,271 @@
        }
       ]
      }
-    ]
-   }
-  },
-  "hoenn-route-124": {
-   "nameDe": "Route 124",
-   "nameEn": "Route 124",
-   "kind": "route",
-   "versions": {
-    "ruby": [
+    ],
+    "omega-ruby": [
      {
-      "areaSlug": "hoenn-route-124-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-safari-zone-nwmach-bike-area",
+      "label": "NWMACH BIKE",
       "rows": [
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
+        "id": 84,
+        "slug": "doduo",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
+        "id": 54,
+        "slug": "psyduck",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
+        "minLevel": 15,
+        "maxLevel": 15
        }
       ]
      },
      {
-      "areaSlug": "hoenn-route-124-underwater",
-      "label": "UNDERWATER",
+      "areaSlug": "hoenn-safari-zone-neacro-bike-area",
+      "label": "NEACRO BIKE",
       "rows": [
        {
-        "id": 366,
-        "slug": "clamperl",
+        "id": 84,
+        "slug": "doduo",
         "method": "OTHER",
         "isStatic": false,
-        "chance": 65,
-        "minLevel": 20,
-        "maxLevel": 35
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 170,
-        "slug": "chinchou",
+        "id": 43,
+        "slug": "oddish",
         "method": "OTHER",
         "isStatic": false,
-        "chance": 30,
-        "minLevel": 20,
-        "maxLevel": 30
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 369,
-        "slug": "relicanth",
+        "id": 54,
+        "slug": "psyduck",
         "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 30,
-        "maxLevel": 35
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-safari-zone-sw",
+      "label": "SW",
+      "rows": [
+       {
+        "id": 84,
+        "slug": "doduo",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 54,
+        "slug": "psyduck",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-safari-zone-se",
+      "label": "SE",
+      "rows": [
+       {
+        "id": 84,
+        "slug": "doduo",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 54,
+        "slug": "psyduck",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
        }
       ]
      }
     ],
-    "sapphire": [
+    "alpha-sapphire": [
      {
-      "areaSlug": "hoenn-route-124-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-safari-zone-nwmach-bike-area",
+      "label": "NWMACH BIKE",
       "rows": [
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
+        "id": 84,
+        "slug": "doduo",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
+        "id": 54,
+        "slug": "psyduck",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
+        "minLevel": 15,
+        "maxLevel": 15
        }
       ]
      },
      {
-      "areaSlug": "hoenn-route-124-underwater",
-      "label": "UNDERWATER",
+      "areaSlug": "hoenn-safari-zone-neacro-bike-area",
+      "label": "NEACRO BIKE",
       "rows": [
        {
-        "id": 366,
-        "slug": "clamperl",
+        "id": 84,
+        "slug": "doduo",
         "method": "OTHER",
-        "isStatic": false,
-        "chance": 65,
-        "minLevel": 20,
-        "maxLevel": 35
-       },
-       {
-        "id": 170,
-        "slug": "chinchou",
-        "method": "OTHER",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 20,
-        "maxLevel": 30
-       },
-       {
-        "id": 369,
-        "slug": "relicanth",
-        "method": "OTHER",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 30,
-        "maxLevel": 35
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "hoenn-route-124-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
         "isStatic": false,
         "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
+        "id": 54,
+        "slug": "psyduck",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
+        "minLevel": 15,
+        "maxLevel": 15
        }
       ]
      },
      {
-      "areaSlug": "hoenn-route-124-underwater",
-      "label": "UNDERWATER",
+      "areaSlug": "hoenn-safari-zone-sw",
+      "label": "SW",
       "rows": [
        {
-        "id": 366,
-        "slug": "clamperl",
+        "id": 84,
+        "slug": "doduo",
         "method": "OTHER",
         "isStatic": false,
-        "chance": 65,
-        "minLevel": 20,
-        "maxLevel": 35
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 170,
-        "slug": "chinchou",
+        "id": 43,
+        "slug": "oddish",
         "method": "OTHER",
         "isStatic": false,
-        "chance": 30,
-        "minLevel": 20,
-        "maxLevel": 30
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
        },
        {
-        "id": 369,
-        "slug": "relicanth",
+        "id": 54,
+        "slug": "psyduck",
         "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 30,
-        "maxLevel": 35
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-safari-zone-se",
+      "label": "SE",
+      "rows": [
+       {
+        "id": 84,
+        "slug": "doduo",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 43,
+        "slug": "oddish",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 54,
+        "slug": "psyduck",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
        }
       ]
      }
@@ -10263,6 +12168,886 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "shoal-cave-high-tide",
+      "label": "HIGH TIDE",
+      "rows": [
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-b1f",
+      "label": "B1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-low-tide",
+      "label": "LOW TIDE",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-b2f",
+      "label": "B2F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-b3f",
+      "label": "B3F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 361,
+        "slug": "snorunt",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "shoal-cave-high-tide",
+      "label": "HIGH TIDE",
+      "rows": [
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-b1f",
+      "label": "B1F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-low-tide",
+      "label": "LOW TIDE",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-b2f",
+      "label": "B2F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     },
+     {
+      "areaSlug": "shoal-cave-b3f",
+      "label": "B3F",
+      "rows": [
+       {
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 363,
+        "slug": "spheal",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 17,
+        "maxLevel": 17
+       },
+       {
+        "id": 361,
+        "slug": "snorunt",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 17,
+        "maxLevel": 17
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "mossdeep-city": {
+   "nameDe": "Moosbach City",
+   "nameEn": "Mossdeep City",
+   "kind": "city",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "mossdeep-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     },
+     {
+      "areaSlug": "mossdeep-city-stevens-house",
+      "label": "STEVENS HOUSE",
+      "rows": [
+       {
+        "id": 374,
+        "slug": "beldum",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "mossdeep-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     },
+     {
+      "areaSlug": "mossdeep-city-stevens-house",
+      "label": "STEVENS HOUSE",
+      "rows": [
+       {
+        "id": 374,
+        "slug": "beldum",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "mossdeep-city-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     },
+     {
+      "areaSlug": "mossdeep-city-stevens-house",
+      "label": "STEVENS HOUSE",
+      "rows": [
+       {
+        "id": 374,
+        "slug": "beldum",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 5,
+        "maxLevel": 5
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "mossdeep-city-stevens-house",
+      "label": "STEVENS HOUSE",
+      "rows": [
+       {
+        "id": 374,
+        "slug": "beldum",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 1,
+        "maxLevel": 1
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "mossdeep-city-stevens-house",
+      "label": "STEVENS HOUSE",
+      "rows": [
+       {
+        "id": 374,
+        "slug": "beldum",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 1,
+        "maxLevel": 1
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "hoenn-route-124": {
+   "nameDe": "Route 124",
+   "nameEn": "Route 124",
+   "kind": "route",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "hoenn-route-124-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-route-124-underwater",
+      "label": "UNDERWATER",
+      "rows": [
+       {
+        "id": 366,
+        "slug": "clamperl",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 65,
+        "minLevel": 20,
+        "maxLevel": 35
+       },
+       {
+        "id": 170,
+        "slug": "chinchou",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 20,
+        "maxLevel": 30
+       },
+       {
+        "id": 369,
+        "slug": "relicanth",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 30,
+        "maxLevel": 35
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "hoenn-route-124-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-route-124-underwater",
+      "label": "UNDERWATER",
+      "rows": [
+       {
+        "id": 366,
+        "slug": "clamperl",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 65,
+        "minLevel": 20,
+        "maxLevel": 35
+       },
+       {
+        "id": 170,
+        "slug": "chinchou",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 20,
+        "maxLevel": 30
+       },
+       {
+        "id": 369,
+        "slug": "relicanth",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 30,
+        "maxLevel": 35
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "hoenn-route-124-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     },
+     {
+      "areaSlug": "hoenn-route-124-underwater",
+      "label": "UNDERWATER",
+      "rows": [
+       {
+        "id": 366,
+        "slug": "clamperl",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 65,
+        "minLevel": 20,
+        "maxLevel": 35
+       },
+       {
+        "id": 170,
+        "slug": "chinchou",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 20,
+        "maxLevel": 30
+       },
+       {
+        "id": 369,
+        "slug": "relicanth",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 30,
+        "maxLevel": 35
+       }
+      ]
+     }
     ]
    }
   },
@@ -10843,17 +13628,273 @@
        }
       ]
      }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "mt-pyre-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-2f",
+      "label": "2F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-4f",
+      "label": "4F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-outside",
+      "label": "OUTSIDE",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 307,
+        "slug": "meditite",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 37,
+        "slug": "vulpix",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-summit",
+      "label": "SUMMIT",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 307,
+        "slug": "meditite",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 37,
+        "slug": "vulpix",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "mt-pyre-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-2f",
+      "label": "2F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-4f",
+      "label": "4F",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 100,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-outside",
+      "label": "OUTSIDE",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 307,
+        "slug": "meditite",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 37,
+        "slug": "vulpix",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     },
+     {
+      "areaSlug": "mt-pyre-summit",
+      "label": "SUMMIT",
+      "rows": [
+       {
+        "id": 353,
+        "slug": "shuppet",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 307,
+        "slug": "meditite",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 15,
+        "maxLevel": 15
+       },
+       {
+        "id": 37,
+        "slug": "vulpix",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 15,
+        "maxLevel": 15
+       }
+      ]
+     }
     ]
    }
   },
-  "mossdeep-city": {
-   "nameDe": "Moosbach City",
-   "nameEn": "Mossdeep City",
-   "kind": "city",
+  "hoenn-route-128": {
+   "nameDe": "Route 128",
+   "nameEn": "Route 128",
+   "kind": "route",
    "versions": {
     "ruby": [
      {
-      "areaSlug": "mossdeep-city-area",
+      "areaSlug": "hoenn-route-128-area",
       "label": "MAIN",
       "rows": [
        {
@@ -10879,17 +13920,17 @@
         "slug": "wailmer",
         "method": "FISH",
         "isStatic": false,
-        "chance": 60,
+        "chance": 45,
         "minLevel": 10,
         "maxLevel": 45
        },
        {
-        "id": 319,
-        "slug": "sharpedo",
+        "id": 370,
+        "slug": "luvdisc",
         "method": "FISH",
         "isStatic": false,
         "chance": 40,
-        "minLevel": 30,
+        "minLevel": 10,
         "maxLevel": 35
        },
        {
@@ -10908,7 +13949,16 @@
         "isStatic": false,
         "chance": 30,
         "minLevel": 5,
-        "maxLevel": 30
+        "maxLevel": 10
+       },
+       {
+        "id": 222,
+        "slug": "corsola",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 30,
+        "maxLevel": 35
        },
        {
         "id": 279,
@@ -10918,28 +13968,13 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
-       }
-      ]
-     },
-     {
-      "areaSlug": "mossdeep-city-stevens-house",
-      "label": "STEVENS HOUSE",
-      "rows": [
-       {
-        "id": 374,
-        "slug": "beldum",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
        }
       ]
      }
     ],
     "sapphire": [
      {
-      "areaSlug": "mossdeep-city-area",
+      "areaSlug": "hoenn-route-128-area",
       "label": "MAIN",
       "rows": [
        {
@@ -10965,17 +14000,17 @@
         "slug": "wailmer",
         "method": "FISH",
         "isStatic": false,
-        "chance": 60,
+        "chance": 45,
         "minLevel": 10,
         "maxLevel": 45
        },
        {
-        "id": 319,
-        "slug": "sharpedo",
+        "id": 370,
+        "slug": "luvdisc",
         "method": "FISH",
         "isStatic": false,
         "chance": 40,
-        "minLevel": 30,
+        "minLevel": 10,
         "maxLevel": 35
        },
        {
@@ -10994,7 +14029,16 @@
         "isStatic": false,
         "chance": 30,
         "minLevel": 5,
-        "maxLevel": 30
+        "maxLevel": 10
+       },
+       {
+        "id": 222,
+        "slug": "corsola",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 30,
+        "maxLevel": 35
        },
        {
         "id": 279,
@@ -11004,28 +14048,13 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
-       }
-      ]
-     },
-     {
-      "areaSlug": "mossdeep-city-stevens-house",
-      "label": "STEVENS HOUSE",
-      "rows": [
-       {
-        "id": 374,
-        "slug": "beldum",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
        }
       ]
      }
     ],
     "emerald": [
      {
-      "areaSlug": "mossdeep-city-area",
+      "areaSlug": "hoenn-route-128-area",
       "label": "MAIN",
       "rows": [
        {
@@ -11051,17 +14080,17 @@
         "slug": "wailmer",
         "method": "FISH",
         "isStatic": false,
-        "chance": 60,
+        "chance": 45,
         "minLevel": 10,
         "maxLevel": 45
        },
        {
-        "id": 319,
-        "slug": "sharpedo",
+        "id": 370,
+        "slug": "luvdisc",
         "method": "FISH",
         "isStatic": false,
         "chance": 40,
-        "minLevel": 30,
+        "minLevel": 10,
         "maxLevel": 35
        },
        {
@@ -11080,7 +14109,16 @@
         "isStatic": false,
         "chance": 30,
         "minLevel": 5,
-        "maxLevel": 30
+        "maxLevel": 10
+       },
+       {
+        "id": 222,
+        "slug": "corsola",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 30,
+        "maxLevel": 35
        },
        {
         "id": 279,
@@ -11090,21 +14128,6 @@
         "chance": 5,
         "minLevel": 25,
         "maxLevel": 30
-       }
-      ]
-     },
-     {
-      "areaSlug": "mossdeep-city-stevens-house",
-      "label": "STEVENS HOUSE",
-      "rows": [
-       {
-        "id": 374,
-        "slug": "beldum",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 5,
-        "maxLevel": 5
        }
       ]
      }
@@ -11235,6 +14258,966 @@
         "chance": 20,
         "minLevel": 5,
         "maxLevel": 45
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "sky-pillar": {
+   "nameDe": "Himmelturm",
+   "nameEn": "Sky Pillar",
+   "kind": "dungeon",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "sky-pillar-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 48,
+        "maxLevel": 50
+       },
+       {
+        "id": 303,
+        "slug": "mawile",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 48,
+        "maxLevel": 50
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 25,
+        "minLevel": 47,
+        "maxLevel": 50
+       },
+       {
+        "id": 356,
+        "slug": "dusclops",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 48,
+        "maxLevel": 50
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 51,
+        "maxLevel": 53
+       },
+       {
+        "id": 303,
+        "slug": "mawile",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 51,
+        "maxLevel": 53
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 25,
+        "minLevel": 50,
+        "maxLevel": 53
+       },
+       {
+        "id": 356,
+        "slug": "dusclops",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 51,
+        "maxLevel": 53
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-5f",
+      "label": "5F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 303,
+        "slug": "mawile",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 19,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 356,
+        "slug": "dusclops",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 334,
+        "slug": "altaria",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 6,
+        "minLevel": 54,
+        "maxLevel": 60
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-apex",
+      "label": "APEX",
+      "rows": [
+       {
+        "id": 384,
+        "slug": "rayquaza",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 70,
+        "maxLevel": 70
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "sky-pillar-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 48,
+        "maxLevel": 50
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 48,
+        "maxLevel": 50
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 25,
+        "minLevel": 47,
+        "maxLevel": 50
+       },
+       {
+        "id": 354,
+        "slug": "banette",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 48,
+        "maxLevel": 50
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 51,
+        "maxLevel": 53
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 51,
+        "maxLevel": 53
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 25,
+        "minLevel": 50,
+        "maxLevel": 53
+       },
+       {
+        "id": 354,
+        "slug": "banette",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 51,
+        "maxLevel": 53
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-5f",
+      "label": "5F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 19,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 354,
+        "slug": "banette",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 54,
+        "maxLevel": 56
+       },
+       {
+        "id": 334,
+        "slug": "altaria",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 6,
+        "minLevel": 54,
+        "maxLevel": 60
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-apex",
+      "label": "APEX",
+      "rows": [
+       {
+        "id": 384,
+        "slug": "rayquaza",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 70,
+        "maxLevel": 70
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "sky-pillar-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 34,
+        "maxLevel": 35
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 33,
+        "maxLevel": 34
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 25,
+        "minLevel": 36,
+        "maxLevel": 38
+       },
+       {
+        "id": 354,
+        "slug": "banette",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 37,
+        "maxLevel": 38
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 34,
+        "maxLevel": 35
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 33,
+        "maxLevel": 34
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 25,
+        "minLevel": 36,
+        "maxLevel": 38
+       },
+       {
+        "id": 354,
+        "slug": "banette",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 37,
+        "maxLevel": 38
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-5f",
+      "label": "5F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 34,
+        "maxLevel": 35
+       },
+       {
+        "id": 302,
+        "slug": "sableye",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 33,
+        "maxLevel": 34
+       },
+       {
+        "id": 344,
+        "slug": "claydol",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 19,
+        "minLevel": 36,
+        "maxLevel": 37
+       },
+       {
+        "id": 354,
+        "slug": "banette",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 15,
+        "minLevel": 37,
+        "maxLevel": 38
+       },
+       {
+        "id": 334,
+        "slug": "altaria",
+        "method": "WALK",
+        "isStatic": false,
+        "chance": 6,
+        "minLevel": 38,
+        "maxLevel": 39
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-apex",
+      "label": "APEX",
+      "rows": [
+       {
+        "id": 384,
+        "slug": "rayquaza",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 70,
+        "maxLevel": 70
+       }
+      ]
+     }
+    ],
+    "omega-ruby": [
+     {
+      "areaSlug": "sky-pillar-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 168,
+        "slug": "ariados",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 23,
+        "maxLevel": 23
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 168,
+        "slug": "ariados",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 23,
+        "maxLevel": 23
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-5f",
+      "label": "5F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 168,
+        "slug": "ariados",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 23,
+        "maxLevel": 23
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-apex",
+      "label": "APEX",
+      "rows": [
+       {
+        "id": 384,
+        "slug": "rayquaza",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 70,
+        "maxLevel": 70
+       },
+       {
+        "id": 386,
+        "slug": "deoxys-normal",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 80,
+        "maxLevel": 80
+       }
+      ]
+     }
+    ],
+    "alpha-sapphire": [
+     {
+      "areaSlug": "sky-pillar-1f",
+      "label": "1F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 168,
+        "slug": "ariados",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 23,
+        "maxLevel": 23
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-3f",
+      "label": "3F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 168,
+        "slug": "ariados",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 23,
+        "maxLevel": 23
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-5f",
+      "label": "5F",
+      "rows": [
+       {
+        "id": 42,
+        "slug": "golbat",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 168,
+        "slug": "ariados",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 23,
+        "maxLevel": 23
+       },
+       {
+        "id": 333,
+        "slug": "swablu",
+        "method": "OTHER",
+        "isStatic": false,
+        "chance": 5,
+        "minLevel": 23,
+        "maxLevel": 23
+       }
+      ]
+     },
+     {
+      "areaSlug": "sky-pillar-apex",
+      "label": "APEX",
+      "rows": [
+       {
+        "id": 384,
+        "slug": "rayquaza",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 70,
+        "maxLevel": 70
+       },
+       {
+        "id": 386,
+        "slug": "deoxys-normal",
+        "method": "STATIC",
+        "isStatic": true,
+        "chance": 100,
+        "minLevel": 80,
+        "maxLevel": 80
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "hoenn-route-129": {
+   "nameDe": "Route 129",
+   "nameEn": "Route 129",
+   "kind": "route",
+   "versions": {
+    "ruby": [
+     {
+      "areaSlug": "hoenn-route-129-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 4,
+        "minLevel": 25,
+        "maxLevel": 30
+       },
+       {
+        "id": 321,
+        "slug": "wailord",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 1,
+        "minLevel": 35,
+        "maxLevel": 40
+       }
+      ]
+     }
+    ],
+    "sapphire": [
+     {
+      "areaSlug": "hoenn-route-129-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 4,
+        "minLevel": 25,
+        "maxLevel": 30
+       },
+       {
+        "id": 321,
+        "slug": "wailord",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 1,
+        "minLevel": 25,
+        "maxLevel": 30
+       }
+      ]
+     }
+    ],
+    "emerald": [
+     {
+      "areaSlug": "hoenn-route-129-area",
+      "label": "MAIN",
+      "rows": [
+       {
+        "id": 129,
+        "slug": "magikarp",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 70,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 5,
+        "maxLevel": 35
+       },
+       {
+        "id": 320,
+        "slug": "wailmer",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 60,
+        "minLevel": 10,
+        "maxLevel": 45
+       },
+       {
+        "id": 319,
+        "slug": "sharpedo",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 40,
+        "minLevel": 30,
+        "maxLevel": 35
+       },
+       {
+        "id": 278,
+        "slug": "wingull",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 35,
+        "minLevel": 10,
+        "maxLevel": 30
+       },
+       {
+        "id": 72,
+        "slug": "tentacool",
+        "method": "FISH",
+        "isStatic": false,
+        "chance": 30,
+        "minLevel": 5,
+        "maxLevel": 30
+       },
+       {
+        "id": 279,
+        "slug": "pelipper",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 4,
+        "minLevel": 25,
+        "maxLevel": 30
+       },
+       {
+        "id": 321,
+        "slug": "wailord",
+        "method": "SURF",
+        "isStatic": false,
+        "chance": 1,
+        "minLevel": 25,
+        "maxLevel": 30
        }
       ]
      }
@@ -11944,960 +15927,139 @@
        }
       ]
      }
-    ]
-   }
-  },
-  "sky-pillar": {
-   "nameDe": "Himmelturm",
-   "nameEn": "Sky Pillar",
-   "kind": "dungeon",
-   "versions": {
-    "ruby": [
+    ],
+    "omega-ruby": [
      {
-      "areaSlug": "sky-pillar-1f",
+      "areaSlug": "hoenn-victory-road-1f",
       "label": "1F",
       "rows": [
        {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 30,
-        "minLevel": 48,
-        "maxLevel": 50
+        "chance": 60,
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 303,
-        "slug": "mawile",
-        "method": "WALK",
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 30,
-        "minLevel": 48,
-        "maxLevel": 50
+        "chance": 35,
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
+        "id": 294,
+        "slug": "loudred",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 25,
-        "minLevel": 47,
-        "maxLevel": 50
-       },
-       {
-        "id": 356,
-        "slug": "dusclops",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 48,
-        "maxLevel": 50
+        "chance": 5,
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      },
      {
-      "areaSlug": "sky-pillar-3f",
-      "label": "3F",
+      "areaSlug": "hoenn-victory-road-b1f",
+      "label": "B1F",
       "rows": [
        {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 30,
-        "minLevel": 51,
-        "maxLevel": 53
+        "chance": 60,
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 303,
-        "slug": "mawile",
-        "method": "WALK",
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 30,
-        "minLevel": 51,
-        "maxLevel": 53
+        "chance": 35,
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
+        "id": 294,
+        "slug": "loudred",
+        "method": "OTHER",
         "isStatic": false,
-        "chance": 25,
-        "minLevel": 50,
-        "maxLevel": 53
-       },
-       {
-        "id": 356,
-        "slug": "dusclops",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 51,
-        "maxLevel": 53
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-5f",
-      "label": "5F",
-      "rows": [
-       {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 303,
-        "slug": "mawile",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 19,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 356,
-        "slug": "dusclops",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 334,
-        "slug": "altaria",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 6,
-        "minLevel": 54,
-        "maxLevel": 60
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-apex",
-      "label": "APEX",
-      "rows": [
-       {
-        "id": 384,
-        "slug": "rayquaza",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 70,
-        "maxLevel": 70
+        "chance": 5,
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
     ],
-    "sapphire": [
+    "alpha-sapphire": [
      {
-      "areaSlug": "sky-pillar-1f",
+      "areaSlug": "hoenn-victory-road-1f",
       "label": "1F",
       "rows": [
        {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 48,
-        "maxLevel": 50
-       },
-       {
-        "id": 302,
-        "slug": "sableye",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 48,
-        "maxLevel": 50
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 25,
-        "minLevel": 47,
-        "maxLevel": 50
-       },
-       {
-        "id": 354,
-        "slug": "banette",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 48,
-        "maxLevel": 50
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-3f",
-      "label": "3F",
-      "rows": [
-       {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 51,
-        "maxLevel": 53
-       },
-       {
-        "id": 302,
-        "slug": "sableye",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 51,
-        "maxLevel": 53
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 25,
-        "minLevel": 50,
-        "maxLevel": 53
-       },
-       {
-        "id": 354,
-        "slug": "banette",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 51,
-        "maxLevel": 53
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-5f",
-      "label": "5F",
-      "rows": [
-       {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 302,
-        "slug": "sableye",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 19,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 354,
-        "slug": "banette",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 54,
-        "maxLevel": 56
-       },
-       {
-        "id": 334,
-        "slug": "altaria",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 6,
-        "minLevel": 54,
-        "maxLevel": 60
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-apex",
-      "label": "APEX",
-      "rows": [
-       {
-        "id": 384,
-        "slug": "rayquaza",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 70,
-        "maxLevel": 70
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "sky-pillar-1f",
-      "label": "1F",
-      "rows": [
-       {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 34,
-        "maxLevel": 35
-       },
-       {
-        "id": 302,
-        "slug": "sableye",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 33,
-        "maxLevel": 34
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 25,
-        "minLevel": 36,
-        "maxLevel": 38
-       },
-       {
-        "id": 354,
-        "slug": "banette",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 37,
-        "maxLevel": 38
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-3f",
-      "label": "3F",
-      "rows": [
-       {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 34,
-        "maxLevel": 35
-       },
-       {
-        "id": 302,
-        "slug": "sableye",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 33,
-        "maxLevel": 34
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 25,
-        "minLevel": 36,
-        "maxLevel": 38
-       },
-       {
-        "id": 354,
-        "slug": "banette",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 37,
-        "maxLevel": 38
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-5f",
-      "label": "5F",
-      "rows": [
-       {
-        "id": 42,
-        "slug": "golbat",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 34,
-        "maxLevel": 35
-       },
-       {
-        "id": 302,
-        "slug": "sableye",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 33,
-        "maxLevel": 34
-       },
-       {
-        "id": 344,
-        "slug": "claydol",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 19,
-        "minLevel": 36,
-        "maxLevel": 37
-       },
-       {
-        "id": 354,
-        "slug": "banette",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 37,
-        "maxLevel": 38
-       },
-       {
-        "id": 334,
-        "slug": "altaria",
-        "method": "WALK",
-        "isStatic": false,
-        "chance": 6,
-        "minLevel": 38,
-        "maxLevel": 39
-       }
-      ]
-     },
-     {
-      "areaSlug": "sky-pillar-apex",
-      "label": "APEX",
-      "rows": [
-       {
-        "id": 384,
-        "slug": "rayquaza",
-        "method": "STATIC",
-        "isStatic": true,
-        "chance": 100,
-        "minLevel": 70,
-        "maxLevel": 70
-       }
-      ]
-     }
-    ]
-   }
-  },
-  "hoenn-route-128": {
-   "nameDe": "Route 128",
-   "nameEn": "Route 128",
-   "kind": "route",
-   "versions": {
-    "ruby": [
-     {
-      "areaSlug": "hoenn-route-128-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 370,
-        "slug": "luvdisc",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 10,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 10
-       },
-       {
-        "id": 222,
-        "slug": "corsola",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
+        "id": 294,
+        "slug": "loudred",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
-     }
-    ],
-    "sapphire": [
+     },
      {
-      "areaSlug": "hoenn-route-128-area",
-      "label": "MAIN",
+      "areaSlug": "hoenn-victory-road-b1f",
+      "label": "B1F",
       "rows": [
        {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
+        "id": 41,
+        "slug": "zubat",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 370,
-        "slug": "luvdisc",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 10,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
+        "id": 304,
+        "slug": "aron",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
+        "minLevel": 20,
+        "maxLevel": 20
        },
        {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 10
-       },
-       {
-        "id": 222,
-        "slug": "corsola",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
+        "id": 294,
+        "slug": "loudred",
+        "method": "OTHER",
         "isStatic": false,
         "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "hoenn-route-128-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 45,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 370,
-        "slug": "luvdisc",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 10,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 10
-       },
-       {
-        "id": 222,
-        "slug": "corsola",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 15,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 5,
-        "minLevel": 25,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ]
-   }
-  },
-  "hoenn-route-129": {
-   "nameDe": "Route 129",
-   "nameEn": "Route 129",
-   "kind": "route",
-   "versions": {
-    "ruby": [
-     {
-      "areaSlug": "hoenn-route-129-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 4,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 321,
-        "slug": "wailord",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 1,
-        "minLevel": 35,
-        "maxLevel": 40
-       }
-      ]
-     }
-    ],
-    "sapphire": [
-     {
-      "areaSlug": "hoenn-route-129-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 4,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 321,
-        "slug": "wailord",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 1,
-        "minLevel": 25,
-        "maxLevel": 30
-       }
-      ]
-     }
-    ],
-    "emerald": [
-     {
-      "areaSlug": "hoenn-route-129-area",
-      "label": "MAIN",
-      "rows": [
-       {
-        "id": 129,
-        "slug": "magikarp",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 70,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 5,
-        "maxLevel": 35
-       },
-       {
-        "id": 320,
-        "slug": "wailmer",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 60,
-        "minLevel": 10,
-        "maxLevel": 45
-       },
-       {
-        "id": 319,
-        "slug": "sharpedo",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 40,
-        "minLevel": 30,
-        "maxLevel": 35
-       },
-       {
-        "id": 278,
-        "slug": "wingull",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 35,
-        "minLevel": 10,
-        "maxLevel": 30
-       },
-       {
-        "id": 72,
-        "slug": "tentacool",
-        "method": "FISH",
-        "isStatic": false,
-        "chance": 30,
-        "minLevel": 5,
-        "maxLevel": 30
-       },
-       {
-        "id": 279,
-        "slug": "pelipper",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 4,
-        "minLevel": 25,
-        "maxLevel": 30
-       },
-       {
-        "id": 321,
-        "slug": "wailord",
-        "method": "SURF",
-        "isStatic": false,
-        "chance": 1,
-        "minLevel": 25,
-        "maxLevel": 30
+        "minLevel": 20,
+        "maxLevel": 20
        }
       ]
      }
@@ -13519,6 +16681,15 @@
    "pastTypes": null,
    "bst": 390
   },
+  "81": {
+   "slug": "magnemite",
+   "types": [
+    "electric",
+    "steel"
+   ],
+   "pastTypes": null,
+   "bst": 325
+  },
   "84": {
    "slug": "doduo",
    "types": [
@@ -13670,6 +16841,15 @@
    "pastTypes": null,
    "bst": 250
   },
+  "168": {
+   "slug": "ariados",
+   "types": [
+    "bug",
+    "poison"
+   ],
+   "pastTypes": null,
+   "bst": 400
+  },
   "170": {
    "slug": "chinchou",
    "types": [
@@ -13678,6 +16858,14 @@
    ],
    "pastTypes": null,
    "bst": 330
+  },
+  "175": {
+   "slug": "togepi",
+   "types": [
+    "fairy"
+   ],
+   "pastTypes": null,
+   "bst": 245
   },
   "177": {
    "slug": "natu",
@@ -14588,6 +17776,62 @@
    ],
    "pastTypes": null,
    "bst": 680
+  },
+  "386": {
+   "slug": "deoxys-normal",
+   "types": [
+    "psychic"
+   ],
+   "pastTypes": null,
+   "bst": 600
+  },
+  "387": {
+   "slug": "turtwig",
+   "types": [
+    "grass"
+   ],
+   "pastTypes": null,
+   "bst": 318
+  },
+  "390": {
+   "slug": "chimchar",
+   "types": [
+    "fire"
+   ],
+   "pastTypes": null,
+   "bst": 309
+  },
+  "393": {
+   "slug": "piplup",
+   "types": [
+    "water"
+   ],
+   "pastTypes": null,
+   "bst": 314
+  },
+  "495": {
+   "slug": "snivy",
+   "types": [
+    "grass"
+   ],
+   "pastTypes": null,
+   "bst": 308
+  },
+  "498": {
+   "slug": "tepig",
+   "types": [
+    "fire"
+   ],
+   "pastTypes": null,
+   "bst": 308
+  },
+  "501": {
+   "slug": "oshawott",
+   "types": [
+    "water"
+   ],
+   "pastTypes": null,
+   "bst": 308
   }
  },
  "names": {
@@ -14646,6 +17890,10 @@
   "75": {
    "de": "Georok",
    "en": "Graveler"
+  },
+  "81": {
+   "de": "Magnetilo",
+   "en": "Magnemite"
   },
   "84": {
    "de": "Dodu",
@@ -14719,9 +17967,17 @@
    "de": "Webarak",
    "en": "Spinarak"
   },
+  "168": {
+   "de": "Ariados",
+   "en": "Ariados"
+  },
   "170": {
    "de": "Lampi",
    "en": "Chinchou"
+  },
+  "175": {
+   "de": "Togepi",
+   "en": "Togepi"
   },
   "177": {
    "de": "Natu",
@@ -15154,6 +18410,34 @@
   "384": {
    "de": "Rayquaza",
    "en": "Rayquaza"
+  },
+  "386": {
+   "de": "Deoxys",
+   "en": "Deoxys Normal"
+  },
+  "387": {
+   "de": "Chelast",
+   "en": "Turtwig"
+  },
+  "390": {
+   "de": "Panflam",
+   "en": "Chimchar"
+  },
+  "393": {
+   "de": "Plinfa",
+   "en": "Piplup"
+  },
+  "495": {
+   "de": "Serpifeu",
+   "en": "Snivy"
+  },
+  "498": {
+   "de": "Floink",
+   "en": "Tepig"
+  },
+  "501": {
+   "de": "Ottaro",
+   "en": "Oshawott"
   }
  }
 }

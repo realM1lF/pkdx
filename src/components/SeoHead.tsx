@@ -12,9 +12,9 @@
  * create ourselves are removed again on route change. */
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
-import { stripLocalePrefix, localePath } from '@/lib/locale-link';
+import { stripLocalePrefix } from '@/lib/locale-link';
 import type { Lang } from '@/lib/i18n-data';
-import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, metaForPath, canonicalUrl, restForLang } from '@/lib/seo';
+import { SITE_NAME, DEFAULT_OG_IMAGE, metaForPath, canonicalUrl, restForLang } from '@/lib/seo';
 import { schemasForRoute } from '@/lib/structured-data';
 
 function upsertMeta(
@@ -71,10 +71,10 @@ export default function SeoHead({ lang }: { lang: Lang }) {
     upsertMeta('property', 'og:site_name', SITE_NAME, managed);
     upsertMeta('property', 'og:locale', lang === 'de' ? 'de_DE' : 'en_US', managed);
 
-    /* canonical + hreflang alternates */
-    upsertLink('alternate', 'de', `${SITE_URL}${localePath('de', restForLang(rest, 'de'))}`, managed);
-    upsertLink('alternate', 'en', `${SITE_URL}${localePath('en', restForLang(rest, 'en'))}`, managed);
-    upsertLink('alternate', 'x-default', `${SITE_URL}${localePath('en', restForLang(rest, 'en'))}`, managed);
+    /* canonical + hreflang alternates (trailing-slash form, == canonical) */
+    upsertLink('alternate', 'de', canonicalUrl('de', restForLang(rest, 'de')), managed);
+    upsertLink('alternate', 'en', canonicalUrl('en', restForLang(rest, 'en')), managed);
+    upsertLink('alternate', 'x-default', canonicalUrl('en', restForLang(rest, 'en')), managed);
     upsertLink('canonical', null, canonicalUrl(lang, restForLang(rest, lang)), managed);
 
     /* JSON-LD structured data — upsert per id, drop blocks that no longer apply */

@@ -2564,7 +2564,12 @@
       "qaBestQ": "Was ist der beste Fang auf {{name}}?",
       "qaBestLead": "{{pokemon}}.",
       "qaBestBody": "Mit {{bst}} Basiswerten hat {{pokemon}} die höchste Summe aller hier fangbaren Arten: unser berechneter Tipp für {{name}} (automatisch aus den Stats abgeleitet, keine Meta-Wertung).",
-      "crumbRegion": "Kanto"
+      "crumbRegion": "Kanto",
+      "versionHG": "HeartGold",
+      "versionSS": "SoulSilver",
+      "versionGold": "Gold",
+      "versionSilver": "Silber",
+      "versionCrystal": "Kristall"
     },
     "pkmn": {
       "whereEyebrow": "FUNDORTE · FRBG",
@@ -2709,7 +2714,9 @@
       "qaItemsBodyNo": "Auf {{name}} sind in dieser Übersicht keine Items erfasst. Der Datenstand umfasst aktuell nur Encounter; die Item-Kuratierung für Hoenn folgt.",
       "qaBestQ": "Was ist der beste Fang auf {{name}}?",
       "qaBestLead": "{{pokemon}}.",
-      "qaBestBody": "Mit {{bst}} Basiswerten hat {{pokemon}} die höchste Summe aller hier fangbaren Arten: unser berechneter Tipp für {{name}} (automatisch aus den Stats abgeleitet, keine Meta-Wertung)."
+      "qaBestBody": "Mit {{bst}} Basiswerten hat {{pokemon}} die höchste Summe aller hier fangbaren Arten: unser berechneter Tipp für {{name}} (automatisch aus den Stats abgeleitet, keine Meta-Wertung).",
+      "versionOmegaRuby": "Omega Rubin",
+      "versionAlphaSapphire": "Alpha Saphir"
     }
   }
 }
