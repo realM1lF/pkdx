@@ -1374,6 +1374,608 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/kanto/victory-road"/>
   </url>
   <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-101</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-101"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-101"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-101"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-101</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-101"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-101"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-101"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/bluetenburg-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/bluetenburg-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/petalburg-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/petalburg-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/petalburg-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/bluetenburg-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/petalburg-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/petalburg-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-102</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-102"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-102"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-102"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-102</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-102"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-102"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-102"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/wurzelheim</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/wurzelheim"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/littleroot-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/littleroot-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/littleroot-town</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/wurzelheim"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/littleroot-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/littleroot-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/bluetenburgwald</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/bluetenburgwald"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/petalburg-woods"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/petalburg-woods"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/petalburg-woods</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/bluetenburgwald"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/petalburg-woods"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/petalburg-woods"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-104</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-104"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-104"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-104"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-104</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-104"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-104"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-104"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-116</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-116"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-116"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-116"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-116</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-116"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-116"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-116"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/metarost-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/metarost-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/rustboro-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/rustboro-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/rustboro-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/metarost-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/rustboro-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/rustboro-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/metaflurtunnel</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/metaflurtunnel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/rusturf-tunnel"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/rusturf-tunnel"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/rusturf-tunnel</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/metaflurtunnel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/rusturf-tunnel"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/rusturf-tunnel"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/faustauhaven</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/faustauhaven"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/dewford-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/dewford-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/dewford-town</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/faustauhaven"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/dewford-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/dewford-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-109</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-109"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-109"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-109"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-109</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-109"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-109"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-109"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-108</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-108"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-108"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-108"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-108</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-108"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-108"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-108"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/graphitport-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/graphitport-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/slateport-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/slateport-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/slateport-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/graphitport-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/slateport-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/slateport-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-105</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-105"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-105"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-105"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-105</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-105"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-105"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-105"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/granithoehle</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/granithoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/granite-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/granite-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/granite-cave</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/granithoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/granite-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/granite-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-110</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-110"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-110"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-110"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-110</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-110"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-110"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-110"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-111</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-111"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-111"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-111"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-111</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-111"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-111"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-111"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-117</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-117"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-117"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-117"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-117</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-117"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-117"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-117"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-112</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-112"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-112"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-112"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-112</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-112"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-112"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-112"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/feuriger-pfad</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/feuriger-pfad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/fiery-path"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/fiery-path"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/fiery-path</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/feuriger-pfad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/fiery-path"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/fiery-path"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-113</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-113"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-113"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-113"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-113</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-113"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-113"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-113"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/bad-lavastadt</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/bad-lavastadt"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/lavaridge-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/lavaridge-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/lavaridge-town</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/bad-lavastadt"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/lavaridge-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/lavaridge-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/meteorfaelle</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/meteorfaelle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/meteor-falls"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/meteor-falls"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/meteor-falls</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/meteorfaelle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/meteor-falls"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/meteor-falls"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-114</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-114"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-114"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-114"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-114</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-114"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-114"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-114"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-103</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-103"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-103"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-103"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-103</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-103"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-103"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-103"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-119</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-119"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-119"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-119"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-119</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-119"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-119"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-119"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-118</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-118"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-118"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-118"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-118</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-118"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-118"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-118"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/baumhausen-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/baumhausen-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/fortree-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/fortree-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/fortree-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/baumhausen-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/fortree-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/fortree-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-120</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-120"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-120"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-120"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-120</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-120"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-120"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-120"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-121</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-121"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-121"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-121"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-121</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-121"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-121"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-121"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/seegrasulb-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/seegrasulb-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/lilycove-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/lilycove-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/lilycove-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/seegrasulb-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/lilycove-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/lilycove-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/safari-zone</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/safari-zone"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/safari-zone</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/safari-zone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/safari-zone"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-124</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-124"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-124"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-124"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-124</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-124"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-124"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-124"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/kuestenhoehle</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/kuestenhoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/shoal-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/shoal-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/shoal-cave</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/kuestenhoehle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/shoal-cave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/shoal-cave"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/pyroberg</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/pyroberg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/mt-pyre"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/mt-pyre"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/mt-pyre</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/pyroberg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/mt-pyre"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/mt-pyre"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/moosbach-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/moosbach-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/mossdeep-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/mossdeep-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/mossdeep-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/moosbach-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/mossdeep-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/mossdeep-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/xeneroville</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/xeneroville"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/sootopolis-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/sootopolis-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/sootopolis-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/xeneroville"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/sootopolis-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/sootopolis-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/siegesstrasse</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/siegesstrasse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/victory-road"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/victory-road"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/victory-road</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/siegesstrasse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/victory-road"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/victory-road"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/himmelturm</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/himmelturm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/sky-pillar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/sky-pillar"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/sky-pillar</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/himmelturm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/sky-pillar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/sky-pillar"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-128</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-128"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-128"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-128"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-128</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-128"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-128"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-128"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/route-129</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-129"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-129"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-129"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/route-129</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/route-129"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/route-129"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/route-129"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/flossbrunn</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/flossbrunn"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/pacifidlog-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/pacifidlog-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/pacifidlog-town</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/flossbrunn"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/pacifidlog-town"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/pacifidlog-town"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/de/maps/hoenn/prachtpolis-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/prachtpolis-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/ever-grande-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/ever-grande-city"/>
+  </url>
+  <url>
+    <loc>https://mypokepanion.com/en/maps/hoenn/ever-grande-city</loc>
+    <lastmod>2026-07-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/maps/hoenn/prachtpolis-city"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mypokepanion.com/en/maps/hoenn/ever-grande-city"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mypokepanion.com/en/maps/hoenn/ever-grande-city"/>
+  </url>
+  <url>
     <loc>https://mypokepanion.com/de/pokemon/1</loc>
     <lastmod>2026-07-28</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mypokepanion.com/de/pokemon/1"/>

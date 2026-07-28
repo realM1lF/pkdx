@@ -82,6 +82,9 @@ export default function App() {
                 {/* static content route outranks maps/:region (React Router ranking);
                     one SEO page per Kanto location with FRLG encounter data */}
                 <Route path="maps/kanto/:slug" element={<RoutePage />} />
+                {/* Hoenn SEO pages (RSE encounters) — same static-route
+                    ranking as Kanto, outranks maps/:region */}
+                <Route path="maps/hoenn/:slug" element={<RoutePage region="hoenn" />} />
                 <Route path="maps/:region" element={<MapRegion />} />
                 <Route path="nuzlocke" element={<Nuzlocke />} />
                 <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />
