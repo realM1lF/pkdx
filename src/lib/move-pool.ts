@@ -16,9 +16,11 @@ export interface PoolEntry {
 
 /** version groups newest → oldest (mirrors detail/data.ts ordering, kept lib-local) */
 const VERSION_GROUP_RANK: Record<string, number> = {
-  'scarlet-violet': 22,
+  'scarlet-violet': 24,
+  'legends-arceus': 23,
+  'brilliant-diamond-shining-pearl': 22,
   'sword-shield': 21,
-  'lets-go-pikachu-lets-go-eevee': 20,
+  'lets-go-pikachu-eevee': 20,
   'ultra-sun-ultra-moon': 19,
   'sun-moon': 18,
   'omega-ruby-alpha-sapphire': 17,
