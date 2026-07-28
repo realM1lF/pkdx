@@ -173,7 +173,39 @@ damage matrix (`src/lib/versus.ts`) runs @smogon/calc. Both MUST agree:
   `npm run check:headers` after a deploy — precedence cannot be reproduced
   locally.
 
-## 10. Security — binding
+## 10. Pre-merge validation — binding (a silent merge revert already happened)
+
+Before ANY merge into `main` and before ANY push of `main`, run the full
+validation gate. A past merge (`3e3eb76`) silently reverted a fix commit
+(−156 lines, 31 tests deleted) and nobody noticed until a later task
+rediscovered the bugs. Merges on the /mnt FUSE mount can also fail
+halfway (ort strategy, index locks) — never trust a merge you have not
+verified.
+
+The gate, in order:
+
+1. **Intent check**: list what the branch is supposed to change (files,
+   features, tests). After merging, verify each intended change is
+   actually present in the result (grep for the new symbols, read the
+   diff `git diff <main-before>..<merge-result> --stat`).
+2. **Regression check**: verify nothing unrelated shrank. Suspicious
+   signs: test count drops, files deleted that the branch never touched,
+   previously-fixed bugs reappearing. Compare against the pre-merge main,
+   not against the branch.
+3. **Build gate**: `npx tsc -b` 0 errors, full `npx vitest run` green,
+   `npm run build` succeeds, prerendered page count matches expectation
+   (`find dist -name index.html | wc -l`).
+4. **Content spot-check**: grep the built `dist/` for the feature's
+   user-facing output (e.g. a new label on a prerendered page) — source
+   code alone does not prove the build carries it.
+5. **Push verification**: after pushing, `git ls-remote github main`
+   must show the new commit; `git fetch && git status` must show no
+   divergence.
+
+If any step fails: do NOT push. Fix or redo the merge first (merging in
+a fresh $HOME clone is more reliable than on /mnt).
+
+## 11. Security — binding
 
 1. **The Supabase publishable key is public by design** (it ships in the
    bundle). Therefore RLS is the *only* thing protecting data. Never assume
