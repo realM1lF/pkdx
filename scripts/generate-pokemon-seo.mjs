@@ -14,7 +14,12 @@
  *   src/data/seo-meta-gen.json   tiny summary consumed by src/lib/seo.ts
  *                                (sync meta registry — names + top encounter)
  *
- * Re-run to refresh:  node scripts/generate-pokemon-seo.mjs
+ * Hoenn (SEO rollout 3, additive):  node scripts/generate-pokemon-seo.mjs hoenn
+ * writes src/data/routes-hoenn.json (RSE encounter tables, default version
+ * emerald) and merges a routesHoenn block into src/data/seo-meta-gen.json —
+ * the Kanto artifacts stay untouched (the default call above is unchanged).
+ *
+ * Re-run to refresh:  node scripts/generate-pokemon-seo.mjs [kanto|hoenn]
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -22,9 +27,15 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const API = 'https://pokeapi.co/api/v2';
-const VERSIONS = ['firered', 'leafgreen'];
 
-const kanto = JSON.parse(readFileSync(path.join(root, 'src/data/regions/kanto.json'), 'utf8'));
+const REGION = process.argv[2] ?? 'kanto';
+if (!['kanto', 'hoenn'].includes(REGION)) {
+  console.error(`usage: node scripts/generate-pokemon-seo.mjs [kanto|hoenn]`);
+  process.exit(1);
+}
+const VERSIONS = REGION === 'hoenn' ? ['ruby', 'sapphire', 'emerald'] : ['firered', 'leafgreen'];
+
+const kanto = JSON.parse(readFileSync(path.join(root, `src/data/regions/${REGION}.json`), 'utf8'));
 const NAMES_DE = JSON.parse(readFileSync(path.join(root, 'src/data/i18n/de/pokemon.json'), 'utf8'));
 
 /** 25 curated Pokémon for the detail-page SEO sections (see task briefing). */
@@ -394,8 +405,118 @@ async function buildPokemon(locationSlugs) {
   return out;
 }
 
-/* ---------- main ---------- */
+/* ---------- hoenn main (additive; Kanto artifacts untouched) ---------- */
 
+/* slug mapping (mirror of src/lib/seo-routes-hoenn.ts — keep in sync!) */
+const HOENN_ROUTE_SLUGS = {
+  'littleroot-town': ['wurzelheim', 'littleroot-town'],
+  'hoenn-route-101': ['route-101', 'route-101'],
+  'oldale-town': ['rosaltstadt', 'oldale-town'],
+  'hoenn-route-102': ['route-102', 'route-102'],
+  'petalburg-city': ['bluetenburg-city', 'petalburg-city'],
+  'hoenn-route-104': ['route-104', 'route-104'],
+  'petalburg-woods': ['bluetenburgwald', 'petalburg-woods'],
+  'rustboro-city': ['metarost-city', 'rustboro-city'],
+  'hoenn-route-116': ['route-116', 'route-116'],
+  'rusturf-tunnel': ['metaflurtunnel', 'rusturf-tunnel'],
+  'hoenn-route-105': ['route-105', 'route-105'],
+  'dewford-town': ['faustauhaven', 'dewford-town'],
+  'granite-cave': ['granithoehle', 'granite-cave'],
+  'hoenn-route-108': ['route-108', 'route-108'],
+  'hoenn-route-109': ['route-109', 'route-109'],
+  'slateport-city': ['graphitport-city', 'slateport-city'],
+  'hoenn-route-110': ['route-110', 'route-110'],
+  'mauville-city': ['malvenfroh-city', 'mauville-city'],
+  'verdanturf-town': ['wiesenflur', 'verdanturf-town'],
+  'hoenn-route-117': ['route-117', 'route-117'],
+  'hoenn-route-111': ['route-111', 'route-111'],
+  'hoenn-route-112': ['route-112', 'route-112'],
+  'fiery-path': ['feuriger-pfad', 'fiery-path'],
+  'hoenn-route-113': ['route-113', 'route-113'],
+  'fallarbor-town': ['laubwechselfeld', 'fallarbor-town'],
+  'meteor-falls': ['meteorfaelle', 'meteor-falls'],
+  'hoenn-route-114': ['route-114', 'route-114'],
+  'mt-chimney': ['schlotberg', 'mt-chimney'],
+  'lavaridge-town': ['bad-lavastadt', 'lavaridge-town'],
+  'hoenn-route-103': ['route-103', 'route-103'],
+  'hoenn-route-118': ['route-118', 'route-118'],
+  'hoenn-route-119': ['route-119', 'route-119'],
+  'fortree-city': ['baumhausen-city', 'fortree-city'],
+  'hoenn-route-120': ['route-120', 'route-120'],
+  'hoenn-route-121': ['route-121', 'route-121'],
+  'hoenn-safari-zone': ['safari-zone', 'safari-zone'],
+  'lilycove-city': ['seegrasulb-city', 'lilycove-city'],
+  'mt-pyre': ['pyroberg', 'mt-pyre'],
+  'hoenn-route-124': ['route-124', 'route-124'],
+  'mossdeep-city': ['moosbach-city', 'mossdeep-city'],
+  'shoal-cave': ['kuestenhoehle', 'shoal-cave'],
+  'sootopolis-city': ['xeneroville', 'sootopolis-city'],
+  'hoenn-route-128': ['route-128', 'route-128'],
+  'sky-pillar': ['himmelturm', 'sky-pillar'],
+  'hoenn-route-129': ['route-129', 'route-129'],
+  'pacifidlog-town': ['flossbrunn', 'pacifidlog-town'],
+  'hoenn-victory-road': ['siegesstrasse', 'victory-road'],
+  'ever-grande-city': ['prachtpolis-city', 'ever-grande-city'],
+};
+
+const writeJson = (file, data) => {
+  writeFileSync(path.join(root, file), `${JSON.stringify(data, null, 1)}\n`);
+  console.log(`[gen] wrote ${file}`);
+};
+
+async function mainHoenn() {
+  console.log('[gen/hoenn] routes…');
+  const routes = await buildRoutes();
+  console.log(`[gen/hoenn] ${Object.keys(routes).length}/${kanto.nodes.length} nodes with encounters`);
+
+  const speciesIds = new Set();
+  for (const nd of Object.values(routes)) {
+    for (const groups of Object.values(nd.versions)) {
+      for (const g of groups) for (const r of g.rows) speciesIds.add(r.id);
+    }
+  }
+  console.log(`[gen/hoenn] dex for ${speciesIds.size} species…`);
+  const dex = await buildDex([...speciesIds].sort((a, b) => a - b));
+
+  const names = {};
+  for (const id of speciesIds) {
+    names[id] = { de: nameDe(id) ?? nameEn(id, dex[id]?.slug ?? String(id)), en: nameEn(id, dex[id]?.slug ?? String(id)) };
+  }
+
+  /* meta summary — "most common catch" counts wild encounters only, from
+   * the default version (emerald), same rule as the Kanto generator */
+  const metaRoutes = {};
+  for (const [nodeId, nd] of Object.entries(routes)) {
+    const fr = nd.versions.emerald ?? Object.values(nd.versions)[0];
+    const all = fr.flatMap((g) => g.rows);
+    const top = [...all].filter((r) => !r.isStatic).sort((a, b) => b.chance - a.chance)[0];
+    const speciesCount = new Set(all.map((r) => r.id)).size;
+    const [de, en] = HOENN_ROUTE_SLUGS[nodeId] ?? [nodeId, nodeId];
+    metaRoutes[nodeId] = {
+      slugDe: de,
+      slugEn: en,
+      nameDe: nd.nameDe,
+      nameEn: nd.nameEn,
+      topId: top?.id ?? null,
+      topNameDe: top ? names[top.id].de : null,
+      topNameEn: top ? names[top.id].en : null,
+      topChance: top?.chance ?? null,
+      speciesCount,
+    };
+  }
+
+  writeJson('src/data/routes-hoenn.json', { nodes: routes, dex, names });
+  /* merge into the existing meta summary — Kanto blocks stay as committed */
+  const metaPath = path.join(root, 'src/data/seo-meta-gen.json');
+  const meta = JSON.parse(readFileSync(metaPath, 'utf8'));
+  meta.routesHoenn = metaRoutes;
+  writeJson('src/data/seo-meta-gen.json', meta);
+  console.log('[gen/hoenn] done.');
+}
+
+/* ---------- kanto main (default — output unchanged) ---------- */
+
+async function mainKanto() {
 console.log('[gen] routes…');
 const routes = await buildRoutes();
 const routeNodeIds = Object.keys(routes);
@@ -476,5 +597,17 @@ const write = (file, data) => {
 
 write('src/data/routes-kanto.json', { nodes: routes, dex, names });
 write('src/data/pokemon-seo.json', { ids: POKEMON_IDS, pokemon, dex: Object.fromEntries(POKEMON_IDS.map((id) => [id, dex[id]])), names: Object.fromEntries(POKEMON_IDS.map((id) => [id, names[id]])) , evoNames: names });
-write('src/data/seo-meta-gen.json', { routes: metaRoutes, pokemon: metaPokemon });
+/* preserve additive blocks from the region generators (routesHoenn) */
+let prevMeta = {};
+try {
+  prevMeta = JSON.parse(readFileSync(path.join(root, 'src/data/seo-meta-gen.json'), 'utf8'));
+} catch { /* first run */ }
+write('src/data/seo-meta-gen.json', { ...prevMeta, routes: metaRoutes, pokemon: metaPokemon });
 console.log('[gen] done.');
+}
+
+if (REGION === 'hoenn') {
+  await mainHoenn();
+} else {
+  await mainKanto();
+}

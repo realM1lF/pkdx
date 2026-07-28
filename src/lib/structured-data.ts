@@ -10,6 +10,7 @@ import type { Lang } from './i18n-data';
 import { resolveTypeParam, typeName, typeOverviewPath } from './seo-types';
 import { ITEMS_SEO, resolveItemParam } from './seo-items';
 import { resolveRouteParam, routeNodeName } from './seo-routes-kanto';
+import { resolveHoennRouteParam, hoennRouteNodeName } from './seo-routes-hoenn';
 
 type JsonLd = Record<string, unknown>;
 
@@ -109,11 +110,18 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
     /* deeper trails for the SEO location pages (keeps parity with the
      * visible breadcrumb on /maps/kanto/:slug) */
     const kantoMatch = rest.match(/^\/maps\/kanto\/([^/]+)$/);
+    const hoennMatch = rest.match(/^\/maps\/hoenn\/([^/]+)$/);
     if (kantoMatch && resolveRouteParam(kantoMatch[1])) {
       const nodeId = resolveRouteParam(kantoMatch[1]) as string;
       trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
       trail.push({ name: 'Kanto', url: localePath(lang, '/maps/kanto') });
       trail.push({ name: routeNodeName(nodeId, lang), url: localePath(lang, restForLang(rest, lang)) });
+    } else if (hoennMatch && resolveHoennRouteParam(hoennMatch[1])) {
+      /* same trail shape for the Hoenn SEO pages */
+      const nodeId = resolveHoennRouteParam(hoennMatch[1]) as string;
+      trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
+      trail.push({ name: 'Hoenn', url: localePath(lang, '/maps/hoenn') });
+      trail.push({ name: hoennRouteNodeName(nodeId, lang), url: localePath(lang, restForLang(rest, lang)) });
     } else if (rest === '/typen' || rest === '/types') {
       trail.push({ name: crumbName, url: localePath(lang, restForLang(rest, lang)) });
     } else if (/^\/(typen|types)\/[^/]+$/.test(rest)) {

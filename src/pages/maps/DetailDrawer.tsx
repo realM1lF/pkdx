@@ -18,6 +18,7 @@ import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
 import { aceSpeciesForNode, hasTrainersAtNode } from '@/lib/trainer-data';
 import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
+import { HOENN_ROUTE_PAGES, hoennRoutePagePath } from '@/lib/seo-routes-hoenn';
 
 const METHOD_ICON: Record<MethodBucket, typeof Footprints> = {
   WALK: Footprints,
@@ -475,11 +476,20 @@ export default function DetailDrawer({
               {t('maps.planVersus')}
             </LocaleLink>
           )}
-          {/* SEO content page exists for every Kanto node with FRLG
+          {/* SEO content page exists for every Kanto/Hoenn node with
               encounter data (localized slug from the curated mapping) */}
           {region.region === 'kanto' && ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={routePagePath(lang, node.id)}
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+            >
+              <ExternalLink size={12} />
+              {t('maps.openAsPage')}
+            </LocaleLink>
+          )}
+          {region.region === 'hoenn' && HOENN_ROUTE_PAGES.has(node.id) && (
+            <LocaleLink
+              to={hoennRoutePagePath(lang, node.id)}
               className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />

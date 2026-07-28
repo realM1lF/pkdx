@@ -16,6 +16,7 @@ import { resolveTypeParam, typeName } from './seo-types';
 import { ITEMS_SEO, localizeItemPath, resolveItemParam } from './seo-items';
 import { localizeTypePath } from './seo-types';
 import { localizeRoutePath, resolveRouteParam, routeMetaGen } from './seo-routes-kanto';
+import { hoennRouteMetaGen, localizeHoennRoutePath, resolveHoennRouteParam } from './seo-routes-hoenn';
 import { localizeMatchupRest, matchupMeta, resolveMatchupParam } from './seo-matchups';
 import META_GEN from '@/data/seo-meta-gen.json';
 
@@ -297,6 +298,26 @@ function kantoRouteMeta(nodeId: string): RouteMeta {
   };
 }
 
+/** Generated meta: Hoenn location pages (RSE, framing "Datenstand Smaragd"). */
+function hoennRouteMeta(nodeId: string): RouteMeta {
+  const m = hoennRouteMetaGen(nodeId);
+  const nameDe = m?.nameDe ?? nodeId;
+  const nameEn = m?.nameEn ?? nodeId;
+  const topDe = m?.topNameDe ?? '';
+  const topEn = m?.topNameEn ?? '';
+  return {
+    title: {
+      de: `${nameDe} (Hoenn) – Pokémon & Fundorte in Rubin/Saphir/Smaragd`,
+      en: `${nameEn} (Hoenn) – Pokémon & Locations in Ruby/Sapphire/Emerald`,
+    },
+    description: {
+      de: `Alle Pokémon auf ${nameDe} in Rubin/Saphir/Smaragd: ${m?.speciesCount ?? ''} Arten mit Fangraten & Levels${topDe ? `. Häufigster Fang: ${topDe}` : ''}. Datenstand Smaragd, mit RS-Abweichungen.`,
+      en: `Every Pokémon on ${nameEn} in Ruby/Sapphire/Emerald: ${m?.speciesCount ?? ''} species with catch rates & levels${topEn ? `. Most common: ${topEn}` : ''}. Data as of Emerald, with RS differences.`,
+    },
+    ogType: 'article',
+  };
+}
+
 /** Generated meta for the 25 curated Pokémon detail pages. */
 function pokemonSeoMeta(id: number): RouteMeta {
   const m = META_POKEMON[String(id)];
@@ -351,6 +372,11 @@ export function metaForPath(rest: string): RouteMeta {
     const nodeId = resolveRouteParam(kantoMatch[1]);
     if (nodeId) return kantoRouteMeta(nodeId);
   }
+  const hoennMatch = key.match(/^\/maps\/hoenn\/([^/]+)$/);
+  if (hoennMatch) {
+    const nodeId = resolveHoennRouteParam(hoennMatch[1]);
+    if (nodeId) return hoennRouteMeta(nodeId);
+  }
   /* curated matchup pages: '/versus/glurak-gegen-turtok' ↔ '/versus/charizard-vs-blastoise' */
   const matchupMatch = key.match(/^\/versus\/([^/]+)$/);
   if (matchupMatch) {
@@ -375,7 +401,10 @@ export function restForLang(rest: string, lang: Lang): string {
    * '/versus/charizard-vs-blastoise') */
   const matchup = localizeMatchupRest(rest, lang);
   if (matchup) return matchup;
-  const localized = localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang);
+  const localized = localizeHoennRoutePath(
+    localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang),
+    lang,
+  );
   /* battle-simulator landing: '/kampf-simulator' ↔ '/battle-simulator' */
   if (localized === BATTLE_LANDING_RESTS.de || localized === BATTLE_LANDING_RESTS.en) {
     return BATTLE_LANDING_RESTS[lang];

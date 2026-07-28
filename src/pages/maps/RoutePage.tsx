@@ -1,5 +1,7 @@
 /* RoutePage — generic SEO content page for every Kanto location with FRLG
- * encounter data: /de/maps/kanto/:slug · /en/maps/kanto/:slug (SEO rollout 2).
+ * encounter data: /de/maps/kanto/:slug · /en/maps/kanto/:slug (SEO rollout 2),
+ * region-parametrized for the Hoenn rollout (RSE encounters, framing
+ * "Datenstand Smaragd"): /de/maps/hoenn/:slug · /en/maps/hoenn/:slug.
  *
  * Successor of the Route 1 pilot (Route1Page.tsx): all data now comes from
  * the build-time PokéAPI snapshot src/data/routes-kanto.json (slot-summed
@@ -22,13 +24,18 @@ import type { Lang } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
 import { cn } from '@/lib/utils';
 import { resolveRouteParam, routeNodeName } from '@/lib/seo-routes-kanto';
+import { resolveHoennRouteParam, hoennRouteNodeName } from '@/lib/seo-routes-hoenn';
 import routesJson from '@/data/routes-kanto.json';
+import routesHoennJson from '@/data/routes-hoenn.json';
 import kantoJson from '@/data/regions/kanto.json';
+import hoennJson from '@/data/regions/hoenn.json';
 import enrichedJson from '@/data/enriched/kanto.json';
+import enrichedHoennJson from '@/data/enriched/hoenn.json';
 
 /* ---------- data shapes (mirror of the generator output) ---------- */
 
 type Frlg = 'firered' | 'leafgreen';
+type RouteVersion = Frlg | 'ruby' | 'sapphire' | 'emerald';
 type Method = 'WALK' | 'SURF' | 'FISH' | 'STATIC' | 'OTHER';
 
 interface EncounterRow {
@@ -51,24 +58,93 @@ interface RouteNodeData {
   nameDe: string;
   nameEn: string;
   kind: string;
-  versions: Partial<Record<Frlg, AreaGroup[]>>;
+  versions: Partial<Record<RouteVersion, AreaGroup[]>>;
 }
 
-const ROUTES = routesJson.nodes as unknown as Record<string, RouteNodeData>;
-const DEX = routesJson.dex as unknown as Record<string, { slug: string; types: string[]; bst: number }>;
-const NAMES = routesJson.names as unknown as Record<string, { de: string; en: string }>;
-const ENRICHED = enrichedJson.nodes as unknown as Record<
+type DexTable = Record<string, { slug: string; types: string[]; bst: number }>;
+type NameTable = Record<string, { de: string; en: string }>;
+type EnrichedTable = Record<
   string,
   {
-    items: Array<{ slug: string; kind: string }>;
-    trainers: Array<{ name: string; class: string; party: Array<{ species: string; level: number }>; important?: boolean }>;
+    items?: Array<{ slug: string; kind: string }>;
+    trainers?: Array<{ name: string; class: string; party: Array<{ species: string; level: number }>; important?: boolean }>;
   }
 >;
 
-const KANTO_NODES = kantoJson.nodes as Array<{ id: string; label: string; nameDe?: string }>;
-const KANTO_EDGES = kantoJson.edges as Array<{ from: string; to: string }>;
+/* ---------- region config (Kanto default; Hoenn additive, RSE data) ---------- */
 
-const pokeName = (id: number, lang: Lang) => NAMES[String(id)]?.[lang] ?? `#${id}`;
+interface SeoRouteRegionConfig {
+  region: 'kanto' | 'hoenn';
+  /** i18n namespace of the region-specific strings */
+  ns: 'seo.route' | 'seo.routeHoenn';
+  versions: RouteVersion[];
+  defaultVersion: RouteVersion;
+  /** framing version: encounter stats, top/rarest, default table */
+  primaryVersion: RouteVersion;
+  /** versions compared in the Q&A diff block (Kanto: FR/LG; Hoenn: RS-Abweichungen) */
+  diffVersions: [RouteVersion, RouteVersion];
+  /** key suffix inside ns for the version toggle labels */
+  versionLabelKey: Record<RouteVersion, string>;
+  routes: Record<string, RouteNodeData>;
+  dex: DexTable;
+  names: NameTable;
+  enriched: EnrichedTable;
+  regionNodes: Array<{ id: string; label: string; nameDe?: string }>;
+  regionEdges: Array<{ from: string; to: string }>;
+  resolveParam: (param: string | undefined) => string | null;
+  nodeName: (nodeId: string, lang: Lang) => string;
+}
+
+const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
+  kanto: {
+    region: 'kanto',
+    ns: 'seo.route',
+    versions: ['firered', 'leafgreen'],
+    defaultVersion: 'firered',
+    primaryVersion: 'firered',
+    diffVersions: ['firered', 'leafgreen'],
+    versionLabelKey: {
+      firered: 'versionFR',
+      leafgreen: 'versionLG',
+      ruby: 'versionFR',
+      sapphire: 'versionLG',
+      emerald: 'versionFR',
+    },
+    routes: routesJson.nodes as unknown as Record<string, RouteNodeData>,
+    dex: routesJson.dex as unknown as DexTable,
+    names: routesJson.names as unknown as NameTable,
+    enriched: enrichedJson.nodes as unknown as EnrichedTable,
+    regionNodes: kantoJson.nodes as Array<{ id: string; label: string; nameDe?: string }>,
+    regionEdges: kantoJson.edges as Array<{ from: string; to: string }>,
+    resolveParam: resolveRouteParam,
+    nodeName: routeNodeName,
+  },
+  hoenn: {
+    region: 'hoenn',
+    ns: 'seo.routeHoenn',
+    versions: ['ruby', 'sapphire', 'emerald'],
+    defaultVersion: 'emerald',
+    primaryVersion: 'emerald',
+    diffVersions: ['ruby', 'sapphire'],
+    versionLabelKey: {
+      firered: 'versionFR',
+      leafgreen: 'versionLG',
+      ruby: 'versionRuby',
+      sapphire: 'versionSapphire',
+      emerald: 'versionEmerald',
+    },
+    routes: routesHoennJson.nodes as unknown as Record<string, RouteNodeData>,
+    dex: routesHoennJson.dex as unknown as DexTable,
+    names: routesHoennJson.names as unknown as NameTable,
+    enriched: enrichedHoennJson.nodes as unknown as EnrichedTable,
+    regionNodes: hoennJson.nodes as Array<{ id: string; label: string; nameDe?: string }>,
+    regionEdges: hoennJson.edges as Array<{ from: string; to: string }>,
+    resolveParam: resolveHoennRouteParam,
+    nodeName: hoennRouteNodeName,
+  },
+};
+
+const pokeName = (id: number, lang: Lang, names: NameTable) => names[String(id)]?.[lang] ?? `#${id}`;
 
 /* ---------- curated per-slug overrides (Route 1 pilot content) ---------- */
 
@@ -98,19 +174,28 @@ interface QaRaw {
   aBody: string;
 }
 
+/* key suffix inside the region i18n namespace (seo.route / seo.routeHoenn) */
 const METHOD_KEY: Record<Method, string> = {
-  WALK: 'seo.route.methodWalk',
-  SURF: 'seo.route.methodSurf',
-  FISH: 'seo.route.methodFish',
-  STATIC: 'seo.route.methodStatic',
-  OTHER: 'seo.route.methodOther',
+  WALK: 'methodWalk',
+  SURF: 'methodSurf',
+  FISH: 'methodFish',
+  STATIC: 'methodStatic',
+  OTHER: 'methodOther',
 };
 
-function FrlgToggle({ value, onChange }: { value: Frlg; onChange: (v: Frlg) => void }) {
+function VersionToggle({
+  cfg,
+  value,
+  onChange,
+}: {
+  cfg: SeoRouteRegionConfig;
+  value: RouteVersion;
+  onChange: (v: RouteVersion) => void;
+}) {
   const { t } = useTranslation();
   return (
-    <div className="flex gap-1" role="group" aria-label={t('seo.route.encountersTitle')}>
-      {(['firered', 'leafgreen'] as const).map((v) => (
+    <div className="flex gap-1" role="group" aria-label={t(`${cfg.ns}.encountersTitle`)}>
+      {cfg.versions.map((v) => (
         <button
           key={v}
           type="button"
@@ -121,7 +206,7 @@ function FrlgToggle({ value, onChange }: { value: Frlg; onChange: (v: Frlg) => v
             value === v ? 'border-gold/60 bg-gold/10 text-gold' : 'border-hairline text-tx-muted hover:text-tx-secondary',
           )}
         >
-          {v === 'firered' ? t('seo.route.versionFR') : t('seo.route.versionLG')}
+          {t(`${cfg.ns}.${cfg.versionLabelKey[v]}`)}
         </button>
       ))}
     </div>
@@ -151,15 +236,16 @@ function SectionCard({
   );
 }
 
-function EncounterTable({ rows, lang }: { rows: EncounterRow[]; lang: Lang }) {
+function EncounterTable({ rows, lang, cfg }: { rows: EncounterRow[]; lang: Lang; cfg: SeoRouteRegionConfig }) {
   const { t } = useTranslation();
+  const ns = cfg.ns;
   return (
     <>
       <div className="flex items-center gap-2 border-b border-hairline px-4 py-2 sm:px-5">
-        <span className="pixel-label flex-1 text-[7px] text-tx-muted">{t('seo.route.colPokemon')}</span>
-        <span className="pixel-label hidden w-[72px] text-[7px] text-tx-muted sm:block">{t('seo.route.colMethod')}</span>
-        <span className="pixel-label w-[58px] text-right text-[7px] text-tx-muted">{t('seo.route.colLevel')}</span>
-        <span className="pixel-label w-[84px] text-right text-[7px] text-tx-muted">{t('seo.route.colChance')}</span>
+        <span className="pixel-label flex-1 text-[7px] text-tx-muted">{t(`${ns}.colPokemon`)}</span>
+        <span className="pixel-label hidden w-[72px] text-[7px] text-tx-muted sm:block">{t(`${ns}.colMethod`)}</span>
+        <span className="pixel-label w-[58px] text-right text-[7px] text-tx-muted">{t(`${ns}.colLevel`)}</span>
+        <span className="pixel-label w-[84px] text-right text-[7px] text-tx-muted">{t(`${ns}.colChance`)}</span>
       </div>
       {rows.map((e) => (
         <LocaleLink
@@ -168,16 +254,16 @@ function EncounterTable({ rows, lang }: { rows: EncounterRow[]; lang: Lang }) {
           className="group flex h-12 items-center gap-2 border-b border-hairline/60 px-4 transition-colors last:border-b-0 hover:bg-surface2 sm:px-5"
         >
           <span className="flex min-w-0 flex-1 items-center gap-2.5">
-            <Sprite id={e.id} name={pokeName(e.id, lang)} era="gen5" className="h-[34px] w-[34px] shrink-0" />
+            <Sprite id={e.id} name={pokeName(e.id, lang, cfg.names)} era="gen5" className="h-[34px] w-[34px] shrink-0" />
             <span className="min-w-0">
               <span className="block truncate text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
-                {pokeName(e.id, lang)}
+                {pokeName(e.id, lang, cfg.names)}
               </span>
               <span className="pixel-label block text-[7px] text-tx-muted">{padNum(e.id)}</span>
             </span>
           </span>
           <span className="hidden w-[72px] shrink-0 text-[11px] font-medium text-tx-secondary sm:block">
-            {t(METHOD_KEY[e.method])}
+            {t(`${cfg.ns}.${METHOD_KEY[e.method]}`)}
           </span>
           <span className="w-[58px] shrink-0 text-right font-sans text-[11px] tabular-nums text-tx-muted">
             {e.minLevel === e.maxLevel ? `Lv ${e.minLevel}` : `Lv ${e.minLevel}–${e.maxLevel}`}
@@ -196,11 +282,18 @@ function EncounterTable({ rows, lang }: { rows: EncounterRow[]; lang: Lang }) {
 
 /* ---------- computed content ---------- */
 
-function useComputed(nodeId: string, data: RouteNodeData, lang: Lang) {
+function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRouteRegionConfig) {
   const { t } = useTranslation();
+  const ns = cfg.ns;
   return useMemo(() => {
-    const frRows = (data.versions.firered ?? []).flatMap((g) => g.rows);
-    const lgRows = (data.versions.leafgreen ?? []).flatMap((g) => g.rows);
+    /* stats from the framing version (Kanto: Feuerrot; Hoenn: Smaragd);
+       the Q&A diff compares the two classic paired versions (Kanto: FR vs.
+       LG; Hoenn: Rubin vs. Saphir — the RS-Abweichungen) */
+    const frRows = (data.versions[cfg.primaryVersion] ?? []).flatMap((g) => g.rows);
+    const lgRows = (data.versions[cfg.diffVersions[0]] ?? []).flatMap((g) => g.rows);
+    const diffBRows = cfg.diffVersions[1] === cfg.diffVersions[0]
+      ? lgRows
+      : (data.versions[cfg.diffVersions[1]] ?? []).flatMap((g) => g.rows);
     /* static gift/bought encounters (e.g. the Magikarp salesman on Route 3)
      * are excluded from the "most common / rarest catch" math — only wild
      * grass/surf/fish encounters count there */
@@ -212,7 +305,7 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang) {
 
     /* top 3 + rarest (FireRed rates) for the "what can you catch" answer */
     const sorted = [...wildSpecies.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
-    const fmt = ([id, chance]: [number, number]) => `${pokeName(id, lang)} (${chance} %)`;
+    const fmt = ([id, chance]: [number, number]) => `${pokeName(id, lang, cfg.names)} (${chance} %)`;
     const top3 = sorted.slice(0, 3).map(fmt).join(', ');
     /* rarest: name ALL species tied at the minimum chance (cap at 3) */
     const minChance = sorted.length ? sorted[sorted.length - 1][1] : null;
@@ -221,85 +314,100 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang) {
     const rarestIsTie = rarestTied.length > 1;
 
     /* version diff: per species, best chance per version */
-    const lgSpecies = new Map<number, number>();
-    for (const r of lgRows) lgSpecies.set(r.id, Math.max(lgSpecies.get(r.id) ?? 0, r.chance));
+    const versionA = t(`${ns}.versionA`);
+    const versionB = t(`${ns}.versionB`);
+    const versionAShort = t(`${ns}.versionAShort`);
+    const versionBShort = t(`${ns}.versionBShort`);
+    const aSpecies = new Map<number, number>();
+    for (const r of lgRows) aSpecies.set(r.id, Math.max(aSpecies.get(r.id) ?? 0, r.chance));
+    const bSpecies = new Map<number, number>();
+    for (const r of diffBRows) bSpecies.set(r.id, Math.max(bSpecies.get(r.id) ?? 0, r.chance));
     const diffs: string[] = [];
-    const ids = new Set([...species.keys(), ...lgSpecies.keys()]);
-    for (const id of [...ids].sort((a, b) => a - b)) {
-      const fr = species.get(id);
-      const lg = lgSpecies.get(id);
-      if (fr !== undefined && lg === undefined) diffs.push(t('seo.route.diffOnlyFR', { pokemon: pokeName(id, lang), chance: fr }));
-      else if (fr === undefined && lg !== undefined) diffs.push(t('seo.route.diffOnlyLG', { pokemon: pokeName(id, lang), chance: lg }));
-      else if (fr !== lg) diffs.push(t('seo.route.diffRate', { pokemon: pokeName(id, lang), fr, lg }));
+    const diffIds = new Set([...aSpecies.keys(), ...bSpecies.keys()]);
+    for (const id of [...diffIds].sort((a, b) => a - b)) {
+      const fr = aSpecies.get(id);
+      const lg = bSpecies.get(id);
+      if (fr !== undefined && lg === undefined)
+        diffs.push(t(`${ns}.diffOnlyA`, { pokemon: pokeName(id, lang, cfg.names), chance: fr, version: versionA }));
+      else if (fr === undefined && lg !== undefined)
+        diffs.push(t(`${ns}.diffOnlyB`, { pokemon: pokeName(id, lang, cfg.names), chance: lg, version: versionB }));
+      else if (fr !== lg)
+        diffs.push(
+          t(`${ns}.diffRate`, { pokemon: pokeName(id, lang, cfg.names), a: fr, b: lg, va: versionAShort, vb: versionBShort }),
+        );
     }
 
     /* best catch: highest base stat total among catchable species */
+    const allIds = new Set([...species.keys(), ...aSpecies.keys(), ...bSpecies.keys()]);
     let best: { id: number; bst: number } | null = null;
-    for (const id of ids) {
-      const bst = DEX[String(id)]?.bst;
+    for (const id of allIds) {
+      const bst = cfg.dex[String(id)]?.bst;
       if (bst && (!best || bst > best.bst)) best = { id, bst };
     }
 
     /* items (curated enrichment) */
-    const items = ENRICHED[nodeId]?.items ?? [];
+    const items = cfg.enriched[nodeId]?.items ?? [];
     const itemNames = items.map((it) => nameOfItem(it.slug, lang));
 
     /* neighbors from the map graph */
     const neighborIds = new Set<string>();
-    for (const e of KANTO_EDGES) {
+    for (const e of cfg.regionEdges) {
       if (e.from === nodeId) neighborIds.add(e.to);
       if (e.to === nodeId) neighborIds.add(e.from);
     }
     const neighbors = [...neighborIds]
-      .map((id) => KANTO_NODES.find((n) => n.id === id))
+      .map((id) => cfg.regionNodes.find((n) => n.id === id))
       .filter((n): n is NonNullable<typeof n> => Boolean(n))
       .map((n) => (lang === 'de' ? n.nameDe ?? n.label : n.label))
       .slice(0, 3);
 
     return { speciesCount: species.size, top3, rarest, rarestIsTie, diffs, best, items, itemNames, neighbors };
-  }, [nodeId, data, lang, t]);
+  }, [nodeId, data, lang, cfg, ns, t]);
 }
 
 /* ---------- page ---------- */
 
-export default function RoutePage() {
+export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'hoenn' }) {
+  const cfg = REGION_CONFIG[region];
+  const ns = cfg.ns;
   const { slug } = useParams();
   const { t } = useTranslation();
   const lang = useLanguage();
-  const [version, setVersion] = useState<Frlg>('firered');
+  const [version, setVersion] = useState<RouteVersion>(cfg.defaultVersion);
 
-  const nodeId = resolveRouteParam(slug);
-  const data = nodeId ? ROUTES[nodeId] : undefined;
+  const nodeId = cfg.resolveParam(slug);
+  const data = nodeId ? cfg.routes[nodeId] : undefined;
 
-  const computed = useComputed(nodeId ?? '', data ?? { nameDe: '', nameEn: '', kind: '', versions: {} }, lang);
+  const computed = useComputed(nodeId ?? '', data ?? { nameDe: '', nameEn: '', kind: '', versions: {} }, lang, cfg);
 
   if (!nodeId || !data) {
-    /* unknown location → back to the Kanto map */
+    /* unknown location → back to the region map */
     return (
       <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
-        <LocaleLink to="/maps/kanto" className="text-gold underline-offset-2 hover:underline">
-          {t('seo.route.crumbKanto')}
+        <LocaleLink to={`/maps/${cfg.region}`} className="text-gold underline-offset-2 hover:underline">
+          {t(`${ns}.crumbRegion`)}
         </LocaleLink>
       </div>
     );
   }
 
-  const name = routeNodeName(nodeId, lang);
-  const override = ROUTE_OVERRIDES[nodeId];
-  const groups = data.versions[version] ?? data.versions.firered ?? [];
+  const name = cfg.nodeName(nodeId, lang);
+  /* curated overrides exist only for the Kanto Route 1 pilot */
+  const override = region === 'kanto' ? ROUTE_OVERRIDES[nodeId] : undefined;
+  const groups = data.versions[version] ?? data.versions[cfg.defaultVersion] ?? [];
   const multiArea = groups.length > 1;
 
   const neighborText =
     computed.neighbors.length >= 2
-      ? t('seo.route.neighbors', { name, a: computed.neighbors[0], b: computed.neighbors[1] })
+      ? t(`${ns}.neighbors`, { name, a: computed.neighbors[0], b: computed.neighbors[1] })
       : '';
-  const intro = override?.introKey ? t(override.introKey) : t('seo.route.intro', { name, neighbors: neighborText });
+  const intro = override?.introKey ? t(override.introKey) : t(`${ns}.intro`, { name, neighbors: neighborText });
 
   const bestCatchId = override?.bestCatch?.pokemonId ?? computed.best?.id;
   const bestCatchBody = override?.bestCatch
     ? t(override.bestCatch.bodyKey)
     : computed.best
-      ? t('seo.route.bestCatchBody', { pokemon: pokeName(computed.best.id, lang), bst: computed.best.bst, name })
+      ? t(`${ns}.bestCatchBody`, { pokemon: pokeName(computed.best.id, lang, cfg.names), bst: computed.best.bst, name })
       : null;
 
   /* Q&A — curated for Route 1 (pilot texts), generated elsewhere */
@@ -317,13 +425,13 @@ export default function RoutePage() {
     }
     const items: Array<{ q: string; a: React.ReactNode }> = [];
     items.push({
-      q: t('seo.route.qaCatchQ', { name }),
+      q: t(`${ns}.qaCatchQ`, { name }),
       a: (
         <p>
           <strong className="font-semibold text-tx-primary">
-            {t('seo.route.qaCatchLead', { count: computed.speciesCount })}
+            {t(`${ns}.qaCatchLead`, { count: computed.speciesCount })}
           </strong>{' '}
-          {t(computed.rarestIsTie ? 'seo.route.qaCatchBodyTie' : 'seo.route.qaCatchBody', {
+          {t(computed.rarestIsTie ? `${ns}.qaCatchBodyTie` : `${ns}.qaCatchBody`, {
             top: computed.top3,
             rare: computed.rarest,
           })}
@@ -331,40 +439,40 @@ export default function RoutePage() {
       ),
     });
     items.push({
-      q: t('seo.route.qaDiffQ', { name }),
+      q: t(`${ns}.qaDiffQ`, { name }),
       a: (
         <p>
           <strong className="font-semibold text-tx-primary">
-            {computed.diffs.length ? t('seo.route.qaDiffLeadYes') : t('seo.route.qaDiffLeadNo')}
+            {computed.diffs.length ? t(`${ns}.qaDiffLeadYes`) : t(`${ns}.qaDiffLeadNo`)}
           </strong>{' '}
           {computed.diffs.length
-            ? t('seo.route.qaDiffBodyYes', { name, details: computed.diffs.join('; ') })
-            : t('seo.route.qaDiffBodyNo', { name })}
+            ? t(`${ns}.qaDiffBodyYes`, { name, details: computed.diffs.join('; ') })
+            : t(`${ns}.qaDiffBodyNo`, { name })}
         </p>
       ),
     });
     items.push({
-      q: t('seo.route.qaItemsQ', { name }),
+      q: t(`${ns}.qaItemsQ`, { name }),
       a: (
         <p>
           <strong className="font-semibold text-tx-primary">
-            {computed.items.length ? t('seo.route.qaItemsLeadYes') : t('seo.route.qaItemsLeadNo')}
+            {computed.items.length ? t(`${ns}.qaItemsLeadYes`) : t(`${ns}.qaItemsLeadNo`)}
           </strong>{' '}
           {computed.items.length
-            ? t('seo.route.qaItemsBodyYes', { name, count: computed.items.length, list: computed.itemNames.join(', ') })
-            : t('seo.route.qaItemsBodyNo', { name })}
+            ? t(`${ns}.qaItemsBodyYes`, { name, count: computed.items.length, list: computed.itemNames.join(', ') })
+            : t(`${ns}.qaItemsBodyNo`, { name })}
         </p>
       ),
     });
     if (computed.best) {
       items.push({
-        q: t('seo.route.qaBestQ', { name }),
+        q: t(`${ns}.qaBestQ`, { name }),
         a: (
           <p>
             <strong className="font-semibold text-tx-primary">
-              {t('seo.route.qaBestLead', { pokemon: pokeName(computed.best.id, lang) })}
+              {t(`${ns}.qaBestLead`, { pokemon: pokeName(computed.best.id, lang, cfg.names) })}
             </strong>{' '}
-            {t('seo.route.qaBestBody', { pokemon: pokeName(computed.best.id, lang), bst: computed.best.bst, name })}
+            {t(`${ns}.qaBestBody`, { pokemon: pokeName(computed.best.id, lang, cfg.names), bst: computed.best.bst, name })}
           </p>
         ),
       });
@@ -372,7 +480,7 @@ export default function RoutePage() {
     return items;
   })();
 
-  const trainers = (ENRICHED[nodeId]?.trainers ?? []).slice(0, 12);
+  const trainers = (cfg.enriched[nodeId]?.trainers ?? []).slice(0, 12);
 
   return (
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
@@ -383,15 +491,15 @@ export default function RoutePage() {
           <ol className="flex flex-wrap items-center gap-1 font-sans text-[12px] font-semibold text-tx-muted">
             <li>
               <LocaleLink to="/maps" className="transition-colors hover:text-gold">
-                {t('seo.route.crumbMaps')}
+                {t(`${ns}.crumbMaps`)}
               </LocaleLink>
             </li>
             <li aria-hidden className="flex items-center">
               <ChevronRight size={12} />
             </li>
             <li>
-              <LocaleLink to="/maps/kanto" className="transition-colors hover:text-gold">
-                {t('seo.route.crumbKanto')}
+              <LocaleLink to={`/maps/${cfg.region}`} className="transition-colors hover:text-gold">
+                {t(`${ns}.crumbRegion`)}
               </LocaleLink>
             </li>
             <li aria-hidden className="flex items-center">
@@ -404,9 +512,9 @@ export default function RoutePage() {
         </nav>
 
         <header className="mb-8">
-          <p className="pixel-label text-[9px] text-gold">{t('seo.route.eyebrow', { name })}</p>
+          <p className="pixel-label text-[9px] text-gold">{t(`${ns}.eyebrow`, { name })}</p>
           <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
-            {t('seo.route.title', { name })}
+            {t(`${ns}.title`, { name })}
           </h1>
           <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">{intro}</p>
         </header>
@@ -414,9 +522,9 @@ export default function RoutePage() {
         <div className="flex flex-col gap-4">
           {/* encounter tables (per area), FR/LG toggle */}
           <SectionCard
-            eyebrow={t('seo.route.encountersEyebrow')}
-            title={t('seo.route.encountersTitle')}
-            right={<FrlgToggle value={version} onChange={setVersion} />}
+            eyebrow={t(`${ns}.encountersEyebrow`)}
+            title={t(`${ns}.encountersTitle`)}
+            right={<VersionToggle cfg={cfg} value={version} onChange={setVersion} />}
           >
             {groups.map((g) => (
               <div key={g.areaSlug}>
@@ -425,13 +533,13 @@ export default function RoutePage() {
                     {g.label}
                   </p>
                 )}
-                <EncounterTable rows={g.rows} lang={lang} />
+                <EncounterTable rows={g.rows} lang={lang} cfg={cfg} />
               </div>
             ))}
             <p className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
-              {t('seo.route.encounterSource')}
+              {t(`${ns}.encounterSource`)}
               <LocaleLink
-                to={`/maps/kanto?node=${nodeId}&v=${version}`}
+                to={`/maps/${cfg.region}?node=${nodeId}&v=${version}`}
                 className="text-gold/80 underline-offset-2 transition-colors hover:text-gold hover:underline"
               >
                 {t('maps.viewOnMapHint')}
@@ -441,7 +549,7 @@ export default function RoutePage() {
 
           {/* items (curated enrichment) */}
           {computed.items.length > 0 && (
-            <SectionCard eyebrow={t('seo.route.itemsEyebrow')} title={t('seo.route.itemsTitle', { name })}>
+            <SectionCard eyebrow={t(`${ns}.itemsEyebrow`)} title={t(`${ns}.itemsTitle`, { name })}>
               {computed.items.map((it, i) => (
                 <div key={`${it.slug}-${i}`} className="flex items-center gap-3 border-b border-hairline/60 px-4 py-2.5 last:border-b-0 sm:px-5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-gold/30 bg-gold-soft text-gold">
@@ -452,10 +560,10 @@ export default function RoutePage() {
                   </div>
                   <span className="pixel-label rounded-sm border border-hairline px-1 py-0.5 text-[6px] text-tx-muted">
                     {it.kind === 'hidden'
-                      ? t('seo.route.itemKindHidden')
+                      ? t(`${ns}.itemKindHidden`)
                       : it.kind === 'given'
-                        ? t('seo.route.itemKindGiven')
-                        : t('seo.route.itemKindBall')}
+                        ? t(`${ns}.itemKindGiven`)
+                        : t(`${ns}.itemKindBall`)}
                   </span>
                 </div>
               ))}
@@ -464,7 +572,7 @@ export default function RoutePage() {
 
           {/* trainers (curated enrichment) */}
           {trainers.length > 0 && (
-            <SectionCard eyebrow={t('seo.route.trainersEyebrow')} title={t('seo.route.trainersTitle', { name })}>
+            <SectionCard eyebrow={t(`${ns}.trainersEyebrow`)} title={t(`${ns}.trainersTitle`, { name })}>
               {trainers.map((tr, i) => (
                 <div key={`${tr.class}-${tr.name}-${i}`} className="flex items-center gap-3 border-b border-hairline/60 px-4 py-2.5 last:border-b-0 sm:px-5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-hairline bg-surface2 text-tx-muted">
@@ -475,7 +583,7 @@ export default function RoutePage() {
                       {tr.class} {tr.name}
                     </p>
                     <p className="text-[11px] text-tx-muted">
-                      {tr.party.map((p) => `${pokeNameBySlug(p.species, lang)} Lv ${p.level}`).join(', ')}
+                      {tr.party.map((p) => `${pokeNameBySlug(p.species, lang, cfg)} Lv ${p.level}`).join(', ')}
                     </p>
                   </div>
                 </div>
@@ -485,12 +593,12 @@ export default function RoutePage() {
 
           {/* best catch */}
           {bestCatchId && bestCatchBody && (
-            <SectionCard eyebrow={t('seo.route.bestCatchEyebrow')} title={t('seo.route.bestCatchTitle', { name })}>
+            <SectionCard eyebrow={t(`${ns}.bestCatchEyebrow`)} title={t(`${ns}.bestCatchTitle`, { name })}>
               <div className="flex items-start gap-3 px-4 py-4 sm:px-5">
-                <LocaleLink to={`/pokemon/${bestCatchId}`} className="group shrink-0" aria-label={pokeName(bestCatchId, lang)}>
+                <LocaleLink to={`/pokemon/${bestCatchId}`} className="group shrink-0" aria-label={pokeName(bestCatchId, lang, cfg.names)}>
                   <Sprite
                     id={bestCatchId}
-                    name={pokeName(bestCatchId, lang)}
+                    name={pokeName(bestCatchId, lang, cfg.names)}
                     era="gen5"
                     className="h-[56px] w-[56px] transition-transform duration-150 group-hover:scale-110"
                   />
@@ -507,21 +615,21 @@ export default function RoutePage() {
                 <Crosshair size={16} strokeWidth={1.75} />
               </span>
               <div className="min-w-0 flex-1 basis-56">
-                <p className="pixel-label text-[8px] text-gold">{t('seo.route.nuzlockeEyebrow')}</p>
+                <p className="pixel-label text-[8px] text-gold">{t(`${ns}.nuzlockeEyebrow`)}</p>
                 <h2 className="font-display text-base font-bold uppercase tracking-wide text-tx-primary">
-                  {t('seo.route.nuzlockeTitle', { name })}
+                  {t(`${ns}.nuzlockeTitle`, { name })}
                 </h2>
               </div>
               <LocaleLink
-                to={`/nuzlocke/new?region=kanto&at=${nodeId}`}
+                to={`/nuzlocke/new?region=${cfg.region}&at=${nodeId}`}
                 className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-glow-gold"
               >
-                {t('seo.route.nuzlockeCta')}
+                {t(`${ns}.nuzlockeCta`)}
                 <ChevronRight size={14} />
               </LocaleLink>
             </div>
             <p className="mt-3 font-sans text-[13px] leading-relaxed text-tx-secondary">
-              {override?.nuzlockeBodyKey ? t(override.nuzlockeBodyKey) : t('seo.route.nuzlockeBody', { name })}
+              {override?.nuzlockeBodyKey ? t(override.nuzlockeBodyKey) : t(`${ns}.nuzlockeBody`, { name })}
             </p>
           </section>
 
@@ -532,17 +640,17 @@ export default function RoutePage() {
           <section className="mt-4">
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px flex-1 bg-hairline" aria-hidden />
-              <span className="pixel-label text-[9px] text-gold">{t('seo.route.linksEyebrow')}</span>
+              <span className="pixel-label text-[9px] text-gold">{t(`${ns}.linksEyebrow`)}</span>
               <span className="h-px flex-1 bg-hairline" aria-hidden />
             </div>
             <div className="flex flex-col gap-2">
               <LocaleLink
-                to={`/maps/kanto?node=${nodeId}`}
+                to={`/maps/${cfg.region}?node=${nodeId}`}
                 className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
               >
                 <span className="flex items-center gap-2.5 text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
                   <MapIcon size={15} className="text-gold" />
-                  {t('seo.route.openMapCta', { name })}
+                  {t(`${ns}.openMapCta`, { name })}
                 </span>
                 <ChevronRight size={15} className="text-tx-muted transition-transform group-hover:translate-x-0.5 group-hover:text-gold" />
               </LocaleLink>
@@ -565,7 +673,7 @@ export default function RoutePage() {
                     className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
                   >
                     <span className="flex items-center gap-2.5">
-                      <Sprite id={25} name={pokeName(25, lang)} era="gen5" className="h-[26px] w-[26px]" />
+                      <Sprite id={25} name={pokeName(25, lang, cfg.names)} era="gen5" className="h-[26px] w-[26px]" />
                       <span className="text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
                         {t('seo.route1.linkPikachu')}
                       </span>
@@ -582,11 +690,14 @@ export default function RoutePage() {
   );
 }
 
-/* trainer party species come as slugs — resolve via the dex table */
-const SLUG_TO_ID: Record<string, number> = Object.fromEntries(
-  Object.entries(DEX).map(([id, d]) => [d.slug, Number(id)]),
-);
-function pokeNameBySlug(slug: string, lang: Lang): string {
-  const id = SLUG_TO_ID[slug];
-  return id ? pokeName(id, lang) : nameOfPokemon(slug, lang);
+/* trainer party species come as slugs — resolve via the region dex table */
+const SLUG_TO_ID_CACHE = new Map<SeoRouteRegionConfig, Record<string, number>>();
+function pokeNameBySlug(slug: string, lang: Lang, cfg: SeoRouteRegionConfig): string {
+  let map = SLUG_TO_ID_CACHE.get(cfg);
+  if (!map) {
+    map = Object.fromEntries(Object.entries(cfg.dex).map(([id, d]) => [d.slug, Number(id)]));
+    SLUG_TO_ID_CACHE.set(cfg, map);
+  }
+  const id = map[slug];
+  return id ? pokeName(id, lang, cfg.names) : nameOfPokemon(slug, lang);
 }

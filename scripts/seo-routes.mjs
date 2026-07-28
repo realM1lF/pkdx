@@ -73,6 +73,13 @@ const KANTO_ROUTE_ENTRIES = Object.values(META_GEN.routes).map((r) => ({
   en: `/maps/kanto/${r.slugEn}`,
 }));
 
+/* Hoenn location pages (SEO rollout 3): localized slugs from the generated
+ * routesHoenn block — same pattern as Kanto, mirror of seo-routes-hoenn.ts. */
+const HOENN_ROUTE_ENTRIES = Object.values(META_GEN.routesHoenn ?? {}).map((r) => ({
+  de: `/maps/hoenn/${r.slugDe}`,
+  en: `/maps/hoenn/${r.slugEn}`,
+}));
+
 /* 25 curated Pokémon detail pages (SEO rollout 2) */
 const POKEMON_SEO_IDS = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 133, 143, 150, 151, 149, 130, 94, 18, 20,
@@ -112,6 +119,8 @@ export const STATIC_ROUTES = [
   ...ITEM_SLUGS.map(([de, en]) => ({ de: `/items/${de}`, en: `/items/${en}` })),
   /* Kanto location pages (localized slugs) */
   ...KANTO_ROUTE_ENTRIES,
+  /* Hoenn location pages (localized slugs) */
+  ...HOENN_ROUTE_ENTRIES,
   /* curated Pokémon detail pages */
   ...POKEMON_SEO_IDS.map((id) => `/pokemon/${id}`),
   /* curated matchup pages (localized slugs) */
