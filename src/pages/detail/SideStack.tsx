@@ -162,8 +162,14 @@ export default function SideStack({ pokemon, species }: { pokemon: Pokemon; spec
 
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
         <MiniPanel eyebrow={t('detail.side.defenseEyebrow')} title={t('detail.side.matchupsTitle')}>
+          {matchups.quad.length > 0 && (
+            <MatchupRow label={t('detail.side.weak4')} mult="×4" types={matchups.quad} tint="#FF6B4A" />
+          )}
           <MatchupRow label={t('detail.side.weak')} mult="×2" types={matchups.weak} tint="#FF8A6B" />
-          <MatchupRow label={t('detail.side.resist')} mult="×0.5" types={matchups.resist} tint="#63D96B" />
+          <MatchupRow label={t('detail.side.resist')} mult="×½" types={matchups.resist} tint="#63D96B" />
+          {matchups.quarter.length > 0 && (
+            <MatchupRow label={t('detail.side.resistQuarter')} mult="×¼" types={matchups.quarter} tint="#3EB58A" />
+          )}
           <MatchupRow label={t('detail.side.immune')} mult="×0" types={matchups.immune} tint="#5E6680" />
         </MiniPanel>
       </motion.div>

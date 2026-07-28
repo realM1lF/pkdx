@@ -13,7 +13,7 @@
  */
 import { Generations } from '@pkmn/data';
 import { Dex } from '@pkmn/dex';
-import type { GenerationNum, Nature, Specie, TypeName } from '@pkmn/data';
+import type { Nature, Specie, TypeName } from '@pkmn/data';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
 import type { Lang } from './i18n-data';
@@ -106,29 +106,10 @@ export function genHasMechanics(vgId: string): { abilities: boolean; items: bool
   return { ...base, ...MECHANICS_OVERRIDES[vgId] };
 }
 
-/* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ---------- */
-
-const capType = (slug: string) => (slug.charAt(0).toUpperCase() + slug.slice(1)) as TypeName;
-
-/**
- * Gen-correct effectiveness of an attacking type vs defending type slugs.
- * Uses the per-gen chart from @pkmn/data (gen 1: Ghost vs Psychic ×0,
- * Bug↔Poison ×2; gen 2–5: Steel resists Dark/Ghost; …).
- * Types that don't exist in the gen resolve neutral.
- */
-export function genEffectivenessOf(genNum: GenerationNum, attackType: string, defendingTypes: string[]): number {
-  const types = gens.get(genNum).types;
-  const atk = capType(attackType);
-  if (!types.get(atk)?.exists) return 1;
-  const defs = defendingTypes.map(capType).filter((d) => types.get(d)?.exists);
-  if (!defs.length) return 1;
-  return types.totalEffectiveness(atk, defs);
-}
-
-/** type slugs (lowercase) existing in this gen — attacking side of defensive profiles */
-export function genTypeSlugs(genNum: GenerationNum): string[] {
-  return [...gens.get(genNum).types].map((t) => t.name.toLowerCase());
-}
+/* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ----------
+ * Lives in ./effectiveness (pure module, shared with the battle engine);
+ * re-exported here to keep the teambuilder API stable. */
+export { genEffectivenessOf, genTypeSlugs } from './effectiveness';
 
 /* ------------------------------------------------------------------ */
 /* Team state model                                                    */

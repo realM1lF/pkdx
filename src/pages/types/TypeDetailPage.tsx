@@ -12,6 +12,7 @@ import Sprite from '@/components/Sprite';
 import TypeGlyph from '@/components/TypeGlyph';
 import { LocaleLink, useLocale } from '@/lib/locale-link';
 import { nameOfPokemon } from '@/lib/i18n-data';
+import { effMultLabel } from '@/lib/effectiveness';
 import {
   attackRating,
   countersOf,
@@ -84,7 +85,7 @@ export default function TypeDetailPage() {
   const exampleMult = exampleMultiplier(example);
   const exampleIsDual = example.types.length > 1;
   const exampleName = nameOfPokemon(example.pokemonId, lang);
-  const multLabel = (m: number) => (m === 0 ? '×0' : m === 0.5 ? '×½' : m === 2 ? '×2' : m === 4 ? '×4' : `×${m}`);
+  const multLabel = effMultLabel;
 
   const counterReason = (c: { type: string; hitsFor: number; takesFor: number }) =>
     c.takesFor === 0

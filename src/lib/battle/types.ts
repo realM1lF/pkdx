@@ -95,6 +95,9 @@ export interface BattleEvent {
   /** side-condition / effect reference for sideStart/sideEnd/activate */
   effectId?: string;
   effectName?: string;
+  /** type effectiveness of the hit for supereffective/resisted (4 = dual-type
+   * ×4, 0.25 = double resist) — computed from move type × defender types */
+  mult?: number;
   /** turn number for kind 'turn' */
   turn?: number;
   /** winner for kind 'win' */

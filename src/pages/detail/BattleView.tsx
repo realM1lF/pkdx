@@ -10,6 +10,7 @@ import PokeballLoader from '@/components/PokeballLoader';
 import { MicroBattle } from '@/lib/battle/engine';
 import type { AiMode, BattleEvent, BattleSideSetup, BattleSnapshot } from '@/lib/battle/types';
 import { nameOfItem, nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { effMultLabel } from '@/lib/effectiveness';
 import { spriteEraForVersus } from '@/lib/sprites';
 import { cn } from '@/lib/utils';
 import type { VersusContext, VersusField } from '@/lib/versus-context';
@@ -120,10 +121,16 @@ function LogLine({
       text = t(`${key}.move`, { name, move: moveName(e) });
       break;
     case 'supereffective':
-      text = t(`${key}.supereffective`);
+      text =
+        e.mult != null && e.mult >= 4
+          ? t(`${key}.extremelyEffective`, { mult: effMultLabel(e.mult) })
+          : t(`${key}.supereffective`);
       break;
     case 'resisted':
-      text = t(`${key}.resisted`);
+      text =
+        e.mult != null && e.mult <= 0.25
+          ? t(`${key}.barelyEffective`, { mult: effMultLabel(e.mult) })
+          : t(`${key}.resisted`);
       break;
     case 'immune':
       text = t(`${key}.immune`, { name });

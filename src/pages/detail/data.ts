@@ -96,14 +96,18 @@ const CHART: Record<PokemonType, Partial<Record<PokemonType, number>>> = {
 };
 
 export interface Matchups {
-  weak: PokemonType[]; // ×2 or worse
-  resist: PokemonType[]; // ×0.5 or better (but > 0)
+  weak: PokemonType[]; // ×2 (but less than ×4)
+  quad: PokemonType[]; // ×4 double weakness (dual types multiply)
+  resist: PokemonType[]; // ×0.5 (but better than ×0.25)
+  quarter: PokemonType[]; // ×0.25 double resist
   immune: PokemonType[]; // ×0
 }
 
 export function computeMatchups(defending: string[]): Matchups {
   const weak: PokemonType[] = [];
+  const quad: PokemonType[] = [];
   const resist: PokemonType[] = [];
+  const quarter: PokemonType[] = [];
   const immune: PokemonType[] = [];
   for (const atk of POKEMON_TYPES) {
     let mult = 1;
@@ -111,10 +115,12 @@ export function computeMatchups(defending: string[]): Matchups {
       mult *= CHART[atk][def as PokemonType] ?? 1;
     }
     if (mult === 0) immune.push(atk);
+    else if (mult >= 4) quad.push(atk);
     else if (mult >= 2) weak.push(atk);
+    else if (mult <= 0.25) quarter.push(atk);
     else if (mult < 1) resist.push(atk);
   }
-  return { weak, resist, immune };
+  return { weak, quad, resist, quarter, immune };
 }
 
 /* ---------- evolution condition formatting ---------- */

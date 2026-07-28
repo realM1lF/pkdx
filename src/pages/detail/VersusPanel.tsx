@@ -46,7 +46,7 @@ import {
   NATURES,
   damageBetween,
   EFF_LABEL,
-  genMatchupsForSide,
+  genSplitMatchupsForSide,
   koLabel,
   legalMoveSlugs,
   levelUpPool,
@@ -1197,12 +1197,15 @@ function DefenseColumn({
   ability?: string | null;
 }) {
   const { t } = useTranslation();
-  const m = genMatchupsForSide(types, gen, ability);
+  const m = genSplitMatchupsForSide(types, gen, ability);
   return (
     <div className="flex flex-col gap-1">
       <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
+      {/* dual-type extremes first: ×4 double weakness / ×¼ double resist */}
+      {m.quad.length > 0 && <MatchupRow label={t('versus.weak')} types={m.quad} mult="×4" color="#FF8A6B" />}
       <MatchupRow label={t('versus.weak')} types={m.weak} mult="×2" color="#F6C945" />
       <MatchupRow label={t('versus.resist')} types={m.resist} mult="×½" color="#63D96B" />
+      {m.quarter.length > 0 && <MatchupRow label={t('versus.resist')} types={m.quarter} mult="×¼" color="#3EB58A" />}
       <MatchupRow label={t('versus.immune')} types={m.immune} mult="×0" color="#5E6680" />
     </div>
   );

@@ -22,6 +22,8 @@
 import { calculate, Field, Generations, Move as CalcMove, Pokemon as CalcPokemon } from '@smogon/calc';
 import type { StatsTable } from '@smogon/calc';
 import type { Battle as SimBattle, ID, PokemonSet, PRNGSeed } from '@pkmn/sim';
+import type { GenerationNum } from '@pkmn/data';
+import { genEffectivenessOf } from '../effectiveness';
 import type {
   AiMode,
   BattleEvent,
@@ -367,6 +369,10 @@ export class MicroBattle {
     p2: new Set<string>(),
   };
   private calcGen: ReturnType<typeof Generations.get> | null = null;
+  /** last attacking move per sim side — the sim's -supereffective/-resisted
+   * lines carry no multiplier, so we recompute it from move type × defender
+   * types (dual types multiply → ×4 / ×¼ shown in the log) */
+  private readonly lastMove: Record<'p1' | 'p2', string | null> = { p1: null, p2: null };
 
   readonly setup: BattleSetup;
   readonly aiMode: AiMode;
@@ -500,9 +506,31 @@ export class MicroBattle {
       if (line === this.prevLine) continue;
       this.prevLine = line;
       const ev = parseProtocolLine(line, 'Player', 'Rival');
-      if (ev) this.emit(ev);
+      if (ev) {
+        if (ev.kind === 'move' && ev.side && ev.moveId) {
+          this.lastMove[ev.side === 'player' ? 'p1' : 'p2'] = ev.moveId;
+        } else if ((ev.kind === 'supereffective' || ev.kind === 'resisted') && ev.side) {
+          ev.mult = this.effectivenessOfLastHit(ev.side);
+        }
+        this.emit(ev);
+      }
     }
     this.logPos = log.length;
+  }
+
+  /** type effectiveness of the last move hit against `defSide` (gen chart,
+   * current defender types — dual types multiply, so Gyarados logs ×4) */
+  private effectivenessOfLastHit(defSide: SideId): number | undefined {
+    const defSim = defSide === 'player' ? 'p1' : 'p2';
+    const atkSim = defSide === 'player' ? 'p2' : 'p1';
+    const moveId = this.lastMove[atkSim];
+    if (!moveId) return undefined;
+    const moveType = this.battle.dex.moves.get(moveId)?.type;
+    if (!moveType) return undefined;
+    const defTypes = this.battle[defSim].pokemon[0]?.getTypes() ?? [];
+    if (!defTypes.length) return undefined;
+    const gen = Math.min(9, Math.max(1, this.setup.gen)) as GenerationNum;
+    return genEffectivenessOf(gen, moveType.toLowerCase(), defTypes.map((t) => t.toLowerCase()));
   }
 
   /* ---------- public API ---------- */
