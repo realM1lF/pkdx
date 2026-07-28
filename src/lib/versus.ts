@@ -19,6 +19,8 @@ import {
   pickTopMoves,
   preferredCategory,
 } from './teambuilder';
+import { effMultLabel, splitMatchups } from './effectiveness';
+import type { SplitMatchups } from './effectiveness';
 import type { GenerationNum } from '@pkmn/data';
 import {
   defaultVersusContext,
@@ -346,8 +348,37 @@ export function genMatchupsForSide(defendingTypes: string[], gen = 9, ability?: 
   return { weak, resist: base.resist, immune: [...immune].sort() };
 }
 
-export const EFF_LABEL = (mult: number): string =>
-  mult === 0 ? '×0' : mult === 0.25 ? '×¼' : mult === 0.5 ? '×½' : mult === 1 ? '×1' : mult === 2 ? '×2' : '×4';
+/** display label for an effectiveness multiplier — shared helper, exact
+ * glyphs incl. ×4/×¼ and ability-modified intermediates (×3, ×1½, …) */
+export const EFF_LABEL = effMultLabel;
+
+/**
+ * Defensive profile with dual-type extremes kept separate (×4 / ×¼ rows),
+ * adjusted for a known held ability (Levitate → Ground immune, etc.).
+ * Type chart stays gen-correct; ability only moves types between buckets.
+ */
+export function genSplitMatchupsForSide(defendingTypes: string[], gen = 9, ability?: string | null): SplitMatchups {
+  const base = splitMatchups(defendingTypes, gen as GenerationNum);
+  if (!ability) return base;
+  const granted = ABILITY_TYPE_IMMUNITIES[ability.toLowerCase()];
+  if (!granted?.length) return base;
+  const immune = new Set(base.immune);
+  const strip = (list: string[]) =>
+    list.filter((t) => {
+      if (granted.includes(t)) {
+        immune.add(t);
+        return false;
+      }
+      return true;
+    });
+  return {
+    quad: strip(base.quad),
+    weak: strip(base.weak),
+    resist: base.resist,
+    quarter: base.quarter,
+    immune: [...immune].sort(),
+  };
+}
 
 /* ---------- damage ---------- */
 

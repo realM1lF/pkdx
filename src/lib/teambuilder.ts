@@ -13,7 +13,7 @@
  */
 import { Generations } from '@pkmn/data';
 import { Dex } from '@pkmn/dex';
-import type { GenerationNum, Nature, Specie, TypeName } from '@pkmn/data';
+import type { Nature, Specie, TypeName } from '@pkmn/data';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
 import type { Lang } from './i18n-data';
@@ -106,29 +106,10 @@ export function genHasMechanics(vgId: string): { abilities: boolean; items: bool
   return { ...base, ...MECHANICS_OVERRIDES[vgId] };
 }
 
-/* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ---------- */
-
-const capType = (slug: string) => (slug.charAt(0).toUpperCase() + slug.slice(1)) as TypeName;
-
-/**
- * Gen-correct effectiveness of an attacking type vs defending type slugs.
- * Uses the per-gen chart from @pkmn/data (gen 1: Ghost vs Psychic ×0,
- * Bug↔Poison ×2; gen 2–5: Steel resists Dark/Ghost; …).
- * Types that don't exist in the gen resolve neutral.
- */
-export function genEffectivenessOf(genNum: GenerationNum, attackType: string, defendingTypes: string[]): number {
-  const types = gens.get(genNum).types;
-  const atk = capType(attackType);
-  if (!types.get(atk)?.exists) return 1;
-  const defs = defendingTypes.map(capType).filter((d) => types.get(d)?.exists);
-  if (!defs.length) return 1;
-  return types.totalEffectiveness(atk, defs);
-}
-
-/** type slugs (lowercase) existing in this gen — attacking side of defensive profiles */
-export function genTypeSlugs(genNum: GenerationNum): string[] {
-  return [...gens.get(genNum).types].map((t) => t.name.toLowerCase());
-}
+/* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ----------
+ * Lives in ./effectiveness (pure module, shared with the battle engine);
+ * re-exported here to keep the teambuilder API stable. */
+export { genEffectivenessOf, genTypeSlugs } from './effectiveness';
 
 /* ------------------------------------------------------------------ */
 /* Team state model                                                    */
@@ -432,9 +413,16 @@ const IMMUNE_ABILITIES: Record<string, PokemonType[]> = {
   'wonder-guard': [], // special-cased below
 };
 
-/** ability slug → { types, mult } resist modifiers */
+/** abilities whose immunity only exists from gen 5 onward — in gen 3/4
+ * Lightning Rod / Storm Drain merely redirect moves in double battles
+ * (no immunity, no boost), so singles effectiveness stays untouched */
+const GEN5_IMMUNITY_ABILITIES = new Set(['lightning-rod', 'storm-drain']);
+
+/** ability slug → { types, mult } damage modifiers (mult < 1 resist, > 1 weakness) */
 const RESIST_ABILITIES: Record<string, { types: PokemonType[]; mult: number }> = {
   'thick-fat': { types: ['fire', 'ice'], mult: 0.5 },
+  // Dry Skin: ×1.25 Fire weakness (Water immunity lives in IMMUNE_ABILITIES)
+  'dry-skin': { types: ['fire'], mult: 1.25 },
   heatproof: { types: ['fire'], mult: 0.5 },
   'water-bubble': { types: ['fire'], mult: 0.5 },
   filter: { types: [...POKEMON_TYPES], mult: 0.75 }, // super-effective only (applied conditionally)
@@ -465,12 +453,17 @@ export function chartEff(atk: PokemonType, def: PokemonType, vgId: string): numb
 export function effectivenessVsMember(atk: PokemonType, member: TeamMemberDefense, vgId: string): number {
   let eff = 1;
   for (const def of member.types) eff *= chartEff(atk, def, vgId);
+  // no abilities in gen 1/2, LGPE and Legends: Arceus — ignore them entirely
+  if (!genHasMechanics(vgId).abilities) return eff;
   const ability = member.ability?.toLowerCase().replace(/ /g, '-') ?? null;
   if (ability) {
     if (ability === 'wonder-guard') {
       if (eff <= 1) return 0;
     } else {
-      const imm = IMMUNE_ABILITIES[ability];
+      const imm =
+        GEN5_IMMUNITY_ABILITIES.has(ability) && versionGroupById(vgId).gen < 5
+          ? undefined
+          : IMMUNE_ABILITIES[ability];
       if (imm?.includes(atk)) return 0;
       const res = RESIST_ABILITIES[ability];
       if (res && res.types.includes(atk)) {
