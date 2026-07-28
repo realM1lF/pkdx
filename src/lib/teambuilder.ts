@@ -432,9 +432,16 @@ const IMMUNE_ABILITIES: Record<string, PokemonType[]> = {
   'wonder-guard': [], // special-cased below
 };
 
-/** ability slug → { types, mult } resist modifiers */
+/** abilities whose immunity only exists from gen 5 onward — in gen 3/4
+ * Lightning Rod / Storm Drain merely redirect moves in double battles
+ * (no immunity, no boost), so singles effectiveness stays untouched */
+const GEN5_IMMUNITY_ABILITIES = new Set(['lightning-rod', 'storm-drain']);
+
+/** ability slug → { types, mult } damage modifiers (mult < 1 resist, > 1 weakness) */
 const RESIST_ABILITIES: Record<string, { types: PokemonType[]; mult: number }> = {
   'thick-fat': { types: ['fire', 'ice'], mult: 0.5 },
+  // Dry Skin: ×1.25 Fire weakness (Water immunity lives in IMMUNE_ABILITIES)
+  'dry-skin': { types: ['fire'], mult: 1.25 },
   heatproof: { types: ['fire'], mult: 0.5 },
   'water-bubble': { types: ['fire'], mult: 0.5 },
   filter: { types: [...POKEMON_TYPES], mult: 0.75 }, // super-effective only (applied conditionally)
@@ -465,12 +472,17 @@ export function chartEff(atk: PokemonType, def: PokemonType, vgId: string): numb
 export function effectivenessVsMember(atk: PokemonType, member: TeamMemberDefense, vgId: string): number {
   let eff = 1;
   for (const def of member.types) eff *= chartEff(atk, def, vgId);
+  // no abilities in gen 1/2, LGPE and Legends: Arceus — ignore them entirely
+  if (!genHasMechanics(vgId).abilities) return eff;
   const ability = member.ability?.toLowerCase().replace(/ /g, '-') ?? null;
   if (ability) {
     if (ability === 'wonder-guard') {
       if (eff <= 1) return 0;
     } else {
-      const imm = IMMUNE_ABILITIES[ability];
+      const imm =
+        GEN5_IMMUNITY_ABILITIES.has(ability) && versionGroupById(vgId).gen < 5
+          ? undefined
+          : IMMUNE_ABILITIES[ability];
       if (imm?.includes(atk)) return 0;
       const res = RESIST_ABILITIES[ability];
       if (res && res.types.includes(atk)) {
