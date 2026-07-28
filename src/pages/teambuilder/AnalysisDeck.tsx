@@ -35,28 +35,13 @@ export interface MatrixMember extends TeamMemberDefense {
 
 /* ============================== DEFENSIVE MATRIX ============================== */
 
-/** exact glyphs for every multiplier ability-modified matchups can produce
- * (Filter/Solid Rock 4→3, 2→1½, ½→⅜…; Dry Skin 1→1¼, 2→2½, 4→5, ½→⅝…) */
-const EFF_LABELS: Record<number, string> = {
-  0: '0',
-  0.125: '⅛',
-  0.25: '¼',
-  0.375: '⅜',
-  0.5: '½',
-  0.625: '⅝',
-  0.75: '¾',
-  1: '',
-  1.25: '1¼',
-  1.5: '1½',
-  2: '2',
-  2.5: '2½',
-  3: '3',
-  4: '4',
-  5: '5',
-};
-
-export function effLabel(eff: number): string {
-  return EFF_LABELS[eff] ?? String(eff);
+function effLabel(eff: number): string {
+  if (eff === 0) return '0';
+  if (eff === 1) return '';
+  if (eff >= 4) return '4';
+  if (eff >= 2) return '2';
+  if (eff <= 0.25) return '¼';
+  return '½';
 }
 
 function effKind(eff: number): 'wk4' | 'wk' | 'nu' | 'rs' | 'im' {
