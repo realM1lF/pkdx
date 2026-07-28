@@ -3,7 +3,7 @@
  * Hover/focus: lift + type glow + sprite hop + aura up (page CSS drives the transforms
  * so Framer owns only entrance/layout motion). Legendary = rotating conic gold ring,
  * mythical = psychic-glow border. Card-level shiny overrides the global mode. */
-import { memo, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, Ref } from 'react';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
@@ -39,6 +39,16 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
   const [override, setOverride] = useState<boolean | null>(null);
   const [burst, setBurst] = useState(0);
   const shiny = override ?? globalShiny;
+
+  /* Hover prefetch is debounced (150 ms): a pointer merely crossing the grid
+   * while scrolling must not fire a 270–425 KB fetch per card (perf fix). */
+  const hoverTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+  const schedulePrefetch = () => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => prefetchPokemon(s.id), 150);
+  };
+  const cancelPrefetch = () => window.clearTimeout(hoverTimer.current);
 
   const t1 = (s.types[0] ?? 'normal') as PokemonType;
   const t2 = s.types[1] as PokemonType | undefined;
@@ -163,7 +173,8 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
       <LocaleLink
         to={`/pokemon/${s.id}`}
         aria-label={`${label} — ${padNum(s.id)}`}
-        onMouseEnter={() => prefetchPokemon(s.id)}
+        onMouseEnter={schedulePrefetch}
+        onMouseLeave={cancelPrefetch}
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10 rounded-lg"
       />

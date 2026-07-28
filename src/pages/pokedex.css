@@ -18,12 +18,22 @@
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
+/* ---- scroll perf: skip layout/paint for off-screen cards (1025 cards) ---- */
+.pdx-card-wrap {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 220px;
+}
+
 /* ---- card hover / focus-within: lift + type glow (design.md §6.2-2) ---- */
 .pdx-card {
   transition:
     transform 250ms var(--ease-out),
     box-shadow 250ms var(--ease-out),
     border-color 250ms var(--ease-out);
+}
+/* promote to compositing layer only while hovered (avoid 1025 layers) */
+.pdx-card-wrap:hover .pdx-card,
+.pdx-card-wrap:focus-within .pdx-card {
   will-change: transform;
 }
 .pdx-card-wrap:hover .pdx-card,
@@ -42,10 +52,15 @@
   animation: hop 420ms var(--ease-out);
 }
 
-/* aura brightens 0.85 → 1 */
+/* aura brightens 0.85 → 1; breathe animation paused at rest (perf: 1600 anims) */
 .pdx-aura {
   opacity: 0.85;
   transition: opacity 250ms var(--ease-out);
+  animation-play-state: paused;
+}
+.pdx-card-wrap:hover .pdx-aura,
+.pdx-card-wrap:focus-within .pdx-aura {
+  animation-play-state: running;
 }
 .pdx-card-wrap:hover .pdx-aura,
 .pdx-card-wrap:focus-within .pdx-aura {
