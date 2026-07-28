@@ -13,12 +13,16 @@ const lastmod = new Date().toISOString().slice(0, 10);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+/* Canonical URL form site-wide: trailing slash (Netlify 301-normalizes every
+ * prerendered page to the slash form; sitemap entries must never redirect). */
+const slash = (p) => (p.endsWith('/') ? p : `${p}/`);
+
 function urlEntry(lang, entry) {
-  const loc = `${SITE_URL}${localePath(lang, restFor(entry, lang))}`;
+  const loc = `${SITE_URL}${slash(localePath(lang, restFor(entry, lang)))}`;
   const alternates = ['de', 'en', 'x-default']
     .map((hl) => {
       const hrefLang = hl === 'x-default' ? 'en' : hl;
-      return `    <xhtml:link rel="alternate" hreflang="${hl}" href="${esc(`${SITE_URL}${localePath(hrefLang, restFor(entry, hrefLang))}`)}"/>`;
+      return `    <xhtml:link rel="alternate" hreflang="${hl}" href="${esc(`${SITE_URL}${slash(localePath(hrefLang, restFor(entry, hrefLang)))}`)}"/>`;
     })
     .join('\n');
   return `  <url>

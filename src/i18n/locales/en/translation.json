@@ -2564,7 +2564,12 @@
       "qaBestQ": "What is the best catch on {{name}}?",
       "qaBestLead": "{{pokemon}}.",
       "qaBestBody": "With a base stat total of {{bst}}, {{pokemon}} has the highest total of all catchable species here: our calculated tip for {{name}} (derived automatically from stats, not a meta ranking).",
-      "crumbRegion": "Kanto"
+      "crumbRegion": "Kanto",
+      "versionHG": "HeartGold",
+      "versionSS": "SoulSilver",
+      "versionGold": "Gold",
+      "versionSilver": "Silver",
+      "versionCrystal": "Crystal"
     },
     "pkmn": {
       "whereEyebrow": "LOCATIONS · FRLG",
@@ -2709,7 +2714,9 @@
       "qaItemsBodyNo": "No items are tracked for {{name}} in this overview yet. The current data covers encounters only; Hoenn item curation follows later.",
       "qaBestQ": "What is the best catch on {{name}}?",
       "qaBestLead": "{{pokemon}}.",
-      "qaBestBody": "With a base stat total of {{bst}}, {{pokemon}} has the highest total of all catchable species here: our calculated tip for {{name}} (derived automatically from stats, not a meta ranking)."
+      "qaBestBody": "With a base stat total of {{bst}}, {{pokemon}} has the highest total of all catchable species here: our calculated tip for {{name}} (derived automatically from stats, not a meta ranking).",
+      "versionOmegaRuby": "Omega Ruby",
+      "versionAlphaSapphire": "Alpha Sapphire"
     }
   }
 }

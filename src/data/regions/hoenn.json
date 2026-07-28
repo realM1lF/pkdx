@@ -7,7 +7,9 @@
   "versions": [
     "ruby",
     "sapphire",
-    "emerald"
+    "emerald",
+    "omega-ruby",
+    "alpha-sapphire"
   ],
   "defaultVersion": "emerald",
   "coverage": 0.94,

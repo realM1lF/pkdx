@@ -4,7 +4,7 @@
  * <script type="application/ld+json"> into the head. Because injection
  * happens in the same runtime pass the prerender pipeline captures, the
  * static HTML carries identical structured data — no JS required. */
-import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, metaForPath, restForLang } from './seo';
+import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, metaForPath, restForLang, withTrailingSlash } from './seo';
 import { localePath } from './locale-link';
 import type { Lang } from './i18n-data';
 import { resolveTypeParam, typeName, typeOverviewPath } from './seo-types';
@@ -55,7 +55,7 @@ export function breadcrumbSchema(items: Array<{ name: string; url: string }>): J
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
+      item: item.url.startsWith('http') ? item.url : withTrailingSlash(`${SITE_URL}${item.url}`),
     })),
   };
 }
@@ -77,7 +77,7 @@ export function softwareApplicationSchema(rest: string, lang: Lang): JsonLd | nu
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name,
-    url: `${SITE_URL}${localePath(lang, rest)}`,
+    url: withTrailingSlash(`${SITE_URL}${localePath(lang, rest)}`),
     applicationCategory: 'GameApplication',
     operatingSystem: 'Web',
     inLanguage: lang,

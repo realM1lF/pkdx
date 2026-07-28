@@ -16,6 +16,26 @@
   # zusaetzlich per scripts/fix-lockfile-registry.mjs normalisiert).
   NPM_CONFIG_REGISTRY = "https://registry.npmjs.org/"
 
+# --- Root language redirect -----------------------------------------------
+# '/' is the strongest URL of the domain but only a SPA shell — redirect it
+# server-side by Accept-Language (302, because the target is language
+# dependent). force = true is required: static files beat unforced redirect
+# rules, and dist/index.html exists. The client-side LangGate redirect stays
+# as fallback for non-Netlify serving. Trailing-slash behavior is untouched
+# (Netlify's CDN already 301-normalizes /x → /x/; rules cannot change that).
+[[redirects]]
+  from = "/"
+  to = "/de/"
+  status = 302
+  force = true
+  conditions = { Language = ["de"] }
+
+[[redirects]]
+  from = "/"
+  to = "/en/"
+  status = 302
+  force = true
+
 # ORDER MATTERS — do not move the "/*" block back below the specific ones.
 #
 # Netlify merges the headers of every matching rule, but when two rules set

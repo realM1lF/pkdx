@@ -35,7 +35,20 @@ import enrichedHoennJson from '@/data/enriched/hoenn.json';
 /* ---------- data shapes (mirror of the generator output) ---------- */
 
 type Frlg = 'firered' | 'leafgreen';
-type RouteVersion = Frlg | 'ruby' | 'sapphire' | 'emerald';
+/* cross-gen: Kanto pages also offer HGSS + GSC tables (Kanto is the HGSS/GSC
+ * post-game), Hoenn pages also offer ORAS — all from the build-time snapshot */
+type RouteVersion =
+  | Frlg
+  | 'gold'
+  | 'silver'
+  | 'crystal'
+  | 'heartgold'
+  | 'soulsilver'
+  | 'ruby'
+  | 'sapphire'
+  | 'emerald'
+  | 'omega-ruby'
+  | 'alpha-sapphire';
 type Method = 'WALK' | 'SURF' | 'FISH' | 'STATIC' | 'OTHER';
 
 interface EncounterRow {
@@ -99,16 +112,23 @@ const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
   kanto: {
     region: 'kanto',
     ns: 'seo.route',
-    versions: ['firered', 'leafgreen'],
+    versions: ['firered', 'leafgreen', 'heartgold', 'soulsilver', 'gold', 'silver', 'crystal'],
     defaultVersion: 'firered',
     primaryVersion: 'firered',
     diffVersions: ['firered', 'leafgreen'],
     versionLabelKey: {
       firered: 'versionFR',
       leafgreen: 'versionLG',
+      heartgold: 'versionHG',
+      soulsilver: 'versionSS',
+      gold: 'versionGold',
+      silver: 'versionSilver',
+      crystal: 'versionCrystal',
       ruby: 'versionFR',
       sapphire: 'versionLG',
       emerald: 'versionFR',
+      'omega-ruby': 'versionHG',
+      'alpha-sapphire': 'versionSS',
     },
     routes: routesJson.nodes as unknown as Record<string, RouteNodeData>,
     dex: routesJson.dex as unknown as DexTable,
@@ -122,16 +142,23 @@ const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
   hoenn: {
     region: 'hoenn',
     ns: 'seo.routeHoenn',
-    versions: ['ruby', 'sapphire', 'emerald'],
+    versions: ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire'],
     defaultVersion: 'emerald',
     primaryVersion: 'emerald',
     diffVersions: ['ruby', 'sapphire'],
     versionLabelKey: {
-      firered: 'versionFR',
-      leafgreen: 'versionLG',
+      firered: 'versionRuby',
+      leafgreen: 'versionSapphire',
+      gold: 'versionRuby',
+      silver: 'versionSapphire',
+      crystal: 'versionEmerald',
+      heartgold: 'versionOmegaRuby',
+      soulsilver: 'versionAlphaSapphire',
       ruby: 'versionRuby',
       sapphire: 'versionSapphire',
       emerald: 'versionEmerald',
+      'omega-ruby': 'versionOmegaRuby',
+      'alpha-sapphire': 'versionAlphaSapphire',
     },
     routes: routesHoennJson.nodes as unknown as Record<string, RouteNodeData>,
     dex: routesHoennJson.dex as unknown as DexTable,
@@ -185,17 +212,20 @@ const METHOD_KEY: Record<Method, string> = {
 
 function VersionToggle({
   cfg,
+  available,
   value,
   onChange,
 }: {
   cfg: SeoRouteRegionConfig;
+  /** versions that actually carry encounter data for this node */
+  available: RouteVersion[];
   value: RouteVersion;
   onChange: (v: RouteVersion) => void;
 }) {
   const { t } = useTranslation();
   return (
     <div className="flex gap-1" role="group" aria-label={t(`${cfg.ns}.encountersTitle`)}>
-      {cfg.versions.map((v) => (
+      {available.map((v) => (
         <button
           key={v}
           type="button"
@@ -394,7 +424,12 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
   const name = cfg.nodeName(nodeId, lang);
   /* curated overrides exist only for the Kanto Route 1 pilot */
   const override = region === 'kanto' ? ROUTE_OVERRIDES[nodeId] : undefined;
-  const groups = data.versions[version] ?? data.versions[cfg.defaultVersion] ?? [];
+  /* only editions with actual encounter data on this node are offered —
+   * e.g. Cerulean Cave does not exist in GSC, so the chip is hidden there
+   * instead of silently showing a FRLG table under an HGSS label */
+  const availableVersions = cfg.versions.filter((v) => (data.versions[v]?.length ?? 0) > 0);
+  const activeVersion = availableVersions.includes(version) ? version : cfg.defaultVersion;
+  const groups = data.versions[activeVersion] ?? [];
   const multiArea = groups.length > 1;
 
   const neighborText =
@@ -524,7 +559,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
           <SectionCard
             eyebrow={t(`${ns}.encountersEyebrow`)}
             title={t(`${ns}.encountersTitle`)}
-            right={<VersionToggle cfg={cfg} value={version} onChange={setVersion} />}
+            right={<VersionToggle cfg={cfg} available={availableVersions} value={activeVersion} onChange={setVersion} />}
           >
             {groups.map((g) => (
               <div key={g.areaSlug}>
@@ -539,7 +574,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
             <p className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
               {t(`${ns}.encounterSource`)}
               <LocaleLink
-                to={`/maps/${cfg.region}?node=${nodeId}&v=${version}`}
+                to={`/maps/${cfg.region}?node=${nodeId}&v=${activeVersion}`}
                 className="text-gold/80 underline-offset-2 transition-colors hover:text-gold hover:underline"
               >
                 {t('maps.viewOnMapHint')}

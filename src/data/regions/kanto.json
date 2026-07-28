@@ -8,8 +8,13 @@
     "red",
     "blue",
     "yellow",
+    "gold",
+    "silver",
+    "crystal",
     "firered",
-    "leafgreen"
+    "leafgreen",
+    "heartgold",
+    "soulsilver"
   ],
   "defaultVersion": "firered",
   "coverage": 1.0,

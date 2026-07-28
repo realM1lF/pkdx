@@ -33,7 +33,18 @@ if (!['kanto', 'hoenn'].includes(REGION)) {
   console.error(`usage: node scripts/generate-pokemon-seo.mjs [kanto|hoenn]`);
   process.exit(1);
 }
-const VERSIONS = REGION === 'hoenn' ? ['ruby', 'sapphire', 'emerald'] : ['firered', 'leafgreen'];
+/* Encounter tables are generated for every edition that is playable in the
+ * region (cross-gen rollout): Kanto = FRLG + HGSS + GSC (Kanto is the full
+ * HGSS/GSC post-game), Hoenn = RSE + ORAS. PokéAPI ships all of them on the
+ * same location-area payload (verified live). The curated Pokémon block
+ * (buildPokemon) stays FRLG-framed by design — see POKEMON_VERSIONS. */
+const VERSIONS =
+  REGION === 'hoenn'
+    ? ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire']
+    : ['firered', 'leafgreen', 'heartgold', 'soulsilver', 'gold', 'silver', 'crystal'];
+/* The curated 25-Pokémon location block (pokemon-seo.json) is FRLG-only —
+ * the Pokémon detail SEO sections are framed "Datenstand Feuerrot". */
+const POKEMON_VERSIONS = ['firered', 'leafgreen'];
 
 const kanto = JSON.parse(readFileSync(path.join(root, `src/data/regions/${REGION}.json`), 'utf8'));
 const NAMES_DE = JSON.parse(readFileSync(path.join(root, 'src/data/i18n/de/pokemon.json'), 'utf8'));
@@ -331,7 +342,7 @@ async function buildPokemon(locationSlugs) {
     const loc = { firered: [], leafgreen: [] };
     for (const e of encounters) {
       const areaName = e.location_area.name;
-      for (const v of VERSIONS) {
+      for (const v of POKEMON_VERSIONS) {
         const vd = e.version_details.find((x) => x.version.name === v);
         if (!vd || vd.encounter_details.length === 0) continue;
         const byBucket = bucketsFromDetails(vd.encounter_details);
@@ -355,7 +366,7 @@ async function buildPokemon(locationSlugs) {
         }
       }
     }
-    for (const v of VERSIONS) {
+    for (const v of POKEMON_VERSIONS) {
       loc[v].sort((a, b) => b.chance - a.chance || a.area.localeCompare(b.area));
     }
 
@@ -487,7 +498,10 @@ async function mainHoenn() {
    * the default version (emerald), same rule as the Kanto generator */
   const metaRoutes = {};
   for (const [nodeId, nd] of Object.entries(routes)) {
-    const fr = nd.versions.emerald ?? Object.values(nd.versions)[0];
+    /* framing stays Smaragd: ORAS-only nodes get no SEO page (same rule as
+     * the Kanto generator — no page without framing-version encounters) */
+    const fr = nd.versions.emerald;
+    if (!fr || fr.length === 0) continue;
     const all = fr.flatMap((g) => g.rows);
     const top = [...all].filter((r) => !r.isStatic).sort((a, b) => b.chance - a.chance)[0];
     const speciesCount = new Set(all.map((r) => r.id)).size;
@@ -557,7 +571,11 @@ for (const entry of Object.values(pokemon)) {
 /* meta summary for the sync registry in src/lib/seo.ts */
 const metaRoutes = {};
 for (const [nodeId, nd] of Object.entries(routes)) {
-  const fr = nd.versions.firered ?? Object.values(nd.versions)[0];
+  /* page framing stays FRLG: nodes with only cross-gen encounters (HGSS
+   * headbutt trees in Pewter City) get no SEO page — a "Feuerrot" page
+   * without a single FireRed encounter would be a doorway page */
+  const fr = nd.versions.firered;
+  if (!fr || fr.length === 0) continue;
   const all = fr.flatMap((g) => g.rows);
   /* "most common catch" counts wild encounters only — static gift/bought
    * encounters (e.g. the Magikarp salesman) are excluded */

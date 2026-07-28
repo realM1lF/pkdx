@@ -2,7 +2,7 @@
  * Layout owns the matching top offset (navbar positioning contract). */
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
-import { LocaleLink, useLocalePath } from '@/lib/locale-link';
+import { LocaleLink, useLocalePath, withTrailingSlash } from '@/lib/locale-link';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { Heart, Info, Menu, MessageSquarePlus, Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -130,7 +130,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             {UTILITY_LINKS.map((l) => (
               <NavLink
                 key={l.to}
-                to={localePath(l.to)}
+                to={withTrailingSlash(localePath(l.to))}
                 className={({ isActive }) =>
                   cn(
                     'pixel-label inline-flex items-center gap-1.5 text-[8px] tracking-[0.14em] transition-colors duration-200',
@@ -192,7 +192,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                   transition={{ delay: 0.08 + i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <NavLink
-                    to={localePath(l.to)}
+                    to={withTrailingSlash(localePath(l.to))}
                     end={l.to === '/'}
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
@@ -230,7 +230,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                 {UTILITY_LINKS.map((l) => (
                   <NavLink
                     key={l.to}
-                    to={localePath(l.to)}
+                    to={withTrailingSlash(localePath(l.to))}
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
                       cn(

@@ -469,7 +469,7 @@ export default function DetailDrawer({
           </LocaleLink>
           {showVersusLink && (
             <LocaleLink
-              to={`/pokemon/${versusAce}?tab=versus&versusTrainer=${node.id}&region=${region.region}&game=${region.defaultVersion}`}
+              to={`/pokemon/${versusAce}?tab=versus&versusTrainer=${node.id}&region=${region.region}&game=${version}`}
               className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/10"
             >
               <Swords size={12} />

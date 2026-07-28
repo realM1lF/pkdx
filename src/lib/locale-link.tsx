@@ -44,13 +44,31 @@ export function stripLocalePrefix(pathname: string): string {
   return stripped === '' ? '/' : stripped;
 }
 
+/**
+ * Canonical URL form site-wide: trailing slash. Netlify's CDN normalizes
+ * every prerendered page (folder index.html) to the slash form via 301, so
+ * emitted hrefs/canonicals declare the slash form. Query strings and hashes
+ * stay untouched ('/team?x=1' → '/team/?x=1').
+ */
+export function withTrailingSlash(href: string): string {
+  const m = href.match(/^([^?#]*)([?#].*)?$/);
+  const path = m?.[1] ?? href;
+  const suffix = m?.[2] ?? '';
+  return `${path.endsWith('/') ? path : `${path}/`}${suffix}`;
+}
+
 type LocaleLinkProps = Omit<ComponentProps<typeof Link>, 'to'> & { to: string };
 
-/** Link that prefixes internal app paths with the active locale. */
+/**
+ * Link that prefixes internal app paths with the active locale. Emitted
+ * hrefs carry the canonical trailing-slash form (React Router matches both
+ * forms; the prerendered HTML and crawlers see the slash form).
+ */
 export const LocaleLink = forwardRef<HTMLAnchorElement, LocaleLinkProps>(function LocaleLink(
   { to, ...props },
   ref,
 ) {
   const localize = useLocalePath();
-  return <Link ref={ref} to={localize(to)} {...props} />;
+  const localized = localize(to);
+  return <Link ref={ref} to={localized.startsWith('/') ? withTrailingSlash(localized) : localized} {...props} />;
 });
