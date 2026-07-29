@@ -80,10 +80,11 @@ const HOENN_ROUTE_ENTRIES = Object.values(META_GEN.routesHoenn ?? {}).map((r) =>
   en: `/maps/hoenn/${r.slugEn}`,
 }));
 
-/* 25 curated Pokémon detail pages (SEO rollout 2) */
+/* 35 curated Pokémon detail pages (SEO rollout 2 + Tranche 26–35) */
 const POKEMON_SEO_IDS = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 133, 143, 150, 151, 149, 130, 94, 18, 20,
   24, 97, 105, 65, 112,
+  134, 135, 136, 131, 142, 144, 145, 146, 59, 68,
 ];
 
 /* 35 curated matchup pages (matchup rollout): localized slugs from the

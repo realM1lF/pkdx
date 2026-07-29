@@ -24,7 +24,17 @@
   97,
   105,
   65,
-  112
+  112,
+  134,
+  135,
+  136,
+  131,
+  142,
+  144,
+  145,
+  146,
+  59,
+  68
  ],
  "pokemon": {
   "1": {
@@ -690,6 +700,28 @@
     }
    ]
   },
+  "59": {
+   "slug": "arcanine",
+   "catchRate": 75,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 58,
+     "to": 59,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "fire-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
   "65": {
    "slug": "alakazam",
    "catchRate": 50,
@@ -713,6 +745,40 @@
     {
      "from": 64,
      "to": 65,
+     "trigger": "trade",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "68": {
+   "slug": "machamp",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 66,
+     "to": 67,
+     "trigger": "level-up",
+     "minLevel": 28,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 67,
+     "to": 68,
      "trigger": "trade",
      "minLevel": null,
      "item": null,
@@ -1370,6 +1436,37 @@
     }
    ]
   },
+  "131": {
+   "slug": "lapras",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "saffron-city-silph-co-7f",
+      "nodeId": "saffron-city",
+      "nodeDe": "Saffronia City",
+      "nodeEn": "Saffron City",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 25,
+      "maxLevel": 25
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "saffron-city-silph-co-7f",
+      "nodeId": "saffron-city",
+      "nodeDe": "Saffronia City",
+      "nodeEn": "Saffron City",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 25,
+      "maxLevel": 25
+     }
+    ]
+   },
+   "evo": []
+  },
   "133": {
    "slug": "eevee",
    "catchRate": 45,
@@ -1462,6 +1559,247 @@
     }
    ]
   },
+  "134": {
+   "slug": "vaporeon",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 133,
+     "to": 134,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "water-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 135,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "thunder-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 136,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "fire-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 196,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "day",
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 197,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "night",
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "135": {
+   "slug": "jolteon",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 133,
+     "to": 134,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "water-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 135,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "thunder-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 136,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "fire-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 196,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "day",
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 197,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "night",
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "136": {
+   "slug": "flareon",
+   "catchRate": 45,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
+   },
+   "evo": [
+    {
+     "from": 133,
+     "to": 134,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "water-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 135,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "thunder-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 136,
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "fire-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 196,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "day",
+     "knownMove": null,
+     "location": null
+    },
+    {
+     "from": 133,
+     "to": 197,
+     "trigger": "level-up",
+     "minLevel": null,
+     "item": null,
+     "heldItem": null,
+     "minHappiness": 160,
+     "timeOfDay": "night",
+     "knownMove": null,
+     "location": null
+    }
+   ]
+  },
+  "142": {
+   "slug": "aerodactyl",
+   "catchRate": 45,
+   "locations": {
+    "firered": [
+     {
+      "area": "cinnabar-island-cinnabar-lab",
+      "nodeId": "cinnabar-island",
+      "nodeDe": "Zinnoberinsel",
+      "nodeEn": "Cinnabar Island",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "cinnabar-island-cinnabar-lab",
+      "nodeId": "cinnabar-island",
+      "nodeDe": "Zinnoberinsel",
+      "nodeEn": "Cinnabar Island",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 5,
+      "maxLevel": 5
+     }
+    ]
+   },
+   "evo": []
+  },
   "143": {
    "slug": "snorlax",
    "catchRate": 25,
@@ -1510,6 +1848,77 @@
       "maxLevel": 30
      }
     ]
+   },
+   "evo": []
+  },
+  "144": {
+   "slug": "articuno",
+   "catchRate": 3,
+   "locations": {
+    "firered": [
+     {
+      "area": "seafoam-islands-b4f",
+      "nodeId": "seafoam-islands",
+      "nodeDe": "Seeschauminseln",
+      "nodeEn": "Seafoam Islands",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 50,
+      "maxLevel": 50
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "seafoam-islands-b4f",
+      "nodeId": "seafoam-islands",
+      "nodeDe": "Seeschauminseln",
+      "nodeEn": "Seafoam Islands",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 50,
+      "maxLevel": 50
+     }
+    ]
+   },
+   "evo": []
+  },
+  "145": {
+   "slug": "zapdos",
+   "catchRate": 3,
+   "locations": {
+    "firered": [
+     {
+      "area": "kanto-power-plant-area",
+      "nodeId": "power-plant",
+      "nodeDe": "Kraftwerk",
+      "nodeEn": "Power Plant",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 50,
+      "maxLevel": 50
+     }
+    ],
+    "leafgreen": [
+     {
+      "area": "kanto-power-plant-area",
+      "nodeId": "power-plant",
+      "nodeDe": "Kraftwerk",
+      "nodeEn": "Power Plant",
+      "method": "STATIC",
+      "chance": 100,
+      "minLevel": 50,
+      "maxLevel": 50
+     }
+    ]
+   },
+   "evo": []
+  },
+  "146": {
+   "slug": "moltres",
+   "catchRate": 3,
+   "locations": {
+    "firered": [],
+    "leafgreen": []
    },
    "evo": []
   },
@@ -1706,6 +2115,14 @@
    "pastTypes": null,
    "bst": 485
   },
+  "59": {
+   "slug": "arcanine",
+   "types": [
+    "fire"
+   ],
+   "pastTypes": null,
+   "bst": 555
+  },
   "65": {
    "slug": "alakazam",
    "types": [
@@ -1713,6 +2130,14 @@
    ],
    "pastTypes": null,
    "bst": 500
+  },
+  "68": {
+   "slug": "machamp",
+   "types": [
+    "fighting"
+   ],
+   "pastTypes": null,
+   "bst": 505
   },
   "94": {
    "slug": "gengar",
@@ -1757,6 +2182,15 @@
    "pastTypes": null,
    "bst": 540
   },
+  "131": {
+   "slug": "lapras",
+   "types": [
+    "water",
+    "ice"
+   ],
+   "pastTypes": null,
+   "bst": 535
+  },
   "133": {
    "slug": "eevee",
    "types": [
@@ -1765,6 +2199,39 @@
    "pastTypes": null,
    "bst": 325
   },
+  "134": {
+   "slug": "vaporeon",
+   "types": [
+    "water"
+   ],
+   "pastTypes": null,
+   "bst": 525
+  },
+  "135": {
+   "slug": "jolteon",
+   "types": [
+    "electric"
+   ],
+   "pastTypes": null,
+   "bst": 525
+  },
+  "136": {
+   "slug": "flareon",
+   "types": [
+    "fire"
+   ],
+   "pastTypes": null,
+   "bst": 525
+  },
+  "142": {
+   "slug": "aerodactyl",
+   "types": [
+    "rock",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 515
+  },
   "143": {
    "slug": "snorlax",
    "types": [
@@ -1772,6 +2239,33 @@
    ],
    "pastTypes": null,
    "bst": 540
+  },
+  "144": {
+   "slug": "articuno",
+   "types": [
+    "ice",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 580
+  },
+  "145": {
+   "slug": "zapdos",
+   "types": [
+    "electric",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 580
+  },
+  "146": {
+   "slug": "moltres",
+   "types": [
+    "fire",
+    "flying"
+   ],
+   "pastTypes": null,
+   "bst": 580
   },
   "149": {
    "slug": "dragonite",
@@ -1856,9 +2350,17 @@
    "de": "Raichu",
    "en": "Raichu"
   },
+  "59": {
+   "de": "Arkani",
+   "en": "Arcanine"
+  },
   "65": {
    "de": "Simsala",
    "en": "Alakazam"
+  },
+  "68": {
+   "de": "Machomei",
+   "en": "Machamp"
   },
   "94": {
    "de": "Gengar",
@@ -1880,13 +2382,45 @@
    "de": "Garados",
    "en": "Gyarados"
   },
+  "131": {
+   "de": "Lapras",
+   "en": "Lapras"
+  },
   "133": {
    "de": "Evoli",
    "en": "Eevee"
   },
+  "134": {
+   "de": "Aquana",
+   "en": "Vaporeon"
+  },
+  "135": {
+   "de": "Blitza",
+   "en": "Jolteon"
+  },
+  "136": {
+   "de": "Flamara",
+   "en": "Flareon"
+  },
+  "142": {
+   "de": "Aerodactyl",
+   "en": "Aerodactyl"
+  },
   "143": {
    "de": "Relaxo",
    "en": "Snorlax"
+  },
+  "144": {
+   "de": "Arktos",
+   "en": "Articuno"
+  },
+  "145": {
+   "de": "Zapdos",
+   "en": "Zapdos"
+  },
+  "146": {
+   "de": "Lavados",
+   "en": "Moltres"
   },
   "149": {
    "de": "Dragoran",
@@ -2110,6 +2644,10 @@
    "de": "Fukano",
    "en": "Growlithe"
   },
+  "59": {
+   "de": "Arkani",
+   "en": "Arcanine"
+  },
   "60": {
    "de": "Quapsel",
    "en": "Poliwag"
@@ -2137,6 +2675,10 @@
   "67": {
    "de": "Maschock",
    "en": "Machoke"
+  },
+  "68": {
+   "de": "Machomei",
+   "en": "Machamp"
   },
   "69": {
    "de": "Knofensa",
@@ -2397,6 +2939,10 @@
   "145": {
    "de": "Zapdos",
    "en": "Zapdos"
+  },
+  "146": {
+   "de": "Lavados",
+   "en": "Moltres"
   },
   "147": {
    "de": "Dratini",
