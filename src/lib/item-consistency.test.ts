@@ -18,6 +18,7 @@ import enrichedKanto from '@/data/enriched/kanto.json';
 import enrichedHoenn from '@/data/enriched/hoenn.json';
 import routesKanto from '@/data/routes-kanto.json';
 import routesHoenn from '@/data/routes-hoenn.json';
+import regionsHoenn from '@/data/regions/hoenn.json';
 
 interface SourceDef {
   region: string;
@@ -99,6 +100,14 @@ describe('map drawer and SEO pages show the same item union', () => {
           itemsForNode(src.region, nodeId).length === 0,
           `${src.region}/${nodeId} drawer`,
         ).toBe(unionEmpty);
+      }
+    });
+
+    it(`${src.region}: every curated key exists as a map node`, () => {
+      if (src.region !== 'hoenn') return;
+      const nodeIds = new Set(regionsHoenn.nodes.map((n) => n.id));
+      for (const key of Object.keys(src.curated)) {
+        expect(nodeIds.has(key), `items-hoenn.json key "${key}"`).toBe(true);
       }
     });
 

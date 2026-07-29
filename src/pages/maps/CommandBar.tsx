@@ -1,7 +1,7 @@
 /* CommandBar — the 56px ops-deck bar (maps.md §2.1): back, region chip,
  * version chips, SCHEMATIC|ORIGINAL view toggle, WALK/SURF/FISH/OTHER
  * filters, node search, scan status, legend popover, reset view. */
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { originalAvailable as hasOriginalGeo } from '@/lib/maps-geo';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -70,6 +70,23 @@ export default function CommandBar({
   const [open, setOpen] = useState(false);
   const [legend, setLegend] = useState(false);
   const blurTimer = useRef(0);
+  /* scroll-affordance for the pill rail: fade at the right edge while more
+   * content is scrollable (mobile only — sm+ keeps the thin scrollbar) */
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [moreRight, setMoreRight] = useState(false);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const update = () => setMoreRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener('scroll', update);
+      ro.disconnect();
+    };
+  }, []);
 
   const results = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -114,8 +131,9 @@ export default function CommandBar({
 
         <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
 
-        {/* scrollable middle — full-width second row on mobile, fixed 56px height on sm+ */}
-        <div className="maps-bar-scroll order-last flex h-11 w-full min-w-0 flex-1 items-center gap-2.5 sm:order-none sm:h-14 sm:w-auto">
+        {/* version switcher — pinned on desktop; own full-width row on mobile
+         * so the primary control is never hidden inside the scroll rail */}
+        <div className="order-3 flex h-11 w-full shrink-0 items-center gap-2.5 sm:order-none sm:h-14 sm:w-auto">
           <div
             id="maps-version-switcher"
             className="flex shrink-0 rounded-pill border border-hairline bg-surface1 p-0.5"
@@ -149,8 +167,19 @@ export default function CommandBar({
               </button>
             ))}
           </div>
+        </div>
 
-          <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
+        {/* scrollable middle — view toggle + method filters; own row on mobile,
+         * inline after the version chips on sm+. Right-edge fade signals more content. */}
+        <div
+          className="maps-bar-wrap order-4 w-full min-w-0 flex-1 sm:order-none sm:w-auto"
+          data-more={moreRight || undefined}
+        >
+          <div
+            ref={scrollRef}
+            className="maps-bar-scroll flex h-11 items-center gap-2.5 sm:h-14"
+          >
+            <span className="hidden h-5 w-px shrink-0 bg-hairline sm:block" aria-hidden />
 
           <div
             className="flex h-11 shrink-0 items-center rounded-pill border border-hairline bg-surface1 p-0.5 sm:h-7"
@@ -235,6 +264,7 @@ export default function CommandBar({
                 </button>
               );
             })}
+          </div>
           </div>
         </div>
 
