@@ -225,8 +225,8 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
         onView={setView}
       />
 
-      {/* mobile KPI strip */}
-      <div className="flex gap-2 overflow-x-auto px-3 py-2 lg:hidden" aria-label={t('maps.regionStats')}>
+      {/* mobile KPI strip — 4-up grid so every chip is fully visible without scrolling */}
+      <div className="grid grid-cols-4 gap-2 px-3 py-2 lg:hidden" aria-label={t('maps.regionStats')}>
         {(
           [
             [t('maps.locations'), railStats.locations],
@@ -235,7 +235,7 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
             [t('maps.rarest'), railStats.rarest],
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
-          <div key={label} className="min-w-[104px] shrink-0 rounded-md border border-hairline bg-surface1 px-2.5 py-1.5">
+          <div key={label} className="min-w-0 rounded-md border border-hairline bg-surface1 px-2 py-1.5">
             <div className="pixel-label text-[7px] text-tx-muted">{label}</div>
             <div className="font-display text-[15px] font-bold tabular-nums" style={{ color: region.accent }}>
               {value}

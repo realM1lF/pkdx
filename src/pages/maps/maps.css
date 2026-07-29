@@ -137,6 +137,28 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
 }
+/* scroll-affordance: gold-tinted fade at the right edge while more content is
+ * reachable (mobile only; JS toggles data-more on the wrapper) */
+.maps-bar-wrap {
+  position: relative;
+}
+.maps-bar-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 36px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  background: linear-gradient(to right, rgba(13, 15, 22, 0), rgba(13, 15, 22, 0.92) 70%, rgba(246, 201, 69, 0.25));
+}
+@media (max-width: 639.98px) {
+  .maps-bar-wrap[data-more]::after {
+    opacity: 1;
+  }
+}
 .maps-bar-scroll::-webkit-scrollbar {
   height: 3px;
 }

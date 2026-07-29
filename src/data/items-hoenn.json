@@ -35,5 +35,268 @@
   "sootopolis-city": [
     { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "moveSlug": "waterfall", "note": "Wallace — in front of the Gym (E); Cave of Origin B3F (RS)", "pocket": "HM" },
     { "itemSlug": "tm-fighting", "name": "TM31 — Brick Break", "moveSlug": "brick-break", "note": "Black Belt — northwestern house (Surf)", "pocket": "TM" }
+  ],
+  "hoenn-route-102": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "pecha-berry", "name": "Pecha Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-103": [
+    { "itemSlug": "guard-spec", "name": "Guard Spec.", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "cheri-berry", "name": "Cheri Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "leppa-berry", "name": "Leppa Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-104": [
+    { "itemSlug": "tm-grass", "name": "TM09 — Bullet Seed", "moveSlug": "bullet-seed", "note": "Boy — south of the Pretty Petal flower shop", "pocket": "TM" },
+    { "itemSlug": "wailmer-pail", "name": "Wailmer Pail", "note": "Girl — inside the Pretty Petal flower shop", "pocket": "KEY" },
+    { "itemSlug": "poke-ball", "name": "Poke Ball", "note": "Item ball — on the route", "pocket": "BALLS" },
+    { "itemSlug": "poke-ball", "name": "Poke Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "x-accuracy", "name": "X Accuracy", "note": "Southeast of the pond (Cut or Surf) — E; in RS: Dire Hit", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "potion", "name": "Potion", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "white-herb", "name": "White Herb", "note": "Girl — Pretty Petal flower shop", "pocket": "ITEMS" },
+    { "itemSlug": "cheri-berry", "name": "Cheri Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "leppa-berry", "name": "Leppa Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "pecha-berry", "name": "Pecha Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "chesto-berry", "name": "Chesto Berry", "note": "Old woman — soft soil bed north of the pond", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-105": [
+    { "itemSlug": "iron", "name": "Iron", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "hoenn-route-108": [
+    { "itemSlug": "star-piece", "name": "Star Piece", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "hoenn-route-109": [
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — Itemfinder (×3)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "ether", "name": "Ether", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "soft-sand", "name": "Soft Sand", "note": "Old man — beach, south of the Seashore House", "pocket": "ITEMS" }
+  ],
+  "hoenn-route-110": [
+    { "itemSlug": "itemfinder", "name": "Itemfinder", "note": "Brendan/May — after the battle on the route", "pocket": "KEY" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "poke-ball", "name": "Poke Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "dire-hit", "name": "Dire Hit", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "nanab-berry", "name": "Nanab Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-111": [
+    { "itemSlug": "tm-rock", "name": "TM37 — Sandstorm", "moveSlug": "sandstorm", "note": "Southern end of the desert", "pocket": "TM" },
+    { "itemSlug": "stardust", "name": "Stardust", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "stardust", "name": "Stardust", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "protein", "name": "Protein", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "razz-berry", "name": "Razz Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "razz-berry", "name": "Razz Berry", "note": "Girl near the Berry trees — daily", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-112": [
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rawst-berry", "name": "Rawst Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "pecha-berry", "name": "Pecha Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-113": [
+    { "itemSlug": "tm-normal", "name": "TM32 — Double Team", "moveSlug": "double-team", "note": "West of the Glass Workshop", "pocket": "TM" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "super-repel", "name": "Super Repel", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "hoenn-route-114": [
+    { "itemSlug": "tm-normal", "name": "TM05 — Roar", "moveSlug": "roar", "note": "Gentleman with Poochyena — near Lanette's house", "pocket": "TM" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "protein", "name": "Protein", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "energy-powder", "name": "Energy Powder", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "carbos", "name": "Carbos", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "revive", "name": "Revive", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "persim-berry", "name": "Persim Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-116": [
+    { "itemSlug": "repeat-ball", "name": "Repeat Ball", "note": "Devon employee — after recovering the Devon Goods (Rusturf Tunnel)", "pocket": "BALLS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "repel", "name": "Repel", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "x-special", "name": "X Special", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "black-glasses", "name": "Black Glasses", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "pinap-berry", "name": "Pinap Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "chesto-berry", "name": "Chesto Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-117": [
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball — on the route", "pocket": "BALLS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "repel", "name": "Repel", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "wepear-berry", "name": "Wepear Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-118": [
+    { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fisherman — east bank (requires Surf)", "pocket": "KEY" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "iron", "name": "Iron", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "sitrus-berry", "name": "Sitrus Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-119": [
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "moveSlug": "fly", "note": "Brendan/May — after the Weather Institute", "pocket": "HM" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "super-repel", "name": "Super Repel", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "zinc", "name": "Zinc", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball — on the route (×2)", "pocket": "ITEMS" },
+    { "itemSlug": "leaf-stone", "name": "Leaf Stone", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball — on the route (×2)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "pomeg-berry", "name": "Pomeg Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" },
+    { "itemSlug": "hondew-berry", "name": "Hondew Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
+    { "itemSlug": "sitrus-berry", "name": "Sitrus Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "leppa-berry", "name": "Leppa Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-120": [
+    { "itemSlug": "devon-scope", "name": "Devon Scope", "note": "Steven — bridge battle vs. Kecleon", "pocket": "KEY" },
+    { "itemSlug": "nest-ball", "name": "Nest Ball", "note": "Item ball — on the route", "pocket": "BALLS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder (×2)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "revive", "name": "Revive", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "zinc", "name": "Zinc", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "wepear-berry", "name": "Wepear Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "pinap-berry", "name": "Pinap Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "nanab-berry", "name": "Nanab Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "razz-berry", "name": "Razz Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "aspear-berry", "name": "Aspear Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" },
+    { "itemSlug": "pecha-berry", "name": "Pecha Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-121": [
+    { "itemSlug": "carbos", "name": "Carbos", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "zinc", "name": "Zinc", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "persim-berry", "name": "Persim Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "aspear-berry", "name": "Aspear Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "rawst-berry", "name": "Rawst Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "chesto-berry", "name": "Chesto Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "nanab-berry", "name": "Nanab Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-124": [
+    { "itemSlug": "red-shard", "name": "Red Shard", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "blue-shard", "name": "Blue Shard", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "yellow-shard", "name": "Yellow Shard", "note": "Item ball — on the route", "pocket": "ITEMS" }
+  ],
+  "hoenn-route-128": [
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — Itemfinder (×3)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "oldale-town": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Poké Mart employee — north of the town", "pocket": "ITEMS" }
+  ],
+  "petalburg-city": [
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "petalburg-woods": [
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Devon researcher — after defeating the Team Aqua/Magma grunt", "pocket": "BALLS" },
+    { "itemSlug": "poke-ball", "name": "Poke Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Devon researcher — after defeating the Team Aqua/Magma grunt", "pocket": "BALLS" },
+    { "itemSlug": "x-attack", "name": "X Attack", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "tiny-mushroom", "name": "Tiny Mushroom", "note": "Hidden — Itemfinder (×2)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "miracle-seed", "name": "Miracle Seed", "note": "Girl — eastern clearing", "pocket": "ITEMS" }
+  ],
+  "rusturf-tunnel": [
+    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "moveSlug": "strength", "note": "Wanda's boyfriend — after smashing the rocks (Rock Smash)", "pocket": "HM" },
+    { "itemSlug": "poke-ball", "name": "Poke Ball", "note": "Item ball — on the route", "pocket": "BALLS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball — on the route", "pocket": "ITEMS" }
+  ],
+  "dewford-town": [
+    { "itemSlug": "old-rod", "name": "Old Rod", "note": "Fisherman — east of the Pokémon Center", "pocket": "KEY" }
+  ],
+  "fiery-path": [
+    { "itemSlug": "tm-poison", "name": "TM06 — Toxic", "moveSlug": "toxic", "note": "East side (requires Strength)", "pocket": "TM" },
+    { "itemSlug": "fire-stone", "name": "Fire Stone", "note": "Item ball — on the route", "pocket": "ITEMS" }
+  ],
+  "fallarbor-town": [
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "mt-chimney": [
+    { "itemSlug": "meteorite", "name": "Meteorite", "note": "Machine at the summit — after the Team Magma/Aqua event; trade for TM27 in Fallarbor (E)", "pocket": "KEY" }
+  ],
+  "hoenn-safari-zone": [
+    { "itemSlug": "tm-grass", "name": "TM22 — Solar Beam", "moveSlug": "solar-beam", "note": "North area (requires Surf)", "pocket": "TM" },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "zinc", "name": "Zinc", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "lilycove-city": [
+    { "itemSlug": "poke-ball", "name": "Poke Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "max-repel", "name": "Max Repel", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "mt-pyre": [
+    { "itemSlug": "tm-ghost", "name": "TM30 — Shadow Ball", "moveSlug": "shadow-ball", "note": "4F — eastern room", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM48 — Skill Swap", "moveSlug": "skill-swap", "note": "Exterior — eastern ledge", "pocket": "TM" },
+    { "itemSlug": "magma-emblem", "name": "Magma Emblem", "note": "Old woman — summit, after the event (E)", "pocket": "KEY" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball — on the route", "pocket": "BALLS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "cleanse-tag", "name": "Cleanse Tag", "note": "Old woman — 1F", "pocket": "ITEMS" },
+    { "itemSlug": "super-repel", "name": "Super Repel", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "sea-incense", "name": "Sea Incense", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "lax-incense", "name": "Lax Incense", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "zinc", "name": "Zinc", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "shoal-cave": [
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "shell-bell", "name": "Shell Bell", "note": "Old man — entrance room, after bringing 4 Shoal Salt + 4 Shoal Shells", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "shoal-shell", "name": "Shoal Shell", "note": "Low tide rooms — shell piles (×4)", "pocket": "ITEMS" },
+    { "itemSlug": "shoal-salt", "name": "Shoal Salt", "note": "Low tide rooms — salt piles (×4)", "pocket": "ITEMS" },
+    { "itemSlug": "ice-heal", "name": "Ice Heal", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "focus-band", "name": "Focus Band", "note": "Black Belt — low tide inner room", "pocket": "ITEMS" }
+  ],
+  "hoenn-victory-road": [
+    { "itemSlug": "tm-psychic", "name": "TM29 — Psychic", "moveSlug": "psychic", "note": "B1F — northeast (requires Strength)", "pocket": "TM" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Hidden — Itemfinder", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball — on the route", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "max-repel", "name": "Max Repel", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
   ]
 }
