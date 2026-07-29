@@ -10,7 +10,7 @@
  *                                bucket — mutually exclusive rods must not
  *                                be summed, see bucketsFromDetails)
  *   src/data/pokemon-seo.json    FRLG locations, evolution steps, types, BST
- *                                and catch rate for the 25 curated Pokémon
+ *                                and catch rate for the 35 curated Pokémon
  *   src/data/seo-meta-gen.json   tiny summary consumed by src/lib/seo.ts
  *                                (sync meta registry — names + top encounter)
  *
@@ -42,17 +42,19 @@ const VERSIONS =
   REGION === 'hoenn'
     ? ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire']
     : ['firered', 'leafgreen', 'heartgold', 'soulsilver', 'gold', 'silver', 'crystal'];
-/* The curated 25-Pokémon location block (pokemon-seo.json) is FRLG-only —
+/* The curated 35-Pokémon location block (pokemon-seo.json) is FRLG-only —
  * the Pokémon detail SEO sections are framed "Datenstand Feuerrot". */
 const POKEMON_VERSIONS = ['firered', 'leafgreen'];
 
 const kanto = JSON.parse(readFileSync(path.join(root, `src/data/regions/${REGION}.json`), 'utf8'));
 const NAMES_DE = JSON.parse(readFileSync(path.join(root, 'src/data/i18n/de/pokemon.json'), 'utf8'));
 
-/** 25 curated Pokémon for the detail-page SEO sections (see task briefing). */
+/** 35 curated Pokémon for the detail-page SEO sections (see task briefing). */
 const POKEMON_IDS = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 133, 143, 150, 151, 149, 130, 94, 18, 20,
   24, 97, 105, 65, 112,
+  /* Tranche 26–35 */
+  134, 135, 136, 131, 142, 144, 145, 146, 59, 68,
 ];
 
 /* ---------- slug mapping (mirror of src/lib/seo-routes-kanto.ts — keep in sync!) ---------- */
