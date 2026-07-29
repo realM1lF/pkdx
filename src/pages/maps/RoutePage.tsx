@@ -20,6 +20,7 @@ import { LocaleLink } from '@/lib/locale-link';
 import QaSection from '@/components/QaSection';
 import Sprite from '@/components/Sprite';
 import { nameOfItem, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { displayNameOfItem, seoItemsForNode } from '@/lib/mapdata';
 import type { Lang } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
 import { cn } from '@/lib/utils';
@@ -375,9 +376,16 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRo
       if (bst && (!best || bst > best.bst)) best = { id, bst };
     }
 
-    /* items (curated enrichment) */
-    const items = cfg.enriched[nodeId]?.items ?? [];
-    const itemNames = items.map((it) => nameOfItem(it.slug, lang));
+    /* items — UNION of both sources (SEO enrichment + map curation), so the
+     * page never contradicts the map drawer (item-consistency fix) */
+    const items = seoItemsForNode(cfg.region, nodeId);
+    const itemNames = items.map((it) =>
+      it.curated ? displayNameOfItem(it.curated, lang) : nameOfItem(it.slug, lang),
+    );
+    /* deduplicated list for the Q&A text: "Trank ×3" instead of "Trank, Trank, Trank" */
+    const itemCounts = new Map<string, number>();
+    for (const n of itemNames) itemCounts.set(n, (itemCounts.get(n) ?? 0) + 1);
+    const itemListDedup = [...itemCounts].map(([n, c]) => (c > 1 ? `${n} ×${c}` : n)).join(', ');
 
     /* neighbors from the map graph */
     const neighborIds = new Set<string>();
@@ -391,7 +399,7 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRo
       .map((n) => (lang === 'de' ? n.nameDe ?? n.label : n.label))
       .slice(0, 3);
 
-    return { speciesCount: species.size, top3, rarest, rarestIsTie, diffs, best, items, itemNames, neighbors };
+    return { speciesCount: species.size, top3, rarest, rarestIsTie, diffs, best, items, itemNames, itemListDedup, neighbors };
   }, [nodeId, data, lang, cfg, ns, t]);
 }
 
@@ -494,7 +502,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
             {computed.items.length ? t(`${ns}.qaItemsLeadYes`) : t(`${ns}.qaItemsLeadNo`)}
           </strong>{' '}
           {computed.items.length
-            ? t(`${ns}.qaItemsBodyYes`, { name, count: computed.items.length, list: computed.itemNames.join(', ') })
+            ? t(`${ns}.qaItemsBodyYes`, { name, count: computed.items.length, list: computed.itemListDedup })
             : t(`${ns}.qaItemsBodyNo`, { name })}
         </p>
       ),

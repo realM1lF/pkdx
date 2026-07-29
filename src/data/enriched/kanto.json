@@ -3095,6 +3095,11 @@
           "slug": "bike-voucher",
           "kind": "given",
           "pos": null
+        },
+        {
+          "slug": "vs-seeker",
+          "kind": "given",
+          "pos": null
         }
       ],
       "trainers": [

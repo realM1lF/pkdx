@@ -16,6 +16,8 @@ import itemsJohto from '@/data/items-johto.json';
 import itemsHoenn from '@/data/items-hoenn.json';
 import itemsSinnoh from '@/data/items-sinnoh.json';
 import itemsUnova from '@/data/items-unova.json';
+import enrichedKanto from '@/data/enriched/kanto.json';
+import enrichedHoenn from '@/data/enriched/hoenn.json';
 
 const API = 'https://pokeapi.co/api/v2';
 
@@ -181,14 +183,108 @@ const ITEMS_BY_REGION: Record<string, Record<string, CuratedItem[]>> = {
   unova: itemsUnova as Record<string, CuratedItem[]>,
 };
 
-export function itemsForNode(regionId: string, nodeId: string): CuratedItem[] {
+/* Second item source: the SEO enrichment dumps (pret/pokefirered for Kanto,
+ * Bulbapedia-curated for Hoenn) keyed by node id. Map drawer and SEO pages
+ * must show the UNION of both sources — historically they each read only one
+ * and contradicted each other (item-consistency fix, audit classes A–C). */
+export interface EnrichedItem {
+  slug: string;
+  kind: 'ball' | 'hidden' | 'given';
+}
+
+const ENRICHED_ITEMS_BY_REGION: Record<string, Record<string, EnrichedItem[]>> = {
+  kanto: Object.fromEntries(
+    Object.entries(enrichedKanto.nodes).map(([node, v]) => [
+      node,
+      ((v as { items?: EnrichedItem[] }).items ?? []) as EnrichedItem[],
+    ]),
+  ),
+  hoenn: Object.fromEntries(
+    Object.entries(enrichedHoenn.nodes).map(([node, v]) => [
+      node,
+      ((v as { items?: EnrichedItem[] }).items ?? []) as EnrichedItem[],
+    ]),
+  ),
+};
+
+/** Cross-source identity of an item: curated TM/HM entries carry move-based
+ * slugs ('tm-psychic') while the enrichment uses numeric ones ('tm29') — the
+ * curated display name ('TM29 — Psychic') pins the number. The Itemfinder was
+ * renamed 'Dowsing Machine' in Gen IV+. */
+export function canonicalItemSlug(slug: string, displayName?: string): string {
+  const machine = displayName ? /^(TM|HM)(\d{2})/.exec(displayName) : null;
+  if (machine) return `${machine[1].toLowerCase()}${machine[2]}`;
+  if (slug === 'dowsing-machine') return 'itemfinder';
+  return slug;
+}
+
+/** curated items only (single source) — internal; use itemsForNode for the union */
+function curatedItemsForNode(regionId: string, nodeId: string): CuratedItem[] {
   return ITEMS_BY_REGION[regionId]?.[nodeId] ?? [];
 }
 
+function enrichedItemsForNode(regionId: string, nodeId: string): EnrichedItem[] {
+  return ENRICHED_ITEMS_BY_REGION[regionId]?.[nodeId] ?? [];
+}
+
+/** map a curated item to the SEO kind vocabulary */
+function kindOfCurated(item: CuratedItem): EnrichedItem['kind'] {
+  if (item.hidden) return 'hidden';
+  return item.pocket === 'ITEMS' ? 'ball' : 'given';
+}
+
+/** Union of both item sources for one node, as CuratedItem rows for the map
+ * drawer: curated entries first (they carry the curation notes), then
+ * enrichment-only items deduplicated by canonical slug. */
+export function itemsForNode(regionId: string, nodeId: string): CuratedItem[] {
+  const curated = curatedItemsForNode(regionId, nodeId);
+  const seen = new Set(curated.map((i) => canonicalItemSlug(i.itemSlug, i.name)));
+  const extras: CuratedItem[] = [];
+  for (const e of enrichedItemsForNode(regionId, nodeId)) {
+    const key = canonicalItemSlug(e.slug);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    extras.push({
+      itemSlug: e.slug,
+      name: e.slug,
+      note: '',
+      pocket: 'ITEMS',
+      hidden: e.kind === 'hidden',
+    });
+  }
+  return [...curated, ...extras];
+}
+
+/** Union of both item sources for the SEO route pages: keeps every enriched
+ * row (each physical item ball stays visible) and appends curated-only items
+ * (canonical slug not already covered by the enrichment). `curated` is set
+ * when the row originates from the curation file (localized display name via
+ * displayNameOfItem). */
+export interface SeoItem extends EnrichedItem {
+  curated?: CuratedItem;
+}
+
+export function seoItemsForNode(regionId: string, nodeId: string): SeoItem[] {
+  const enriched = enrichedItemsForNode(regionId, nodeId);
+  const seen = new Set(enriched.map((e) => canonicalItemSlug(e.slug)));
+  const out: SeoItem[] = enriched.map((e) => ({ slug: e.slug, kind: e.kind }));
+  for (const c of curatedItemsForNode(regionId, nodeId)) {
+    const key = canonicalItemSlug(c.itemSlug, c.name);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ slug: c.itemSlug, kind: kindOfCurated(c), curated: c });
+  }
+  return out;
+}
+
 export function itemCountForRegion(regionId: string): number {
-  const table = ITEMS_BY_REGION[regionId];
-  if (!table) return 0;
-  return Object.values(table).reduce((sum, list) => sum + list.length, 0);
+  const nodeIds = new Set([
+    ...Object.keys(ITEMS_BY_REGION[regionId] ?? {}),
+    ...Object.keys(ENRICHED_ITEMS_BY_REGION[regionId] ?? {}),
+  ]);
+  let sum = 0;
+  for (const nodeId of nodeIds) sum += itemsForNode(regionId, nodeId).length;
+  return sum;
 }
 
 export const ITEM_SPRITE_BASE =
