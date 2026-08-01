@@ -925,6 +925,7 @@
     "nickname": "Nickname",
     "logEncounter": "Log encounter",
     "logEncounterEnter": "Log encounter (Enter)",
+    "logShort": "Log",
     "pickPokemon": "Pick a Pokémon",
     "routeAlready": "Route already logged for {{player}} — Dupes Clause is {{dupes}}.",
     "continueRun": "Continue last run",

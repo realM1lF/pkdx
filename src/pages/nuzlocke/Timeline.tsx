@@ -19,11 +19,12 @@ import type { NuzEncounterRow, RunState, SoulLinkGroup } from '@/lib/nuzlocke-st
 import { cn } from '@/lib/utils';
 import { PixelLabel, StatusDot, timeAgo } from './ui';
 
-const CARD_W = 150;
-const GAP = 12;
+const CARD_W = 188;
+const GAP = 14;
 const STRIDE = CARD_W + GAP;
-const HEADER_H = 28;
-const SLOT_H = 44;
+const HEADER_H = 32;
+const SLOT_H = 58;
+const FOOTER_H = 24;
 
 /* node-kind glyphs (§2.3 footer) */
 function KindGlyph({ kind }: { kind: MapNode['kind'] }) {
@@ -125,7 +126,7 @@ function PlayerSlot({
   return (
     <div
       className={cn(
-        'relative flex h-[44px] items-center gap-1.5 border-b border-hairline px-1.5 last:border-b-0',
+        'relative flex h-[58px] items-center gap-2 border-b border-hairline px-2 last:border-b-0',
         cascade && 'nz-shake',
         linked && !linkBroken && 'nz-sl-border',
         linked && linkBroken && 'opacity-80',
@@ -144,12 +145,12 @@ function PlayerSlot({
           type="button"
           onClick={onPrefill}
           aria-label={t('nuz.timeline.logFor', { player: playerName })}
-          className="mx-auto h-[30px] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
+          className="mx-auto h-[40px] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
         />
       ) : enc.status === 'dead' || enc.status === 'lost' ? (
         <button
           type="button"
-          className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
+          className="flex min-w-0 flex-1 items-center gap-2 text-left"
           onClick={(e) => {
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
@@ -157,27 +158,27 @@ function PlayerSlot({
           aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? speciesName })}
         >
           <span data-slot-enc={enc.id} className="nz-dead-sprite inline-block shrink-0">
-            <Sprite id={speciesId} name={speciesName} className="h-[28px] w-[28px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[44px] w-[44px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[11px] font-semibold text-tx-muted line-through">
+            <span className="block truncate text-[12px] font-semibold leading-tight text-tx-muted line-through">
               {enc.nickname ?? speciesName}
-              {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
+              {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-3 w-3 align-[-1px]" />}
             </span>
-            <span className="block font-display text-[9px] font-bold text-tx-muted/70">LV {enc.level}</span>
+            <span className="mt-0.5 block font-display text-[10px] font-bold tabular-nums text-tx-muted/70">LV {enc.level}</span>
           </span>
           {enc.status === 'lost' ? (
-            <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] tracking-[0.06em] text-gold" aria-label={t('nuz.statusLost')}>
+            <span className="shrink-0 rounded-full border border-gold/60 px-1.5 font-pixel text-[7px] tracking-[0.06em] text-gold" aria-label={t('nuz.statusLost')}>
               🔗
             </span>
           ) : (
-            <span className="h-2 w-2 shrink-0 rounded-full border border-gold/70" aria-label={t('nuz.timeline.fallen')} />
+            <span className="h-2.5 w-2.5 shrink-0 rounded-full border border-gold/70" aria-label={t('nuz.timeline.fallen')} />
           )}
         </button>
       ) : enc.status === 'missed' || enc.status === 'duped' ? (
         <button
           type="button"
-          className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
+          className="flex min-w-0 flex-1 items-center gap-2 text-left"
           onClick={(e) => {
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
@@ -185,20 +186,20 @@ function PlayerSlot({
           aria-label={t('nuz.timeline.optionsAria', { name: speciesName })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 opacity-30">
-            <Sprite id={speciesId} name={speciesName} className="h-[30px] w-[30px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[44px] w-[44px]" skeleton={false} />
           </span>
-          <span className="min-w-0 flex-1 truncate text-[10px] text-tx-muted">
+          <span className="min-w-0 flex-1 truncate text-[12px] text-tx-muted">
             {speciesName}
-            {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
+            {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-3 w-3 align-[-1px]" />}
           </span>
-          <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] tracking-[0.06em] text-gold">
+          <span className="shrink-0 rounded-full border border-gold/60 px-1.5 font-pixel text-[7px] tracking-[0.06em] text-gold">
             {t(enc.status === 'missed' ? 'nuz.statusMissed' : 'nuz.statusDuped')}
           </span>
         </button>
       ) : (
         <button
           type="button"
-          className="group/slot flex min-w-0 flex-1 items-center gap-1.5 text-left"
+          className="group/slot flex min-w-0 flex-1 items-center gap-2 text-left"
           onClick={(e) => {
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
@@ -206,20 +207,20 @@ function PlayerSlot({
           aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? speciesName })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 transition-transform duration-200 group-hover/slot:-translate-y-[6%]">
-            <Sprite id={speciesId} name={speciesName} className="h-[36px] w-[36px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[48px] w-[48px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[11px] font-semibold text-tx-primary">
+            <span className="block truncate text-[12px] font-semibold leading-tight text-tx-primary">
               {enc.nickname ?? speciesName}
-              {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
+              {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-3 w-3 align-[-1px]" />}
             </span>
-            <span className="block font-display text-[9px] font-bold text-tx-muted">LV {enc.level}</span>
+            <span className="mt-0.5 block font-display text-[10px] font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
           </span>
           {pendingSync && <span className="nz-orbit h-1.5 w-1.5 shrink-0" aria-label={t('nuz.timeline.pendingSync')} />}
         </button>
       )}
       {cascade && enc?.status === 'caught' && (
-        <span className="absolute -top-1.5 right-1 rounded-full border border-gold bg-surface2 px-1 font-pixel text-[6px] text-gold" title={t('nuz.timeline.boxCascade')}>
+        <span className="absolute -top-1.5 right-1 rounded-full border border-gold bg-surface2 px-1.5 font-pixel text-[7px] text-gold" title={t('nuz.timeline.boxCascade')}>
           BOX?
         </span>
       )}
@@ -313,7 +314,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
   } as CSSProperties;
 
   const empty = state.encounters.length === 0;
-  const cardH = HEADER_H + players.length * SLOT_H + 22;
+  const cardH = HEADER_H + players.length * SLOT_H + FOOTER_H;
 
   return (
     <section className="group/tl relative rounded-xl border border-hairline bg-[#07080D]" aria-label={t('nuz.timeline.aria')}>
@@ -345,7 +346,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
       >
         <div className="relative w-fit px-4 pb-3 pt-7" style={{ minWidth: '100%' }}>
           <div className="relative" style={{ width: trackW }}>
-            <ol className="relative flex gap-3" role="list">
+            <ol className="relative flex gap-3.5" role="list">
               {nodes.map((node, i) => {
                 const isHere = node.id === hereKey;
                 const linkGroup = groupsByRoute.get(node.id);
@@ -371,7 +372,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.35, delay: i < 12 ? i * 0.02 : 0 }}
                     className={cn(
-                      'relative w-[150px] shrink-0 rounded-md border bg-surface1 transition-all duration-200 hover:-translate-y-1 hover:border-gold/30',
+                      'relative w-[188px] shrink-0 rounded-md border bg-surface1 transition-all duration-200 hover:-translate-y-1 hover:border-gold/30',
                       node.postGame ? 'border-hairline opacity-60' : 'border-hairline',
                       isHere && 'border-gold/60 shadow-[inset_0_2px_0_0_var(--gold),0_0_18px_rgba(246,201,69,0.12)]',
                     )}
@@ -379,24 +380,24 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                     aria-label={nodeName(node, lang)}
                   >
                     {isHere && !(empty && i === 0) && (
-                      <span className="nz-bob absolute -top-6 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-gold bg-void px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-gold">
+                      <span className="nz-bob absolute -top-6 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-gold bg-void px-2 py-0.5 font-pixel text-[8px] tracking-[0.08em] text-gold">
                         {t('nuz.timeline.youAreHere')}
                       </span>
                     )}
                     {empty && i === 0 && (
-                      <span className="nz-bob absolute -top-6 left-1/2 z-20 w-max -translate-x-1/2 whitespace-nowrap rounded-full border border-gold/70 bg-surface2 px-2 py-0.5 font-pixel text-[7px] text-gold">
+                      <span className="nz-bob absolute -top-6 left-1/2 z-20 w-max -translate-x-1/2 whitespace-nowrap rounded-full border border-gold/70 bg-surface2 px-2 py-0.5 font-pixel text-[8px] text-gold">
                         {t('nuz.timeline.firstEncounter')}
                       </span>
                     )}
                     {/* header */}
-                    <div className="flex h-[28px] items-center gap-1.5 border-b border-hairline px-2">
-                      <span className="font-display text-[9px] font-bold tabular-nums text-tx-muted">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="min-w-0 flex-1 truncate font-pixel text-[7px] uppercase tracking-[0.05em] text-tx-secondary">{nodeName(node, lang)}</span>
-                      {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">{t('nuz.timeline.post')}</span>}
-                      <span className="flex shrink-0 items-center gap-[3px]">
+                    <div className="flex h-[32px] items-center gap-1.5 border-b border-hairline px-2.5">
+                      <span className="font-display text-[10px] font-bold tabular-nums text-tx-muted">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="min-w-0 flex-1 truncate font-pixel text-[8px] uppercase tracking-[0.05em] text-tx-secondary">{nodeName(node, lang)}</span>
+                      {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[7px] text-tx-muted">{t('nuz.timeline.post')}</span>}
+                      <span className="flex shrink-0 items-center gap-1">
                         {players.map((p) => {
                           const enc = encBy.get(`${p.id}:${node.id}`);
-                          return <StatusDot key={p.id} size={4} status={enc ? enc.status : 'pending'} color={p.color} />;
+                          return <StatusDot key={p.id} size={5} status={enc ? enc.status : 'pending'} color={p.color} />;
                         })}
                       </span>
                     </div>
@@ -432,9 +433,9 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                       })}
                     </div>
                     {/* footer */}
-                    <div className="absolute inset-x-0 bottom-0 flex h-[20px] items-center gap-1 px-2">
+                    <div className="absolute inset-x-0 bottom-0 flex h-[24px] items-center gap-1.5 px-2.5">
                       <KindGlyph kind={node.kind} />
-                      <PixelLabel className="text-[6px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}</PixelLabel>
+                      <PixelLabel className="text-[8px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}</PixelLabel>
                       {/* EP5.3 — map chip only for atlas regions; freeform
                           (Gen 6–9) runs are decoupled from /maps */}
                       {isRegionId(region.region) && (
@@ -445,8 +446,8 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                           aria-label={t('nuz.openInMaps', { label: nodeName(node, lang) })}
                           className="ml-auto flex items-center gap-0.5 text-tx-muted/50 transition-colors hover:text-gold"
                         >
-                          <span className="font-pixel text-[6px]">{t('nuz.mapsChip')}</span>
-                          <ExternalLink size={9} />
+                          <span className="font-pixel text-[7px]">{t('nuz.mapsChip')}</span>
+                          <ExternalLink size={10} />
                         </LocaleLink>
                       )}
                     </div>

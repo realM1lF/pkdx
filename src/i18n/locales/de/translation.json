@@ -925,6 +925,7 @@
     "nickname": "Spitzname",
     "logEncounter": "Begegnung eintragen",
     "logEncounterEnter": "Begegnung eintragen (Enter)",
+    "logShort": "Eintragen",
     "pickPokemon": "Pokémon wählen",
     "routeAlready": "Route für {{player}} bereits eingetragen — Dupes-Klausel ist {{dupes}}.",
     "continueRun": "Letzten Run fortsetzen",

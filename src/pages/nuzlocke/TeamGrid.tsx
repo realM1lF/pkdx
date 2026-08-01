@@ -40,7 +40,7 @@ function useTypes(id: number): string[] {
 function TypeChip({ type }: { type: string }) {
   const c = TYPE_COLORS[type as PokemonType];
   return (
-    <span className="rounded-full px-1 text-[8px] font-bold uppercase leading-[12px]" style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}>
+    <span className="rounded-full px-1.5 text-[9px] font-bold uppercase leading-[14px]" style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}>
       {type.slice(0, 3)}
     </span>
   );
@@ -121,7 +121,8 @@ function PartySlot({
         }
       }}
       className={cn(
-        'group/cell relative flex h-[96px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-sm border border-hairline bg-surface2 transition-all',
+        /* full-width row: sprite left, info column right — never clipped */
+        'group/cell relative flex min-h-[120px] w-full min-w-0 cursor-pointer items-center gap-4 overflow-hidden rounded-md border border-hairline bg-surface2 px-4 py-3 transition-all',
         dragging && 'opacity-40',
         swapTarget && 'border-gold/70 shadow-glow-gold',
       )}
@@ -133,26 +134,34 @@ function PartySlot({
       role="link"
       aria-label={t('nuz.team.openDexAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
     >
-      <span className="transition-transform duration-200 group-hover/cell:-translate-y-[6%]">
-        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[48px] w-[48px]" skeleton={false} />
+      <span className="shrink-0 self-center transition-transform duration-200 group-hover/cell:-translate-y-[6%]">
+        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[96px] w-[96px]" skeleton={false} />
       </span>
-      <span className="max-w-full truncate px-1 text-[10px] font-semibold leading-tight text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
-      <span className="flex items-center gap-1">
-        <span className="font-display text-[8px] font-bold text-tx-muted">LV {enc.level}</span>
-        {types.slice(0, 2).map((tp) => (
-          <TypeChip key={tp} type={tp} />
-        ))}
-      </span>
-      {hasEvolved(enc) && (
-        <span className="max-w-full truncate px-1 font-pixel text-[6px] tracking-[0.04em] text-tx-muted/80">
-          {t('nuz.team.caughtAs', { name: nameOf(speciesIdFor(enc, 'caught')) })}
+      <span className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
+        <span className="truncate pr-6 text-[15px] font-semibold leading-tight text-tx-primary">
+          {enc.nickname ?? nameOf(enc.pokemon_id)}
         </span>
-      )}
-      {linked && (
-        <img src="/sparkle.svg" alt="" className="absolute left-1 top-1 h-1.5 w-1.5" title={partnerName ? t('nuz.team.soulLinkedWith', { name: partnerName }) : t('nuz.team.soulLinked')} />
-      )}
-      {enc.is_shiny && (
-        <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="absolute bottom-1 left-1 h-2.5 w-2.5" />
+        <span className="font-display text-[11px] font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
+        <span className="flex min-w-0 flex-nowrap items-center gap-1.5">
+          {types.slice(0, 2).map((tp) => (
+            <TypeChip key={tp} type={tp} />
+          ))}
+        </span>
+        {hasEvolved(enc) && (
+          <span className="truncate font-pixel text-[8px] tracking-[0.04em] text-tx-muted/80">
+            {t('nuz.team.caughtAs', { name: nameOf(speciesIdFor(enc, 'caught')) })}
+          </span>
+        )}
+      </span>
+      {(linked || enc.is_shiny) && (
+        <span className="absolute bottom-2 left-2 flex items-center gap-1">
+          {linked && (
+            <img src="/sparkle.svg" alt="" className="h-3 w-3" title={partnerName ? t('nuz.team.soulLinkedWith', { name: partnerName }) : t('nuz.team.soulLinked')} />
+          )}
+          {enc.is_shiny && (
+            <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="h-3 w-3" />
+          )}
+        </span>
       )}
       <button
         type="button"
@@ -161,9 +170,9 @@ function PartySlot({
           e.stopPropagation();
           onMenu(enc, e.clientX, e.clientY);
         }}
-        className="absolute right-0.5 top-0.5 grid h-5 w-5 place-items-center rounded-sm text-tx-muted opacity-0 transition-opacity hover:text-gold group-hover/cell:opacity-100"
+        className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-sm text-tx-muted opacity-0 transition-opacity hover:text-gold group-hover/cell:opacity-100"
       >
-        <MoreVertical size={11} />
+        <MoreVertical size={14} />
       </button>
     </motion.div>
   );
@@ -205,7 +214,7 @@ export default function TeamGrid({
               viewport={{ once: true }}
               transition={{ duration: 0.35, delay: pi * 0.06 }}
               className={cn(
-                'rounded-md border bg-surface2/40 p-2.5 transition-colors',
+                'rounded-md border bg-surface2/40 p-3 transition-colors',
                 dropPlayer === p.id ? 'border-gold/60' : 'border-hairline',
               )}
               onDragOver={(e: any) => {
@@ -261,7 +270,7 @@ export default function TeamGrid({
                   <span className="hidden sm:inline">{mine === p.id ? t('nuz.team.openMineShort') : t('nuz.team.openViewShort')}</span>
                 </LocaleLink>
               </div>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-1 gap-2">
                 <AnimatePresence mode="popLayout">
                   {party.map((enc) => {
                     const partner = linkPartner(enc.id);
@@ -284,11 +293,11 @@ export default function TeamGrid({
                   <div
                     key={`e${i}`}
                     className={cn(
-                      'grid h-[96px] place-items-center rounded-sm border border-dashed transition-colors',
+                      'grid min-h-[120px] place-items-center rounded-md border border-dashed transition-colors',
                       dropPlayer === p.id ? 'border-gold/50 bg-gold/5' : 'border-hairline2',
                     )}
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-tx-muted/40" />
+                    <span className="h-2 w-2 rounded-full bg-tx-muted/40" />
                   </div>
                 ))}
               </div>

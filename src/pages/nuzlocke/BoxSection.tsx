@@ -38,14 +38,14 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
     return releaseOnDeath ? (
       <span
         title={t('nuz.box.badge.deadReleaseTip')}
-        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-gold"
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-gold"
       >
         💀 {t('nuz.box.badge.deadRelease')}
       </span>
     ) : (
       <span
         title={t('nuz.box.badge.deadTip')}
-        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted"
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted"
       >
         💀 {t('nuz.box.badge.dead')}
       </span>
@@ -53,14 +53,14 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
   }
   if (enc.status === 'lost') {
     return (
-      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-gold">
+      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-gold">
         🔗 {t('nuz.box.badge.lost')}
       </span>
     );
   }
   /* missed + duped */
   return (
-    <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted">
+    <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted">
       🌫 {t('nuz.box.badge.missed')}
     </span>
   );
@@ -131,28 +131,28 @@ function BoxCell({
       aria-label={t('nuz.box.openDexAria', { name: nick })}
       aria-disabled={locked}
       className={cn(
-        'group/box relative flex w-[64px] cursor-pointer flex-col items-center gap-0 rounded-sm border border-hairline bg-surface2/60 px-1 pb-1 pt-0.5 transition-all duration-150',
+        'group/box relative flex w-[104px] cursor-pointer flex-col items-center gap-0.5 overflow-hidden rounded-md border border-hairline bg-surface2/60 px-1.5 pb-1.5 pt-1 transition-all duration-150',
         dragging && 'opacity-40',
         locked && 'cursor-default opacity-50',
       )}
     >
       <span className={cn('transition-transform duration-200 group-hover/box:-translate-y-[6%]', enc.status === 'dead' && 'grayscale')}>
-        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[40px] w-[40px]" skeleton={false} />
+        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[64px] w-[64px]" skeleton={false} />
       </span>
-      <span className={cn('max-w-full truncate text-[9px] font-semibold leading-tight text-tx-primary', locked && 'text-tx-muted', enc.status === 'dead' && 'line-through')}>{nick}</span>
-      <span className="font-display text-[7px] font-bold tabular-nums text-tx-muted">
+      <span className={cn('max-w-full truncate text-[11px] font-semibold leading-tight text-tx-primary', locked && 'text-tx-muted', enc.status === 'dead' && 'line-through')}>{nick}</span>
+      <span className="font-display text-[9px] font-bold tabular-nums text-tx-muted">
         LV {enc.level}
-        {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="ml-0.5 inline h-2 w-2 align-[-1px]" />}
+        {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="ml-0.5 inline h-2.5 w-2.5 align-[-1px]" />}
       </span>
       {hasEvolved(enc) && (
-        <span className="max-w-full truncate font-pixel text-[5.5px] tracking-[0.04em] text-tx-muted/70">
+        <span className="max-w-full truncate font-pixel text-[7px] tracking-[0.04em] text-tx-muted/70">
           {t('nuz.team.caughtAs', { name: nameOf(speciesIdFor(enc, 'caught')) })}
         </span>
       )}
       {locked ? (
         <StatusBadge enc={enc} releaseOnDeath={releaseOnDeath} />
       ) : (
-        <span className="max-w-full truncate font-pixel text-[6px] uppercase leading-[1.6] text-tx-muted/80">
+        <span className="max-w-full truncate font-pixel text-[7px] uppercase leading-[1.6] text-tx-muted/80">
           {routeLabel(enc.route_key)}
         </span>
       )}
@@ -169,9 +169,9 @@ function BoxCell({
             else if (!res.ok) pushToast('info', t('nuz.dnd.lockedState'));
             else pushToast('info', t('nuz.dnd.movedTeam', { name: nick }));
           }}
-          className="absolute right-0.5 top-0.5 grid h-5 w-5 place-items-center rounded-sm border border-hairline bg-void/90 text-tx-muted opacity-0 transition-opacity hover:text-gold group-hover/box:opacity-100"
+          className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-sm border border-hairline bg-void/90 text-tx-muted opacity-0 transition-opacity hover:text-gold group-hover/box:opacity-100"
         >
-          <ArrowUpFromLine size={11} />
+          <ArrowUpFromLine size={12} />
         </button>
       )}
     </motion.div>
@@ -271,14 +271,14 @@ export default function BoxSection({
               {boxed.length === 0 ? (
                 <div
                   className={cn(
-                    'grid h-10 flex-1 place-items-center rounded-sm border border-dashed transition-colors',
+                    'grid min-h-[72px] flex-1 place-items-center rounded-md border border-dashed transition-colors',
                     dropPlayer === p.id ? 'border-gold/50 opacity-100' : 'border-hairline2 opacity-50',
                   )}
                 >
                   <PixelLabel>{dropPlayer === p.id ? t('nuz.dnd.dropHere') : t('nuz.box.empty')}</PixelLabel>
                 </div>
               ) : (
-                <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
+                <div className="flex min-w-0 flex-1 flex-wrap gap-2">
                   {boxed.map((enc, i) => (
                     <BoxCell
                       key={enc.id}

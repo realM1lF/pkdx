@@ -599,20 +599,21 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
         />
       )}
 
-      {/* LOG */}
-      <div className={cn('relative', stacked && 'w-full')}>
+      {/* LOG — short label so it stays in the config row; Enter hint stays in title */}
+      <div className={cn('relative shrink-0', stacked ? 'w-full' : 'ml-auto')}>
         <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
           <button
             type="button"
             disabled={!canLog}
             title={canLog ? t('nuz.logEncounterEnter') : disabledReason}
+            aria-label={t('nuz.logEncounterEnter')}
             onClick={submit}
             className={cn(
-              'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-5 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
+              'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-3.5 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
               stacked && 'w-full',
             )}
           >
-            {t('nuz.logEncounterEnter')}
+            {t('nuz.logShort')}
           </button>
         </div>
         <GoldHint text={hint} show={!!hint} />
