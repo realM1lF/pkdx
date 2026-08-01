@@ -247,10 +247,10 @@
   border-left-color: #f6c945;
 }
 
-/* compact EV slider rows */
+/* compact EV slider rows: label · slider · EV · final stat @ level */
 .tb-ev-row {
   display: grid;
-  grid-template-columns: 34px 1fr 40px;
+  grid-template-columns: 34px 1fr 32px 40px;
   align-items: center;
   gap: 8px;
 }

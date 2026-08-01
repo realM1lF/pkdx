@@ -1,6 +1,6 @@
 /* Nuzlocke — New Run wizard (nuzlocke.md §1.5) + join-by-code flow (§1.4).
  * 3 steps: 01 GAME → 02 CREW → 03 RULES; success pane mints the invite code. */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
@@ -8,6 +8,7 @@ import { useLanguage } from '@/lib/i18n-data';
 import i18n from '@/i18n';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Copy, Minus, Plus } from 'lucide-react';
+import { useAuth } from '@/lib/auth';
 import { REGIONS, coverageTier, regionName, versionLabel, viewBoxParts } from '@/lib/regions';
 import type { RegionId } from '@/lib/regions';
 import { isRegionId } from '@/lib/regions';
@@ -71,7 +72,10 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
   const localePath = useLocalePath();
   const { t } = useTranslation();
   const lang = useLanguage();
+  const { profile } = useAuth();
   const joinMode = !!joinPreset;
+  /* Account username as trainer default when logged in (player names max 18). */
+  const loginName = (profile?.username ?? '').trim().slice(0, 18);
 
   const [step, setStep] = useState(0); // join mode starts at 1
   /* EP5.3 — atlas RegionId or freeform (map-less Gen 6–9) region id */
@@ -103,11 +107,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
     const suggestion = t('nuz.wizard.runNameSuggestion', { region: regionName(startMap, lang), n: runCount + 1 });
     setAutoName(suggestion);
     setName(suggestion);
-    setCrew([{ name: '', color: PLAYER_COLORS[0] }]);
+    setCrew([{ name: loginName, color: PLAYER_COLORS[0] }]);
     setSoulLink(false);
     setOnline(true);
     setRules({ ...DEFAULT_RULES });
-    setJoinName('');
+    setJoinName(loginName);
     setInvite(null);
     setCreatedId(null);
     setHint('');
@@ -121,11 +125,23 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
     if (open) reset();
   }
 
+  /* Auth can resolve after the wizard opens — fill empty trainer fields once. */
+  useEffect(() => {
+    if (!open || !loginName) return;
+    setCrew((c) => {
+      if (c.length !== 1 || c[0].name.trim()) return c;
+      return [{ ...c[0], name: loginName }];
+    });
+    setJoinName((n) => (n.trim() ? n : loginName));
+  }, [open, loginName]);
+
   const fail = (msg: string) => {
     setHint(msg);
     shake();
     window.setTimeout(() => setHint(''), 2600);
   };
+
+  const hostFallbackName = () => loginName || t('nuz.wizard.you');
 
   const startRun = async () => {
     if (!name.trim()) {
@@ -138,7 +154,10 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
         name: name.trim(),
         region: regionId,
         game,
-        players: crew.map((p, i) => ({ name: p.name.trim() || (i === 0 ? t('nuz.wizard.you') : `PLAYER ${i + 1}`), color: p.color })),
+        players: crew.map((p, i) => ({
+          name: p.name.trim() || (i === 0 ? hostFallbackName() : `PLAYER ${i + 1}`),
+          color: p.color,
+        })),
         rules: { ...rules, soulLink },
         online: online && isMultiCapable(),
       });
@@ -162,13 +181,14 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
       fail(t('nuz.wizard.failJoinFull', { max: MAX_PLAYERS }));
       return;
     }
-    if (!joinName.trim()) {
+    const trainer = joinName.trim() || loginName;
+    if (!trainer) {
       fail(t('nuz.wizard.failJoinName'));
       return;
     }
     setBusy(true);
     try {
-      const state = await joinRun(joinPreset, joinName, joinColor);
+      const state = await joinRun(joinPreset, trainer, joinColor);
       if (!state) {
         fail(t('nuz.wizard.failJoin'));
         return;
@@ -278,7 +298,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       <input
                         value={joinName}
                         onChange={(e) => setJoinName(e.target.value)}
-                        placeholder={t('nuz.wizard.trainerName')}
+                        placeholder={loginName || t('nuz.wizard.trainerName')}
                         maxLength={18}
                         className="h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 text-[14px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
                       />
@@ -432,7 +452,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     <input
                       value={p.name}
                       onChange={(e) => setCrew((c) => c.map((x, xi) => (xi === i ? { ...x, name: e.target.value } : x)))}
-                      placeholder={i === 0 ? t('nuz.wizard.you') : `PLAYER ${i + 1}`}
+                      placeholder={i === 0 ? hostFallbackName() : `PLAYER ${i + 1}`}
                       maxLength={18}
                       className="h-full flex-1 bg-transparent text-[13px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted"
                     />
