@@ -171,7 +171,7 @@ export function RulesEditor({ state }: { state: RunState }) {
   return (
     <div className="w-[260px] space-y-2.5 p-3">
       <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
-      <RulePresetButtons onApply={applyPreset} soulLinkDisabled={state.players.length < 2} />
+      <RulePresetButtons onApply={applyPreset} soulLinkDisabled={state.players.length < 2 && state.mode !== 'multi'} />
       <div />
       <GoldSwitch checked={r.dupes} onChange={(v) => set({ dupes: v })} label={t('nuz.rules.dupesClause')} tip={t('nuz.rules.dupesTip')} />
       <div />

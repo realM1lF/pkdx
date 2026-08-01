@@ -158,6 +158,10 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
 
   const doJoin = async () => {
     if (!joinPreset) return;
+    if (joinPreset.players.length >= MAX_PLAYERS) {
+      fail(t('nuz.wizard.failJoinFull', { max: MAX_PLAYERS }));
+      return;
+    }
     if (!joinName.trim()) {
       fail(t('nuz.wizard.failJoinName'));
       return;
@@ -177,11 +181,21 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
   };
 
   const gymPreview = useMemo(() => gymCapPreview(regionId, rules.badgesCleared), [regionId, rules.badgesCleared]);
+  /* Open Lobby: SoulLink OK alone when online (waiting for invite partners). */
+  const onlineLobby = online && isMultiCapable();
+  const soulLinkOk = crew.length >= 2 || onlineLobby;
+  const joinFull = !!joinPreset && joinPreset.players.length >= MAX_PLAYERS;
 
   const applyPreset = (key: RulePresetKey) => {
     const preset = RULE_PRESETS[key];
     setRules((r) => ({ ...r, ...preset }));
     if (typeof preset.soulLink === 'boolean') setSoulLink(preset.soulLink);
+  };
+
+  const setModeOnline = (nextOnline: boolean) => {
+    setOnline(nextOnline);
+    if (nextOnline) setCrew((c) => c.slice(0, 1));
+    else if (crew.length < 2) setSoulLink(false);
   };
 
   const copyInvite = () => {
@@ -247,45 +261,58 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
               <div className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-[12px] text-tx-secondary">
                 {t('nuz.wizard.joiningRun')} <span className="font-semibold text-tx-primary">“{joinPreset.run.name}”</span> — {joinPreset.players.length === 1 ? t('nuz.wizard.playersInside', { count: 1 }) : t('nuz.wizard.playersInsidePlural', { count: joinPreset.players.length })}
               </div>
-              <PixelLabel>{t('nuz.wizard.yourTrainer')}</PixelLabel>
-              <div className="relative mt-2">
-                <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
-                  <input
-                    value={joinName}
-                    onChange={(e) => setJoinName(e.target.value)}
-                    placeholder={t('nuz.wizard.trainerName')}
-                    maxLength={18}
-                    className="h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 text-[14px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
-                  />
+              {joinFull ? (
+                <div className="relative">
+                  <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
+                    <p className="rounded-md border border-gold/40 bg-gold/5 px-3 py-3 text-[12px] text-tx-secondary">
+                      {t('nuz.wizard.failJoinFull', { max: MAX_PLAYERS })}
+                    </p>
+                  </div>
+                  <GoldHint text={hint} show={!!hint} />
                 </div>
-                <GoldHint text={hint} show={!!hint} />
-              </div>
-              <PixelLabel className="mt-4 block">{t('nuz.wizard.pickColor')}</PixelLabel>
-              <div className="mt-2 flex gap-2">
-                {PLAYER_COLORS.map((c) => {
-                  const taken = joinPreset.players.some((p) => p.color === c);
-                  return (
-                    <button
-                      key={c}
-                      type="button"
-                      disabled={taken}
-                      onClick={() => setJoinColor(c)}
-                      className={cn('h-8 w-8 rounded-full border-2 transition-transform', taken && 'cursor-not-allowed opacity-25', joinColor === c ? 'scale-110 border-white' : 'border-transparent')}
-                      style={{ background: c }}
-                      title={taken ? t('nuz.wizard.colorTaken') : c}
-                      aria-label={`color ${c}`}
-                    />
-                  );
-                })}
-              </div>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void doJoin()}
-                className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
-              >
-                {busy ? t('nuz.wizard.joining') : t('nuz.wizard.joinRun')}
-              </button>
+              ) : (
+                <>
+                  <PixelLabel>{t('nuz.wizard.yourTrainer')}</PixelLabel>
+                  <div className="relative mt-2">
+                    <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
+                      <input
+                        value={joinName}
+                        onChange={(e) => setJoinName(e.target.value)}
+                        placeholder={t('nuz.wizard.trainerName')}
+                        maxLength={18}
+                        className="h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 text-[14px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+                      />
+                    </div>
+                    <GoldHint text={hint} show={!!hint} />
+                  </div>
+                  <PixelLabel className="mt-4 block">{t('nuz.wizard.pickColor')}</PixelLabel>
+                  <div className="mt-2 flex gap-2">
+                    {PLAYER_COLORS.map((c) => {
+                      const taken = joinPreset.players.some((p) => p.color === c);
+                      return (
+                        <button
+                          key={c}
+                          type="button"
+                          disabled={taken}
+                          onClick={() => setJoinColor(c)}
+                          className={cn('h-8 w-8 rounded-full border-2 transition-transform', taken && 'cursor-not-allowed opacity-25', joinColor === c ? 'scale-110 border-white' : 'border-transparent')}
+                          style={{ background: c }}
+                          title={taken ? t('nuz.wizard.colorTaken') : c}
+                          aria-label={`color ${c}`}
+                        />
+                      );
+                    })}
+                  </div>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => void doJoin()}
+                    className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+                  >
+                    {busy ? t('nuz.wizard.joining') : t('nuz.wizard.joinRun')}
+                  </button>
+                </>
+              )}
             </motion.div>
           ) : step === 0 ? (
             /* ---------- step 1: game & region ---------- */
@@ -411,14 +438,25 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     />
                     <span className="font-pixel text-[7px] text-tx-muted">P{i + 1}</span>
                     {i > 0 && (
-                      <button type="button" onClick={() => setCrew((c) => c.filter((_, xi) => xi !== i))} className="text-tx-muted transition-colors hover:text-gold" aria-label={t('nuz.wizard.removePlayer')}>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCrew((c) => {
+                            const next = c.filter((_, xi) => xi !== i);
+                            if (next.length < 2 && !onlineLobby) setSoulLink(false);
+                            return next;
+                          })
+                        }
+                        className="text-tx-muted transition-colors hover:text-gold"
+                        aria-label={t('nuz.wizard.removePlayer')}
+                      >
                         <Minus size={13} />
                       </button>
                     )}
                   </div>
                 ))}
               </div>
-              {crew.length < MAX_PLAYERS && (
+              {!onlineLobby && crew.length < MAX_PLAYERS && (
                 <button
                   type="button"
                   onClick={() => setCrew((c) => [...c, { name: '', color: PLAYER_COLORS[c.length] }])}
@@ -427,17 +465,23 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                   <Plus size={13} /> {t('nuz.wizard.addPlayer')}
                 </button>
               )}
+              {onlineLobby && (
+                <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.onlineCrewHint')}</p>
+              )}
 
               {/* SoulLink — the signature switch */}
-              <div className={cn('mt-4 rounded-md border p-3 transition-colors', soulLink ? 'border-gold/50 bg-gold/5' : 'border-hairline bg-surface1', crew.length < 2 && 'opacity-40')}>
+              <div className={cn('mt-4 rounded-md border p-3 transition-colors', soulLink ? 'border-gold/50 bg-gold/5' : 'border-hairline bg-surface1', !soulLinkOk && 'opacity-40')}>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">SOUL LINK</span>
                     <InfoTip text={t('nuz.rules.soulLinkTip')} />
                   </span>
-                  <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={crew.length < 2} label={t(soulLink ? 'nuz.on' : 'nuz.off').toUpperCase()} />
+                  <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={!soulLinkOk} label={t(soulLink ? 'nuz.on' : 'nuz.off').toUpperCase()} />
                 </div>
-                {crew.length < 2 && <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.needsTwo')}</p>}
+                {!soulLinkOk && <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.needsTwo')}</p>}
+                {soulLink && onlineLobby && crew.length < 2 && (
+                  <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.soulLinkWait')}</p>
+                )}
                 {soulLink && crew.length >= 2 && (
                   <svg viewBox="0 0 200 36" className="mt-2 h-9 w-full" aria-hidden>
                     <defs>
@@ -464,7 +508,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       <button
                         key={o.label}
                         type="button"
-                        onClick={() => setOnline(o.v)}
+                        onClick={() => setModeOnline(o.v)}
                         className={cn(
                           'rounded-md border px-2 py-2 font-pixel text-[7px] leading-relaxed tracking-[0.06em] transition-all',
                           online === o.v ? 'border-gold bg-gold/10 text-gold' : 'border-hairline2 text-tx-muted hover:border-gold/40',
@@ -486,7 +530,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
             <motion.div key="s2" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
               <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
               <div className="mt-2">
-                <RulePresetButtons onApply={applyPreset} soulLinkDisabled={crew.length < 2} />
+                <RulePresetButtons onApply={applyPreset} soulLinkDisabled={!soulLinkOk} />
               </div>
               <div className="relative mt-2">
                 <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>

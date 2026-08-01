@@ -17,7 +17,9 @@ import {
   goOnline,
   isRunArchived,
   isRunOwner,
+  myPlayerId,
   pushToast,
+  renamePlayer,
   renameRun,
   restoreRun,
   setRunStatus,
@@ -43,6 +45,8 @@ export default function RunHeader({
   const state = entry.state;
   const [renaming, setRenaming] = useState(false);
   const [draft, setDraft] = useState('');
+  const [renamingPlayerId, setRenamingPlayerId] = useState<string | null>(null);
+  const [playerDraft, setPlayerDraft] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -54,6 +58,13 @@ export default function RunHeader({
   const owner = isRunOwner(state.run.id);
   const archived = isRunArchived(state.run.id);
   const multi = state.mode === 'multi';
+  const mine = myPlayerId(state.run.id);
+
+  const commitPlayerRename = () => {
+    if (!renamingPlayerId) return;
+    renamePlayer(state.run.id, renamingPlayerId, playerDraft);
+    setRenamingPlayerId(null);
+  };
 
   const copyInvite = () => {
     if (!state.run.invite_code) return;
@@ -128,21 +139,55 @@ export default function RunHeader({
 
       {/* right cluster */}
       <div className="ml-auto flex flex-wrap items-center gap-2">
-        {/* player pills */}
+        {/* player pills — own slot rename only */}
         {[...state.players]
           .sort((a, b) => a.slot - b.slot)
           .map((p, i) => {
             const alive = state.encounters.filter((e) => e.player_id === p.id && e.status === 'caught').length;
             const dead = state.encounters.filter((e) => e.player_id === p.id && e.status === 'dead').length;
             const online = multi && !!entry.online[p.id];
+            const isMine = mine === p.id;
+            if (renamingPlayerId === p.id) {
+              return (
+                <motion.span
+                  key={p.id}
+                  initial={{ scale: 0.6, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="flex h-9 items-center gap-1.5 rounded-full border border-gold/60 bg-surface1 px-2"
+                >
+                  <span className={cn('h-2.5 w-2.5 shrink-0 rounded-full', online && 'nz-presence-ring')} style={{ background: p.color }} />
+                  <input
+                    autoFocus
+                    value={playerDraft}
+                    maxLength={18}
+                    onChange={(e) => setPlayerDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') commitPlayerRename();
+                      if (e.key === 'Escape') setRenamingPlayerId(null);
+                    }}
+                    onBlur={commitPlayerRename}
+                    className="w-[7rem] bg-transparent text-[12px] font-semibold text-tx-primary outline-none"
+                    aria-label={t('nuz.header.renamePlayerTip')}
+                  />
+                </motion.span>
+              );
+            }
             return (
               <motion.span
                 key={p.id}
                 initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 420, damping: 30, delay: i * 0.05 }}
-                title={t('nuz.header.playerTip', { name: p.name, alive, dead })}
-                className="flex h-9 items-center gap-1.5 rounded-full border border-hairline bg-surface1 px-3"
+                title={isMine ? t('nuz.header.renamePlayerTip') : t('nuz.header.playerTip', { name: p.name, alive, dead })}
+                onClick={() => {
+                  if (!isMine) return;
+                  setPlayerDraft(p.name);
+                  setRenamingPlayerId(p.id);
+                }}
+                className={cn(
+                  'flex h-9 items-center gap-1.5 rounded-full border border-hairline bg-surface1 px-3',
+                  isMine && 'cursor-text hover:border-gold/50',
+                )}
               >
                 <span className={cn('h-2.5 w-2.5 rounded-full', online && 'nz-presence-ring')} style={{ background: p.color }} />
                 <span className="text-[12px] font-semibold text-tx-primary">{p.name}</span>

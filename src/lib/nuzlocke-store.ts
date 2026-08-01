@@ -1285,6 +1285,19 @@ export interface CreatedRun {
   offlineFallback: boolean;
 }
 
+/** Online lobby: only the host is created; partners join via invite. Offline: full crew. */
+export function resolveCreateCrew(crew: NewRunPlayer[], online: boolean): NewRunPlayer[] {
+  if (online) return crew.slice(0, 1);
+  return crew;
+}
+
+/** Lowest free slot in `0 .. MAX_PLAYERS-1`, or `MAX_PLAYERS` when full. */
+export function nextPlayerSlot(players: Pick<NuzPlayerRow, 'slot'>[]): number {
+  const taken = new Set(players.map((p) => p.slot));
+  for (let s = 0; s < MAX_PLAYERS; s++) if (!taken.has(s)) return s;
+  return MAX_PLAYERS;
+}
+
 /* Insert the run row, re-minting the invite code when the unique index
  * rejects it. Without the retry a collision downgraded the run to offline. */
 async function insertRunWithFreshInvite(
@@ -1304,7 +1317,10 @@ async function insertRunWithFreshInvite(
 export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   const id = uuid();
   const now = new Date().toISOString();
-  const players: NuzPlayerRow[] = cfg.players.map((p, i) => ({
+  /* Open Lobby: online create inserts only the host — no placeholder crew in DB. */
+  const wantOnline = cfg.online && isMultiCapable();
+  const crew = resolveCreateCrew(cfg.players, wantOnline);
+  const players: NuzPlayerRow[] = crew.map((p, i) => ({
     id: uuid(),
     run_id: id,
     name: p.name.trim() || `PLAYER ${i + 1}`,
@@ -1327,7 +1343,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   let invite: string | null = null;
   let offlineFallback = false;
 
-  if (cfg.online && isMultiCapable()) {
+  if (wantOnline) {
     /* the insert policy requires an identity; the DB trigger then records
      * this session as the run's owner */
     await ensureRunIdentity();
@@ -1414,16 +1430,19 @@ export async function lookupByCode(code: string): Promise<JoinLookup | null> {
   }
 }
 
-/** Join a looked-up run as a new player (nuzlocke.md §1.4). */
+/** Join a looked-up run as a new player (nuzlocke.md §1.4). Open Lobby: always a new slot. */
 export async function joinRun(lookup: JoinLookup, name: string, color: string): Promise<RunState | null> {
+  if (lookup.players.length >= MAX_PLAYERS) return null;
   const taken = new Set(lookup.players.map((p) => p.color));
   const finalColor = taken.has(color) ? (PLAYER_COLORS.find((c) => !taken.has(c)) ?? color) : color;
+  const slot = nextPlayerSlot(lookup.players);
+  if (slot >= MAX_PLAYERS) return null;
   const player: NuzPlayerRow = {
     id: uuid(),
     run_id: lookup.run.id,
-    name: name.trim() || `PLAYER ${lookup.players.length + 1}`,
+    name: name.trim() || `PLAYER ${slot + 1}`,
     color: finalColor,
-    slot: lookup.players.length,
+    slot,
     created_at: new Date().toISOString(),
   };
   const { error } = await nuzTables.players().insert(player);
@@ -1881,6 +1900,27 @@ export function renameRun(runId: string, name: string): void {
   }
   scheduleLinkedSync(s);
   emit(entry);
+}
+
+/** Rename own trainer only — membership-scoped; never another player's slot. */
+export function renamePlayer(runId: string, playerId: string, name: string): boolean {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  const trimmed = name.trim();
+  if (!s || !trimmed) return false;
+  if (myPlayerId(runId) !== playerId) return false;
+  const player = s.players.find((p) => p.id === playerId);
+  if (!player) return false;
+  player.name = trimmed.slice(0, 18);
+  saveLocalRun(s);
+  if (s.mode === 'multi') {
+    persistWithRetry(entry, `player:${playerId}`, () =>
+      nuzTables.players().update({ name: player.name }).eq('id', playerId).eq('run_id', runId),
+    );
+  }
+  scheduleLinkedSync(s);
+  emit(entry);
+  return true;
 }
 
 export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
