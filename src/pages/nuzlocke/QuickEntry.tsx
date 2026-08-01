@@ -12,7 +12,7 @@ import type { RegionMap } from '@/lib/regions';
 import type { RegionDataState } from '@/lib/mapdata';
 import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
-import { effectiveLevelCap, isGiftNode } from '@/lib/nuzlocke-rules';
+import { effectiveLevelCap, isSpecialNode } from '@/lib/nuzlocke-rules';
 import type { LogValidationError } from '@/lib/nuzlocke-rules';
 import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
@@ -204,7 +204,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       duplicate: t('nuz.err.routeAlready', { player: player?.name ?? '?' }),
       speciesDupe: t('nuz.err.speciesDupe'),
       nicknameRequired: t('nuz.err.nicknameRequired'),
-      giftRoute: t('nuz.err.giftRoute'),
+      giftRoute: t('nuz.err.giftRoute'), /* legacy key — no longer raised */
     };
     fail(map[code]);
   };
@@ -366,8 +366,13 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               >
                 <span className="w-6 font-display text-[9px] font-bold tabular-nums text-tx-muted">{String(nodes.indexOf(n) + 1).padStart(2, '0')}</span>
                 <span className="min-w-0 flex-1 truncate">{n.label}</span>
-                {isGiftNode(n) && (
-                  <span className="rounded-full border border-gold/50 px-1 font-pixel text-[6px] text-gold">{t('nuz.giftRouteChip')}</span>
+                {isSpecialNode(n) && (
+                  <span
+                    title={t('nuz.specialRouteTip')}
+                    className="rounded-full border border-gold/50 px-1 font-pixel text-[6px] text-gold"
+                  >
+                    {t('nuz.specialRouteChip')}
+                  </span>
                 )}
                 {used && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">{t('nuz.chip.used')}</span>}
                 <span className="font-pixel text-[7px] text-tx-muted">

@@ -934,12 +934,12 @@
       "speciesDupe": "Evolution line already alive in the run — Dupes Clause blocks this catch.",
       "nicknameRequired": "Nickname required — nickname rule is active.",
       "levelCap": "Level {{level}} is above cap {{cap}} — press again to log anyway.",
-      "giftRoute": "Gift/special route — use route encounters only, or log Missed/Duped."
+      "giftRoute": "Special location — log the Pokémon you actually got here."
     },
     "shinyCatch": "Shiny",
     "shinyRouteHint": "Route already resolved — Shiny Clause: only a shiny catch may be logged here.",
-    "giftRouteChip": "Gift",
     "specialRouteChip": "Special",
+    "specialRouteTip": "Special map location (tower, power plant, …). May include gifts or static encounters — log what you actually got.",
     "exportSummary": "Copy run summary",
     "exportCopied": "Summary copied",
     "importToTeam": "Import to Team Builder",
@@ -983,6 +983,7 @@
       "soulLink": "SOUL LINK FORMED — {{a}} ⇄ {{b}}",
       "cascade": "SOULLINK RULE — {{name}} MUST FALL TOO",
       "cascadeBoxed": "SOULLINK — {{name}} AUTO-BOXED (CASCADE)",
+      "linkBoxed": "SOULLINK — {{name}} AUTO-BOXED (PARTNER BOXED)",
       "routeConflict": "ROUTE ALREADY LOGGED — SERVER STATE SYNCED",
       "releaseRule": "NUZLOCKE RULE — {{name}} fainted and must be released.",
       "storageFailed": "STORAGE FULL — could not save run. Old PokéAPI cache was trimmed; please try again.",
@@ -1008,8 +1009,10 @@
       "autoLevelCapTip": "Cap follows the ace level of the next unbeaten gym leader — overrides the manual cap.",
       "badges": "BADGES",
       "badgeTip": "Badge progress — drives auto cap and gym prep.",
+      "lowerBadges": "Lower badge count",
+      "raiseBadges": "Raise badge count",
       "releaseOnDeath": "DEATH = RELEASE",
-      "releaseOnDeathTip": "Reminds on death that the Pokémon cannot be used further.",
+      "releaseOnDeathTip": "On: a dead Pokémon must be released — the box badge says so and turns gold. Off: dead Pokémon just stay in the box, no release required.",
       "randomizer": "RANDOMIZER",
       "randomizerTip": "Encounters are randomized: on every route you may log any Pokémon from the full dex (no route encounter table).",
       "lower": "Lower level cap",
@@ -1021,8 +1024,21 @@
       "links": "LINKS",
       "linksTip": "SoulLink groups — one per route with 2+ linked catches",
       "capTitle": "Party limit until next gym: {{cap}}.",
+      "capTitleGym": "Party limit until {{gym}}: Lv. {{cap}}.",
+      "nextGymHint": "Next: {{gym}} — cap Lv. {{cap}}.",
       "noCap": "No level cap set",
-      "routes": "{{done}}/{{total}} ROUTES"
+      "routes": "{{done}}/{{total}} ROUTES",
+      "activeLabel": "ACTIVE:",
+      "chipSoulLink": "SOUL LINK",
+      "chipSoulLinkCascade": "SOUL LINK · DEATH CASCADE",
+      "chipNicknames": "NICKNAMES",
+      "chipRelease": "DEATH = RELEASE",
+      "chipRandomizer": "RANDOMIZER",
+      "preset": {
+        "classic": "CLASSIC",
+        "hardcoreLite": "HARDCORE-LITE",
+        "soulLink": "SOUL LINK"
+      }
     },
     "team": {
       "aria": "Active parties",
@@ -1055,6 +1071,9 @@
       },
       "badge": {
         "dead": "DEAD",
+        "deadTip": "Fainted — stays boxed, no further action needed (Death=Release is off).",
+        "deadRelease": "RELEASE",
+        "deadReleaseTip": "Fainted — Death=Release is on, so this Pokémon must be released and can't be used again.",
         "missed": "MISSED",
         "lost": "LINK-LOST"
       },
@@ -1113,6 +1132,7 @@
       "verbLost": "lost to the link",
       "linkLost": "SoulLink miss — {{name}} is link-lost",
       "linkMissBoxed": "SoulLink miss — {{name}} was auto-boxed",
+      "linkBoxed": "SoulLink box-link — {{name}} was auto-boxed",
       "evolved": "{{name}} EVOLVED"
     },
     "time": {
@@ -1172,8 +1192,8 @@
       "nicknames": "NICKNAMES",
       "autoLevelCap": "AUTO CAP (NEXT GYM)",
       "autoLevelCapTip": "Cap follows the ace level of the next unbeaten gym leader — no manual tuning needed.",
-      "autoCapStart": "Starting cap: Lv. {{cap}} (0 badges)",
-      "autoCapExplain": "During the run, set badges in the rules bar — the cap follows your region's gym leaders automatically.",
+      "autoCapStart": "Starting cap: Lv. {{cap}} ({{badges}} badges)",
+      "autoCapExplain": "Update your badge count as you play (here or in the rules bar) — the cap follows your region's gym leaders automatically.",
       "manualCapHint": "Manual cap — for house rules without the badge ladder.",
       "lowerCap": "Lower cap",
       "raiseCap": "Raise cap",

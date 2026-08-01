@@ -9,6 +9,8 @@ import {
   kpisOf,
   linkPartnersOf,
   logEncounter,
+  setEncounterParty,
+  swapParty,
   updateEncounter,
 } from './nuzlocke-store';
 import type { NuzRules, RunState } from './nuzlocke-store';
@@ -222,5 +224,78 @@ describe('SoulLink death cascade (N players)', () => {
      * find any new living partner to cascade to */
     const res = updateEncounter(s.run.id, encAt(s, 0, 'route-1')!.id, { status: 'dead' });
     expect(res.cascadePartners).toHaveLength(0);
+  });
+});
+
+describe('SoulLink box-cascade (A1)', () => {
+  it('boxing a living catch also boxes every other living partner on the route', async () => {
+    let s = await makeSoulRun({}, [{ name: 'CAM', color: '#FF7A45' }]);
+    await log(s, 0, 'route-1', 1);
+    await log(s, 1, 'route-1', 4);
+    await log(s, 2, 'route-1', 7);
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(true);
+    expect(encAt(s, 2, 'route-1')!.in_party).toBe(true);
+
+    const res = setEncounterParty(s.run.id, encAt(s, 0, 'route-1')!.id, false);
+    expect(res.ok).toBe(true);
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 0, 'route-1')!.in_party).toBe(false);
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
+    expect(encAt(s, 2, 'route-1')!.in_party).toBe(false);
+    /* still caught — only boxed, not killed/lost (independent of soulLinkCascade) */
+    expect(encAt(s, 1, 'route-1')!.status).toBe('caught');
+    expect(encAt(s, 2, 'route-1')!.status).toBe('caught');
+  });
+
+  it('box-link fires even with the death cascade rule off', async () => {
+    let s = await makeSoulRun({ soulLinkCascade: false });
+    await log(s, 0, 'route-1', 16);
+    await log(s, 1, 'route-1', 19);
+    s = getRunState(s.run.id)!;
+
+    setEncounterParty(s.run.id, encAt(s, 0, 'route-1')!.id, false);
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
+    expect(encAt(s, 1, 'route-1')!.status).toBe('caught');
+  });
+
+  it('unboxing does NOT pull a boxed partner back into the party', async () => {
+    let s = await makeSoulRun();
+    await log(s, 0, 'route-1', 16);
+    await log(s, 1, 'route-1', 19);
+    s = getRunState(s.run.id)!;
+
+    setEncounterParty(s.run.id, encAt(s, 0, 'route-1')!.id, false);
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
+
+    setEncounterParty(s.run.id, encAt(s, 0, 'route-1')!.id, true);
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 0, 'route-1')!.in_party).toBe(true);
+    /* partner stays boxed — no forced party move */
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
+  });
+
+  it('a boxed-in-party swap also box-cascades the outgoing mon\'s partner', async () => {
+    let s = await makeSoulRun();
+    await log(s, 0, 'route-1', 16); // Ann: linked party member (route-1)
+    await log(s, 1, 'route-1', 19); // Bob: linked partner (route-1)
+    await log(s, 0, 'route-2', 13); // Ann: a boxed candidate, no link
+    s = getRunState(s.run.id)!;
+    setEncounterParty(s.run.id, encAt(s, 0, 'route-2')!.id, false);
+    s = getRunState(s.run.id)!;
+    const boxed = encAt(s, 0, 'route-2')!;
+    const partySlot = encAt(s, 0, 'route-1')!;
+    expect(partySlot.in_party).toBe(true);
+
+    const res = swapParty(s.run.id, boxed.id, partySlot.id);
+    expect(res.ok).toBe(true);
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 0, 'route-2')!.in_party).toBe(true);
+    expect(encAt(s, 0, 'route-1')!.in_party).toBe(false);
+    /* Bob's route-1 partner was box-linked to Ann's just-boxed route-1 mon */
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
+    expect(encAt(s, 1, 'route-1')!.status).toBe('caught');
   });
 });

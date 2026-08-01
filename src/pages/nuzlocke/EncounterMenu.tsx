@@ -7,9 +7,10 @@ import { Archive, ArrowUpRight, Check, HeartCrack, Hash, Pencil, Trash2, Wind } 
 import { useTranslation } from 'react-i18next';
 import { listEvolutionOptions, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { deleteEncounter, evolveEncounter, pushToast, setEncounterParty, updateEncounter } from '@/lib/nuzlocke-store';
-import type { NuzEncounterRow } from '@/lib/nuzlocke-store';
+import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
+import { effectiveLevelCap } from '@/lib/nuzlocke-rules';
 import { cn } from '@/lib/utils';
-import { useShake } from './ui';
+import { GoldHint, useShake } from './ui';
 
 export interface MenuTarget {
   enc: NuzEncounterRow;
@@ -27,10 +28,12 @@ type SubMode = 'none' | 'note' | 'nick' | 'evolve' | 'level';
 export default function EncounterMenu({
   target,
   nameOf,
+  state,
   onClose,
 }: {
   target: MenuTarget | null;
   nameOf: (id: number) => string;
+  state: RunState;
   onClose: () => void;
 }) {
   const { t } = useTranslation();
@@ -41,7 +44,12 @@ export default function EncounterMenu({
   const [evoOpts, setEvoOpts] = useState<number[]>([]);
   const [evoLoading, setEvoLoading] = useState(false);
   const [shakeKey, shake] = useShake();
+  const [levelHint, setLevelHint] = useState('');
+  /* level-cap is a soft warning here too (mirrors QuickEntry's capAck):
+   * first commit over cap warns, the acknowledged second commit sets it anyway */
+  const [capAck, setCapAck] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const cap = effectiveLevelCap(state);
 
   useEffect(() => {
     if (!target) return undefined;
@@ -69,7 +77,11 @@ export default function EncounterMenu({
     setLevel(target?.enc.level ?? 1);
     setEvoOpts([]);
     setEvoLoading(false);
+    setCapAck(false);
+    setLevelHint('');
   }
+
+  useEffect(() => setCapAck(false), [level]);
 
   useEffect(() => {
     if (!target || sub !== 'evolve') return undefined;
@@ -109,6 +121,13 @@ export default function EncounterMenu({
 
   const commitLevel = () => {
     const n = Math.max(1, Math.min(100, Math.round(level) || 1));
+    if (cap !== null && n > cap && !capAck) {
+      setCapAck(true);
+      shake();
+      setLevelHint(t('nuz.err.levelCap', { level: n, cap }));
+      window.setTimeout(() => setLevelHint(''), 2600);
+      return;
+    }
     updateEncounter(enc.run_id, enc.id, { level: n });
     onClose();
   };
@@ -259,7 +278,7 @@ export default function EncounterMenu({
         )}
 
         {sub === 'level' && (
-          <div className="px-3 py-2">
+          <div className="relative px-3 py-2">
             <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.menu.levelLabel')}</label>
             <input
               autoFocus
@@ -269,7 +288,11 @@ export default function EncounterMenu({
               value={level}
               onChange={(e) => setLevel(Number(e.target.value))}
               onKeyDown={(e) => e.key === 'Enter' && commitLevel()}
-              className="mt-1.5 h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] tabular-nums text-tx-primary outline-none focus:border-gold"
+              title={cap !== null ? t('nuz.rules.capTitle', { cap }) : undefined}
+              className={cn(
+                'mt-1.5 h-8 w-full rounded-sm border bg-surface1 px-2 text-[12px] tabular-nums text-tx-primary outline-none focus:border-gold',
+                cap !== null && Number(level) > cap ? 'border-gold/70' : 'border-hairline2',
+              )}
             />
             <button
               type="button"
@@ -278,6 +301,7 @@ export default function EncounterMenu({
             >
               {t('nuz.menu.levelLabel')} {Math.max(1, Math.min(100, Math.round(level) || 1))}
             </button>
+            <GoldHint text={levelHint} show={!!levelHint} />
           </div>
         )}
 

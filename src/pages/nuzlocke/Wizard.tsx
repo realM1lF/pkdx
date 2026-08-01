@@ -21,9 +21,11 @@ import {
   pushToast,
 } from '@/lib/nuzlocke-store';
 import type { JoinLookup, NuzRules } from '@/lib/nuzlocke-store';
+import { RULE_PRESETS, gymCapPreview } from '@/lib/nuzlocke-rules';
+import type { RulePresetKey } from '@/lib/nuzlocke-rules';
 import { isMultiCapable } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
-import { LevelCapStepper } from './RulesBar';
+import { BadgeStepper, LevelCapStepper, RulePresetButtons } from './RulesBar';
 import { GoldHint, GoldSwitch, InfoTip, NuzModal, PixelLabel, SparkleBurst, useShake } from './ui';
 
 /* ---------- mini region schematic (compact re-render of /maps cards) ---------- */
@@ -172,6 +174,14 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
     } finally {
       setBusy(false);
     }
+  };
+
+  const gymPreview = useMemo(() => gymCapPreview(regionId, rules.badgesCleared), [regionId, rules.badgesCleared]);
+
+  const applyPreset = (key: RulePresetKey) => {
+    const preset = RULE_PRESETS[key];
+    setRules((r) => ({ ...r, ...preset }));
+    if (typeof preset.soulLink === 'boolean') setSoulLink(preset.soulLink);
   };
 
   const copyInvite = () => {
@@ -475,6 +485,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
             /* ---------- step 3: rules ---------- */
             <motion.div key="s2" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
               <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
+              <div className="mt-2">
+                <RulePresetButtons onApply={applyPreset} soulLinkDisabled={crew.length < 2} />
+              </div>
               <div className="relative mt-2">
                 <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
                   <div className="grid grid-cols-2 gap-2">
@@ -496,7 +509,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       </div>
                     )}
                   </div>
-                  {/* level cap: manual number or auto (next gym ace) */}
+                  {/* level cap: manual number or auto (next gym ace, badge-driven) */}
                   <div className="mt-2 rounded-md border border-hairline bg-surface1 px-3 py-2.5">
                     <GoldSwitch
                       checked={rules.autoLevelCap}
@@ -504,10 +517,25 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       label={t('nuz.wizard.autoLevelCap')}
                       tip={t('nuz.wizard.autoLevelCapTip')}
                     />
-                    <div className="mt-2 flex items-center justify-between gap-2">
-                      <span className="text-[10px] text-tx-muted">{t('nuz.wizard.manualCapHint')}</span>
-                      <LevelCapStepper value={rules.levelCap} onChange={(v) => setRules((r) => ({ ...r, levelCap: v }))} disabled={rules.autoLevelCap} />
-                    </div>
+                    {rules.autoLevelCap ? (
+                      <>
+                        <div className="mt-2 flex items-center justify-between gap-2">
+                          <PixelLabel>{t('nuz.rules.badges')}</PixelLabel>
+                          <BadgeStepper value={rules.badgesCleared} onChange={(v) => setRules((r) => ({ ...r, badgesCleared: v }))} />
+                        </div>
+                        {gymPreview && (
+                          <p className="mt-1.5 text-[10px] text-tx-muted">
+                            {t('nuz.wizard.autoCapStart', { cap: gymPreview.cap, badges: rules.badgesCleared })}
+                          </p>
+                        )}
+                        <p className="mt-1 text-[10px] leading-snug text-tx-muted">{t('nuz.wizard.autoCapExplain')}</p>
+                      </>
+                    ) : (
+                      <div className="mt-2 flex items-center justify-between gap-2">
+                        <span className="text-[10px] text-tx-muted">{t('nuz.wizard.manualCapHint')}</span>
+                        <LevelCapStepper value={rules.levelCap} onChange={(v) => setRules((r) => ({ ...r, levelCap: v }))} disabled={rules.autoLevelCap} />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <GoldHint text={hint} show={!!hint} />

@@ -934,12 +934,12 @@
       "speciesDupe": "Evolutionslinie bereits lebend im Run — Dupes-Klausel blockiert den Fang.",
       "nicknameRequired": "Spitzname nötig — Nickname-Regel ist aktiv.",
       "levelCap": "Level {{level}} über Cap {{cap}} — erneut bestätigen zum Loggen.",
-      "giftRoute": "Geschenk-/Spezialroute — nur Route-Encounters oder Status „Verpasst/Duplett“."
+      "giftRoute": "Spezialort — trage das Pokémon ein, das du dort wirklich bekommen hast."
     },
     "shinyCatch": "Schillernd",
     "shinyRouteHint": "Route bereits abgeschlossen — Shiny-Klausel: nur ein Shiny-Fang ist hier möglich.",
-    "giftRouteChip": "Geschenk",
     "specialRouteChip": "Spezial",
+    "specialRouteTip": "Besonderer Kartenort (Turm, Kraftwerk, …). Kann Geschenk oder Static sein — trage ein, was du wirklich bekommen hast.",
     "exportSummary": "Run-Zusammenfassung kopieren",
     "exportCopied": "Zusammenfassung kopiert",
     "importToTeam": "In Team-Builder importieren",
@@ -983,6 +983,7 @@
       "soulLink": "SOUL LINK GESCHMIEDET — {{a}} ⇄ {{b}}",
       "cascade": "SOULLINK-REGEL — {{name}} MUSS EBENFALLS FALLEN",
       "cascadeBoxed": "SEELENLINK — {{name}} AUTO-GEBOXT (KASKADE)",
+      "linkBoxed": "SEELENLINK — {{name}} AUTO-GEBOXT (PARTNER GEBOXT)",
       "routeConflict": "ROUTE BEREITS GELOGGT — SERVERSTAND ÜBERNOMMEN",
       "releaseRule": "NUZLOCKE-REGEL — {{name}} ist tot und muss freigelassen werden.",
       "storageFailed": "SPEICHER VOLL — Run konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen.",
@@ -1008,8 +1009,10 @@
       "autoLevelCapTip": "Cap folgt dem Ass-Level der nächsten ungeschlagenen Arena — manueller Cap wird überschrieben.",
       "badges": "ORDEN",
       "badgeTip": "Orden-Fortschritt — steuert Auto-Cap und Gym-Vorbereitung.",
+      "lowerBadges": "Orden-Anzahl senken",
+      "raiseBadges": "Orden-Anzahl erhöhen",
       "releaseOnDeath": "TOD = FREIGABE",
-      "releaseOnDeathTip": "Erinnert beim Tod, dass das Pokémon nicht weiter genutzt werden darf.",
+      "releaseOnDeathTip": "An: Ein totes Pokémon muss freigelassen werden — die Box-Markierung zeigt das gold an. Aus: Tote Pokémon bleiben einfach in der Box, keine Freigabe nötig.",
       "randomizer": "RANDOMIZER",
       "randomizerTip": "Begegnungen sind randomisiert: pro Route darfst du jedes Pokémon aus dem vollen Dex eintragen (keine Routen-Encounter-Liste).",
       "lower": "Cap senken",
@@ -1021,8 +1024,21 @@
       "links": "LINKS",
       "linksTip": "SoulLink-Gruppen — eine pro Route mit 2+ verknüpften Fängen",
       "capTitle": "Team-Limit bis zur nächsten Arena: {{cap}}.",
+      "capTitleGym": "Team-Limit bis {{gym}}: Lv. {{cap}}.",
+      "nextGymHint": "Nächste: {{gym}} — Cap Lv. {{cap}}.",
       "noCap": "Kein Level-Cap gesetzt",
-      "routes": "{{done}}/{{total}} ROUTEN"
+      "routes": "{{done}}/{{total}} ROUTEN",
+      "activeLabel": "AKTIV:",
+      "chipSoulLink": "SOUL LINK",
+      "chipSoulLinkCascade": "SOUL LINK · TODESKASKADE",
+      "chipNicknames": "SPITZNAMEN",
+      "chipRelease": "TOD = FREIGABE",
+      "chipRandomizer": "RANDOMIZER",
+      "preset": {
+        "classic": "CLASSIC",
+        "hardcoreLite": "HARDCORE-LITE",
+        "soulLink": "SOUL LINK"
+      }
     },
     "team": {
       "aria": "Aktive Teams",
@@ -1055,6 +1071,9 @@
       },
       "badge": {
         "dead": "TOT",
+        "deadTip": "Erlegen — bleibt geboxt, keine weitere Aktion nötig (Tod=Freigabe ist aus).",
+        "deadRelease": "FREIGABE",
+        "deadReleaseTip": "Erlegen — Tod=Freigabe ist an, dieses Pokémon muss freigelassen werden und darf nicht mehr genutzt werden.",
         "missed": "VERPASST",
         "lost": "LINK-VERLUST"
       },
@@ -1113,6 +1132,7 @@
       "verbLost": "verlor per Link",
       "linkLost": "SoulLink-Verpasst — {{name}} ist Link-Verlust",
       "linkMissBoxed": "SoulLink-Verpasst — {{name}} wurde automatisch geboxt",
+      "linkBoxed": "SoulLink-Boxlink — {{name}} wurde automatisch geboxt",
       "evolved": "{{name}} ENTWICKELT"
     },
     "time": {
@@ -1172,8 +1192,8 @@
       "nicknames": "SPITZNAMEN",
       "autoLevelCap": "AUTO-CAP (NÄCHSTE ARENA)",
       "autoLevelCapTip": "Cap folgt dem Ass-Level der nächsten ungeschlagenen Arena — kein manuelles Nachziehen nötig.",
-      "autoCapStart": "Start-Cap: Lv. {{cap}} (0 Orden)",
-      "autoCapExplain": "Im Run stellst du Orden in der Regel-Leiste ein — der Cap folgt automatisch dem nächsten Arenaleiter deiner Region.",
+      "autoCapStart": "Start-Cap: Lv. {{cap}} ({{badges}} Orden)",
+      "autoCapExplain": "Aktualisiere deinen Orden-Stand beim Spielen (hier oder in der Regel-Leiste) — der Cap folgt automatisch dem nächsten Arenaleiter deiner Region.",
       "manualCapHint": "Manueller Cap — für Hausregeln ohne Orden-Leiter.",
       "lowerCap": "Cap senken",
       "raiseCap": "Cap erhöhen",

@@ -273,7 +273,7 @@ export default function NuzlockeRun() {
         </div>
       </div>
 
-      <EncounterMenu target={menu} nameOf={nameOf} onClose={() => setMenu(null)} />
+      <EncounterMenu target={menu} nameOf={nameOf} state={state} onClose={() => setMenu(null)} />
       <NuzToasts />
 
       {/* sprite FLIP flight into the timeline (§2.5) */}

@@ -68,6 +68,7 @@ export const DEFAULT_RULES: NuzRules = {
   releaseOnDeath: true,
   levelCap: null,
   autoLevelCap: false,
+  badgesCleared: 0,
   randomizer: false,
 };
 
@@ -1199,6 +1200,39 @@ function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): NuzEncou
   return touched;
 }
 
+/* ---------- SoulLink box-link (§A1) ----------
+ * Mirror of NU Soul Link's "box link": boxing one half of a pair boxes the
+ * other too — independent of `soulLinkCascade` (that toggle only governs
+ * the death/miss cascade above). Always on with SoulLink. Deliberately
+ * one-directional: pulling a mon INTO the party never force-moves a
+ * partner along (their party could already be full), only boxing does. */
+function boxLinkPartners(entry: RunEntry, boxedEnc: NuzEncounterRow): NuzEncounterRow[] {
+  const s = entry.state;
+  if (!s || !s.run.rules.soulLink) return [];
+  const partners = s.encounters.filter(
+    (e) =>
+      e.id !== boxedEnc.id &&
+      e.route_key === boxedEnc.route_key &&
+      e.player_id !== boxedEnc.player_id &&
+      e.status === 'caught' &&
+      e.in_party === true,
+  );
+  if (partners.length === 0) return [];
+  const route = routeLabelOf(s.run, boxedEnc.route_key).toUpperCase();
+  const touched: NuzEncounterRow[] = [];
+  for (const partner of partners) {
+    const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
+    s.encounters = s.encounters.map((e) => (e.id === partner.id ? { ...e, in_party: false } : e));
+    const updated = s.encounters.find((e) => e.id === partner.id)!;
+    touched.push(updated);
+    saveLocalRun(s);
+    scheduleLinkedSync(s, partner.player_id);
+    pushFeed(entry, { kind: 'link', color: '#F6C945', title: i18n.t('nuz.feed.linkBoxed', { name }), meta: route });
+    pushToast('info', i18n.t('nuz.toast.linkBoxed', { name: name.toUpperCase() }));
+  }
+  return touched;
+}
+
 /** SoulLink route lock: a linked partner already MISSED this route, so any
  * catch logged here is link-lost from the start. Only applies with the
  * cascade rule on (rule off keeps partners usable, hence no lock). */
@@ -1754,6 +1788,9 @@ export function setEncounterParty(runId: string, encId: string, inParty: boolean
   if (Boolean(enc.in_party) === inParty) return { ok: true };
   enc.in_party = inParty;
   saveLocalRun(s);
+  /* box-link (§A1): boxing this catch also boxes its SoulLink partners.
+   * Unboxing never pulls a partner along (their party slot may be full). */
+  const boxedPartners = inParty ? [] : boxLinkPartners(entry, enc);
   if (s.mode === 'multi') {
     persistWithRetry(
       entry,
@@ -1761,6 +1798,14 @@ export function setEncounterParty(runId: string, encId: string, inParty: boolean
       () => nuzTables.encounters().update({ in_party: inParty }).eq('id', enc.id),
       { snapshot: enc, kind: 'patch' },
     );
+    for (const partner of boxedPartners) {
+      persistWithRetry(
+        entry,
+        partner.id,
+        () => nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
+        { snapshot: partner, kind: 'patch' },
+      );
+    }
   }
   scheduleLinkedSync(s, enc.player_id);
   emit(entry);
@@ -1780,6 +1825,9 @@ export function swapParty(runId: string, boxEncId: string, partyEncId: string): 
   a.in_party = true;
   b.in_party = false;
   saveLocalRun(s);
+  /* box-link (§A1): `b` just got boxed by this swap, so its SoulLink
+   * partners get boxed too (the incoming `a` is not affected). */
+  const boxedPartners = boxLinkPartners(entry, b);
   if (s.mode === 'multi') {
     persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id), {
       snapshot: a,
@@ -1789,6 +1837,14 @@ export function swapParty(runId: string, boxEncId: string, partyEncId: string): 
       snapshot: b,
       kind: 'patch',
     });
+    for (const partner of boxedPartners) {
+      persistWithRetry(
+        entry,
+        partner.id,
+        () => nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
+        { snapshot: partner, kind: 'patch' },
+      );
+    }
   }
   scheduleLinkedSync(s, a.player_id);
   emit(entry);

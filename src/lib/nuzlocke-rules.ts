@@ -2,7 +2,7 @@
 import { fetchEvolutionFamilyIds } from '@/lib/nuzlocke-evolution';
 import { routeOrder } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
-import type { MapNode, RegionId } from '@/lib/regions';
+import type { MapNode, RegionId, RegionMap } from '@/lib/regions';
 import type { LogDraft, NuzEncounterRow, NuzRules, RunState } from '@/lib/nuzlocke-store';
 
 export type LogValidationError =
@@ -21,6 +21,7 @@ export function normalizeRules(partial?: Partial<NuzRules>): NuzRules {
     releaseOnDeath: partial?.releaseOnDeath ?? true,
     levelCap: typeof partial?.levelCap === 'number' ? partial.levelCap : null,
     autoLevelCap: partial?.autoLevelCap ?? false,
+    badgesCleared: Math.max(0, Math.min(8, Math.round(partial?.badgesCleared ?? 0))),
     randomizer: partial?.randomizer ?? false,
   };
 }
@@ -58,14 +59,21 @@ export function evoLineAliveInRun(state: RunState, familyIds: number[]): boolean
   });
 }
 
-export function isGiftNode(node: MapNode | undefined): boolean {
+/** Map `kind: 'special'` — informational only (Power Plant, Tower, …).
+ * Not a reliable gift/static/trade taxonomy; do not hard-block catches on it. */
+export function isSpecialNode(node: MapNode | undefined): boolean {
   return node?.kind === 'special';
+}
+
+/** @deprecated alias — prefer `isSpecialNode` */
+export function isGiftNode(node: MapNode | undefined): boolean {
+  return isSpecialNode(node);
 }
 
 export async function validateLogDraft(
   state: RunState,
   draft: LogDraft,
-  node?: MapNode,
+  _node?: MapNode,
 ): Promise<LogValidationError | null> {
   const rules = state.run.rules;
   /* shiny clause: shinies are always catchable — they bypass the route lock
@@ -91,13 +99,32 @@ export async function validateLogDraft(
       const family = await fetchEvolutionFamilyIds(draft.pokemonId);
       if (evoLineAliveInRun(state, family)) return 'speciesDupe';
     }
-
-    /* gift/special routes normally require the route table — randomizers have none */
-    if (isGiftNode(node) && draft.offRoute && !rules.randomizer) return 'giftRoute';
   }
 
   return null;
 }
+
+/* ---------- rule presets (§B1) ----------
+ * Preset buttons only ever toggle switches that already exist in `NuzRules`
+ * — no invented item-ban / randomizer-tier fields. Applying a preset merges
+ * over the current rules (owner-editable, same as any other rule toggle). */
+export type RulePresetKey = 'classic' | 'hardcoreLite' | 'soulLink';
+
+const PRESET_CLASSIC: Partial<NuzRules> = {
+  dupes: true,
+  shiny: true,
+  nicknames: true,
+  releaseOnDeath: true,
+  soulLink: false,
+  soulLinkCascade: true,
+  autoLevelCap: false,
+};
+
+export const RULE_PRESETS: Record<RulePresetKey, Partial<NuzRules>> = {
+  classic: PRESET_CLASSIC,
+  hardcoreLite: { ...PRESET_CLASSIC, autoLevelCap: true, badgesCleared: 0 },
+  soulLink: { ...PRESET_CLASSIC, soulLink: true, soulLinkCascade: true },
+};
 
 /* ---------- level cap ---------- */
 
@@ -156,13 +183,123 @@ const GYM_ACE: Record<RegionId, Record<string, number>> = {
   },
 };
 
-/** Ace level of the next unbeaten gym leader, derived from run progress:
- * the cheapest ace among gyms whose map node lies beyond the furthest
- * resolved route. Returns null when every gym is behind the crew. */
+/** Explicit badge-conquest order (not map visit order, not ace-level sort).
+ * Sinnoh follows Platinum (Fantina before Maylene). Johto: Jasmine before Pryce.
+ * Ace levels in `GYM_ACE` are still approximate per mainline version — owners
+ * can override with a manual cap when a rom/version differs. */
+const GYM_BADGE_ORDER: Record<RegionId, readonly string[]> = {
+  kanto: [
+    'pewter-city',
+    'cerulean-city',
+    'vermilion-city',
+    'celadon-city',
+    'fuchsia-city',
+    'saffron-city',
+    'cinnabar-island',
+    'viridian-city',
+  ],
+  johto: [
+    'violet-city',
+    'azalea-town',
+    'goldenrod-city',
+    'ecruteak-city',
+    'cianwood-city',
+    'olivine-city',
+    'mahogany-town',
+    'blackthorn-city',
+  ],
+  hoenn: [
+    'rustboro-city',
+    'dewford-town',
+    'mauville-city',
+    'lavaridge-town',
+    'petalburg-city',
+    'fortree-city',
+    'mossdeep-city',
+    'sootopolis-city',
+  ],
+  sinnoh: [
+    'oreburgh-city',
+    'eterna-city',
+    'hearthome-city',
+    'veilstone-city',
+    'pastoria-city',
+    'canalave-city',
+    'snowpoint-city',
+    'sunyshore-city',
+  ],
+  unova: [
+    'striaton-city',
+    'nacrene-city',
+    'castelia-city',
+    'nimbasa-city',
+    'driftveil-city',
+    'mistralton-city',
+    'icirrus-city',
+    'humilau-city',
+  ],
+};
+
+function orderedGyms(region: RegionMap): { nodeId: string; ace: number }[] {
+  const gyms = GYM_ACE[region.region];
+  const order = GYM_BADGE_ORDER[region.region];
+  if (!gyms || !order) return [];
+  const out: { nodeId: string; ace: number }[] = [];
+  for (const nodeId of order) {
+    const ace = gyms[nodeId];
+    if (typeof ace === 'number') out.push({ nodeId, ace });
+  }
+  return out;
+}
+
+export interface NextGymInfo {
+  /** ace level of the next unbeaten gym — the level cap while it applies */
+  cap: number;
+  gymNodeId: string;
+  badgesCleared: number;
+  badgesTotal: number;
+}
+
+function gymInfoFor(region: RegionMap, badgesCleared: number): NextGymInfo | null {
+  const gyms = orderedGyms(region);
+  if (gyms.length === 0) return null;
+  const badgesTotal = gyms.length;
+  const cleared = Math.max(0, Math.min(badgesTotal, badgesCleared));
+  const next = gyms[cleared];
+  /* every gym cleared → postgame, honestly uncapped rather than guessing */
+  if (!next) return null;
+  return { cap: next.ace, gymNodeId: next.nodeId, badgesCleared: cleared, badgesTotal };
+}
+
+/** Badge-driven auto cap (A3, primary source): the next gym past
+ * `rules.badgesCleared`, plus display context (node id, progress) for the
+ * rules bar / editor. More honest for hardcore play than guessing progress
+ * from route history — the owner explicitly advances badges as gyms fall.
+ * Returns null when the region has no mapped gym ladder (freeform regions)
+ * or every gym is already cleared. */
+export function nextGymInfo(state: RunState): NextGymInfo | null {
+  const region = anyRegionById(state.run.region);
+  if (!region) return null;
+  return gymInfoFor(region, state.run.rules.badgesCleared);
+}
+
+/** Same lookup, usable before a run exists yet (New Run wizard preview). */
+export function gymCapPreview(regionId: string, badgesCleared: number): NextGymInfo | null {
+  const region = anyRegionById(regionId);
+  if (!region) return null;
+  return gymInfoFor(region, badgesCleared);
+}
+
+/** Fallback-only heuristic for regions without a mapped gym ladder: the
+ * cheapest ace among gyms whose map node lies beyond the furthest resolved
+ * route. Kept for freeform/legacy cases where `nextGymInfo` has nothing to
+ * go on — `effectiveLevelCap` prefers the badge-driven cap whenever the
+ * region's ladder is known. Returns null when every gym is behind the crew. */
 export function nextGymCap(state: RunState): number | null {
   const region = anyRegionById(state.run.region);
   if (!region) return null;
   const gyms = GYM_ACE[region.region];
+  if (!gyms) return null;
   const order = routeOrder(region);
   const orderIdx = new Map(order.map((n, i) => [n.id, i]));
   let progress = -1;
@@ -180,10 +317,17 @@ export function nextGymCap(state: RunState): number | null {
   return cap;
 }
 
-/** Effective level cap: auto (next gym) wins over the manual value; null = off. */
+/** Effective level cap: auto mode prefers the badge-driven next-gym cap
+ * (§A3) and only falls back to the route-progress heuristic when the
+ * region has no mapped gym ladder at all; null = off (or postgame, once
+ * badges run out). Manual value applies when auto is off. */
 export function effectiveLevelCap(state: RunState): number | null {
   const rules = state.run.rules;
-  if (rules.autoLevelCap) return nextGymCap(state);
+  if (rules.autoLevelCap) {
+    const region = anyRegionById(state.run.region);
+    const hasLadder = !!region && orderedGyms(region).length > 0;
+    return hasLadder ? (nextGymInfo(state)?.cap ?? null) : nextGymCap(state);
+  }
   return typeof rules.levelCap === 'number' ? rules.levelCap : null;
 }
 

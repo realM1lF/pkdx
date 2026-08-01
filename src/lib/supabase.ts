@@ -90,6 +90,9 @@ export interface NuzRules {
   levelCap: number | null;
   /** auto cap: ace level of the next unbeaten gym leader (overrides manual) */
   autoLevelCap: boolean;
+  /** badges cleared (0–8) — drives the auto cap (`nextGymInfo`); owner-editable
+   * stepper in the rules editor, shown only while `autoLevelCap` is on */
+  badgesCleared: number;
   /** randomized encounter table — Quick Entry searches the full dex by default */
   randomizer: boolean;
 }

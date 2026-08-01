@@ -29,11 +29,24 @@ function matchesFilter(enc: NuzEncounterRow, f: BoxFilter): boolean {
   return enc.status === 'missed' || enc.status === 'duped';
 }
 
-function StatusBadge({ enc }: { enc: NuzEncounterRow }) {
+/* Holo-Dex: errors/fallen state are never red — gold (release reminder is
+ * "active", releaseOnDeath ON) or plain muted hairline (releaseOnDeath OFF,
+ * boxed forever is fine, no reminder needed — §A4/B5). */
+function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnDeath: boolean }) {
   const { t } = useTranslation();
   if (enc.status === 'dead') {
-    return (
-      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-red-400/40 bg-red-500/10 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-red-300/90">
+    return releaseOnDeath ? (
+      <span
+        title={t('nuz.box.badge.deadReleaseTip')}
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-gold"
+      >
+        💀 {t('nuz.box.badge.deadRelease')}
+      </span>
+    ) : (
+      <span
+        title={t('nuz.box.badge.deadTip')}
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[6px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted"
+      >
         💀 {t('nuz.box.badge.dead')}
       </span>
     );
@@ -59,12 +72,14 @@ function BoxCell({
   nameOf,
   routeLabel,
   index,
+  releaseOnDeath,
 }: {
   enc: NuzEncounterRow;
   color: string;
   nameOf: (id: number) => string;
   routeLabel: (key: string) => string;
   index: number;
+  releaseOnDeath: boolean;
 }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
@@ -135,7 +150,7 @@ function BoxCell({
         </span>
       )}
       {locked ? (
-        <StatusBadge enc={enc} />
+        <StatusBadge enc={enc} releaseOnDeath={releaseOnDeath} />
       ) : (
         <span className="max-w-full truncate font-pixel text-[6px] uppercase leading-[1.6] text-tx-muted/80">
           {routeLabel(enc.route_key)}
@@ -265,7 +280,15 @@ export default function BoxSection({
               ) : (
                 <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                   {boxed.map((enc, i) => (
-                    <BoxCell key={enc.id} enc={enc} color={p.color} nameOf={nameOf} routeLabel={routeLabel} index={i} />
+                    <BoxCell
+                      key={enc.id}
+                      enc={enc}
+                      color={p.color}
+                      nameOf={nameOf}
+                      routeLabel={routeLabel}
+                      index={i}
+                      releaseOnDeath={state.run.rules.releaseOnDeath}
+                    />
                   ))}
                 </div>
               )}

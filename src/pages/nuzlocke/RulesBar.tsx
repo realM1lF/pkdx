@@ -7,8 +7,12 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { Minus, Plus } from 'lucide-react';
 import { boxedOf, kpisOf, pushToast, setRunRules } from '@/lib/nuzlocke-store';
-import type { RunState } from '@/lib/nuzlocke-store';
-import { effectiveLevelCap } from '@/lib/nuzlocke-rules';
+import type { NuzRules, RunState } from '@/lib/nuzlocke-store';
+import { RULE_PRESETS, effectiveLevelCap, nextGymInfo } from '@/lib/nuzlocke-rules';
+import type { RulePresetKey } from '@/lib/nuzlocke-rules';
+import { nodeIndex, nodeName } from '@/lib/regions';
+import { anyRegionById } from '@/lib/regions-freeform';
+import { useLanguage } from '@/lib/i18n-data';
 import { cn } from '@/lib/utils';
 import { GoldSwitch, PixelLabel } from './ui';
 
@@ -82,14 +86,93 @@ export function LevelCapStepper({ value, onChange, disabled }: { value: number |
   );
 }
 
+/** Badge-progress stepper (0–8) — owner-editable, drives the auto cap
+ * (`nextGymInfo`) while `autoLevelCap` is on. Shared by the rules editor and
+ * the New Run wizard preview. */
+export function BadgeStepper({
+  value,
+  onChange,
+  total = 8,
+  disabled,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  total?: number;
+  disabled?: boolean;
+}) {
+  const { t } = useTranslation();
+  return (
+    <span className={cn('inline-flex items-center gap-1', disabled && 'opacity-40')}>
+      <button
+        type="button"
+        aria-label={t('nuz.rules.lowerBadges')}
+        disabled={disabled}
+        onClick={() => onChange(Math.max(0, value - 1))}
+        className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted transition-colors hover:border-gold/50 hover:text-gold disabled:cursor-not-allowed"
+      >
+        <Minus size={11} />
+      </button>
+      <span className="min-w-[40px] text-center font-display text-[12px] font-bold tabular-nums text-gold">
+        {value}/{total}
+      </span>
+      <button
+        type="button"
+        aria-label={t('nuz.rules.raiseBadges')}
+        disabled={disabled}
+        onClick={() => onChange(Math.min(total, value + 1))}
+        className="grid h-6 w-6 place-items-center rounded-sm border border-hairline2 text-tx-muted transition-colors hover:border-gold/50 hover:text-gold disabled:cursor-not-allowed"
+      >
+        <Plus size={11} />
+      </button>
+    </span>
+  );
+}
+
+const PRESET_KEYS: RulePresetKey[] = ['classic', 'hardcoreLite', 'soulLink'];
+
+/** Preset buttons (§B1) — merge a canned set of ALREADY-EXISTING toggles
+ * onto the current rules. Shared by the rules editor and the wizard. */
+export function RulePresetButtons({
+  onApply,
+  soulLinkDisabled,
+}: {
+  onApply: (key: RulePresetKey) => void;
+  /** disable the SoulLink preset when the crew can't support it (<2 players) */
+  soulLinkDisabled?: boolean;
+}) {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {PRESET_KEYS.map((key) => (
+        <button
+          key={key}
+          type="button"
+          disabled={key === 'soulLink' && soulLinkDisabled}
+          onClick={() => onApply(key)}
+          className="rounded-full border border-hairline2 px-2.5 py-1 font-pixel text-[7px] tracking-[0.06em] text-tx-muted transition-colors hover:border-gold/50 hover:text-gold disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          {t(`nuz.rules.preset.${key}`)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 /** Shared rules editor — used in the header "Edit rules" popover (owner). */
 export function RulesEditor({ state }: { state: RunState }) {
   const { t } = useTranslation();
+  const lang = useLanguage();
   const r = state.run.rules;
   const set = (patch: Parameters<typeof setRunRules>[1]) => setRunRules(state.run.id, patch);
+  const applyPreset = (key: RulePresetKey) => set(RULE_PRESETS[key]);
+  const gymInfo = r.autoLevelCap ? nextGymInfo(state) : null;
+  const region = gymInfo ? anyRegionById(state.run.region) : undefined;
+  const gymNode = gymInfo && region ? nodeIndex(region).get(gymInfo.gymNodeId) : undefined;
   return (
-    <div className="w-[240px] space-y-2.5 p-3">
+    <div className="w-[260px] space-y-2.5 p-3">
       <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
+      <RulePresetButtons onApply={applyPreset} soulLinkDisabled={state.players.length < 2} />
+      <div />
       <GoldSwitch checked={r.dupes} onChange={(v) => set({ dupes: v })} label={t('nuz.rules.dupesClause')} tip={t('nuz.rules.dupesTip')} />
       <div />
       <GoldSwitch checked={r.shiny} onChange={(v) => set({ shiny: v })} label={t('nuz.rules.shinyClause')} tip={t('nuz.rules.shinyTip')} />
@@ -109,6 +192,20 @@ export function RulesEditor({ state }: { state: RunState }) {
       <GoldSwitch checked={r.randomizer} onChange={(v) => set({ randomizer: v })} label={t('nuz.rules.randomizer')} tip={t('nuz.rules.randomizerTip')} />
       <div />
       <GoldSwitch checked={r.autoLevelCap} onChange={(v) => set({ autoLevelCap: v })} label={t('nuz.rules.autoLevelCap')} tip={t('nuz.rules.autoLevelCapTip')} />
+      {r.autoLevelCap && (
+        <>
+          <div />
+          <span className="flex items-center justify-between gap-2">
+            <PixelLabel>{t('nuz.rules.badges')}</PixelLabel>
+            <BadgeStepper value={r.badgesCleared} onChange={(v) => set({ badgesCleared: v })} />
+          </span>
+          {gymNode && (
+            <p className="text-[10px] leading-snug text-tx-muted">
+              {t('nuz.rules.nextGymHint', { gym: nodeName(gymNode, lang), cap: gymInfo!.cap })}
+            </p>
+          )}
+        </>
+      )}
       <div />
       <span className="flex items-center justify-between gap-2">
         <PixelLabel>{t('nuz.rules.levelCap')}</PixelLabel>
@@ -118,13 +215,33 @@ export function RulesEditor({ state }: { state: RunState }) {
   );
 }
 
+/** Compact "active rules" line (§B4) — only ON rules, pixel chips, no wall
+ * of text. Rules already visible as toggles in the counters row (dupes,
+ * shiny, level cap) are skipped here to avoid repeating them. */
+function useActiveRuleChips(rules: NuzRules): string[] {
+  const { t } = useTranslation();
+  const chips: string[] = [];
+  if (rules.soulLink) chips.push(t(rules.soulLinkCascade ? 'nuz.rules.chipSoulLinkCascade' : 'nuz.rules.chipSoulLink'));
+  if (rules.nicknames) chips.push(t('nuz.rules.chipNicknames'));
+  if (rules.releaseOnDeath) chips.push(t('nuz.rules.chipRelease'));
+  if (rules.randomizer) chips.push(t('nuz.rules.chipRandomizer'));
+  return chips;
+}
+
 export default function RulesBar({ state, owner }: { state: RunState; owner: boolean }) {
   const { t } = useTranslation();
+  const lang = useLanguage();
   const k = kpisOf(state);
   const cap = effectiveLevelCap(state);
   const pct = k.routesTotal > 0 ? Math.round((k.routesDone / k.routesTotal) * 100) : 0;
   /* boxed = alive catches beyond the party of 6, summed over the crew (§0.4) */
   const boxedTotal = state.players.reduce((n, p) => n + boxedOf(state, p.id).length, 0);
+  /* B3 — cap chip shows the gym driving it while autoLevelCap is on */
+  const gymInfo = state.run.rules.autoLevelCap ? nextGymInfo(state) : null;
+  const gymRegion = gymInfo ? anyRegionById(state.run.region) : undefined;
+  const gymNode = gymInfo && gymRegion ? nodeIndex(gymRegion).get(gymInfo.gymNodeId) : undefined;
+  const gymLabel = gymNode ? nodeName(gymNode, lang) : null;
+  const activeChips = useActiveRuleChips(state.run.rules);
 
   const toggle = (key: 'dupes' | 'shiny', v: boolean) => {
     setRunRules(state.run.id, { [key]: v });
@@ -167,11 +284,16 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
           </span>
           {cap !== null && (
             <span
-              className="flex items-center gap-1 rounded-full border border-gold/50 px-2 py-0.5"
-              title={t('nuz.rules.capTitle', { cap })}
+              className="flex max-w-[190px] items-center gap-1 rounded-full border border-gold/50 px-2 py-0.5"
+              title={gymLabel ? t('nuz.rules.capTitleGym', { gym: gymLabel, cap }) : t('nuz.rules.capTitle', { cap })}
             >
-              <PixelLabel className="text-gold">{t('nuz.rules.levelCap')}</PixelLabel>
-              <span className="font-display text-[12px] font-bold tabular-nums text-gold">{cap}</span>
+              <PixelLabel className="shrink-0 text-gold">{t('nuz.rules.levelCap')}</PixelLabel>
+              <span className="shrink-0 font-display text-[12px] font-bold tabular-nums text-gold">{cap}</span>
+              {gymLabel && (
+                <span className="truncate font-pixel text-[6px] tracking-[0.05em] text-gold/70">
+                  · {gymLabel.toUpperCase()}
+                </span>
+              )}
             </span>
           )}
         </div>
@@ -193,6 +315,18 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
           </PixelLabel>
         </div>
       </div>
+
+      {/* B4 — compact "active rules" line: only ON rules not already shown above */}
+      {activeChips.length > 0 && (
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-1.5 border-t border-hairline/60 py-1">
+          <PixelLabel className="shrink-0 text-tx-muted/70">{t('nuz.rules.activeLabel')}</PixelLabel>
+          {activeChips.map((c) => (
+            <span key={c} className="rounded-full border border-gold/30 bg-gold/5 px-1.5 py-0.5 font-pixel text-[6px] tracking-[0.05em] text-gold/80">
+              {c}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
