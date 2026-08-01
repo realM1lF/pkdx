@@ -987,6 +987,7 @@
       "releaseRule": "NUZLOCKE RULE — {{name}} fainted and must be released.",
       "storageFailed": "STORAGE FULL — could not save run. Old PokéAPI cache was trimmed; please try again.",
       "linkLost": "SOULLINK — {{name}} LINK-LOST",
+      "dupeRace": "DUPES CLAUSE — {{name}} MARKED DUPE (SYNC RACE)",
       "evolved": "EVOLVED — {{name}} → {{to}}",
       "evolveFailed": "Evolution failed — try again"
     },
@@ -1076,14 +1077,6 @@
       "pendingSync": "pending sync",
       "soulLinkTip": "SOUL LINK — {{a}} ⇄ {{b}}. If one falls, the other falls too.",
       "soulLinkTipGroup": "SOUL LINK — {{names}}. If one falls, every partner on the route falls."
-    },
-    "cascade": {
-      "title": "SOUL LINK — CASCADE",
-      "body": "{{fallen}} has fallen — SoulLink partner {{partner}} must fall too. Confirm?",
-      "bodyMany": "{{fallen}} has fallen — SoulLink partners {{partners}} must fall too. Confirm?",
-      "confirm": "Confirm — partner falls",
-      "confirmMany": "Confirm — partners fall",
-      "later": "Decide later"
     },
     "feed": {
       "aria": "Activity feed",

@@ -987,6 +987,7 @@
       "releaseRule": "NUZLOCKE-REGEL — {{name}} ist tot und muss freigelassen werden.",
       "storageFailed": "SPEICHER VOLL — Run konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen.",
       "linkLost": "SEELENLINK — {{name}} LINK-VERLUST",
+      "dupeRace": "DUPES-KLAUSEL — {{name}} ALS DUPLIKAT MARKIERT (SYNC-KONFLIKT)",
       "evolved": "ENTWICKELT — {{name}} → {{to}}",
       "evolveFailed": "Entwicklung fehlgeschlagen — erneut versuchen"
     },
@@ -1076,14 +1077,6 @@
       "pendingSync": "Sync ausstehend",
       "soulLinkTip": "SOUL LINK — {{a}} ⇄ {{b}}. Fällt eines, fällt auch das andere.",
       "soulLinkTipGroup": "SOUL LINK — {{names}}. Fällt eines, fallen alle Partner auf der Route."
-    },
-    "cascade": {
-      "title": "SEELENLINK — KASKADE",
-      "body": "{{fallen}} ist gefallen — Seelenlink-Partner {{partner}} muss ebenfalls fallen. Bestätigen?",
-      "bodyMany": "{{fallen}} ist gefallen — Seelenlink-Partner {{partners}} müssen ebenfalls fallen. Bestätigen?",
-      "confirm": "Bestätigen — Partner fällt",
-      "confirmMany": "Bestätigen — Partner fallen",
-      "later": "Später entscheiden"
     },
     "feed": {
       "aria": "Aktivitäts-Feed",

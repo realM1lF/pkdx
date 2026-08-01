@@ -89,6 +89,16 @@ export function primeEvolutionFamilyCache(family: number[]): void {
   for (const id of family) familyCache.set(id, family);
 }
 
+/** Sync cache read (no network/await) — used by the Phase 1.3 dupes TOCTOU
+ * re-scan (`findEvoLineDupeViolations` in nuzlocke-concurrency.ts), which
+ * runs after `fetchEvolutionFamilyIds` has already resolved for the
+ * triggering row and just needs to look up every other living row's family
+ * without awaiting anything itself. Returns undefined on a cache miss —
+ * callers degrade to a singleton family for that species. */
+export function cachedEvolutionFamilyIds(pokemonId: number): number[] | undefined {
+  return familyCache.get(pokemonId);
+}
+
 export function clearEvolutionFamilyCache(): void {
   familyCache.clear();
 }

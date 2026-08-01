@@ -89,31 +89,33 @@ sequenceDiagram
 ## Phase 1 — Optimistic hardening
 
 ### 1.1 Outbox merge on hydrate
-- [ ] Extend `RunEntry` with durable/in-memory outbox: pending encounter snapshots + op metadata keyed by `enc.id` / `client_op_id`
-- [ ] `refreshRemote`: `serverRows` as base; **keep** local rows still in `pendingSync` that are absent on server (or newer pending patches); drop pending on ack/reject
-- [ ] Never blind `entry.state = remote` while pending ops exist
+- [x] Extend `RunEntry` with durable/in-memory outbox: pending encounter snapshots + op metadata keyed by `enc.id` / `client_op_id`
+- [x] `refreshRemote`: `serverRows` as base; **keep** local rows still in `pendingSync` that are absent on server (or newer pending patches); drop pending on ack/reject
+- [x] Never blind `entry.state = remote` while pending ops exist
 
-**Files:** `src/lib/nuzlocke-store.ts` (`refreshRemote`, `persistWithRetry`, `ensureEntry`)  
+**Files:** `src/lib/nuzlocke-store.ts` (`refreshRemote`, `persistWithRetry`, `ensureEntry`) + `nuzlocke-concurrency.ts`  
 **Tests:** vitest — pending insert survives simulated refresh; ack clears pending
 
 ### 1.2 Op-generation / stale retry guard
-- [ ] Per `syncKey`: monotonic `opGen`; each `persistWithRetry` captures gen; on success/failure only apply if gen still current
-- [ ] Optional: PATCH with `.eq('status', expected)` for status transitions (reject stale death→caught overwrite)
+- [x] Per `syncKey`: monotonic `opGen`; each `persistWithRetry` captures gen; on success/failure only apply if gen still current
+- [x] Optional: PATCH with `.eq('status', expected)` for status transitions (reject stale death→caught overwrite)
+  - *Superseded for status writes by Phase 2.2 RPC; opGen still guards all persistWithRetry paths.*
 
 **Files:** `src/lib/nuzlocke-store.ts` (`persistWithRetry`)  
 **Tests:** rapid dead→restore; only last write sticks
 
 ### 1.3 Dupes TOCTOU interim
-- [ ] After successful multi insert **and** on realtime INSERT of another player’s catch: re-run `evoLineAliveInRun` for living family
-- [ ] If violation: mark **later** row (`created_at` / not owned) as `status: 'duped'`, `in_party: false`, toast (gold), persist
-- [ ] Document as interim until RPC
+- [x] After successful multi insert **and** on realtime INSERT of another player’s catch: re-run `evoLineAliveInRun` for living family
+- [x] If violation: mark **later** row (`created_at` / not owned) as `status: 'duped'`, `in_party: false`, toast (gold), persist
+- [x] Document as interim until RPC
 
-**Files:** `src/lib/nuzlocke-store.ts`, `src/lib/nuzlocke-rules.ts`  
+**Files:** `src/lib/nuzlocke-store.ts`, `src/lib/nuzlocke-concurrency.ts`  
 **Tests:** two near-simultaneous logs different stages same line → one stays caught, one duped (simulated sequential with primed family cache)
 
 ### 1.4 Realtime apply hygiene
-- [ ] Dedupe by PK (already mostly)
-- [ ] Status monotonicity helpers where safe (`dead`/`lost` not silently downgraded by stale retry — ties to 1.2)
+- [x] Dedupe by PK (already mostly)
+- [x] Status monotonicity helpers where safe (`dead`/`lost` not silently downgraded by stale retry — ties to 1.2)
+  - *Outbox skip for own in-flight writes; peer realtime is authoritative (restore must sync).*
 
 ---
 
@@ -123,24 +125,28 @@ sequenceDiagram
 **Recommend:** Auto-apply partner deaths when `soulLinkCascade` ON (mirror miss→`lost`), with feed/toast; keep optional confirm as UX delay ≤ N seconds then auto.  
 Alternative: RPC only (below) without local double-cascade.
 
-- [ ] Decide product: auto vs confirm-on-all-clients
-- [ ] Implement chosen path; remote clients must not leave permanent rule-break
+- [x] Decide product: auto vs confirm-on-all-clients
+  - *Decision: auto-apply (confirm dialog removed).*
+- [x] Implement chosen path; remote clients must not leave permanent rule-break
 
 ### 2.2 RPC `nuz_apply_encounter_status` (preferred for cascades)
-- [ ] SECURITY INVOKER or tight DEFINER + `search_path`
-- [ ] Input: `encounter_id`, `new_status`, `note?`, `client_op_id`
-- [ ] Single TX: update row + SoulLink partner rows (death/miss rules) + membership check
-- [ ] Client: call RPC instead of multi PATCH; Realtime still fans out
+- [x] SECURITY INVOKER or tight DEFINER + `search_path`
+- [x] Input: `encounter_id`, `new_status`, `note?`, `client_op_id`
+- [x] Single TX: update row + SoulLink partner rows (death/miss rules) + membership check
+- [x] Client: call RPC instead of multi PATCH; Realtime still fans out
+  - *Migration: `07_nuz_apply_encounter_status.sql` — deploy in Supabase SQL Editor.*
 
 ### 2.3 Optional RPC `nuz_log_encounter`
 - [ ] Validate nicknames / slot / dupes family (server needs evo data **or** pass family ids from client as hint + re-check exact species set stored on run — practical v1: exact species + client family ids stored in a small `species_family` cache table later)
 - [ ] Insert in TX; return winner row
 - [ ] Only if Phase-1 interim dupes still flaky in practice
+  - *Skipped — Phase 1.3 interim + slot UNIQUE sufficient unless live flakiness appears.*
 
 ### 2.4 Small cleanups
-- [ ] `evolveEncounter`: single PATCH
-- [ ] Serialize `scheduleLinkedSync` per `(runId, playerId)` (local mutex)
-- [ ] Unique `(run_id, slot)` on `nuz_players` if join races observed
+- [x] `evolveEncounter`: single PATCH
+- [x] Serialize `scheduleLinkedSync` per `(runId, playerId)` (local mutex)
+- [x] Unique `(run_id, slot)` on `nuz_players` if join races observed
+  - *Migration: `08_nuz_players_slot_uidx.sql`.*
 
 ---
 

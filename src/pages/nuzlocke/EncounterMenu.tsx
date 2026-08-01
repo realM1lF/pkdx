@@ -7,7 +7,7 @@ import { Archive, ArrowUpRight, Check, HeartCrack, Hash, Pencil, Trash2, Wind } 
 import { useTranslation } from 'react-i18next';
 import { listEvolutionOptions, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { deleteEncounter, evolveEncounter, pushToast, setEncounterParty, updateEncounter } from '@/lib/nuzlocke-store';
-import type { NuzEncounterRow, UpdateResult } from '@/lib/nuzlocke-store';
+import type { NuzEncounterRow } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { useShake } from './ui';
 
@@ -22,16 +22,16 @@ export interface MenuTarget {
 
 type SubMode = 'none' | 'note' | 'nick' | 'evolve' | 'level';
 
+/* SoulLink death/miss cascade is auto-applied inside `updateEncounter`
+ * (feed + gold toast) — no confirm dialog needed here anymore. */
 export default function EncounterMenu({
   target,
   nameOf,
   onClose,
-  onCascade,
 }: {
   target: MenuTarget | null;
   nameOf: (id: number) => string;
   onClose: () => void;
-  onCascade: (res: UpdateResult, enc: NuzEncounterRow) => void;
 }) {
   const { t } = useTranslation();
   const [sub, setSub] = useState<SubMode>('none');
@@ -103,8 +103,7 @@ export default function EncounterMenu({
   const idle = sub === 'none';
 
   const markDead = () => {
-    const res = updateEncounter(enc.run_id, enc.id, { status: 'dead', note: note.trim() || enc.note });
-    onCascade(res, enc);
+    updateEncounter(enc.run_id, enc.id, { status: 'dead', note: note.trim() || enc.note });
     onClose();
   };
 
@@ -160,8 +159,7 @@ export default function EncounterMenu({
             <button
               type="button"
               onClick={() => {
-                const res = updateEncounter(enc.run_id, enc.id, { status: 'missed' });
-                onCascade(res, enc);
+                updateEncounter(enc.run_id, enc.id, { status: 'missed' });
                 onClose();
               }}
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"

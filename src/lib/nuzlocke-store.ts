@@ -27,13 +27,23 @@ import { padNum } from './pokeapi';
 import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
 import {
+  cachedEvolutionFamilyIds,
   fetchEvolutionChainIds,
+  fetchEvolutionFamilyIds,
   isValidEvolutionTarget,
   normalizeEncounter,
   normalizeEncounters,
 } from './nuzlocke-evolution';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 import { ensureRunIdentity, getAuthUser } from './auth';
+import {
+  findEvoLineDupeViolations,
+  isCurrentOp,
+  livingCascadeTargets,
+  mergeRemoteWithOutbox,
+  nextOpGen,
+} from './nuzlocke-concurrency';
+import type { Outbox, OutboxOpKind } from './nuzlocke-concurrency';
 
 export type {
   NuzEncounterRow,
@@ -77,9 +87,29 @@ export interface RunState {
   encounters: NuzEncounterRow[];
 }
 
-/** Fire-and-forget party → linked TB sync (dynamic import avoids cycles). */
+/* Fire-and-forget party → linked TB sync (dynamic import avoids cycles).
+ * `syncLinkedTeamsForRun` awaits network (species slug lookups) and does its
+ * own read-modify-write of the linked team blob (loadTeams → project →
+ * saveTeam). A burst of encounter edits (e.g. a SoulLink cascade touching
+ * several rows at once) fires several overlapping calls; without
+ * serialization the slower-finishing one can clobber a faster one's newer
+ * projection. Chain every call behind the previous one for the same
+ * (run, owned player) key — regardless of which `playerId` a caller passes,
+ * only this browser's owned player ever actually writes (nuzlocke-linked-
+ * teams.ts `ownedPlayerId` no-ops for anyone else), so keying on the owned
+ * player collapses every call for this run onto one queue (concurrency
+ * plan §2.4). */
+const linkedSyncChains = new Map<string, Promise<void>>();
+
 function scheduleLinkedSync(state: RunState, playerId?: string): void {
-  void import('./nuzlocke-linked-teams').then((m) => m.syncLinkedTeamsForRun(state, playerId));
+  const key = `${state.run.id}:${myPlayerId(state.run.id) ?? playerId ?? '*'}`;
+  const prev = linkedSyncChains.get(key) ?? Promise.resolve();
+  const next = prev.catch(() => undefined).then(() =>
+    import('./nuzlocke-linked-teams')
+      .then((m) => m.syncLinkedTeamsForRun(state, playerId))
+      .catch((err) => console.warn('[nuzlocke] linked team sync failed', err)),
+  );
+  linkedSyncChains.set(key, next);
 }
 
 /* ---------- feed ---------- */
@@ -508,8 +538,17 @@ export interface RunEntry {
   /** player_id → presence meta */
   online: Record<string, { name: string; color: string }>;
   feed: FeedEvent[];
-  /** encounter ids awaiting server ack (§2.9 latency honesty) */
+  /** encounter ids (or `run:<id>` for run-level ops) awaiting server ack
+   * (§2.9 latency honesty) */
   pendingSync: Set<string>;
+  /** durable-per-session outbox: unacked encounter writes keyed by `enc.id`,
+   * consulted by `refreshRemote` so a hydrate/reconnect never blind-drops an
+   * optimistic insert/patch/delete still in flight (concurrency plan §1.1) */
+  outbox: Outbox;
+  /** monotonic write generation per `syncKey` — lets `persistWithRetry`
+   * ignore a stale write's success/failure once a newer one supersedes it
+   * (concurrency plan §1.2) */
+  opGen: Map<string, number>;
   milestones: Set<string>;
   listeners: Set<() => void>;
   refs: number;
@@ -531,6 +570,8 @@ function newEntry(id: string): RunEntry {
     online: {},
     feed: [],
     pendingSync: new Set(),
+    outbox: new Map(),
+    opGen: new Map(),
     milestones: new Set(),
     listeners: new Set(),
     refs: 0,
@@ -656,18 +697,15 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
     if (local?.run) await ensureRunAccess(local.run);
     const remote = await fetchRemoteRun(entry.id);
     if (remote) {
-      /* Keep optimistic inserts still awaiting ack — blind replace would
-       * drop them on SUBSCRIBED refetch (Phase 1.1 will harden to a full outbox). */
-      const pendingKeep =
-        local && entry.pendingSync.size > 0
-          ? local.encounters.filter(
-              (e) => entry.pendingSync.has(e.id) && !remote.encounters.some((r) => r.id === e.id),
-            )
-          : [];
-      const merged =
-        pendingKeep.length > 0
-          ? { ...remote, encounters: [...remote.encounters, ...pendingKeep] }
-          : remote;
+      /* Never blind `state = remote` while writes are still in flight — the
+       * outbox overrides/excludes rows with an unacked insert/patch/delete
+       * (concurrency plan §1.1). */
+      const { encounters } = mergeRemoteWithOutbox({
+        remote: remote.encounters,
+        localEncounters: local?.encounters ?? [],
+        outbox: entry.outbox,
+      });
+      const merged = { ...remote, encounters };
       entry.state = merged;
       entry.phase = 'ready';
       saveLocalRun(merged);
@@ -701,31 +739,84 @@ function presenceMe(entry: RunEntry): { player_id: string; name: string; color: 
 function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
   const s = entry.state;
   if (!s) return;
+  if (entry.outbox.has(enc.id)) {
+    /* a local write for this row is still unacked — the optimistic value is
+     * already on screen, and this realtime echo predates it (or is stale).
+     * Let the in-flight write's own success/failure settle it instead of
+     * reverting the UI now (concurrency plan §1.1/§1.2). */
+    return;
+  }
   const normalized = normalizeEncounter(enc);
   const before = soulLinkGroupsOf(s).length;
   const idx = s.encounters.findIndex((e) => e.id === normalized.id);
   const isNew = idx < 0;
+  let applied = normalized;
   if (isNew) {
     s.encounters = [...s.encounters, normalized];
     pushFeed(entry, encounterFeedEvent(s, normalized, true));
+    /* another player's fresh catch — Dupes TOCTOU interim re-scan (§1.3) */
+    if (normalized.status === 'caught') void reconcileEvoLineDupes(entry, normalized);
   } else {
     const prev = s.encounters[idx];
-    s.encounters = s.encounters.map((e) => (e.id === normalized.id ? normalized : e));
-    if (prev.status !== normalized.status || prev.pokemon_id !== normalized.pokemon_id || prev.level !== normalized.level) {
-      if (prev.status !== normalized.status) {
-        pushFeed(entry, encounterFeedEvent(s, normalized, true));
-        if (normalized.status === 'dead') checkCascade(entry, normalized);
-        if (normalized.status === 'missed') checkMissCascade(entry, normalized);
+    /* Server/realtime frames are authoritative for peer writes. Stale
+     * echoes of our own in-flight writes are already skipped via outbox
+     * above — do NOT block legitimate restores (dead→caught) for peers. */
+    applied = normalized;
+    s.encounters = s.encounters.map((e) => (e.id === applied.id ? applied : e));
+    if (prev.status !== applied.status || prev.pokemon_id !== applied.pokemon_id || prev.level !== applied.level) {
+      if (prev.status !== applied.status) {
+        pushFeed(entry, encounterFeedEvent(s, applied, true));
+        if (applied.status === 'dead') checkCascade(entry, applied);
+        if (applied.status === 'missed') checkMissCascade(entry, applied);
+        /* restore into a living evo-line may re-open a dupes race (§1.3) */
+        if (applied.status === 'caught') void reconcileEvoLineDupes(entry, applied);
       }
     }
   }
-  entry.pendingSync.delete(normalized.id);
+  entry.pendingSync.delete(applied.id);
+  entry.outbox.delete(applied.id);
   saveLocalRun(s);
   const after = soulLinkGroupsOf(s).length;
-  if (after > before) announceLink(entry, s, normalized);
+  if (after > before) announceLink(entry, s, applied);
   checkMilestones(entry);
-  scheduleLinkedSync(s, normalized.player_id);
+  scheduleLinkedSync(s, applied.player_id);
   emit(entry);
+}
+
+/* ---------- Dupes Clause TOCTOU interim (Phase 1.3) ----------
+ * Interim client-side re-check until a server-side RPC validates the family
+ * in the same transaction as the insert (plan §2.3). Runs after every insert
+ * either client learns about — see call sites in `applyRemoteEncounter`
+ * (remote catch) and `logEncounter` (our own ack). `pickDupeLoser` /
+ * `findEvoLineDupeViolations` are pure and deterministic (created_at/id), so
+ * every online client converges on the same loser without coordinating. */
+async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow): Promise<void> {
+  if (entry.state?.mode !== 'multi' || !entry.state.run.rules.dupes) return;
+  if (trigger.status !== 'caught' || trigger.is_shiny) return;
+  const speciesId =
+    typeof trigger.caught_pokemon_id === 'number' && trigger.caught_pokemon_id > 0
+      ? trigger.caught_pokemon_id
+      : trigger.pokemon_id;
+  try {
+    /* populates the sync cache `findEvoLineDupeViolations` reads below */
+    await fetchEvolutionFamilyIds(speciesId);
+  } catch {
+    return; /* offline / unknown species — no re-check possible, degrade gracefully */
+  }
+  const s = entry.state;
+  if (!s || s.mode !== 'multi') return;
+  const losers = findEvoLineDupeViolations(s.encounters, cachedEvolutionFamilyIds);
+  for (const loser of losers) {
+    /* re-check right before writing — a concurrent scan (the other client's
+     * own trigger) may have already turned this row into a `duped` no-op */
+    if (s.encounters.find((e) => e.id === loser.id)?.status !== 'caught') continue;
+    /* updateEncounter already frees in_party for any non-'caught' status */
+    updateEncounter(entry.id, loser.id, { status: 'duped' });
+    pushToast(
+      'info',
+      i18n.t('nuz.toast.dupeRace', { name: (loser.nickname ?? speciesNamer(loser.pokemon_id)).toUpperCase() }),
+    );
+  }
 }
 
 function goLive(entry: RunEntry): void {
@@ -749,6 +840,8 @@ function goLive(entry: RunEntry): void {
         const st = entry.state;
         if (st && old.id) {
           st.encounters = st.encounters.filter((e) => e.id !== old.id);
+          entry.pendingSync.delete(old.id);
+          entry.outbox.delete(old.id);
           saveLocalRun(st);
           emit(entry);
         }
@@ -877,22 +970,102 @@ function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-/** Fire-and-replay a remote write; gold toast on failure, never red. */
-function persistWithRetry(entry: RunEntry, syncKey: string, op: () => PromiseLike<{ error: unknown }>): void {
+/** Fire-and-replay a remote write; gold toast on failure, never red.
+ * `outbox` (when the write touches an encounter row) records the local
+ * snapshot `refreshRemote` must prefer over the server until this write
+ * acks — see `mergeRemoteWithOutbox` (concurrency plan §1.1).
+ * Every call allocates a fresh `opGen` for `syncKey`; a call superseded by a
+ * later one for the same key (e.g. rapid dead → restore) skips its own
+ * success/failure side effects once it is no longer current (§1.2) — the
+ * newer call owns clearing `pendingSync`/`outbox` and any toast. */
+function persistWithRetry(
+  entry: RunEntry,
+  syncKey: string,
+  op: () => PromiseLike<{ error: unknown }>,
+  outbox?: { snapshot: NuzEncounterRow; kind: OutboxOpKind },
+): void {
   if (!isMultiCapable() || entry.state?.mode !== 'multi') return;
+  const gen = nextOpGen(entry.opGen, syncKey);
   entry.pendingSync.add(syncKey);
+  if (outbox) entry.outbox.set(syncKey, { kind: outbox.kind, snapshot: outbox.snapshot, gen });
   emit(entry);
   const attempt = async (n: number): Promise<void> => {
+    if (!isCurrentOp(entry.opGen, syncKey, gen)) return; /* superseded — newer write owns this key now */
     try {
       const { error } = await op();
+      if (!isCurrentOp(entry.opGen, syncKey, gen)) return;
       if (!error) {
         entry.pendingSync.delete(syncKey);
+        entry.outbox.delete(syncKey);
         emit(entry);
         return;
       }
       if (n === 0) pushToast('sync', 'RETRYING SYNC…');
       if (n >= 4) return; /* stays flagged — PENDING SYNC caption */
     } catch {
+      if (!isCurrentOp(entry.opGen, syncKey, gen)) return;
+      if (n === 0) pushToast('sync', 'RETRYING SYNC…');
+      if (n >= 4) return;
+    }
+    await sleep(900 * 2 ** n);
+    return attempt(n + 1);
+  };
+  void attempt(0);
+}
+
+/** Server-confirmed rows from our own `nuz_apply_encounter_status` call —
+ * overwrite the matching local rows so any client/server logic drift is
+ * corrected without waiting on realtime. No feed/toast here: those already
+ * fired when the cascade was applied optimistically (checkCascade /
+ * checkMissCascade); this is purely reconciliation. */
+function applyOwnWriteResult(entry: RunEntry, rows: NuzEncounterRow[]): void {
+  const s = entry.state;
+  if (!s || rows.length === 0) return;
+  const byId = new Map(rows.map((r) => [r.id, normalizeEncounter(r)]));
+  s.encounters = s.encounters.map((e) => byId.get(e.id) ?? e);
+  saveLocalRun(s);
+  emit(entry);
+}
+
+/** Bundles the primary row + every SoulLink partner a local cascade touched
+ * into ONE `nuz_apply_encounter_status` RPC call (concurrency plan §2.2) —
+ * the server re-derives the same partner set from `route_key`/`soulLink`
+ * and applies all of them in a single transaction, so this never sends N
+ * separate partner PATCHes. Outbox/opGen bookkeeping is tracked per row id
+ * exactly like `persistWithRetry`, just fanned out over every target
+ * instead of one, so a stale retry for any single row can still be
+ * superseded independently (Phase 1.2). */
+function persistStatusRpc(
+  entry: RunEntry,
+  targets: NuzEncounterRow[],
+  args: { p_encounter_id: string; p_new_status: string; p_note: string | null },
+): void {
+  if (!isMultiCapable() || entry.state?.mode !== 'multi' || targets.length === 0) return;
+  const gens = targets.map((row) => ({ id: row.id, row, gen: nextOpGen(entry.opGen, row.id) }));
+  for (const g of gens) {
+    entry.pendingSync.add(g.id);
+    entry.outbox.set(g.id, { kind: 'patch', snapshot: g.row, gen: g.gen });
+  }
+  emit(entry);
+  const attempt = async (n: number): Promise<void> => {
+    if (!gens.some((g) => isCurrentOp(entry.opGen, g.id, g.gen))) return; /* every target superseded */
+    try {
+      const { data, error } = await supabase.rpc('nuz_apply_encounter_status', args);
+      const stillCurrent = gens.filter((g) => isCurrentOp(entry.opGen, g.id, g.gen));
+      if (!error) {
+        for (const g of stillCurrent) {
+          entry.pendingSync.delete(g.id);
+          entry.outbox.delete(g.id);
+        }
+        emit(entry);
+        const updated = (data as { updated?: NuzEncounterRow[] } | null)?.updated;
+        if (updated?.length) applyOwnWriteResult(entry, updated);
+        return;
+      }
+      if (n === 0) pushToast('sync', 'RETRYING SYNC…');
+      if (n >= 4) return;
+    } catch {
+      if (!gens.some((g) => isCurrentOp(entry.opGen, g.id, g.gen))) return;
       if (n === 0) pushToast('sync', 'RETRYING SYNC…');
       if (n >= 4) return;
     }
@@ -935,46 +1108,50 @@ function announceLink(entry: RunEntry, s: RunState, enc: NuzEncounterRow): void 
   pushToast('link', i18n.t('nuz.toast.soulLink', { a: aName.toUpperCase(), b: bName.toUpperCase() }));
 }
 
-function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
+/** Death cascade (concurrency plan §2.1/2.2 — product decision: auto-apply,
+ * mirroring the miss→`lost` cascade). PURELY local: mutates `s.encounters` +
+ * feed/toast and returns the touched partner rows; it never talks to the
+ * network itself. The caller decides how to persist:
+ *  - `updateEncounter` (interactive mark-dead) bundles the returned rows
+ *    into one `nuz_apply_encounter_status` RPC call together with the
+ *    primary row (`persistStatusRpc`).
+ *  - `logEncounter` (logging an encounter that is already dead) fires the
+ *    same RPC once its own insert has landed.
+ *  - `applyRemoteEncounter` (a REMOTE client's death arriving via realtime)
+ *    calls this only to keep the local view predictively in sync — it must
+ *    NOT re-persist, since the originating client's RPC already owns that
+ *    write server-side. Re-running this against already-dead partners is a
+ *    no-op (idempotent): `livingCascadeTargets` only returns `caught` rows. */
+function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): NuzEncounterRow[] {
   const s = entry.state;
-  if (!s || !s.run.rules.soulLink) return;
+  if (!s || !s.run.rules.soulLink) return [];
   /* N-player SoulLink: every living catch on the route cascades — not just
    * the next slot in the pairwise chain (that missed player 3+). */
-  const partners = livingPartnersOnRoute(s, deadEnc);
-  if (partners.length === 0) return;
+  const partners = livingCascadeTargets(s.encounters, deadEnc);
+  if (partners.length === 0) return [];
   const route = routeLabelOf(s.run, deadEnc.route_key).toUpperCase();
+  const cascadeOn = s.run.rules.soulLinkCascade;
+  const touched: NuzEncounterRow[] = [];
   for (const partner of partners) {
     const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
-    /* cascade rule off (owner choice): partners are auto-boxed immediately —
-     * works identically for local and remote (realtime) deaths */
-    if (!s.run.rules.soulLinkCascade) {
-      s.encounters = s.encounters.map((e) => (e.id === partner.id ? { ...e, in_party: false } : e));
-      saveLocalRun(s);
-      if (s.mode === 'multi') {
-        persistWithRetry(entry, partner.id, () =>
-          nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
-        );
-      }
-      scheduleLinkedSync(s, partner.player_id);
-      pushFeed(entry, {
-        kind: 'link',
-        color: '#F6C945',
-        title: i18n.t('nuz.feed.linkCascadeBoxed', { name }),
-        meta: route,
-      });
-      pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
-      continue;
-    }
-    /* cascade rule on: partners must fall too — local UI confirms via
-     * UpdateResult.cascadePartners; remote viewers get toast + BOX? chip */
+    /* cascade rule on: partner falls too (auto-applied, no confirm needed).
+     * cascade rule off (owner choice): partner is only auto-boxed. */
+    s.encounters = s.encounters.map((e) =>
+      e.id === partner.id ? { ...e, status: cascadeOn ? ('dead' as const) : e.status, in_party: false } : e,
+    );
+    const updated = s.encounters.find((e) => e.id === partner.id)!;
+    touched.push(updated);
+    saveLocalRun(s);
+    scheduleLinkedSync(s, partner.player_id);
     pushFeed(entry, {
       kind: 'link',
       color: '#F6C945',
-      title: i18n.t('nuz.feed.linkCascade', { name }),
+      title: i18n.t(cascadeOn ? 'nuz.feed.linkCascade' : 'nuz.feed.linkCascadeBoxed', { name }),
       meta: route,
     });
-    pushToast('info', i18n.t('nuz.toast.cascade', { name: name.toUpperCase() }));
+    pushToast('info', i18n.t(cascadeOn ? 'nuz.toast.cascade' : 'nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
   }
+  return touched;
 }
 
 /* ---------- SoulLink missed cascade ----------
@@ -989,45 +1166,37 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
  * dead/lost/missed partners are untouched, so a realtime double-miss race
  * cannot loop. */
 function livingPartnersOnRoute(s: RunState, enc: NuzEncounterRow): NuzEncounterRow[] {
-  return s.encounters.filter(
-    (e) => e.id !== enc.id && e.route_key === enc.route_key && e.player_id !== enc.player_id && e.status === 'caught',
-  );
+  return livingCascadeTargets(s.encounters, enc);
 }
 
-function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): void {
+/** Miss cascade — same local-only contract as `checkCascade` above (returns
+ * touched partner rows, never persists itself). */
+function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): NuzEncounterRow[] {
   const s = entry.state;
-  if (!s || !s.run.rules.soulLink || missedEnc.status !== 'missed') return;
+  if (!s || !s.run.rules.soulLink || missedEnc.status !== 'missed') return [];
   const route = routeLabelOf(s.run, missedEnc.route_key).toUpperCase();
+  const cascadeOn = s.run.rules.soulLinkCascade;
+  const touched: NuzEncounterRow[] = [];
   for (const partner of livingPartnersOnRoute(s, missedEnc)) {
     const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
-    if (s.run.rules.soulLinkCascade) {
-      /* link-lost: NOT dead — own 'lost' status, out of the party */
-      s.encounters = s.encounters.map((e) =>
-        e.id === partner.id ? { ...e, status: 'lost' as const, in_party: false } : e,
-      );
-      saveLocalRun(s);
-      if (s.mode === 'multi') {
-        persistWithRetry(entry, partner.id, () =>
-          nuzTables.encounters().update({ status: 'lost', in_party: false }).eq('id', partner.id),
-        );
-      }
-      scheduleLinkedSync(s, partner.player_id);
+    /* link-lost (cascade on): NOT dead — own 'lost' status, out of the party.
+     * cascade off: partner stays alive but is auto-boxed immediately. */
+    s.encounters = s.encounters.map((e) =>
+      e.id === partner.id ? { ...e, status: cascadeOn ? ('lost' as const) : e.status, in_party: false } : e,
+    );
+    const updated = s.encounters.find((e) => e.id === partner.id)!;
+    touched.push(updated);
+    saveLocalRun(s);
+    scheduleLinkedSync(s, partner.player_id);
+    if (cascadeOn) {
       pushFeed(entry, { kind: 'lost', color: '#F6C945', title: i18n.t('nuz.feed.linkLost', { name }), meta: route });
       pushToast('info', i18n.t('nuz.toast.linkLost', { name: name.toUpperCase() }));
     } else {
-      /* cascade rule off: partner stays alive but is auto-boxed immediately */
-      s.encounters = s.encounters.map((e) => (e.id === partner.id ? { ...e, in_party: false } : e));
-      saveLocalRun(s);
-      if (s.mode === 'multi') {
-        persistWithRetry(entry, partner.id, () =>
-          nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
-        );
-      }
-      scheduleLinkedSync(s, partner.player_id);
       pushFeed(entry, { kind: 'link', color: '#F6C945', title: i18n.t('nuz.feed.linkMissBoxed', { name }), meta: route });
       pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
     }
   }
+  return touched;
 }
 
 /** SoulLink route lock: a linked partner already MISSED this route, so any
@@ -1353,23 +1522,45 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
   const after = soulLinkGroupsOf(s).length;
   const linkedWith = after > before || isLinked(s, enc.id) ? linkPartnerOf(s, enc.id) : null;
   if (after > before) announceLink(entry, s, enc);
-  if (enc.status === 'dead') checkCascade(entry, enc);
-  if (enc.status === 'missed') checkMissCascade(entry, enc);
+  let cascadePartners: NuzEncounterRow[] = [];
+  if (enc.status === 'dead') cascadePartners = checkCascade(entry, enc);
+  if (enc.status === 'missed') cascadePartners = checkMissCascade(entry, enc);
   if (enc.status === 'lost' && draft.status === 'caught') {
     pushToast('info', i18n.t('nuz.toast.linkLost', { name: (enc.nickname ?? speciesNamer(enc.pokemon_id)).toUpperCase() }));
   }
   checkMilestones(entry);
 
   if (s.mode === 'multi') {
-    persistWithRetry(entry, enc.id, async () => {
-      const res = await nuzTables.encounters().insert(enc);
-      /* unique-violation on the route slot (multi-client race): adopt the
-       * server row instead of staying pendingSync forever (audit P0-5) */
-      if (res.error && isUniqueViolation(res.error) && (await reconcileRouteConflict(entry, enc))) {
-        return { error: null };
-      }
-      return res;
-    });
+    persistWithRetry(
+      entry,
+      enc.id,
+      async () => {
+        const res = await nuzTables.encounters().insert(enc);
+        /* unique-violation on the route slot (multi-client race): adopt the
+         * server row instead of staying pendingSync forever (audit P0-5) */
+        if (res.error && isUniqueViolation(res.error) && (await reconcileRouteConflict(entry, enc))) {
+          /* drop any optimistic SoulLink cascade speculation for the lost insert */
+          void refreshRemote(entry);
+          return { error: null };
+        }
+        if (!res.error) {
+          /* our insert landed — Dupes TOCTOU interim re-scan (§1.3) */
+          void reconcileEvoLineDupes(entry, enc);
+          /* the row now exists server-side, so the SoulLink cascade for a
+           * directly-logged dead/missed encounter can go through the same
+           * single-TX RPC as the interactive mark-dead/missed flow */
+          if (cascadePartners.length > 0) {
+            persistStatusRpc(entry, [enc, ...cascadePartners], {
+              p_encounter_id: enc.id,
+              p_new_status: enc.status,
+              p_note: enc.note,
+            });
+          }
+        }
+        return res;
+      },
+      { snapshot: enc, kind: 'insert' },
+    );
   }
   scheduleLinkedSync(s, enc.player_id);
   emit(entry);
@@ -1411,13 +1602,18 @@ export interface UpdateResult {
   ok: boolean;
   /** @deprecated use cascadePartners — kept as first living mate for older callers */
   cascadePartner?: NuzEncounterRow | null;
-  /** every living SoulLink mate on the route (N-player) */
+  /** every SoulLink mate the cascade already touched (dead/lost or boxed) —
+   * informational for feed/UI only; cascade is auto-applied, no confirm
+   * step required to see this effect (concurrency plan §2.1). */
   cascadePartners?: NuzEncounterRow[];
 }
 
-/** Mark dead / mark missed / edit nickname / note (§2.5–2.7 flows).
- * `fromCascade`: death applied by the SoulLink confirm dialog — skip nested
- * cascade discovery (the whole group is already being resolved). */
+/** Mark dead / mark missed / restore / edit nickname / note (§2.5–2.7 flows).
+ * `fromCascade`: reserved for callers that already resolved the whole
+ * SoulLink group themselves — skips nested cascade discovery. Nothing in
+ * this codebase needs to pass it anymore (cascades are auto-applied inside
+ * `checkCascade`/`checkMissCascade` themselves), it stays as a defensive
+ * guard against double-processing. */
 export function updateEncounter(
   runId: string,
   encId: string,
@@ -1436,25 +1632,41 @@ export function updateEncounter(
   const persistedPatch = freesSlot ? { ...patch, in_party: false } : patch;
   saveLocalRun(s);
   let cascadePartners: NuzEncounterRow[] = [];
-  if (patch.status && patch.status !== prevStatus) {
+  const isStatusChange = Boolean(patch.status && patch.status !== prevStatus);
+  if (isStatusChange) {
     pushFeed(entry, encounterFeedEvent(s, enc, false));
     if (patch.status === 'dead') {
-      if (!opts?.fromCascade && s.run.rules.soulLink) {
-        /* all living mates on the route — UI confirm kills the whole group */
-        cascadePartners = livingPartnersOnRoute(s, enc);
-        checkCascade(entry, enc);
-      }
+      if (!opts?.fromCascade && s.run.rules.soulLink) cascadePartners = checkCascade(entry, enc);
       if (s.run.rules.releaseOnDeath) {
         pushToast('info', i18n.t('nuz.toast.releaseRule', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
       }
     } else if (patch.status === 'missed') {
-      checkMissCascade(entry, enc);
+      if (!opts?.fromCascade) cascadePartners = checkMissCascade(entry, enc);
+    } else if (patch.status === 'caught') {
+      /* restore may re-open an evo-line dupes race (§1.3) */
+      void reconcileEvoLineDupes(entry, enc);
     }
   }
   if (s.mode === 'multi') {
-    persistWithRetry(entry, enc.id, () =>
-      nuzTables.encounters().update(persistedPatch).eq('id', enc.id),
-    );
+    if (isStatusChange) {
+      /* single-TX RPC: this row's status/note + every SoulLink partner the
+       * local cascade above touched apply server-side in one transaction —
+       * a remote client can never observe the primary fallen without its
+       * linked partner (or vice versa). Replaces the old bare PATCH + N
+       * separate partner PATCHes (concurrency plan §2.2). */
+      persistStatusRpc(entry, [enc, ...cascadePartners], {
+        p_encounter_id: enc.id,
+        p_new_status: enc.status,
+        p_note: patch.note ?? null,
+      });
+    } else {
+      persistWithRetry(
+        entry,
+        enc.id,
+        () => nuzTables.encounters().update(persistedPatch).eq('id', enc.id),
+        { snapshot: enc, kind: 'patch' },
+      );
+    }
   }
   scheduleLinkedSync(s, enc.player_id);
   emit(entry);
@@ -1486,15 +1698,26 @@ export async function evolveEncounter(
   } catch {
     return { ok: false, error: 'chain' };
   }
-  if (enc.caught_pokemon_id == null) enc.caught_pokemon_id = caughtId;
-  const res = updateEncounter(runId, encId, { pokemon_id: toPokemonId });
-  if (!res.ok) return { ok: false, error: 'missing' };
+  /* mutate + persist directly (single PATCH) instead of delegating to
+   * updateEncounter — that used to fire its OWN patch({ pokemon_id }) and
+   * then a second patch({ pokemon_id, caught_pokemon_id }) right after for
+   * the same row, i.e. two network writes for one evolution (concurrency
+   * plan §2.4 cleanup). */
+  const nextCaughtId =
+    typeof enc.caught_pokemon_id === 'number' && enc.caught_pokemon_id > 0 ? enc.caught_pokemon_id : caughtId;
+  enc.pokemon_id = toPokemonId;
+  enc.caught_pokemon_id = nextCaughtId;
+  saveLocalRun(s);
   if (s.mode === 'multi') {
-    persistWithRetry(entry, enc.id, () =>
-      nuzTables
-        .encounters()
-        .update({ pokemon_id: toPokemonId, caught_pokemon_id: enc.caught_pokemon_id })
-        .eq('id', enc.id),
+    persistWithRetry(
+      entry,
+      enc.id,
+      () =>
+        nuzTables
+          .encounters()
+          .update({ pokemon_id: toPokemonId, caught_pokemon_id: nextCaughtId })
+          .eq('id', enc.id),
+      { snapshot: enc, kind: 'patch' },
     );
   }
   pushFeed(entry, {
@@ -1505,6 +1728,7 @@ export async function evolveEncounter(
     }),
     meta: routeLabelOf(s.run, enc.route_key).toUpperCase(),
   });
+  scheduleLinkedSync(s, enc.player_id);
   return { ok: true };
 }
 
@@ -1531,7 +1755,12 @@ export function setEncounterParty(runId: string, encId: string, inParty: boolean
   enc.in_party = inParty;
   saveLocalRun(s);
   if (s.mode === 'multi') {
-    persistWithRetry(entry, enc.id, () => nuzTables.encounters().update({ in_party: inParty }).eq('id', enc.id));
+    persistWithRetry(
+      entry,
+      enc.id,
+      () => nuzTables.encounters().update({ in_party: inParty }).eq('id', enc.id),
+      { snapshot: enc, kind: 'patch' },
+    );
   }
   scheduleLinkedSync(s, enc.player_id);
   emit(entry);
@@ -1552,8 +1781,14 @@ export function swapParty(runId: string, boxEncId: string, partyEncId: string): 
   b.in_party = false;
   saveLocalRun(s);
   if (s.mode === 'multi') {
-    persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id));
-    persistWithRetry(entry, b.id, () => nuzTables.encounters().update({ in_party: false }).eq('id', b.id));
+    persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id), {
+      snapshot: a,
+      kind: 'patch',
+    });
+    persistWithRetry(entry, b.id, () => nuzTables.encounters().update({ in_party: false }).eq('id', b.id), {
+      snapshot: b,
+      kind: 'patch',
+    });
   }
   scheduleLinkedSync(s, a.player_id);
   emit(entry);
@@ -1567,8 +1802,11 @@ export function deleteEncounter(runId: string, encId: string): void {
   const removed = s.encounters.find((e) => e.id === encId);
   s.encounters = s.encounters.filter((e) => e.id !== encId);
   saveLocalRun(s);
-  if (s.mode === 'multi') {
-    persistWithRetry(entry, encId, () => nuzTables.encounters().delete().eq('id', encId));
+  if (s.mode === 'multi' && removed) {
+    persistWithRetry(entry, encId, () => nuzTables.encounters().delete().eq('id', encId), {
+      snapshot: removed,
+      kind: 'delete',
+    });
   }
   if (removed) scheduleLinkedSync(s, removed.player_id);
   emit(entry);

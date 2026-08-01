@@ -164,7 +164,7 @@ describe('SoulLink KPI links', () => {
 });
 
 describe('SoulLink death cascade (N players)', () => {
-  it('death returns every living mate on the route, not just the next slot', async () => {
+  it('death auto-applies to every living mate on the route, no confirm/fromCascade needed', async () => {
     let s = await makeSoulRun({}, [{ name: 'CAM', color: '#FF7A45' }]);
     expect(s.players).toHaveLength(3);
     await log(s, 0, 'route-1', 1);
@@ -174,20 +174,23 @@ describe('SoulLink death cascade (N players)', () => {
     const ann = encAt(s, 0, 'route-1')!;
     expect(linkPartnersOf(s, ann.id)).toHaveLength(2);
 
+    /* a single updateEncounter call — no follow-up per-partner calls, no
+     * fromCascade, no UI confirm — must leave the whole group dead */
     const res = updateEncounter(s.run.id, ann.id, { status: 'dead' });
     expect(res.ok).toBe(true);
     expect(res.cascadePartners).toHaveLength(2);
     const partnerIds = new Set(res.cascadePartners!.map((p) => p.id));
     expect(partnerIds.has(encAt(s, 1, 'route-1')!.id)).toBe(true);
     expect(partnerIds.has(encAt(s, 2, 'route-1')!.id)).toBe(true);
+    /* the returned rows already reflect the auto-applied final state */
+    expect(res.cascadePartners!.every((p) => p.status === 'dead' && p.in_party === false)).toBe(true);
 
-    for (const p of res.cascadePartners!) {
-      updateEncounter(s.run.id, p.id, { status: 'dead' }, { fromCascade: true });
-    }
     s = getRunState(s.run.id)!;
     expect(encAt(s, 0, 'route-1')!.status).toBe('dead');
     expect(encAt(s, 1, 'route-1')!.status).toBe('dead');
     expect(encAt(s, 2, 'route-1')!.status).toBe('dead');
+    expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
+    expect(encAt(s, 2, 'route-1')!.in_party).toBe(false);
   });
 
   it('cascade rule off boxes every living mate, none die', async () => {
@@ -204,5 +207,20 @@ describe('SoulLink death cascade (N players)', () => {
     expect(encAt(s, 1, 'route-1')!.in_party).toBe(false);
     expect(encAt(s, 2, 'route-1')!.status).toBe('caught');
     expect(encAt(s, 2, 'route-1')!.in_party).toBe(false);
+  });
+
+  it('no double cascade: an already-dead partner never re-triggers a second pass', async () => {
+    let s = await makeSoulRun();
+    await log(s, 0, 'route-1', 16);
+    await log(s, 1, 'route-1', 19);
+
+    updateEncounter(s.run.id, encAt(s, 0, 'route-1')!.id, { status: 'dead' });
+    s = getRunState(s.run.id)!;
+    expect(encAt(s, 1, 'route-1')!.status).toBe('dead');
+
+    /* re-marking the same (already dead) encounter dead again must not
+     * find any new living partner to cascade to */
+    const res = updateEncounter(s.run.id, encAt(s, 0, 'route-1')!.id, { status: 'dead' });
+    expect(res.cascadePartners).toHaveLength(0);
   });
 });
