@@ -83,7 +83,8 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const [statusOpen, setStatusOpen] = useState(false);
   const [routeFilter, setRouteFilter] = useState('');
   const [listOpen, setListOpen] = useState(false);
-  const [fullDex, setFullDex] = useState(false);
+  const randomizer = !!state.run.rules.randomizer;
+  const [fullDex, setFullDex] = useState(randomizer);
   const [isShiny, setIsShiny] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const [shakeKey, shake] = useShake();
@@ -96,6 +97,11 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const pokePickerRef = useRef<HTMLDivElement>(null);
 
   const player = players.find((p) => p.id === playerId) ?? players[0];
+
+  /* randomizer rule → stay in full-dex mode by default */
+  useEffect(() => {
+    if (randomizer) setFullDex(true);
+  }, [randomizer]);
 
   useEffect(() => {
     if (!listOpen) return;
@@ -142,9 +148,11 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     return [...best.values()].sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0));
   }, [routeKey, mapData.data, nameIdx, lang]);
 
+  const useFullDex = randomizer || fullDex;
+
   const options = useMemo<SpeciesOption[]>(() => {
     const q = query.trim().toLowerCase();
-    if (fullDex) {
+    if (useFullDex) {
       const all = [...nameIdx.values()];
       const filtered = q
         ? all.filter(
@@ -155,12 +163,17 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               (germanAliasOfPokemon(e.id)?.includes(q) ?? false),
           )
         : all;
-      return filtered.slice(0, 8).map((e) => ({ id: e.id, label: nameOfPokemon(e.id, lang), custom: true }));
+      /* randomizer: every species is on-table — don't stamp CUSTOM chips */
+      return filtered.slice(0, 8).map((e) => ({
+        id: e.id,
+        label: nameOfPokemon(e.id, lang),
+        custom: !randomizer,
+      }));
     }
     const base = routeOptions;
     return (q ? base.filter((o) => o.label.toLowerCase().includes(q) || (germanAliasOfPokemon(o.id)?.includes(q) ?? false)) : base).slice(0, 8);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady rebuilds aliases after the lazy de load
-  }, [query, fullDex, nameIdx, routeOptions, lang, deReady]);
+  }, [query, useFullDex, randomizer, nameIdx, routeOptions, lang, deReady]);
 
   /* N focuses the bar (route field) */
   useEffect(() => {
@@ -211,7 +224,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     setRouteOpen(false);
     setSpecies(null);
     setQuery('');
-    setFullDex(false);
+    setFullDex(randomizer);
     window.setTimeout(() => searchRef.current?.focus(), 50);
   };
 
@@ -231,7 +244,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       return;
     }
     const fromRect = previewRef.current?.getBoundingClientRect() ?? null;
-    const res = logEncounter(state.run.id, {
+    void logEncounter(state.run.id, {
       playerId: player.id,
       routeKey,
       pokemonId: species.id,
@@ -239,20 +252,22 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       level,
       status,
       isShiny: state.run.rules.shiny ? isShiny : false,
-      offRoute: !!species.custom || fullDex,
+      /* randomizer treats every species as legal on-route */
+      offRoute: randomizer ? false : !!species.custom || fullDex,
+    }).then((res) => {
+      if (!res.ok) {
+        if (res.error) failCode(res.error);
+        else fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
+        return;
+      }
+      onLogged({ ...res, fromRect });
+      setSpecies(null);
+      setQuery('');
+      setNick('');
+      setFullDex(randomizer);
+      setIsShiny(false);
+      onDone?.();
     });
-    if (!res.ok) {
-      if (res.error) failCode(res.error);
-      else fail(t('nuz.routeAlready', { player: player.name, dupes: t(state.run.rules.dupes ? 'nuz.on' : 'nuz.off') }));
-      return;
-    }
-    onLogged({ ...res, fromRect });
-    setSpecies(null);
-    setQuery('');
-    setNick('');
-    setFullDex(false);
-    setIsShiny(false);
-    onDone?.();
   };
 
   const needsNick = state.run.rules.nicknames && status === 'caught';
@@ -396,7 +411,13 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               setListOpen(false);
             }
           }}
-          placeholder={routeKey ? t('nuz.pokemonPlaceholder') : t('nuz.pickRouteFirst')}
+          placeholder={
+            !routeKey
+              ? t('nuz.pickRouteFirst')
+              : randomizer
+                ? t('nuz.pokemonPlaceholderRandomizer')
+                : t('nuz.pokemonPlaceholder')
+          }
           disabled={!routeKey}
           aria-label={t('nuz.pokemonAria')}
           aria-expanded={listOpen}
@@ -419,7 +440,14 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           >
             {options.length === 0 && (
               <div className="px-3 py-2.5 text-[11px] text-tx-muted">
-                {mapData.data.get(routeKey)?.status === 'loaded' || fullDex ? t('nuz.noMatchTryDex') : t('nuz.scanningEncounters')}
+                {useFullDex || mapData.data.get(routeKey)?.status === 'loaded'
+                  ? t('nuz.noMatchTryDex')
+                  : t('nuz.scanningEncounters')}
+              </div>
+            )}
+            {randomizer && (
+              <div className="border-b border-hairline px-3 py-1.5 font-pixel text-[7px] tracking-[0.08em] text-gold">
+                {t('nuz.randomizerDexHint')}
               </div>
             )}
             {options.map((o, i) => (
@@ -448,7 +476,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 <span className="font-pixel text-[7px] text-tx-muted">{padNum(o.id)}</span>
               </button>
             ))}
-            {!fullDex && (
+            {!useFullDex && (
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}

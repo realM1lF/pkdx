@@ -109,10 +109,11 @@ interface SlotEditorProps {
   pokemon: Pokemon | undefined;
   versionGroup: string;
   legality: SlotLegality;
+  readOnly?: boolean;
   onPatch: (slotId: string, patch: Partial<TeamSlot>) => void;
 }
 
-export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPatch }: SlotEditorProps) {
+export default function SlotEditor({ slot, pokemon, versionGroup, legality, readOnly = false, onPatch }: SlotEditorProps) {
   const lang = useLanguage();
   const { t } = useTranslation();
   const vg = versionGroupById(versionGroup);
@@ -129,7 +130,10 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
   const entityModal = useEntityModal();
 
   const total = evTotal(slot);
-  const patch = (p: Partial<TeamSlot>) => onPatch(slot.id, p);
+  const patch = (p: Partial<TeamSlot>) => {
+    if (readOnly) return;
+    onPatch(slot.id, p);
+  };
 
   const setMove = (i: number, move: string | null) => {
     const moves = [...slot.moves] as TeamSlot['moves'];
@@ -153,6 +157,11 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
       className="overflow-hidden"
     >
       <div className="tb-panel mt-2 grid grid-cols-1 gap-4 p-4 md:grid-cols-12">
+          {readOnly && (
+            <div className="md:col-span-12">
+              <span className="tb-micro-gold">{t('tb.linked.readOnly')}</span>
+            </div>
+          )}
           {/* ---------- moves (span 6) ---------- */}
           <div className="md:col-span-6">
             <div className="mb-2 flex items-center justify-between">
@@ -167,7 +176,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                     value={m}
                     options={moveOptions}
                     onChange={(mv) => setMove(i, mv)}
-                    disabled={!pokemon}
+                    disabled={!pokemon || readOnly}
                   />
                 </div>
               ))}
@@ -205,7 +214,8 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                 onChange={(e) => patch({ nickname: e.target.value || null })}
                 placeholder={slot.pokemon ? nameOfPokemon(slot.pokemon, lang) : ''}
                 maxLength={18}
-                className="tb-input mt-1 !py-1.5 !text-[12px]"
+                disabled={readOnly}
+                className="tb-input mt-1 !py-1.5 !text-[12px] disabled:opacity-50"
               />
             </div>
             <div>
@@ -215,11 +225,12 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                 min={1}
                 max={100}
                 value={slot.level}
+                disabled={readOnly}
                 onChange={(e) => {
                   const n = Number(e.target.value);
                   if (Number.isFinite(n)) patch({ level: Math.max(1, Math.min(100, Math.round(n))) });
                 }}
-                className="tb-input mt-1 !py-1.5 !text-[12px] tabular-nums"
+                className="tb-input mt-1 !py-1.5 !text-[12px] tabular-nums disabled:opacity-50"
               />
             </div>
             <div>
@@ -245,7 +256,8 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                   keyOf={(it) => it}
                   placeholder={t('tb.editor.addItem')}
                   displayValue={slot.item ? localName(slot.item, lang, nameOfItem) : undefined}
-                  onClear={slot.item ? () => patch({ item: null }) : undefined}
+                  onClear={slot.item && !readOnly ? () => patch({ item: null }) : undefined}
+                  disabled={readOnly}
                   maxResults={40}
                   renderItem={(it) => {
                     const slug = slugify(it);
@@ -289,7 +301,8 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                   keyOf={(a) => a}
                   placeholder={t('tb.editor.selectAbility')}
                   displayValue={slot.ability ? localName(slot.ability, lang, nameOfAbility) : undefined}
-                  onClear={slot.ability ? () => patch({ ability: null }) : undefined}
+                  onClear={slot.ability && !readOnly ? () => patch({ ability: null }) : undefined}
+                  disabled={readOnly}
                   maxResults={4}
                   renderItem={(a) => <span>{localName(a, lang, nameOfAbility)}</span>}
                 />
@@ -309,7 +322,8 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                   keyOf={(n) => n.name}
                   placeholder={t('tb.editor.selectNature')}
                   displayValue={slot.nature ? localName(slot.nature, lang, nameOfNature) : undefined}
-                  onClear={slot.nature ? () => patch({ nature: null }) : undefined}
+                  onClear={slot.nature && !readOnly ? () => patch({ nature: null }) : undefined}
+                  disabled={readOnly}
                   maxResults={30}
                   renderItem={(n) => (
                     <span className="flex w-full items-center justify-between gap-2">
@@ -350,6 +364,7 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                         max={MAX_EV_PER_STAT}
                         step={4}
                         value={slot.evs[k] || 0}
+                        disabled={readOnly}
                         onChange={(e) => setEv(k, Number(e.target.value))}
                         aria-label={t('tb.editor.evAria', { stat: STAT_LABELS[k] })}
                       />
@@ -359,22 +374,24 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, onPa
                     </label>
                   ))}
                 </div>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {EV_PRESETS.map((p) => (
-                    <button key={p.label} type="button" onClick={() => patch({ evs: p.apply() })} className="tb-chip transition-all hover:border-gold/60 hover:text-gold">
-                      {p.label}
+                {!readOnly && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {EV_PRESETS.map((p) => (
+                      <button key={p.label} type="button" onClick={() => patch({ evs: p.apply() })} className="tb-chip transition-all hover:border-gold/60 hover:text-gold">
+                        {p.label}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => patch({ evs: zeroEvs() })}
+                      className="tb-chip transition-all hover:border-gold/60 hover:text-gold"
+                      aria-label={t('tb.editor.resetEvs')}
+                    >
+                      <Eraser size={9} />
+                      {t('tb.editor.reset')}
                     </button>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => patch({ evs: zeroEvs() })}
-                    className="tb-chip transition-all hover:border-gold/60 hover:text-gold"
-                    aria-label={t('tb.editor.resetEvs')}
-                  >
-                    <Eraser size={9} />
-                    {t('tb.editor.reset')}
-                  </button>
-                </div>
+                  </div>
+                )}
               </>
             ) : (
               <p className="tb-micro">{t('tb.editor.noEvs')}</p>

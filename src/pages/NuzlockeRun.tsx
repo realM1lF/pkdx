@@ -16,7 +16,7 @@ import {
   linkPartnerOf,
   registerRouteNamer,
   registerSpeciesNamer,
-  soulLinksOf,
+  soulLinkGroupsOf,
   updateEncounter,
   useRunEntry,
 } from '@/lib/nuzlocke-store';
@@ -91,7 +91,7 @@ export default function NuzlockeRun() {
   const [prefill, setPrefill] = useState<Prefill | null>(null);
   const [menu, setMenu] = useState<MenuTarget | null>(null);
   /* SoulLink death cascade — pending partner confirm (rules.soulLinkCascade) */
-  const [cascade, setCascade] = useState<{ dead: NuzEncounterRow; partner: NuzEncounterRow } | null>(null);
+  const [cascade, setCascade] = useState<{ dead: NuzEncounterRow; partners: NuzEncounterRow[] } | null>(null);
   const [deckTab, setDeckTab] = useState<'deck' | 'versus'>('deck');
   const [flash, setFlash] = useState<{ route: string; playerId: string; key: number } | null>(null);
   const [fly, setFly] = useState<FlyState | null>(null);
@@ -106,19 +106,20 @@ export default function NuzlockeRun() {
     window.history.replaceState({}, document.title);
   }, [location.state, state]);
 
-  /* SoulLink death-cascade: alive partner of a dead link gets BOX? + shake (§2.3/§2.10) */
+  /* SoulLink death-cascade: every living mate on a route with a death gets BOX? + shake */
   const cascadeIds = useMemo(() => {
     const ids = new Set<string>();
-    if (!state) return ids;
-    for (const l of soulLinksOf(state)) {
-      if (!l.broken) continue;
-      if (l.a.status === 'caught') ids.add(l.a.id);
-      if (l.b.status === 'caught') ids.add(l.b.id);
+    if (!state?.run.rules.soulLink) return ids;
+    const deadRoutes = new Set(
+      state.encounters.filter((e) => e.status === 'dead').map((e) => e.route_key),
+    );
+    for (const e of state.encounters) {
+      if (e.status === 'caught' && deadRoutes.has(e.route_key)) ids.add(e.id);
     }
     return ids;
   }, [state]);
 
-  const links = useMemo(() => (state ? soulLinksOf(state) : []), [state]);
+  const linkGroups = useMemo(() => (state ? soulLinkGroupsOf(state) : []), [state]);
 
   /* FLIP: after the store re-renders, find the slot sprite and fly to it (§2.5) */
   useEffect(() => {
@@ -186,16 +187,24 @@ export default function NuzlockeRun() {
   };
 
   const onCascade = (res: UpdateResult, enc: NuzEncounterRow) => {
-    /* consume the cascade partner: with the cascade rule on, the partner must
-     * fall too — confirm dialog. Rule off → store already auto-boxed it. */
-    if (res.ok && res.cascadePartner && state.run.rules.soulLink && state.run.rules.soulLinkCascade) {
-      setCascade({ dead: enc, partner: res.cascadePartner });
+    /* consume cascade partners: with the cascade rule on, every living mate on
+     * the route must fall — confirm dialog. Rule off → store already boxed them. */
+    const partners = res.cascadePartners?.length
+      ? res.cascadePartners
+      : res.cascadePartner
+        ? [res.cascadePartner]
+        : [];
+    if (res.ok && partners.length > 0 && state.run.rules.soulLink && state.run.rules.soulLinkCascade) {
+      setCascade({ dead: enc, partners });
     }
   };
 
   const confirmCascade = () => {
     if (!cascade) return;
-    updateEncounter(state.run.id, cascade.partner.id, { status: 'dead' });
+    /* mark the whole SoulLink group dead in one confirm (no nested dialogs) */
+    for (const p of cascade.partners) {
+      updateEncounter(state.run.id, p.id, { status: 'dead' }, { fromCascade: true });
+    }
     setCascade(null);
   };
 
@@ -254,7 +263,7 @@ export default function NuzlockeRun() {
           <Timeline
             state={state}
             region={region}
-            links={links}
+            groups={linkGroups}
             nameOf={nameOf}
             flash={flash}
             cascadeIds={cascadeIds}
@@ -292,21 +301,30 @@ export default function NuzlockeRun() {
       <EncounterMenu target={menu} nameOf={nameOf} onClose={() => setMenu(null)} onCascade={onCascade} />
       <NuzToasts />
 
-      {/* SoulLink death cascade — partner must fall too (confirm) */}
+      {/* SoulLink death cascade — all living mates on the route must fall (confirm) */}
       <NuzModal open={!!cascade} onClose={() => setCascade(null)}>
         {cascade && (
           <div className="p-5">
             <PixelLabel className="text-gold">{t('nuz.cascade.title')}</PixelLabel>
-            <div className="mt-3 flex items-center gap-3">
+            <div className="mt-3 flex flex-wrap items-center gap-3">
               <img src={sprites.front(cascade.dead.pokemon_id)} alt="" className="h-[48px] w-[48px] opacity-50 [image-rendering:pixelated]" />
               <span className="font-pixel text-[10px] text-gold">⇄</span>
-              <img src={sprites.front(cascade.partner.pokemon_id)} alt="" className="h-[48px] w-[48px] [image-rendering:pixelated]" />
+              {cascade.partners.map((p) => (
+                <img key={p.id} src={sprites.front(p.pokemon_id)} alt="" className="h-[48px] w-[48px] [image-rendering:pixelated]" />
+              ))}
             </div>
             <p className="mt-3 text-[13px] leading-relaxed text-tx-secondary">
-              {t('nuz.cascade.body', {
-                fallen: cascade.dead.nickname ?? nameOf(cascade.dead.pokemon_id),
-                partner: cascade.partner.nickname ?? nameOf(cascade.partner.pokemon_id),
-              })}
+              {cascade.partners.length === 1
+                ? t('nuz.cascade.body', {
+                    fallen: cascade.dead.nickname ?? nameOf(cascade.dead.pokemon_id),
+                    partner: cascade.partners[0].nickname ?? nameOf(cascade.partners[0].pokemon_id),
+                  })
+                : t('nuz.cascade.bodyMany', {
+                    fallen: cascade.dead.nickname ?? nameOf(cascade.dead.pokemon_id),
+                    partners: cascade.partners
+                      .map((p) => p.nickname ?? nameOf(p.pokemon_id))
+                      .join(', '),
+                  })}
             </p>
             <div className="mt-5 flex items-center justify-between gap-3">
               <button
@@ -321,7 +339,7 @@ export default function NuzlockeRun() {
                 onClick={confirmCascade}
                 className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
               >
-                {t('nuz.cascade.confirm')}
+                {cascade.partners.length === 1 ? t('nuz.cascade.confirm') : t('nuz.cascade.confirmMany')}
               </button>
             </div>
           </div>

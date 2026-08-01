@@ -38,6 +38,10 @@ interface SlotCardProps {
   versusOpponentId?: number | null;
   moveDetails: Record<string, Move>;
   canDuplicate: boolean;
+  /** Linked Nuzlocke team: no species pick / remove / duplicate */
+  rosterLocked?: boolean;
+  /** Foreign multiplayer linked team: view only */
+  readOnly?: boolean;
   expanded: boolean;
   focused: boolean;
   onPick: (slotId: string, pokemonSlug: string, pokemonId: number) => void;
@@ -56,6 +60,8 @@ export default function SlotCard({
   versusOpponentId,
   moveDetails,
   canDuplicate,
+  rosterLocked = false,
+  readOnly = false,
   expanded,
   focused,
   onPick,
@@ -68,9 +74,18 @@ export default function SlotCard({
   const { t: t8n } = useTranslation();
   const [picking, setPicking] = useState(false);
   const entityModal = useEntityModal();
+  const lockRoster = rosterLocked || readOnly;
 
   /* ---------- empty slot ---------- */
   if (!slot.pokemon || slot.pokemonId == null) {
+    if (lockRoster) {
+      return (
+        <div className="tb-panel flex min-h-[172px] flex-col items-center justify-center gap-2 border-dashed p-3 opacity-60">
+          <span className="tb-micro text-center">{t8n('tb.slot.empty')}</span>
+          <span className="tb-micro !text-[7px] text-tx-muted/80">{t8n('tb.linked.rosterLocked')}</span>
+        </div>
+      );
+    }
     return (
       <div
         className={cn(
@@ -153,31 +168,35 @@ export default function SlotCard({
               {t8n('tb.slot.illegalIn', { vg: vg.short })}
             </span>
           )}
-          <button
-            type="button"
-            aria-label={t8n('tb.slot.duplicateAria', { name: label })}
-            title={t8n('tb.slot.duplicate')}
-            disabled={!canDuplicate}
-            onClick={(e) => {
-              e.stopPropagation();
-              onDuplicate(slot.id);
-            }}
-            className="rounded-sm p-0.5 text-tx-muted transition-all hover:text-gold disabled:cursor-not-allowed disabled:opacity-30"
-          >
-            <Copy size={12} />
-          </button>
-          <button
-            type="button"
-            aria-label={t8n('tb.slot.removeAria', { name: label })}
-            title={t8n('tb.slot.remove')}
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove(slot.id);
-            }}
-            className="rounded-sm p-0.5 text-tx-muted transition-all hover:rotate-90 hover:text-gold"
-          >
-            <X size={12} />
-          </button>
+          {!lockRoster && (
+            <>
+              <button
+                type="button"
+                aria-label={t8n('tb.slot.duplicateAria', { name: label })}
+                title={t8n('tb.slot.duplicate')}
+                disabled={!canDuplicate}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDuplicate(slot.id);
+                }}
+                className="rounded-sm p-0.5 text-tx-muted transition-all hover:text-gold disabled:cursor-not-allowed disabled:opacity-30"
+              >
+                <Copy size={12} />
+              </button>
+              <button
+                type="button"
+                aria-label={t8n('tb.slot.removeAria', { name: label })}
+                title={t8n('tb.slot.remove')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove(slot.id);
+                }}
+                className="rounded-sm p-0.5 text-tx-muted transition-all hover:rotate-90 hover:text-gold"
+              >
+                <X size={12} />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -189,11 +208,18 @@ export default function SlotCard({
         </div>
       )}
 
-      {/* sprite on aura */}
-      <div className="relative mx-auto my-0.5 h-[64px] w-[64px]">
+      {/* sprite on aura → detail page (stopPropagation so slot focus / drag stay intact) */}
+      <LocaleLink
+        to={`/pokemon/${slot.pokemonId}`}
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
+        className="group/detail relative mx-auto my-0.5 block h-[64px] w-[64px] outline-none focus-visible:ring-2 focus-visible:ring-gold/70"
+        aria-label={t8n('tb.slot.openDetail', { name: label })}
+        title={t8n('tb.slot.openDetail', { name: label })}
+      >
         <span
           aria-hidden
-          className="absolute inset-[-8px] animate-breathe rounded-full"
+          className="absolute inset-[-8px] animate-breathe rounded-full transition-opacity group-hover/detail:opacity-100"
           style={{
             background: `radial-gradient(circle at 50% 55%, rgba(${primary.rgb},0.38) 0%, rgba(${primary.rgb},0.12) 42%, transparent 70%)`,
             filter: 'blur(10px)',
@@ -204,7 +230,7 @@ export default function SlotCard({
           name={nameOfPokemon(slot.pokemon, lang)}
           era={slot.pokemonId <= 649 ? 'gen5' : 'default'}
           shiny={slot.shiny}
-          className="relative h-full w-full"
+          className="relative h-full w-full transition-transform duration-150 group-hover/detail:scale-105"
         />
         {slot.shiny && (
           <span
@@ -214,13 +240,19 @@ export default function SlotCard({
             <Sparkles size={9} />
           </span>
         )}
-      </div>
+      </LocaleLink>
 
-      {/* name + types */}
+      {/* name + types — name also opens detail */}
       <div className="text-center">
-        <div className="truncate font-display text-[12px] font-bold uppercase tracking-wide text-tx-primary" title={label}>
+        <LocaleLink
+          to={`/pokemon/${slot.pokemonId}`}
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="block truncate font-display text-[12px] font-bold uppercase tracking-wide text-tx-primary outline-none transition-colors hover:text-gold focus-visible:text-gold"
+          title={label}
+        >
           {label}
-        </div>
+        </LocaleLink>
         <div className="mt-1 flex justify-center gap-1">
           {types.map((t) => (
             <TypeBadge key={t} type={t} className="!gap-1 !px-1.5 !py-0 !text-[8px]" />
@@ -329,9 +361,12 @@ export default function SlotCard({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
+              if (readOnly) return;
               onToggleExpand(slot.id);
             }}
-            className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
+            disabled={readOnly}
+            title={readOnly ? t8n('tb.linked.readOnly') : undefined}
+            className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold disabled:cursor-not-allowed disabled:opacity-40"
             aria-expanded={expanded}
             aria-label={t8n('tb.slot.editAria', { name: label })}
           >

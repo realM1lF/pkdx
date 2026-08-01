@@ -26,6 +26,12 @@ import { anyRegionById } from './regions-freeform';
 import { padNum } from './pokeapi';
 import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
+import {
+  fetchEvolutionChainIds,
+  isValidEvolutionTarget,
+  normalizeEncounter,
+  normalizeEncounters,
+} from './nuzlocke-evolution';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 import { ensureRunIdentity, getAuthUser } from './auth';
 
@@ -52,9 +58,12 @@ export const DEFAULT_RULES: NuzRules = {
   releaseOnDeath: true,
   levelCap: null,
   autoLevelCap: false,
+  randomizer: false,
 };
 
 const LS_INDEX = 'pdx2.nuz.runs';
+/** Archived run ids — payload stays under LS_RUN; excluded from the active hub. */
+const LS_ARCHIVED = 'pdx2.nuz.archived';
 const LS_RUN = (id: string) => `pdx2.nuz.run.${id}`;
 const LS_MEMBERS = 'pdx2.nuz.memberships';
 const LS_OWNERS = 'pdx2.nuz.owners';
@@ -66,6 +75,11 @@ export interface RunState {
   mode: RunMode;
   players: NuzPlayerRow[];
   encounters: NuzEncounterRow[];
+}
+
+/** Fire-and-forget party → linked TB sync (dynamic import avoids cycles). */
+function scheduleLinkedSync(state: RunState, playerId?: string): void {
+  void import('./nuzlocke-linked-teams').then((m) => m.syncLinkedTeamsForRun(state, playerId));
 }
 
 /* ---------- feed ---------- */
@@ -138,9 +152,11 @@ function notifyHub(): void {
   hubListeners.forEach((fn) => fn());
 }
 
-/** Recover runs whose payload exists but index entry was lost (quota race, etc.). */
+/** Recover runs whose payload exists but index entry was lost (quota race, etc.).
+ * Archived ids are skipped — they live in LS_ARCHIVED on purpose. */
 function reconcileRunIndex(): void {
   const indexed = new Set(readRunIndex());
+  const archived = new Set(readArchivedIndex());
   const recovered: string[] = [];
   const prefix = 'pdx2.nuz.run.';
   try {
@@ -148,7 +164,7 @@ function reconcileRunIndex(): void {
       const key = localStorage.key(i);
       if (!key?.startsWith(prefix)) continue;
       const id = key.slice(prefix.length);
-      if (id && !indexed.has(id) && loadLocalRun(id)) recovered.push(id);
+      if (id && !indexed.has(id) && !archived.has(id) && loadLocalRun(id)) recovered.push(id);
     }
   } catch {
     /* ignore */
@@ -158,6 +174,18 @@ function reconcileRunIndex(): void {
 
 export function readRunIndex(): string[] {
   return readJson<string[]>(LS_INDEX, []);
+}
+
+export function readArchivedIndex(): string[] {
+  return readJson<string[]>(LS_ARCHIVED, []);
+}
+
+function writeArchivedIndex(ids: string[]): void {
+  if (!writeJson(LS_ARCHIVED, ids)) notifyStorageFailure();
+}
+
+export function isRunArchived(runId: string): boolean {
+  return readArchivedIndex().includes(runId);
 }
 
 /** Most recently touched run id (hub index head). */
@@ -176,12 +204,16 @@ function addToIndex(id: string): void {
 export function loadLocalRun(id: string): RunState | null {
   const s = readJson<RunState | null>(LS_RUN(id), null);
   if (!s || !s.run) return null;
-  return { ...s, run: { ...s.run, rules: normalizeRules(s.run.rules) } };
+  return {
+    ...s,
+    run: { ...s.run, rules: normalizeRules(s.run.rules) },
+    encounters: normalizeEncounters(s.encounters ?? []),
+  };
 }
 
 function saveLocalRun(state: RunState): void {
   if (!writeJson(LS_RUN(state.run.id), state)) notifyStorageFailure();
-  else addToIndex(state.run.id);
+  else if (!isRunArchived(state.run.id)) addToIndex(state.run.id);
   /* cloud mirror (no-op for guests) — dynamic import keeps the module graph acyclic */
   void import('./cloud-sync').then((m) => m.cloudPushSoloRun(state));
 }
@@ -300,40 +332,84 @@ export interface SoulLink {
   broken: boolean;
 }
 
-/** SoulLink pairs: same route, different players, both caught (or one dead). */
-export function soulLinksOf(state: RunState): SoulLink[] {
-  if (!state.run.rules.soulLink) return [];
+/** Full SoulLink group on one route (2–N players). */
+export interface SoulLinkGroup {
+  routeKey: string;
+  members: NuzEncounterRow[];
+  /** any member is dead */
+  broken: boolean;
+}
+
+function soulLinkMembersByRoute(state: RunState): Map<string, NuzEncounterRow[]> {
   const byRoute = new Map<string, NuzEncounterRow[]>();
+  if (!state.run.rules.soulLink) return byRoute;
+  const slotOf = (p: string) => state.players.find((pl) => pl.id === p)?.slot ?? 99;
   for (const e of state.encounters) {
     if (e.status !== 'caught' && e.status !== 'dead') continue;
     const list = byRoute.get(e.route_key) ?? [];
     list.push(e);
     byRoute.set(e.route_key, list);
   }
-  const slotOf = (p: string) => state.players.find((pl) => pl.id === p)?.slot ?? 99;
+  for (const [k, list] of byRoute) {
+    byRoute.set(
+      k,
+      [...list].sort((x, y) => slotOf(x.player_id) - slotOf(y.player_id)),
+    );
+  }
+  return byRoute;
+}
+
+/** One group per route with 2+ linked catches (timeline rail). */
+export function soulLinkGroupsOf(state: RunState): SoulLinkGroup[] {
+  const groups: SoulLinkGroup[] = [];
+  for (const [routeKey, members] of soulLinkMembersByRoute(state)) {
+    if (members.length < 2) continue;
+    groups.push({
+      routeKey,
+      members,
+      broken: members.some((m) => m.status === 'dead'),
+    });
+  }
+  return groups;
+}
+
+/** SoulLink pairs (feed / KPI): consecutive slots per route. */
+export function soulLinksOf(state: RunState): SoulLink[] {
   const links: SoulLink[] = [];
-  for (const [routeKey, list] of byRoute) {
-    const sorted = [...list].sort((x, y) => slotOf(x.player_id) - slotOf(y.player_id));
+  for (const [routeKey, sorted] of soulLinkMembersByRoute(state)) {
+    /* group broken → every pair reads broken (N-player death) */
+    const groupBroken = sorted.some((m) => m.status === 'dead');
     for (let i = 0; i + 1 < sorted.length; i++) {
       const a = sorted[i];
       const b = sorted[i + 1];
-      links.push({ routeKey, a, b, broken: a.status === 'dead' || b.status === 'dead' });
+      links.push({ routeKey, a, b, broken: groupBroken });
     }
   }
   return links;
 }
 
-/** The linked partner encounter, if any. */
+/** All SoulLink mates on the same route (N-player groups, not just pair chain). */
+export function linkPartnersOf(state: RunState, encId: string): NuzEncounterRow[] {
+  if (!state.run.rules.soulLink) return [];
+  const enc = state.encounters.find((e) => e.id === encId);
+  if (!enc || (enc.status !== 'caught' && enc.status !== 'dead')) return [];
+  return state.encounters.filter(
+    (e) =>
+      e.id !== enc.id &&
+      e.route_key === enc.route_key &&
+      e.player_id !== enc.player_id &&
+      (e.status === 'caught' || e.status === 'dead'),
+  );
+}
+
+/** First linked partner (display / 2-player toast). Prefer a living mate. */
 export function linkPartnerOf(state: RunState, encId: string): NuzEncounterRow | null {
-  for (const l of soulLinksOf(state)) {
-    if (l.a.id === encId) return l.b;
-    if (l.b.id === encId) return l.a;
-  }
-  return null;
+  const partners = linkPartnersOf(state, encId);
+  return partners.find((p) => p.status === 'caught') ?? partners[0] ?? null;
 }
 
 export function isLinked(state: RunState, encId: string): boolean {
-  return linkPartnerOf(state, encId) !== null;
+  return linkPartnersOf(state, encId).length > 0;
 }
 
 /** Party membership: explicit `in_party` flag (drag & drop). Legacy runs
@@ -392,7 +468,9 @@ export interface RunKpis {
 }
 
 export function kpisOf(state: RunState): RunKpis {
-  const links = soulLinksOf(state);
+  /* one SoulLink per route group (2–N players), not pairwise edges —
+   * 3 catches on Alabastia → LINKS 1, not 2 (A–B + B–C). */
+  const linkGroups = soulLinkGroupsOf(state);
   /* duped/shiny rows don't resolve a route — only slot-consuming rows count */
   const routes = new Set(state.encounters.filter(isSlotConsuming).map((e) => e.route_key));
   const region = anyRegionById(state.run.region);
@@ -400,7 +478,7 @@ export function kpisOf(state: RunState): RunKpis {
     caught: state.encounters.filter((e) => e.status === 'caught').length,
     dead: state.encounters.filter((e) => e.status === 'dead').length,
     missed: state.encounters.filter((e) => e.status === 'missed' || e.status === 'duped').length,
-    links: links.length,
+    links: linkGroups.length,
     routesDone: routes.size,
     routesTotal: region ? region.nodes.length : 0,
   };
@@ -436,6 +514,8 @@ export interface RunEntry {
   listeners: Set<() => void>;
   refs: number;
   channel: RealtimeChannel | null;
+  /** re-track presence when the tab becomes visible again */
+  presenceVisHandler: (() => void) | null;
   remoteLoaded: boolean;
   teardownTimer: number | null;
 }
@@ -455,6 +535,7 @@ function newEntry(id: string): RunEntry {
     listeners: new Set(),
     refs: 0,
     channel: null,
+    presenceVisHandler: null,
     remoteLoaded: false,
     teardownTimer: null,
   };
@@ -554,7 +635,7 @@ async function fetchRemoteRun(runId: string): Promise<RunState | null> {
     run: { ...row, rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) } },
     mode: 'multi',
     players: (players ?? []) as NuzPlayerRow[],
-    encounters: (encounters ?? []) as NuzEncounterRow[],
+    encounters: normalizeEncounters((encounters ?? []) as NuzEncounterRow[]),
   };
 }
 
@@ -575,12 +656,25 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
     if (local?.run) await ensureRunAccess(local.run);
     const remote = await fetchRemoteRun(entry.id);
     if (remote) {
-      entry.state = remote;
+      /* Keep optimistic inserts still awaiting ack — blind replace would
+       * drop them on SUBSCRIBED refetch (Phase 1.1 will harden to a full outbox). */
+      const pendingKeep =
+        local && entry.pendingSync.size > 0
+          ? local.encounters.filter(
+              (e) => entry.pendingSync.has(e.id) && !remote.encounters.some((r) => r.id === e.id),
+            )
+          : [];
+      const merged =
+        pendingKeep.length > 0
+          ? { ...remote, encounters: [...remote.encounters, ...pendingKeep] }
+          : remote;
+      entry.state = merged;
       entry.phase = 'ready';
-      saveLocalRun(remote);
+      saveLocalRun(merged);
       addToIndex(entry.id);
       /* authoritative re-seed — includes encounter history, not just joins */
       seedFeed(entry);
+      scheduleLinkedSync(merged);
     } else if (!local) {
       entry.phase = 'missing';
     }
@@ -589,6 +683,8 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
   }
   entry.remoteLoaded = true;
   emit(entry);
+  /* Membership/players may arrive only after hydrate — retry live attach. */
+  if (entry.state?.mode === 'multi' && entry.refs > 0 && !entry.channel) goLive(entry);
 }
 
 /* ---------- realtime (nuzlocke.md §2.9) ---------- */
@@ -597,47 +693,57 @@ function presenceMe(entry: RunEntry): { player_id: string; name: string; color: 
   const s = entry.state;
   if (!s) return null;
   const mine = myPlayerId(entry.id);
-  const p = s.players.find((pl) => pl.id === mine) ?? s.players[0];
+  if (!mine) return null;
+  const p = s.players.find((pl) => pl.id === mine);
   return p ? { player_id: p.id, name: p.name, color: p.color } : null;
 }
 
 function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
   const s = entry.state;
   if (!s) return;
-  const before = soulLinksOf(s).length;
-  const idx = s.encounters.findIndex((e) => e.id === enc.id);
+  const normalized = normalizeEncounter(enc);
+  const before = soulLinkGroupsOf(s).length;
+  const idx = s.encounters.findIndex((e) => e.id === normalized.id);
   const isNew = idx < 0;
   if (isNew) {
-    s.encounters = [...s.encounters, enc];
-    pushFeed(entry, encounterFeedEvent(s, enc, true));
+    s.encounters = [...s.encounters, normalized];
+    pushFeed(entry, encounterFeedEvent(s, normalized, true));
   } else {
     const prev = s.encounters[idx];
-    s.encounters = s.encounters.map((e) => (e.id === enc.id ? enc : e));
-    if (prev.status !== enc.status) {
-      pushFeed(entry, encounterFeedEvent(s, enc, true));
-      if (enc.status === 'dead') checkCascade(entry, enc);
-      if (enc.status === 'missed') checkMissCascade(entry, enc);
+    s.encounters = s.encounters.map((e) => (e.id === normalized.id ? normalized : e));
+    if (prev.status !== normalized.status || prev.pokemon_id !== normalized.pokemon_id || prev.level !== normalized.level) {
+      if (prev.status !== normalized.status) {
+        pushFeed(entry, encounterFeedEvent(s, normalized, true));
+        if (normalized.status === 'dead') checkCascade(entry, normalized);
+        if (normalized.status === 'missed') checkMissCascade(entry, normalized);
+      }
     }
   }
-  entry.pendingSync.delete(enc.id);
+  entry.pendingSync.delete(normalized.id);
   saveLocalRun(s);
-  const after = soulLinksOf(s).length;
-  if (after > before) announceLink(entry, s, enc);
+  const after = soulLinkGroupsOf(s).length;
+  if (after > before) announceLink(entry, s, normalized);
   checkMilestones(entry);
+  scheduleLinkedSync(s, normalized.player_id);
   emit(entry);
 }
 
 function goLive(entry: RunEntry): void {
   const s = entry.state;
   if (!s || s.mode !== 'multi' || entry.channel || !isMultiCapable()) return;
+  /* Presence key = player id only (never runId, never players[0] guess). */
+  const presenceKey = myPlayerId(entry.id);
+  if (!presenceKey) return;
   entry.status = 'connecting';
   const runId = entry.id;
-  const ch = runChannel(runId);
+  const ch = runChannel(runId, presenceKey);
   entry.channel = ch;
+  const isCurrent = (): boolean => entry.channel === ch;
   ch.on(
     'postgres_changes',
     { event: '*', schema: 'public', table: 'nuz_encounters', filter: `run_id=eq.${runId}` },
     (payload) => {
+      if (!isCurrent()) return;
       if (payload.eventType === 'DELETE') {
         const old = payload.old as Partial<NuzEncounterRow>;
         const st = entry.state;
@@ -655,6 +761,7 @@ function goLive(entry: RunEntry): void {
     'postgres_changes',
     { event: '*', schema: 'public', table: 'nuz_players', filter: `run_id=eq.${runId}` },
     (payload) => {
+      if (!isCurrent()) return;
       const st = entry.state;
       if (!st) return;
       if (payload.eventType === 'DELETE') {
@@ -677,6 +784,7 @@ function goLive(entry: RunEntry): void {
     'postgres_changes',
     { event: 'UPDATE', schema: 'public', table: 'nuz_runs', filter: `id=eq.${runId}` },
     (payload) => {
+      if (!isCurrent()) return;
       const st = entry.state;
       if (!st) return;
       const row = payload.new as NuzRunRow;
@@ -686,6 +794,7 @@ function goLive(entry: RunEntry): void {
     },
   );
   ch.on('presence', { event: 'sync' }, () => {
+    if (!isCurrent()) return;
     const pres = ch.presenceState<{ player_id: string; name: string; color: string }>();
     const online: Record<string, { name: string; color: string }> = {};
     const wasOnline = new Set(Object.keys(entry.online));
@@ -703,18 +812,35 @@ function goLive(entry: RunEntry): void {
     emit(entry);
   });
   ch.subscribe((status) => {
+    if (!isCurrent()) return;
     if (status === 'SUBSCRIBED') {
       entry.status = 'live';
       const me = presenceMe(entry);
       if (me) void ch.track(me);
+      /* fill any postgres_changes gap while disconnected */
+      void refreshRemote(entry);
     } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
-      if (entry.channel) entry.status = 'reconnecting';
+      entry.status = 'reconnecting';
     }
     emit(entry);
   });
+  if (!entry.presenceVisHandler) {
+    const onVis = (): void => {
+      if (document.visibilityState !== 'visible') return;
+      if (entry.channel !== ch) return;
+      const me = presenceMe(entry);
+      if (me) void ch.track(me);
+    };
+    document.addEventListener('visibilitychange', onVis);
+    entry.presenceVisHandler = onVis;
+  }
 }
 
 function dropLive(entry: RunEntry): void {
+  if (entry.presenceVisHandler) {
+    document.removeEventListener('visibilitychange', entry.presenceVisHandler);
+    entry.presenceVisHandler = null;
+  }
   if (entry.channel) {
     dropChannel(entry.channel);
     entry.channel = null;
@@ -811,15 +937,17 @@ function announceLink(entry: RunEntry, s: RunState, enc: NuzEncounterRow): void 
 
 function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
   const s = entry.state;
-  if (!s) return;
-  const partner = linkPartnerOf(s, deadEnc.id);
-  if (!partner || partner.status !== 'caught') return;
-  const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
-  /* cascade rule off (owner choice): the partner is auto-boxed immediately —
-   * works identically for local and remote (realtime) deaths */
-  if (!s.run.rules.soulLinkCascade) {
-    const idx = s.encounters.findIndex((e) => e.id === partner.id);
-    if (idx >= 0) {
+  if (!s || !s.run.rules.soulLink) return;
+  /* N-player SoulLink: every living catch on the route cascades — not just
+   * the next slot in the pairwise chain (that missed player 3+). */
+  const partners = livingPartnersOnRoute(s, deadEnc);
+  if (partners.length === 0) return;
+  const route = routeLabelOf(s.run, deadEnc.route_key).toUpperCase();
+  for (const partner of partners) {
+    const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
+    /* cascade rule off (owner choice): partners are auto-boxed immediately —
+     * works identically for local and remote (realtime) deaths */
+    if (!s.run.rules.soulLinkCascade) {
       s.encounters = s.encounters.map((e) => (e.id === partner.id ? { ...e, in_party: false } : e));
       saveLocalRun(s);
       if (s.mode === 'multi') {
@@ -827,25 +955,26 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): void {
           nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
         );
       }
+      scheduleLinkedSync(s, partner.player_id);
+      pushFeed(entry, {
+        kind: 'link',
+        color: '#F6C945',
+        title: i18n.t('nuz.feed.linkCascadeBoxed', { name }),
+        meta: route,
+      });
+      pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
+      continue;
     }
+    /* cascade rule on: partners must fall too — local UI confirms via
+     * UpdateResult.cascadePartners; remote viewers get toast + BOX? chip */
     pushFeed(entry, {
       kind: 'link',
       color: '#F6C945',
-      title: i18n.t('nuz.feed.linkCascadeBoxed', { name }),
-      meta: routeLabelOf(s.run, deadEnc.route_key).toUpperCase(),
+      title: i18n.t('nuz.feed.linkCascade', { name }),
+      meta: route,
     });
-    pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
-    return;
+    pushToast('info', i18n.t('nuz.toast.cascade', { name: name.toUpperCase() }));
   }
-  /* cascade rule on: the partner must fall too — the local UI confirms via
-   * UpdateResult.cascadePartner; remote viewers get toast + BOX? chip */
-  pushFeed(entry, {
-    kind: 'link',
-    color: '#F6C945',
-    title: i18n.t('nuz.feed.linkCascade', { name }),
-    meta: routeLabelOf(s.run, deadEnc.route_key).toUpperCase(),
-  });
-  pushToast('info', i18n.t('nuz.toast.cascade', { name: name.toUpperCase() }));
 }
 
 /* ---------- SoulLink missed cascade ----------
@@ -882,6 +1011,7 @@ function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): void {
           nuzTables.encounters().update({ status: 'lost', in_party: false }).eq('id', partner.id),
         );
       }
+      scheduleLinkedSync(s, partner.player_id);
       pushFeed(entry, { kind: 'lost', color: '#F6C945', title: i18n.t('nuz.feed.linkLost', { name }), meta: route });
       pushToast('info', i18n.t('nuz.toast.linkLost', { name: name.toUpperCase() }));
     } else {
@@ -893,6 +1023,7 @@ function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): void {
           nuzTables.encounters().update({ in_party: false }).eq('id', partner.id),
         );
       }
+      scheduleLinkedSync(s, partner.player_id);
       pushFeed(entry, { kind: 'link', color: '#F6C945', title: i18n.t('nuz.feed.linkMissBoxed', { name }), meta: route });
       pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
     }
@@ -1020,6 +1151,9 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   entry.status = mode === 'multi' ? 'connecting' : 'local';
   seedFeed(entry);
   if (mode === 'multi') goLive(entry);
+  void import('./nuzlocke-linked-teams').then((m) => {
+    m.ensureLinkedTeams(state);
+  });
   emit(entry);
   notifyHub();
   return { state, inviteCode: invite, offlineFallback };
@@ -1104,7 +1238,11 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   entry.state = state;
   entry.phase = 'ready';
   seedFeed(entry);
-  void refreshRemote(entry).then(() => goLive(entry));
+  void import('./nuzlocke-linked-teams').then((m) => m.ensureLinkedTeams(state));
+  void refreshRemote(entry).then(() => {
+    goLive(entry);
+    if (entry.state) scheduleLinkedSync(entry.state);
+  });
   emit(entry);
   notifyHub();
   return state;
@@ -1175,13 +1313,13 @@ export function encounterAt(state: RunState, playerId: string, routeKey: string)
   return state.encounters.find((e) => e.player_id === playerId && e.route_key === routeKey && isSlotConsuming(e));
 }
 
-export function logEncounter(runId: string, draft: LogDraft): LogResult {
+export async function logEncounter(runId: string, draft: LogDraft): Promise<LogResult> {
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return { ok: false };
   const region = anyRegionById(s.run.region);
   const node = region ? nodeIndex(region).get(draft.routeKey) : undefined;
-  const violation = validateLogDraft(s, draft, node);
+  const violation = await validateLogDraft(s, draft, node);
   if (violation) return { ok: false, error: violation };
 
   const enc: NuzEncounterRow = {
@@ -1190,6 +1328,7 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
     player_id: draft.playerId,
     route_key: draft.routeKey,
     pokemon_id: draft.pokemonId,
+    caught_pokemon_id: draft.pokemonId,
     nickname: draft.nickname?.trim() ? draft.nickname.trim() : null,
     level: draft.level,
     status: draft.status,
@@ -1207,12 +1346,12 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
     enc.in_party = false;
   }
 
-  const before = soulLinksOf(s).length;
+  const before = soulLinkGroupsOf(s).length;
   s.encounters = [...s.encounters, enc];
   saveLocalRun(s);
   pushFeed(entry, encounterFeedEvent(s, enc, false));
-  const after = soulLinksOf(s).length;
-  const linkedWith = after > before ? linkPartnerOf(s, enc.id) : null;
+  const after = soulLinkGroupsOf(s).length;
+  const linkedWith = after > before || isLinked(s, enc.id) ? linkPartnerOf(s, enc.id) : null;
   if (after > before) announceLink(entry, s, enc);
   if (enc.status === 'dead') checkCascade(entry, enc);
   if (enc.status === 'missed') checkMissCascade(entry, enc);
@@ -1232,6 +1371,7 @@ export function logEncounter(runId: string, draft: LogDraft): LogResult {
       return res;
     });
   }
+  scheduleLinkedSync(s, enc.player_id);
   emit(entry);
   return { ok: true, encounter: enc, linkedWith };
 }
@@ -1269,14 +1409,20 @@ async function reconcileRouteConflict(entry: RunEntry, enc: NuzEncounterRow): Pr
 
 export interface UpdateResult {
   ok: boolean;
+  /** @deprecated use cascadePartners — kept as first living mate for older callers */
   cascadePartner?: NuzEncounterRow | null;
+  /** every living SoulLink mate on the route (N-player) */
+  cascadePartners?: NuzEncounterRow[];
 }
 
-/** Mark dead / mark missed / edit nickname / note (§2.5–2.7 flows). */
+/** Mark dead / mark missed / edit nickname / note (§2.5–2.7 flows).
+ * `fromCascade`: death applied by the SoulLink confirm dialog — skip nested
+ * cascade discovery (the whole group is already being resolved). */
 export function updateEncounter(
   runId: string,
   encId: string,
-  patch: Partial<Pick<NuzEncounterRow, 'status' | 'note' | 'nickname' | 'level'>>,
+  patch: Partial<Pick<NuzEncounterRow, 'status' | 'note' | 'nickname' | 'level' | 'pokemon_id'>>,
+  opts?: { fromCascade?: boolean },
 ): UpdateResult {
   const entry = ensureEntry(runId);
   const s = entry.state;
@@ -1289,14 +1435,15 @@ export function updateEncounter(
   Object.assign(enc, patch);
   const persistedPatch = freesSlot ? { ...patch, in_party: false } : patch;
   saveLocalRun(s);
-  let cascadePartner: NuzEncounterRow | null = null;
+  let cascadePartners: NuzEncounterRow[] = [];
   if (patch.status && patch.status !== prevStatus) {
     pushFeed(entry, encounterFeedEvent(s, enc, false));
     if (patch.status === 'dead') {
-      const partner = linkPartnerOf(s, enc.id);
-      /* only a living partner can cascade — consumed by the UI confirm flow */
-      cascadePartner = partner && partner.status === 'caught' ? partner : null;
-      checkCascade(entry, enc);
+      if (!opts?.fromCascade && s.run.rules.soulLink) {
+        /* all living mates on the route — UI confirm kills the whole group */
+        cascadePartners = livingPartnersOnRoute(s, enc);
+        checkCascade(entry, enc);
+      }
       if (s.run.rules.releaseOnDeath) {
         pushToast('info', i18n.t('nuz.toast.releaseRule', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
       }
@@ -1309,8 +1456,56 @@ export function updateEncounter(
       nuzTables.encounters().update(persistedPatch).eq('id', enc.id),
     );
   }
+  scheduleLinkedSync(s, enc.player_id);
   emit(entry);
-  return { ok: true, cascadePartner };
+  return {
+    ok: true,
+    cascadePartners,
+    cascadePartner: cascadePartners[0] ?? null,
+  };
+}
+
+/** Change current form; Timeline keeps `caught_pokemon_id`. */
+export async function evolveEncounter(
+  runId: string,
+  encId: string,
+  toPokemonId: number,
+): Promise<{ ok: boolean; error?: 'missing' | 'invalid' | 'chain' }> {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  const enc = s?.encounters.find((e) => e.id === encId);
+  if (!s || !enc) return { ok: false, error: 'missing' };
+  if (enc.status !== 'caught') return { ok: false, error: 'invalid' };
+  const normalized = normalizeEncounter(enc);
+  const caughtId = normalized.caught_pokemon_id ?? normalized.pokemon_id;
+  try {
+    const chainIds = await fetchEvolutionChainIds(caughtId);
+    if (!isValidEvolutionTarget(chainIds, caughtId, normalized.pokemon_id, toPokemonId)) {
+      return { ok: false, error: 'chain' };
+    }
+  } catch {
+    return { ok: false, error: 'chain' };
+  }
+  if (enc.caught_pokemon_id == null) enc.caught_pokemon_id = caughtId;
+  const res = updateEncounter(runId, encId, { pokemon_id: toPokemonId });
+  if (!res.ok) return { ok: false, error: 'missing' };
+  if (s.mode === 'multi') {
+    persistWithRetry(entry, enc.id, () =>
+      nuzTables
+        .encounters()
+        .update({ pokemon_id: toPokemonId, caught_pokemon_id: enc.caught_pokemon_id })
+        .eq('id', enc.id),
+    );
+  }
+  pushFeed(entry, {
+    kind: 'catch',
+    color: '#F6C945',
+    title: i18n.t('nuz.feed.evolved', {
+      name: (enc.nickname ?? speciesNamer(toPokemonId)).toUpperCase(),
+    }),
+    meta: routeLabelOf(s.run, enc.route_key).toUpperCase(),
+  });
+  return { ok: true };
 }
 
 /* ---------- actions: party management (drag & drop / menu) ---------- */
@@ -1338,6 +1533,7 @@ export function setEncounterParty(runId: string, encId: string, inParty: boolean
   if (s.mode === 'multi') {
     persistWithRetry(entry, enc.id, () => nuzTables.encounters().update({ in_party: inParty }).eq('id', enc.id));
   }
+  scheduleLinkedSync(s, enc.player_id);
   emit(entry);
   return { ok: true };
 }
@@ -1359,6 +1555,7 @@ export function swapParty(runId: string, boxEncId: string, partyEncId: string): 
     persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id));
     persistWithRetry(entry, b.id, () => nuzTables.encounters().update({ in_party: false }).eq('id', b.id));
   }
+  scheduleLinkedSync(s, a.player_id);
   emit(entry);
   return { ok: true };
 }
@@ -1367,11 +1564,13 @@ export function deleteEncounter(runId: string, encId: string): void {
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return;
+  const removed = s.encounters.find((e) => e.id === encId);
   s.encounters = s.encounters.filter((e) => e.id !== encId);
   saveLocalRun(s);
   if (s.mode === 'multi') {
     persistWithRetry(entry, encId, () => nuzTables.encounters().delete().eq('id', encId));
   }
+  if (removed) scheduleLinkedSync(s, removed.player_id);
   emit(entry);
 }
 
@@ -1386,6 +1585,7 @@ export function renameRun(runId: string, name: string): void {
   if (s.mode === 'multi') {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ name: s.run.name }).eq('id', runId));
   }
+  scheduleLinkedSync(s);
   emit(entry);
 }
 
@@ -1409,6 +1609,7 @@ function rulesSummary(r: NuzRules): string {
     i18n.t(r.shiny ? 'nuz.feed.shinyOn' : 'nuz.feed.shinyOff'),
   ];
   if (r.soulLink) bits.push('SOULLINK');
+  if (r.randomizer) bits.push(i18n.t('nuz.feed.randomizerOn'));
   return bits.join(' · ');
 }
 
@@ -1439,10 +1640,42 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
   emit(entry);
 }
 
-/** Archive = remove from this device (remote rows untouched). */
+/** Archive = hide from the active hub; payload stays on device (restorable). */
 export function archiveRun(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
+  writeArchivedIndex([runId, ...readArchivedIndex().filter((id) => id !== runId)]);
+  /* multi realtime can keep running if the page is still open; hub just hides it */
+  const entry = entries.get(runId);
+  if (entry?.state?.mode === 'multi') dropLive(entry);
+  notifyHub();
+}
+
+/** Move an archived run back into the active hub. */
+export function restoreRun(runId: string): void {
+  if (!loadLocalRun(runId) && !entries.get(runId)?.state) return;
+  writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
+  addToIndex(runId);
+  const entry = ensureEntry(runId);
+  if (entry.state) scheduleLinkedSync(entry.state);
+  notifyHub();
+}
+
+function clearLocalRunMeta(runId: string): void {
+  const members = { ...getMemberships() };
+  if (runId in members) {
+    delete members[runId];
+    if (!writeJson(LS_MEMBERS, members)) notifyStorageFailure();
+  }
+  const owners = readJson<string[]>(LS_OWNERS, []).filter((id) => id !== runId);
+  if (!writeJson(LS_OWNERS, owners)) notifyStorageFailure();
+}
+
+/** Permanent delete on this device (+ cloud solo mirror). Multiplayer remote rows stay for other members. */
+export function deleteRunForever(runId: string): void {
+  writeRunIndex(readRunIndex().filter((id) => id !== runId));
+  writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
   removeLocalKey(LS_RUN(runId));
+  clearLocalRunMeta(runId);
   const entry = entries.get(runId);
   if (entry) {
     dropLive(entry);
@@ -1451,6 +1684,8 @@ export function archiveRun(runId: string): void {
     emit(entry);
     entries.delete(runId);
   }
+  void import('./cloud-sync').then((m) => m.cloudDeleteSoloRun(runId));
+  void import('./nuzlocke-linked-teams').then((m) => m.deleteLinkedTeamsForRun(runId));
   notifyHub();
 }
 
@@ -1465,13 +1700,18 @@ export function duplicateAsSolo(runId: string): string | null {
     playerMap.set(p.id, nid);
     return { ...p, id: nid, run_id: id, created_at: now };
   });
-  const encounters = src.encounters.map((e) => ({
-    ...e,
-    id: uuid(),
-    run_id: id,
-    player_id: playerMap.get(e.player_id) ?? e.player_id,
-    created_at: now,
-  }));
+  const encounterMap = new Map<string, string>();
+  const encounters = src.encounters.map((e) => {
+    const nid = uuid();
+    encounterMap.set(e.id, nid);
+    return {
+      ...normalizeEncounter(e),
+      id: nid,
+      run_id: id,
+      player_id: playerMap.get(e.player_id) ?? e.player_id,
+      created_at: now,
+    };
+  });
   const state: RunState = {
     run: { ...src.run, id, invite_code: null, name: `${src.run.name} (COPY)`, created_at: now },
     mode: 'solo',
@@ -1481,6 +1721,9 @@ export function duplicateAsSolo(runId: string): string | null {
   saveLocalRun(state);
   setRunOwner(id);
   if (players[0]) setMembership(id, players[0].id);
+  void import('./nuzlocke-linked-teams').then((m) => {
+    m.cloneLinkedTeamsForDuplicate(src.run.id, state, playerMap, encounterMap);
+  });
   notifyHub();
   return id;
 }
@@ -1492,20 +1735,25 @@ let hubLoaded = false;
 
 function hubRefresh(): void {
   reconcileRunIndex();
-  for (const id of readRunIndex()) {
+  for (const id of [...readRunIndex(), ...readArchivedIndex()]) {
     const e = ensureEntry(id);
     if (e.state?.mode === 'multi' && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
   }
   notifyHub();
 }
 
-export function useHubRuns(): { runs: RunState[]; loading: boolean; entries: RunEntry[] } {
+export function useHubRuns(): {
+  runs: RunState[];
+  archived: RunState[];
+  loading: boolean;
+  entries: RunEntry[];
+} {
   const [, force] = useReducer((c: number) => c + 1, 0);
 
   useEffect(() => {
     const unsubs = new Map<string, () => void>();
     function syncSubs() {
-      const ids = readRunIndex();
+      const ids = [...readRunIndex(), ...readArchivedIndex()];
       for (const id of ids) if (!unsubs.has(id)) unsubs.set(id, subscribeRun(id, fn));
       for (const [id, u] of [...unsubs]) {
         if (!ids.includes(id)) {
@@ -1531,12 +1779,25 @@ export function useHubRuns(): { runs: RunState[]; loading: boolean; entries: Run
   }, []);
 
   const list = readRunIndex()
-    .map((id) => entries.get(id))
-    .filter((e): e is RunEntry => !!e && !!e.state);
+    .map((id) => ensureEntry(id))
+    .filter((e): e is RunEntry => !!e.state);
   const runs = list
     .map((e) => e.state as RunState)
     .sort((a, b) => lastActivity(b) - lastActivity(a));
-  return { runs, loading: list.some((e) => e.phase === 'loading'), entries: list };
+
+  const archivedEntries = readArchivedIndex()
+    .map((id) => ensureEntry(id))
+    .filter((e): e is RunEntry => !!e.state);
+  const archived = archivedEntries
+    .map((e) => e.state as RunState)
+    .sort((a, b) => lastActivity(b) - lastActivity(a));
+
+  return {
+    runs,
+    archived,
+    loading: list.some((e) => e.phase === 'loading'),
+    entries: [...list, ...archivedEntries],
+  };
 }
 
 function lastActivity(s: RunState): number {

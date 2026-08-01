@@ -977,7 +977,7 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
   const lang = useLanguage();
   return (
     <div>
-      <div className="grid grid-cols-[20px_minmax(0,1fr)_18px_76px_34px_46px] items-center gap-1.5 border-b border-hairline px-2 pb-1">
+      <div className="grid grid-cols-[20px_minmax(0,1fr)_18px_68px_30px_minmax(108px,1.1fr)] items-center gap-1.5 border-b border-hairline px-2 pb-1">
         <span className="pixel-label text-[7px] text-tx-muted"> </span>
         <span className="pixel-label text-[7px] text-tx-muted">{heading}</span>
         <span className="pixel-label text-center text-[6px] text-tx-muted">{t('versus.catCol')}</span>
@@ -1015,12 +1015,18 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
           : cell?.ramp
             ? t('versus.rampNote')
             : undefined;
-        const koText = cell?.ramp?.koHits ? t('versus.rampHits', { n: cell.koHits }) : koLabel(cell);
-        const koTitle = cell?.survivesFirstHit && cell.koHits > 1
-          ? t('versus.sashSurvive')
-          : cell && cell.koChance > 0 && cell.koChance < 1
-            ? t('versus.koChance', { pct: Math.round(cell.koChance * 100) })
-            : undefined;
+        const koText = cell?.ramp?.koHits
+          ? t('versus.rampHits', { n: cell.koHits })
+          : isOhko
+            ? t('versus.ko.one')
+            : koLabel(cell, lang);
+        const koTitle = isOhko
+          ? t('versus.ohkoMove', { acc: cell!.ohko!.accuracy })
+          : cell?.survivesFirstHit && cell.koHits > 1
+            ? t('versus.sashSurvive')
+            : cell && cell.koChance > 0 && cell.koChance < 1
+              ? t('versus.koChance', { pct: Math.round(cell.koChance * 100) })
+              : undefined;
         return (
           <div key={row.slug || `row-${ri}`} className="vs-row" style={{ '--mt': typeRgb(type) } as CSSProperties}>
             <span style={{ color: `rgb(${typeRgb(type)})` }}>
@@ -1064,12 +1070,8 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
               {damaging || isOhko ? EFF_LABEL(eff) : '—'}
             </span>
             <span className="text-right">
-              <span
-                className="vs-ko"
-                data-n={koN}
-                title={isOhko ? t('versus.ohkoMove', { acc: cell!.ohko!.accuracy }) : koTitle}
-              >
-                {isOhko ? 'OHKO' : koText}
+              <span className="vs-ko" data-n={isOhko ? 1 : koN} title={koTitle}>
+                {damaging || isOhko ? koText : '—'}
               </span>
             </span>
           </div>

@@ -6,15 +6,17 @@ import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
-import { CloudUpload, Copy, HardDrive, MoreVertical, Pencil, CopyPlus, Archive } from 'lucide-react';
+import { Archive, ArchiveRestore, CloudUpload, Copy, CopyPlus, HardDrive, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { routeOrder, versionChipLabel } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import {
   archiveRun,
+  deleteRunForever,
   duplicateAsSolo,
   kpisOf,
   pushToast,
   renameRun,
+  restoreRun,
   soulLinksOf,
 } from '@/lib/nuzlocke-store';
 import type { RunEntry, RunState } from '@/lib/nuzlocke-store';
@@ -76,14 +78,28 @@ function MiniTimeline({ state, nameOf }: { state: RunState; nameOf: NameOf }) {
   );
 }
 
-export default function RunCard({ state, entry, index, nameOf }: { state: RunState; entry?: RunEntry; index: number; nameOf: NameOf }) {
+type ConfirmKind = null | 'archive' | 'delete';
+
+export default function RunCard({
+  state,
+  entry,
+  index,
+  nameOf,
+  archived = false,
+}: {
+  state: RunState;
+  entry?: RunEntry;
+  index: number;
+  nameOf: NameOf;
+  archived?: boolean;
+}) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
   const { t } = useTranslation();
   const region = anyRegionById(state.run.region);
   const k = kpisOf(state);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [confirmArchive, setConfirmArchive] = useState(false);
+  const [confirm, setConfirm] = useState<ConfirmKind>(null);
   const [renaming, setRenaming] = useState(false);
   const [nameDraft, setNameDraft] = useState(state.run.name);
   const last = state.encounters[state.encounters.length - 1]?.created_at ?? state.run.created_at;
@@ -97,7 +113,10 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
       onClick={open}
-      className="group col-span-12 cursor-pointer rounded-lg border border-hairline bg-surface1 p-4 transition-all duration-200 hover:-translate-y-1 hover:border-gold/35 lg:col-span-6"
+      className={cn(
+        'group col-span-12 cursor-pointer rounded-lg border bg-surface1 p-4 transition-all duration-200 hover:-translate-y-1 lg:col-span-6',
+        archived ? 'border-hairline/80 opacity-90 hover:border-gold/30' : 'border-hairline hover:border-gold/35',
+      )}
       aria-label={t('nuz.openRun', { name: state.run.name })}
     >
       {/* row 1 — name / chips */}
@@ -131,6 +150,11 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
           {versionChipLabel(state.run.game)}
         </span>
         <RunStatusChip status={state.run.status} />
+        {archived && (
+          <span className="shrink-0 rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">
+            {t('nuz.card.archivedChip')}
+          </span>
+        )}
         <span className="ml-auto flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
           <span title={multi ? t('nuz.card.multiTip') : t('nuz.card.soloTip')} className="text-tx-muted">
             {multi ? <CloudUpload size={14} /> : <HardDrive size={14} />}
@@ -139,7 +163,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
             open={menuOpen}
             onClose={() => {
               setMenuOpen(false);
-              setConfirmArchive(false);
+              setConfirm(null);
             }}
             align="right"
             anchor={
@@ -152,50 +176,87 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
                 <MoreVertical size={14} />
               </button>
             }
-            className="w-[190px] py-1"
+            className="w-[210px] py-1"
           >
-            {[
-              { icon: Pencil, label: t('nuz.card.rename'), act: () => { setMenuOpen(false); setRenaming(true); } },
-              { icon: CopyPlus, label: t('nuz.card.duplicate'), act: () => { const id = duplicateAsSolo(state.run.id); if (id) pushToast('success', i18n.t('nuz.card.duplicated')); setMenuOpen(false); } },
-              {
-                icon: Copy,
-                label: t(multi ? 'nuz.card.copyInvite' : 'nuz.card.copyInviteOnline'),
-                act: () => {
-                  if (state.run.invite_code) {
-                    void navigator.clipboard?.writeText(state.run.invite_code).catch(() => undefined);
-                    pushToast('success', i18n.t('nuz.toast.inviteCopied', { code: state.run.invite_code }));
-                  }
-                  setMenuOpen(false);
+            {!archived &&
+              [
+                { icon: Pencil, label: t('nuz.card.rename'), act: () => { setMenuOpen(false); setRenaming(true); } },
+                { icon: CopyPlus, label: t('nuz.card.duplicate'), act: () => { const id = duplicateAsSolo(state.run.id); if (id) pushToast('success', i18n.t('nuz.card.duplicated')); setMenuOpen(false); } },
+                {
+                  icon: Copy,
+                  label: t(multi ? 'nuz.card.copyInvite' : 'nuz.card.copyInviteOnline'),
+                  act: () => {
+                    if (state.run.invite_code) {
+                      void navigator.clipboard?.writeText(state.run.invite_code).catch(() => undefined);
+                      pushToast('success', i18n.t('nuz.toast.inviteCopied', { code: state.run.invite_code }));
+                    }
+                    setMenuOpen(false);
+                  },
+                  dim: !multi,
                 },
-                dim: !multi,
-              },
-            ].map((item) => (
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={item.act}
+                  className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3', item.dim ? 'text-tx-muted/50' : 'text-tx-secondary hover:text-gold')}
+                >
+                  <item.icon size={13} /> {item.label}
+                </button>
+              ))}
+
+            {archived ? (
               <button
-                key={item.label}
                 type="button"
-                onClick={item.act}
-                className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3', item.dim ? 'text-tx-muted/50' : 'text-tx-secondary hover:text-gold')}
+                onClick={() => {
+                  restoreRun(state.run.id);
+                  pushToast('success', i18n.t('nuz.toast.restored'));
+                  setMenuOpen(false);
+                }}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
               >
-                <item.icon size={13} /> {item.label}
+                <ArchiveRestore size={13} /> {t('nuz.card.restore')}
               </button>
-            ))}
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm !== 'archive') {
+                    setConfirm('archive');
+                    return;
+                  }
+                  archiveRun(state.run.id);
+                  pushToast('info', i18n.t('nuz.toast.archived'));
+                  setMenuOpen(false);
+                  setConfirm(null);
+                }}
+                className={cn(
+                  'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+                  confirm === 'archive' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
+                )}
+              >
+                <Archive size={13} /> {confirm === 'archive' ? t('nuz.card.confirmArchive') : t('nuz.card.archive')}
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => {
-                if (!confirmArchive) {
-                  setConfirmArchive(true);
+                if (confirm !== 'delete') {
+                  setConfirm('delete');
                   return;
                 }
-                archiveRun(state.run.id);
-                pushToast('info', i18n.t('nuz.toast.archived'));
+                deleteRunForever(state.run.id);
+                pushToast('info', i18n.t('nuz.toast.deleted'));
                 setMenuOpen(false);
+                setConfirm(null);
               }}
               className={cn(
                 'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
-                confirmArchive ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
+                confirm === 'delete' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
               )}
             >
-              <Archive size={13} /> {confirmArchive ? t('nuz.card.confirmArchive') : t('nuz.card.archive')}
+              <Trash2 size={13} /> {confirm === 'delete' ? t('nuz.card.confirmDelete') : t('nuz.card.deleteForever')}
             </button>
           </Popover>
         </span>
@@ -236,7 +297,7 @@ export default function RunCard({ state, entry, index, nameOf }: { state: RunSta
           <PixelLabel>{t('nuz.card.dead')}</PixelLabel>
           <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{k.dead}</span>
         </span>
-        <span className="flex items-baseline gap-1.5">
+        <span className="flex items-baseline gap-1.5" title={t('nuz.card.linksTip')}>
           <img src="/sparkle.svg" alt="" className="h-2.5 w-2.5 self-center" />
           <PixelLabel>{t('nuz.card.links')}</PixelLabel>
           <span className="font-display text-[14px] font-bold tabular-nums text-gold">{k.links}</span>

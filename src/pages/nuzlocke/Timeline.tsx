@@ -1,6 +1,6 @@
 /* Nuzlocke run — THE TIMELINE (nuzlocke.md §2.3): horizontal route-card
- * track in canonical order + SoulLink SVG overlay (gradient curves,
- * traveling pulses, death-cascade dashes). Drag / shift-wheel scroll. */
+ * track in canonical order + SoulLink pulse on player border-lefts.
+ * Drag / shift-wheel scroll. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +12,10 @@ import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import { routeOrder } from '@/lib/regions';
 import type { MapNode, RegionMap } from '@/lib/regions';
+import { speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { youAreHereKey } from '@/lib/nuzlocke-store';
 import { isSlotConsuming } from '@/lib/nuzlocke-rules';
-import type { NuzEncounterRow, RunState, SoulLink } from '@/lib/nuzlocke-store';
+import type { NuzEncounterRow, RunState, SoulLinkGroup } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { PixelLabel, StatusDot, timeAgo } from './ui';
 
@@ -52,91 +53,30 @@ function KindGlyph({ kind }: { kind: MapNode['kind'] }) {
   );
 }
 
-/* ---------- SoulLink overlay ---------- */
+/* ---------- SoulLink: glow dot travels along slot border-lefts ---------- */
 
-function linkGeometry(cardIdx: number, slotA: number, slotB: number) {
-  const x = cardIdx * STRIDE + 8;
-  /* S-curve bulges into the 12px card gap (or into the card for the first card) */
-  const cx = cardIdx === 0 ? x + 14 : x - 22;
-  const yA = HEADER_H + slotA * SLOT_H + SLOT_H / 2;
-  const yB = HEADER_H + slotB * SLOT_H + SLOT_H / 2;
-  const d = `M ${x} ${yA} C ${cx} ${yA}, ${cx} ${yB}, ${x} ${yB}`;
-  const mx = 0.25 * x + 0.75 * cx;
-  const my = (yA + yB) / 2;
-  return { d, mx, my };
-}
-
-function SoulLinkOverlay({
-  links,
-  state,
-  cardIndex,
-  width,
-  height,
-  nameOf,
+function SoulLinkPulse({
+  firstSlot,
+  lastSlot,
+  broken,
+  label,
 }: {
-  links: SoulLink[];
-  state: RunState;
-  cardIndex: Map<string, number>;
-  width: number;
-  height: number;
-  nameOf: (id: number) => string;
+  firstSlot: number;
+  lastSlot: number;
+  broken: boolean;
+  label: string;
 }) {
-  const { t } = useTranslation();
-  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const slotOf = (pid: string) => state.players.findIndex((p) => p.id === pid);
-  const colorOf = (pid: string) => state.players.find((p) => p.id === pid)?.color ?? '#F6C945';
-
+  const top = firstSlot * SLOT_H;
+  const height = (lastSlot - firstSlot + 1) * SLOT_H;
   return (
-    <svg width={width} height={height} className="pointer-events-none absolute left-0 top-7 z-10" aria-hidden>
-      <defs>
-        {links.map((l, i) => (
-          <linearGradient key={i} id={`nz-lg-${i}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor={colorOf(l.a.player_id)} />
-            <stop offset="1" stopColor={colorOf(l.b.player_id)} />
-          </linearGradient>
-        ))}
-      </defs>
-      {links.map((l, i) => {
-        const ci = cardIndex.get(l.routeKey);
-        if (ci === undefined) return null;
-        const sa = slotOf(l.a.player_id);
-        const sb = slotOf(l.b.player_id);
-        if (sa < 0 || sb < 0) return null;
-        const { d, mx, my } = linkGeometry(ci, Math.min(sa, sb), Math.max(sa, sb));
-        const label = t('nuz.timeline.soulLinkTip', {
-          a: l.a.nickname ?? nameOf(l.a.pokemon_id),
-          b: l.b.nickname ?? nameOf(l.b.pokemon_id),
-        });
-        return (
-          <g key={`${l.routeKey}-${l.a.id}-${l.b.id}`}>
-            <path
-              d={d}
-              fill="none"
-              stroke={`url(#nz-lg-${i})`}
-              strokeWidth="3"
-              strokeLinecap="round"
-              pathLength={1}
-              className={l.broken ? 'nz-curve-broken' : 'nz-curve'}
-              style={l.broken ? undefined : { animationDelay: `${i * 120}ms` }}
-            />
-            {/* fat invisible hover stroke with native tooltip */}
-            <path d={d} fill="none" stroke="transparent" strokeWidth="14" style={{ pointerEvents: 'stroke' }}>
-              <title>{label}</title>
-            </path>
-            {!l.broken && (
-              <image href="/sparkle.svg" x={mx - 5} y={my - 5} width="10" height="10">
-                <title>{label}</title>
-              </image>
-            )}
-            {!l.broken && !reduced && (
-              <circle r="3" fill="#FFF7D6" opacity="0.9">
-                <animateMotion dur="2.4s" begin={`${i * 0.3}s`} repeatCount="indefinite" path={d} />
-              </circle>
-            )}
-          </g>
-        );
-      })}
-    </svg>
+    <div
+      className="pointer-events-none absolute left-0 z-10 w-[2px]"
+      style={{ top, height }}
+      title={label}
+      aria-hidden
+    >
+      {!broken && <span className="nz-sl-dot" />}
+    </div>
   );
 }
 
@@ -149,16 +89,33 @@ interface SlotProps {
   pendingSync: boolean;
   flashed: boolean;
   cascade: boolean;
+  /** this slot is part of a SoulLink group on the route */
+  linked?: boolean;
+  linkBroken?: boolean;
   nameOf: (id: number) => string;
   onPrefill: () => void;
   onOpen: (enc: NuzEncounterRow, x: number, y: number) => void;
 }
 
-function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nameOf, onPrefill, onOpen }: SlotProps) {
+function PlayerSlot({
+  enc,
+  color,
+  playerName,
+  pendingSync,
+  flashed,
+  cascade,
+  linked,
+  linkBroken,
+  nameOf,
+  onPrefill,
+  onOpen,
+}: SlotProps) {
   const { t } = useTranslation();
+  const speciesId = enc ? speciesIdFor(enc, 'caught') : 0;
+  const speciesName = enc ? nameOf(speciesId) : '';
   const tip = enc
     ? t('nuz.timeline.slotTip', {
-        name: `${nameOf(enc.pokemon_id)}${enc.nickname ? ` '${enc.nickname}'` : ''}`,
+        name: `${speciesName}${enc.nickname ? ` '${enc.nickname}'` : ''}`,
         level: enc.level,
         status: t(`nuz.status${enc.status.charAt(0).toUpperCase() + enc.status.slice(1)}`),
         time: timeAgo(enc.created_at),
@@ -167,8 +124,18 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
     : undefined;
   return (
     <div
-      className={cn('relative flex h-[44px] items-center gap-1.5 border-b border-hairline px-1.5 last:border-b-0', cascade && 'nz-shake')}
-      style={{ borderLeft: `2px solid ${color}` }}
+      className={cn(
+        'relative flex h-[44px] items-center gap-1.5 border-b border-hairline px-1.5 last:border-b-0',
+        cascade && 'nz-shake',
+        linked && !linkBroken && 'nz-sl-border',
+        linked && linkBroken && 'opacity-80',
+      )}
+      style={
+        {
+          borderLeft: `${linked && !linkBroken ? 3 : 2}px solid ${color}`,
+          ['--sl-c' as string]: color,
+        } as CSSProperties
+      }
       title={tip}
     >
       {flashed && <span className="nz-ring-flash pointer-events-none absolute inset-0 rounded-sm" style={{ '--ring-c': color } as CSSProperties} />}
@@ -187,14 +154,14 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
           }}
-          aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
+          aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? speciesName })}
         >
           <span data-slot-enc={enc.id} className="nz-dead-sprite inline-block shrink-0">
-            <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[28px] w-[28px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[28px] w-[28px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
             <span className="block truncate text-[11px] font-semibold text-tx-muted line-through">
-              {enc.nickname ?? nameOf(enc.pokemon_id)}
+              {enc.nickname ?? speciesName}
               {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
             </span>
             <span className="block font-display text-[9px] font-bold text-tx-muted/70">LV {enc.level}</span>
@@ -215,13 +182,13 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
           }}
-          aria-label={t('nuz.timeline.optionsAria', { name: nameOf(enc.pokemon_id) })}
+          aria-label={t('nuz.timeline.optionsAria', { name: speciesName })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 opacity-30">
-            <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[30px] w-[30px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[30px] w-[30px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1 truncate text-[10px] text-tx-muted">
-            {nameOf(enc.pokemon_id)}
+            {speciesName}
             {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
           </span>
           <span className="shrink-0 rounded-full border border-gold/60 px-1 font-pixel text-[6px] tracking-[0.06em] text-gold">
@@ -236,14 +203,14 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
             e.stopPropagation();
             onOpen(enc, e.clientX, e.clientY);
           }}
-          aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
+          aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? speciesName })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 transition-transform duration-200 group-hover/slot:-translate-y-[6%]">
-            <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[36px] w-[36px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[36px] w-[36px]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
             <span className="block truncate text-[11px] font-semibold text-tx-primary">
-              {enc.nickname ?? nameOf(enc.pokemon_id)}
+              {enc.nickname ?? speciesName}
               {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-2.5 w-2.5 align-[-1px]" />}
             </span>
             <span className="block font-display text-[9px] font-bold text-tx-muted">LV {enc.level}</span>
@@ -265,7 +232,7 @@ function PlayerSlot({ enc, color, playerName, pendingSync, flashed, cascade, nam
 interface TimelineProps {
   state: RunState;
   region: RegionMap;
-  links: SoulLink[];
+  groups: SoulLinkGroup[];
   nameOf: (id: number) => string;
   flash: { route: string; playerId: string; key: number } | null;
   cascadeIds: Set<string>;
@@ -274,7 +241,7 @@ interface TimelineProps {
   onOpenEncounter: (enc: NuzEncounterRow, x: number, y: number) => void;
 }
 
-export default function Timeline({ state, region, links, nameOf, flash, cascadeIds, pendingSync, onPrefill, onOpenEncounter }: TimelineProps) {
+export default function Timeline({ state, region, groups, nameOf, flash, cascadeIds, pendingSync, onPrefill, onOpenEncounter }: TimelineProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const nodes = useMemo(() => routeOrder(region), [region]);
@@ -285,6 +252,7 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
   const [dragging, setDragging] = useState(false);
   const cardIndex = useMemo(() => new Map(nodes.map((n, i) => [n.id, i])), [nodes]);
   const trackW = nodes.length * STRIDE - GAP;
+  const groupsByRoute = useMemo(() => new Map(groups.map((g) => [g.routeKey, g])), [groups]);
 
   const encBy = useMemo(() => {
     /* one slot per (player, route): the slot-consuming row wins; among
@@ -377,10 +345,24 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
       >
         <div className="relative w-fit px-4 pb-3 pt-7" style={{ minWidth: '100%' }}>
           <div className="relative" style={{ width: trackW }}>
-            <SoulLinkOverlay links={links} state={state} cardIndex={cardIndex} width={trackW} height={cardH} nameOf={nameOf} />
             <ol className="relative flex gap-3" role="list">
               {nodes.map((node, i) => {
                 const isHere = node.id === hereKey;
+                const linkGroup = groupsByRoute.get(node.id);
+                const linkedIds = new Set(linkGroup?.members.map((m) => m.player_id) ?? []);
+                const linkedSlots = players
+                  .map((p, pi) => (linkedIds.has(p.id) ? pi : -1))
+                  .filter((pi) => pi >= 0);
+                const linkLabel = linkGroup
+                  ? linkGroup.members.length === 2
+                    ? t('nuz.timeline.soulLinkTip', {
+                        a: linkGroup.members[0].nickname ?? nameOf(linkGroup.members[0].pokemon_id),
+                        b: linkGroup.members[1].nickname ?? nameOf(linkGroup.members[1].pokemon_id),
+                      })
+                    : t('nuz.timeline.soulLinkTipGroup', {
+                        names: linkGroup.members.map((m) => m.nickname ?? nameOf(m.pokemon_id)).join(' · '),
+                      })
+                  : '';
                 return (
                   <motion.li
                     key={node.id}
@@ -418,10 +400,19 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                         })}
                       </span>
                     </div>
-                    {/* player slots */}
-                    <div>
+                    {/* player slots + SoulLink pulse on the shared left edge */}
+                    <div className="relative">
+                      {linkedSlots.length >= 2 && linkGroup && (
+                        <SoulLinkPulse
+                          firstSlot={linkedSlots[0]}
+                          lastSlot={linkedSlots[linkedSlots.length - 1]}
+                          broken={linkGroup.broken}
+                          label={linkLabel}
+                        />
+                      )}
                       {players.map((p) => {
                         const enc = encBy.get(`${p.id}:${node.id}`);
+                        const linked = linkedIds.has(p.id);
                         return (
                           <PlayerSlot
                             key={p.id}
@@ -431,6 +422,8 @@ export default function Timeline({ state, region, links, nameOf, flash, cascadeI
                             pendingSync={!!enc && pendingSync.has(enc.id)}
                             flashed={!!flash && flash.route === node.id && flash.playerId === p.id}
                             cascade={!!enc && cascadeIds.has(enc.id)}
+                            linked={linked}
+                            linkBroken={linked && !!linkGroup?.broken}
                             nameOf={nameOf}
                             onPrefill={() => onPrefill(node.id, p.id)}
                             onOpen={onOpenEncounter}

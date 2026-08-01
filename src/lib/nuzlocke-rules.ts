@@ -1,4 +1,5 @@
 /* Nuzlocke rule helpers — validation, run export (player-ux-audit §Nuzlocke). */
+import { fetchEvolutionFamilyIds } from '@/lib/nuzlocke-evolution';
 import { routeOrder } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import type { MapNode, RegionId } from '@/lib/regions';
@@ -20,32 +21,52 @@ export function normalizeRules(partial?: Partial<NuzRules>): NuzRules {
     releaseOnDeath: partial?.releaseOnDeath ?? true,
     levelCap: typeof partial?.levelCap === 'number' ? partial.levelCap : null,
     autoLevelCap: partial?.autoLevelCap ?? false,
+    randomizer: partial?.randomizer ?? false,
   };
 }
 
 /** A row consumes the (run, player, route) slot only when it is a real
  * resolution of the first encounter: `duped` rows just document a skipped
  * dupe (route stays open for the re-roll) and shiny rows are clause-free.
- * Mirrors the partial unique index `nuz_encounters_route_slot_uidx`. */
+ * Mirrors partial unique `nuz_encounters_route_slot_uidx`
+ * (`status IS DISTINCT FROM 'duped'` — null/undefined counts as consuming). */
 export function isSlotConsuming(e: Pick<NuzEncounterRow, 'status' | 'is_shiny'>): boolean {
   return e.status !== 'duped' && !e.is_shiny;
 }
 
+/** Exact species still alive for one player (legacy helper / tests). */
 export function speciesAlive(state: RunState, playerId: string, pokemonId: number): boolean {
   return state.encounters.some(
     (e) => e.player_id === playerId && e.pokemon_id === pokemonId && e.status === 'caught',
   );
 }
 
+/**
+ * Dupes Clause (species / evo-line): any *living* catch in the run whose
+ * current or caught form shares the candidate's evolution family blocks the
+ * catch — including other players (Schiggy on P1 → no Schillok/Turtok for P2).
+ * Dead / missed / lost / duped rows free the line again.
+ */
+export function evoLineAliveInRun(state: RunState, familyIds: number[]): boolean {
+  if (familyIds.length === 0) return false;
+  const family = new Set(familyIds);
+  return state.encounters.some((e) => {
+    if (e.status !== 'caught') return false;
+    if (family.has(e.pokemon_id)) return true;
+    const caught = e.caught_pokemon_id;
+    return typeof caught === 'number' && family.has(caught);
+  });
+}
+
 export function isGiftNode(node: MapNode | undefined): boolean {
   return node?.kind === 'special';
 }
 
-export function validateLogDraft(
+export async function validateLogDraft(
   state: RunState,
   draft: LogDraft,
   node?: MapNode,
-): LogValidationError | null {
+): Promise<LogValidationError | null> {
   const rules = state.run.rules;
   /* shiny clause: shinies are always catchable — they bypass the route lock
    * AND the dupes clause (Bulbapedia). Requires the shiny rule to be on. */
@@ -66,11 +87,13 @@ export function validateLogDraft(
   if (draft.status === 'caught') {
     if (rules.nicknames && !draft.nickname?.trim()) return 'nicknameRequired';
 
-    if (rules.dupes && !shinyBypass && speciesAlive(state, draft.playerId, draft.pokemonId)) {
-      return 'speciesDupe';
+    if (rules.dupes && !shinyBypass) {
+      const family = await fetchEvolutionFamilyIds(draft.pokemonId);
+      if (evoLineAliveInRun(state, family)) return 'speciesDupe';
     }
 
-    if (isGiftNode(node) && draft.offRoute) return 'giftRoute';
+    /* gift/special routes normally require the route table — randomizers have none */
+    if (isGiftNode(node) && draft.offRoute && !rules.randomizer) return 'giftRoute';
   }
 
   return null;

@@ -129,7 +129,15 @@ export interface TeamSlot {
   ability: string | null;
   nature: string | null;
   evs: Record<StatKey, number>;
+  /** Nuzlocke encounter id when this slot is projected from a linked run party */
+  encounterId?: string | null;
 }
+
+/** Battle-set fields preserved while a linked encounter is boxed. */
+export type LinkedSetBagEntry = Pick<
+  TeamSlot,
+  'moves' | 'item' | 'ability' | 'nature' | 'evs' | 'shiny' | 'nickname' | 'level'
+>;
 
 export interface Team {
   id: string;
@@ -137,6 +145,11 @@ export interface Team {
   versionGroup: string;
   slots: TeamSlot[]; // 6
   updatedAt: number;
+  /** When set with linkedPlayerId, roster is projected from that Nuzlocke party */
+  linkedRunId?: string;
+  linkedPlayerId?: string;
+  /** Sets for encounters not currently in the party (box trip preservation) */
+  linkedSetBag?: Record<string, LinkedSetBagEntry>;
 }
 
 export const TEAM_SIZE = 6;
@@ -167,6 +180,24 @@ export function emptySlot(): TeamSlot {
     ability: null,
     nature: null,
     evs: zeroEvs(),
+    encounterId: null,
+  };
+}
+
+export function isLinkedTeam(team: Team): boolean {
+  return typeof team.linkedRunId === 'string' && !!team.linkedRunId && typeof team.linkedPlayerId === 'string' && !!team.linkedPlayerId;
+}
+
+export function extractLinkedSet(slot: TeamSlot): LinkedSetBagEntry {
+  return {
+    moves: [...slot.moves] as TeamSlot['moves'],
+    item: slot.item,
+    ability: slot.ability,
+    nature: slot.nature,
+    evs: { ...slot.evs },
+    shiny: slot.shiny,
+    nickname: slot.nickname,
+    level: slot.level,
   };
 }
 
@@ -589,15 +620,24 @@ export interface SmogonSpeciesEntry {
   weight: number | null;
 }
 
-type SmogonDump = Record<string, { sets?: Record<string, unknown>; weight?: number }>;
+type SmogonDump = Record<string, Record<string, unknown>>;
 
 export function fetchMetaDump(): Promise<SmogonDump> {
   return cachedJson<SmogonDump>(SMOGON_CACHE_KEY, SMOGON_OU_URL);
 }
 
 function asStringArray(v: unknown): string[] {
-  if (!Array.isArray(v)) return [];
-  return v.filter((x): x is string => typeof x === 'string');
+  if (typeof v === 'string') return [v];
+  if (Array.isArray(v)) return v.filter((x): x is string => typeof x === 'string');
+  return [];
+}
+
+function asRecord(v: unknown): Record<string, unknown> | null {
+  return v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : null;
+}
+
+function normalizedSpeciesKey(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 /** Showdown short stat ids → our StatKey (pkmn.cc spreads use short keys) */
@@ -623,26 +663,15 @@ function parseSpread(v: unknown): Partial<Record<StatKey, number>> {
 
 /** defensive parser — tolerates missing/extra fields, name variants */
 export function parseMetaEntry(dump: SmogonDump, speciesDisplay: string): SmogonSpeciesEntry | null {
-  const candidates = [
-    speciesDisplay,
-    speciesDisplay.replace(/-/g, ' '),
-    speciesDisplay.split('-')[0],
-    speciesDisplay.split(/[- ]/).map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join('-'),
-    speciesDisplay.split(/[- ]/).map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
-  ];
-  let raw: { sets?: Record<string, unknown>; weight?: number } | undefined;
-  let matched = '';
-  for (const c of candidates) {
-    if (dump[c]) {
-      raw = dump[c];
-      matched = c;
-      break;
-    }
-  }
-  if (!raw?.sets) return null;
+  const speciesIndex = new Map(Object.keys(dump).map((key) => [normalizedSpeciesKey(key), key]));
+  const matched = speciesIndex.get(normalizedSpeciesKey(speciesDisplay));
+  if (!matched) return null;
+  const raw = dump[matched];
+  const rawSets = asRecord(raw.sets) ?? raw;
   const sets: SmogonSet[] = [];
-  for (const [name, v] of Object.entries(raw.sets)) {
-    const s = v as Record<string, unknown>;
+  for (const [name, v] of Object.entries(rawSets)) {
+    const s = asRecord(v);
+    if (!s) continue;
     const moves = Array.isArray(s.moves)
       ? (s.moves as unknown[]).map((slot) => asStringArray(slot))
       : [];
@@ -652,12 +681,12 @@ export function parseMetaEntry(dump: SmogonDump, speciesDisplay: string): Smogon
     sets.push({
       name,
       moves,
-      items: asStringArray(s.items),
-      abilities: asStringArray(s.abilities),
-      natures: asStringArray(s.natures),
+      items: asStringArray(s.items ?? s.item),
+      abilities: asStringArray(s.abilities ?? s.ability),
+      natures: asStringArray(s.natures ?? s.nature),
       evs,
       level: typeof s.level === 'number' ? s.level : null,
-      teraTypes: asStringArray(s.teraTypes ?? s.teraType),
+      teraTypes: asStringArray(s.teratypes ?? s.teraTypes ?? s.teraType),
     });
   }
   if (!sets.length) return null;
@@ -850,7 +879,7 @@ export async function decodeTeamHash(payload: string): Promise<Team | null> {
 
 export const TEAM_HASH_PREFIX = '#team=';
 
-/** read & clear a `#team=…` hash (one-shot import on page load) */
+/** read & clear a `#team=…` hash (one-shot view-only open on page load) */
 export function consumeTeamHash(): string | null {
   if (typeof window === 'undefined') return null;
   const h = window.location.hash;

@@ -1,7 +1,8 @@
 /* Nuzlocke — page-local UI primitives (Holo-Dex + command-deck density).
  * Tooltips per design.md §9.11 with gold left border; errors = shake + gold, never red. */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Info, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,37 +10,104 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import type { NuzEncounterStatus } from '@/lib/nuzlocke-store';
 
-/* ---------- tooltip (§9.11 shell, gold left border, 200ms intent) ---------- */
+/* ---------- tooltip (§9.11 shell, gold left border, 200ms intent) ----------
+ * Portaled to document.body so modal overflow-y-auto never clips it. */
 
 export function InfoTip({ text, className, iconSize = 12 }: { text: string; className?: string; iconSize?: number }) {
   const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState<{ left: number; top: number; place: 'above' | 'below' } | null>(null);
+  const triggerRef = useRef<HTMLSpanElement>(null);
+  const tipRef = useRef<HTMLSpanElement>(null);
   const timer = useRef<number | null>(null);
+
+  const place = () => {
+    const el = triggerRef.current;
+    const tip = tipRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const tipW = tip?.offsetWidth ?? 220;
+    const tipH = tip?.offsetHeight ?? 72;
+    const gap = 8;
+    let left = r.left + r.width / 2;
+    left = Math.min(window.innerWidth - tipW / 2 - 8, Math.max(tipW / 2 + 8, left));
+    const preferAbove = r.top - tipH - gap >= 8;
+    if (preferAbove) setCoords({ left, top: r.top - gap, place: 'above' });
+    else setCoords({ left, top: r.bottom + gap, place: 'below' });
+  };
+
   const show = () => {
     timer.current = window.setTimeout(() => setOpen(true), 200);
   };
   const hide = () => {
     if (timer.current) window.clearTimeout(timer.current);
     setOpen(false);
+    setCoords(null);
   };
+
   useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
+
+  useLayoutEffect(() => {
+    if (!open) return undefined;
+    place();
+    /* second pass after tip has measured itself */
+    const raf = window.requestAnimationFrame(place);
+    const onReposition = () => place();
+    window.addEventListener('scroll', onReposition, true);
+    window.addEventListener('resize', onReposition);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onReposition, true);
+      window.removeEventListener('resize', onReposition);
+    };
+  }, [open, text]);
+
   return (
-    <span className={cn('relative inline-flex items-center', className)} onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
+    <span
+      ref={triggerRef}
+      className={cn('relative inline-flex items-center', className)}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
+    >
       <Info size={iconSize} className="text-tx-muted/40 transition-colors hover:text-tx-muted" />
-      <AnimatePresence>
-        {open && (
-          <motion.span
-            initial={{ scale: 0.92, y: 4, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 30 }}
-            className="absolute bottom-full left-1/2 z-50 mb-2 w-max max-w-[260px] -translate-x-1/2 rounded-sm border border-hairline2 border-l-2 border-l-gold bg-surface2 px-3 py-2 text-left text-[12px] leading-[1.5] text-tx-secondary shadow-[0_8px_32px_rgba(0,0,0,0.45)]"
-            role="tooltip"
-          >
-            {text}
-            <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1 rotate-45 border-b border-r border-hairline2 bg-surface2" />
-          </motion.span>
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <motion.span
+                ref={tipRef}
+                initial={{ scale: 0.92, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 30 }}
+                className={cn(
+                  'pointer-events-none fixed z-[90] w-max max-w-[260px] -translate-x-1/2 rounded-sm border border-hairline2 border-l-2 border-l-gold bg-surface2 px-3 py-2 text-left text-[12px] leading-[1.5] text-tx-secondary shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
+                  coords?.place === 'below' ? 'translate-y-0' : '-translate-y-full',
+                )}
+                style={
+                  {
+                    left: coords?.left ?? -9999,
+                    top: coords?.top ?? -9999,
+                    visibility: coords ? 'visible' : 'hidden',
+                  } as CSSProperties
+                }
+                role="tooltip"
+              >
+                {text}
+                <span
+                  className={cn(
+                    'absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-hairline2 bg-surface2',
+                    coords?.place === 'below'
+                      ? 'bottom-full translate-y-1 border-l border-t'
+                      : 'top-full -translate-y-1 border-b border-r',
+                  )}
+                />
+              </motion.span>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </span>
   );
 }
@@ -130,15 +198,19 @@ export function GoldSwitch({
         disabled={disabled}
         onClick={() => onChange?.(!checked)}
         className={cn(
-          'relative h-[16px] w-[28px] shrink-0 rounded-full border transition-colors duration-200',
+          // Flex + padding centers the thumb vertically; animate x only —
+          // never combine framer `layout` with -translate-y-1/2 (thumb drifts).
+          'inline-flex h-4 w-7 shrink-0 items-center rounded-full border p-0.5 transition-colors duration-200',
           checked ? 'border-gold/70 bg-gold/25' : 'border-hairline2 bg-surface3',
           !disabled && 'hover:border-gold',
         )}
       >
         <motion.span
-          layout
+          aria-hidden
+          className={cn('block h-2.5 w-2.5 rounded-full', checked ? 'bg-gold' : 'bg-tx-muted')}
+          initial={false}
+          animate={{ x: checked ? 12 : 0 }}
           transition={{ type: 'spring', stiffness: 420, damping: 30 }}
-          className={cn('absolute top-1/2 h-[10px] w-[10px] -translate-y-1/2 rounded-full', checked ? 'left-[15px] bg-gold' : 'left-[3px] bg-tx-muted')}
         />
       </button>
       <span className={cn('font-pixel text-[8px] uppercase tracking-[0.08em]', checked ? 'text-gold' : 'text-tx-muted')}>{label}</span>

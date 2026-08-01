@@ -699,13 +699,19 @@ export function damageBetween(
   }
 }
 
-/** compact KO chip label: OHKO / 2HKO / 3HKO / 4HKO+ / 9HKO+ / — */
-export function koLabel(cell: DamageCell | null): string {
-  if (!cell || cell.koHits <= 0) return '—';
-  if (cell.koHits === 1) return 'OHKO';
-  if (cell.koHits <= 3) return `${cell.koHits}HKO`;
-  if (cell.koHits >= 9) return '9HKO+';
-  return '4HKO+';
+/** Plain-language KO chip from hit count (1 → "1× for KO", 2 → "Use 2× for KO", …). */
+export function koLabelFromHits(hits: number, lang: 'en' | 'de' = 'en'): string {
+  if (hits <= 0) return i18n.t('versus.ko.none', { lng: lang });
+  if (hits === 1) return i18n.t('versus.ko.one', { lng: lang });
+  if (hits <= 3) return i18n.t('versus.ko.n', { lng: lang, n: hits });
+  if (hits >= 9) return i18n.t('versus.ko.plus9', { lng: lang });
+  return i18n.t('versus.ko.plus4', { lng: lang });
+}
+
+/** KO chip for a damage cell — same wording as {@link koLabelFromHits}. */
+export function koLabel(cell: DamageCell | null, lang: 'en' | 'de' = 'en'): string {
+  if (!cell || cell.koHits <= 0) return koLabelFromHits(0, lang);
+  return koLabelFromHits(cell.koHits, lang);
 }
 
 /* ---------- move pools (PokéAPI payload, sync) ---------- */
@@ -796,14 +802,16 @@ export function judgeMatchup(
   const parts: string[] = [];
   if (best) {
     const stab = best.eff >= 2 ? `${t('versus.reasonSuper')} ` : '';
-    parts.push(`${stab}${nameOfMove(best.move, lang)} ${koLabel(best)}`);
+    parts.push(`${stab}${nameOfMove(best.move, lang)} ${koLabel(best, lang)}`);
   } else {
     parts.push(t('versus.reasonNoAnswer'));
   }
   if (worstIn)
     parts.push(
       inHits > 0
-        ? t('versus.reasonTakes', { ko: inHits >= 4 ? '4HKO+' : `${inHits}HKO` })
+        ? t('versus.reasonTakes', {
+            hits: inHits >= 4 ? t('versus.reasonHitsPlus', { n: 4 }) : t('versus.reasonHits', { n: inHits }),
+          })
         : t('versus.reasonChip'),
     );
   else parts.push(t('versus.reasonUntouched'));

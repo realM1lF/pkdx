@@ -39,10 +39,14 @@ Feature Integration Contracts · Enriched-Data Pipeline (pret)
 
 - Project URL + publishable key live in the nuzlocke store module.
 - Tables: `nuz_runs`, `nuz_players`, `nuz_encounters`
-  (`unique(run_id, player_id, route_key)` enforces one encounter per route
-  per player). Realtime channel + Presence for live sync; invite-code
+  (partial unique index `nuz_encounters_route_slot_uidx` on
+  `(run_id, player_id, route_key) WHERE status <> 'duped' AND
+  coalesce(is_shiny,false) = false` — mirrors client `isSlotConsuming`;
+  duped/shiny rows do not consume the route slot). Realtime channel +
+  Presence keyed by **player id** (never run id) for live sync; invite-code
   access. Solo mode mirrors to localStorage (`pdx2.nuz.*`) with an online
-  upgrade path.
+  upgrade path. Client inserts + reconciles `23505` (no PostgREST upsert
+  against the partial index).
 - `getRunTeam(runId)` is the integration hook for Team Builder / Versus.
 - Do not change table names/columns casually — live runs depend on them.
 

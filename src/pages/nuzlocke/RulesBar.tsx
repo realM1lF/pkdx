@@ -106,6 +106,8 @@ export function RulesEditor({ state }: { state: RunState }) {
       <div />
       <GoldSwitch checked={r.releaseOnDeath} onChange={(v) => set({ releaseOnDeath: v })} label={t('nuz.rules.releaseOnDeath')} tip={t('nuz.rules.releaseOnDeathTip')} />
       <div />
+      <GoldSwitch checked={r.randomizer} onChange={(v) => set({ randomizer: v })} label={t('nuz.rules.randomizer')} tip={t('nuz.rules.randomizerTip')} />
+      <div />
       <GoldSwitch checked={r.autoLevelCap} onChange={(v) => set({ autoLevelCap: v })} label={t('nuz.rules.autoLevelCap')} tip={t('nuz.rules.autoLevelCapTip')} />
       <div />
       <span className="flex items-center justify-between gap-2">
@@ -150,7 +152,9 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
             }
           />
           <span className="h-4 w-px bg-hairline2" />
-          <Counter label={t('nuz.rules.links')} value={k.links} gold dot={<img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />} />
+          <span title={t('nuz.rules.linksTip')}>
+            <Counter label={t('nuz.rules.links')} value={k.links} gold dot={<img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />} />
+          </span>
         </div>
 
         {/* clause toggles */}

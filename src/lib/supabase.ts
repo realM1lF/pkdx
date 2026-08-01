@@ -90,6 +90,8 @@ export interface NuzRules {
   levelCap: number | null;
   /** auto cap: ace level of the next unbeaten gym leader (overrides manual) */
   autoLevelCap: boolean;
+  /** randomized encounter table — Quick Entry searches the full dex by default */
+  randomizer: boolean;
 }
 
 export interface NuzRunRow {
@@ -118,7 +120,11 @@ export interface NuzEncounterRow {
   player_id: string;
   /** == MapNode.id from the shared RegionMap (maps.md §0) */
   route_key: string;
+  /** Current form (post-evolution). Team / Box / Versus / linked TB. */
   pokemon_id: number;
+  /** Species at catch time. Timeline / route history. Pre-migration rows
+   * omit this — normalize to `pokemon_id` on load. */
+  caught_pokemon_id?: number;
   nickname: string | null;
   level: number;
   status: NuzEncounterStatus;
@@ -142,10 +148,12 @@ export const nuzTables = {
 
 /* ---------- realtime channel helper (nuzlocke.md §0.2) ----------
  * Channel `run:{runId}` carries postgres_changes on all three tables
- * plus presence (per-player online state). Callers register handlers
+ * plus presence (per-player online state). Presence key MUST be the
+ * player id (unique per client in the room) — never the run id, or every
+ * peer overwrites the same presence slot. Callers register handlers
  * before calling .subscribe(). */
-export function runChannel(runId: string): RealtimeChannel {
-  return supabase.channel(`run:${runId}`, { config: { presence: { key: runId } } });
+export function runChannel(runId: string, presenceKey: string): RealtimeChannel {
+  return supabase.channel(`run:${runId}`, { config: { presence: { key: presenceKey } } });
 }
 
 export function dropChannel(channel: RealtimeChannel): void {

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   damageBetween,
   genMatchupsForSide,
+  koLabelFromHits,
   pokemonFromVersusSide,
   speedCheck,
   statsOf,
@@ -425,5 +426,26 @@ describe('Focus Sash / Sturdy at the defender', () => {
     );
     expect(cell!.multihit).toBeTruthy();
     expect(cell!.koHits).toBe(1); // 2+ hits per use: hit 1 pops the sash, hit 2 KOs
+  });
+});
+
+describe('koLabelFromHits (plain-language chips)', () => {
+  it('localizes the common hit buckets in DE and EN', async () => {
+    const i18n = (await import('@/i18n')).default;
+    const de = (await import('@/i18n/locales/de/translation.json')).default;
+    if (!i18n.hasResourceBundle('de', 'translation')) {
+      i18n.addResourceBundle('de', 'translation', de, true, true);
+    }
+
+    expect(koLabelFromHits(0, 'de')).toBe('—');
+    expect(koLabelFromHits(1, 'de')).toBe('1× für KO');
+    expect(koLabelFromHits(2, 'de')).toBe('2× nutzen für KO');
+    expect(koLabelFromHits(3, 'de')).toBe('3× nutzen für KO');
+    expect(koLabelFromHits(4, 'de')).toBe('4×+ für KO');
+    expect(koLabelFromHits(9, 'de')).toBe('9×+ für KO');
+
+    expect(koLabelFromHits(1, 'en')).toBe('1× for KO');
+    expect(koLabelFromHits(2, 'en')).toBe('Use 2× for KO');
+    expect(koLabelFromHits(4, 'en')).toBe('4×+ for KO');
   });
 });

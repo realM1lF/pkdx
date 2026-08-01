@@ -1,9 +1,7 @@
-/* AnalysisDeck — the command deck (team-builder.md "Analyse-Deck", reworked):
- * DEFENSIVE MATRIX (span 6): 18 attacking types × team members — instantly
- * readable cells (brightness/saturation of the TYPE color, never red),
- * top-3 weakness callouts with concrete fix hints (which types cover it).
- * OFFENSIVE COVERAGE (span 3): SE strip + gap callouts with SE-via hints.
- * META SNAPSHOT (span 3): Smogon gen9 OU sets — visibly labeled as such.
+/* AnalysisDeck — command deck under the 6-slot row:
+ * DEFENSE (lg 8/12): single tall matrix — team header once, all 18 types stacked.
+ * OFFENSE (lg 4/12): coverage strip + gap callouts with plain-language hints.
+ * META (full width below): Smogon gen9 OU reference sets (template, not game law).
  * All warnings gold, never red (design.md §2.3). */
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
@@ -13,6 +11,7 @@ import Sprite from '@/components/Sprite';
 import TypeGlyph from '@/components/TypeGlyph';
 import { useTranslation } from 'react-i18next';
 import { nameOfItem, nameOfMove, nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
+import { LocaleLink } from '@/lib/locale-link';
 import {
   coverTypesFor,
   effectivenessVsMember,
@@ -98,8 +97,8 @@ function WorstCallout({ row, vgId }: { row: DefenseRow; vgId: string }) {
     >
       <div className="flex items-center gap-2">
         <AlertTriangle size={10} className="shrink-0 text-gold" />
-        <span className="tb-micro-gold !text-[8px]">
-          {t('tb.worstLine', { weak: row.weak, type: nameOfType(row.type, lang).toUpperCase(), resist: row.resist + row.immune })}
+        <span className="text-[11px] font-semibold text-gold">
+          {t('tb.worstLine', { weak: row.weak, type: nameOfType(row.type, lang), resist: row.resist + row.immune })}
         </span>
         <TypeGlyph type={row.type} size={12} className="ml-auto shrink-0" style={{ color: TYPE_COLORS[row.type].base }} />
       </div>
@@ -122,49 +121,21 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
   const { t } = useTranslation();
   const lang = useLanguage();
   const worst = worstCases(rows);
-  const colA = rows.slice(0, 9);
-  const colB = rows.slice(9);
-  const gridCols = `14px repeat(${Math.max(members.length, 1)}, minmax(0,1fr))`;
-
-  const renderRow = (r: DefenseRow) => (
-    <div
-      key={r.type}
-      className={cn('grid items-center gap-[3px] rounded-[4px] py-px pl-1', r.severity >= 2 && 'bg-gold/5 shadow-[inset_2px_0_0_rgba(246,201,69,0.7)]')}
-      style={{ gridTemplateColumns: gridCols }}
-    >
-      <TypeGlyph type={r.type} size={11} style={{ color: TYPE_COLORS[r.type].base }} />
-      {members.map((m) => {
-        const eff = effectivenessVsMember(r.type, m, vgId);
-        return (
-          <span
-            key={m.slotId}
-            data-eff={effKind(eff)}
-            className="tb-cell"
-            style={{ '--t': TYPE_COLORS[r.type].rgb } as CSSProperties}
-            title={t('tb.cellTip', {
-              name: nameOfPokemon(m.slug, lang).toUpperCase(),
-              eff,
-              type: nameOfType(r.type, lang).toUpperCase(),
-            })}
-          >
-            {effLabel(eff)}
-          </span>
-        );
-      })}
-    </div>
-  );
+  /* type label + one cell per filled member — single tall matrix, team header once */
+  const gridCols = `minmax(72px, 88px) repeat(${Math.max(members.length, 1)}, minmax(0,1fr))`;
 
   return (
-    <section className="tb-panel md:col-span-12 lg:col-span-6" aria-label={t('tb.defenseAria')}>
+    <section className="tb-panel md:col-span-12 lg:col-span-8" aria-label={t('tb.defenseAria')}>
       <div className="tb-panel-head">
         <span className="tb-micro-gold flex items-center gap-1.5">
           <Shield size={11} />
           {t('tb.defenseEyebrow')}
         </span>
-        <span className="tb-micro !text-[7px]">{t('tb.defenseNote')}</span>
       </div>
       <div className="p-3">
-        {/* top-3 weaknesses with fix hints */}
+        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t('tb.defenseHelp')}</p>
+
+        {/* top weaknesses with plain-language fix hints */}
         <div className="mb-2.5 space-y-1.5" aria-live="polite">
           {worst.length === 0 ? (
             <div className="tb-chip w-full justify-center !py-1.5 text-tx-muted">
@@ -176,36 +147,73 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
           )}
         </div>
 
-        {/* column headers: the team members */}
-        <div className="mb-1 grid gap-x-3 sm:grid-cols-2">
-          {[0, 1].map((half) => (
+        {/* legend before the grid — read first, then scan numbers */}
+        <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[8px] border border-hairline bg-surface2/60 px-2 py-1.5">
+          <span className="tb-micro !text-[8px]">{t('tb.legend.weak')}</span>
+          <span className="tb-micro !text-[8px]">{t('tb.legend.resist')}</span>
+          <span className="tb-micro !text-[8px]">{t('tb.legend.immune')}</span>
+          <span className="tb-micro ml-auto !text-[8px]">{t('tb.legend.ability')}</span>
+        </div>
+
+        {/* one team header */}
+        <div className="mb-1 grid items-end gap-[3px] pl-1" style={{ gridTemplateColumns: gridCols }}>
+          <span className="tb-micro !text-[7px]">{t('tb.defenseColType')}</span>
+          {members.map((m) => {
+            const name = nameOfPokemon(m.slug, lang);
+            return (
+              <LocaleLink
+                key={m.slotId}
+                to={`/pokemon/${m.pokemonId}`}
+                className="group/m flex min-w-0 flex-col items-center gap-0.5 outline-none transition-colors hover:text-gold focus-visible:text-gold"
+                title={name}
+                aria-label={t('tb.slot.openDetail', { name })}
+              >
+                <Sprite id={m.pokemonId} name={name} era="default" className="h-6 w-6" skeleton={false} />
+                <span className="w-full truncate text-center text-[8px] font-semibold uppercase tracking-wide text-tx-muted transition-colors group-hover/m:text-gold">
+                  {name}
+                </span>
+              </LocaleLink>
+            );
+          })}
+        </div>
+
+        {/* all 18 attacking types in one column */}
+        <div className="space-y-px">
+          {rows.map((r) => (
             <div
-              key={half}
-              className={cn('grid items-center gap-[3px] pl-1', half === 1 && 'max-sm:hidden')}
+              key={r.type}
+              className={cn(
+                'grid items-center gap-[3px] rounded-[4px] py-0.5 pl-1',
+                r.severity >= 2 && 'bg-gold/5 shadow-[inset_2px_0_0_rgba(246,201,69,0.7)]',
+              )}
               style={{ gridTemplateColumns: gridCols }}
             >
-              <span />
-              {members.map((m) => (
-                <span key={m.slotId} className="flex justify-center" title={nameOfPokemon(m.slug, lang)}>
-                  <Sprite id={m.pokemonId} name={nameOfPokemon(m.slug, lang)} era="default" className="h-5 w-5" skeleton={false} />
+              <span className="flex min-w-0 items-center gap-1.5">
+                <TypeGlyph type={r.type} size={12} className="shrink-0" style={{ color: TYPE_COLORS[r.type].base }} />
+                <span className="truncate text-[10px] font-semibold uppercase tracking-wide" style={{ color: TYPE_COLORS[r.type].base }}>
+                  {nameOfType(r.type, lang)}
                 </span>
-              ))}
+              </span>
+              {members.map((m) => {
+                const eff = effectivenessVsMember(r.type, m, vgId);
+                return (
+                  <span
+                    key={m.slotId}
+                    data-eff={effKind(eff)}
+                    className="tb-cell"
+                    style={{ '--t': TYPE_COLORS[r.type].rgb } as CSSProperties}
+                    title={t('tb.cellTip', {
+                      name: nameOfPokemon(m.slug, lang).toUpperCase(),
+                      eff,
+                      type: nameOfType(r.type, lang).toUpperCase(),
+                    })}
+                  >
+                    {effLabel(eff)}
+                  </span>
+                );
+              })}
             </div>
           ))}
-        </div>
-
-        {/* 18 attacking types × team members */}
-        <div className="grid gap-x-3 sm:grid-cols-2">
-          <div className="space-y-px">{colA.map(renderRow)}</div>
-          <div className="space-y-px max-sm:mt-px">{colB.map(renderRow)}</div>
-        </div>
-
-        {/* legend */}
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-hairline pt-1.5">
-          <span className="tb-micro !text-[7px]">{t('tb.legend.weak')}</span>
-          <span className="tb-micro !text-[7px]">{t('tb.legend.resist')}</span>
-          <span className="tb-micro !text-[7px]">{t('tb.legend.immune')}</span>
-          <span className="tb-micro ml-auto !text-[7px]">{t('tb.legend.ability')}</span>
         </div>
       </div>
     </section>
@@ -219,19 +227,21 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
   const lang = useLanguage();
   const covered = POKEMON_TYPES.filter((t) => coverage.se[t].length > 0);
   return (
-    <section className="tb-panel md:col-span-12 lg:col-span-3" aria-label={t8n('tb.offenseAria')}>
+    <section className="tb-panel md:col-span-12 lg:col-span-4" aria-label={t8n('tb.offenseAria')}>
       <div className="tb-panel-head">
         <span className="tb-micro-gold flex items-center gap-1.5">
           <Crosshair size={11} />
           {t8n('tb.offenseEyebrow')}
         </span>
-        <span className="tb-micro !text-[7px] tabular-nums">
+        <span className="tb-micro !text-[8px] tabular-nums">
           {t8n('tb.seCount', { count: covered.length })} {loading && `· ${t8n('tb.sync')}`}
         </span>
       </div>
       <div className="p-3">
+        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t8n('tb.offenseHelp')}</p>
+
         {/* 18-type coverage strip — glyph + hitter count */}
-        <div className="mb-2.5 grid grid-cols-6 gap-1">
+        <div className="mb-2.5 grid grid-cols-3 gap-1.5 sm:grid-cols-6 lg:grid-cols-3">
           {POKEMON_TYPES.map((t) => {
             const hitters = coverage.se[t];
             const isGap = hitters.length === 0;
@@ -239,7 +249,7 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
               <div
                 key={t}
                 className={cn(
-                  'flex h-[30px] flex-col items-center justify-center rounded-[6px] border transition-all duration-150',
+                  'flex min-h-[40px] flex-col items-center justify-center gap-0.5 rounded-[6px] border px-1 py-1 transition-all duration-150',
                   isGap
                     ? 'border-gold/60 bg-gold/10 shadow-[0_0_8px_rgba(246,201,69,0.2)]'
                     : 'border-hairline bg-surface2 hover:border-[rgba(var(--t),0.5)]',
@@ -251,13 +261,18 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
                     : t8n('tb.hitBy', { type: nameOfType(t, lang).toUpperCase(), moves: hitters.map((h) => nameOfMove(h, lang)).join(', ') })
                 }
               >
-                <TypeGlyph
-                  type={t}
-                  size={11}
-                  style={{ color: isGap ? '#F6C945' : TYPE_COLORS[t].base, opacity: isGap ? 1 : 0.85 }}
-                />
-                <span className={cn('text-[7px] font-bold tabular-nums', isGap ? 'text-gold' : 'text-tx-muted')}>
-                  {isGap ? '!' : hitters.length}
+                <span className="flex items-center gap-1">
+                  <TypeGlyph
+                    type={t}
+                    size={11}
+                    style={{ color: isGap ? '#F6C945' : TYPE_COLORS[t].base, opacity: isGap ? 1 : 0.85 }}
+                  />
+                  <span className={cn('truncate text-[8px] font-bold uppercase', isGap ? 'text-gold' : 'text-tx-secondary')}>
+                    {nameOfType(t, lang)}
+                  </span>
+                </span>
+                <span className={cn('text-[8px] font-bold tabular-nums', isGap ? 'text-gold' : 'text-tx-muted')}>
+                  {isGap ? t8n('tb.gapMark') : t8n('tb.seHits', { count: hitters.length })}
                 </span>
               </div>
             );
@@ -290,12 +305,12 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
             <div className="tb-micro !text-[8px]">{t8n('tb.moreGaps', { count: coverage.gaps.length - 3 })}</div>
           )}
         </div>
-        {/* STAB summary */}
+        {/* STAB summary — plain language + optional acronym */}
         <div className="border-t border-hairline pt-2">
-          <span className="tb-micro !text-[7px]">{t8n('tb.stabCoverage')}</span>
+          <span className="tb-micro !text-[8px]">{t8n('tb.stabCoverage')}</span>
           <div className="mt-1 flex flex-wrap gap-1">
             {coverage.stabTypes.length === 0 ? (
-              <span className="tb-micro !text-[8px]">{t8n('tb.addDamaging')}</span>
+              <span className="text-[10px] text-tx-muted">{t8n('tb.addDamaging')}</span>
             ) : (
               coverage.stabTypes.map((t) => (
                 <span key={t} className="tb-chip !text-[8px]" style={{ color: TYPE_COLORS[t].base }}>
@@ -329,11 +344,14 @@ function SetCard({
   primary,
   onApply,
   applied,
+  applyLabel,
 }: {
   set: SmogonSet;
   primary: boolean;
   onApply: () => void;
   applied: boolean;
+  /** override CTA (e.g. "use as template" when team gen ≠ 9) */
+  applyLabel?: string;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
@@ -400,7 +418,7 @@ function SetCard({
                   <Check size={10} /> {t('tb.applied')}
                 </>
               ) : (
-                t('tb.applySet')
+                applyLabel ?? t('tb.applySet')
               )}
             </button>
           </motion.div>
@@ -412,8 +430,9 @@ function SetCard({
 
 function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: MetaPanelProps) {
   const { t } = useTranslation();
+  const mismatched = teamGen !== 9;
   return (
-    <section className="tb-panel md:col-span-12 lg:col-span-3" aria-label={t('tb.metaAria')}>
+    <section className="tb-panel md:col-span-12" aria-label={t('tb.metaAria')}>
       <div className="tb-panel-head">
         <span className="tb-micro-gold flex items-center gap-1.5" title={t('tb.metaGenNote')}>
           <Sparkles size={11} />
@@ -429,14 +448,15 @@ function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: M
         </span>
       </div>
       <div className="p-3">
+        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t('tb.metaHelp')}</p>
         {/* gen-awareness: the meta data is always gen 9 OU — say so, flag mismatch */}
-        {teamGen !== 9 && (
+        {mismatched && (
           <div
             className="mb-2 flex items-center gap-1.5 rounded-[8px] border border-gold/50 bg-gold/10 px-2 py-1.5"
             title={t('tb.metaGenNote')}
           >
             <AlertTriangle size={10} className="shrink-0 text-gold" />
-            <span className="tb-micro-gold !text-[7px]">{t('tb.metaGenMismatch', { gen: teamGen })}</span>
+            <span className="tb-micro-gold !text-[8px]">{t('tb.metaGenMismatch', { gen: teamGen })}</span>
           </div>
         )}
         {state === 'unavailable' && (
@@ -447,13 +467,28 @@ function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: M
         )}
         {state === 'loading' && <div className="tb-micro py-2">{t('tb.syncingOu')}</div>}
         {state !== 'unavailable' && state !== 'loading' && !entry && (
-          <div className="tb-micro py-2">{focusLabel ? t('tb.noOuSets', { name: focusLabel.toUpperCase() }) : t('tb.focusSlot')}</div>
+          <div className="text-[11px] text-tx-muted">
+            {focusLabel ? t('tb.noOuSets', { name: focusLabel }) : t('tb.focusSlot')}
+          </div>
         )}
         {entry && (
-          <div className="space-y-2">
-            <SetCard set={entry.sets[0]} primary onApply={() => onApplySet(entry.sets[0])} applied={applied} />
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            <SetCard
+              set={entry.sets[0]}
+              primary
+              onApply={() => onApplySet(entry.sets[0])}
+              applied={applied}
+              applyLabel={mismatched ? t('tb.applyAsTemplate') : undefined}
+            />
             {entry.sets.slice(1, 3).map((s) => (
-              <SetCard key={s.name} set={s} primary={false} onApply={() => onApplySet(s)} applied={false} />
+              <SetCard
+                key={s.name}
+                set={s}
+                primary={false}
+                onApply={() => onApplySet(s)}
+                applied={false}
+                applyLabel={mismatched ? t('tb.applyAsTemplate') : undefined}
+              />
             ))}
           </div>
         )}
@@ -522,6 +557,8 @@ export default function AnalysisDeck({
       <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
         <DefensePanel rows={defenseRows} members={members} vgId={versionGroup} />
         <CoveragePanel coverage={coverage} loading={coverageLoading} vgId={versionGroup} />
+      </div>
+      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-12">
         <MetaPanel
           state={metaState}
           entry={metaEntry}

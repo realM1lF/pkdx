@@ -11,6 +11,7 @@ import { useLocalePath } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import { ArrowUpFromLine } from 'lucide-react';
 import Sprite from '@/components/Sprite';
+import { hasEvolved, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { boxEntriesOf, pushToast, setEncounterParty } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
@@ -128,6 +129,11 @@ function BoxCell({
         LV {enc.level}
         {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="ml-0.5 inline h-2 w-2 align-[-1px]" />}
       </span>
+      {hasEvolved(enc) && (
+        <span className="max-w-full truncate font-pixel text-[5.5px] tracking-[0.04em] text-tx-muted/70">
+          {t('nuz.team.caughtAs', { name: nameOf(speciesIdFor(enc, 'caught')) })}
+        </span>
+      )}
       {locked ? (
         <StatusBadge enc={enc} />
       ) : (

@@ -22,6 +22,7 @@ import {
   genHasMechanics,
   genTypesOf,
   importRunTeams,
+  isLinkedTeam,
   loadDraft,
   loadTeams,
   offensiveCoverage,
@@ -34,6 +35,7 @@ import {
   versionGroupById,
   zeroEvs,
 } from '@/lib/teambuilder';
+import { getRunState, myPlayerId, updateEncounter } from '@/lib/nuzlocke-store';
 import type {
   CoverageResult,
   ImportedRunTeam,
@@ -71,8 +73,10 @@ export default function TeamBuilder() {
   const { t: t8n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const fromRunHandled = useRef(false);
-  /* shared-team hash is consumed once at mount (lazy initializer) */
+  const viewRunHandled = useRef(false);
+  /* shared-team hash is consumed once at mount — always opens as view-only */
   const [sharedPayload] = useState<string | null>(() => consumeTeamHash());
+  const [viewMode, setViewMode] = useState(!!sharedPayload);
   const [team, setTeam] = useState<Team | null>(() => (sharedPayload ? null : loadDraft()));
   const [teams, setTeams] = useState<Team[]>(() => loadTeams());
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -96,12 +100,13 @@ export default function TeamBuilder() {
     entry: null,
   });
 
-  /* ---------- decode a shared team from the URL hash ---------- */
+  /* ---------- decode a shared team from the URL hash (view-only) ---------- */
   useEffect(() => {
     if (!sharedPayload) return undefined;
     let alive = true;
     void decodeTeamHash(sharedPayload).then((shared) => {
       if (alive && shared) {
+        setViewMode(true);
         setTeam(shared);
         setFocusedId(shared.slots.find((s) => s.pokemon)?.id ?? null);
       }
@@ -111,16 +116,16 @@ export default function TeamBuilder() {
     };
   }, [sharedPayload]);
 
-  /* ---------- draft autosave (debounced) ---------- */
+  /* ---------- draft autosave (debounced) — never for view-only ---------- */
   const draftTimer = useRef<number | null>(null);
   useEffect(() => {
-    if (!team) return undefined;
+    if (!team || viewMode) return undefined;
     if (draftTimer.current) window.clearTimeout(draftTimer.current);
     draftTimer.current = window.setTimeout(() => saveDraft(team), 350);
     return () => {
       if (draftTimer.current) window.clearTimeout(draftTimer.current);
     };
-  }, [team]);
+  }, [team, viewMode]);
 
   /* ---------- hydrate PokéAPI payloads for filled slots ---------- */
   useEffect(() => {
@@ -186,16 +191,28 @@ export default function TeamBuilder() {
 
   const patchSlot = useCallback(
     (slotId: string, patch: Partial<TeamSlot>) => {
-      patchTeam((t) => ({
-        ...t,
-        slots: t.slots.map((s) => (s.id === slotId ? { ...s, ...patch } : s)),
-      }));
+      patchTeam((t) => {
+        const prev = t.slots.find((s) => s.id === slotId);
+        if (
+          typeof patch.level === 'number' &&
+          isLinkedTeam(t) &&
+          t.linkedRunId &&
+          prev?.encounterId
+        ) {
+          updateEncounter(t.linkedRunId, prev.encounterId, { level: patch.level });
+        }
+        return {
+          ...t,
+          slots: t.slots.map((s) => (s.id === slotId ? { ...s, ...patch } : s)),
+        };
+      });
     },
     [patchTeam],
   );
 
   const handlePick = useCallback(
     (slotId: string, pokemonSlug: string, pokemonId: number) => {
+      if (team && isLinkedTeam(team)) return;
       patchSlot(slotId, {
         pokemon: pokemonSlug,
         pokemonId,
@@ -216,20 +233,22 @@ export default function TeamBuilder() {
       setFocusedId(slotId);
       setAppliedSetName(null);
     },
-    [patchSlot],
+    [patchSlot, team],
   );
 
   const handleRemove = useCallback((slotId: string) => {
+    if (team && isLinkedTeam(team)) return;
     patchTeam((t) => ({
       ...t,
       slots: t.slots.map((s) => (s.id === slotId ? { ...emptySlot(), id: s.id } : s)),
     }));
     setExpandedId((cur) => (cur === slotId ? null : cur));
-  }, [patchTeam]);
+  }, [patchTeam, team]);
 
   /* copy a slot into the first free slot (keeps drag keys stable) */
   const handleDuplicate = useCallback(
     (slotId: string) => {
+      if (team && isLinkedTeam(team)) return;
       patchTeam((t) => {
         const src = t.slots.find((s) => s.id === slotId);
         const dstIdx = t.slots.findIndex((s) => !s.pokemon);
@@ -240,18 +259,19 @@ export default function TeamBuilder() {
         return { ...t, slots };
       });
     },
-    [patchTeam],
+    [patchTeam, team],
   );
 
   /* Showdown paste import — replaces slots, keeps team name + game */
   const handleShowdownImport = useCallback(
     (result: ShowdownImport) => {
+      if (team && isLinkedTeam(team)) return;
       patchTeam((t) => ({ ...t, slots: result.slots }));
       setExpandedId(null);
       setFocusedId(null);
       setAppliedSetName(null);
     },
-    [patchTeam],
+    [patchTeam, team],
   );
 
   const handleGameChange = useCallback(
@@ -262,19 +282,23 @@ export default function TeamBuilder() {
   );
 
   const handleClear = useCallback(() => {
+    if (team && isLinkedTeam(team)) return;
     patchTeam((t) => ({ ...t, slots: t.slots.map((s) => ({ ...emptySlot(), id: s.id })) }));
     setExpandedId(null);
     setAppliedSetName(null);
-  }, [patchTeam]);
+  }, [patchTeam, team]);
 
   const handleImport = useCallback(
     (imported: ImportedRunTeam) => {
-      patchTeam((t) => ({
-        ...t,
-        name: imported.runName ? `${imported.runName}` : t.name,
-        versionGroup: imported.versionGroup ?? t.versionGroup,
-        slots: slotsFromImport(imported),
-      }));
+      patchTeam((t) => {
+        if (isLinkedTeam(t)) return t;
+        return {
+          ...t,
+          name: imported.runName ? `${imported.runName}` : t.name,
+          versionGroup: imported.versionGroup ?? t.versionGroup,
+          slots: slotsFromImport(imported),
+        };
+      });
       setExpandedId(null);
       setFocusedId(null);
       setAppliedSetName(null);
@@ -282,6 +306,7 @@ export default function TeamBuilder() {
     [patchTeam],
   );
 
+  /* Open own linked team for edit */
   useEffect(() => {
     const runId = searchParams.get('fromRun');
     if (!runId || fromRunHandled.current) return undefined;
@@ -290,44 +315,122 @@ export default function TeamBuilder() {
     next.delete('fromRun');
     setSearchParams(next, { replace: true });
     let alive = true;
-    void importRunTeams(runId).then((teams) => {
+    void (async () => {
+      try {
+        const { ensureLinkedTeams, findLinkedTeam, ownedPlayerId, syncLinkedTeamRoster } = await import(
+          '@/lib/nuzlocke-linked-teams'
+        );
+        const state = getRunState(runId);
+        const pid = state ? ownedPlayerId(state) : myPlayerId(runId);
+        if (state && pid) {
+          ensureLinkedTeams(state);
+          await syncLinkedTeamRoster(state, pid);
+          const linked = findLinkedTeam(runId, pid);
+          if (alive && linked) {
+            setViewMode(false);
+            setTeam(linked);
+            saveDraft(linked);
+            setFocusedId(linked.slots.find((s) => s.pokemon)?.id ?? null);
+            return;
+          }
+        }
+      } catch {
+        /* fall through to snapshot import */
+      }
       if (!alive) return;
-      const ready = teams.filter((t) => t.members.length > 0);
+      const imported = await importRunTeams(runId);
+      if (!alive) return;
+      const ready = imported.filter((t) => t.members.length > 0);
       if (ready.length === 1) handleImport(ready[0]);
       else if (ready.length > 0) setImportOpen(true);
-    });
+    })();
     return () => {
       alive = false;
     };
   }, [searchParams, setSearchParams, handleImport]);
 
+  /* View another player's party (read-only, not saved to vault) */
+  useEffect(() => {
+    const runId = searchParams.get('viewRun');
+    const playerId = searchParams.get('player');
+    if (!runId || !playerId || viewRunHandled.current) return undefined;
+    viewRunHandled.current = true;
+    const next = new URLSearchParams(searchParams);
+    next.delete('viewRun');
+    next.delete('player');
+    setSearchParams(next, { replace: true });
+    let alive = true;
+    void (async () => {
+      const { buildViewTeamFromParty, ownedPlayerId } = await import('@/lib/nuzlocke-linked-teams');
+      const state = getRunState(runId);
+      if (!state || !alive) return;
+      /* if it's actually my player, open the editable linked team instead */
+      if (ownedPlayerId(state) === playerId) {
+        fromRunHandled.current = false;
+        setSearchParams(new URLSearchParams({ fromRun: runId }), { replace: true });
+        return;
+      }
+      const view = await buildViewTeamFromParty(state, playerId);
+      if (!alive || !view) return;
+      setViewMode(true);
+      setTeam(view);
+      setFocusedId(view.slots.find((s) => s.pokemon)?.id ?? null);
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [searchParams, setSearchParams]);
+
   const handleShare = useCallback(async () => {
     if (!team) return;
     try {
       const payload = await encodeTeamHash(team);
+      /* share URL opens view-only for recipients — do not leave #team in our bar */
       const url = `${window.location.origin}${window.location.pathname}#team=${payload}`;
-      window.history.replaceState(null, '', `#team=${payload}`);
       await navigator.clipboard.writeText(url);
       setShareState('copied');
       window.setTimeout(() => setShareState('idle'), 2200);
     } catch {
-      /* clipboard blocked — the hash is already in the URL bar */
       setShareState('copied');
       window.setTimeout(() => setShareState('idle'), 2200);
     }
   }, [team]);
 
   const handleSave = useCallback(() => {
-    if (!team) return;
+    if (!team || viewMode) return;
     const next = saveTeam(team);
     setTeams(next);
     saveDraft(team);
     setSavedFlash(true);
     window.setTimeout(() => setSavedFlash(false), 2200);
+  }, [team, viewMode]);
+
+  const handleSaveCopy = useCallback(async () => {
+    if (!team) return;
+    const { detachAsCopy } = await import('@/lib/nuzlocke-linked-teams');
+    const copy = detachAsCopy(team);
+    setViewMode(false);
+    setTeam(copy);
+    const next = saveTeam(copy);
+    setTeams(next);
+    saveDraft(copy);
+    setSavedFlash(true);
+    window.setTimeout(() => setSavedFlash(false), 2200);
   }, [team]);
+
+  const linked = !!team && isLinkedTeam(team);
+  const linkedRunState = linked && team.linkedRunId ? getRunState(team.linkedRunId) : null;
+  const linkedForeign =
+    linked &&
+    !!team.linkedRunId &&
+    !!team.linkedPlayerId &&
+    !!linkedRunState &&
+    myPlayerId(team.linkedRunId) !== team.linkedPlayerId;
+  const linkedReadOnly = viewMode || linkedForeign;
 
   const handleApplySet = useCallback(
     (set: SmogonSet) => {
+      if (linkedReadOnly) return;
       const targetId = focusedId ?? team?.slots.find((s) => s.pokemon)?.id;
       if (!targetId) return;
       const moves: TeamSlot['moves'] = [null, null, null, null];
@@ -345,7 +448,7 @@ export default function TeamBuilder() {
       setAppliedSetName(set.name);
       window.setTimeout(() => setAppliedSetName(null), 2600);
     },
-    [focusedId, team, patchSlot],
+    [focusedId, team, patchSlot, linkedReadOnly],
   );
 
   /* ---------- derived: legality, defense, coverage ---------- */
@@ -398,7 +501,7 @@ export default function TeamBuilder() {
   const showdownText = useMemo(() => (team ? teamToShowdown(team) : ''), [team]);
 
   const hasMembers = members.length > 0;
-  const canDuplicate = !!team && filledSlots(team).length < 6;
+  const canDuplicate = !!team && !linked && filledSlots(team).length < 6;
 
   const coverageLoading = useMemo(() => {
     if (!team) return false;
@@ -515,6 +618,19 @@ export default function TeamBuilder() {
     if (!team) setTeams(loadTeams());
   }, [team]);
 
+  /* Hub open: drop leftover foreign Nuzlocke teams (own-only vault) */
+  useEffect(() => {
+    if (team) return undefined;
+    let alive = true;
+    void import('@/lib/nuzlocke-linked-teams').then((m) => {
+      m.repairAllLinkedTeams();
+      if (alive) setTeams(loadTeams());
+    });
+    return () => {
+      alive = false;
+    };
+  }, [team]);
+
   /* ---------- hub (no team being edited) ---------- */
   if (!team) {
     return (
@@ -523,10 +639,12 @@ export default function TeamBuilder() {
           teams={teams}
           onNew={() => {
             const t = emptyTeam();
+            setViewMode(false);
             setTeam(t);
             saveDraft(t);
           }}
           onLoad={(t) => {
+            setViewMode(false);
             setTeam(t);
             saveDraft(t);
             setFocusedId(t.slots.find((s) => s.pokemon)?.id ?? null);
@@ -545,35 +663,48 @@ export default function TeamBuilder() {
         team={team}
         saved={savedFlash}
         shareState={shareState}
-        onName={(name) => patchTeam((t) => ({ ...t, name }))}
-        onGameChange={handleGameChange}
+        readOnly={linkedReadOnly}
+        viewOnly={viewMode}
+        onName={(name) => {
+          if (linked || linkedReadOnly) return;
+          patchTeam((t) => ({ ...t, name }));
+        }}
+        onGameChange={(vgId) => {
+          if (linked || linkedReadOnly) return;
+          handleGameChange(vgId);
+        }}
         onImport={() => setImportOpen(true)}
         onShowdown={() => setShowdownTab(filledSlots(team).length ? 'export' : 'import')}
         onShare={() => void handleShare()}
         onSave={handleSave}
+        onSaveCopy={() => void handleSaveCopy()}
         onClear={handleClear}
         onOpenHub={() => {
-          if (team && filledSlots(team).length > 0) {
+          if (!viewMode && team && filledSlots(team).length > 0) {
             setTeams(saveTeam(team));
           } else {
             setTeams(loadTeams());
           }
-          saveDraft(null);
+          if (!viewMode) saveDraft(null);
+          setViewMode(false);
           setTeam(null);
         }}
         savedCount={teams.length}
       />
 
-      {/* 6-slot card row — framer drag & drop reorder */}
+      {/* 6-slot card row — framer drag & drop reorder (locked for linked teams) */}
       <Reorder.Group
         axis="x"
         values={team.slots}
-        onReorder={(slots) => patchTeam((t) => ({ ...t, slots }))}
+        onReorder={(slots) => {
+          if (linked) return;
+          patchTeam((t) => ({ ...t, slots }));
+        }}
         className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6"
         as="div"
       >
         {team.slots.map((slot, i) => (
-          <Reorder.Item key={slot.id} value={slot} as="div" className="min-w-0">
+          <Reorder.Item key={slot.id} value={slot} as="div" className="min-w-0" drag={!linked}>
             <SlotCard
               slot={slot}
               index={i}
@@ -583,6 +714,8 @@ export default function TeamBuilder() {
               versusOpponentId={versusOpponentBySlot.get(slot.id) ?? null}
               moveDetails={moveDetails}
               canDuplicate={canDuplicate}
+              rosterLocked={linked}
+              readOnly={linkedReadOnly}
               expanded={expandedId === slot.id}
               focused={focusSlot?.id === slot.id}
               onPick={handlePick}
@@ -598,7 +731,7 @@ export default function TeamBuilder() {
         ))}
       </Reorder.Group>
 
-      {/* per-slot expander */}
+      {/* per-slot expander (read-only for foreign multi linked teams) */}
       <AnimatePresence>
         {expandedSlot && (
           <SlotEditor
@@ -607,6 +740,7 @@ export default function TeamBuilder() {
             pokemon={expandedSlot.pokemonId != null ? pokemonCache[expandedSlot.pokemonId] : undefined}
             versionGroup={team.versionGroup}
             legality={legalities.get(expandedSlot.id) ?? { legal: true, reasons: [] }}
+            readOnly={linkedReadOnly}
             onPatch={patchSlot}
           />
         )}

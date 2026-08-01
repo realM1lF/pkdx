@@ -7,16 +7,19 @@ import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useLanguage } from '@/lib/i18n-data';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Share2, Skull, SlidersHorizontal, Archive, Swords } from 'lucide-react';
+import { Archive, ArchiveRestore, ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Share2, Skull, SlidersHorizontal, Swords, Trash2 } from 'lucide-react';
 import { regionName, versionChipLabel } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import {
   archiveRun,
+  deleteRunForever,
   exportRunSummary,
   goOnline,
+  isRunArchived,
   isRunOwner,
   pushToast,
   renameRun,
+  restoreRun,
   setRunStatus,
 } from '@/lib/nuzlocke-store';
 import type { RunEntry } from '@/lib/nuzlocke-store';
@@ -45,9 +48,11 @@ export default function RunHeader({
   const [inviteOpen, setInviteOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [goingOnline, setGoingOnline] = useState(false);
+  const [confirm, setConfirm] = useState<null | 'archive' | 'delete'>(null);
   if (!state) return null;
   const region = anyRegionById(state.run.region);
   const owner = isRunOwner(state.run.id);
+  const archived = isRunArchived(state.run.id);
   const multi = state.mode === 'multi';
 
   const copyInvite = () => {
@@ -202,7 +207,10 @@ export default function RunHeader({
         {/* overflow */}
         <Popover
           open={menuOpen}
-          onClose={() => setMenuOpen(false)}
+          onClose={() => {
+            setMenuOpen(false);
+            setConfirm(null);
+          }}
           align="right"
           anchor={
             <button
@@ -214,7 +222,7 @@ export default function RunHeader({
               <MoreVertical size={15} />
             </button>
           }
-          className="w-[210px] py-1"
+          className="w-[220px] py-1"
         >
           {owner && (
             <button
@@ -295,16 +303,60 @@ export default function RunHeader({
               <Flag size={13} /> {t('nuz.header.reactivate')}
             </button>
           )}
+          {archived ? (
+            <button
+              type="button"
+              onClick={() => {
+                restoreRun(state.run.id);
+                pushToast('success', i18n.t('nuz.toast.restored'));
+                setMenuOpen(false);
+                setConfirm(null);
+              }}
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            >
+              <ArchiveRestore size={13} /> {t('nuz.header.restore')}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                if (confirm !== 'archive') {
+                  setConfirm('archive');
+                  return;
+                }
+                archiveRun(state.run.id);
+                pushToast('info', i18n.t('nuz.toast.archived'));
+                setMenuOpen(false);
+                setConfirm(null);
+                navigate(localePath('/nuzlocke'));
+              }}
+              className={cn(
+                'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+                confirm === 'archive' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
+              )}
+            >
+              <Archive size={13} /> {confirm === 'archive' ? t('nuz.header.confirmArchive') : t('nuz.header.archive')}
+            </button>
+          )}
           <button
             type="button"
             onClick={() => {
-              archiveRun(state.run.id);
-              pushToast('info', i18n.t('nuz.toast.archived'));
+              if (confirm !== 'delete') {
+                setConfirm('delete');
+                return;
+              }
+              deleteRunForever(state.run.id);
+              pushToast('info', i18n.t('nuz.toast.deleted'));
+              setMenuOpen(false);
+              setConfirm(null);
               navigate(localePath('/nuzlocke'));
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className={cn(
+              'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+              confirm === 'delete' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
+            )}
           >
-            <Archive size={13} /> {t('nuz.header.archive')}
+            <Trash2 size={13} /> {confirm === 'delete' ? t('nuz.header.confirmDelete') : t('nuz.header.deleteForever')}
           </button>
         </Popover>
 

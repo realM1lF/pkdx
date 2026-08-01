@@ -157,11 +157,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 18px;
+  height: 22px;
   min-width: 0;
   border-radius: 4px;
   font-family: Orbitron, sans-serif;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #3a4157;

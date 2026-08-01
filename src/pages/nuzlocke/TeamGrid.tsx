@@ -8,9 +8,11 @@ import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MoreVertical } from 'lucide-react';
+import { ExternalLink, MoreVertical } from 'lucide-react';
 import Sprite from '@/components/Sprite';
-import { partyOf, pushToast, setEncounterParty, swapParty } from '@/lib/nuzlocke-store';
+import { LocaleLink } from '@/lib/locale-link';
+import { hasEvolved, speciesIdFor } from '@/lib/nuzlocke-evolution';
+import { myPlayerId, partyOf, pushToast, setEncounterParty, swapParty } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { getPokemon, pokemonTypes } from '@/lib/pokeapi';
 import { TYPE_COLORS } from '@/lib/types';
@@ -119,7 +121,7 @@ function PartySlot({
         }
       }}
       className={cn(
-        'group/cell relative flex h-[88px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-sm border border-hairline bg-surface2 transition-all',
+        'group/cell relative flex h-[96px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-sm border border-hairline bg-surface2 transition-all',
         dragging && 'opacity-40',
         swapTarget && 'border-gold/70 shadow-glow-gold',
       )}
@@ -137,10 +139,15 @@ function PartySlot({
       <span className="max-w-full truncate px-1 text-[10px] font-semibold leading-tight text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
       <span className="flex items-center gap-1">
         <span className="font-display text-[8px] font-bold text-tx-muted">LV {enc.level}</span>
-        {types.slice(0, 2).map((t) => (
-          <TypeChip key={t} type={t} />
+        {types.slice(0, 2).map((tp) => (
+          <TypeChip key={tp} type={tp} />
         ))}
       </span>
+      {hasEvolved(enc) && (
+        <span className="max-w-full truncate px-1 font-pixel text-[6px] tracking-[0.04em] text-tx-muted/80">
+          {t('nuz.team.caughtAs', { name: nameOf(speciesIdFor(enc, 'caught')) })}
+        </span>
+      )}
       {linked && (
         <img src="/sparkle.svg" alt="" className="absolute left-1 top-1 h-1.5 w-1.5" title={partnerName ? t('nuz.team.soulLinkedWith', { name: partnerName }) : t('nuz.team.soulLinked')} />
       )}
@@ -178,6 +185,8 @@ export default function TeamGrid({
   const { t } = useTranslation();
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const [dropPlayer, setDropPlayer] = useState<string | null>(null);
+  const mine =
+    myPlayerId(state.run.id) ?? (state.mode === 'solo' ? state.players[0]?.id ?? null : null);
 
   return (
     <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label={t('nuz.team.aria')}>
@@ -236,8 +245,21 @@ export default function TeamGrid({
             >
               <div className="flex h-8 items-center gap-1.5">
                 <span className={cn('h-2.5 w-2.5 rounded-full', online[p.id] && 'nz-presence-ring')} style={{ background: p.color }} />
-                <span className="font-display text-[13px] font-bold text-tx-primary">{p.name}</span>
-                <span className="ml-auto text-[10px] tabular-nums text-tx-muted">{party.length}/6</span>
+                <span className="min-w-0 truncate font-display text-[13px] font-bold text-tx-primary">{p.name}</span>
+                <span className="text-[10px] tabular-nums text-tx-muted">{party.length}/6</span>
+                <LocaleLink
+                  to={
+                    mine === p.id
+                      ? `/team?fromRun=${state.run.id}`
+                      : `/team?viewRun=${state.run.id}&player=${p.id}`
+                  }
+                  className="ml-auto inline-flex items-center gap-1 rounded-sm border border-hairline px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-tx-muted transition-colors hover:border-gold/50 hover:text-gold"
+                  title={mine === p.id ? t('nuz.team.openMine') : t('nuz.team.openView')}
+                  aria-label={mine === p.id ? t('nuz.team.openMine') : t('nuz.team.openView')}
+                >
+                  <ExternalLink size={11} />
+                  <span className="hidden sm:inline">{mine === p.id ? t('nuz.team.openMineShort') : t('nuz.team.openViewShort')}</span>
+                </LocaleLink>
               </div>
               <div className="grid grid-cols-3 gap-1.5">
                 <AnimatePresence mode="popLayout">
@@ -262,7 +284,7 @@ export default function TeamGrid({
                   <div
                     key={`e${i}`}
                     className={cn(
-                      'grid h-[88px] place-items-center rounded-sm border border-dashed transition-colors',
+                      'grid h-[96px] place-items-center rounded-sm border border-dashed transition-colors',
                       dropPlayer === p.id ? 'border-gold/50 bg-gold/5' : 'border-hairline2',
                     )}
                   >

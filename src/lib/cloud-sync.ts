@@ -200,6 +200,8 @@ export function bootCloudSync(): void {
     void (async () => {
       const [teams, runs] = await Promise.all([hydrateTeams(user), hydrateSoloRuns(user)]);
       maybeOffer(teams, runs);
+      /* mid-run login / second device: repair linked TB teams after hydrate */
+      void import('./nuzlocke-linked-teams').then((m) => m.repairAllLinkedTeams());
     })();
   });
 }

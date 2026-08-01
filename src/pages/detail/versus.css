@@ -4,7 +4,7 @@
 /* ---------- matrix rows (36px) ---------- */
 .vs-row {
   display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) 18px 76px 34px 46px;
+  grid-template-columns: 20px minmax(0, 1fr) 18px 68px 30px minmax(108px, 1.1fr);
   align-items: center;
   gap: 6px;
   height: 36px;
@@ -44,19 +44,22 @@
   opacity: 0.85;
 }
 
-/* KO chips */
+/* KO chips — plain-language labels need a wider column than "2HKO" */
 .vs-ko {
   display: inline-flex;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
-  height: 18px;
-  padding: 0 6px;
+  height: 20px;
+  padding: 0 7px;
   border-radius: 999px;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .vs-ko[data-n='1'] {
   color: #0a0c12;

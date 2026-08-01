@@ -1,11 +1,15 @@
 /* Nuzlocke — encounter context menu: mark dead (with note) / mark missed /
- * edit nickname / remove. Fixed-position at pointer, gold-only feedback. */
+ * evolve / edit level / edit nickname / remove. Fixed-position at pointer,
+ * gold-only feedback. */
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Archive, Check, HeartCrack, Pencil, Trash2, Wind } from 'lucide-react';
+import { Archive, ArrowUpRight, Check, HeartCrack, Hash, Pencil, Trash2, Wind } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { deleteEncounter, pushToast, setEncounterParty, updateEncounter } from '@/lib/nuzlocke-store';
+import { listEvolutionOptions, speciesIdFor } from '@/lib/nuzlocke-evolution';
+import { deleteEncounter, evolveEncounter, pushToast, setEncounterParty, updateEncounter } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, UpdateResult } from '@/lib/nuzlocke-store';
+import { cn } from '@/lib/utils';
+import { useShake } from './ui';
 
 export interface MenuTarget {
   enc: NuzEncounterRow;
@@ -15,6 +19,8 @@ export interface MenuTarget {
    * encounter (route slot already taken by a later catch) */
   canRestore?: boolean;
 }
+
+type SubMode = 'none' | 'note' | 'nick' | 'evolve' | 'level';
 
 export default function EncounterMenu({
   target,
@@ -28,10 +34,13 @@ export default function EncounterMenu({
   onCascade: (res: UpdateResult, enc: NuzEncounterRow) => void;
 }) {
   const { t } = useTranslation();
-  const [noteMode, setNoteMode] = useState(false);
+  const [sub, setSub] = useState<SubMode>('none');
   const [note, setNote] = useState('');
-  const [nickMode, setNickMode] = useState(false);
   const [nick, setNick] = useState('');
+  const [level, setLevel] = useState(1);
+  const [evoOpts, setEvoOpts] = useState<number[]>([]);
+  const [evoLoading, setEvoLoading] = useState(false);
+  const [shakeKey, shake] = useShake();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,16 +63,44 @@ export default function EncounterMenu({
   const [prev, setPrev] = useState<MenuTarget | null>(null);
   if (target !== prev) {
     setPrev(target);
-    setNoteMode(false);
-    setNickMode(false);
+    setSub('none');
     setNote(target?.enc.note ?? '');
     setNick(target?.enc.nickname ?? '');
+    setLevel(target?.enc.level ?? 1);
+    setEvoOpts([]);
+    setEvoLoading(false);
   }
+
+  useEffect(() => {
+    if (!target || sub !== 'evolve') return undefined;
+    let alive = true;
+    setEvoLoading(true);
+    const caughtId = speciesIdFor(target.enc, 'caught');
+    void listEvolutionOptions(caughtId, target.enc.pokemon_id)
+      .then((ids) => {
+        if (alive) setEvoOpts(ids);
+      })
+      .catch(() => {
+        if (alive) {
+          setEvoOpts([]);
+          shake();
+          pushToast('info', t('nuz.toast.evolveFailed'));
+        }
+      })
+      .finally(() => {
+        if (alive) setEvoLoading(false);
+      });
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- shake/t are stable enough; only re-fetch on target/sub
+  }, [target, sub]);
 
   if (!target) return null;
   const { enc } = target;
   const x = Math.min(target.x, window.innerWidth - 240);
-  const y = Math.min(target.y, window.innerHeight - 260);
+  const y = Math.min(target.y, window.innerHeight - 320);
+  const idle = sub === 'none';
 
   const markDead = () => {
     const res = updateEncounter(enc.run_id, enc.id, { status: 'dead', note: note.trim() || enc.note });
@@ -71,15 +108,42 @@ export default function EncounterMenu({
     onClose();
   };
 
+  const commitLevel = () => {
+    const n = Math.max(1, Math.min(100, Math.round(level) || 1));
+    updateEncounter(enc.run_id, enc.id, { level: n });
+    onClose();
+  };
+
+  const pickEvolve = async (toId: number) => {
+    const res = await evolveEncounter(enc.run_id, enc.id, toId);
+    if (!res.ok) {
+      shake();
+      pushToast('info', t('nuz.toast.evolveFailed'));
+      return;
+    }
+    pushToast(
+      'success',
+      t('nuz.toast.evolved', {
+        name: (enc.nickname ?? nameOf(enc.pokemon_id)).toUpperCase(),
+        to: nameOf(toId).toUpperCase(),
+      }),
+    );
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       <motion.div
         ref={ref}
+        key={shakeKey}
         initial={{ scale: 0.92, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 420, damping: 30 }}
-        className="fixed z-[75] w-[220px] rounded-md border border-hairline2 bg-surface2 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.45)]"
+        className={cn(
+          'fixed z-[75] w-[220px] rounded-md border border-hairline2 bg-surface2 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
+          shakeKey > 0 && 'nz-shake',
+        )}
         style={{ left: x, top: y }}
         role="menu"
       >
@@ -88,9 +152,9 @@ export default function EncounterMenu({
           <span className="ml-2 font-display text-[10px] font-bold text-tx-muted">LV {enc.level}</span>
         </div>
 
-        {enc.status === 'caught' && !noteMode && !nickMode && (
+        {enc.status === 'caught' && idle && (
           <>
-            <button type="button" onClick={() => setNoteMode(true)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
+            <button type="button" onClick={() => setSub('note')} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
               <HeartCrack size={13} /> {t('nuz.menu.markDead')}
             </button>
             <button
@@ -104,6 +168,25 @@ export default function EncounterMenu({
               role="menuitem"
             >
               <Wind size={13} /> {t('nuz.menu.markMissed')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setSub('evolve')}
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              role="menuitem"
+            >
+              <ArrowUpRight size={13} /> {t('nuz.menu.evolve')}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setLevel(enc.level);
+                setSub('level');
+              }}
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              role="menuitem"
+            >
+              <Hash size={13} /> {t('nuz.menu.editLevel')}
             </button>
             {/* non-drag path (touch devices): box this party member */}
             {enc.in_party !== false && (
@@ -122,7 +205,7 @@ export default function EncounterMenu({
             )}
           </>
         )}
-        {enc.status !== 'caught' && !noteMode && !nickMode && target.canRestore !== false && (
+        {enc.status !== 'caught' && idle && target.canRestore !== false && (
           <button
             type="button"
             onClick={() => {
@@ -136,7 +219,7 @@ export default function EncounterMenu({
           </button>
         )}
 
-        {noteMode && (
+        {sub === 'note' && (
           <div className="px-3 py-2">
             <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.menu.deathNote')}</label>
             <input
@@ -154,13 +237,59 @@ export default function EncounterMenu({
           </div>
         )}
 
-        {!noteMode && !nickMode && (
-          <button type="button" onClick={() => setNickMode(true)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
+        {sub === 'evolve' && (
+          <div className="max-h-[220px] overflow-y-auto px-1 py-1" data-lenis-prevent>
+            {evoLoading && (
+              <span className="block px-2 py-2 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">…</span>
+            )}
+            {!evoLoading && evoOpts.length === 0 && (
+              <span className="block px-2 py-2 text-[11px] text-tx-muted">{t('nuz.toast.evolveFailed')}</span>
+            )}
+            {evoOpts.map((id) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => void pickEvolve(id)}
+                className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+                role="menuitem"
+              >
+                <ArrowUpRight size={12} className="shrink-0 text-gold/70" />
+                {t('nuz.menu.evolveTo', { name: nameOf(id) })}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {sub === 'level' && (
+          <div className="px-3 py-2">
+            <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.menu.levelLabel')}</label>
+            <input
+              autoFocus
+              type="number"
+              min={1}
+              max={100}
+              value={level}
+              onChange={(e) => setLevel(Number(e.target.value))}
+              onKeyDown={(e) => e.key === 'Enter' && commitLevel()}
+              className="mt-1.5 h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] tabular-nums text-tx-primary outline-none focus:border-gold"
+            />
+            <button
+              type="button"
+              onClick={commitLevel}
+              className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/20"
+            >
+              {t('nuz.menu.levelLabel')} {Math.max(1, Math.min(100, Math.round(level) || 1))}
+            </button>
+          </div>
+        )}
+
+        {idle && (
+          <button type="button" onClick={() => setSub('nick')} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
             <Pencil size={13} /> {t('nuz.menu.editNick')}
           </button>
         )}
 
-        {nickMode && (
+        {sub === 'nick' && (
           <div className="px-3 py-2">
             <input
               autoFocus
@@ -179,7 +308,7 @@ export default function EncounterMenu({
           </div>
         )}
 
-        {!noteMode && !nickMode && (
+        {idle && (
           <button
             type="button"
             onClick={() => {

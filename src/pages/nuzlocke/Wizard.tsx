@@ -464,6 +464,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       </button>
                     ))}
                   </div>
+                  {online && (
+                    <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>
+                  )}
                 </div>
               )}
               <WizardFooter back={() => setStep(0)} next={() => setStep(2)} nextLabel={t('nuz.wizard.rulesNext')} />
@@ -483,6 +486,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     </div>
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
                       <GoldSwitch checked={rules.nicknames} onChange={(v) => setRules((r) => ({ ...r, nicknames: v }))} label={t('nuz.wizard.nicknames')} tip={t('nuz.wizard.nickTip')} />
+                    </div>
+                    <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
+                      <GoldSwitch checked={rules.randomizer} onChange={(v) => setRules((r) => ({ ...r, randomizer: v }))} label={t('nuz.rules.randomizer')} tip={t('nuz.rules.randomizerTip')} />
                     </div>
                     {soulLink && (
                       <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">

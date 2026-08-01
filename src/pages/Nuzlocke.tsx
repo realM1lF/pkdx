@@ -23,8 +23,9 @@ export default function Nuzlocke() {
   const { t } = useTranslation();
   const lang = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { runs, loading, entries } = useHubRuns();
+  const { runs, archived, loading, entries } = useHubRuns();
   const [wizardOpen, setWizardOpen] = useState(false);
+  const [showArchive, setShowArchive] = useState(true);
   const presetRegion = useMemo(() => {
     const raw = searchParams.get('region');
     return raw && isRegionId(raw) ? raw : null;
@@ -147,9 +148,15 @@ export default function Nuzlocke() {
 
       {/* ---------- runs grid (§1.3) ---------- */}
       <section className="mt-8">
-        <div className="mb-3 flex items-baseline gap-3">
+        <div className="mb-3 flex flex-wrap items-baseline gap-3">
           <h2 className="font-display text-[18px] font-bold uppercase text-tx-primary">{t('nuz.activeOps')}</h2>
           <PixelLabel>{runs.length === 1 ? t('nuz.run', { count: runs.length }) : t('nuz.runs', { count: runs.length })}</PixelLabel>
+          <a
+            href="#archiv"
+            className="ml-auto text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold"
+          >
+            {t('nuz.archiveJump', { count: archived.length })}
+          </a>
         </div>
 
         {!loading && runs.length === 0 ? (
@@ -207,6 +214,40 @@ export default function Nuzlocke() {
             )}
           </>
         )}
+      </section>
+
+      {/* ---------- archive vault ---------- */}
+      <section
+        id="archiv"
+        aria-label={t('nuz.archiveAria')}
+        className="mt-10 scroll-mt-28 rounded-lg border border-hairline bg-surface1/60 px-4 py-5 md:px-5"
+      >
+        <div className="mb-2 flex flex-wrap items-baseline gap-3">
+          <div>
+            <PixelLabel className="text-gold">{t('nuz.archiveEyebrow')}</PixelLabel>
+            <h2 className="mt-1 font-display text-[18px] font-bold uppercase text-tx-primary">{t('nuz.archiveTitle')}</h2>
+          </div>
+          <PixelLabel>{t('nuz.archiveCount', { count: archived.length })}</PixelLabel>
+          {archived.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowArchive((o) => !o)}
+              className="ml-auto text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold"
+            >
+              {showArchive ? t('nuz.archiveHide') : t('nuz.archiveShow')}
+            </button>
+          )}
+        </div>
+        <p className="max-w-[520px] text-[12px] leading-relaxed text-tx-secondary">{t('nuz.archiveHelp')}</p>
+        {archived.length === 0 ? (
+          <p className="mt-3 text-[11px] text-tx-muted">{t('nuz.archiveEmpty')}</p>
+        ) : showArchive ? (
+          <div className="mt-4 grid grid-cols-12 gap-4">
+            {archived.map((s, i) => (
+              <RunCard key={s.run.id} state={s} entry={entryOf(s.run.id)} index={i} nameOf={nameOf} archived />
+            ))}
+          </div>
+        ) : null}
       </section>
 
       <WhatIsNuzlocke />
