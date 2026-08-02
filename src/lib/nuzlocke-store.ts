@@ -318,6 +318,110 @@ function setRunOwner(runId: string): void {
   if (!owners.includes(runId) && !writeJson(LS_OWNERS, [...owners, runId])) notifyStorageFailure();
 }
 
+function isMissingColumnError(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  if (error.code === PG_MISSING_COLUMN) return true;
+  return /archived/i.test(error.message ?? '') && /column|schema cache/i.test(error.message ?? '');
+}
+
+function isAccountLinkedRun(runId: string): boolean {
+  return (
+    readPersistedAccountRunIds().has(runId) ||
+    accountRunIds.has(runId) ||
+    readArchivedIndex().includes(runId)
+  );
+}
+
+async function resolveMembershipRole(runId: string): Promise<'owner' | 'member' | null> {
+  const user = getAuthUser();
+  if (!user || !isMultiCapable()) return isRunOwner(runId) ? 'owner' : null;
+
+  const { data, error } = await supabase
+    .from('nuz_run_members')
+    .select('role')
+    .eq('run_id', runId)
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (!error && data) {
+    return (data as { role?: string }).role === 'owner' ? 'owner' : 'member';
+  }
+  if (isRunOwner(runId)) return 'owner';
+  if (myPlayerId(runId) || getMemberships()[runId]) return 'member';
+  return null;
+}
+
+async function remoteDeleteRunForever(runId: string): Promise<void> {
+  if (!isMultiCapable()) return;
+  const user = getAuthUser();
+  if (!user) return;
+
+  const role = await resolveMembershipRole(runId);
+  if (role === 'owner') {
+    const { error } = await nuzTables.runs().delete().eq('id', runId);
+    if (error) console.warn('[nuzlocke] run delete failed', error.message);
+    return;
+  }
+  if (role === 'member') {
+    const { error } = await supabase
+      .from('nuz_run_members')
+      .delete()
+      .eq('run_id', runId)
+      .eq('user_id', user.id);
+    if (error) console.warn('[nuzlocke] leave run failed', error.message);
+    return;
+  }
+  if (isRunOwner(runId) || isAccountLinkedRun(runId)) {
+    const { error } = await nuzTables.runs().delete().eq('id', runId);
+    if (error) console.warn('[nuzlocke] run delete failed', error.message);
+  }
+}
+
+async function syncMembershipArchived(runId: string, archived: boolean): Promise<void> {
+  const user = getAuthUser();
+  if (!user || !isMultiCapable() || !membersArchivedSupported || !isAccountLinkedRun(runId)) return;
+
+  const { error } = await supabase
+    .from('nuz_run_members')
+    .update({ archived })
+    .eq('run_id', runId)
+    .eq('user_id', user.id);
+
+  if (error) {
+    if (isMissingColumnError(error)) {
+      membersArchivedSupported = false;
+      return;
+    }
+    console.warn('[nuzlocke] archive sync failed', error.message);
+    return;
+  }
+
+  if (archived) accountRunIds.delete(runId);
+  else accountRunIds.add(runId);
+  notifyHub();
+}
+
+function syncLocalArchivedFromServer(archivedIds: Set<string>, activeIds: Set<string>): void {
+  let archived = readArchivedIndex();
+  let active = readRunIndex();
+
+  for (const id of archivedIds) {
+    if (!archived.includes(id)) {
+      archived = [id, ...archived.filter((x) => x !== id)];
+      active = active.filter((x) => x !== id);
+    }
+  }
+  for (const id of activeIds) {
+    if (archived.includes(id)) {
+      archived = archived.filter((x) => x !== id);
+      if (!active.includes(id)) active = [id, ...active.filter((x) => x !== id)];
+    }
+  }
+
+  writeArchivedIndex(archived);
+  writeRunIndex(active);
+}
+
 /* The invite code is the only credential guarding a multiplayer run, so it
  * must be unguessable: 8 symbols from a 31-char alphabet ≈ 2^39.6, drawn from
  * the CSPRNG instead of Math.random(). The alphabet drops I/L/O/0/1 so codes
@@ -350,6 +454,10 @@ const PG_UNIQUE_VIOLATION = '23505';
  * yet, so callers fall back to their previous direct-table behaviour. This
  * is what lets the same build run against both schema states. */
 const PG_MISSING_FUNCTION = 'PGRST202';
+/** PostgREST: column absent from schema cache — migration 09 not applied yet. */
+const PG_MISSING_COLUMN = 'PGRST204';
+
+let membersArchivedSupported = true;
 
 /* Multiplayer rows are scoped to run membership. Runs created before that
  * existed — and sessions whose browser storage was cleared — hold no
@@ -2027,9 +2135,11 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
 export function archiveRun(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
   writeArchivedIndex([runId, ...readArchivedIndex().filter((id) => id !== runId)]);
+  accountRunIds.delete(runId);
   /* multi realtime can keep running if the page is still open; hub just hides it */
   const entry = entries.get(runId);
   if (entry?.state?.mode === 'multi') dropLive(entry);
+  void syncMembershipArchived(runId, true);
   notifyHub();
 }
 
@@ -2038,8 +2148,10 @@ export function restoreRun(runId: string): void {
   if (!loadLocalRun(runId) && !entries.get(runId)?.state) return;
   writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
   addToIndex(runId);
+  if (isAccountLinkedRun(runId)) accountRunIds.add(runId);
   const entry = ensureEntry(runId);
   if (entry.state) scheduleLinkedSync(entry.state);
+  void syncMembershipArchived(runId, false);
   notifyHub();
 }
 
@@ -2069,12 +2181,15 @@ function purgeLocalRunMirror(runId: string): void {
   }
 }
 
-/** Permanent delete on this device (+ cloud solo mirror). Multiplayer remote rows stay for other members. */
+/** Permanent delete on this device (+ cloud when account-linked). */
 export function deleteRunForever(runId: string): void {
   purgeLocalRunMirror(runId);
   tombstoneAccountRun(runId);
   writePersistedAccountRunIds([...readPersistedAccountRunIds()].filter((id) => id !== runId));
-  void import('./cloud-sync').then((m) => m.cloudDeleteSoloRun(runId));
+  accountRunIds.delete(runId);
+  const user = getAuthUser();
+  if (user) void remoteDeleteRunForever(runId);
+  else void import('./cloud-sync').then((m) => m.cloudDeleteSoloRun(runId));
   void import('./nuzlocke-linked-teams').then((m) => m.deleteLinkedTeamsForRun(runId));
   notifyHub();
 }
@@ -2155,21 +2270,50 @@ export function stopAccountRunsWatch(): void {
 
 async function performAccountSync(userId: string): Promise<void> {
   const prevKnown = new Set([...accountRunIds, ...readPersistedAccountRunIds()]);
+  const purged = readAccountPurgedIds();
 
   const { data, error } = await supabase
     .from('nuz_run_members')
-    .select('run_id, nuz_runs(*)')
+    .select('run_id, archived, nuz_runs(*)')
     .eq('user_id', userId);
 
   if (error) {
+    if (isMissingColumnError(error)) {
+      membersArchivedSupported = false;
+      const fallback = await supabase
+        .from('nuz_run_members')
+        .select('run_id, nuz_runs(*)')
+        .eq('user_id', userId);
+      if (fallback.error) {
+        console.warn('[nuzlocke] account sync failed', fallback.error.message);
+        return;
+      }
+      return performAccountSyncWithRows(userId, prevKnown, purged, fallback.data ?? []);
+    }
     console.warn('[nuzlocke] account sync failed', error.message);
     return;
   }
 
+  await performAccountSyncWithRows(userId, prevKnown, purged, data ?? []);
+}
+
+async function performAccountSyncWithRows(
+  _userId: string,
+  prevKnown: Set<string>,
+  purged: Set<string>,
+  rows: unknown[],
+): Promise<void> {
   const nextIds = new Set<string>();
-  for (const row of data ?? []) {
+  const nextActiveIds = new Set<string>();
+  const nextArchivedIds = new Set<string>();
+
+  for (const row of rows) {
     const runId = (row as { run_id?: string }).run_id;
-    if (runId) nextIds.add(runId);
+    if (!runId || purged.has(runId)) continue;
+    nextIds.add(runId);
+    const archived = (row as { archived?: boolean }).archived === true;
+    if (archived) nextArchivedIds.add(runId);
+    else nextActiveIds.add(runId);
   }
 
   for (const id of prevKnown) {
@@ -2177,11 +2321,15 @@ async function performAccountSync(userId: string): Promise<void> {
     tombstoneAccountRun(id);
     purgeLocalRunMirror(id);
   }
-  for (const id of nextIds) clearAccountRunTombstone(id);
+  for (const id of nextIds) {
+    if (!purged.has(id)) clearAccountRunTombstone(id);
+  }
+
+  syncLocalArchivedFromServer(nextArchivedIds, nextActiveIds);
 
   writePersistedAccountRunIds(nextIds);
   accountRunIds.clear();
-  for (const id of nextIds) accountRunIds.add(id);
+  for (const id of nextActiveIds) accountRunIds.add(id);
 
   await Promise.all(
     [...nextIds].map(async (id) => {

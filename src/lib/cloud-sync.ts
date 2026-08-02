@@ -185,16 +185,19 @@ export function cloudPushSoloRun(state: RunState): void {
 }
 
 export function cloudDeleteSoloRun(id: string): void {
-  const user = getAuthUser();
-  if (!user) return;
-  void supabase
-    .from('nuz_solo_runs')
-    .delete()
-    .eq('id', id)
-    .eq('user_id', user.id)
-    .then(({ error }) => {
-      if (error) console.warn('[cloud-sync] run delete failed', error.message);
-    });
+  /* Logged-in accounts delete via nuz_runs / nuz_run_members in nuzlocke-store. */
+  if (getAuthUser()) return;
+  void (async () => {
+    const { data } = await supabase.auth.getSession();
+    const sessionUser = data.session?.user;
+    if (!sessionUser) return;
+    const { error } = await supabase
+      .from('nuz_solo_runs')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', sessionUser.id);
+    if (error) console.warn('[cloud-sync] run delete failed', error.message);
+  })();
 }
 
 interface SoloRunRow {
