@@ -718,7 +718,7 @@ async function fetchRemoteRun(runId: string): Promise<RunState | null> {
   const row = run as NuzRunRow;
   return {
     run: { ...row, rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) } },
-    mode: 'multi',
+    mode: row.invite_code ? 'multi' : 'solo',
     players: (players ?? []) as NuzPlayerRow[],
     encounters: normalizeEncounters((encounters ?? []) as NuzEncounterRow[]),
   };
@@ -1400,6 +1400,12 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
     } else {
       offlineFallback = true;
       pushToast('sync', 'OFFLINE — RUN SAVED TO THIS DEVICE');
+    }
+  } else if (getAuthUser() && isMultiCapable()) {
+    const { error: runErr } = await nuzTables.runs().insert({ ...baseRun, invite_code: null });
+    if (!runErr) {
+      const { error: plErr } = await nuzTables.players().insert(players);
+      if (!plErr) linkRunToAccount(id, 'owner');
     }
   }
 

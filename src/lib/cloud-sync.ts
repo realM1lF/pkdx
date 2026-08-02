@@ -140,19 +140,47 @@ async function hydrateTeams(user: User): Promise<Team[]> {
 
 /* ---------------- nuzlocke solo runs ---------------- */
 export function cloudPushSoloRun(state: RunState): void {
-  const user = getAuthUser();
-  if (!user || state.mode !== 'solo') return;
+  if (state.mode !== 'solo') return;
   const id = state.run.id;
   debounce(runTimers, id, () => {
-    void supabase
-      .from('nuz_solo_runs')
-      .upsert(
-        { id, user_id: user.id, payload: state, updated_at: new Date().toISOString() },
-        { onConflict: 'id' },
-      )
-      .then(({ error }) => {
-        if (error) console.warn('[cloud-sync] run push failed', error.message);
-      });
+    void (async () => {
+      const realUser = getAuthUser();
+      if (realUser) {
+        const runRow = { ...state.run, invite_code: null };
+        const { error: runErr } = await supabase.from('nuz_runs').upsert(runRow, { onConflict: 'id' });
+        if (runErr) {
+          console.warn('[cloud-sync] run push failed', runErr.message);
+          return;
+        }
+        if (state.players.length) {
+          const { error: plErr } = await supabase
+            .from('nuz_players')
+            .upsert(state.players, { onConflict: 'id' });
+          if (plErr) console.warn('[cloud-sync] players push failed', plErr.message);
+        }
+        if (state.encounters.length) {
+          const { error: encErr } = await supabase
+            .from('nuz_encounters')
+            .upsert(state.encounters, { onConflict: 'id' });
+          if (encErr) console.warn('[cloud-sync] encounters push failed', encErr.message);
+        }
+        const { error: memErr } = await supabase
+          .from('nuz_run_members')
+          .upsert({ run_id: id, user_id: realUser.id, role: 'owner' }, { onConflict: 'run_id,user_id' });
+        if (memErr) console.warn('[cloud-sync] member push failed', memErr.message);
+        return;
+      }
+      const { data } = await supabase.auth.getSession();
+      const sessionUser = data.session?.user;
+      if (!sessionUser) return;
+      const { error } = await supabase
+        .from('nuz_solo_runs')
+        .upsert(
+          { id, user_id: sessionUser.id, payload: state, updated_at: new Date().toISOString() },
+          { onConflict: 'id' },
+        );
+      if (error) console.warn('[cloud-sync] run push failed', error.message);
+    })();
   });
 }
 
@@ -175,7 +203,8 @@ interface SoloRunRow {
   updated_at: string;
 }
 
-async function hydrateSoloRuns(user: User): Promise<RunState[]> {
+export async function hydrateSoloRuns(user: User): Promise<RunState[]> {
+  if (getAuthUser()) return [];
   const { data, error } = await supabase.from('nuz_solo_runs').select('id, payload, updated_at').eq('user_id', user.id);
   if (error || !data) return [];
   const remoteIds = new Set<string>();
