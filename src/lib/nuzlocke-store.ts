@@ -2067,9 +2067,101 @@ export function duplicateAsSolo(runId: string): string | null {
 const hubListeners = new Set<() => void>();
 let hubLoaded = false;
 
+/** Run ids discovered via nuz_run_members for the logged-in account. */
+const accountRunIds = new Set<string>();
+let accountWatchUserId: string | null = null;
+let accountChannel: RealtimeChannel | null = null;
+
+function hubRunIds(): string[] {
+  return [...new Set([...readRunIndex(), ...accountRunIds])];
+}
+
+/** Merged active hub ids (localStorage index + account discovery). */
+export function getHubRunIds(): string[] {
+  return hubRunIds();
+}
+
+function dropAccountWatch(): void {
+  if (accountChannel) {
+    dropChannel(accountChannel);
+    accountChannel = null;
+  }
+  accountWatchUserId = null;
+}
+
+/** Tear down account-level realtime (logout). */
+export function stopAccountRunsWatch(): void {
+  dropAccountWatch();
+  accountRunIds.clear();
+}
+
+/** Fetch nuz_run_members + hydrate each run into the hub cache. */
+export async function syncAccountRuns(userId: string): Promise<void> {
+  const user = getAuthUser();
+  if (!user || user.id !== userId || !isMultiCapable()) return;
+
+  const { data, error } = await supabase
+    .from('nuz_run_members')
+    .select('run_id, nuz_runs(*)')
+    .eq('user_id', userId);
+
+  if (error) {
+    console.warn('[nuzlocke] account sync failed', error.message);
+    return;
+  }
+
+  const nextIds = new Set<string>();
+  for (const row of data ?? []) {
+    const runId = (row as { run_id?: string }).run_id;
+    if (runId) nextIds.add(runId);
+  }
+
+  for (const id of accountRunIds) {
+    if (!nextIds.has(id)) writeRunIndex(readRunIndex().filter((x) => x !== id));
+  }
+  accountRunIds.clear();
+  for (const id of nextIds) accountRunIds.add(id);
+
+  await Promise.all(
+    [...nextIds].map(async (id) => {
+      const entry = ensureEntry(id);
+      await refreshRemote(entry);
+    }),
+  );
+  notifyHub();
+}
+
+/** Live membership + run metadata changes for the logged-in account. */
+export function watchAccountRuns(userId: string): void {
+  if (!isMultiCapable()) return;
+  const user = getAuthUser();
+  if (!user || user.id !== userId) return;
+  if (accountWatchUserId === userId && accountChannel) return;
+
+  dropAccountWatch();
+  accountWatchUserId = userId;
+
+  const resync = (): void => {
+    void syncAccountRuns(userId);
+  };
+
+  const ch = supabase.channel(`account-runs:${userId}`);
+  accountChannel = ch;
+  ch.on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'nuz_run_members', filter: `user_id=eq.${userId}` },
+    resync,
+  );
+  ch.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nuz_runs' }, resync);
+  ch.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'nuz_runs' }, resync);
+  ch.subscribe();
+}
+
 function hubRefresh(): void {
   reconcileRunIndex();
-  for (const id of [...readRunIndex(), ...readArchivedIndex()]) {
+  const user = getAuthUser();
+  if (user) void syncAccountRuns(user.id);
+  for (const id of [...hubRunIds(), ...readArchivedIndex()]) {
     const e = ensureEntry(id);
     if (e.state?.mode === 'multi' && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
   }
@@ -2087,7 +2179,7 @@ export function useHubRuns(): {
   useEffect(() => {
     const unsubs = new Map<string, () => void>();
     function syncSubs() {
-      const ids = [...readRunIndex(), ...readArchivedIndex()];
+      const ids = [...hubRunIds(), ...readArchivedIndex()];
       for (const id of ids) if (!unsubs.has(id)) unsubs.set(id, subscribeRun(id, fn));
       for (const [id, u] of [...unsubs]) {
         if (!ids.includes(id)) {
@@ -2112,7 +2204,7 @@ export function useHubRuns(): {
     };
   }, []);
 
-  const list = readRunIndex()
+  const list = hubRunIds()
     .map((id) => ensureEntry(id))
     .filter((e): e is RunEntry => !!e.state);
   const runs = list

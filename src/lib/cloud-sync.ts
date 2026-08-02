@@ -5,9 +5,15 @@
 import type { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { getAuthUser, onAuthChange } from './auth';
-import { loadTeams, saveTeam } from './teambuilder';
-import type { Team } from './teambuilder';
-import { loadLocalRun, readRunIndex, saveLocalRunPublic } from './nuzlocke-store';
+import { loadTeams, saveTeam, type Team } from './teambuilder';
+import {
+  loadLocalRun,
+  readRunIndex,
+  saveLocalRunPublic,
+  stopAccountRunsWatch,
+  syncAccountRuns,
+  watchAccountRuns,
+} from './nuzlocke-store';
 import type { RunState } from './nuzlocke-store';
 
 const DEBOUNCE_MS = 900;
@@ -196,12 +202,24 @@ export function bootCloudSync(): void {
   if (booted) return;
   booted = true;
   onAuthChange((user) => {
-    if (!user) return;
+    if (!user) {
+      stopAccountRunsWatch();
+      const runs = readRunIndex()
+        .map((id) => loadLocalRun(id))
+        .filter((r): r is RunState => !!r && r.mode === 'solo');
+      maybeOffer(loadTeams(), runs);
+      return;
+    }
+    watchAccountRuns(user.id);
     void (async () => {
-      const [teams, runs] = await Promise.all([hydrateTeams(user), hydrateSoloRuns(user)]);
-      maybeOffer(teams, runs);
+      await syncAccountRuns(user.id);
+      await hydrateTeams(user);
+      /* logged-in users sync via nuz_run_members — no migration offer */
       /* mid-run login / second device: repair linked TB teams after hydrate */
       void import('./nuzlocke-linked-teams').then((m) => m.repairAllLinkedTeams());
     })();
   });
 }
+
+/* Task 2 replaces guest-only nuz_solo_runs hydration for logged-in users. */
+void hydrateSoloRuns;
