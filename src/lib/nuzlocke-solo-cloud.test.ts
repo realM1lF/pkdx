@@ -222,8 +222,7 @@ describe('solo cloud persistence', () => {
     expect(fromMock).not.toHaveBeenCalledWith('nuz_solo_runs');
   });
 
-  it('saveLocalRun on existing solo run upserts nuz_runs when logged in (debounced)', async () => {
-    vi.useRealTimers();
+  it('saveLocalRun on existing solo run uses row update via renameRun when cloud-backed', async () => {
     mockUser = { id: USER_ID };
     await loadCloudSync();
     const { createRun, getRunState, renameRun } = await loadStore();
@@ -241,12 +240,19 @@ describe('solo cloud persistence', () => {
     fromMock.mockClear();
 
     renameRun(state.run.id, 'Renamed Solo');
-    await new Promise((r) => setTimeout(r, 950));
+    await vi.waitFor(() =>
+      expect(
+        fromMock.mock.calls.some(
+          (c) => c[0] === 'nuz_runs' && chainFor('nuz_runs').update.mock.calls.length > 0,
+        ),
+      ).toBe(true),
+    );
 
-    expect(fromMock).toHaveBeenCalledWith('nuz_runs');
-    expect(runsUpserts.some((r) => (r as { name?: string }).name === 'Renamed Solo')).toBe(true);
     expect(getRunState(state.run.id)?.run.name).toBe('Renamed Solo');
     expect(fromMock).not.toHaveBeenCalledWith('nuz_solo_runs');
+    /* no debounced full-state blob upsert for account-managed solos */
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(runsUpserts).toHaveLength(0);
   });
 
   it('guest createRun writes nuz_solo_runs and NOT nuz_runs', async () => {

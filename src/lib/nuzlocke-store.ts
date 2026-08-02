@@ -288,8 +288,10 @@ export function loadLocalRun(id: string): RunState | null {
 function saveLocalRun(state: RunState): void {
   if (!writeJson(LS_RUN(state.run.id), state)) notifyStorageFailure();
   else if (!isRunArchived(state.run.id)) addToIndex(state.run.id);
-  /* cloud mirror (no-op for guests) — dynamic import keeps the module graph acyclic */
-  void import('./cloud-sync').then((m) => m.cloudPushSoloRun(state));
+  /* guest blob mirror only — cloud-backed solos persist row-by-row */
+  if (!isCloudRun(state)) {
+    void import('./cloud-sync').then((m) => m.cloudPushSoloRun(state));
+  }
 }
 
 /** public persistence entry for cloud hydration (cloud-sync) */
@@ -330,6 +332,20 @@ function isAccountLinkedRun(runId: string): boolean {
     accountRunIds.has(runId) ||
     readArchivedIndex().includes(runId)
   );
+}
+
+/** Cloud-backed run: logged-in account with rows in nuz_runs (solo or multi).
+ * Guests stay purely local (nuz_solo_runs blob only). */
+export function isCloudRun(state: RunState): boolean {
+  if (!isMultiCapable() || !getAuthUser()) return false;
+  if (state.mode === 'multi') return true;
+  return isAccountLinkedRun(state.run.id);
+}
+
+function registerAccountRun(runId: string): void {
+  accountRunIds.add(runId);
+  const ids = readPersistedAccountRunIds();
+  if (!ids.has(runId)) writePersistedAccountRunIds([...ids, runId]);
 }
 
 async function resolveMembershipRole(runId: string): Promise<'owner' | 'member' | null> {
@@ -752,7 +768,7 @@ function ensureEntry(runId: string): RunEntry {
     if (local) {
       e.state = local;
       e.phase = 'ready';
-      e.status = local.mode === 'multi' ? 'connecting' : 'local';
+      e.status = isCloudRun(local) ? 'connecting' : 'local';
       seedFeed(e);
     }
     void refreshRemote(e);
@@ -834,7 +850,7 @@ async function fetchRemoteRun(runId: string): Promise<RunState | null> {
 
 async function refreshRemote(entry: RunEntry): Promise<void> {
   const local = entry.state;
-  if (local && local.mode !== 'multi') {
+  if (local && !isCloudRun(local)) {
     entry.phase = 'ready';
     emit(entry);
     return;
@@ -858,10 +874,18 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
         outbox: entry.outbox,
       });
       const merged = { ...remote, encounters };
+      if (
+        merged.mode === 'solo' &&
+        isCloudRun(merged) &&
+        !myPlayerId(entry.id) &&
+        merged.players.length === 1
+      ) {
+        setMembership(entry.id, merged.players[0].id);
+      }
       entry.state = merged;
       entry.phase = 'ready';
       saveLocalRun(merged);
-      addToIndex(entry.id);
+      if (!isRunArchived(entry.id)) addToIndex(entry.id);
       /* authoritative re-seed — includes encounter history, not just joins */
       seedFeed(entry);
       scheduleLinkedSync(merged);
@@ -874,7 +898,7 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
   entry.remoteLoaded = true;
   emit(entry);
   /* Membership/players may arrive only after hydrate — retry live attach. */
-  if (entry.state?.mode === 'multi' && entry.refs > 0 && !entry.channel) goLive(entry);
+  if (entry.state && isCloudRun(entry.state) && entry.refs > 0 && !entry.channel) goLive(entry);
 }
 
 /* ---------- realtime (nuzlocke.md §2.9) ---------- */
@@ -943,7 +967,7 @@ function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
  * `findEvoLineDupeViolations` are pure and deterministic (created_at/id), so
  * every online client converges on the same loser without coordinating. */
 async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow): Promise<void> {
-  if (entry.state?.mode !== 'multi' || !entry.state.run.rules.dupes) return;
+  if (!entry.state || !isCloudRun(entry.state) || !entry.state.run.rules.dupes) return;
   if (trigger.status !== 'caught' || trigger.is_shiny) return;
   const speciesId =
     typeof trigger.caught_pokemon_id === 'number' && trigger.caught_pokemon_id > 0
@@ -956,7 +980,7 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow):
     return; /* offline / unknown species — no re-check possible, degrade gracefully */
   }
   const s = entry.state;
-  if (!s || s.mode !== 'multi') return;
+  if (!s || !isCloudRun(s)) return;
   const losers = findEvoLineDupeViolations(s.encounters, cachedEvolutionFamilyIds);
   for (const loser of losers) {
     /* re-check right before writing — a concurrent scan (the other client's
@@ -973,13 +997,13 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow):
 
 function goLive(entry: RunEntry): void {
   const s = entry.state;
-  if (!s || s.mode !== 'multi' || entry.channel || !isMultiCapable()) return;
-  /* Presence key = player id only (never runId, never players[0] guess). */
-  const presenceKey = myPlayerId(entry.id);
-  if (!presenceKey) return;
+  if (!s || !isCloudRun(s) || entry.channel || !isMultiCapable()) return;
+  /* Presence key = player id; solo cloud falls back to the sole player or run id. */
+  const presenceKey = myPlayerId(entry.id) ?? s.players[0]?.id ?? entry.id;
   entry.status = 'connecting';
   const runId = entry.id;
   const ch = runChannel(runId, presenceKey);
+  const multiPresence = s.mode === 'multi';
   entry.channel = ch;
   const isCurrent = (): boolean => entry.channel === ch;
   ch.on(
@@ -1038,30 +1062,34 @@ function goLive(entry: RunEntry): void {
       emit(entry);
     },
   );
-  ch.on('presence', { event: 'sync' }, () => {
-    if (!isCurrent()) return;
-    const pres = ch.presenceState<{ player_id: string; name: string; color: string }>();
-    const online: Record<string, { name: string; color: string }> = {};
-    const wasOnline = new Set(Object.keys(entry.online));
-    for (const list of Object.values(pres)) {
-      for (const m of list) {
-        if (m.player_id) {
-          online[m.player_id] = { name: m.name, color: m.color };
-          if (!wasOnline.has(m.player_id) && m.player_id !== presenceMe(entry)?.player_id) {
-            pushFeed(entry, { kind: 'presence', color: m.color, title: i18n.t('nuz.feed.online', { name: m.name }) });
+  if (multiPresence) {
+    ch.on('presence', { event: 'sync' }, () => {
+      if (!isCurrent()) return;
+      const pres = ch.presenceState<{ player_id: string; name: string; color: string }>();
+      const online: Record<string, { name: string; color: string }> = {};
+      const wasOnline = new Set(Object.keys(entry.online));
+      for (const list of Object.values(pres)) {
+        for (const m of list) {
+          if (m.player_id) {
+            online[m.player_id] = { name: m.name, color: m.color };
+            if (!wasOnline.has(m.player_id) && m.player_id !== presenceMe(entry)?.player_id) {
+              pushFeed(entry, { kind: 'presence', color: m.color, title: i18n.t('nuz.feed.online', { name: m.name }) });
+            }
           }
         }
       }
-    }
-    entry.online = online;
-    emit(entry);
-  });
+      entry.online = online;
+      emit(entry);
+    });
+  }
   ch.subscribe((status) => {
     if (!isCurrent()) return;
     if (status === 'SUBSCRIBED') {
       entry.status = 'live';
-      const me = presenceMe(entry);
-      if (me) void ch.track(me);
+      if (multiPresence) {
+        const me = presenceMe(entry);
+        if (me) void ch.track(me);
+      }
       /* fill any postgres_changes gap while disconnected */
       void refreshRemote(entry);
     } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
@@ -1069,7 +1097,7 @@ function goLive(entry: RunEntry): void {
     }
     emit(entry);
   });
-  if (!entry.presenceVisHandler) {
+  if (multiPresence && !entry.presenceVisHandler) {
     const onVis = (): void => {
       if (document.visibilityState !== 'visible') return;
       if (entry.channel !== ch) return;
@@ -1090,7 +1118,7 @@ function dropLive(entry: RunEntry): void {
     dropChannel(entry.channel);
     entry.channel = null;
   }
-  if (entry.state?.mode === 'multi') entry.status = 'connecting';
+  if (entry.state && isCloudRun(entry.state)) entry.status = 'connecting';
   entry.online = {};
 }
 
@@ -1103,7 +1131,7 @@ export function subscribeRun(runId: string, listener: () => void): () => void {
     window.clearTimeout(entry.teardownTimer);
     entry.teardownTimer = null;
   }
-  if (entry.state?.mode === 'multi') goLive(entry);
+  if (entry.state && isCloudRun(entry.state)) goLive(entry);
   return () => {
     entry.listeners.delete(listener);
     entry.refs -= 1;
@@ -1136,7 +1164,7 @@ function persistWithRetry(
   op: () => PromiseLike<{ error: unknown }>,
   outbox?: { snapshot: NuzEncounterRow; kind: OutboxOpKind },
 ): void {
-  if (!isMultiCapable() || entry.state?.mode !== 'multi') return;
+  if (!isMultiCapable() || !entry.state || !isCloudRun(entry.state)) return;
   const gen = nextOpGen(entry.opGen, syncKey);
   entry.pendingSync.add(syncKey);
   if (outbox) entry.outbox.set(syncKey, { kind: outbox.kind, snapshot: outbox.snapshot, gen });
@@ -1192,7 +1220,7 @@ function persistStatusRpc(
   targets: NuzEncounterRow[],
   args: { p_encounter_id: string; p_new_status: string; p_note: string | null },
 ): void {
-  if (!isMultiCapable() || entry.state?.mode !== 'multi' || targets.length === 0) return;
+  if (!isMultiCapable() || !entry.state || !isCloudRun(entry.state) || targets.length === 0) return;
   const gens = targets.map((row) => ({ id: row.id, row, gen: nextOpGen(entry.opGen, row.id) }));
   for (const g of gens) {
     entry.pendingSync.add(g.id);
@@ -1493,6 +1521,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   let mode: RunMode = 'solo';
   let invite: string | null = null;
   let offlineFallback = false;
+  let cloudBacked = false;
 
   if (wantOnline) {
     /* the insert policy requires an identity; the DB trigger then records
@@ -1505,6 +1534,8 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
       mode = 'multi';
       baseRun.invite_code = invite;
       linkRunToAccount(id, 'owner');
+      registerAccountRun(id);
+      cloudBacked = true;
     } else {
       offlineFallback = true;
       pushToast('sync', 'OFFLINE — RUN SAVED TO THIS DEVICE');
@@ -1513,7 +1544,11 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
     const { error: runErr } = await nuzTables.runs().insert({ ...baseRun, invite_code: null });
     if (!runErr) {
       const { error: plErr } = await nuzTables.players().insert(players);
-      if (!plErr) linkRunToAccount(id, 'owner');
+      if (!plErr) {
+        linkRunToAccount(id, 'owner');
+        registerAccountRun(id);
+        cloudBacked = true;
+      }
     }
   }
 
@@ -1524,9 +1559,9 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   const entry = ensureEntry(id);
   entry.state = state;
   entry.phase = 'ready';
-  entry.status = mode === 'multi' ? 'connecting' : 'local';
+  entry.status = cloudBacked ? 'connecting' : 'local';
   seedFeed(entry);
-  if (mode === 'multi') goLive(entry);
+  if (cloudBacked) goLive(entry);
   void import('./nuzlocke-linked-teams').then((m) => {
     m.ensureLinkedTeams(state);
   });
@@ -1740,7 +1775,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
   }
   checkMilestones(entry);
 
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(
       entry,
       enc.id,
@@ -1857,7 +1892,7 @@ export function updateEncounter(
       void reconcileEvoLineDupes(entry, enc);
     }
   }
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     if (isStatusChange) {
       /* single-TX RPC: this row's status/note + every SoulLink partner the
        * local cascade above touched apply server-side in one transaction —
@@ -1918,7 +1953,7 @@ export async function evolveEncounter(
   enc.pokemon_id = toPokemonId;
   enc.caught_pokemon_id = nextCaughtId;
   saveLocalRun(s);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(
       entry,
       enc.id,
@@ -1967,7 +2002,7 @@ export function setEncounterParty(runId: string, encId: string, inParty: boolean
   /* box-link (§A1): boxing this catch also boxes its SoulLink partners.
    * Unboxing never pulls a partner along (their party slot may be full). */
   const boxedPartners = inParty ? [] : boxLinkPartners(entry, enc);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(
       entry,
       enc.id,
@@ -2004,7 +2039,7 @@ export function swapParty(runId: string, boxEncId: string, partyEncId: string): 
   /* box-link (§A1): `b` just got boxed by this swap, so its SoulLink
    * partners get boxed too (the incoming `a` is not affected). */
   const boxedPartners = boxLinkPartners(entry, b);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id), {
       snapshot: a,
       kind: 'patch',
@@ -2034,7 +2069,7 @@ export function deleteEncounter(runId: string, encId: string): void {
   const removed = s.encounters.find((e) => e.id === encId);
   s.encounters = s.encounters.filter((e) => e.id !== encId);
   saveLocalRun(s);
-  if (s.mode === 'multi' && removed) {
+  if (isCloudRun(s) && removed) {
     persistWithRetry(entry, encId, () => nuzTables.encounters().delete().eq('id', encId), {
       snapshot: removed,
       kind: 'delete',
@@ -2052,7 +2087,7 @@ export function renameRun(runId: string, name: string): void {
   if (!s || !name.trim()) return;
   s.run.name = name.trim();
   saveLocalRun(s);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ name: s.run.name }).eq('id', runId));
   }
   scheduleLinkedSync(s);
@@ -2070,7 +2105,7 @@ export function renamePlayer(runId: string, playerId: string, name: string): boo
   if (!player) return false;
   player.name = trimmed.slice(0, 18);
   saveLocalRun(s);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `player:${playerId}`, () =>
       nuzTables.players().update({ name: player.name }).eq('id', playerId).eq('run_id', runId),
     );
@@ -2088,7 +2123,7 @@ export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
   s.run.rules = next;
   saveLocalRun(s);
   pushFeed(entry, { kind: 'rule', color: '#F6C945', title: i18n.t('nuz.feed.rulesUpdated'), meta: rulesSummary(s.run.rules) });
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ rules: s.run.rules }).eq('id', runId));
   }
   emit(entry);
@@ -2125,7 +2160,7 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
           : i18n.t('nuz.feed.statusActive'),
   });
   checkMilestones(entry);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ status }).eq('id', runId));
   }
   emit(entry);
@@ -2138,7 +2173,7 @@ export function archiveRun(runId: string): void {
   accountRunIds.delete(runId);
   /* multi realtime can keep running if the page is still open; hub just hides it */
   const entry = entries.get(runId);
-  if (entry?.state?.mode === 'multi') dropLive(entry);
+  if (entry?.state && isCloudRun(entry.state)) dropLive(entry);
   void syncMembershipArchived(runId, true);
   notifyHub();
 }
@@ -2409,7 +2444,7 @@ function hubRefresh(): void {
   if (user) void syncAccountRuns(user.id);
   for (const id of [...hubRunIds(), ...readArchivedIndex()]) {
     const e = ensureEntry(id);
-    if (e.state?.mode === 'multi' && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
+    if (e.state && isCloudRun(e.state) && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
   }
   notifyHub();
 }
@@ -2511,7 +2546,7 @@ export interface RunTeamPlayer {
 /** Current alive team per player (≤6, catch order). Used by the Team Builder phase. */
 export async function getRunTeam(runId: string): Promise<RunTeamPlayer[]> {
   let state: RunState | null = loadLocalRun(runId) ?? entries.get(runId)?.state ?? null;
-  if ((!state || state.mode === 'multi') && isMultiCapable()) {
+  if ((!state || isCloudRun(state)) && isMultiCapable()) {
     try {
       const remote = await fetchRemoteRun(runId);
       if (remote) state = remote;
