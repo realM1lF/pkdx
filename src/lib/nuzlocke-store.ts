@@ -2145,6 +2145,19 @@ export function watchAccountRuns(userId: string): void {
     void syncAccountRuns(userId);
   };
 
+  const resyncIfAccountRun = (payload: {
+    eventType: string;
+    new?: unknown;
+    old?: Partial<{ id: string }>;
+  }): void => {
+    const id =
+      payload.eventType === 'DELETE'
+        ? payload.old?.id
+        : (payload.new as Partial<{ id: string }> | undefined)?.id;
+    if (!id || !accountRunIds.has(id)) return;
+    resync();
+  };
+
   const ch = supabase.channel(`account-runs:${userId}`);
   accountChannel = ch;
   ch.on(
@@ -2152,8 +2165,8 @@ export function watchAccountRuns(userId: string): void {
     { event: '*', schema: 'public', table: 'nuz_run_members', filter: `user_id=eq.${userId}` },
     resync,
   );
-  ch.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nuz_runs' }, resync);
-  ch.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'nuz_runs' }, resync);
+  ch.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
+  ch.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
   ch.subscribe();
 }
 

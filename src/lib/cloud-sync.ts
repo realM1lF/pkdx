@@ -214,12 +214,10 @@ export function bootCloudSync(): void {
     void (async () => {
       await syncAccountRuns(user.id);
       await hydrateTeams(user);
+      await hydrateSoloRuns(user);
       /* logged-in users sync via nuz_run_members — no migration offer */
       /* mid-run login / second device: repair linked TB teams after hydrate */
       void import('./nuzlocke-linked-teams').then((m) => m.repairAllLinkedTeams());
     })();
   });
 }
-
-/* Task 2 replaces guest-only nuz_solo_runs hydration for logged-in users. */
-void hydrateSoloRuns;

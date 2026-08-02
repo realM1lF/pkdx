@@ -21,6 +21,14 @@ type PgHandler = (payload: {
 }) => void;
 const pgHandlers: Array<{ table: string; filter?: string; handler: PgHandler }> = [];
 
+const { fromMock } = vi.hoisted(() => ({
+  fromMock: vi.fn((table: string) => ({
+    select: vi.fn(() => ({
+      eq: vi.fn((col: string, val: string) => chainEq(table, col, val)),
+    })),
+  })),
+}));
+
 const mockChannel = {
   on: vi.fn(function (
     this: typeof mockChannel,
@@ -71,23 +79,18 @@ vi.mock('./auth', () => ({
 
 vi.mock('./supabase', async () => {
   const actual = await vi.importActual<typeof import('./supabase')>('./supabase');
-  const from = vi.fn((table: string) => ({
-    select: vi.fn(() => ({
-      eq: vi.fn((col: string, val: string) => chainEq(table, col, val)),
-    })),
-  }));
   return {
     ...actual,
     isMultiCapable: () => true,
     supabase: {
-      from,
+      from: fromMock,
       channel: vi.fn(() => mockChannel as unknown as RealtimeChannel),
       removeChannel: vi.fn(),
     },
     nuzTables: {
-      runs: () => from('nuz_runs'),
-      players: () => from('nuz_players'),
-      encounters: () => from('nuz_encounters'),
+      runs: () => fromMock('nuz_runs'),
+      players: () => fromMock('nuz_players'),
+      encounters: () => fromMock('nuz_encounters'),
     },
   };
 });
@@ -151,6 +154,7 @@ describe('account run discovery', () => {
     pgHandlers.length = 0;
     mockChannel.on.mockClear();
     mockChannel.subscribe.mockClear();
+    fromMock.mockClear();
   });
 
   async function loadStore() {
@@ -220,6 +224,28 @@ describe('account run discovery', () => {
     }
     await vi.waitFor(() => expect(getRunState(RUN_A)?.run.name).toBe('New Name'));
     expect(getRunState(RUN_A)?.run.status).toBe('complete');
+  });
+
+  it('realtime UPDATE on nuz_runs for unrelated run does not resync', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'My Run');
+    seedRun(RUN_B, 'Other Run');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const { syncAccountRuns, watchAccountRuns, getHubRunIds } = await loadStore();
+    await syncAccountRuns(USER_ID);
+    watchAccountRuns(USER_ID);
+    const callsBefore = fromMock.mock.calls.filter((c) => c[0] === 'nuz_run_members').length;
+
+    runsById.set(RUN_B, { ...runsById.get(RUN_B)!, name: 'Hacked Name' });
+    for (const handler of runHandlers()) {
+      handler({ eventType: 'UPDATE', new: runsById.get(RUN_B) });
+    }
+    await new Promise((r) => setTimeout(r, 50));
+
+    const callsAfter = fromMock.mock.calls.filter((c) => c[0] === 'nuz_run_members').length;
+    expect(callsAfter).toBe(callsBefore);
+    expect(getHubRunIds()).not.toContain(RUN_B);
   });
 
   it('guest: no account sync, localStorage only', async () => {
