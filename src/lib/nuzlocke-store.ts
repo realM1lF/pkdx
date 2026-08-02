@@ -75,6 +75,10 @@ export const DEFAULT_RULES: NuzRules = {
 const LS_INDEX = 'pdx2.nuz.runs';
 /** Archived run ids — payload stays under LS_RUN; excluded from the active hub. */
 const LS_ARCHIVED = 'pdx2.nuz.archived';
+/** Last server-confirmed account membership ids — reconcile must not resurrect these from LS_RUN. */
+const LS_ACCOUNT_RUNS = 'pdx2.nuz.accountRuns';
+/** Runs purged after lost membership — reconcile skips even if a stale LS_RUN remains. */
+const LS_ACCOUNT_PURGED = 'pdx2.nuz.accountPurged';
 const LS_RUN = (id: string) => `pdx2.nuz.run.${id}`;
 const LS_MEMBERS = 'pdx2.nuz.memberships';
 const LS_OWNERS = 'pdx2.nuz.owners';
@@ -183,11 +187,41 @@ function notifyHub(): void {
   hubListeners.forEach((fn) => fn());
 }
 
+function readPersistedAccountRunIds(): Set<string> {
+  return new Set(readJson<string[]>(LS_ACCOUNT_RUNS, []));
+}
+
+function writePersistedAccountRunIds(ids: Iterable<string>): void {
+  if (!writeJson(LS_ACCOUNT_RUNS, [...ids])) notifyStorageFailure();
+}
+
+function readAccountPurgedIds(): Set<string> {
+  return new Set(readJson<string[]>(LS_ACCOUNT_PURGED, []));
+}
+
+function tombstoneAccountRun(runId: string): void {
+  const purged = readAccountPurgedIds();
+  if (purged.has(runId)) return;
+  purged.add(runId);
+  if (!writeJson(LS_ACCOUNT_PURGED, [...purged])) notifyStorageFailure();
+}
+
+function clearAccountRunTombstone(runId: string): void {
+  const purged = readAccountPurgedIds();
+  if (!purged.has(runId)) return;
+  purged.delete(runId);
+  if (!writeJson(LS_ACCOUNT_PURGED, [...purged])) notifyStorageFailure();
+}
+
 /** Recover runs whose payload exists but index entry was lost (quota race, etc.).
- * Archived ids are skipped — they live in LS_ARCHIVED on purpose. */
+ * Archived ids are skipped — they live in LS_ARCHIVED on purpose.
+ * Account-discovered runs are owned by `syncAccountRuns` — never resurrect
+ * from LS_RUN here (prevents ghost runs after a lost membership). */
 function reconcileRunIndex(): void {
   const indexed = new Set(readRunIndex());
   const archived = new Set(readArchivedIndex());
+  const accountManaged = readPersistedAccountRunIds();
+  const purged = readAccountPurgedIds();
   const recovered: string[] = [];
   const prefix = 'pdx2.nuz.run.';
   try {
@@ -195,7 +229,16 @@ function reconcileRunIndex(): void {
       const key = localStorage.key(i);
       if (!key?.startsWith(prefix)) continue;
       const id = key.slice(prefix.length);
-      if (id && !indexed.has(id) && !archived.has(id) && loadLocalRun(id)) recovered.push(id);
+      if (
+        id &&
+        !indexed.has(id) &&
+        !archived.has(id) &&
+        !accountManaged.has(id) &&
+        !purged.has(id) &&
+        loadLocalRun(id)
+      ) {
+        recovered.push(id);
+      }
     }
   } catch {
     /* ignore */
@@ -2004,8 +2047,8 @@ function clearLocalRunMeta(runId: string): void {
   if (!writeJson(LS_OWNERS, owners)) notifyStorageFailure();
 }
 
-/** Permanent delete on this device (+ cloud solo mirror). Multiplayer remote rows stay for other members. */
-export function deleteRunForever(runId: string): void {
+/** Drop local mirror only — no server rows, no cloud solo delete (lost membership). */
+function purgeLocalRunMirror(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
   writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
   removeLocalKey(LS_RUN(runId));
@@ -2018,6 +2061,13 @@ export function deleteRunForever(runId: string): void {
     emit(entry);
     entries.delete(runId);
   }
+}
+
+/** Permanent delete on this device (+ cloud solo mirror). Multiplayer remote rows stay for other members. */
+export function deleteRunForever(runId: string): void {
+  purgeLocalRunMirror(runId);
+  tombstoneAccountRun(runId);
+  writePersistedAccountRunIds([...readPersistedAccountRunIds()].filter((id) => id !== runId));
   void import('./cloud-sync').then((m) => m.cloudDeleteSoloRun(runId));
   void import('./nuzlocke-linked-teams').then((m) => m.deleteLinkedTeamsForRun(runId));
   notifyHub();
@@ -2071,6 +2121,8 @@ let hubLoaded = false;
 const accountRunIds = new Set<string>();
 let accountWatchUserId: string | null = null;
 let accountChannel: RealtimeChannel | null = null;
+let accountSyncInFlight: Promise<void> | null = null;
+let accountSyncNeedsFollowUp = false;
 
 function hubRunIds(): string[] {
   return [...new Set([...readRunIndex(), ...accountRunIds])];
@@ -2095,10 +2147,8 @@ export function stopAccountRunsWatch(): void {
   accountRunIds.clear();
 }
 
-/** Fetch nuz_run_members + hydrate each run into the hub cache. */
-export async function syncAccountRuns(userId: string): Promise<void> {
-  const user = getAuthUser();
-  if (!user || user.id !== userId || !isMultiCapable()) return;
+async function performAccountSync(userId: string): Promise<void> {
+  const prevKnown = new Set([...accountRunIds, ...readPersistedAccountRunIds()]);
 
   const { data, error } = await supabase
     .from('nuz_run_members')
@@ -2116,9 +2166,14 @@ export async function syncAccountRuns(userId: string): Promise<void> {
     if (runId) nextIds.add(runId);
   }
 
-  for (const id of accountRunIds) {
-    if (!nextIds.has(id)) writeRunIndex(readRunIndex().filter((x) => x !== id));
+  for (const id of prevKnown) {
+    if (nextIds.has(id)) continue;
+    tombstoneAccountRun(id);
+    purgeLocalRunMirror(id);
   }
+  for (const id of nextIds) clearAccountRunTombstone(id);
+
+  writePersistedAccountRunIds(nextIds);
   accountRunIds.clear();
   for (const id of nextIds) accountRunIds.add(id);
 
@@ -2129,6 +2184,30 @@ export async function syncAccountRuns(userId: string): Promise<void> {
     }),
   );
   notifyHub();
+}
+
+/** Fetch nuz_run_members + hydrate each run into the hub cache. */
+export async function syncAccountRuns(userId: string): Promise<void> {
+  const user = getAuthUser();
+  if (!user || user.id !== userId || !isMultiCapable()) return;
+
+  if (accountSyncInFlight) {
+    accountSyncNeedsFollowUp = true;
+    return accountSyncInFlight;
+  }
+
+  accountSyncInFlight = (async () => {
+    try {
+      do {
+        accountSyncNeedsFollowUp = false;
+        await performAccountSync(userId);
+      } while (accountSyncNeedsFollowUp);
+    } finally {
+      accountSyncInFlight = null;
+    }
+  })();
+
+  return accountSyncInFlight;
 }
 
 /** Live membership + run metadata changes for the logged-in account. */

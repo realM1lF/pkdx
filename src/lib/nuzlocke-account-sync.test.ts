@@ -7,8 +7,12 @@ import { DEFAULT_RULES } from './nuzlocke-store';
 const USER_ID = 'user-test-1';
 const RUN_A = 'run-account-a';
 const RUN_B = 'run-account-b';
+const RUN_GUEST = 'run-guest-local';
 
 let mockUser: { id: string } | null = null;
+let membersFetchDelayMs = 0;
+let membersFetchInFlight = 0;
+let membersFetchCompleted = 0;
 
 const runsById = new Map<string, NuzRunRow>();
 const membersByUser = new Map<string, string[]>();
@@ -21,12 +25,15 @@ type PgHandler = (payload: {
 }) => void;
 const pgHandlers: Array<{ table: string; filter?: string; handler: PgHandler }> = [];
 
-const { fromMock } = vi.hoisted(() => ({
+const { fromMock, removeChannelMock, channelMock, dropChannelMock } = vi.hoisted(() => ({
   fromMock: vi.fn((table: string) => ({
     select: vi.fn(() => ({
       eq: vi.fn((col: string, val: string) => chainEq(table, col, val)),
     })),
   })),
+  removeChannelMock: vi.fn(),
+  channelMock: vi.fn(),
+  dropChannelMock: vi.fn(),
 }));
 
 const mockChannel = {
@@ -48,9 +55,16 @@ const mockChannel = {
 function chainEq(table: string, col: string, val: string) {
   if (table === 'nuz_run_members' && col === 'user_id') {
     const ids = membersByUser.get(val) ?? [];
-    return Promise.resolve({
-      data: ids.map((run_id) => ({ run_id, nuz_runs: runsById.get(run_id) ?? null })),
-      error: null,
+    membersFetchInFlight += 1;
+    const payload = ids.map((run_id) => ({ run_id, nuz_runs: runsById.get(run_id) ?? null }));
+    return new Promise<{ data: typeof payload; error: null }>((resolve) => {
+      const finish = (): void => {
+        membersFetchCompleted += 1;
+        membersFetchInFlight -= 1;
+        resolve({ data: payload, error: null });
+      };
+      if (membersFetchDelayMs <= 0) finish();
+      else setTimeout(finish, membersFetchDelayMs);
     });
   }
   if (table === 'nuz_runs' && col === 'id') {
@@ -79,13 +93,15 @@ vi.mock('./auth', () => ({
 
 vi.mock('./supabase', async () => {
   const actual = await vi.importActual<typeof import('./supabase')>('./supabase');
+  channelMock.mockImplementation(() => mockChannel as unknown as RealtimeChannel);
   return {
     ...actual,
     isMultiCapable: () => true,
+    dropChannel: dropChannelMock,
     supabase: {
       from: fromMock,
-      channel: vi.fn(() => mockChannel as unknown as RealtimeChannel),
-      removeChannel: vi.fn(),
+      channel: channelMock,
+      removeChannel: removeChannelMock,
     },
     nuzTables: {
       runs: () => fromMock('nuz_runs'),
@@ -143,6 +159,18 @@ function runHandlers(): PgHandler[] {
   return pgHandlers.filter((h) => h.table === 'nuz_runs').map((h) => h.handler);
 }
 
+function memberFetchCount(): number {
+  return fromMock.mock.calls.filter((c) => c[0] === 'nuz_run_members').length;
+}
+
+/** Mirrors hubRefresh's account-sync step for ghost-run regression coverage. */
+async function hubRefreshLike(store: {
+  syncAccountRuns: (userId: string) => Promise<void>;
+}): Promise<void> {
+  const user = mockUser;
+  if (user) await store.syncAccountRuns(user.id);
+}
+
 describe('account run discovery', () => {
   beforeEach(async () => {
     vi.resetModules();
@@ -152,9 +180,15 @@ describe('account run discovery', () => {
     membersByUser.clear();
     playersByRun.clear();
     pgHandlers.length = 0;
+    membersFetchDelayMs = 0;
+    membersFetchInFlight = 0;
+    membersFetchCompleted = 0;
     mockChannel.on.mockClear();
     mockChannel.subscribe.mockClear();
     fromMock.mockClear();
+    removeChannelMock.mockClear();
+    channelMock.mockClear();
+    dropChannelMock.mockClear();
   });
 
   async function loadStore() {
@@ -269,5 +303,119 @@ describe('account run discovery', () => {
     expect(getHubRunIds()).toEqual([state.run.id]);
     expect(getHubRunIds()).not.toContain(RUN_A);
     expect(pgHandlers).toHaveLength(0);
+  });
+
+  it('stopAccountRunsWatch clears accountRunIds and removes the channel', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Watched Run');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const { syncAccountRuns, watchAccountRuns, stopAccountRunsWatch, getHubRunIds } = await loadStore();
+    await syncAccountRuns(USER_ID);
+    watchAccountRuns(USER_ID);
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([]));
+    expect(getHubRunIds()).toContain(RUN_A);
+
+    stopAccountRunsWatch();
+
+    expect(getHubRunIds()).not.toContain(RUN_A);
+    expect(dropChannelMock).toHaveBeenCalled();
+  });
+
+  it('watchAccountRuns is idempotent — second call does not create another channel', async () => {
+    mockUser = { id: USER_ID };
+    membersByUser.set(USER_ID, []);
+
+    const { watchAccountRuns } = await loadStore();
+
+    watchAccountRuns(USER_ID);
+    watchAccountRuns(USER_ID);
+
+    expect(channelMock).toHaveBeenCalledTimes(1);
+    expect(dropChannelMock).not.toHaveBeenCalled();
+  });
+
+  it('lost membership purges local payload — ghost run does not reappear after hub refresh', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Ghost Run');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const store = await loadStore();
+    await store.syncAccountRuns(USER_ID);
+    expect(store.getHubRunIds()).toContain(RUN_A);
+    expect(store.loadLocalRun(RUN_A)).not.toBeNull();
+
+    membersByUser.set(USER_ID, []);
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([RUN_A]));
+    await hubRefreshLike(store);
+
+    expect(store.getHubRunIds()).not.toContain(RUN_A);
+    expect(store.loadLocalRun(RUN_A)).toBeNull();
+    expect(localStorage.getItem(`pdx2.nuz.run.${RUN_A}`)).toBeNull();
+  });
+
+  it('lost membership purge does not touch guest-only local runs', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Account Run');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const store = await loadStore();
+    await store.syncAccountRuns(USER_ID);
+
+    const guestState = {
+      run: {
+        id: RUN_GUEST,
+        invite_code: null,
+        name: 'Guest Solo',
+        game: 'firered',
+        region: 'kanto',
+        rules: { ...DEFAULT_RULES },
+        status: 'active' as const,
+        created_at: '2026-01-01T00:00:00.000Z',
+      },
+      mode: 'solo' as const,
+      players: [
+        {
+          id: 'player-guest',
+          run_id: RUN_GUEST,
+          name: 'ME',
+          color: '#FFD60A',
+          slot: 0,
+          created_at: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+      encounters: [],
+    };
+    localStorage.setItem(`pdx2.nuz.run.${RUN_GUEST}`, JSON.stringify(guestState));
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([RUN_GUEST, RUN_A]));
+
+    membersByUser.set(USER_ID, []);
+    await store.syncAccountRuns(USER_ID);
+
+    expect(store.getHubRunIds()).not.toContain(RUN_A);
+    expect(store.getHubRunIds()).toContain(RUN_GUEST);
+    expect(store.loadLocalRun(RUN_GUEST)).not.toBeNull();
+  });
+
+  it('syncAccountRuns single-flight: concurrent calls share one fetch; mid-sync event triggers one follow-up', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Flight Run');
+    membersByUser.set(USER_ID, [RUN_A]);
+    membersFetchDelayMs = 50;
+
+    const { syncAccountRuns, watchAccountRuns } = await loadStore();
+    watchAccountRuns(USER_ID);
+
+    const first = syncAccountRuns(USER_ID);
+    const second = syncAccountRuns(USER_ID);
+    await vi.waitFor(() => expect(membersFetchInFlight).toBe(1));
+
+    for (const handler of memberHandlers()) {
+      handler({ eventType: 'INSERT', new: { run_id: RUN_A, user_id: USER_ID } });
+    }
+
+    await Promise.all([first, second]);
+    expect(membersFetchCompleted).toBe(2);
+    expect(memberFetchCount()).toBe(2);
   });
 });
