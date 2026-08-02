@@ -75,6 +75,10 @@ export const DEFAULT_RULES: NuzRules = {
 const LS_INDEX = 'pdx2.nuz.runs';
 /** Archived run ids — payload stays under LS_RUN; excluded from the active hub. */
 const LS_ARCHIVED = 'pdx2.nuz.archived';
+/** Last server-confirmed account membership ids — reconcile must not resurrect these from LS_RUN. */
+const LS_ACCOUNT_RUNS = 'pdx2.nuz.accountRuns';
+/** Runs purged after lost membership — reconcile skips even if a stale LS_RUN remains. */
+const LS_ACCOUNT_PURGED = 'pdx2.nuz.accountPurged';
 const LS_RUN = (id: string) => `pdx2.nuz.run.${id}`;
 const LS_MEMBERS = 'pdx2.nuz.memberships';
 const LS_OWNERS = 'pdx2.nuz.owners';
@@ -183,11 +187,41 @@ function notifyHub(): void {
   hubListeners.forEach((fn) => fn());
 }
 
+function readPersistedAccountRunIds(): Set<string> {
+  return new Set(readJson<string[]>(LS_ACCOUNT_RUNS, []));
+}
+
+function writePersistedAccountRunIds(ids: Iterable<string>): void {
+  if (!writeJson(LS_ACCOUNT_RUNS, [...ids])) notifyStorageFailure();
+}
+
+function readAccountPurgedIds(): Set<string> {
+  return new Set(readJson<string[]>(LS_ACCOUNT_PURGED, []));
+}
+
+function tombstoneAccountRun(runId: string): void {
+  const purged = readAccountPurgedIds();
+  if (purged.has(runId)) return;
+  purged.add(runId);
+  if (!writeJson(LS_ACCOUNT_PURGED, [...purged])) notifyStorageFailure();
+}
+
+function clearAccountRunTombstone(runId: string): void {
+  const purged = readAccountPurgedIds();
+  if (!purged.has(runId)) return;
+  purged.delete(runId);
+  if (!writeJson(LS_ACCOUNT_PURGED, [...purged])) notifyStorageFailure();
+}
+
 /** Recover runs whose payload exists but index entry was lost (quota race, etc.).
- * Archived ids are skipped — they live in LS_ARCHIVED on purpose. */
+ * Archived ids are skipped — they live in LS_ARCHIVED on purpose.
+ * Account-discovered runs are owned by `syncAccountRuns` — never resurrect
+ * from LS_RUN here (prevents ghost runs after a lost membership). */
 function reconcileRunIndex(): void {
   const indexed = new Set(readRunIndex());
   const archived = new Set(readArchivedIndex());
+  const accountManaged = readPersistedAccountRunIds();
+  const purged = readAccountPurgedIds();
   const recovered: string[] = [];
   const prefix = 'pdx2.nuz.run.';
   try {
@@ -195,7 +229,16 @@ function reconcileRunIndex(): void {
       const key = localStorage.key(i);
       if (!key?.startsWith(prefix)) continue;
       const id = key.slice(prefix.length);
-      if (id && !indexed.has(id) && !archived.has(id) && loadLocalRun(id)) recovered.push(id);
+      if (
+        id &&
+        !indexed.has(id) &&
+        !archived.has(id) &&
+        !accountManaged.has(id) &&
+        !purged.has(id) &&
+        loadLocalRun(id)
+      ) {
+        recovered.push(id);
+      }
     }
   } catch {
     /* ignore */
@@ -245,8 +288,12 @@ export function loadLocalRun(id: string): RunState | null {
 function saveLocalRun(state: RunState): void {
   if (!writeJson(LS_RUN(state.run.id), state)) notifyStorageFailure();
   else if (!isRunArchived(state.run.id)) addToIndex(state.run.id);
-  /* cloud mirror (no-op for guests) — dynamic import keeps the module graph acyclic */
-  void import('./cloud-sync').then((m) => m.cloudPushSoloRun(state));
+  /* guest blob mirror only — cloud-backed solos persist row-by-row */
+  if (!isCloudRun(state)) {
+    void import('./cloud-sync')
+      .then((m) => m.cloudPushSoloRun(state))
+      .catch((err) => console.warn('[nuzlocke] cloud push failed', err));
+  }
 }
 
 /** public persistence entry for cloud hydration (cloud-sync) */
@@ -273,6 +320,124 @@ export function isRunOwner(runId: string): boolean {
 function setRunOwner(runId: string): void {
   const owners = readJson<string[]>(LS_OWNERS, []);
   if (!owners.includes(runId) && !writeJson(LS_OWNERS, [...owners, runId])) notifyStorageFailure();
+}
+
+function isMissingColumnError(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  if (error.code === PG_MISSING_COLUMN) return true;
+  return /archived/i.test(error.message ?? '') && /column|schema cache/i.test(error.message ?? '');
+}
+
+function isAccountLinkedRun(runId: string): boolean {
+  return (
+    readPersistedAccountRunIds().has(runId) ||
+    accountRunIds.has(runId) ||
+    readArchivedIndex().includes(runId)
+  );
+}
+
+/** Cloud-backed run: logged-in account with rows in nuz_runs (solo or multi).
+ * Guests stay purely local (nuz_solo_runs blob only). */
+export function isCloudRun(state: RunState): boolean {
+  if (!isMultiCapable() || !getAuthUser()) return false;
+  if (state.mode === 'multi') return true;
+  return isAccountLinkedRun(state.run.id);
+}
+
+function registerAccountRun(runId: string): void {
+  accountRunIds.add(runId);
+  const ids = readPersistedAccountRunIds();
+  if (!ids.has(runId)) writePersistedAccountRunIds([...ids, runId]);
+}
+
+async function resolveMembershipRole(runId: string): Promise<'owner' | 'member' | null> {
+  const user = getAuthUser();
+  if (!user || !isMultiCapable()) return isRunOwner(runId) ? 'owner' : null;
+
+  const { data, error } = await supabase
+    .from('nuz_run_members')
+    .select('role')
+    .eq('run_id', runId)
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (!error && data) {
+    return (data as { role?: string }).role === 'owner' ? 'owner' : 'member';
+  }
+  if (isRunOwner(runId)) return 'owner';
+  if (myPlayerId(runId) || getMemberships()[runId]) return 'member';
+  return null;
+}
+
+async function remoteDeleteRunForever(runId: string): Promise<void> {
+  if (!isMultiCapable()) return;
+  const user = getAuthUser();
+  if (!user) return;
+
+  const role = await resolveMembershipRole(runId);
+  if (role === 'owner') {
+    const { error } = await nuzTables.runs().delete().eq('id', runId);
+    if (error) console.warn('[nuzlocke] run delete failed', error.message);
+    return;
+  }
+  if (role === 'member') {
+    const { error } = await supabase
+      .from('nuz_run_members')
+      .delete()
+      .eq('run_id', runId)
+      .eq('user_id', user.id);
+    if (error) console.warn('[nuzlocke] leave run failed', error.message);
+    return;
+  }
+  if (isRunOwner(runId) || isAccountLinkedRun(runId)) {
+    const { error } = await nuzTables.runs().delete().eq('id', runId);
+    if (error) console.warn('[nuzlocke] run delete failed', error.message);
+  }
+}
+
+async function syncMembershipArchived(runId: string, archived: boolean): Promise<void> {
+  const user = getAuthUser();
+  if (!user || !isMultiCapable() || !membersArchivedSupported || !isAccountLinkedRun(runId)) return;
+
+  const { error } = await supabase
+    .from('nuz_run_members')
+    .update({ archived })
+    .eq('run_id', runId)
+    .eq('user_id', user.id);
+
+  if (error) {
+    if (isMissingColumnError(error)) {
+      membersArchivedSupported = false;
+      return;
+    }
+    console.warn('[nuzlocke] archive sync failed', error.message);
+    return;
+  }
+
+  if (archived) accountRunIds.delete(runId);
+  else accountRunIds.add(runId);
+  notifyHub();
+}
+
+function syncLocalArchivedFromServer(archivedIds: Set<string>, activeIds: Set<string>): void {
+  let archived = readArchivedIndex();
+  let active = readRunIndex();
+
+  for (const id of archivedIds) {
+    if (!archived.includes(id)) {
+      archived = [id, ...archived.filter((x) => x !== id)];
+      active = active.filter((x) => x !== id);
+    }
+  }
+  for (const id of activeIds) {
+    if (archived.includes(id)) {
+      archived = archived.filter((x) => x !== id);
+      if (!active.includes(id)) active = [id, ...active.filter((x) => x !== id)];
+    }
+  }
+
+  writeArchivedIndex(archived);
+  writeRunIndex(active);
 }
 
 /* The invite code is the only credential guarding a multiplayer run, so it
@@ -307,6 +472,10 @@ const PG_UNIQUE_VIOLATION = '23505';
  * yet, so callers fall back to their previous direct-table behaviour. This
  * is what lets the same build run against both schema states. */
 const PG_MISSING_FUNCTION = 'PGRST202';
+/** PostgREST: column absent from schema cache — migration 09 not applied yet. */
+const PG_MISSING_COLUMN = 'PGRST204';
+
+let membersArchivedSupported = true;
 
 /* Multiplayer rows are scoped to run membership. Runs created before that
  * existed — and sessions whose browser storage was cleared — hold no
@@ -601,7 +770,7 @@ function ensureEntry(runId: string): RunEntry {
     if (local) {
       e.state = local;
       e.phase = 'ready';
-      e.status = local.mode === 'multi' ? 'connecting' : 'local';
+      e.status = isCloudRun(local) ? 'connecting' : 'local';
       seedFeed(e);
     }
     void refreshRemote(e);
@@ -675,7 +844,7 @@ async function fetchRemoteRun(runId: string): Promise<RunState | null> {
   const row = run as NuzRunRow;
   return {
     run: { ...row, rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) } },
-    mode: 'multi',
+    mode: row.invite_code ? 'multi' : 'solo',
     players: (players ?? []) as NuzPlayerRow[],
     encounters: normalizeEncounters((encounters ?? []) as NuzEncounterRow[]),
   };
@@ -683,7 +852,7 @@ async function fetchRemoteRun(runId: string): Promise<RunState | null> {
 
 async function refreshRemote(entry: RunEntry): Promise<void> {
   const local = entry.state;
-  if (local && local.mode !== 'multi') {
+  if (local && !isCloudRun(local)) {
     entry.phase = 'ready';
     emit(entry);
     return;
@@ -707,10 +876,18 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
         outbox: entry.outbox,
       });
       const merged = { ...remote, encounters };
+      if (
+        merged.mode === 'solo' &&
+        isCloudRun(merged) &&
+        !myPlayerId(entry.id) &&
+        merged.players.length === 1
+      ) {
+        setMembership(entry.id, merged.players[0].id);
+      }
       entry.state = merged;
       entry.phase = 'ready';
       saveLocalRun(merged);
-      addToIndex(entry.id);
+      if (!isRunArchived(entry.id)) addToIndex(entry.id);
       /* authoritative re-seed — includes encounter history, not just joins */
       seedFeed(entry);
       scheduleLinkedSync(merged);
@@ -723,7 +900,7 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
   entry.remoteLoaded = true;
   emit(entry);
   /* Membership/players may arrive only after hydrate — retry live attach. */
-  if (entry.state?.mode === 'multi' && entry.refs > 0 && !entry.channel) goLive(entry);
+  if (entry.state && isCloudRun(entry.state) && entry.refs > 0 && !entry.channel) goLive(entry);
 }
 
 /* ---------- realtime (nuzlocke.md §2.9) ---------- */
@@ -792,7 +969,7 @@ function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
  * `findEvoLineDupeViolations` are pure and deterministic (created_at/id), so
  * every online client converges on the same loser without coordinating. */
 async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow): Promise<void> {
-  if (entry.state?.mode !== 'multi' || !entry.state.run.rules.dupes) return;
+  if (!entry.state || !isCloudRun(entry.state) || !entry.state.run.rules.dupes) return;
   if (trigger.status !== 'caught' || trigger.is_shiny) return;
   const speciesId =
     typeof trigger.caught_pokemon_id === 'number' && trigger.caught_pokemon_id > 0
@@ -805,7 +982,7 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow):
     return; /* offline / unknown species — no re-check possible, degrade gracefully */
   }
   const s = entry.state;
-  if (!s || s.mode !== 'multi') return;
+  if (!s || !isCloudRun(s)) return;
   const losers = findEvoLineDupeViolations(s.encounters, cachedEvolutionFamilyIds);
   for (const loser of losers) {
     /* re-check right before writing — a concurrent scan (the other client's
@@ -822,13 +999,13 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow):
 
 function goLive(entry: RunEntry): void {
   const s = entry.state;
-  if (!s || s.mode !== 'multi' || entry.channel || !isMultiCapable()) return;
-  /* Presence key = player id only (never runId, never players[0] guess). */
-  const presenceKey = myPlayerId(entry.id);
-  if (!presenceKey) return;
+  if (!s || !isCloudRun(s) || entry.channel || !isMultiCapable()) return;
+  /* Presence key = player id; solo cloud falls back to the sole player or run id. */
+  const presenceKey = myPlayerId(entry.id) ?? s.players[0]?.id ?? entry.id;
   entry.status = 'connecting';
   const runId = entry.id;
   const ch = runChannel(runId, presenceKey);
+  const multiPresence = s.mode === 'multi';
   entry.channel = ch;
   const isCurrent = (): boolean => entry.channel === ch;
   ch.on(
@@ -887,30 +1064,34 @@ function goLive(entry: RunEntry): void {
       emit(entry);
     },
   );
-  ch.on('presence', { event: 'sync' }, () => {
-    if (!isCurrent()) return;
-    const pres = ch.presenceState<{ player_id: string; name: string; color: string }>();
-    const online: Record<string, { name: string; color: string }> = {};
-    const wasOnline = new Set(Object.keys(entry.online));
-    for (const list of Object.values(pres)) {
-      for (const m of list) {
-        if (m.player_id) {
-          online[m.player_id] = { name: m.name, color: m.color };
-          if (!wasOnline.has(m.player_id) && m.player_id !== presenceMe(entry)?.player_id) {
-            pushFeed(entry, { kind: 'presence', color: m.color, title: i18n.t('nuz.feed.online', { name: m.name }) });
+  if (multiPresence) {
+    ch.on('presence', { event: 'sync' }, () => {
+      if (!isCurrent()) return;
+      const pres = ch.presenceState<{ player_id: string; name: string; color: string }>();
+      const online: Record<string, { name: string; color: string }> = {};
+      const wasOnline = new Set(Object.keys(entry.online));
+      for (const list of Object.values(pres)) {
+        for (const m of list) {
+          if (m.player_id) {
+            online[m.player_id] = { name: m.name, color: m.color };
+            if (!wasOnline.has(m.player_id) && m.player_id !== presenceMe(entry)?.player_id) {
+              pushFeed(entry, { kind: 'presence', color: m.color, title: i18n.t('nuz.feed.online', { name: m.name }) });
+            }
           }
         }
       }
-    }
-    entry.online = online;
-    emit(entry);
-  });
+      entry.online = online;
+      emit(entry);
+    });
+  }
   ch.subscribe((status) => {
     if (!isCurrent()) return;
     if (status === 'SUBSCRIBED') {
       entry.status = 'live';
-      const me = presenceMe(entry);
-      if (me) void ch.track(me);
+      if (multiPresence) {
+        const me = presenceMe(entry);
+        if (me) void ch.track(me);
+      }
       /* fill any postgres_changes gap while disconnected */
       void refreshRemote(entry);
     } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
@@ -918,7 +1099,7 @@ function goLive(entry: RunEntry): void {
     }
     emit(entry);
   });
-  if (!entry.presenceVisHandler) {
+  if (multiPresence && !entry.presenceVisHandler) {
     const onVis = (): void => {
       if (document.visibilityState !== 'visible') return;
       if (entry.channel !== ch) return;
@@ -939,7 +1120,7 @@ function dropLive(entry: RunEntry): void {
     dropChannel(entry.channel);
     entry.channel = null;
   }
-  if (entry.state?.mode === 'multi') entry.status = 'connecting';
+  if (entry.state && isCloudRun(entry.state)) entry.status = 'connecting';
   entry.online = {};
 }
 
@@ -952,7 +1133,7 @@ export function subscribeRun(runId: string, listener: () => void): () => void {
     window.clearTimeout(entry.teardownTimer);
     entry.teardownTimer = null;
   }
-  if (entry.state?.mode === 'multi') goLive(entry);
+  if (entry.state && isCloudRun(entry.state)) goLive(entry);
   return () => {
     entry.listeners.delete(listener);
     entry.refs -= 1;
@@ -985,7 +1166,7 @@ function persistWithRetry(
   op: () => PromiseLike<{ error: unknown }>,
   outbox?: { snapshot: NuzEncounterRow; kind: OutboxOpKind },
 ): void {
-  if (!isMultiCapable() || entry.state?.mode !== 'multi') return;
+  if (!isMultiCapable() || !entry.state || !isCloudRun(entry.state)) return;
   const gen = nextOpGen(entry.opGen, syncKey);
   entry.pendingSync.add(syncKey);
   if (outbox) entry.outbox.set(syncKey, { kind: outbox.kind, snapshot: outbox.snapshot, gen });
@@ -1041,7 +1222,7 @@ function persistStatusRpc(
   targets: NuzEncounterRow[],
   args: { p_encounter_id: string; p_new_status: string; p_note: string | null },
 ): void {
-  if (!isMultiCapable() || entry.state?.mode !== 'multi' || targets.length === 0) return;
+  if (!isMultiCapable() || !entry.state || !isCloudRun(entry.state) || targets.length === 0) return;
   const gens = targets.map((row) => ({ id: row.id, row, gen: nextOpGen(entry.opGen, row.id) }));
   for (const g of gens) {
     entry.pendingSync.add(g.id);
@@ -1250,15 +1431,20 @@ function linkRunToAccount(runId: string, role: 'owner' | 'member'): void {
   const user = getAuthUser();
   if (!user) return;
   if (role === 'owner') {
+    /* the owner membership itself is written by the nuz_runs_grant_owner
+     * trigger — clients may not insert role='owner' (migration 10) */
     void supabase
       .from('nuz_runs')
       .update({ owner_id: user.id })
       .eq('id', runId)
       .then(({ error }) => error && console.warn('[accounts] owner link failed', error.message));
+    return;
   }
+  /* insert-only: rewriting an existing row would let a rejoin downgrade an
+   * owner to member, and `role` is not writable over REST anyway */
   void supabase
     .from('nuz_run_members')
-    .upsert({ run_id: runId, user_id: user.id, role }, { onConflict: 'run_id,user_id' })
+    .upsert({ run_id: runId, user_id: user.id, role }, { onConflict: 'run_id,user_id', ignoreDuplicates: true })
     .then(({ error }) => error && console.warn('[accounts] member link failed', error.message));
 }
 
@@ -1342,6 +1528,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   let mode: RunMode = 'solo';
   let invite: string | null = null;
   let offlineFallback = false;
+  let cloudBacked = false;
 
   if (wantOnline) {
     /* the insert policy requires an identity; the DB trigger then records
@@ -1354,9 +1541,21 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
       mode = 'multi';
       baseRun.invite_code = invite;
       linkRunToAccount(id, 'owner');
+      registerAccountRun(id);
+      cloudBacked = true;
     } else {
       offlineFallback = true;
       pushToast('sync', 'OFFLINE — RUN SAVED TO THIS DEVICE');
+    }
+  } else if (getAuthUser() && isMultiCapable()) {
+    const { error: runErr } = await nuzTables.runs().insert({ ...baseRun, invite_code: null });
+    if (!runErr) {
+      const { error: plErr } = await nuzTables.players().insert(players);
+      if (!plErr) {
+        linkRunToAccount(id, 'owner');
+        registerAccountRun(id);
+        cloudBacked = true;
+      }
     }
   }
 
@@ -1367,12 +1566,14 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   const entry = ensureEntry(id);
   entry.state = state;
   entry.phase = 'ready';
-  entry.status = mode === 'multi' ? 'connecting' : 'local';
+  entry.status = cloudBacked ? 'connecting' : 'local';
   seedFeed(entry);
-  if (mode === 'multi') goLive(entry);
-  void import('./nuzlocke-linked-teams').then((m) => {
-    m.ensureLinkedTeams(state);
-  });
+  if (cloudBacked) goLive(entry);
+  void import('./nuzlocke-linked-teams')
+    .then((m) => {
+      m.ensureLinkedTeams(state);
+    })
+    .catch((err) => console.warn('[nuzlocke] linked team init failed', err));
   emit(entry);
   notifyHub();
   return { state, inviteCode: invite, offlineFallback };
@@ -1460,7 +1661,9 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   entry.state = state;
   entry.phase = 'ready';
   seedFeed(entry);
-  void import('./nuzlocke-linked-teams').then((m) => m.ensureLinkedTeams(state));
+  void import('./nuzlocke-linked-teams')
+    .then((m) => m.ensureLinkedTeams(state))
+    .catch((err) => console.warn('[nuzlocke] linked team init failed', err));
   void refreshRemote(entry).then(() => {
     goLive(entry);
     if (entry.state) scheduleLinkedSync(entry.state);
@@ -1583,7 +1786,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
   }
   checkMilestones(entry);
 
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(
       entry,
       enc.id,
@@ -1700,7 +1903,7 @@ export function updateEncounter(
       void reconcileEvoLineDupes(entry, enc);
     }
   }
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     if (isStatusChange) {
       /* single-TX RPC: this row's status/note + every SoulLink partner the
        * local cascade above touched apply server-side in one transaction —
@@ -1761,7 +1964,7 @@ export async function evolveEncounter(
   enc.pokemon_id = toPokemonId;
   enc.caught_pokemon_id = nextCaughtId;
   saveLocalRun(s);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(
       entry,
       enc.id,
@@ -1810,7 +2013,7 @@ export function setEncounterParty(runId: string, encId: string, inParty: boolean
   /* box-link (§A1): boxing this catch also boxes its SoulLink partners.
    * Unboxing never pulls a partner along (their party slot may be full). */
   const boxedPartners = inParty ? [] : boxLinkPartners(entry, enc);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(
       entry,
       enc.id,
@@ -1847,7 +2050,7 @@ export function swapParty(runId: string, boxEncId: string, partyEncId: string): 
   /* box-link (§A1): `b` just got boxed by this swap, so its SoulLink
    * partners get boxed too (the incoming `a` is not affected). */
   const boxedPartners = boxLinkPartners(entry, b);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, a.id, () => nuzTables.encounters().update({ in_party: true }).eq('id', a.id), {
       snapshot: a,
       kind: 'patch',
@@ -1877,7 +2080,7 @@ export function deleteEncounter(runId: string, encId: string): void {
   const removed = s.encounters.find((e) => e.id === encId);
   s.encounters = s.encounters.filter((e) => e.id !== encId);
   saveLocalRun(s);
-  if (s.mode === 'multi' && removed) {
+  if (isCloudRun(s) && removed) {
     persistWithRetry(entry, encId, () => nuzTables.encounters().delete().eq('id', encId), {
       snapshot: removed,
       kind: 'delete',
@@ -1895,7 +2098,7 @@ export function renameRun(runId: string, name: string): void {
   if (!s || !name.trim()) return;
   s.run.name = name.trim();
   saveLocalRun(s);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ name: s.run.name }).eq('id', runId));
   }
   scheduleLinkedSync(s);
@@ -1913,7 +2116,7 @@ export function renamePlayer(runId: string, playerId: string, name: string): boo
   if (!player) return false;
   player.name = trimmed.slice(0, 18);
   saveLocalRun(s);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `player:${playerId}`, () =>
       nuzTables.players().update({ name: player.name }).eq('id', playerId).eq('run_id', runId),
     );
@@ -1931,7 +2134,7 @@ export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
   s.run.rules = next;
   saveLocalRun(s);
   pushFeed(entry, { kind: 'rule', color: '#F6C945', title: i18n.t('nuz.feed.rulesUpdated'), meta: rulesSummary(s.run.rules) });
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ rules: s.run.rules }).eq('id', runId));
   }
   emit(entry);
@@ -1968,7 +2171,7 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
           : i18n.t('nuz.feed.statusActive'),
   });
   checkMilestones(entry);
-  if (s.mode === 'multi') {
+  if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ status }).eq('id', runId));
   }
   emit(entry);
@@ -1978,9 +2181,11 @@ export function setRunStatus(runId: string, status: NuzRunStatus): void {
 export function archiveRun(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
   writeArchivedIndex([runId, ...readArchivedIndex().filter((id) => id !== runId)]);
+  accountRunIds.delete(runId);
   /* multi realtime can keep running if the page is still open; hub just hides it */
   const entry = entries.get(runId);
-  if (entry?.state?.mode === 'multi') dropLive(entry);
+  if (entry?.state && isCloudRun(entry.state)) dropLive(entry);
+  void syncMembershipArchived(runId, true);
   notifyHub();
 }
 
@@ -1989,8 +2194,10 @@ export function restoreRun(runId: string): void {
   if (!loadLocalRun(runId) && !entries.get(runId)?.state) return;
   writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
   addToIndex(runId);
+  if (isAccountLinkedRun(runId)) accountRunIds.add(runId);
   const entry = ensureEntry(runId);
   if (entry.state) scheduleLinkedSync(entry.state);
+  void syncMembershipArchived(runId, false);
   notifyHub();
 }
 
@@ -2004,8 +2211,8 @@ function clearLocalRunMeta(runId: string): void {
   if (!writeJson(LS_OWNERS, owners)) notifyStorageFailure();
 }
 
-/** Permanent delete on this device (+ cloud solo mirror). Multiplayer remote rows stay for other members. */
-export function deleteRunForever(runId: string): void {
+/** Drop local mirror only — no server rows, no cloud solo delete (lost membership). */
+function purgeLocalRunMirror(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
   writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
   removeLocalKey(LS_RUN(runId));
@@ -2018,8 +2225,23 @@ export function deleteRunForever(runId: string): void {
     emit(entry);
     entries.delete(runId);
   }
-  void import('./cloud-sync').then((m) => m.cloudDeleteSoloRun(runId));
-  void import('./nuzlocke-linked-teams').then((m) => m.deleteLinkedTeamsForRun(runId));
+}
+
+/** Permanent delete on this device (+ cloud when account-linked). */
+export function deleteRunForever(runId: string): void {
+  purgeLocalRunMirror(runId);
+  tombstoneAccountRun(runId);
+  writePersistedAccountRunIds([...readPersistedAccountRunIds()].filter((id) => id !== runId));
+  accountRunIds.delete(runId);
+  const user = getAuthUser();
+  if (user) void remoteDeleteRunForever(runId);
+  else
+    void import('./cloud-sync')
+      .then((m) => m.cloudDeleteSoloRun(runId))
+      .catch((err) => console.warn('[nuzlocke] cloud delete failed', err));
+  void import('./nuzlocke-linked-teams')
+    .then((m) => m.deleteLinkedTeamsForRun(runId))
+    .catch((err) => console.warn('[nuzlocke] linked team cleanup failed', err));
   notifyHub();
 }
 
@@ -2055,9 +2277,11 @@ export function duplicateAsSolo(runId: string): string | null {
   saveLocalRun(state);
   setRunOwner(id);
   if (players[0]) setMembership(id, players[0].id);
-  void import('./nuzlocke-linked-teams').then((m) => {
-    m.cloneLinkedTeamsForDuplicate(src.run.id, state, playerMap, encounterMap);
-  });
+  void import('./nuzlocke-linked-teams')
+    .then((m) => {
+      m.cloneLinkedTeamsForDuplicate(src.run.id, state, playerMap, encounterMap);
+    })
+    .catch((err) => console.warn('[nuzlocke] linked team clone failed', err));
   notifyHub();
   return id;
 }
@@ -2067,11 +2291,178 @@ export function duplicateAsSolo(runId: string): string | null {
 const hubListeners = new Set<() => void>();
 let hubLoaded = false;
 
+/** Run ids discovered via nuz_run_members for the logged-in account. */
+const accountRunIds = new Set<string>();
+let accountWatchUserId: string | null = null;
+let accountChannel: RealtimeChannel | null = null;
+let accountSyncInFlight: Promise<void> | null = null;
+let accountSyncNeedsFollowUp = false;
+
+function hubRunIds(): string[] {
+  return [...new Set([...readRunIndex(), ...accountRunIds])];
+}
+
+/** Merged active hub ids (localStorage index + account discovery). */
+export function getHubRunIds(): string[] {
+  return hubRunIds();
+}
+
+function dropAccountWatch(): void {
+  if (accountChannel) {
+    dropChannel(accountChannel);
+    accountChannel = null;
+  }
+  accountWatchUserId = null;
+}
+
+/** Tear down account-level realtime (logout). */
+export function stopAccountRunsWatch(): void {
+  dropAccountWatch();
+  accountRunIds.clear();
+}
+
+async function performAccountSync(userId: string): Promise<void> {
+  const prevKnown = new Set([...accountRunIds, ...readPersistedAccountRunIds()]);
+  const purged = readAccountPurgedIds();
+
+  const { data, error } = await supabase
+    .from('nuz_run_members')
+    .select('run_id, archived, nuz_runs(*)')
+    .eq('user_id', userId);
+
+  if (error) {
+    if (isMissingColumnError(error)) {
+      membersArchivedSupported = false;
+      const fallback = await supabase
+        .from('nuz_run_members')
+        .select('run_id, nuz_runs(*)')
+        .eq('user_id', userId);
+      if (fallback.error) {
+        console.warn('[nuzlocke] account sync failed', fallback.error.message);
+        return;
+      }
+      return performAccountSyncWithRows(userId, prevKnown, purged, fallback.data ?? []);
+    }
+    console.warn('[nuzlocke] account sync failed', error.message);
+    return;
+  }
+
+  await performAccountSyncWithRows(userId, prevKnown, purged, data ?? []);
+}
+
+async function performAccountSyncWithRows(
+  _userId: string,
+  prevKnown: Set<string>,
+  purged: Set<string>,
+  rows: unknown[],
+): Promise<void> {
+  const nextIds = new Set<string>();
+  const nextActiveIds = new Set<string>();
+  const nextArchivedIds = new Set<string>();
+
+  for (const row of rows) {
+    const runId = (row as { run_id?: string }).run_id;
+    if (!runId || purged.has(runId)) continue;
+    nextIds.add(runId);
+    const archived = (row as { archived?: boolean }).archived === true;
+    if (archived) nextArchivedIds.add(runId);
+    else nextActiveIds.add(runId);
+  }
+
+  for (const id of prevKnown) {
+    if (nextIds.has(id)) continue;
+    tombstoneAccountRun(id);
+    purgeLocalRunMirror(id);
+  }
+  for (const id of nextIds) {
+    if (!purged.has(id)) clearAccountRunTombstone(id);
+  }
+
+  syncLocalArchivedFromServer(nextArchivedIds, nextActiveIds);
+
+  writePersistedAccountRunIds(nextIds);
+  accountRunIds.clear();
+  for (const id of nextActiveIds) accountRunIds.add(id);
+
+  await Promise.all(
+    [...nextIds].map(async (id) => {
+      const entry = ensureEntry(id);
+      await refreshRemote(entry);
+    }),
+  );
+  notifyHub();
+}
+
+/** Fetch nuz_run_members + hydrate each run into the hub cache. */
+export async function syncAccountRuns(userId: string): Promise<void> {
+  const user = getAuthUser();
+  if (!user || user.id !== userId || !isMultiCapable()) return;
+
+  if (accountSyncInFlight) {
+    accountSyncNeedsFollowUp = true;
+    return accountSyncInFlight;
+  }
+
+  accountSyncInFlight = (async () => {
+    try {
+      do {
+        accountSyncNeedsFollowUp = false;
+        await performAccountSync(userId);
+      } while (accountSyncNeedsFollowUp);
+    } finally {
+      accountSyncInFlight = null;
+    }
+  })();
+
+  return accountSyncInFlight;
+}
+
+/** Live membership + run metadata changes for the logged-in account. */
+export function watchAccountRuns(userId: string): void {
+  if (!isMultiCapable()) return;
+  const user = getAuthUser();
+  if (!user || user.id !== userId) return;
+  if (accountWatchUserId === userId && accountChannel) return;
+
+  dropAccountWatch();
+  accountWatchUserId = userId;
+
+  const resync = (): void => {
+    void syncAccountRuns(userId);
+  };
+
+  const resyncIfAccountRun = (payload: {
+    eventType: string;
+    new?: unknown;
+    old?: Partial<{ id: string }>;
+  }): void => {
+    const id =
+      payload.eventType === 'DELETE'
+        ? payload.old?.id
+        : (payload.new as Partial<{ id: string }> | undefined)?.id;
+    if (!id || !accountRunIds.has(id)) return;
+    resync();
+  };
+
+  const ch = supabase.channel(`account-runs:${userId}`);
+  accountChannel = ch;
+  ch.on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'nuz_run_members', filter: `user_id=eq.${userId}` },
+    resync,
+  );
+  ch.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
+  ch.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
+  ch.subscribe();
+}
+
 function hubRefresh(): void {
   reconcileRunIndex();
-  for (const id of [...readRunIndex(), ...readArchivedIndex()]) {
+  const user = getAuthUser();
+  if (user) void syncAccountRuns(user.id);
+  for (const id of [...hubRunIds(), ...readArchivedIndex()]) {
     const e = ensureEntry(id);
-    if (e.state?.mode === 'multi' && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
+    if (e.state && isCloudRun(e.state) && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
   }
   notifyHub();
 }
@@ -2087,7 +2478,7 @@ export function useHubRuns(): {
   useEffect(() => {
     const unsubs = new Map<string, () => void>();
     function syncSubs() {
-      const ids = [...readRunIndex(), ...readArchivedIndex()];
+      const ids = [...hubRunIds(), ...readArchivedIndex()];
       for (const id of ids) if (!unsubs.has(id)) unsubs.set(id, subscribeRun(id, fn));
       for (const [id, u] of [...unsubs]) {
         if (!ids.includes(id)) {
@@ -2112,7 +2503,7 @@ export function useHubRuns(): {
     };
   }, []);
 
-  const list = readRunIndex()
+  const list = hubRunIds()
     .map((id) => ensureEntry(id))
     .filter((e): e is RunEntry => !!e.state);
   const runs = list
@@ -2173,7 +2564,7 @@ export interface RunTeamPlayer {
 /** Current alive team per player (≤6, catch order). Used by the Team Builder phase. */
 export async function getRunTeam(runId: string): Promise<RunTeamPlayer[]> {
   let state: RunState | null = loadLocalRun(runId) ?? entries.get(runId)?.state ?? null;
-  if ((!state || state.mode === 'multi') && isMultiCapable()) {
+  if ((!state || isCloudRun(state)) && isMultiCapable()) {
     try {
       const remote = await fetchRemoteRun(runId);
       if (remote) state = remote;

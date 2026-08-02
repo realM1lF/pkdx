@@ -6,16 +6,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CloudUpload, X } from 'lucide-react';
 import { onMigrationOffer } from '@/lib/cloud-sync';
 import type { MigrationOffer } from '@/lib/cloud-sync';
+import { useAuth } from '@/lib/auth';
 
 export default function MigrationDialog() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [offer, setOffer] = useState<MigrationOffer | null>(null);
 
   useEffect(() => onMigrationOffer(setOffer), []);
 
+  /* signed-in accounts sync silently — the offer only ever applies to guests */
+  const visible = offer && !user;
+
   return (
     <AnimatePresence>
-      {offer && (
+      {visible && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

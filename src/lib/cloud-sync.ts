@@ -5,9 +5,15 @@
 import type { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { getAuthUser, onAuthChange } from './auth';
-import { loadTeams, saveTeam } from './teambuilder';
-import type { Team } from './teambuilder';
-import { loadLocalRun, readRunIndex, saveLocalRunPublic } from './nuzlocke-store';
+import { loadTeams, saveTeam, type Team } from './teambuilder';
+import {
+  loadLocalRun,
+  readRunIndex,
+  saveLocalRunPublic,
+  stopAccountRunsWatch,
+  syncAccountRuns,
+  watchAccountRuns,
+} from './nuzlocke-store';
 import type { RunState } from './nuzlocke-store';
 
 const DEBOUNCE_MS = 900;
@@ -56,6 +62,9 @@ function migrationSkipped(): boolean {
 }
 
 function maybeOffer(teams: Team[], runs: RunState[]): void {
+  /* accounts sync silently via nuz_run_members — the offer is guest-only, and
+   * a transient null from a token refresh must never surface it */
+  if (getAuthUser()) return;
   if (sessionAsked || migrationSkipped() || (teams.length === 0 && runs.length === 0)) return;
   sessionAsked = true;
   const offer: MigrationOffer = {
@@ -134,33 +143,62 @@ async function hydrateTeams(user: User): Promise<Team[]> {
 
 /* ---------------- nuzlocke solo runs ---------------- */
 export function cloudPushSoloRun(state: RunState): void {
-  const user = getAuthUser();
-  if (!user || state.mode !== 'solo') return;
+  if (state.mode !== 'solo') return;
   const id = state.run.id;
   debounce(runTimers, id, () => {
-    void supabase
-      .from('nuz_solo_runs')
-      .upsert(
-        { id, user_id: user.id, payload: state, updated_at: new Date().toISOString() },
-        { onConflict: 'id' },
-      )
-      .then(({ error }) => {
-        if (error) console.warn('[cloud-sync] run push failed', error.message);
-      });
+    void (async () => {
+      const realUser = getAuthUser();
+      if (realUser) {
+        const runRow = { ...state.run, invite_code: null };
+        const { error: runErr } = await supabase.from('nuz_runs').upsert(runRow, { onConflict: 'id' });
+        if (runErr) {
+          console.warn('[cloud-sync] run push failed', runErr.message);
+          return;
+        }
+        if (state.players.length) {
+          const { error: plErr } = await supabase
+            .from('nuz_players')
+            .upsert(state.players, { onConflict: 'id' });
+          if (plErr) console.warn('[cloud-sync] players push failed', plErr.message);
+        }
+        if (state.encounters.length) {
+          const { error: encErr } = await supabase
+            .from('nuz_encounters')
+            .upsert(state.encounters, { onConflict: 'id' });
+          if (encErr) console.warn('[cloud-sync] encounters push failed', encErr.message);
+        }
+        /* the owner membership comes from the nuz_runs_grant_owner trigger —
+         * clients cannot insert role='owner' (see migration 10) */
+        return;
+      }
+      const { data } = await supabase.auth.getSession();
+      const sessionUser = data.session?.user;
+      if (!sessionUser) return;
+      const { error } = await supabase
+        .from('nuz_solo_runs')
+        .upsert(
+          { id, user_id: sessionUser.id, payload: state, updated_at: new Date().toISOString() },
+          { onConflict: 'id' },
+        );
+      if (error) console.warn('[cloud-sync] run push failed', error.message);
+    })();
   });
 }
 
 export function cloudDeleteSoloRun(id: string): void {
-  const user = getAuthUser();
-  if (!user) return;
-  void supabase
-    .from('nuz_solo_runs')
-    .delete()
-    .eq('id', id)
-    .eq('user_id', user.id)
-    .then(({ error }) => {
-      if (error) console.warn('[cloud-sync] run delete failed', error.message);
-    });
+  /* Logged-in accounts delete via nuz_runs / nuz_run_members in nuzlocke-store. */
+  if (getAuthUser()) return;
+  void (async () => {
+    const { data } = await supabase.auth.getSession();
+    const sessionUser = data.session?.user;
+    if (!sessionUser) return;
+    const { error } = await supabase
+      .from('nuz_solo_runs')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', sessionUser.id);
+    if (error) console.warn('[cloud-sync] run delete failed', error.message);
+  })();
 }
 
 interface SoloRunRow {
@@ -169,7 +207,8 @@ interface SoloRunRow {
   updated_at: string;
 }
 
-async function hydrateSoloRuns(user: User): Promise<RunState[]> {
+export async function hydrateSoloRuns(user: User): Promise<RunState[]> {
+  if (getAuthUser()) return [];
   const { data, error } = await supabase.from('nuz_solo_runs').select('id, payload, updated_at').eq('user_id', user.id);
   if (error || !data) return [];
   const remoteIds = new Set<string>();
@@ -196,10 +235,20 @@ export function bootCloudSync(): void {
   if (booted) return;
   booted = true;
   onAuthChange((user) => {
-    if (!user) return;
+    if (!user) {
+      stopAccountRunsWatch();
+      const runs = readRunIndex()
+        .map((id) => loadLocalRun(id))
+        .filter((r): r is RunState => !!r && r.mode === 'solo');
+      maybeOffer(loadTeams(), runs);
+      return;
+    }
+    watchAccountRuns(user.id);
     void (async () => {
-      const [teams, runs] = await Promise.all([hydrateTeams(user), hydrateSoloRuns(user)]);
-      maybeOffer(teams, runs);
+      await syncAccountRuns(user.id);
+      await hydrateTeams(user);
+      await hydrateSoloRuns(user);
+      /* logged-in users sync via nuz_run_members — no migration offer */
       /* mid-run login / second device: repair linked TB teams after hydrate */
       void import('./nuzlocke-linked-teams').then((m) => m.repairAllLinkedTeams());
     })();
