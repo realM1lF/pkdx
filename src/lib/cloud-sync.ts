@@ -167,15 +167,8 @@ export function cloudPushSoloRun(state: RunState): void {
             .upsert(state.encounters, { onConflict: 'id' });
           if (encErr) console.warn('[cloud-sync] encounters push failed', encErr.message);
         }
-        /* create the owner row when missing, never rewrite an existing one —
-         * an overwrite would let this path promote a member to owner */
-        const { error: memErr } = await supabase
-          .from('nuz_run_members')
-          .upsert(
-            { run_id: id, user_id: realUser.id, role: 'owner' },
-            { onConflict: 'run_id,user_id', ignoreDuplicates: true },
-          );
-        if (memErr) console.warn('[cloud-sync] member push failed', memErr.message);
+        /* the owner membership comes from the nuz_runs_grant_owner trigger —
+         * clients cannot insert role='owner' (see migration 10) */
         return;
       }
       const { data } = await supabase.auth.getSession();

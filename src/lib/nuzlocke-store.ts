@@ -1431,11 +1431,14 @@ function linkRunToAccount(runId: string, role: 'owner' | 'member'): void {
   const user = getAuthUser();
   if (!user) return;
   if (role === 'owner') {
+    /* the owner membership itself is written by the nuz_runs_grant_owner
+     * trigger — clients may not insert role='owner' (migration 10) */
     void supabase
       .from('nuz_runs')
       .update({ owner_id: user.id })
       .eq('id', runId)
       .then(({ error }) => error && console.warn('[accounts] owner link failed', error.message));
+    return;
   }
   /* insert-only: rewriting an existing row would let a rejoin downgrade an
    * owner to member, and `role` is not writable over REST anyway */

@@ -191,7 +191,7 @@ describe('solo cloud persistence', () => {
     return import('./cloud-sync');
   }
 
-  it('createRun (solo, logged in) writes nuz_runs + nuz_run_members owner', async () => {
+  it('createRun (solo, logged in) writes nuz_runs and leaves the owner membership to the DB trigger', async () => {
     mockUser = { id: USER_ID };
     const { createRun } = await loadStore();
 
@@ -213,12 +213,11 @@ describe('solo cloud persistence', () => {
       invite_code: null,
       name: 'Account Solo',
     });
-    expect(fromMock).toHaveBeenCalledWith('nuz_run_members');
-    expect(membersUpserts).toContainEqual({
-      run_id: state.run.id,
-      user_id: USER_ID,
-      role: 'owner',
-    });
+    /* role='owner' is rejected by RLS for REST clients (migration 10) — the
+     * nuz_runs_grant_owner trigger writes that row instead */
+    expect(membersUpserts).not.toContainEqual(
+      expect.objectContaining({ run_id: state.run.id, role: 'owner' }),
+    );
     expect(fromMock).not.toHaveBeenCalledWith('nuz_solo_runs');
   });
 
