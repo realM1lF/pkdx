@@ -290,7 +290,9 @@ function saveLocalRun(state: RunState): void {
   else if (!isRunArchived(state.run.id)) addToIndex(state.run.id);
   /* guest blob mirror only — cloud-backed solos persist row-by-row */
   if (!isCloudRun(state)) {
-    void import('./cloud-sync').then((m) => m.cloudPushSoloRun(state));
+    void import('./cloud-sync')
+      .then((m) => m.cloudPushSoloRun(state))
+      .catch((err) => console.warn('[nuzlocke] cloud push failed', err));
   }
 }
 
@@ -1435,9 +1437,11 @@ function linkRunToAccount(runId: string, role: 'owner' | 'member'): void {
       .eq('id', runId)
       .then(({ error }) => error && console.warn('[accounts] owner link failed', error.message));
   }
+  /* insert-only: rewriting an existing row would let a rejoin downgrade an
+   * owner to member, and `role` is not writable over REST anyway */
   void supabase
     .from('nuz_run_members')
-    .upsert({ run_id: runId, user_id: user.id, role }, { onConflict: 'run_id,user_id' })
+    .upsert({ run_id: runId, user_id: user.id, role }, { onConflict: 'run_id,user_id', ignoreDuplicates: true })
     .then(({ error }) => error && console.warn('[accounts] member link failed', error.message));
 }
 
@@ -1562,9 +1566,11 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   entry.status = cloudBacked ? 'connecting' : 'local';
   seedFeed(entry);
   if (cloudBacked) goLive(entry);
-  void import('./nuzlocke-linked-teams').then((m) => {
-    m.ensureLinkedTeams(state);
-  });
+  void import('./nuzlocke-linked-teams')
+    .then((m) => {
+      m.ensureLinkedTeams(state);
+    })
+    .catch((err) => console.warn('[nuzlocke] linked team init failed', err));
   emit(entry);
   notifyHub();
   return { state, inviteCode: invite, offlineFallback };
@@ -1652,7 +1658,9 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   entry.state = state;
   entry.phase = 'ready';
   seedFeed(entry);
-  void import('./nuzlocke-linked-teams').then((m) => m.ensureLinkedTeams(state));
+  void import('./nuzlocke-linked-teams')
+    .then((m) => m.ensureLinkedTeams(state))
+    .catch((err) => console.warn('[nuzlocke] linked team init failed', err));
   void refreshRemote(entry).then(() => {
     goLive(entry);
     if (entry.state) scheduleLinkedSync(entry.state);
@@ -2224,8 +2232,13 @@ export function deleteRunForever(runId: string): void {
   accountRunIds.delete(runId);
   const user = getAuthUser();
   if (user) void remoteDeleteRunForever(runId);
-  else void import('./cloud-sync').then((m) => m.cloudDeleteSoloRun(runId));
-  void import('./nuzlocke-linked-teams').then((m) => m.deleteLinkedTeamsForRun(runId));
+  else
+    void import('./cloud-sync')
+      .then((m) => m.cloudDeleteSoloRun(runId))
+      .catch((err) => console.warn('[nuzlocke] cloud delete failed', err));
+  void import('./nuzlocke-linked-teams')
+    .then((m) => m.deleteLinkedTeamsForRun(runId))
+    .catch((err) => console.warn('[nuzlocke] linked team cleanup failed', err));
   notifyHub();
 }
 
@@ -2261,9 +2274,11 @@ export function duplicateAsSolo(runId: string): string | null {
   saveLocalRun(state);
   setRunOwner(id);
   if (players[0]) setMembership(id, players[0].id);
-  void import('./nuzlocke-linked-teams').then((m) => {
-    m.cloneLinkedTeamsForDuplicate(src.run.id, state, playerMap, encounterMap);
-  });
+  void import('./nuzlocke-linked-teams')
+    .then((m) => {
+      m.cloneLinkedTeamsForDuplicate(src.run.id, state, playerMap, encounterMap);
+    })
+    .catch((err) => console.warn('[nuzlocke] linked team clone failed', err));
   notifyHub();
   return id;
 }
