@@ -62,6 +62,9 @@ function migrationSkipped(): boolean {
 }
 
 function maybeOffer(teams: Team[], runs: RunState[]): void {
+  /* accounts sync silently via nuz_run_members — the offer is guest-only, and
+   * a transient null from a token refresh must never surface it */
+  if (getAuthUser()) return;
   if (sessionAsked || migrationSkipped() || (teams.length === 0 && runs.length === 0)) return;
   sessionAsked = true;
   const offer: MigrationOffer = {
