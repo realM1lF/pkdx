@@ -38,7 +38,7 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
     <div className="mx-auto max-w-[960px]">
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-[26px] font-extrabold uppercase tracking-wide text-tx-primary">
+          <h1 className="font-display text-[26px] font-extrabold tracking-wide text-tx-primary">
             {t8n('tb.page.title')}
           </h1>
           <p className="tb-micro mt-1.5">
@@ -80,7 +80,7 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                 <div className="mb-2.5 flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="flex min-w-0 items-center gap-1.5">
-                      <div className="truncate font-display text-[14px] font-bold uppercase tracking-wide text-tx-primary">
+                      <div className="truncate font-display text-[14px] font-bold tracking-wide text-tx-primary">
                         {t.name}
                       </div>
                       {isLinkedTeam(t) && (

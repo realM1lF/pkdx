@@ -233,7 +233,7 @@ export default function Spotlight() {
                     {padNum(id)}
                   </span>,
                   <div key="name">
-                    <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
+                    <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
                       {pokemon ? nameOfPokemon(id, lang) : '…'}
                     </h2>
                     <p className="mt-1 font-sans text-base italic text-tx-secondary">
@@ -256,7 +256,7 @@ export default function Spotlight() {
                   <div key="cta" className="mt-2 flex flex-wrap gap-4">
                     <LocaleLink
                       to={`/pokemon/${id}`}
-                      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border px-6 py-3 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-primary transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
+                      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border px-6 py-3 font-display text-sm font-bold tracking-[0.06em] text-tx-primary transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
                       style={{
                         borderColor: `rgba(${TYPE_COLORS[primary].rgb},0.6)`,
                         background: `linear-gradient(135deg, rgba(${TYPE_COLORS[primary].rgb},0.25), rgba(${TYPE_COLORS[primary].rgb},0.10))`,
@@ -269,7 +269,7 @@ export default function Spotlight() {
                     <button
                       type="button"
                       onClick={() => setOffset((o) => o + 1)}
-                      className="rounded-md border border-hairline2 px-6 py-3 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-secondary transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface3 hover:text-gold active:scale-[0.97]"
+                      className="rounded-md border border-hairline2 px-6 py-3 font-display text-sm font-bold tracking-[0.06em] text-tx-secondary transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface3 hover:text-gold active:scale-[0.97]"
                     >
                       {t('home.spotlight.next')}
                     </button>

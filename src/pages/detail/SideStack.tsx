@@ -29,7 +29,7 @@ function MiniPanel({
     <section className={cn('dx-panel', className)}>
       <header className="flex items-baseline gap-2 border-b border-hairline px-3.5 py-2">
         <span className="pixel-label text-[8px] text-gold">{eyebrow}</span>
-        <h3 className="font-display text-[13px] font-bold uppercase tracking-wide text-tx-primary">{title}</h3>
+        <h3 className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{title}</h3>
       </header>
       <div className="p-3">{children}</div>
     </section>

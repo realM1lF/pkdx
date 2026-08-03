@@ -136,7 +136,7 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
         </div>
 
         {/* title + caption */}
-        <h3 className="mt-3 font-display text-[30px] font-extrabold uppercase leading-none tracking-wide text-tx-primary">
+        <h3 className="mt-3 font-display text-[30px] font-extrabold leading-none tracking-wide text-tx-primary">
           {t(card.titleKey)}
         </h3>
         <p className="mt-2 max-w-[46ch] text-[12.5px] font-medium leading-relaxed text-tx-secondary">
@@ -161,7 +161,7 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
         <div className="mt-3.5">
           <LocaleLink
             to={card.to}
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
             style={{
               borderColor: `rgba(${rgb},0.6)`,
               background: `linear-gradient(135deg, rgba(${rgb},0.25), rgba(${rgb},0.10))`,

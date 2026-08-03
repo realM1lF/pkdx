@@ -38,14 +38,14 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
     return releaseOnDeath ? (
       <span
         title={t('nuz.box.badge.deadReleaseTip')}
-        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-gold"
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-gold"
       >
         💀 {t('nuz.box.badge.deadRelease')}
       </span>
     ) : (
       <span
         title={t('nuz.box.badge.deadTip')}
-        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted"
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-tx-muted"
       >
         💀 {t('nuz.box.badge.dead')}
       </span>
@@ -53,14 +53,14 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
   }
   if (enc.status === 'lost') {
     return (
-      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-gold">
+      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-gold">
         🔗 {t('nuz.box.badge.lost')}
       </span>
     );
   }
   /* missed + duped */
   return (
-    <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] uppercase leading-[1.8] tracking-[0.05em] text-tx-muted">
+    <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-tx-muted">
       🌫 {t('nuz.box.badge.missed')}
     </span>
   );
@@ -152,7 +152,7 @@ function BoxCell({
       {locked ? (
         <StatusBadge enc={enc} releaseOnDeath={releaseOnDeath} />
       ) : (
-        <span className="max-w-full truncate font-pixel text-[7px] uppercase leading-[1.6] text-tx-muted/80">
+        <span className="max-w-full truncate font-pixel text-[7px] leading-[1.6] text-tx-muted/80">
           {routeLabel(enc.route_key)}
         </span>
       )}
@@ -213,7 +213,7 @@ export default function BoxSection({
             aria-pressed={filter === f}
             onClick={() => setFilter(f)}
             className={cn(
-              'rounded-full border px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-[0.04em] transition-colors',
+              'rounded-full border px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.04em] transition-colors',
               filter === f
                 ? 'border-gold/60 bg-gold/10 text-gold'
                 : 'border-hairline2 text-tx-muted hover:border-gold/40 hover:text-tx-secondary',

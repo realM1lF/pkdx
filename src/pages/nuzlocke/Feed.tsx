@@ -45,7 +45,7 @@ export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean 
             </span>
             <span className="min-w-0 flex-1">
               <span className="block truncate text-[11px] leading-tight text-tx-secondary">{ev.title}</span>
-              {ev.meta && <span className="block font-pixel text-[6px] uppercase tracking-[0.06em] text-tx-muted">{ev.meta}</span>}
+              {ev.meta && <span className="block font-pixel text-[6px] tracking-[0.06em] text-tx-muted">{ev.meta}</span>}
             </span>
             <span className="shrink-0 text-[9px] tabular-nums text-tx-muted">{timeAgo(ev.t, true)}</span>
           </motion.div>

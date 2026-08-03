@@ -38,7 +38,7 @@ function SectionCard({
     <section className="rounded-lg border border-hairline bg-surface1">
       <header className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-hairline px-4 py-2.5 sm:px-5">
         <span className="pixel-label shrink-0 text-[9px] text-gold">{eyebrow}</span>
-        <h2 className="font-display text-base font-bold uppercase tracking-wide text-tx-primary">{title}</h2>
+        <h2 className="font-display text-base font-bold tracking-wide text-tx-primary">{title}</h2>
       </header>
       <div>{children}</div>
     </section>
@@ -63,7 +63,7 @@ export default function TypeDetailPage() {
   if (!slug) {
     return (
       <div className="mx-auto max-w-content px-4 pb-20 pt-16 md:px-8">
-        <h1 className="font-display text-xl font-extrabold uppercase text-tx-primary">
+        <h1 className="font-display text-xl font-extrabold text-tx-primary">
           {t('seo.type.notFoundTitle')}
         </h1>
         <p className="mt-3 text-[14px] text-tx-secondary">
@@ -170,7 +170,7 @@ export default function TypeDetailPage() {
             <TypeGlyph type={slug} size={12} />
             {t('seo.type.eyebrow')}
           </p>
-          <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+          <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
             {t('seo.type.title', { name })}
           </h1>
           <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">

@@ -47,7 +47,7 @@ export default function Versus() {
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <header className="mb-4">
         <p className="pixel-label text-[9px] text-gold">{t('versus.pageEyebrow')}</p>
-        <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+        <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('versus.pageTitle')}
         </h1>
         <p className="mt-1 max-w-xl font-sans text-[13px] text-tx-secondary">{t('versus.pageHint')}</p>
@@ -66,7 +66,7 @@ export default function Versus() {
       <section className="mx-auto mt-12 max-w-3xl">
         <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
           <p className="pixel-label text-[9px] text-gold">{t('seo.versus.explainerEyebrow')}</p>
-          <h2 className="mt-1 font-display text-lg font-bold uppercase tracking-wide text-tx-primary md:text-xl">
+          <h2 className="mt-1 font-display text-lg font-bold tracking-wide text-tx-primary md:text-xl">
             {t('seo.versus.explainerTitle')}
           </h2>
           <p className="mt-2.5 font-sans text-[13.5px] leading-relaxed text-tx-secondary">
@@ -91,7 +91,7 @@ export default function Versus() {
       <section className="mx-auto mt-10 max-w-3xl">
         <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
           <p className="pixel-label text-[9px] text-gold">{t('seo.versus.matchupsEyebrow')}</p>
-          <h2 className="mt-1 font-display text-lg font-bold uppercase tracking-wide text-tx-primary md:text-xl">
+          <h2 className="mt-1 font-display text-lg font-bold tracking-wide text-tx-primary md:text-xl">
             {t('seo.versus.matchupsTitle')}
           </h2>
           <p className="mt-2 font-sans text-[12.5px] leading-relaxed text-tx-secondary">

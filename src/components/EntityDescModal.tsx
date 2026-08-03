@@ -176,7 +176,7 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
             <div className="flex items-center gap-3 border-b border-hairline px-4 py-3">
               {target.kind === 'item' && slug && <ItemIcon slug={slug} name={name} size={40} />}
               <div className="min-w-0 flex-1">
-                <div className="truncate font-display text-[15px] font-bold uppercase tracking-wide text-tx-primary">
+                <div className="truncate font-display text-[15px] font-bold tracking-wide text-tx-primary">
                   {name}
                 </div>
                 {nameEn && nameEn !== name && (

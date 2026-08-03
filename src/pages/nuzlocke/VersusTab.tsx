@@ -233,7 +233,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
           {state.players.map((p) => (
             <FilterChip key={p.id} active={playerFilter === p.id} onClick={() => setPlayerFilter(p.id)}>
               <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full" style={{ background: p.color }} />
-              {p.name.toUpperCase()}
+              {p.name}
             </FilterChip>
           ))}
         </div>
@@ -336,7 +336,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                   level: member.level,
                   moves: member.moves ?? [],
                   source: (member.moves?.length ?? 0) > 0 ? 'trainer' : 'wild',
-                  context: `${tr.name.toUpperCase()} · ${tr.class}`,
+                  context: `${tr.name} · ${tr.class}`,
                 });
               }}
             />
@@ -382,7 +382,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
               <OwnSideTune side={you} onSide={(patch) => setYou((s) => ({ ...s, ...patch }))} pokemon={youPokemon} versionGroup={ctx.versionGroup} />
             )}
 
-            <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName.toUpperCase()} />
+            <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName} />
 
             {(youStatus === 'loading' || foeStatus === 'loading') && (
               <div className="flex h-24 items-center justify-center">
@@ -523,7 +523,7 @@ function SideHeader({
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-1.5">
           <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
-          <span className="truncate font-display text-[13px] font-bold uppercase text-tx-primary">{name}</span>
+          <span className="truncate font-display text-[13px] font-bold text-tx-primary">{name}</span>
           {id > 0 && <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(id)}</span>}
         </div>
         <div className="mt-0.5 flex items-center gap-1.5">

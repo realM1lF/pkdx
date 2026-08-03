@@ -21,7 +21,7 @@ export default function TypesOverviewPage() {
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <header className="mb-8 max-w-3xl">
         <p className="pixel-label text-[9px] text-gold">{t('seo.types.eyebrow')}</p>
-        <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+        <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('seo.types.title')}
         </h1>
         <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">
@@ -47,7 +47,7 @@ export default function TypesOverviewPage() {
                   <TypeGlyph type={type} size={18} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-display text-[15px] font-bold uppercase tracking-wide text-tx-primary transition-colors group-hover:text-[rgb(var(--t))]">
+                  <span className="block font-display text-[15px] font-bold tracking-wide text-tx-primary transition-colors group-hover:text-[rgb(var(--t))]">
                     {typeName(type, lang)}
                   </span>
                   <span className="pixel-label block text-[7px] text-tx-muted">

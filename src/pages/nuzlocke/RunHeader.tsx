@@ -113,7 +113,7 @@ export default function RunHeader({
         />
       ) : (
         <h1
-          className={cn('font-display text-[clamp(18px,2.4vw,24px)] font-extrabold uppercase text-tx-primary', owner && 'cursor-text')}
+          className={cn('font-display text-[clamp(18px,2.4vw,24px)] font-extrabold text-tx-primary', owner && 'cursor-text')}
           title={owner ? t('nuz.header.renameTip') : undefined}
           onClick={() => {
             if (!owner) return;
@@ -132,7 +132,7 @@ export default function RunHeader({
         {versionChipLabel(state.run.game)}
       </span>
       <span className="rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">
-        {region ? regionName(region, lang).toUpperCase() : state.run.region.toUpperCase()}
+        {region ? regionName(region, lang) : state.run.region}
       </span>
       <RunStatusChip status={state.run.status} />
       <SyncBadge status={multi ? entry.status : 'local'} />
@@ -242,7 +242,7 @@ export default function RunHeader({
                   if (ok) setInviteOpen(false);
                 });
               }}
-              className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-[11px] font-bold uppercase tracking-[0.06em] text-tx-primary disabled:opacity-50"
+              className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-[11px] font-bold tracking-[0.06em] text-tx-primary disabled:opacity-50"
             >
               {goingOnline ? t('nuz.header.goingOnline') : t('nuz.header.goOnline')}
             </button>

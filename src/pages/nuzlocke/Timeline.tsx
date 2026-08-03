@@ -392,7 +392,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                     {/* header */}
                     <div className="flex h-[32px] items-center gap-1.5 border-b border-hairline px-2.5">
                       <span className="font-display text-[10px] font-bold tabular-nums text-tx-muted">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="min-w-0 flex-1 truncate font-pixel text-[8px] uppercase tracking-[0.05em] text-tx-secondary">{nodeName(node, lang)}</span>
+                      <span className="min-w-0 flex-1 truncate font-pixel text-[8px] tracking-[0.05em] text-tx-secondary">{nodeName(node, lang)}</span>
                       {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[7px] text-tx-muted">{t('nuz.timeline.post')}</span>}
                       <span className="flex shrink-0 items-center gap-1">
                         {players.map((p) => {
@@ -435,7 +435,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                     {/* footer */}
                     <div className="absolute inset-x-0 bottom-0 flex h-[24px] items-center gap-1.5 px-2.5">
                       <KindGlyph kind={node.kind} />
-                      <PixelLabel className="text-[8px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}</PixelLabel>
+                      <PixelLabel className="text-[8px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}</PixelLabel>
                       {/* EP5.3 — map chip only for atlas regions; freeform
                           (Gen 6–9) runs are decoupled from /maps */}
                       {isRegionId(region.region) && (

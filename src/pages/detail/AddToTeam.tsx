@@ -82,7 +82,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
         type="button"
         onClick={() => setOpen(true)}
         title={t8n('detail.addToTeam.button')}
-        className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold uppercase tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
+        className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
       >
         <Users size={11} />
         <span className="hidden sm:inline">{t8n('detail.addToTeam.button')}</span>
@@ -130,7 +130,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                   <div className="flex flex-col items-center gap-2 py-6">
                     <PokeballLoader variant="inline" />
                     <span className="pixel-label text-[8px] text-tx-muted">
-                      {t8n('detail.addToTeam.adding', { name: phase.teamName.toUpperCase() })}
+                      {t8n('detail.addToTeam.adding', { name: phase.teamName })}
                     </span>
                   </div>
                 )}
@@ -166,7 +166,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                     <LocaleLink
                       to="/team"
                       onClick={() => saveDraft(phase.team)}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[8px] border border-gold/60 bg-gold/15 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[8px] border border-gold/60 bg-gold/15 px-3 py-2 font-display text-[11px] font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
                     >
                       <FolderOpen size={12} />
                       {t8n('detail.addToTeam.openTeam')}
@@ -182,7 +182,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                         <button
                           type="button"
                           onClick={createAndAdd}
-                          className="mx-auto mt-3 inline-flex items-center gap-1.5 rounded-pill border border-gold/60 bg-gold/15 px-3.5 py-2 font-display text-[11px] font-bold uppercase tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
+                          className="mx-auto mt-3 inline-flex items-center gap-1.5 rounded-pill border border-gold/60 bg-gold/15 px-3.5 py-2 font-display text-[11px] font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
                         >
                           <Plus size={12} />
                           {t8n('detail.addToTeam.createNew')}
@@ -222,7 +222,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                                   )}
                                 </span>
                                 <span className="min-w-0 flex-1">
-                                  <span className="block truncate font-display text-[12px] font-bold uppercase tracking-wide text-tx-primary">
+                                  <span className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary">
                                     {team.name}
                                   </span>
                                   <span className="pixel-label text-[7px] text-tx-muted">

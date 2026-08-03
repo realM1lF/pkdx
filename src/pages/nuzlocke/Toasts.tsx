@@ -30,7 +30,7 @@ export default function NuzToasts() {
             {t.kind === 'link' && <img src="/sparkle.svg" alt="" className="h-3.5 w-3.5" />}
             {t.kind === 'sync' && <span className="nz-orbit h-3 w-3" />}
             {t.kind === 'success' && <Sparkles size={13} className="text-gold" />}
-            <span className="font-pixel text-[8px] uppercase tracking-[0.08em] text-gold">{t.text}</span>
+            <span className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t.text}</span>
           </motion.div>
         ))}
       </AnimatePresence>

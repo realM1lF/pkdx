@@ -52,7 +52,7 @@ export default function GenerationsRail() {
       <Reveal className="mx-auto mb-10 flex max-w-content flex-wrap items-end justify-between gap-6 px-4 md:px-8">
         <div className="flex flex-col gap-4">
           <span className="pixel-label text-[10px] text-gold">1996 → 2022</span>
-          <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
+          <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
             {t('home.generations.title')}
           </h2>
         </div>

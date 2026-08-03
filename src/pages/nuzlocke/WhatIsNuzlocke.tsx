@@ -32,7 +32,7 @@ export default function WhatIsNuzlocke() {
   return (
     <section className="mt-10 max-w-3xl" aria-labelledby="nuz-what-is-heading">
       <div className="mb-4 flex items-baseline gap-3">
-        <h2 id="nuz-what-is-heading" className="font-display text-[18px] font-bold uppercase text-tx-primary">
+        <h2 id="nuz-what-is-heading" className="font-display text-[18px] font-bold text-tx-primary">
           {t('nuz.whatIsSection.title')}
         </h2>
         <PixelLabel>{t('nuz.whatIsSection.eyebrow')}</PixelLabel>

@@ -217,7 +217,7 @@ export default function DetailDrawer({
               className="pixel-label rounded-sm border px-1.5 py-0.5 text-[7px]"
               style={{ color: region.accent, borderColor: `rgba(${rgb},0.4)` }}
             >
-              {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind.toUpperCase() })}
+              {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}
             </span>
             <span className="pixel-label rounded-sm border border-hairline px-1.5 py-0.5 text-[7px] text-tx-muted">
               {t('maps.order', { n: node.order })}
@@ -249,7 +249,7 @@ export default function DetailDrawer({
             <X size={14} />
           </button>
         </div>
-        <h2 className="mt-2.5 font-display text-[22px] font-extrabold uppercase leading-none text-tx-primary">
+        <h2 className="mt-2.5 font-display text-[22px] font-extrabold leading-none text-tx-primary">
           {nodeName(node, lang)}
         </h2>
         <p className="mt-1 text-[11px] font-medium text-tx-muted">

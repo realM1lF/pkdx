@@ -201,7 +201,7 @@ function NodeGlyph({
             strokeWidth={3}
             paintOrder="stroke"
           >
-            {label.toUpperCase()}
+            {label}
             {node.postGame && (
               <tspan fill="#F6C945" opacity={0.8} dx={4} fontSize={6.5}>
                 POST

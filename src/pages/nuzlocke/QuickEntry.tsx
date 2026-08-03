@@ -609,7 +609,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             aria-label={t('nuz.logEncounterEnter')}
             onClick={submit}
             className={cn(
-              'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-3.5 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
+              'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-3.5 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
               stacked && 'w-full',
             )}
           >

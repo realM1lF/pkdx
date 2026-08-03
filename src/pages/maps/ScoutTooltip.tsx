@@ -53,7 +53,7 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
         <span className="truncate text-[13px] font-bold text-tx-primary">{nodeName(node, lang)}</span>
         <span className="pixel-label shrink-0 text-[8px] text-tx-muted">{t('maps.order', { n: node.order })}</span>
       </div>
-      <div className="pixel-label mt-0.5 text-[7px] uppercase" style={{ color: region.accent }}>
+      <div className="pixel-label mt-0.5 text-[7px]" style={{ color: region.accent }}>
         {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}
         {node.postGame ? ` · ${t('maps.postGame')}` : ''}
       </div>

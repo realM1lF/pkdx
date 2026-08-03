@@ -92,7 +92,7 @@ function StageCard({
             <Sprite id={stage.id} name={label} era={stage.id <= 649 ? 'gen5' : 'default'} />
           </span>
         </span>
-        <span className="max-w-full truncate font-display text-[11px] font-bold uppercase text-tx-primary">
+        <span className="max-w-full truncate font-display text-[11px] font-bold text-tx-primary">
           {label}
         </span>
         <span className="pixel-label text-[8px] text-tx-muted">{padNum(stage.id)}</span>

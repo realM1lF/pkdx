@@ -197,7 +197,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
                       cn(
-                        'font-display text-4xl font-extrabold uppercase tracking-wide transition-colors',
+                        'font-display text-4xl font-extrabold tracking-wide transition-colors',
                         isActive ? 'text-gold' : 'text-tx-primary hover:text-gold',
                       )
                     }
@@ -234,7 +234,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
                       cn(
-                        'inline-flex items-center gap-2.5 font-display text-xl font-bold uppercase tracking-wide transition-colors',
+                        'inline-flex items-center gap-2.5 font-display text-xl font-bold tracking-wide transition-colors',
                         l.key === 'nav.support'
                           ? 'rainbow-text'
                           : isActive

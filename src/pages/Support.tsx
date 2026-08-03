@@ -22,7 +22,7 @@ export default function Support() {
           <Heart size={28} strokeWidth={1.75} />
         </span>
         <p className="pixel-label mt-5 text-[9px] text-gold">{t('support.eyebrow')}</p>
-        <h1 className="mt-2 font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+        <h1 className="mt-2 font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('support.title')}
         </h1>
         <p className="mt-4 font-sans text-[14.5px] leading-relaxed text-tx-secondary">
@@ -41,7 +41,7 @@ export default function Support() {
           rel="noopener noreferrer"
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.97 }}
-          className="group relative mt-8 inline-flex items-center gap-2.5 overflow-hidden rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.28),rgba(246,201,69,0.12))] px-8 py-4 font-display text-sm font-bold uppercase tracking-wider text-tx-primary transition-shadow duration-200 hover:shadow-glow-gold"
+          className="group relative mt-8 inline-flex items-center gap-2.5 overflow-hidden rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.28),rgba(246,201,69,0.12))] px-8 py-4 font-display text-sm font-bold tracking-wider text-tx-primary transition-shadow duration-200 hover:shadow-glow-gold"
         >
           <span className="absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.30)_50%,transparent_70%)] transition-transform duration-sheen group-hover:translate-x-full" />
           <Coffee size={17} />

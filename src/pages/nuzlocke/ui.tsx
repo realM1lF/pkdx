@@ -170,7 +170,7 @@ export function StatusDot({ status, color, size = 8, className }: { status: NuzE
 /* ---------- pixel micro-label ---------- */
 
 export function PixelLabel({ children, className }: { children: ReactNode; className?: string }) {
-  return <span className={cn('font-pixel text-[8px] uppercase tracking-[0.08em] text-tx-muted', className)}>{children}</span>;
+  return <span className={cn('font-pixel text-[8px] tracking-[0.08em] text-tx-muted', className)}>{children}</span>;
 }
 
 /* ---------- 28px pill switch (§2.2) ---------- */
@@ -213,7 +213,7 @@ export function GoldSwitch({
           transition={{ type: 'spring', stiffness: 420, damping: 30 }}
         />
       </button>
-      <span className={cn('font-pixel text-[8px] uppercase tracking-[0.08em]', checked ? 'text-gold' : 'text-tx-muted')}>{label}</span>
+      <span className={cn('font-pixel text-[8px] tracking-[0.08em]', checked ? 'text-gold' : 'text-tx-muted')}>{label}</span>
       {tip && <InfoTip text={tip} />}
     </span>
   );

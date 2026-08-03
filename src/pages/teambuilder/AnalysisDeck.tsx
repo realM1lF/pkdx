@@ -203,9 +203,9 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
                     className="tb-cell"
                     style={{ '--t': TYPE_COLORS[r.type].rgb } as CSSProperties}
                     title={t('tb.cellTip', {
-                      name: nameOfPokemon(m.slug, lang).toUpperCase(),
+                      name: nameOfPokemon(m.slug, lang),
                       eff,
-                      type: nameOfType(r.type, lang).toUpperCase(),
+                      type: nameOfType(r.type, lang),
                     })}
                   >
                     {effLabel(eff)}
@@ -257,8 +257,8 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
                 style={{ '--t': TYPE_COLORS[t].rgb } as CSSProperties}
                 title={
                   isGap
-                    ? t8n('tb.noAnswerFor', { type: nameOfType(t, lang).toUpperCase() })
-                    : t8n('tb.hitBy', { type: nameOfType(t, lang).toUpperCase(), moves: hitters.map((h) => nameOfMove(h, lang)).join(', ') })
+                    ? t8n('tb.noAnswerFor', { type: nameOfType(t, lang) })
+                    : t8n('tb.hitBy', { type: nameOfType(t, lang), moves: hitters.map((h) => nameOfMove(h, lang)).join(', ') })
                 }
               >
                 <span className="flex items-center gap-1">
@@ -290,7 +290,7 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
               <div key={g} className="rounded-[6px] border border-gold/40 bg-gold/5 px-1.5 py-1">
                 <div className="tb-micro-gold flex items-center gap-1.5 !text-[8px]">
                   <AlertTriangle size={9} />
-                  {t8n('tb.noAnswerFor', { type: nameOfType(g, lang).toUpperCase() })}
+                  {t8n('tb.noAnswerFor', { type: nameOfType(g, lang) })}
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-1 pl-[15px]">
                   <span className="tb-micro !text-[7px]">{t8n('tb.seVia')}</span>
