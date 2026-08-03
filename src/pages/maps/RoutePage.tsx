@@ -259,7 +259,7 @@ function SectionCard({
     <section className="rounded-lg border border-hairline bg-surface1">
       <header className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-hairline px-4 py-2.5 sm:px-5">
         <span className="pixel-label shrink-0 text-[9px] text-gold">{eyebrow}</span>
-        <h2 className="font-display text-base font-bold uppercase tracking-wide text-tx-primary">{title}</h2>
+        <h2 className="font-display text-base font-bold tracking-wide text-tx-primary">{title}</h2>
         {right && <div className="ml-auto flex items-center gap-2">{right}</div>}
       </header>
       <div>{children}</div>
@@ -556,7 +556,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
 
         <header className="mb-8">
           <p className="pixel-label text-[9px] text-gold">{t(`${ns}.eyebrow`, { name })}</p>
-          <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+          <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
             {t(`${ns}.title`, { name })}
           </h1>
           <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">{intro}</p>
@@ -659,13 +659,13 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
               </span>
               <div className="min-w-0 flex-1 basis-56">
                 <p className="pixel-label text-[8px] text-gold">{t(`${ns}.nuzlockeEyebrow`)}</p>
-                <h2 className="font-display text-base font-bold uppercase tracking-wide text-tx-primary">
+                <h2 className="font-display text-base font-bold tracking-wide text-tx-primary">
                   {t(`${ns}.nuzlockeTitle`, { name })}
                 </h2>
               </div>
               <LocaleLink
                 to={`/nuzlocke/new?region=${cfg.region}&at=${nodeId}`}
-                className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-glow-gold"
+                className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-glow-gold"
               >
                 {t(`${ns}.nuzlockeCta`)}
                 <ChevronRight size={14} />

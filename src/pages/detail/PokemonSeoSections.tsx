@@ -74,7 +74,7 @@ function PikachuSeo() {
       <section className="rounded-lg border border-hairline bg-surface1">
         <header className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-hairline px-4 py-2.5 sm:px-5">
           <span className="pixel-label shrink-0 text-[9px] text-gold">{t('seo.pikachu.whereEyebrow')}</span>
-          <h2 className="font-display text-base font-bold uppercase tracking-wide text-tx-primary">
+          <h2 className="font-display text-base font-bold tracking-wide text-tx-primary">
             {t('seo.pikachu.whereTitle')}
           </h2>
           <div className="ml-auto flex items-center gap-2">

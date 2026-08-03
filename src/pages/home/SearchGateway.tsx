@@ -29,7 +29,7 @@ export default function SearchGateway() {
       />
       <Reveal className="mx-auto flex w-full max-w-[720px] flex-col items-center gap-6 px-4">
         <span className="pixel-label text-[10px] text-gold">{t('home.gateway.eyebrow')}</span>
-        <h2 className="text-center font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
+        <h2 className="text-center font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
           {t('home.gateway.title')}
         </h2>
 

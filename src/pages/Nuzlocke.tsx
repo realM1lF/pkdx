@@ -17,6 +17,7 @@ import RunCard from './nuzlocke/RunCard';
 import NuzToasts from './nuzlocke/Toasts';
 import { GoldHint, InfoTip, PixelLabel, useShake } from './nuzlocke/ui';
 import WhatIsNuzlocke from './nuzlocke/WhatIsNuzlocke';
+import NuzlockeSeoSections from './nuzlocke/NuzlockeSeoSections';
 import './nuzlocke/nuzlocke.css';
 
 export default function Nuzlocke() {
@@ -77,7 +78,7 @@ export default function Nuzlocke() {
             initial={{ y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.06 }}
-            className="mt-2 font-display text-[clamp(28px,4vw,44px)] font-extrabold uppercase leading-[1.1] text-tx-primary"
+            className="mt-2 font-display text-[clamp(28px,4vw,44px)] font-extrabold leading-[1.1] text-tx-primary"
           >
             {t('nuz.title')}
           </motion.h1>
@@ -99,7 +100,7 @@ export default function Nuzlocke() {
               setJoinPreset(null);
               setWizardOpen(true);
             }}
-            className="nz-sheen flex items-center gap-2 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 hover:border-gold"
+            className="nz-sheen flex items-center gap-2 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 hover:border-gold"
           >
             <Plus size={15} /> {t('nuz.newRun')}
           </button>
@@ -149,7 +150,7 @@ export default function Nuzlocke() {
       {/* ---------- runs grid (§1.3) ---------- */}
       <section className="mt-8">
         <div className="mb-3 flex flex-wrap items-baseline gap-3">
-          <h2 className="font-display text-[18px] font-bold uppercase text-tx-primary">{t('nuz.activeOps')}</h2>
+          <h2 className="font-display text-[18px] font-bold text-tx-primary">{t('nuz.activeOps')}</h2>
           <PixelLabel>{runs.length === 1 ? t('nuz.run', { count: runs.length }) : t('nuz.runs', { count: runs.length })}</PixelLabel>
           <a
             href="#archiv"
@@ -174,7 +175,7 @@ export default function Nuzlocke() {
                 setJoinPreset(null);
                 setWizardOpen(true);
               }}
-              className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+              className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
             >
               {t('nuz.emptyCta')}
             </button>
@@ -225,7 +226,7 @@ export default function Nuzlocke() {
         <div className="mb-2 flex flex-wrap items-baseline gap-3">
           <div>
             <PixelLabel className="text-gold">{t('nuz.archiveEyebrow')}</PixelLabel>
-            <h2 className="mt-1 font-display text-[18px] font-bold uppercase text-tx-primary">{t('nuz.archiveTitle')}</h2>
+            <h2 className="mt-1 font-display text-[18px] font-bold text-tx-primary">{t('nuz.archiveTitle')}</h2>
           </div>
           <PixelLabel>{t('nuz.archiveCount', { count: archived.length })}</PixelLabel>
           {archived.length > 0 && (
@@ -251,6 +252,7 @@ export default function Nuzlocke() {
       </section>
 
       <WhatIsNuzlocke />
+      <NuzlockeSeoSections />
 
       <Wizard
         open={wizardOpen}
@@ -307,7 +309,7 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
             maxLength={16}
             aria-label={t('nuz.inviteAria')}
             className={cn(
-              'h-9 w-[190px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold uppercase tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
+              'h-9 w-[190px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
               'border-hairline2 focus:border-gold',
             )}
           />
@@ -318,7 +320,7 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
         type="button"
         disabled={busy || !code.trim()}
         onClick={() => void submit()}
-        className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+        className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {t('nuz.join')} <ArrowRight size={13} />
       </button>

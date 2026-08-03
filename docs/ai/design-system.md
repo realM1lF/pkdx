@@ -21,9 +21,10 @@ practical summary for coding agents.
 
 ## 2. Typography
 
-- Display/headlines: Orbitron (`font-display`), uppercase, tight leading.
-- Pixel micro-labels: Press Start 2P via `.pixel-label` (8–10px, eyebrows,
-  tags, counters).
+- Display/headlines: Orbitron (`font-display`), sentence case (not CSS `uppercase`), tight leading.
+- Pixel micro-labels: Press Start 2P via `.pixel-label` (8–10px). Caps only for
+  intentional ALL-CAPS i18n (eyebrows, phase banners, tiny abbrev chips) — not
+  via CSS `text-transform`, so place names and readable chrome stay sentence case.
 - Body/UI: Space Grotesk (`font-sans`).
 - Numbers in tables/stats: tabular feel; keep alignment right for numeric
   columns.

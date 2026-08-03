@@ -249,7 +249,7 @@ const OriginalMarker = memo(function OriginalMarker({
             strokeWidth={4}
             paintOrder="stroke"
           >
-            {label.toUpperCase()}
+            {label}
             {node.postGame && (
               <tspan fill={GOLD} opacity={0.9} dx={6} fontSize={6.5 * S}>
                 POST

@@ -343,7 +343,7 @@ export function formatRunSummary(state: RunState, opts: RunSummaryOptions): stri
   const { run, players, encounters } = state;
   const lines: string[] = [
     `# ${run.name}`,
-    `${opts.regionLabel} · ${opts.gameLabel} · ${run.status.toUpperCase()}`,
+    `${opts.regionLabel} · ${opts.gameLabel} · ${run.status}`,
     `Rules: dupes ${run.rules.dupes ? 'ON' : 'OFF'} · shiny ${run.rules.shiny ? 'ON' : 'OFF'} · nicknames ${run.rules.nicknames ? 'ON' : 'OFF'}`,
     '',
   ];

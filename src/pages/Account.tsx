@@ -95,7 +95,7 @@ export default function Account() {
       <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }} className="mx-auto max-w-md">
           <p className="pixel-label text-[9px] text-gold">{t('account.eyebrow')}</p>
-          <h1 className="mt-1 font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary">
+          <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary">
             {t('account.hi', { name: profile.username })}
           </h1>
           <div className="mt-6 rounded-lg border border-hairline bg-surface1 p-5">
@@ -130,7 +130,7 @@ export default function Account() {
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }} className="mx-auto max-w-md">
         <p className="pixel-label text-[9px] text-gold">{t('account.eyebrow')}</p>
-        <h1 className="mt-1 font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary">
+        <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary">
           {t('account.title')}
         </h1>
         <p className="mt-2 font-sans text-[13.5px] leading-relaxed text-tx-secondary">{t('account.lede')}</p>

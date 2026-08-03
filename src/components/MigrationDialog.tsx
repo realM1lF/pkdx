@@ -49,7 +49,7 @@ export default function MigrationDialog() {
                 <X size={14} />
               </button>
             </div>
-            <h2 className="mt-4 font-display text-lg font-extrabold uppercase tracking-wide text-tx-primary">
+            <h2 className="mt-4 font-display text-lg font-extrabold tracking-wide text-tx-primary">
               {t('account.migrate.title')}
             </h2>
             <p className="mt-2 font-sans text-[13.5px] leading-relaxed text-tx-secondary">

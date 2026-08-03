@@ -125,7 +125,7 @@ export default function CommandBar({
 
         <div className="flex shrink-0 items-center gap-2">
           <span className="h-2 w-2 rounded-full" style={{ background: region.accent, boxShadow: `0 0 8px rgba(${rgb},0.9)` }} />
-          <span className="font-display text-[13px] font-bold uppercase tracking-wide text-tx-primary">{regionName(region, lang)}</span>
+          <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{regionName(region, lang)}</span>
           <span className="pixel-label hidden text-[7px] leading-none text-tx-muted sm:inline">{region.gen}</span>
         </div>
 
@@ -320,7 +320,7 @@ export default function CommandBar({
                     <span className="truncate">{nodeName(n, lang)}</span>
                     <span className="pixel-label shrink-0 text-[7px] text-tx-muted">
                       #{n.order}{' '}
-                      {t(`maps.kind${n.kind.charAt(0).toUpperCase() + n.kind.slice(1)}`, { defaultValue: n.kind.toUpperCase() })}
+                      {t(`maps.kind${n.kind.charAt(0).toUpperCase() + n.kind.slice(1)}`, { defaultValue: n.kind })}
                     </span>
                   </button>
                 ))}

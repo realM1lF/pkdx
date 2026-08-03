@@ -11,8 +11,27 @@ import { resolveTypeParam, typeName, typeOverviewPath } from './seo-types';
 import { ITEMS_SEO, resolveItemParam } from './seo-items';
 import { resolveRouteParam, routeNodeName } from './seo-routes-kanto';
 import { resolveHoennRouteParam, hoennRouteNodeName } from './seo-routes-hoenn';
+import { isNuzlockeSeoSlug } from './nuzlocke-seo';
+import { nuzlockeSeoContent } from './nuzlocke-seo-content';
+import { nuzlockeGuideContent } from './nuzlocke-guide-content';
 
 type JsonLd = Record<string, unknown>;
+
+/** FAQPage with answers kept in sync with the visible Q&A copy. */
+export function faqPageSchema(items: { q: string; a: string }[]): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  };
+}
 
 /** Site-wide Organization — emitted on every page. */
 export function organizationSchema(): JsonLd {
@@ -141,21 +160,37 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
         name: slug ? (lang === 'de' ? ITEMS_SEO[slug].nameDe : ITEMS_SEO[slug].nameEn) : crumbName,
         url: localePath(lang, restForLang(rest, lang)),
       });
-    } else if (rest === '/kampf-simulator' || rest === '/battle-simulator') {
-      /* battle-simulator landing — short crumb + localized slug */
-      trail.push({
-        name: lang === 'de' ? 'Kampf-Simulator' : 'Battle Simulator',
-        url: localePath(lang, restForLang(rest, lang)),
-      });
-    } else if (rest.startsWith('/pokemon/')) {
-      trail.push({ name: 'Pokédex', url: localePath(lang, '/pokedex') });
-      trail.push({ name: crumbName, url: localePath(lang, rest) });
     } else {
-      trail.push({ name: crumbName, url: localePath(lang, rest) });
+      const nuzlockeMatch = rest.match(/^\/nuzlocke\/([^/]+)$/);
+      if (nuzlockeMatch && isNuzlockeSeoSlug(nuzlockeMatch[1])) {
+        trail.push({ name: lang === 'de' ? 'Nuzlocke-Tracker' : 'Nuzlocke Tracker', url: localePath(lang, '/nuzlocke') });
+        trail.push({ name: crumbName, url: localePath(lang, rest) });
+      } else if (rest === '/kampf-simulator' || rest === '/battle-simulator') {
+        /* battle-simulator landing — short crumb + localized slug */
+        trail.push({
+          name: lang === 'de' ? 'Kampf-Simulator' : 'Battle Simulator',
+          url: localePath(lang, restForLang(rest, lang)),
+        });
+      } else if (rest.startsWith('/pokemon/')) {
+        trail.push({ name: 'Pokédex', url: localePath(lang, '/pokedex') });
+        trail.push({ name: crumbName, url: localePath(lang, rest) });
+      } else {
+        trail.push({ name: crumbName, url: localePath(lang, rest) });
+      }
     }
     blocks.push({ id: 'breadcrumb', data: breadcrumbSchema(trail) });
   }
   const app = softwareApplicationSchema(rest, lang);
   if (app) blocks.push({ id: 'software-application', data: app });
+  if (rest === '/nuzlocke') {
+    blocks.push({ id: 'faq-page', data: faqPageSchema(nuzlockeSeoContent(lang).faq.items) });
+  }
+  const nuzlockeGuideMatch = rest.match(/^\/nuzlocke\/([^/]+)$/);
+  if (nuzlockeGuideMatch && isNuzlockeSeoSlug(nuzlockeGuideMatch[1])) {
+    blocks.push({
+      id: 'faq-page',
+      data: faqPageSchema(nuzlockeGuideContent(lang, nuzlockeGuideMatch[1]).faq),
+    });
+  }
   return blocks;
 }

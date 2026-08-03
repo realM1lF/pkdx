@@ -131,7 +131,7 @@ export default function MatchupPage() {
     return (
       <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
         <p className="font-sans text-[13px] text-tx-secondary">{t('matchup.notFound')}</p>
-        <LocaleLink to="/versus" className="mt-2 inline-flex items-center gap-1.5 font-display text-[13px] font-bold uppercase text-gold">
+        <LocaleLink to="/versus" className="mt-2 inline-flex items-center gap-1.5 font-display text-[13px] font-bold text-gold">
           {t('matchup.toVersus')}
           <ArrowRight size={11} />
         </LocaleLink>
@@ -155,7 +155,7 @@ export default function MatchupPage() {
       {/* ---------- H1 + prerendered result sentence (AI-citable) ---------- */}
       <header className="mb-6">
         <p className="pixel-label text-[9px] text-gold">{t('matchup.eyebrow')}</p>
-        <h1 className="mt-1 font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+        <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {tt('matchup.h1')}
         </h1>
         <p className="mt-3 max-w-2xl font-sans text-[14px] font-semibold leading-relaxed text-tx-primary">
@@ -180,7 +180,7 @@ export default function MatchupPage() {
         <div className="flex items-center justify-center gap-6 sm:gap-10">
           <div className="flex flex-col items-center gap-1">
             <Sprite id={m.dexA} name={a} era="default" eager className="h-20 w-20 sm:h-24 sm:w-24" skeleton={false} />
-            <p className="font-display text-[13px] font-bold uppercase tracking-wide text-tx-primary">{a}</p>
+            <p className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{a}</p>
             <div className="flex gap-1">
               {m.typesA.map((ty) => (
                 <TypeBadge key={ty} type={ty as PokemonType} />
@@ -192,7 +192,7 @@ export default function MatchupPage() {
           </span>
           <div className="flex flex-col items-center gap-1">
             <Sprite id={m.dexB} name={b} era="default" eager className="h-20 w-20 sm:h-24 sm:w-24" skeleton={false} />
-            <p className="font-display text-[13px] font-bold uppercase tracking-wide text-tx-primary">{b}</p>
+            <p className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{b}</p>
             <div className="flex gap-1">
               {m.typesB.map((ty) => (
                 <TypeBadge key={ty} type={ty as PokemonType} />
@@ -315,7 +315,7 @@ export default function MatchupPage() {
       <section className="mx-auto mt-8 max-w-3xl">
         <div className="rounded-lg border border-hairline bg-surface1 px-4 py-4 sm:px-6">
           <p className="pixel-label text-[9px] text-gold">{t('matchup.setsEyebrow')}</p>
-          <h2 className="mt-1 font-display text-base font-bold uppercase tracking-wide text-tx-primary">
+          <h2 className="mt-1 font-display text-base font-bold tracking-wide text-tx-primary">
             {t('matchup.setsTitle')}
           </h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -342,7 +342,7 @@ export default function MatchupPage() {
       {/* ---------- replay CTA: same pairing in the live simulator ---------- */}
       <section className="mx-auto mt-8 max-w-3xl">
         <div className="flex flex-col items-center gap-3 rounded-lg border border-gold/30 bg-gold/5 px-4 py-8 text-center">
-          <p className="max-w-xl font-display text-base font-bold uppercase tracking-wide text-tx-primary md:text-lg">
+          <p className="max-w-xl font-display text-base font-bold tracking-wide text-tx-primary md:text-lg">
             {tt('matchup.ctaTitle')}
           </p>
           <p className="max-w-xl font-sans text-[12.5px] leading-relaxed text-tx-secondary">
@@ -350,7 +350,7 @@ export default function MatchupPage() {
           </p>
           <LocaleLink
             to={`${battleLandingPath(lang)}?a=${m.dexA}&b=${m.dexB}`}
-            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] font-extrabold uppercase tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
+            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
           >
             <Swords size={11} />
             {t('matchup.ctaButton')}
@@ -416,7 +416,7 @@ export default function MatchupPage() {
         <div className="mt-4">
           <LocaleLink
             to="/versus"
-            className="inline-flex items-center gap-1.5 font-display text-[12px] font-bold uppercase tracking-wide text-gold transition-colors hover:text-tx-primary"
+            className="inline-flex items-center gap-1.5 font-display text-[12px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
           >
             {t('matchup.toVersus')}
             <ArrowRight size={11} />

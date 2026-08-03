@@ -270,7 +270,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                   onClose();
                   if (createdId) navigate(localePath(`/nuzlocke/${createdId}`));
                 }}
-                className="nz-sheen mx-auto mt-5 block rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+                className="nz-sheen mx-auto mt-5 block rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
               >
                 {t('nuz.wizard.enterRun')}
               </button>
@@ -327,7 +327,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     type="button"
                     disabled={busy}
                     onClick={() => void doJoin()}
-                    className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+                    className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                   >
                     {busy ? t('nuz.wizard.joining') : t('nuz.wizard.joinRun')}
                   </button>
@@ -493,10 +493,10 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
               <div className={cn('mt-4 rounded-md border p-3 transition-colors', soulLink ? 'border-gold/50 bg-gold/5' : 'border-hairline bg-surface1', !soulLinkOk && 'opacity-40')}>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
-                    <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">SOUL LINK</span>
+                    <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{t('nuz.rules.soulLink')}</span>
                     <InfoTip text={t('nuz.rules.soulLinkTip')} />
                   </span>
-                  <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={!soulLinkOk} label={t(soulLink ? 'nuz.on' : 'nuz.off').toUpperCase()} />
+                  <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={!soulLinkOk} label={t(soulLink ? 'nuz.on' : 'nuz.off')} />
                 </div>
                 {!soulLinkOk && <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.needsTwo')}</p>}
                 {soulLink && onlineLobby && crew.length < 2 && (
@@ -612,7 +612,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                   type="button"
                   disabled={busy}
                   onClick={() => void startRun()}
-                  className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+                  className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                 >
                   {busy ? t('nuz.wizard.starting') : t('nuz.wizard.startRun')}
                 </button>
@@ -640,7 +640,7 @@ function WizardFooter({ back, next, nextLabel }: { back: (() => void) | null; ne
       <button
         type="button"
         onClick={next}
-        className="rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold uppercase tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+        className="rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
       >
         {nextLabel}
       </button>

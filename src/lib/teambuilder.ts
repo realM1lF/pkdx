@@ -379,7 +379,7 @@ export interface SlotLegality {
  * move params are PokéAPI slugs → localized via nameOfMove. */
 export function legalityReasonText(r: LegalityReason, lang: Lang): string {
   const name = r.param == null ? '' : r.key === 'move' ? nameOfMove(r.param, lang) : r.param;
-  return i18n.t(`tb.illegal.${r.key}`, { lng: lang, name }).toUpperCase();
+  return i18n.t(`tb.illegal.${r.key}`, { lng: lang, name });
 }
 
 /**

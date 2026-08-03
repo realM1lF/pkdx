@@ -50,7 +50,7 @@ function UnchartedSector() {
         <rect width="100%" height="100%" fill="url(#uncharted-grid)" />
       </svg>
       <p className="pixel-label text-[10px] text-gold">ERROR — 404</p>
-      <h1 className="mt-4 font-display text-[clamp(28px,4vw,44px)] font-extrabold uppercase text-tx-primary">
+      <h1 className="mt-4 font-display text-[clamp(28px,4vw,44px)] font-extrabold text-tx-primary">
         {t('maps.uncharted')}
       </h1>
       <p className="mt-3 max-w-[420px] text-[14px] font-medium text-tx-secondary">
@@ -58,7 +58,7 @@ function UnchartedSector() {
       </p>
       <LocaleLink
         to="/maps"
-        className="mt-6 inline-flex h-11 items-center rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-6 font-display text-[13px] font-bold uppercase tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(246,201,69,0.35)]"
+        className="mt-6 inline-flex h-11 items-center rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-6 font-display text-[13px] font-bold tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(246,201,69,0.35)]"
       >
         {t('maps.backToAtlas')}
       </LocaleLink>

@@ -54,7 +54,7 @@ export default function Maps() {
           </motion.p>
           <motion.h1
             {...reveal(1)}
-            className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold uppercase leading-[1.1] text-tx-primary"
+            className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.1] text-tx-primary"
           >
             {t('maps.atlasTitle')}
           </motion.h1>

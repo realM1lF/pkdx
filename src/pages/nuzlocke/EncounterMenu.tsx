@@ -142,8 +142,8 @@ export default function EncounterMenu({
     pushToast(
       'success',
       t('nuz.toast.evolved', {
-        name: (enc.nickname ?? nameOf(enc.pokemon_id)).toUpperCase(),
-        to: nameOf(toId).toUpperCase(),
+        name: enc.nickname ?? nameOf(enc.pokemon_id),
+        to: nameOf(toId),
       }),
     );
     onClose();
@@ -248,7 +248,7 @@ export default function EncounterMenu({
               maxLength={80}
               className="mt-1.5 h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
             />
-            <button type="button" onClick={markDead} className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/20">
+            <button type="button" onClick={markDead} className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold text-gold transition-colors hover:bg-gold/20">
               {t('nuz.menu.confirmDead')}
             </button>
           </div>
@@ -297,7 +297,7 @@ export default function EncounterMenu({
             <button
               type="button"
               onClick={commitLevel}
-              className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/20"
+              className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold text-gold transition-colors hover:bg-gold/20"
             >
               {t('nuz.menu.levelLabel')} {Math.max(1, Math.min(100, Math.round(level) || 1))}
             </button>

@@ -130,13 +130,79 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
   '/nuzlocke': {
     title: {
-      de: 'Nuzlocke-Tracker · Runs planen, Encounters & Tode tracken',
+      de: 'Nuzlocke-Tracker · Runs, Begegnungen und Tode verwalten',
       en: 'Nuzlocke Tracker · plan runs, track encounters & deaths',
     },
     description: {
-      de: 'Der Nuzlocke-Tracker für deine Challenge-Runs: Encounters pro Route festhalten, Teams verwalten, Tode dokumentieren, mit Regel-Referenz und Encounter-Tabellen.',
-      en: 'The Nuzlocke tracker for your challenge runs: record encounters per route, manage teams, log deaths, with rule reference and encounter tables.',
+      de: 'Kostenloser Nuzlocke-Tracker im Browser: Begegnungen pro Route, Team und Tode verwalten, mit Regionskarten für Kanto bis Einall. Run starten.',
+      en: 'Free Nuzlocke tracker in your browser: record route encounters, manage teams and log deaths, with regional maps from Kanto to Unova. Start a run.',
     },
+  },
+  '/nuzlocke/soul-link': {
+    title: {
+      de: 'Soul-Link-Nuzlocke-Tracker · Gemeinsame Runs planen',
+      en: 'Soul Link Nuzlocke Tracker · Plan Shared Runs',
+    },
+    description: {
+      de: 'Soul-Link-Nuzlocke im Browser planen: gemeinsamer Run mit Begegnungen, Teams, Verlustprotokoll und eigenen Gruppenregeln. Kostenlos starten.',
+      en: 'Plan a Soul Link Nuzlocke in the browser: shared encounters, teams, loss log and your group rules in one free co-op run.',
+    },
+    ogType: 'article',
+  },
+  '/nuzlocke/firered': {
+    title: {
+      de: 'Feuerrot-Nuzlocke-Tracker · Kanto-Run sicher planen',
+      en: 'FireRed Nuzlocke Tracker · Plan Your Kanto Run',
+    },
+    description: {
+      de: 'Feuerrot-Nuzlocke in Kanto planen: Begegnungen pro Route, Team und Tode dokumentieren. Kanto-Karte und eigene Regeln im kostenlosen Browser-Run.',
+      en: 'Plan a Pokémon FireRed Nuzlocke in Kanto: record route encounters, team and deaths with a Kanto map and custom rules in a free browser run.',
+    },
+    ogType: 'article',
+  },
+  '/nuzlocke/emerald': {
+    title: {
+      de: 'Smaragd-Nuzlocke-Tracker · Hoenn-Run sicher planen',
+      en: 'Emerald Nuzlocke Tracker · Plan Your Hoenn Run',
+    },
+    description: {
+      de: 'Smaragd-Nuzlocke in Hoenn planen: Begegnungen pro Route, Team und Tode dokumentieren. Hoenn-Karte und eigene Regeln im kostenlosen Browser-Run.',
+      en: 'Plan a Pokémon Emerald Nuzlocke in Hoenn: record route encounters, team and deaths with a Hoenn map and custom rules in a free browser run.',
+    },
+    ogType: 'article',
+  },
+  '/nuzlocke/platinum': {
+    title: {
+      de: 'Platin-Nuzlocke-Tracker · Sinnoh-Run sicher planen',
+      en: 'Platinum Nuzlocke Tracker · Plan Your Sinnoh Run',
+    },
+    description: {
+      de: 'Platin-Nuzlocke in Sinnoh planen: Begegnungen pro Route, Team und Tode dokumentieren. Sinnoh-Karte und eigene Regeln im kostenlosen Browser-Run.',
+      en: 'Plan a Pokémon Platinum Nuzlocke in Sinnoh: record route encounters, team and deaths with a Sinnoh map and custom rules in a free browser run.',
+    },
+    ogType: 'article',
+  },
+  '/nuzlocke/heartgold': {
+    title: {
+      de: 'HeartGold-Nuzlocke-Tracker · Johto-Run sicher planen',
+      en: 'HeartGold Nuzlocke Tracker · Plan Your Johto Run',
+    },
+    description: {
+      de: 'HeartGold-Nuzlocke in Johto planen: Begegnungen pro Route, Team und Tode dokumentieren. Johto-Karte und eigene Regeln im kostenlosen Browser-Run.',
+      en: 'Plan a Pokémon HeartGold Nuzlocke in Johto: record route encounters, team and deaths with a Johto map and custom rules in a free browser run.',
+    },
+    ogType: 'article',
+  },
+  '/nuzlocke/black-white': {
+    title: {
+      de: 'Schwarz/Weiß-Nuzlocke-Tracker · Einall-Run planen',
+      en: 'Black & White Nuzlocke Tracker · Plan Your Unova Run',
+    },
+    description: {
+      de: 'Schwarz/Weiß-Nuzlocke in Einall planen: Begegnungen pro Route, Team und Tode verwalten. Einall-Karte und eigene Regeln im kostenlosen Browser-Run.',
+      en: 'Plan a Black & White Nuzlocke in Unova: record route encounters, team and deaths with an Unova map and custom rules in a free browser run.',
+    },
+    ogType: 'article',
   },
   '/team': {
     title: {

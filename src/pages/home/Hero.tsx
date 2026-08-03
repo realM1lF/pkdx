@@ -194,7 +194,7 @@ export default function Hero({ started }: { started: boolean }) {
             {t('home.hero.eyebrow')}
           </motion.p>
 
-          <h1 className="mt-6 font-display text-[clamp(48px,8vw,96px)] font-black uppercase leading-[1.02] tracking-[0.01em]">
+          <h1 className="mt-6 font-display text-[clamp(48px,8vw,96px)] font-black leading-[1.02] tracking-[0.01em]">
             <SplitChars text={t('home.hero.titleA')} started={started} baseDelay={0.15} />
             <br />
             <SplitChars text={t('home.hero.titleB')} started={started} baseDelay={0.45} />
@@ -217,7 +217,7 @@ export default function Hero({ started }: { started: boolean }) {
           >
             <LocaleLink
               to="/pokedex"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:border-gold hover:shadow-glow-gold active:scale-[0.97]"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3.5 font-display text-sm font-bold tracking-[0.06em] text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:border-gold hover:shadow-glow-gold active:scale-[0.97]"
             >
               <span className="absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.35)_50%,transparent_70%)] transition-transform duration-sheen group-hover:translate-x-full" />
               <span className="relative">{t('home.hero.cta')}</span>
@@ -225,7 +225,7 @@ export default function Hero({ started }: { started: boolean }) {
             <button
               type="button"
               onClick={surprise}
-              className="inline-flex items-center gap-2 rounded-md border border-hairline2 px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.06em] text-tx-secondary transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface3 hover:text-gold active:scale-[0.97]"
+              className="inline-flex items-center gap-2 rounded-md border border-hairline2 px-7 py-3.5 font-display text-sm font-bold tracking-[0.06em] text-tx-secondary transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface3 hover:text-gold active:scale-[0.97]"
             >
               <motion.span
                 animate={rattling ? { rotate: 360 } : { rotate: 0 }}
@@ -241,7 +241,7 @@ export default function Hero({ started }: { started: boolean }) {
                 to={`/nuzlocke/${latestRun.run.id}`}
                 className="inline-flex flex-col rounded-md border border-hairline2 px-5 py-3 text-left transition-colors hover:border-gold/50 hover:text-gold"
               >
-                <span className="font-display text-[11px] font-bold uppercase tracking-[0.06em] text-tx-primary">{t('nuz.continueRun')}</span>
+                <span className="font-display text-[11px] font-bold tracking-[0.06em] text-tx-primary">{t('nuz.continueRun')}</span>
                 <span className="mt-0.5 text-[11px] text-tx-muted">{t('nuz.continueRunHint', { name: latestRun.run.name })}</span>
               </LocaleLink>
             )}

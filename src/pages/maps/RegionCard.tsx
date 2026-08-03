@@ -104,7 +104,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
         </div>
 
         {/* title + meta */}
-        <h2 className="mt-2 font-display text-[28px] font-extrabold uppercase leading-none tracking-wide text-tx-primary">
+        <h2 className="mt-2 font-display text-[28px] font-extrabold leading-none tracking-wide text-tx-primary">
           {regionName(region, lang)}
         </h2>
         <p className="mt-1.5 text-[12px] font-medium text-tx-secondary">
@@ -135,7 +135,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
             to={`/maps/${region.region}`}
             className={cn(
               'inline-flex h-9 items-center gap-1.5 rounded-md border px-4',
-              'font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary',
+              'font-display text-[12px] font-bold tracking-wider text-tx-primary',
               'transition-all duration-200 hover:-translate-y-0.5',
             )}
             style={{

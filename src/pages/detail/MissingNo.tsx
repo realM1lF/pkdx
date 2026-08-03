@@ -24,7 +24,7 @@ export default function MissingNo({ query }: { query: string }) {
       </div>
 
       <motion.h1
-        className="mt-8 font-display text-3xl font-black uppercase tracking-wide text-tx-primary md:text-4xl"
+        className="mt-8 font-display text-3xl font-black tracking-wide text-tx-primary md:text-4xl"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -36,7 +36,7 @@ export default function MissingNo({ query }: { query: string }) {
       </p>
       <LocaleLink
         to="/pokedex"
-        className="mt-8 inline-flex h-10 items-center rounded-md border border-gold/60 bg-gold-soft px-6 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+        className="mt-8 inline-flex h-10 items-center rounded-md border border-gold/60 bg-gold-soft px-6 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
       >
         {t('missingno.cta')}
       </LocaleLink>

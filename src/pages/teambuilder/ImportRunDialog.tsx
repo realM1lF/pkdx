@@ -108,7 +108,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
               {phase.kind === 'loading' && (
                 <div className="flex flex-col items-center gap-2 py-6">
                   <PokeballLoader variant="inline" />
-                  <span className="tb-micro">{t8n('tb.import.loading', { name: phase.run.name.toUpperCase() })}</span>
+                  <span className="tb-micro">{t8n('tb.import.loading', { name: phase.run.name })}</span>
                 </div>
               )}
 
@@ -142,7 +142,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
                           <span className="min-w-0 flex-1">
                             <span className="block truncate text-[13px] font-semibold text-tx-primary">{r.name}</span>
                             <span className="tb-micro !text-[7px]">
-                              {versionChipLabel(r.game)} · {r.mode.toUpperCase()} · {r.status.toUpperCase()}
+                              {versionChipLabel(r.game)} · {r.mode} · {r.status}
                             </span>
                           </span>
                           <span
@@ -162,7 +162,7 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
 
               {phase.kind === 'players' && (
                 <>
-                  <p className="tb-micro mb-2 px-1">{t8n('tb.import.whoseTeam')} · {phase.run.name.toUpperCase()}</p>
+                  <p className="tb-micro mb-2 px-1">{t8n('tb.import.whoseTeam')} · {phase.run.name}</p>
                   <ul className="space-y-1.5">
                     {phase.teams.map((t) => (
                       <li key={t.player}>

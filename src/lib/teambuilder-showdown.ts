@@ -85,7 +85,7 @@ export interface ShowdownImport {
 }
 
 export function showdownWarningText(w: ShowdownWarning, lang: Lang): string {
-  return i18n.t(`tb.sd.warn.${w.key}`, { lng: lang, name: w.param ?? '' }).toUpperCase();
+  return i18n.t(`tb.sd.warn.${w.key}`, { lng: lang, name: w.param ?? '' });
 }
 
 /** 'Mr. Mime' / 'nidoran-f' / 'Flabébé' → 'mrmime' / 'nidoranf' / 'flabebe' */

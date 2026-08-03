@@ -24,7 +24,7 @@ export default function About() {
         className="mb-10 max-w-2xl"
       >
         <p className="pixel-label text-[9px] text-gold">{t('about.eyebrow')}</p>
-        <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+        <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('about.title')}
         </h1>
         <p className="mt-3 font-sans text-[15px] leading-relaxed text-tx-secondary">
@@ -46,7 +46,7 @@ export default function About() {
               <Icon size={18} strokeWidth={1.75} />
             </span>
             <div>
-              <h2 className="font-display text-base font-bold uppercase tracking-wide text-tx-primary">
+              <h2 className="font-display text-base font-bold tracking-wide text-tx-primary">
                 {t(titleKey)}
               </h2>
               <p className="mt-1.5 font-sans text-[13.5px] leading-relaxed text-tx-secondary">
@@ -71,7 +71,7 @@ export default function About() {
         </p>
         <LocaleLink
           to="/feedback"
-          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
         >
           {t('about.feedback.cta')}
           <ArrowRight size={14} />

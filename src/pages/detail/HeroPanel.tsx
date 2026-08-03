@@ -338,7 +338,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
                 {t(`regions.${genRegionKey(gen.region)}`)} · GEN {gen.roman}
               </span>
             </div>
-            <h1 className="mt-0.5 font-display text-[32px] font-black uppercase leading-[1.05] tracking-wide text-tx-primary md:text-[38px]">
+            <h1 className="mt-0.5 font-display text-[32px] font-black leading-[1.05] tracking-wide text-tx-primary md:text-[38px]">
               {name}
             </h1>
           </motion.div>
@@ -443,7 +443,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             <button
               type="button"
               onClick={scrollToMuseum}
-              className="group inline-flex h-8 items-center gap-2 rounded-md border px-3.5 font-display text-[11px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
+              className="group inline-flex h-8 items-center gap-2 rounded-md border px-3.5 font-display text-[11px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
               style={
                 {
                   borderColor: `rgba(${typeRgb(primary)},0.6)`,

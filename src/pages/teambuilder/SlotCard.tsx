@@ -248,7 +248,7 @@ export default function SlotCard({
           to={`/pokemon/${slot.pokemonId}`}
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
-          className="block truncate font-display text-[12px] font-bold uppercase tracking-wide text-tx-primary outline-none transition-colors hover:text-gold focus-visible:text-gold"
+          className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary outline-none transition-colors hover:text-gold focus-visible:text-gold"
           title={label}
         >
           {label}

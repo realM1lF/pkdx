@@ -57,7 +57,7 @@ export default function HeaderStrip({
           maxLength={40}
           aria-label={t('tb.teamName')}
           disabled={readOnly || linked || viewOnly}
-          className="w-full bg-transparent font-display text-[15px] font-bold uppercase tracking-wide text-tx-primary outline-none transition-colors placeholder:text-tx-muted focus:text-gold disabled:opacity-70"
+          className="w-full bg-transparent font-display text-[15px] font-bold tracking-wide text-tx-primary outline-none transition-colors placeholder:text-tx-muted focus:text-gold disabled:opacity-70"
         />
         {viewOnly && (
           <span className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !text-[8px] !text-gold" title={t('tb.viewOnly.tip')}>

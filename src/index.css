@@ -165,7 +165,8 @@
   /* Pixel micro-label (§3) — Press Start 2P, texture not reading font */
   .pixel-label {
     font-family: 'Press Start 2P', monospace;
-    text-transform: uppercase;
+    /* Caps only via intentional ALL-CAPS i18n (eyebrows/chips), not CSS —
+       place names and readable chrome must stay sentence case. */
     letter-spacing: 0.08em;
     line-height: 1.6;
   }

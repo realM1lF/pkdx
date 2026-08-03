@@ -154,7 +154,7 @@ export default function NuzlockeRun() {
         <p className="mt-1 max-w-[360px] text-[13px] text-tx-secondary">
           {t('nuz.runNotFoundBody')}
         </p>
-        <LocaleLink to="/nuzlocke" className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[12px] font-bold uppercase tracking-[0.06em] text-tx-primary">
+        <LocaleLink to="/nuzlocke" className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary">
           ← {t('nuz.backToRuns')}
         </LocaleLink>
       </div>
@@ -199,22 +199,22 @@ export default function NuzlockeRun() {
         />
       )}
 
-      {/* deck tab strip — RUN DECK / VERSUS (versus.md UI 2) */}
+      {/* deck tab strip — Run Deck / Versus */}
       <div className="mt-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label={t('nuz.runViewAria')}>
-        {(['deck', 'versus'] as const).map((t) => (
+        {(['deck', 'versus'] as const).map((tab) => (
           <button
-            key={t}
+            key={tab}
             type="button"
             role="tab"
-            aria-selected={deckTab === t}
-            onClick={() => setDeckTab(t)}
+            aria-selected={deckTab === tab}
+            onClick={() => setDeckTab(tab)}
             className={`relative flex items-center gap-1.5 px-3 py-2 transition-colors duration-150 ${
-              deckTab === t ? 'text-gold' : 'text-tx-muted hover:text-tx-secondary'
+              deckTab === tab ? 'text-gold' : 'text-tx-muted hover:text-tx-secondary'
             }`}
           >
-            {t === 'versus' && <Swords size={11} />}
-            <span className="pixel-label text-[9px]">{t === 'deck' ? 'RUN DECK' : 'VERSUS'}</span>
-            {deckTab === t && (
+            {tab === 'versus' && <Swords size={11} />}
+            <span className="pixel-label text-[9px]">{tab === 'deck' ? t('nuz.tabs.deck') : t('nuz.tabs.versus')}</span>
+            {deckTab === tab && (
               <motion.span layoutId="nuz-deck-tab" className="absolute inset-x-2 -bottom-px h-0.5 bg-gold" transition={{ type: 'spring', stiffness: 420, damping: 30 }} />
             )}
           </button>
@@ -251,7 +251,7 @@ export default function NuzlockeRun() {
         {failed && (
           <div className="flex items-center justify-center gap-3 rounded-lg border border-hairline bg-surface1/60 px-4 py-3">
             <PixelLabel>{t('nuz.runFailed')}</PixelLabel>
-            <LocaleLink to="/nuzlocke" className="rounded-md border border-gold/60 px-4 py-1.5 font-display text-[11px] font-bold uppercase text-gold transition-colors hover:bg-gold/10">
+            <LocaleLink to="/nuzlocke" className="rounded-md border border-gold/60 px-4 py-1.5 font-display text-[11px] font-bold text-gold transition-colors hover:bg-gold/10">
               {t('nuz.startNew')}
             </LocaleLink>
           </div>

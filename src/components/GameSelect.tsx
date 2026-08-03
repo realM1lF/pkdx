@@ -153,7 +153,7 @@ export default function GameSelect({
                 return (
                   <div key={g.gen}>
                     <div className="gs-micro px-3 pb-1 pt-2.5 !text-[8px]">
-                      GEN {g.roman} · {t(`regions.${genRegionKey(g.region)}`).toUpperCase()}
+                      Gen {g.roman} · {t(`regions.${genRegionKey(g.region)}`)}
                     </div>
                     {groups.map(renderOption)}
                   </div>

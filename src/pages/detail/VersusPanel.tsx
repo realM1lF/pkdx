@@ -785,7 +785,7 @@ export function SideCard({
               <button
                 type="button"
                 onClick={onHostOverview}
-                className="truncate text-left font-display text-[15px] font-bold uppercase text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
+                className="truncate text-left font-display text-[15px] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
               >
                 {displayName}
               </button>
@@ -794,7 +794,7 @@ export function SideCard({
                 to={`/pokemon/${pokemon.id}`}
                 onMouseEnter={() => prefetchPokemon(pokemon.id)}
                 onFocus={() => prefetchPokemon(pokemon.id)}
-                className="truncate font-display text-[15px] font-bold uppercase text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
+                className="truncate font-display text-[15px] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
               >
                 {displayName}
               </LocaleLink>
@@ -1144,7 +1144,7 @@ export function SpeedCheckBanner({ check, youName, foeName }: { check: SpeedChec
       )}
     >
       <span className={cn('pixel-label text-[8px]', youWin || tie ? 'text-gold' : 'text-tx-muted')}>{t('versus.speedCheck')}</span>
-      <span className={cn('font-display text-[12px] font-bold uppercase tracking-wide', youWin ? 'text-gold' : tie ? 'text-tx-primary' : 'text-tx-muted')}>
+      <span className={cn('font-display text-[12px] font-bold tracking-wide', youWin ? 'text-gold' : tie ? 'text-tx-primary' : 'text-tx-muted')}>
         {tie
           ? t('versus.speedTie', { speed: check.you })
           : youWin
@@ -1463,7 +1463,7 @@ export default function VersusPanel({
   const pickTrainerMon = (tr: EnrichedTrainer, member: { species: string; level: number; moves?: string[] }) => {
     const id = idOf(member.species);
     if (id) setFoeId(id);
-    setTrainerCtx(`${tr.name.toUpperCase()} · ${tr.class}`);
+    setTrainerCtx(`${tr.name} · ${tr.class}`);
     setFoe({
       ...blankSide(member.level),
       slots: member.moves?.length ? member.moves : [],
@@ -1643,7 +1643,7 @@ export default function VersusPanel({
       <div className="col-span-12 flex items-center justify-center lg:col-span-2">
         <div className="flex flex-col items-center gap-1">
           <span
-            className="font-display text-[34px] font-black uppercase leading-none text-gold"
+            className="font-display text-[34px] font-black leading-none text-gold"
             style={{ textShadow: '0 0 24px rgba(246,201,69,0.45)' }}
           >
             VS
@@ -1796,7 +1796,7 @@ export default function VersusPanel({
 
       {/* ---------- speed check ---------- */}
       <div className="col-span-12">
-        <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName.toUpperCase()} />
+        <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName} />
       </div>
 
       {youV && youPokemon && foeV && foePokemon && (

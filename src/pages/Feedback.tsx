@@ -47,7 +47,7 @@ export default function Feedback() {
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <header className="mb-8">
         <p className="pixel-label text-[9px] text-gold">{t('feedback.eyebrow')}</p>
-        <h1 className="font-display text-2xl font-extrabold uppercase tracking-wide text-tx-primary md:text-3xl">
+        <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('feedback.title')}
         </h1>
         <p className="mt-2 max-w-2xl font-sans text-[14px] leading-relaxed text-tx-secondary">
@@ -92,14 +92,14 @@ export default function Feedback() {
                 >
                   <Icon size={20} strokeWidth={1.75} />
                 </span>
-                <h2 className="mt-4 font-display text-xl font-extrabold uppercase tracking-wide text-tx-primary">
+                <h2 className="mt-4 font-display text-xl font-extrabold tracking-wide text-tx-primary">
                   {t(titleKey)}
                 </h2>
                 <p className="mt-2 max-w-[52ch] font-sans text-[13px] leading-relaxed text-tx-secondary">
                   {t(textKey)}
                 </p>
                 <span
-                  className="mt-5 inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-transform duration-200 group-hover:-translate-y-0.5"
+                  className="mt-5 inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-transform duration-200 group-hover:-translate-y-0.5"
                   style={{
                     borderColor: `rgba(${rgb},0.6)`,
                     background: `linear-gradient(135deg, rgba(${rgb},0.25), rgba(${rgb},0.10))`,

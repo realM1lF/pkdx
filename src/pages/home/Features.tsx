@@ -347,7 +347,7 @@ export default function Features() {
     <section className="mx-auto max-w-content overflow-x-clip px-4 py-24 md:px-8">
       <div className="mb-12 flex flex-col gap-4">
         <span className="pixel-label text-[10px] text-gold">{t('home.features.eyebrow')}</span>
-        <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold uppercase leading-[1.15]">
+        <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
           {t('home.features.title')}
         </h2>
       </div>
@@ -362,7 +362,7 @@ export default function Features() {
       <div className="mt-10 flex flex-wrap items-center gap-5 rounded-lg border border-gold/35 bg-[linear-gradient(135deg,rgba(246,201,69,0.10),rgba(246,201,69,0.03))] px-6 py-6">
         <div className="min-w-[220px] flex-1">
           <p className="pixel-label text-[9px] text-gold">{t('home.feedbackTeaser.eyebrow')}</p>
-          <h3 className="mt-1.5 font-display text-lg font-extrabold uppercase tracking-wide text-tx-primary">
+          <h3 className="mt-1.5 font-display text-lg font-extrabold tracking-wide text-tx-primary">
             {t('home.feedbackTeaser.title')}
           </h3>
           <p className="mt-1.5 max-w-[56ch] font-sans text-[13px] leading-relaxed text-tx-secondary">
@@ -372,13 +372,13 @@ export default function Features() {
         <div className="flex flex-wrap items-center gap-3">
           <LocaleLink
             to="/feedback"
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
           >
             {t('home.feedbackTeaser.bugCta')}
           </LocaleLink>
           <LocaleLink
             to="/feedback"
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-4 font-display text-[12px] font-bold uppercase tracking-wider text-tx-secondary transition-colors duration-200 hover:border-gold/50 hover:text-gold"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-4 font-display text-[12px] font-bold tracking-wider text-tx-secondary transition-colors duration-200 hover:border-gold/50 hover:text-gold"
           >
             {t('home.feedbackTeaser.featureCta')}
           </LocaleLink>

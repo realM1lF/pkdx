@@ -813,7 +813,7 @@ function encounterFeedEvent(state: RunState, enc: NuzEncounterRow, _live: boolea
     : enc.status === 'duped' ? 'duped'
     : enc.status === 'lost' ? 'lost'
     : 'missed';
-  const route = routeLabelOf(state.run, enc.route_key).toUpperCase();
+  const route = routeLabelOf(state.run, enc.route_key);
   return {
     id: `enc-${enc.id}`,
     t: Date.parse(enc.created_at) || Date.now(),
@@ -992,7 +992,7 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow):
     updateEncounter(entry.id, loser.id, { status: 'duped' });
     pushToast(
       'info',
-      i18n.t('nuz.toast.dupeRace', { name: (loser.nickname ?? speciesNamer(loser.pokemon_id)).toUpperCase() }),
+      i18n.t('nuz.toast.dupeRace', { name: loser.nickname ?? speciesNamer(loser.pokemon_id) }),
     );
   }
 }
@@ -1285,9 +1285,9 @@ function announceLink(entry: RunEntry, s: RunState, enc: NuzEncounterRow): void 
     kind: 'link',
     color: '#F6C945',
     title: i18n.t('nuz.feed.linkFormed', { a: aName, b: bName }),
-    meta: routeLabelOf(s.run, enc.route_key).toUpperCase(),
+    meta: routeLabelOf(s.run, enc.route_key),
   });
-  pushToast('link', i18n.t('nuz.toast.soulLink', { a: aName.toUpperCase(), b: bName.toUpperCase() }));
+  pushToast('link', i18n.t('nuz.toast.soulLink', { a: aName, b: bName }));
 }
 
 /** Death cascade (concurrency plan §2.1/2.2 — product decision: auto-apply,
@@ -1311,7 +1311,7 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): NuzEncounterRo
    * the next slot in the pairwise chain (that missed player 3+). */
   const partners = livingCascadeTargets(s.encounters, deadEnc);
   if (partners.length === 0) return [];
-  const route = routeLabelOf(s.run, deadEnc.route_key).toUpperCase();
+  const route = routeLabelOf(s.run, deadEnc.route_key);
   const cascadeOn = s.run.rules.soulLinkCascade;
   const touched: NuzEncounterRow[] = [];
   for (const partner of partners) {
@@ -1331,7 +1331,7 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): NuzEncounterRo
       title: i18n.t(cascadeOn ? 'nuz.feed.linkCascade' : 'nuz.feed.linkCascadeBoxed', { name }),
       meta: route,
     });
-    pushToast('info', i18n.t(cascadeOn ? 'nuz.toast.cascade' : 'nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
+    pushToast('info', i18n.t(cascadeOn ? 'nuz.toast.cascade' : 'nuz.toast.cascadeBoxed', { name }));
   }
   return touched;
 }
@@ -1356,7 +1356,7 @@ function livingPartnersOnRoute(s: RunState, enc: NuzEncounterRow): NuzEncounterR
 function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): NuzEncounterRow[] {
   const s = entry.state;
   if (!s || !s.run.rules.soulLink || missedEnc.status !== 'missed') return [];
-  const route = routeLabelOf(s.run, missedEnc.route_key).toUpperCase();
+  const route = routeLabelOf(s.run, missedEnc.route_key);
   const cascadeOn = s.run.rules.soulLinkCascade;
   const touched: NuzEncounterRow[] = [];
   for (const partner of livingPartnersOnRoute(s, missedEnc)) {
@@ -1372,10 +1372,10 @@ function checkMissCascade(entry: RunEntry, missedEnc: NuzEncounterRow): NuzEncou
     scheduleLinkedSync(s, partner.player_id);
     if (cascadeOn) {
       pushFeed(entry, { kind: 'lost', color: '#F6C945', title: i18n.t('nuz.feed.linkLost', { name }), meta: route });
-      pushToast('info', i18n.t('nuz.toast.linkLost', { name: name.toUpperCase() }));
+      pushToast('info', i18n.t('nuz.toast.linkLost', { name }));
     } else {
       pushFeed(entry, { kind: 'link', color: '#F6C945', title: i18n.t('nuz.feed.linkMissBoxed', { name }), meta: route });
-      pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name: name.toUpperCase() }));
+      pushToast('info', i18n.t('nuz.toast.cascadeBoxed', { name }));
     }
   }
   return touched;
@@ -1399,7 +1399,7 @@ function boxLinkPartners(entry: RunEntry, boxedEnc: NuzEncounterRow): NuzEncount
       e.in_party === true,
   );
   if (partners.length === 0) return [];
-  const route = routeLabelOf(s.run, boxedEnc.route_key).toUpperCase();
+  const route = routeLabelOf(s.run, boxedEnc.route_key);
   const touched: NuzEncounterRow[] = [];
   for (const partner of partners) {
     const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
@@ -1409,7 +1409,7 @@ function boxLinkPartners(entry: RunEntry, boxedEnc: NuzEncounterRow): NuzEncount
     saveLocalRun(s);
     scheduleLinkedSync(s, partner.player_id);
     pushFeed(entry, { kind: 'link', color: '#F6C945', title: i18n.t('nuz.feed.linkBoxed', { name }), meta: route });
-    pushToast('info', i18n.t('nuz.toast.linkBoxed', { name: name.toUpperCase() }));
+    pushToast('info', i18n.t('nuz.toast.linkBoxed', { name }));
   }
   return touched;
 }
@@ -1782,7 +1782,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
   if (enc.status === 'dead') cascadePartners = checkCascade(entry, enc);
   if (enc.status === 'missed') cascadePartners = checkMissCascade(entry, enc);
   if (enc.status === 'lost' && draft.status === 'caught') {
-    pushToast('info', i18n.t('nuz.toast.linkLost', { name: (enc.nickname ?? speciesNamer(enc.pokemon_id)).toUpperCase() }));
+    pushToast('info', i18n.t('nuz.toast.linkLost', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
   }
   checkMilestones(entry);
 
@@ -1980,9 +1980,9 @@ export async function evolveEncounter(
     kind: 'catch',
     color: '#F6C945',
     title: i18n.t('nuz.feed.evolved', {
-      name: (enc.nickname ?? speciesNamer(toPokemonId)).toUpperCase(),
+      name: enc.nickname ?? speciesNamer(toPokemonId),
     }),
-    meta: routeLabelOf(s.run, enc.route_key).toUpperCase(),
+    meta: routeLabelOf(s.run, enc.route_key),
   });
   scheduleLinkedSync(s, enc.player_id);
   return { ok: true };

@@ -245,7 +245,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
 
   const toggle = (key: 'dupes' | 'shiny', v: boolean) => {
     setRunRules(state.run.id, { [key]: v });
-    pushToast('info', i18n.t('nuz.toast.clause', { clause: i18n.t(`nuz.rules.${key}Clause`), state: i18n.t(v ? 'nuz.on' : 'nuz.off') }).toUpperCase());
+    pushToast('info', i18n.t('nuz.toast.clause', { clause: i18n.t(`nuz.rules.${key}Clause`), state: i18n.t(v ? 'nuz.on' : 'nuz.off') }));
   };
 
   return (
@@ -277,10 +277,10 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
         {/* clause toggles */}
         <div className="flex items-center gap-4 border-l border-hairline2 pl-4">
           <span title={owner ? undefined : t('nuz.rules.ownerTip')}>
-            <GoldSwitch checked={state.run.rules.dupes} onChange={(v) => toggle('dupes', v)} disabled={!owner} label="DUPES" tip={t('nuz.rules.dupesTip')} />
+            <GoldSwitch checked={state.run.rules.dupes} onChange={(v) => toggle('dupes', v)} disabled={!owner} label={t('nuz.rules.dupesShort')} tip={t('nuz.rules.dupesTip')} />
           </span>
           <span title={owner ? undefined : t('nuz.rules.ownerTip')}>
-            <GoldSwitch checked={state.run.rules.shiny} onChange={(v) => toggle('shiny', v)} disabled={!owner} label="SHINY" tip={t('nuz.rules.shinyTip')} />
+            <GoldSwitch checked={state.run.rules.shiny} onChange={(v) => toggle('shiny', v)} disabled={!owner} label={t('nuz.rules.shinyShort')} tip={t('nuz.rules.shinyTip')} />
           </span>
           {cap !== null && (
             <span
@@ -291,7 +291,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
               <span className="shrink-0 font-display text-[12px] font-bold tabular-nums text-gold">{cap}</span>
               {gymLabel && (
                 <span className="truncate font-pixel text-[6px] tracking-[0.05em] text-gold/70">
-                  · {gymLabel.toUpperCase()}
+                  · {gymLabel}
                 </span>
               )}
             </span>

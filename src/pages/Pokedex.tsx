@@ -319,7 +319,7 @@ export default function Pokedex() {
         >
           <p className="pixel-label text-[10px] text-gold">{t8n('pokedex.eyebrow')}</p>
           <div className="mt-1.5 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-            <h1 className="font-display text-[clamp(26px,3.5vw,40px)] font-extrabold uppercase leading-none tracking-wide">
+            <h1 className="font-display text-[clamp(26px,3.5vw,40px)] font-extrabold leading-none tracking-wide">
               {t8n('pokedex.title')}
             </h1>
             <p className="font-sans text-[13px] text-tx-secondary" aria-hidden>

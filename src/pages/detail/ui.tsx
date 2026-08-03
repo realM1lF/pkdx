@@ -25,7 +25,7 @@ export function Panel({ eyebrow, title, right, children, className, bodyClassNam
           <div className="flex min-w-0 items-baseline gap-2.5">
             {eyebrow && <span className="pixel-label shrink-0 text-[9px] text-gold">{eyebrow}</span>}
             {title && (
-              <h2 className="truncate font-display text-base font-bold uppercase tracking-wide text-tx-primary">
+              <h2 className="truncate font-display text-base font-bold tracking-wide text-tx-primary">
                 {title}
               </h2>
             )}

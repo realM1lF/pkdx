@@ -38,6 +38,7 @@ const MapRegion = lazyWithReload(() => import('./pages/MapRegion'));
 const RoutePage = lazyWithReload(() => import('./pages/maps/RoutePage'));
 const Nuzlocke = lazyWithReload(() => import('./pages/Nuzlocke'));
 const NuzlockeRun = lazyWithReload(() => import('./pages/NuzlockeRun'));
+const NuzlockeGuidePage = lazyWithReload(() => import('./pages/nuzlocke/NuzlockeGuidePage'));
 const TeamBuilder = lazyWithReload(() => import('./pages/TeamBuilder'));
 const Items = lazyWithReload(() => import('./pages/Items'));
 const ItemDetailPage = lazyWithReload(() => import('./pages/items/ItemDetailPage'));
@@ -87,6 +88,13 @@ export default function App() {
                 <Route path="maps/hoenn/:slug" element={<RoutePage region="hoenn" />} />
                 <Route path="maps/:region" element={<MapRegion />} />
                 <Route path="nuzlocke" element={<Nuzlocke />} />
+                {/* static SEO guides must outrank the dynamic run ID route */}
+                <Route path="nuzlocke/soul-link" element={<NuzlockeGuidePage />} />
+                <Route path="nuzlocke/firered" element={<NuzlockeGuidePage />} />
+                <Route path="nuzlocke/emerald" element={<NuzlockeGuidePage />} />
+                <Route path="nuzlocke/platinum" element={<NuzlockeGuidePage />} />
+                <Route path="nuzlocke/heartgold" element={<NuzlockeGuidePage />} />
+                <Route path="nuzlocke/black-white" element={<NuzlockeGuidePage />} />
                 <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />
                 <Route path="team" element={<TeamBuilder />} />
                 <Route path="items" element={<Items />} />
