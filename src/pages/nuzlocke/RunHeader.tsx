@@ -8,6 +8,7 @@ import { useLanguage } from '@/lib/i18n-data';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
 import { Archive, ArchiveRestore, ArrowLeft, Check, Flag, Link2, MoreVertical, Pencil, Share2, Skull, SlidersHorizontal, Swords, Trash2 } from 'lucide-react';
+import { useAuth } from '@/lib/auth';
 import { regionName, versionChipLabel } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import {
@@ -15,6 +16,7 @@ import {
   deleteRunForever,
   exportRunSummary,
   goOnline,
+  isCloudRun,
   isRunArchived,
   isRunOwner,
   myPlayerId,
@@ -42,6 +44,7 @@ export default function RunHeader({
   const localePath = useLocalePath();
   const { t } = useTranslation();
   const lang = useLanguage();
+  const { user, ready: authReady } = useAuth();
   const state = entry.state;
   const [renaming, setRenaming] = useState(false);
   const [draft, setDraft] = useState('');
@@ -135,7 +138,15 @@ export default function RunHeader({
         {region ? regionName(region, lang) : state.run.region}
       </span>
       <RunStatusChip status={state.run.status} />
-      <SyncBadge status={multi ? entry.status : 'local'} />
+      <SyncBadge
+        status={
+          entry.hydrateError
+            ? 'error'
+            : multi || (state && isCloudRun(state))
+              ? entry.status
+              : 'local'
+        }
+      />
 
       {/* right cluster */}
       <div className="ml-auto flex flex-wrap items-center gap-2">
@@ -231,21 +242,35 @@ export default function RunHeader({
             className="w-[240px] p-3"
           >
             <PixelLabel className="text-gold">{t('nuz.header.soloRun')}</PixelLabel>
-            <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.header.soloBody')}</p>
-            <button
-              type="button"
-              disabled={goingOnline}
-              onClick={() => {
-                setGoingOnline(true);
-                void goOnline(state.run.id).then((ok) => {
-                  setGoingOnline(false);
-                  if (ok) setInviteOpen(false);
-                });
-              }}
-              className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-[11px] font-bold tracking-[0.06em] text-tx-primary disabled:opacity-50"
-            >
-              {goingOnline ? t('nuz.header.goingOnline') : t('nuz.header.goOnline')}
-            </button>
+            {!authReady || user ? (
+              <>
+                <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.header.soloBody')}</p>
+                <button
+                  type="button"
+                  disabled={goingOnline || !authReady || !user}
+                  onClick={() => {
+                    setGoingOnline(true);
+                    void goOnline(state.run.id).then((ok) => {
+                      setGoingOnline(false);
+                      if (ok) setInviteOpen(false);
+                    });
+                  }}
+                  className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-[11px] font-bold tracking-[0.06em] text-tx-primary disabled:opacity-50"
+                >
+                  {goingOnline ? t('nuz.header.goingOnline') : t('nuz.header.goOnline')}
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.header.loginToGoOnline')}</p>
+                <LocaleLink
+                  to="/account"
+                  className="mt-2.5 block w-full rounded-md border border-gold/60 py-2 text-center font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:bg-gold/10"
+                >
+                  {t('nuz.wizard.loginCta')}
+                </LocaleLink>
+              </>
+            )}
           </Popover>
         )}
 

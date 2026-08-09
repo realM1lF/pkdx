@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Info, Plus, X } from 'lucide-react';
 import { bootNameIndex, padNum } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { useAuth } from '@/lib/auth';
+import { LocaleLink } from '@/lib/locale-link';
 import { lookupByCode, useHubRuns } from '@/lib/nuzlocke-store';
 import type { JoinLookup } from '@/lib/nuzlocke-store';
 import { isMultiCapable } from '@/lib/supabase';
@@ -271,13 +273,20 @@ export default function Nuzlocke() {
 
 function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
   const { t } = useTranslation();
+  const { user, ready: authReady } = useAuth();
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [shakeKey, shake] = useShake();
   const [hint, setHint] = useState('');
 
   const submit = async () => {
-    if (!code.trim() || busy) return;
+    if (!code.trim() || busy || !authReady) return;
+    if (!user) {
+      shake();
+      setHint(t('nuz.joinLoginHint'));
+      window.setTimeout(() => setHint(''), 3200);
+      return;
+    }
     setBusy(true);
     try {
       const lookup = await lookupByCode(code);
@@ -297,33 +306,47 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
   return (
     <div id="join-code" className="mt-4 flex min-h-[56px] flex-wrap items-center gap-3 rounded-md border border-hairline bg-surface1 px-4 py-2">
       <PixelLabel>{t('nuz.haveInvite')}</PixelLabel>
-      <div className="relative">
-        <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
-          <input
-            value={code}
-            onChange={(e) => setCode(e.target.value.toUpperCase())}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') void submit();
-            }}
-            placeholder="SOUL-········"
-            maxLength={16}
-            aria-label={t('nuz.inviteAria')}
-            className={cn(
-              'h-9 w-[190px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
-              'border-hairline2 focus:border-gold',
-            )}
-          />
-        </div>
-        <GoldHint text={hint} show={!!hint} />
-      </div>
-      <button
-        type="button"
-        disabled={busy || !code.trim()}
-        onClick={() => void submit()}
-        className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {t('nuz.join')} <ArrowRight size={13} />
-      </button>
+      {authReady && !user ? (
+        <>
+          <p className="max-w-md text-[12px] leading-snug text-tx-secondary">{t('nuz.joinLoginHint')}</p>
+          <LocaleLink
+            to="/account"
+            className="rounded-md border border-gold/60 px-3 py-2 font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:bg-gold/10"
+          >
+            {t('nuz.wizard.loginCta')}
+          </LocaleLink>
+        </>
+      ) : (
+        <>
+          <div className="relative">
+            <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
+              <input
+                value={code}
+                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') void submit();
+                }}
+                placeholder="SOUL-········"
+                maxLength={16}
+                aria-label={t('nuz.inviteAria')}
+                className={cn(
+                  'h-9 w-[190px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
+                  'border-hairline2 focus:border-gold',
+                )}
+              />
+            </div>
+            <GoldHint text={hint} show={!!hint} />
+          </div>
+          <button
+            type="button"
+            disabled={busy || !code.trim()}
+            onClick={() => void submit()}
+            className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {t('nuz.join')} <ArrowRight size={13} />
+          </button>
+        </>
+      )}
       {!isMultiCapable() && (
         <span className="flex items-center gap-1 text-[11px] text-tx-muted">
           <Info size={11} /> {t('nuz.joinOffline')}

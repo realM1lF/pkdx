@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useLocalePath } from '@/lib/locale-link';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useLanguage } from '@/lib/i18n-data';
 import i18n from '@/i18n';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -17,6 +17,7 @@ import {
   DEFAULT_RULES,
   MAX_PLAYERS,
   PLAYER_COLORS,
+  NuzLoginRequiredError,
   createRun,
   joinRun,
   pushToast,
@@ -72,7 +73,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
   const localePath = useLocalePath();
   const { t } = useTranslation();
   const lang = useLanguage();
-  const { profile } = useAuth();
+  const { user, profile, ready: authReady } = useAuth();
+  const loggedIn = !!user;
+  const needsLoginForOnline = authReady && !loggedIn;
   const joinMode = !!joinPreset;
   /* Account username as trainer default when logged in (player names max 18). */
   const loginName = (profile?.username ?? '').trim().slice(0, 18);
@@ -148,6 +151,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
       fail(t('nuz.wizard.failName'));
       return;
     }
+    const wantOnline = online && isMultiCapable();
+    if (wantOnline && needsLoginForOnline) {
+      fail(t('nuz.wizard.failLoginOnline'));
+      return;
+    }
     setBusy(true);
     try {
       const res = await createRun({
@@ -159,7 +167,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
           color: p.color,
         })),
         rules: { ...rules, soulLink },
-        online: online && isMultiCapable(),
+        online: wantOnline,
       });
       if (res.inviteCode) {
         setInvite(res.inviteCode);
@@ -170,6 +178,12 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
           state: presetRouteKey ? { prefillRoute: presetRouteKey } : undefined,
         });
       }
+    } catch (err) {
+      if (err instanceof NuzLoginRequiredError) {
+        fail(t('nuz.wizard.failLoginOnline'));
+        return;
+      }
+      throw err;
     } finally {
       setBusy(false);
     }
@@ -177,6 +191,10 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
 
   const doJoin = async () => {
     if (!joinPreset) return;
+    if (needsLoginForOnline) {
+      fail(t('nuz.wizard.failLoginJoin'));
+      return;
+    }
     if (joinPreset.players.length >= MAX_PLAYERS) {
       fail(t('nuz.wizard.failJoinFull', { max: MAX_PLAYERS }));
       return;
@@ -281,7 +299,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
               <div className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-[12px] text-tx-secondary">
                 {t('nuz.wizard.joiningRun')} <span className="font-semibold text-tx-primary">“{joinPreset.run.name}”</span> — {joinPreset.players.length === 1 ? t('nuz.wizard.playersInside', { count: 1 }) : t('nuz.wizard.playersInsidePlural', { count: joinPreset.players.length })}
               </div>
-              {joinFull ? (
+              {needsLoginForOnline ? (
+                <LoginRequiredNote />
+              ) : joinFull ? (
                 <div className="relative">
                   <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
                     <p className="rounded-md border border-gold/40 bg-gold/5 px-3 py-3 text-[12px] text-tx-secondary">
@@ -539,7 +559,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     ))}
                   </div>
                   {online && (
-                    <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>
+                    needsLoginForOnline ? (
+                      <LoginRequiredNote />
+                    ) : (
+                      <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>
+                    )
                   )}
                 </div>
               )}
@@ -610,18 +634,38 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 </button>
                 <button
                   type="button"
-                  disabled={busy}
+                  disabled={busy || (online && isMultiCapable() && (!authReady || !loggedIn))}
                   onClick={() => void startRun()}
                   className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                 >
                   {busy ? t('nuz.wizard.starting') : t('nuz.wizard.startRun')}
                 </button>
               </div>
+              {online && isMultiCapable() && needsLoginForOnline && (
+                <div className="mt-3">
+                  <LoginRequiredNote />
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </NuzModal>
+  );
+}
+
+function LoginRequiredNote() {
+  const { t } = useTranslation();
+  return (
+    <div className="rounded-md border border-gold/40 bg-gold/5 px-3 py-2.5">
+      <p className="text-[12px] leading-snug text-tx-secondary">{t('nuz.wizard.accountRequired')}</p>
+      <LocaleLink
+        to="/account"
+        className="mt-2 inline-block font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:text-tx-primary"
+      >
+        {t('nuz.wizard.loginCta')}
+      </LocaleLink>
+    </div>
   );
 }
 

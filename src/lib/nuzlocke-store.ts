@@ -35,7 +35,7 @@ import {
   normalizeEncounters,
 } from './nuzlocke-evolution';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
-import { ensureRunIdentity, getAuthUser } from './auth';
+import { ensureRunIdentity, getAuthUser, isAuthReady, useAuth } from './auth';
 import {
   findEvoLineDupeViolations,
   isCurrentOp,
@@ -322,6 +322,20 @@ function setRunOwner(runId: string): void {
   if (!owners.includes(runId) && !writeJson(LS_OWNERS, [...owners, runId])) notifyStorageFailure();
 }
 
+/**
+ * Second-device hydrate: nuz_run_members has role but not player_id.
+ * Owner → slot-0 player + local owner flag. Member → bind only when
+ * unambiguous (single player). Never invent a slot in a full lobby.
+ */
+function restoreLocalRunIdentity(state: RunState, role: 'owner' | 'member' | null): void {
+  if (!role) return;
+  if (role === 'owner') setRunOwner(state.run.id);
+  if (myPlayerId(state.run.id)) return;
+  const sorted = [...state.players].sort((a, b) => a.slot - b.slot);
+  if (sorted.length === 0) return;
+  if (role === 'owner' || sorted.length === 1) setMembership(state.run.id, sorted[0].id);
+}
+
 function isMissingColumnError(error: { code?: string; message?: string } | null): boolean {
   if (!error) return false;
   if (error.code === PG_MISSING_COLUMN) return true;
@@ -348,6 +362,38 @@ function registerAccountRun(runId: string): void {
   accountRunIds.add(runId);
   const ids = readPersistedAccountRunIds();
   if (!ids.has(runId)) writePersistedAccountRunIds([...ids, runId]);
+}
+
+/** Mark a run as account-linked after a silent local→cloud adopt. */
+export function markRunAccountLinked(runId: string): void {
+  clearAccountRunTombstone(runId);
+  registerAccountRun(runId);
+}
+
+/** True when this run id is managed via nuz_run_members / account sync. */
+export function isAccountManagedRun(runId: string): boolean {
+  return isAccountLinkedRun(runId);
+}
+
+/**
+ * Guest hub visibility: only pure device-local solos.
+ * Multi + account-synced runs stay cached on disk for the next login, but
+ * must not appear (or open) while logged out — they belong to the account/DB.
+ *
+ * Deliberately ignores `readArchivedIndex()` (unlike isAccountLinkedRun):
+ * guests may archive a local solo without it becoming "account-owned".
+ */
+export function isDeviceLocalSoloRun(state: RunState): boolean {
+  if (state.mode !== 'solo') return false;
+  if (state.run.invite_code) return false;
+  if (accountRunIds.has(state.run.id)) return false;
+  if (readPersistedAccountRunIds().has(state.run.id)) return false;
+  return true;
+}
+
+function isHubVisibleWhileLoggedOut(runId: string): boolean {
+  const s = entries.get(runId)?.state ?? loadLocalRun(runId);
+  return !!s && isDeviceLocalSoloRun(s);
 }
 
 async function resolveMembershipRole(runId: string): Promise<'owner' | 'member' | null> {
@@ -726,6 +772,8 @@ export interface RunEntry {
   /** re-track presence when the tab becomes visible again */
   presenceVisHandler: (() => void) | null;
   remoteLoaded: boolean;
+  /** set when a cloud-backed run could not load the server snapshot */
+  hydrateError: string | null;
   teardownTimer: number | null;
 }
 
@@ -748,8 +796,29 @@ function newEntry(id: string): RunEntry {
     channel: null,
     presenceVisHandler: null,
     remoteLoaded: false,
+    hydrateError: null,
     teardownTimer: null,
   };
+}
+
+function expectsServerSnapshot(state: RunState | null): boolean {
+  if (!state || !getAuthUser()) return false;
+  return state.mode === 'multi' || isAccountLinkedRun(state.run.id) || isCloudRun(state);
+}
+
+/** True for runs minted in this tab moments ago — first fetch can race RLS. */
+function isFreshlyCreatedLocal(state: RunState): boolean {
+  const t = Date.parse(state.run.created_at);
+  return Number.isFinite(t) && Date.now() - t < 15_000;
+}
+
+function markHydrateFailed(entry: RunEntry, opts?: { silent?: boolean }): void {
+  const first = !entry.hydrateError;
+  entry.hydrateError = 'stale';
+  /* Fresh creates: badge only on the first miss (membership trigger race).
+   * Stale cache / later retries: toast so the user knows the server view failed. */
+  if (first && !opts?.silent) pushToast('sync', i18n.t('nuz.toast.hydrateFailed'));
+  emit(entry);
 }
 
 function emit(entry: RunEntry): void {
@@ -876,16 +945,12 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
         outbox: entry.outbox,
       });
       const merged = { ...remote, encounters };
-      if (
-        merged.mode === 'solo' &&
-        isCloudRun(merged) &&
-        !myPlayerId(entry.id) &&
-        merged.players.length === 1
-      ) {
-        setMembership(entry.id, merged.players[0].id);
-      }
       entry.state = merged;
       entry.phase = 'ready';
+      entry.hydrateError = null;
+      /* Account membership is per user_id, not per browser — restore owner /
+       * player binding so a second device is not a read-only stranger. */
+      restoreLocalRunIdentity(merged, await resolveMembershipRole(entry.id));
       saveLocalRun(merged);
       if (!isRunArchived(entry.id)) addToIndex(entry.id);
       /* authoritative re-seed — includes encounter history, not just joins */
@@ -893,9 +958,14 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
       scheduleLinkedSync(merged);
     } else if (!local) {
       entry.phase = 'missing';
+    } else if (expectsServerSnapshot(local)) {
+      markHydrateFailed(entry, { silent: !entry.remoteLoaded && isFreshlyCreatedLocal(local) });
     }
   } catch {
     if (!local) entry.phase = 'missing';
+    else if (expectsServerSnapshot(local)) {
+      markHydrateFailed(entry, { silent: !entry.remoteLoaded && isFreshlyCreatedLocal(local) });
+    }
   }
   entry.remoteLoaded = true;
   emit(entry);
@@ -1471,6 +1541,14 @@ export interface CreatedRun {
   offlineFallback: boolean;
 }
 
+/** Thrown when online create/join is attempted without a real account. */
+export class NuzLoginRequiredError extends Error {
+  constructor() {
+    super('login_required');
+    this.name = 'NuzLoginRequiredError';
+  }
+}
+
 /** Online lobby: only the host is created; partners join via invite. Offline: full crew. */
 export function resolveCreateCrew(crew: NewRunPlayer[], online: boolean): NewRunPlayer[] {
   if (online) return crew.slice(0, 1);
@@ -1501,10 +1579,17 @@ async function insertRunWithFreshInvite(
 }
 
 export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
+  const wantOnline = cfg.online && isMultiCapable();
+  /* Online/Multi needs a real account so runs sync across devices. Solo stays
+   * guest-friendly (local-only). */
+  if (wantOnline && !getAuthUser()) {
+    pushToast('info', i18n.t('nuz.toast.loginRequiredOnline'));
+    throw new NuzLoginRequiredError();
+  }
+
   const id = uuid();
   const now = new Date().toISOString();
   /* Open Lobby: online create inserts only the host — no placeholder crew in DB. */
-  const wantOnline = cfg.online && isMultiCapable();
   const crew = resolveCreateCrew(cfg.players, wantOnline);
   const players: NuzPlayerRow[] = crew.map((p, i) => ({
     id: uuid(),
@@ -1586,6 +1671,10 @@ export interface JoinLookup {
 
 export async function lookupByCode(code: string): Promise<JoinLookup | null> {
   if (!isMultiCapable()) return null;
+  if (!getAuthUser()) {
+    pushToast('info', i18n.t('nuz.toast.loginRequiredJoin'));
+    return null;
+  }
   /* tolerate whitespace pasted along with the code */
   const clean = code.replace(/\s+/g, '').toUpperCase();
   if (!clean) return null;
@@ -1633,6 +1722,10 @@ export async function lookupByCode(code: string): Promise<JoinLookup | null> {
 
 /** Join a looked-up run as a new player (nuzlocke.md §1.4). Open Lobby: always a new slot. */
 export async function joinRun(lookup: JoinLookup, name: string, color: string): Promise<RunState | null> {
+  if (!getAuthUser()) {
+    pushToast('info', i18n.t('nuz.toast.loginRequiredJoin'));
+    return null;
+  }
   if (lookup.players.length >= MAX_PLAYERS) return null;
   const taken = new Set(lookup.players.map((p) => p.color));
   const finalColor = taken.has(color) ? (PLAYER_COLORS.find((c) => !taken.has(c)) ?? color) : color;
@@ -1680,6 +1773,10 @@ export async function goOnline(runId: string): Promise<boolean> {
   if (!s) return false;
   if (s.mode === 'multi') return true;
   if (!isMultiCapable()) return false;
+  if (!getAuthUser()) {
+    pushToast('info', i18n.t('nuz.toast.loginRequiredOnline'));
+    return false;
+  }
   /* covers both cases: a brand-new online run (identity for the insert
    * policy) and a run that already carries a code from an earlier attempt
    * (membership for the update policy) */
@@ -2299,7 +2396,17 @@ let accountSyncInFlight: Promise<void> | null = null;
 let accountSyncNeedsFollowUp = false;
 
 function hubRunIds(): string[] {
-  return [...new Set([...readRunIndex(), ...accountRunIds])];
+  const merged = [...new Set([...readRunIndex(), ...accountRunIds])];
+  /* Before auth resolves, don't guest-filter — callers should treat the hub
+   * as loading so we never flash "logged out" for a signed-in session. */
+  if (!isAuthReady() || getAuthUser()) return merged;
+  return merged.filter(isHubVisibleWhileLoggedOut);
+}
+
+function hubArchivedIds(): string[] {
+  const archived = readArchivedIndex();
+  if (!isAuthReady() || getAuthUser()) return archived;
+  return archived.filter(isHubVisibleWhileLoggedOut);
 }
 
 /** Merged active hub ids (localStorage index + account discovery). */
@@ -2319,6 +2426,7 @@ function dropAccountWatch(): void {
 export function stopAccountRunsWatch(): void {
   dropAccountWatch();
   accountRunIds.clear();
+  notifyHub();
 }
 
 async function performAccountSync(userId: string): Promise<void> {
@@ -2327,7 +2435,7 @@ async function performAccountSync(userId: string): Promise<void> {
 
   const { data, error } = await supabase
     .from('nuz_run_members')
-    .select('run_id, archived, nuz_runs(*)')
+    .select('run_id, archived, role, nuz_runs(*)')
     .eq('user_id', userId);
 
   if (error) {
@@ -2335,7 +2443,7 @@ async function performAccountSync(userId: string): Promise<void> {
       membersArchivedSupported = false;
       const fallback = await supabase
         .from('nuz_run_members')
-        .select('run_id, nuz_runs(*)')
+        .select('run_id, role, nuz_runs(*)')
         .eq('user_id', userId);
       if (fallback.error) {
         console.warn('[nuzlocke] account sync failed', fallback.error.message);
@@ -2460,7 +2568,7 @@ function hubRefresh(): void {
   reconcileRunIndex();
   const user = getAuthUser();
   if (user) void syncAccountRuns(user.id);
-  for (const id of [...hubRunIds(), ...readArchivedIndex()]) {
+  for (const id of [...hubRunIds(), ...hubArchivedIds()]) {
     const e = ensureEntry(id);
     if (e.state && isCloudRun(e.state) && !e.remoteLoaded) void refreshRemote(e).then(() => notifyHub());
   }
@@ -2474,11 +2582,12 @@ export function useHubRuns(): {
   entries: RunEntry[];
 } {
   const [, force] = useReducer((c: number) => c + 1, 0);
+  const { ready: authReady, user } = useAuth();
 
   useEffect(() => {
     const unsubs = new Map<string, () => void>();
     function syncSubs() {
-      const ids = [...hubRunIds(), ...readArchivedIndex()];
+      const ids = [...hubRunIds(), ...hubArchivedIds()];
       for (const id of ids) if (!unsubs.has(id)) unsubs.set(id, subscribeRun(id, fn));
       for (const [id, u] of [...unsubs]) {
         if (!ids.includes(id)) {
@@ -2503,6 +2612,15 @@ export function useHubRuns(): {
     };
   }, []);
 
+  /* Re-filter + resubscribe when auth settles (login/logout / first session). */
+  useEffect(() => {
+    force();
+  }, [authReady, user?.id]);
+
+  if (!authReady) {
+    return { runs: [], archived: [], loading: true, entries: [] };
+  }
+
   const list = hubRunIds()
     .map((id) => ensureEntry(id))
     .filter((e): e is RunEntry => !!e.state);
@@ -2510,7 +2628,7 @@ export function useHubRuns(): {
     .map((e) => e.state as RunState)
     .sort((a, b) => lastActivity(b) - lastActivity(a));
 
-  const archivedEntries = readArchivedIndex()
+  const archivedEntries = hubArchivedIds()
     .map((id) => ensureEntry(id))
     .filter((e): e is RunEntry => !!e.state);
   const archived = archivedEntries

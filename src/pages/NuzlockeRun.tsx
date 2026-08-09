@@ -11,7 +11,9 @@ import PokeballLoader from '@/components/PokeballLoader';
 import { REGIONS, nodeIndex, nodeName } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import { useRegionData } from '@/lib/mapdata';
+import { useAuth } from '@/lib/auth';
 import {
+  isDeviceLocalSoloRun,
   isRunOwner,
   linkPartnerOf,
   registerRouteNamer,
@@ -51,9 +53,18 @@ export default function NuzlockeRun() {
   const { t } = useTranslation();
   const localePath = useLocalePath();
   const location = useLocation();
+  const { user, ready: authReady } = useAuth();
   const { runId } = useParams<{ runId: string }>();
   const entry = useRunEntry(runId === 'new' ? undefined : runId);
-  const state = entry?.state ?? null;
+  const rawState = entry?.state ?? null;
+  /* Wait for auth before gating — otherwise a signed-in multi run flashes "missing".
+   * Logged-out users may only open pure device-local solos, not cached multi/DB runs. */
+  const state =
+    !authReady
+      ? null
+      : rawState && (user || isDeviceLocalSoloRun(rawState))
+        ? rawState
+        : null;
   const region = anyRegionById(state?.run.region) ?? REGIONS[0];
   const mapData = useRegionData(region, state?.run.game ?? region.defaultVersion);
 
@@ -138,7 +149,7 @@ export default function NuzlockeRun() {
     return <Navigate to={`${localePath('/nuzlocke')}?${params.toString()}`} replace />;
   }
 
-  if (!entry || entry.phase === 'loading') {
+  if (!authReady || !entry || entry.phase === 'loading') {
     return (
       <div className="grid min-h-[60dvh] place-items-center">
         <PokeballLoader variant="inline" />

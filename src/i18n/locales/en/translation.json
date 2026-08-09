@@ -891,6 +891,7 @@
     "haveInvite": "Have An Invite?",
     "inviteAria": "Invite code",
     "join": "Join",
+    "joinLoginHint": "Sign in to join — that keeps the run the same on every device.",
     "joinHint": "No run with that code — check spelling.",
     "joinOffline": "Joining needs an online connection.",
     "codeFormat": "Codes look like SOUL-7K2",
@@ -961,6 +962,7 @@
       "soloBody": "Upgrade this run to multiplayer to invite friends — realtime sync, presence, the works.",
       "goOnline": "Go online",
       "goingOnline": "Going online…",
+      "loginToGoOnline": "Going online needs an account — so the run stays the same on every device.",
       "options": "Run options",
       "editRules": "Edit rules",
       "rename": "Rename",
@@ -992,7 +994,10 @@
       "linkLost": "SOULLINK — {{name}} LINK-LOST",
       "dupeRace": "DUPES CLAUSE — {{name}} MARKED DUPE (SYNC RACE)",
       "evolved": "EVOLVED — {{name}} → {{to}}",
-      "evolveFailed": "Evolution failed — try again"
+      "evolveFailed": "Evolution failed — try again",
+      "loginRequiredOnline": "Online runs need an account — please sign in.",
+      "loginRequiredJoin": "Joining needs an account — please sign in.",
+      "hydrateFailed": "Could not load server state — showing the local cache."
     },
     "rules": {
       "dupesTip": "Skip if the first encounter shares an evolution line with any living catch in the run (e.g. Squirtle blocks Wartortle/Blastoise for every player). Mark as Duped and re-roll.",
@@ -1158,6 +1163,8 @@
       "liveTip": "Multiplayer — live sync",
       "reconnectingTip": "Reconnecting to realtime sync",
       "localTip": "Solo — local save on this device",
+      "syncError": "Sync error",
+      "syncErrorTip": "Server state missing — what you see may be outdated. Reload or open the run again later.",
       "used": "Used"
     },
     "wizard": {
@@ -1166,7 +1173,7 @@
       "stepRules": "03 Rules",
       "online": "Run online — invite your crew",
       "copyInvite": "Copy invite code",
-      "anyoneCanJoin": "Anyone with this code can join from the hub.",
+      "anyoneCanJoin": "Friends with an account join from the hub with this code.",
       "enterRun": "Enter run →",
       "joiningRun": "You're joining",
       "playersInside": "{{count}} player inside",
@@ -1194,7 +1201,11 @@
       "mode": "Mode",
       "modeOnline": "Online — invite by code",
       "modeLocal": "Local — shared screen",
-      "accountHint": "Account recommended for online runs (optional).",
+      "accountHint": "Online runs need an account so phone and PC stay in sync.",
+      "accountRequired": "Please sign in before starting online or joining a crew. Local on this device works without an account.",
+      "loginCta": "GO TO ACCOUNT",
+      "failLoginOnline": "Sign in first to start an online run.",
+      "failLoginJoin": "You need an account to join.",
       "nickTip": "A Nuzlocke classic. Every catch gets a name — it hurts more that way.",
       "nicknames": "Nicknames",
       "autoLevelCap": "Auto cap (next gym)",

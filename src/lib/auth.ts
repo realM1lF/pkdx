@@ -205,6 +205,9 @@ export function onAuthChange(cb: (user: User | null) => void): () => void {
   boot();
   const fn = (s: AuthState) => cb(s.user);
   listeners.push(fn);
+  /* If session already resolved (late subscriber / HMR), don't wait for the
+   * next auth event — otherwise bootCloudSync never adopts on a warm load. */
+  if (state.ready) cb(state.user);
   return () => {
     listeners = listeners.filter((l) => l !== fn);
   };
@@ -214,11 +217,17 @@ export function getAuthUser(): User | null {
   return state.user;
 }
 
+/** False until the first getSession()/auth event has resolved. */
+export function isAuthReady(): boolean {
+  return state.ready;
+}
+
 /** Reactive auth state: { ready, user, profile }. */
 export function useAuth(): AuthState {
   const [s, setS] = useState(state);
   useEffect(() => {
     boot();
+    setS(state);
     const fn = (next: AuthState) => setS(next);
     listeners.push(fn);
     return () => {

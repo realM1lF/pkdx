@@ -250,8 +250,20 @@ export function RunStatusChip({ status }: { status: 'active' | 'complete' | 'fai
 
 /* ---------- sync badge (§1.2 / §2.1) ---------- */
 
-export function SyncBadge({ status }: { status: 'local' | 'connecting' | 'live' | 'reconnecting' }) {
+export function SyncBadge({
+  status,
+}: {
+  status: 'local' | 'connecting' | 'live' | 'reconnecting' | 'error';
+}) {
   const { t } = useTranslation();
+  if (status === 'error') {
+    return (
+      <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.syncErrorTip')}>
+        <span className="h-2 w-2 animate-pulse rounded-full bg-gold" />
+        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.syncError')}</span>
+      </span>
+    );
+  }
   if (status === 'live') {
     return (
       <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.liveTip')}>

@@ -7,7 +7,6 @@ import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { useLocation } from 'react-router';
 import Navbar from './Navbar';
-import MigrationDialog from './MigrationDialog';
 import { bootCloudSync } from '@/lib/cloud-sync';
 import Footer from './Footer';
 import SearchCommand from './SearchCommand';
@@ -152,7 +151,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="relative min-h-[100dvh] overflow-x-clip bg-void text-tx-primary">
       <Navbar onSearchOpen={() => setSearchOpen(true)} />
       <main className="relative pt-16 md:pt-[6.25rem]">{children}</main>
-      <MigrationDialog />
       <Footer />
       <SearchCommand variant="modal" open={searchOpen} onClose={() => setSearchOpen(false)} />
       <BackToTop />

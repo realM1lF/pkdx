@@ -135,6 +135,8 @@ vi.mock('./nuzlocke-linked-teams', () => ({
 
 vi.mock('./auth', () => ({
   getAuthUser: () => mockUser,
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: mockUser, profile: null }),
   ensureRunIdentity: vi.fn().mockResolvedValue(undefined),
   onAuthChange: vi.fn(() => () => undefined),
 }));

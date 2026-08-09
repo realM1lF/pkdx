@@ -16,6 +16,8 @@ let membersFetchCompleted = 0;
 
 const runsById = new Map<string, NuzRunRow>();
 const membersByUser = new Map<string, string[]>();
+/** `${userId}:${runId}` → role; defaults to owner when unset */
+const memberRoles = new Map<string, 'owner' | 'member'>();
 const playersByRun = new Map<string, NuzPlayerRow[]>();
 
 type PgHandler = (payload: {
@@ -29,6 +31,14 @@ const { fromMock, removeChannelMock, channelMock, dropChannelMock } = vi.hoisted
   fromMock: vi.fn((table: string) => ({
     select: vi.fn(() => ({
       eq: vi.fn((col: string, val: string) => chainEq(table, col, val)),
+    })),
+    delete: vi.fn(() => ({
+      eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({ data: null, error: null })),
+      })),
+    })),
+    update: vi.fn(() => ({
+      eq: vi.fn(() => Promise.resolve({ data: null, error: null })),
     })),
   })),
   removeChannelMock: vi.fn(),
@@ -52,20 +62,54 @@ const mockChannel = {
   }),
 };
 
+function membersListPayload(userId: string) {
+  const ids = membersByUser.get(userId) ?? [];
+  return ids.map((run_id) => ({
+    run_id,
+    archived: false,
+    role: memberRoles.get(`${userId}:${run_id}`) ?? 'owner',
+    nuz_runs: runsById.get(run_id) ?? null,
+  }));
+}
+
+/** Thenable + chainable — supports account list fetch and role maybeSingle. */
+function membersQuery(filters: Record<string, string>) {
+  const api = {
+    eq(col: string, val: string) {
+      return membersQuery({ ...filters, [col]: val });
+    },
+    maybeSingle() {
+      const runId = filters.run_id;
+      const userId = filters.user_id;
+      if (runId && userId && (membersByUser.get(userId) ?? []).includes(runId)) {
+        const role = memberRoles.get(`${userId}:${runId}`) ?? 'owner';
+        return Promise.resolve({ data: { role }, error: null });
+      }
+      return Promise.resolve({ data: null, error: null });
+    },
+    then(
+      onFulfilled?: (value: { data: ReturnType<typeof membersListPayload>; error: null }) => unknown,
+      onRejected?: (reason: unknown) => unknown,
+    ) {
+      const userId = filters.user_id;
+      membersFetchInFlight += 1;
+      return new Promise<{ data: ReturnType<typeof membersListPayload>; error: null }>((resolve) => {
+        const finish = (): void => {
+          membersFetchCompleted += 1;
+          membersFetchInFlight -= 1;
+          resolve({ data: userId ? membersListPayload(userId) : [], error: null });
+        };
+        if (membersFetchDelayMs <= 0) finish();
+        else setTimeout(finish, membersFetchDelayMs);
+      }).then(onFulfilled, onRejected);
+    },
+  };
+  return api;
+}
+
 function chainEq(table: string, col: string, val: string) {
-  if (table === 'nuz_run_members' && col === 'user_id') {
-    const ids = membersByUser.get(val) ?? [];
-    membersFetchInFlight += 1;
-    const payload = ids.map((run_id) => ({ run_id, nuz_runs: runsById.get(run_id) ?? null }));
-    return new Promise<{ data: typeof payload; error: null }>((resolve) => {
-      const finish = (): void => {
-        membersFetchCompleted += 1;
-        membersFetchInFlight -= 1;
-        resolve({ data: payload, error: null });
-      };
-      if (membersFetchDelayMs <= 0) finish();
-      else setTimeout(finish, membersFetchDelayMs);
-    });
+  if (table === 'nuz_run_members') {
+    return membersQuery({ [col]: val });
   }
   if (table === 'nuz_runs' && col === 'id') {
     return {
@@ -87,8 +131,17 @@ function chainEq(table: string, col: string, val: string) {
 
 vi.mock('./auth', () => ({
   getAuthUser: () => mockUser,
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: mockUser, profile: null }),
   ensureRunIdentity: vi.fn().mockResolvedValue(undefined),
   onAuthChange: vi.fn(() => () => undefined),
+}));
+
+vi.mock('./nuzlocke-linked-teams', () => ({
+  syncLinkedTeamsForRun: vi.fn().mockResolvedValue(undefined),
+  ensureLinkedTeams: vi.fn().mockResolvedValue(undefined),
+  repairAllLinkedTeams: vi.fn().mockResolvedValue(undefined),
+  cloneLinkedTeamsForDuplicate: vi.fn(),
 }));
 
 vi.mock('./supabase', async () => {
@@ -178,6 +231,7 @@ describe('account run discovery', () => {
     mockUser = null;
     runsById.clear();
     membersByUser.clear();
+    memberRoles.clear();
     playersByRun.clear();
     pgHandlers.length = 0;
     membersFetchDelayMs = 0;
@@ -206,6 +260,66 @@ describe('account run discovery', () => {
     expect(readRunIndex()).toContain(RUN_A);
     expect(getHubRunIds()).toContain(RUN_A);
     expect(getRunState(RUN_A)?.run.name).toBe('Remote Run');
+  });
+
+  it('fresh device: multi owner hydrate restores myPlayerId + isRunOwner from membership', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Soul Link Host');
+    memberRoles.set(`${USER_ID}:${RUN_A}`, 'owner');
+    membersByUser.set(USER_ID, [RUN_A]);
+    expect(localStorage.getItem('pdx2.nuz.memberships')).toBeNull();
+    expect(localStorage.getItem('pdx2.nuz.owners')).toBeNull();
+
+    const { syncAccountRuns, myPlayerId, isRunOwner, getRunState } = await loadStore();
+    await syncAccountRuns(USER_ID);
+
+    expect(getRunState(RUN_A)?.mode).toBe('multi');
+    expect(myPlayerId(RUN_A)).toBe(`player-${RUN_A}`);
+    expect(isRunOwner(RUN_A)).toBe(true);
+  });
+
+  it('fresh device: multi member with one player binds membership but not owner', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Joined Alone');
+    memberRoles.set(`${USER_ID}:${RUN_A}`, 'member');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const { syncAccountRuns, myPlayerId, isRunOwner } = await loadStore();
+    await syncAccountRuns(USER_ID);
+
+    expect(myPlayerId(RUN_A)).toBe(`player-${RUN_A}`);
+    expect(isRunOwner(RUN_A)).toBe(false);
+  });
+
+  it('fresh device: multi member with multiple players does not guess myPlayerId', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Full Lobby');
+    playersByRun.set(RUN_A, [
+      {
+        id: 'player-host',
+        run_id: RUN_A,
+        name: 'HOST',
+        color: '#FFD60A',
+        slot: 0,
+        created_at: '2026-01-01T00:00:00.000Z',
+      },
+      {
+        id: 'player-joiner',
+        run_id: RUN_A,
+        name: 'P2',
+        color: '#45C8FF',
+        slot: 1,
+        created_at: '2026-01-01T00:00:01.000Z',
+      },
+    ]);
+    memberRoles.set(`${USER_ID}:${RUN_A}`, 'member');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const { syncAccountRuns, myPlayerId, isRunOwner } = await loadStore();
+    await syncAccountRuns(USER_ID);
+
+    expect(myPlayerId(RUN_A)).toBeNull();
+    expect(isRunOwner(RUN_A)).toBe(false);
   });
 
   it('realtime INSERT on nuz_run_members adds run to hub', async () => {
@@ -322,6 +436,42 @@ describe('account run discovery', () => {
     expect(dropChannelMock).toHaveBeenCalled();
   });
 
+  it('logged out: hub hides multi + account-synced runs still sitting in localStorage', async () => {
+    mockUser = { id: USER_ID };
+    seedRun(RUN_A, 'Multi Cached');
+    membersByUser.set(USER_ID, [RUN_A]);
+
+    const store = await loadStore();
+    await store.syncAccountRuns(USER_ID);
+    expect(store.getHubRunIds()).toContain(RUN_A);
+
+    mockUser = null;
+    store.stopAccountRunsWatch();
+
+    /* pure guest solo created while logged out stays visible */
+    const { state: guestSolo } = await store.createRun({
+      name: 'Guest Solo',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ME', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+
+    expect(store.getHubRunIds()).not.toContain(RUN_A);
+    expect(store.getHubRunIds()).toContain(guestSolo.run.id);
+    /* multi payload stays on disk for the next login */
+    expect(store.loadLocalRun(RUN_A)).not.toBeNull();
+
+    /* guest archive must not make a local solo look account-owned */
+    store.archiveRun(guestSolo.run.id);
+    expect(store.isDeviceLocalSoloRun(guestSolo)).toBe(true);
+    expect(store.getHubRunIds()).not.toContain(guestSolo.run.id);
+    /* still listed under archived when logged out */
+    const archived = JSON.parse(localStorage.getItem('pdx2.nuz.archived') ?? '[]') as string[];
+    expect(archived).toContain(guestSolo.run.id);
+  });
+
   it('watchAccountRuns is idempotent — second call does not create another channel', async () => {
     mockUser = { id: USER_ID };
     membersByUser.set(USER_ID, []);
@@ -415,7 +565,8 @@ describe('account run discovery', () => {
     }
 
     await Promise.all([first, second]);
+    /* list fetches only (thenable path) — role maybeSingle adds extra from() calls */
     expect(membersFetchCompleted).toBe(2);
-    expect(memberFetchCount()).toBe(2);
+    expect(memberFetchCount()).toBeGreaterThanOrEqual(2);
   });
 });

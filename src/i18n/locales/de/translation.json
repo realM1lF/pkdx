@@ -891,6 +891,7 @@
     "haveInvite": "Einladung vorhanden?",
     "inviteAria": "Einladungscode",
     "join": "Beitreten",
+    "joinLoginHint": "Zum Beitreten bitte anmelden — so bleibt der Run auf allen Geräten gleich.",
     "joinHint": "Kein Run mit diesem Code — Schreibweise prüfen.",
     "joinOffline": "Beitreten braucht eine Online-Verbindung.",
     "codeFormat": "Codes sehen aus wie SOUL-7K2",
@@ -961,6 +962,7 @@
       "soloBody": "Rüste diesen Run auf Multiplayer auf, um Freunde einzuladen — Echtzeit-Sync, Präsenz, alles dabei.",
       "goOnline": "Online gehen",
       "goingOnline": "Gehe online…",
+      "loginToGoOnline": "Online gehen braucht ein Konto — damit der Run auf allen Geräten gleich bleibt.",
       "options": "Run-Optionen",
       "editRules": "Regeln bearbeiten",
       "rename": "Umbenennen",
@@ -992,7 +994,10 @@
       "linkLost": "SEELENLINK — {{name}} LINK-VERLUST",
       "dupeRace": "DUPES-KLAUSEL — {{name}} ALS DUPLIKAT MARKIERT (SYNC-KONFLIKT)",
       "evolved": "ENTWICKELT — {{name}} → {{to}}",
-      "evolveFailed": "Entwicklung fehlgeschlagen — erneut versuchen"
+      "evolveFailed": "Entwicklung fehlgeschlagen — erneut versuchen",
+      "loginRequiredOnline": "Online-Runs brauchen ein Konto — bitte anmelden.",
+      "loginRequiredJoin": "Zum Beitreten brauchst du ein Konto — bitte anmelden.",
+      "hydrateFailed": "Server-Stand nicht geladen — es wird der lokale Cache gezeigt."
     },
     "rules": {
       "dupesTip": "Überspringen, wenn die Erstbegegnung zur Evolutionslinie eines lebenden Fangs im Run gehört (z. B. Schiggy blockiert Schillok/Turtok für alle Spieler). Als Duped markieren und neu würfeln.",
@@ -1158,6 +1163,8 @@
       "liveTip": "Multiplayer — Live-Sync",
       "reconnectingTip": "Verbinde erneut mit Echtzeit-Sync",
       "localTip": "Solo — lokale Speicherung auf diesem Gerät",
+      "syncError": "Sync-Fehler",
+      "syncErrorTip": "Server-Stand fehlt — Anzeige kann veraltet sein. Neu laden oder später erneut öffnen.",
       "used": "Vergeben"
     },
     "wizard": {
@@ -1166,7 +1173,7 @@
       "stepRules": "03 Regeln",
       "online": "Run online — lade deine Crew ein",
       "copyInvite": "Einladungscode kopieren",
-      "anyoneCanJoin": "Jeder mit diesem Code kann über die Übersicht beitreten.",
+      "anyoneCanJoin": "Freunde mit Konto treten in der Übersicht mit diesem Code bei.",
       "enterRun": "Run betreten →",
       "joiningRun": "Du trittst bei",
       "playersInside": "{{count}} Spieler an Bord",
@@ -1194,7 +1201,11 @@
       "mode": "Modus",
       "modeOnline": "Online — Einladung per Code",
       "modeLocal": "Lokal — geteilter Bildschirm",
-      "accountHint": "Konto für Online-Runs empfohlen (optional).",
+      "accountHint": "Online-Runs brauchen ein Konto, damit Handy und PC denselben Stand sehen.",
+      "accountRequired": "Bitte melde dich an, bevor du online startest oder einer Crew beitrittst. Lokal auf diesem Gerät geht ohne Konto.",
+      "loginCta": "ZUM KONTO",
+      "failLoginOnline": "Für Online-Runs bitte zuerst anmelden.",
+      "failLoginJoin": "Zum Beitreten brauchst du ein Konto.",
       "nickTip": "Ein Nuzlocke-Klassiker. Jeder Fang bekommt einen Namen — so tut's mehr weh.",
       "nicknames": "Spitznamen",
       "autoLevelCap": "Auto-Cap (nächste Arena)",

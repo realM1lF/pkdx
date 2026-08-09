@@ -1,13 +1,15 @@
 /* cloud-sync — local-first mirror into Supabase (plan-accounts.md WP5/WP6).
- * localStorage stays the source of truth for reads; when logged in, writes
- * are mirrored to the DB (debounced) and on login the DB is merged back in
- * (last-write-wins per record). Guest mode never touches this module. */
+ * localStorage stays the fast cache; logged-in writes mirror to the DB.
+ * On login, local-only solo runs/teams are adopted silently (no dialog).
+ * Guest mode never touches account tables. */
 import type { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { getAuthUser, onAuthChange } from './auth';
 import { loadTeams, saveTeam, type Team } from './teambuilder';
 import {
+  isAccountManagedRun,
   loadLocalRun,
+  markRunAccountLinked,
   readRunIndex,
   saveLocalRunPublic,
   stopAccountRunsWatch,
@@ -34,7 +36,9 @@ function debounce(map: Map<string, ReturnType<typeof setTimeout>>, id: string, f
   );
 }
 
-/* ---------------- migration offer (first login) ---------------- */
+/* ---------------- migration offer (legacy no-op API) ----------------
+ * Kept so old listeners do not crash; offers are never emitted. Local-only
+ * data is adopted silently in bootCloudSync on login. */
 export interface MigrationOffer {
   teams: Team[];
   runs: RunState[];
@@ -42,49 +46,9 @@ export interface MigrationOffer {
   decline: (forever: boolean) => void;
 }
 
-const SKIP_KEY = 'pdx2.acctMigrateSkip';
-let offerListeners: Array<(o: MigrationOffer | null) => void> = [];
-let sessionAsked = false;
-
 export function onMigrationOffer(cb: (o: MigrationOffer | null) => void): () => void {
-  offerListeners.push(cb);
-  return () => {
-    offerListeners = offerListeners.filter((l) => l !== cb);
-  };
-}
-
-function migrationSkipped(): boolean {
-  try {
-    return localStorage.getItem(SKIP_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function maybeOffer(teams: Team[], runs: RunState[]): void {
-  /* accounts sync silently via nuz_run_members — the offer is guest-only, and
-   * a transient null from a token refresh must never surface it */
-  if (getAuthUser()) return;
-  if (sessionAsked || migrationSkipped() || (teams.length === 0 && runs.length === 0)) return;
-  sessionAsked = true;
-  const offer: MigrationOffer = {
-    teams,
-    runs,
-    accept: () => {
-      for (const t of teams) cloudPushTeam(t);
-      for (const r of runs) cloudPushSoloRun(r);
-      offerListeners.forEach((fn) => fn(null));
-    },
-    decline: (forever) => {
-      if (forever) {
-        try {
-          localStorage.setItem(SKIP_KEY, '1');
-        } catch { /* ignore */ }
-      }
-      offerListeners.forEach((fn) => fn(null));
-    },
-  };
-  offerListeners.forEach((fn) => fn(offer));
+  void cb;
+  return () => undefined;
 }
 
 /* ---------------- teams ---------------- */
@@ -137,38 +101,45 @@ async function hydrateTeams(user: User): Promise<Team[]> {
       saveTeam({ ...row.payload, id: row.id, updatedAt: remoteTs });
     }
   }
-  /* local teams missing remotely → migration candidates (dialog decides) */
+  /* local teams missing remotely → silent adopt on login */
   return loadTeams().filter((t) => !remoteIds.has(t.id));
 }
 
 /* ---------------- nuzlocke solo runs ---------------- */
+
+/** Immediate account upsert (no debounce) — used by login adopt + debounced push. */
+async function pushSoloRunToAccount(state: RunState): Promise<boolean> {
+  if (state.mode !== 'solo') return false;
+  const realUser = getAuthUser();
+  if (!realUser) return false;
+  const runRow = { ...state.run, invite_code: null };
+  const { error: runErr } = await supabase.from('nuz_runs').upsert(runRow, { onConflict: 'id' });
+  if (runErr) {
+    console.warn('[cloud-sync] run push failed', runErr.message);
+    return false;
+  }
+  if (state.players.length) {
+    const { error: plErr } = await supabase.from('nuz_players').upsert(state.players, { onConflict: 'id' });
+    if (plErr) console.warn('[cloud-sync] players push failed', plErr.message);
+  }
+  if (state.encounters.length) {
+    const { error: encErr } = await supabase
+      .from('nuz_encounters')
+      .upsert(state.encounters, { onConflict: 'id' });
+    if (encErr) console.warn('[cloud-sync] encounters push failed', encErr.message);
+  }
+  /* owner membership comes from nuz_runs_grant_owner trigger */
+  return true;
+}
+
 export function cloudPushSoloRun(state: RunState): void {
   if (state.mode !== 'solo') return;
   const id = state.run.id;
   debounce(runTimers, id, () => {
     void (async () => {
-      const realUser = getAuthUser();
-      if (realUser) {
-        const runRow = { ...state.run, invite_code: null };
-        const { error: runErr } = await supabase.from('nuz_runs').upsert(runRow, { onConflict: 'id' });
-        if (runErr) {
-          console.warn('[cloud-sync] run push failed', runErr.message);
-          return;
-        }
-        if (state.players.length) {
-          const { error: plErr } = await supabase
-            .from('nuz_players')
-            .upsert(state.players, { onConflict: 'id' });
-          if (plErr) console.warn('[cloud-sync] players push failed', plErr.message);
-        }
-        if (state.encounters.length) {
-          const { error: encErr } = await supabase
-            .from('nuz_encounters')
-            .upsert(state.encounters, { onConflict: 'id' });
-          if (encErr) console.warn('[cloud-sync] encounters push failed', encErr.message);
-        }
-        /* the owner membership comes from the nuz_runs_grant_owner trigger —
-         * clients cannot insert role='owner' (see migration 10) */
+      if (getAuthUser()) {
+        const ok = await pushSoloRunToAccount(state);
+        if (ok) markRunAccountLinked(id);
         return;
       }
       const { data } = await supabase.auth.getSession();
@@ -228,6 +199,18 @@ export async function hydrateSoloRuns(user: User): Promise<RunState[]> {
   return pending;
 }
 
+/** Upload solo runs that exist only in localStorage after account sync. */
+async function adoptLocalSoloRuns(): Promise<void> {
+  if (!getAuthUser()) return;
+  for (const id of readRunIndex()) {
+    if (isAccountManagedRun(id)) continue;
+    const local = loadLocalRun(id);
+    if (!local || local.mode !== 'solo') continue;
+    const ok = await pushSoloRunToAccount(local);
+    if (ok) markRunAccountLinked(id);
+  }
+}
+
 /* ---------------- boot / login hydration ---------------- */
 let booted = false;
 
@@ -237,19 +220,16 @@ export function bootCloudSync(): void {
   onAuthChange((user) => {
     if (!user) {
       stopAccountRunsWatch();
-      const runs = readRunIndex()
-        .map((id) => loadLocalRun(id))
-        .filter((r): r is RunState => !!r && r.mode === 'solo');
-      maybeOffer(loadTeams(), runs);
+      /* never prompt while logged out — that flash is what users hated */
       return;
     }
     watchAccountRuns(user.id);
     void (async () => {
       await syncAccountRuns(user.id);
-      await hydrateTeams(user);
+      const pendingTeams = await hydrateTeams(user);
+      for (const t of pendingTeams) cloudPushTeam(t);
+      await adoptLocalSoloRuns();
       await hydrateSoloRuns(user);
-      /* logged-in users sync via nuz_run_members — no migration offer */
-      /* mid-run login / second device: repair linked TB teams after hydrate */
       void import('./nuzlocke-linked-teams').then((m) => m.repairAllLinkedTeams());
     })();
   });
