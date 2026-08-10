@@ -29,10 +29,10 @@ import type { LogValidationError } from './nuzlocke-rules';
 import {
   cachedEvolutionFamilyIds,
   fetchEvolutionChainIds,
-  fetchEvolutionFamilyIds,
   isValidEvolutionTarget,
   normalizeEncounter,
   normalizeEncounters,
+  prefetchEvolutionFamiliesForEncounters,
 } from './nuzlocke-evolution';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 import { ensureRunIdentity, getAuthUser, isAuthReady, useAuth } from './auth';
@@ -956,6 +956,10 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
       /* authoritative re-seed — includes encounter history, not just joins */
       seedFeed(entry);
       scheduleLinkedSync(merged);
+      /* Heal Dupes violations that snuck in while this client was offline /
+       * mid-hydrate — realtime only re-scans on fresh INSERTs, not on a
+       * full snapshot replace (Menki+Rasaff both `caught` after reload). */
+      void reconcileEvoLineDupes(entry);
     } else if (!local) {
       entry.phase = 'missing';
     } else if (expectsServerSnapshot(local)) {
@@ -1035,21 +1039,20 @@ function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
  * Interim client-side re-check until a server-side RPC validates the family
  * in the same transaction as the insert (plan §2.3). Runs after every insert
  * either client learns about — see call sites in `applyRemoteEncounter`
- * (remote catch) and `logEncounter` (our own ack). `pickDupeLoser` /
- * `findEvoLineDupeViolations` are pure and deterministic (created_at/id), so
- * every online client converges on the same loser without coordinating. */
-async function reconcileEvoLineDupes(entry: RunEntry, trigger: NuzEncounterRow): Promise<void> {
+ * (remote catch) and `logEncounter` (our own ack) — and after hydrate
+ * (`refreshRemote`) so a full snapshot replace still heals. Prefetches
+ * families for *every* living catch (not only the trigger) so a fail-open
+ * singleton on one stage cannot miss a sibling that already resolved the
+ * line. `pickDupeLoser` / `findEvoLineDupeViolations` are pure and
+ * deterministic (created_at/id), so every online client converges on the
+ * same loser without coordinating. */
+async function reconcileEvoLineDupes(entry: RunEntry, trigger?: NuzEncounterRow): Promise<void> {
   if (!entry.state || !isCloudRun(entry.state) || !entry.state.run.rules.dupes) return;
-  if (trigger.status !== 'caught' || trigger.is_shiny) return;
-  const speciesId =
-    typeof trigger.caught_pokemon_id === 'number' && trigger.caught_pokemon_id > 0
-      ? trigger.caught_pokemon_id
-      : trigger.pokemon_id;
+  if (trigger && (trigger.status !== 'caught' || trigger.is_shiny)) return;
   try {
-    /* populates the sync cache `findEvoLineDupeViolations` reads below */
-    await fetchEvolutionFamilyIds(speciesId);
+    await prefetchEvolutionFamiliesForEncounters(entry.state.encounters);
   } catch {
-    return; /* offline / unknown species — no re-check possible, degrade gracefully */
+    return; /* offline / unknown — no re-check possible, degrade gracefully */
   }
   const s = entry.state;
   if (!s || !isCloudRun(s)) return;

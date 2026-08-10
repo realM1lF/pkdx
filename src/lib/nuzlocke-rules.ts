@@ -1,5 +1,5 @@
 /* Nuzlocke rule helpers — validation, run export (player-ux-audit §Nuzlocke). */
-import { fetchEvolutionFamilyIds } from '@/lib/nuzlocke-evolution';
+import { fetchEvolutionFamilyIds, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { routeOrder } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import type { MapNode, RegionId, RegionMap } from '@/lib/regions';
@@ -59,6 +59,31 @@ export function evoLineAliveInRun(state: RunState, familyIds: number[]): boolean
   });
 }
 
+/**
+ * Bidirectional Dupes check: candidate family vs living rows, then each living
+ * row's family vs the candidate. Covers fail-open when the candidate's
+ * PokéAPI fetch degrades to a singleton but a living Menki still resolves
+ * the full line that contains Rasaff.
+ */
+export async function isEvoLineDupeCatch(
+  state: RunState,
+  candidatePokemonId: number,
+): Promise<boolean> {
+  const candidateFamily = await fetchEvolutionFamilyIds(candidatePokemonId);
+  if (evoLineAliveInRun(state, candidateFamily)) return true;
+
+  const candidateSet = new Set(candidateFamily);
+  for (const e of state.encounters) {
+    if (e.status !== 'caught') continue;
+    const livingId = speciesIdFor(e, 'caught');
+    if (candidateSet.has(livingId) || candidateSet.has(e.pokemon_id)) return true;
+    const livingFamily = await fetchEvolutionFamilyIds(livingId);
+    if (livingFamily.includes(candidatePokemonId)) return true;
+    if (livingFamily.some((id) => candidateSet.has(id))) return true;
+  }
+  return false;
+}
+
 /** Map `kind: 'special'` — informational only (Power Plant, Tower, …).
  * Not a reliable gift/static/trade taxonomy; do not hard-block catches on it. */
 export function isSpecialNode(node: MapNode | undefined): boolean {
@@ -96,8 +121,7 @@ export async function validateLogDraft(
     if (rules.nicknames && !draft.nickname?.trim()) return 'nicknameRequired';
 
     if (rules.dupes && !shinyBypass) {
-      const family = await fetchEvolutionFamilyIds(draft.pokemonId);
-      if (evoLineAliveInRun(state, family)) return 'speciesDupe';
+      if (await isEvoLineDupeCatch(state, draft.pokemonId)) return 'speciesDupe';
     }
   }
 

@@ -203,6 +203,41 @@ describe('findEvoLineDupeViolations', () => {
     const b = enc({ id: 'e2', pokemon_id: WARTORTLE, created_at: '2026-01-01T00:00:01.000Z' });
     expect(findEvoLineDupeViolations([a, b], noCache)).toEqual([]);
   });
+
+  it('asymmetric cache (full family on one stage, singleton poison on another) still collides', () => {
+    /* Menki fetch succeeded → [56,57,979]; Rasaff later failed open → cached [57].
+     * Math.min keys used to diverge (56 vs 57); union-by-shared-member must heal. */
+    const MANKEY = 56;
+    const PRIMEAPE = 57;
+    const ANNIHILAPE = 979;
+    const ownFamily = familyOf({
+      [MANKEY]: [MANKEY, PRIMEAPE, ANNIHILAPE],
+      [PRIMEAPE]: [PRIMEAPE],
+    });
+    const first = enc({
+      id: 'e-menki',
+      player_id: 'ann',
+      pokemon_id: MANKEY,
+      created_at: '2026-01-01T00:00:00.000Z',
+    });
+    const second = enc({
+      id: 'e-rasaff',
+      player_id: 'bob',
+      pokemon_id: PRIMEAPE,
+      created_at: '2026-01-01T00:00:03.000Z',
+    });
+    expect(findEvoLineDupeViolations([first, second], ownFamily)).toEqual([second]);
+  });
+
+  it('overlapping partial family caches (7–8 and 8–9) collide via shared member', () => {
+    const ownFamily = familyOf({
+      [SQUIRTLE]: [SQUIRTLE, WARTORTLE],
+      [BLASTOISE]: [WARTORTLE, BLASTOISE],
+    });
+    const first = enc({ id: 'e1', pokemon_id: SQUIRTLE, created_at: '2026-01-01T00:00:00.000Z' });
+    const second = enc({ id: 'e2', pokemon_id: BLASTOISE, created_at: '2026-01-01T00:00:01.000Z' });
+    expect(findEvoLineDupeViolations([first, second], ownFamily)).toEqual([second]);
+  });
 });
 
 describe('isStatusDowngrade', () => {

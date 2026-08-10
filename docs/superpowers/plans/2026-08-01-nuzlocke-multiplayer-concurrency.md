@@ -105,12 +105,13 @@ sequenceDiagram
 **Tests:** rapid dead→restore; only last write sticks
 
 ### 1.3 Dupes TOCTOU interim
-- [x] After successful multi insert **and** on realtime INSERT of another player’s catch: re-run `evoLineAliveInRun` for living family
+- [x] After successful multi insert **and** on realtime INSERT of another player’s catch: re-run evo-line scan for living family
 - [x] If violation: mark **later** row (`created_at` / not owned) as `status: 'duped'`, `in_party: false`, toast (gold), persist
 - [x] Document as interim until RPC
+- [x] Harden (2026-08-10): prefetch all living families; union-find by shared members (not `Math.min`); never cache fail-open singletons; bidirectional validate; re-scan after hydrate
 
-**Files:** `src/lib/nuzlocke-store.ts`, `src/lib/nuzlocke-concurrency.ts`  
-**Tests:** two near-simultaneous logs different stages same line → one stays caught, one duped (simulated sequential with primed family cache)
+**Files:** `src/lib/nuzlocke-store.ts`, `src/lib/nuzlocke-concurrency.ts`, `src/lib/nuzlocke-evolution.ts`, `src/lib/nuzlocke-rules.ts`  
+**Tests:** two near-simultaneous logs different stages same line → one stays caught, one duped; asymmetric/poisoned cache; candidate fetch fail-open with living Menki→Rasaff
 
 ### 1.4 Realtime apply hygiene
 - [x] Dedupe by PK (already mostly)

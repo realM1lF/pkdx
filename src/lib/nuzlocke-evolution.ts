@@ -67,36 +67,63 @@ export async function fetchEvolutionChainIds(pokemonId: number): Promise<number[
 /** pokemonId → full family ids (shared array for every member). */
 const familyCache = new Map<number, number[]>();
 
+/** True singleton (no evo) or a multi-stage line — never a fail-open poison. */
+function cacheFamily(family: number[]): void {
+  for (const id of family) familyCache.set(id, family);
+}
+
+/**
+ * Sync cache read for Dupes Clause scans. Prefer a multi-member family that
+ * contains `pokemonId` even when this key was later overwritten by a
+ * fail-open singleton (Menki→[56,57,979], Rasaff fail →[57]).
+ * Returns undefined on a true miss — callers degrade to a singleton.
+ */
+export function cachedEvolutionFamilyIds(pokemonId: number): number[] | undefined {
+  const hit = familyCache.get(pokemonId);
+  if (hit && hit.length > 1) return hit;
+  for (const fam of familyCache.values()) {
+    if (fam.length > 1 && fam.includes(pokemonId)) {
+      cacheFamily(fam);
+      return fam;
+    }
+  }
+  return hit;
+}
+
 /** Evolution family for Dupes Clause (Schiggy ↔ Schillok ↔ Turtok). Cached. */
 export async function fetchEvolutionFamilyIds(pokemonId: number): Promise<number[]> {
-  const hit = familyCache.get(pokemonId);
+  const hit = cachedEvolutionFamilyIds(pokemonId);
   if (hit) return hit;
   try {
     const ids = await fetchEvolutionChainIds(pokemonId);
     const family = ids.length > 0 ? ids : [pokemonId];
-    for (const id of family) familyCache.set(id, family);
+    cacheFamily(family);
     return family;
   } catch {
-    /* offline / unknown species — degrade to singleton so exact dupes still work */
-    const singleton = [pokemonId];
-    familyCache.set(pokemonId, singleton);
-    return singleton;
+    /* offline / unknown — return singleton for this call only. Do NOT cache:
+     * a later sibling fetch (or retry) must still be able to populate the
+     * full line; caching [57] used to poison Primeape while Menki kept the
+     * rich family and break cross-stage Dupes detection. */
+    return [pokemonId];
   }
+}
+
+/** Prefetch families for every living catch so Dupes scans see full lines. */
+export async function prefetchEvolutionFamiliesForEncounters(
+  encounters: Array<Pick<NuzEncounterRow, 'pokemon_id' | 'caught_pokemon_id' | 'status' | 'is_shiny'>>,
+): Promise<void> {
+  const ids = new Set<number>();
+  for (const e of encounters) {
+    if (e.status !== 'caught' || e.is_shiny) continue;
+    ids.add(speciesIdFor(e, 'caught'));
+    ids.add(e.pokemon_id);
+  }
+  await Promise.all([...ids].map((id) => fetchEvolutionFamilyIds(id)));
 }
 
 /** Test helper — seed cache without network. */
 export function primeEvolutionFamilyCache(family: number[]): void {
-  for (const id of family) familyCache.set(id, family);
-}
-
-/** Sync cache read (no network/await) — used by the Phase 1.3 dupes TOCTOU
- * re-scan (`findEvoLineDupeViolations` in nuzlocke-concurrency.ts), which
- * runs after `fetchEvolutionFamilyIds` has already resolved for the
- * triggering row and just needs to look up every other living row's family
- * without awaiting anything itself. Returns undefined on a cache miss —
- * callers degrade to a singleton family for that species. */
-export function cachedEvolutionFamilyIds(pokemonId: number): number[] | undefined {
-  return familyCache.get(pokemonId);
+  cacheFamily(family);
 }
 
 export function clearEvolutionFamilyCache(): void {

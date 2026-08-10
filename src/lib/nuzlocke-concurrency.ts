@@ -176,29 +176,63 @@ export function pickDupeLoser(a: NuzEncounterRow, b: NuzEncounterRow): NuzEncoun
  * downgraded to `duped`. `familyOf(pokemonId)` should read the same sync
  * cache `fetchEvolutionFamilyIds` populates (`cachedEvolutionFamilyIds` in
  * nuzlocke-evolution.ts) — a species with no cache entry yet degrades to a
- * singleton family, which still catches an exact-species dupe (same id) and
- * simply defers a cross-stage dupe (e.g. Schiggy vs. Schillok) until that
- * species' family has been fetched at least once (the caller fetches the
- * trigger row's family right before calling this). */
+ * singleton family, which still catches an exact-species dupe (same id).
+ *
+ * Families are grouped by **union of shared members**, not `Math.min(family)`:
+ * a full Menki line `[56,57,979]` and a poisoned Rasaff singleton `[57]` share
+ * 57 and must collide; overlapping partial caches (`[7,8]` + `[8,9]`) too.
+ * Callers should prefetch every living row's family before scanning. */
 export function findEvoLineDupeViolations(
   encounters: NuzEncounterRow[],
   familyOf: (pokemonId: number) => number[] | undefined,
 ): NuzEncounterRow[] {
   const living = encounters.filter((e) => e.status === 'caught' && !e.is_shiny);
-  const winnerByFamily = new Map<number, NuzEncounterRow>();
-  const losers: NuzEncounterRow[] = [];
-  for (const e of living) {
+  if (living.length < 2) return [];
+
+  const rows = living.map((e) => {
     const speciesId =
       typeof e.caught_pokemon_id === 'number' && e.caught_pokemon_id > 0 ? e.caught_pokemon_id : e.pokemon_id;
     const family = familyOf(speciesId) ?? familyOf(e.pokemon_id) ?? [speciesId];
-    const key = Math.min(...family);
-    const incumbent = winnerByFamily.get(key);
+    const members = [...new Set([speciesId, e.pokemon_id, ...family])];
+    return { e, members };
+  });
+
+  const parent = new Map<number, number>();
+  const find = (x: number): number => {
+    const start = parent.get(x) ?? x;
+    if (!parent.has(x)) parent.set(x, x);
+    let p = start;
+    while (p !== (parent.get(p) ?? p)) p = parent.get(p) ?? p;
+    /* path compression */
+    let c = x;
+    while (c !== p) {
+      const next = parent.get(c) ?? c;
+      parent.set(c, p);
+      c = next;
+    }
+    return p;
+  };
+  const union = (a: number, b: number) => {
+    const ra = find(a);
+    const rb = find(b);
+    if (ra !== rb) parent.set(ra, rb);
+  };
+
+  for (const { members } of rows) {
+    for (let i = 1; i < members.length; i++) union(members[0]!, members[i]!);
+  }
+
+  const winnerByRoot = new Map<number, NuzEncounterRow>();
+  const losers: NuzEncounterRow[] = [];
+  for (const { e, members } of rows) {
+    const root = find(members[0]!);
+    const incumbent = winnerByRoot.get(root);
     if (!incumbent) {
-      winnerByFamily.set(key, e);
+      winnerByRoot.set(root, e);
       continue;
     }
     const loser = pickDupeLoser(incumbent, e);
-    winnerByFamily.set(key, loser === incumbent ? e : incumbent);
+    winnerByRoot.set(root, loser === incumbent ? e : incumbent);
     losers.push(loser);
   }
   return losers;
