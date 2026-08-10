@@ -585,6 +585,16 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
                       <GoldSwitch checked={rules.shiny} onChange={(v) => setRules((r) => ({ ...r, shiny: v }))} label={t('nuz.rules.shinyClause')} tip={t('nuz.rules.shinyTip')} />
                     </div>
+                    {rules.dupes && (
+                      <>
+                        <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
+                          <GoldSwitch checked={rules.dupesDead} onChange={(v) => setRules((r) => ({ ...r, dupesDead: v }))} label={t('nuz.rules.dupesDead')} tip={t('nuz.rules.dupesDeadTip')} />
+                        </div>
+                        <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
+                          <GoldSwitch checked={rules.dupesEncounter} onChange={(v) => setRules((r) => ({ ...r, dupesEncounter: v }))} label={t('nuz.rules.dupesEncounter')} tip={t('nuz.rules.dupesEncounterTip')} />
+                        </div>
+                      </>
+                    )}
                     <div className="rounded-md border border-hairline bg-surface1 px-3 py-2.5">
                       <GoldSwitch checked={rules.nicknames} onChange={(v) => setRules((r) => ({ ...r, nicknames: v }))} label={t('nuz.wizard.nicknames')} tip={t('nuz.wizard.nickTip')} />
                     </div>

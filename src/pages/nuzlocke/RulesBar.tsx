@@ -174,6 +174,14 @@ export function RulesEditor({ state }: { state: RunState }) {
       <RulePresetButtons onApply={applyPreset} soulLinkDisabled={state.players.length < 2 && state.mode !== 'multi'} />
       <div />
       <GoldSwitch checked={r.dupes} onChange={(v) => set({ dupes: v })} label={t('nuz.rules.dupesClause')} tip={t('nuz.rules.dupesTip')} />
+      {r.dupes && (
+        <>
+          <div />
+          <GoldSwitch checked={r.dupesDead} onChange={(v) => set({ dupesDead: v })} label={t('nuz.rules.dupesDead')} tip={t('nuz.rules.dupesDeadTip')} />
+          <div />
+          <GoldSwitch checked={r.dupesEncounter} onChange={(v) => set({ dupesEncounter: v })} label={t('nuz.rules.dupesEncounter')} tip={t('nuz.rules.dupesEncounterTip')} />
+        </>
+      )}
       <div />
       <GoldSwitch checked={r.shiny} onChange={(v) => set({ shiny: v })} label={t('nuz.rules.shinyClause')} tip={t('nuz.rules.shinyTip')} />
       <div />
@@ -221,6 +229,8 @@ export function RulesEditor({ state }: { state: RunState }) {
 function useActiveRuleChips(rules: NuzRules): string[] {
   const { t } = useTranslation();
   const chips: string[] = [];
+  if (rules.dupes && rules.dupesDead) chips.push(t('nuz.rules.chipDupesDead'));
+  if (rules.dupes && rules.dupesEncounter) chips.push(t('nuz.rules.chipDupesEncounter'));
   if (rules.soulLink) chips.push(t(rules.soulLinkCascade ? 'nuz.rules.chipSoulLinkCascade' : 'nuz.rules.chipSoulLink'));
   if (rules.nicknames) chips.push(t('nuz.rules.chipNicknames'));
   if (rules.releaseOnDeath) chips.push(t('nuz.rules.chipRelease'));

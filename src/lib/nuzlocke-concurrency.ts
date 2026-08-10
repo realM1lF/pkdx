@@ -171,25 +171,27 @@ export function pickDupeLoser(a: NuzEncounterRow, b: NuzEncounterRow): NuzEncoun
   return a.id > b.id ? a : b;
 }
 
-/** Scan every living (`caught`, non-shiny — shinies are clause-free)
- * encounter for evolution-family collisions and return the rows that must be
- * downgraded to `duped`. `familyOf(pokemonId)` should read the same sync
- * cache `fetchEvolutionFamilyIds` populates (`cachedEvolutionFamilyIds` in
- * nuzlocke-evolution.ts) — a species with no cache entry yet degrades to a
- * singleton family, which still catches an exact-species dupe (same id).
+/** Scan claiming encounters for evolution-family collisions and return the
+ * still-`caught` rows that must be downgraded to `duped`.
  *
- * Families are grouped by **union of shared members**, not `Math.min(family)`:
- * a full Menki line `[56,57,979]` and a poisoned Rasaff singleton `[57]` share
- * 57 and must collide; overlapping partial caches (`[7,8]` + `[8,9]`) too.
- * Callers should prefetch every living row's family before scanning. */
+ * `claimingStatuses` defaults to living catches only (`caught`). With
+ * `dupesDead` / `dupesEncounter` the caller passes the expanded set from
+ * `dupesClaimingStatuses` — a prior dead/missed claim then demotes a later
+ * living catch of the same line. Only `caught` rows are ever returned as
+ * losers (graveyard / missed rows stay as-is). Shinies never claim.
+ *
+ * Families are grouped by **union of shared members**. Callers should
+ * prefetch every claiming row's family before scanning. */
 export function findEvoLineDupeViolations(
   encounters: NuzEncounterRow[],
   familyOf: (pokemonId: number) => number[] | undefined,
+  claimingStatuses: ReadonlySet<NuzEncounterStatus> | readonly NuzEncounterStatus[] = ['caught'],
 ): NuzEncounterRow[] {
-  const living = encounters.filter((e) => e.status === 'caught' && !e.is_shiny);
-  if (living.length < 2) return [];
+  const claimSet = claimingStatuses instanceof Set ? claimingStatuses : new Set(claimingStatuses);
+  const claiming = encounters.filter((e) => claimSet.has(e.status) && !e.is_shiny);
+  if (claiming.length < 2) return [];
 
-  const rows = living.map((e) => {
+  const rows = claiming.map((e) => {
     const speciesId =
       typeof e.caught_pokemon_id === 'number' && e.caught_pokemon_id > 0 ? e.caught_pokemon_id : e.pokemon_id;
     const family = familyOf(speciesId) ?? familyOf(e.pokemon_id) ?? [speciesId];
@@ -222,18 +224,26 @@ export function findEvoLineDupeViolations(
     for (let i = 1; i < members.length; i++) union(members[0]!, members[i]!);
   }
 
-  const winnerByRoot = new Map<number, NuzEncounterRow>();
-  const losers: NuzEncounterRow[] = [];
+  const byRoot = new Map<number, NuzEncounterRow[]>();
   for (const { e, members } of rows) {
     const root = find(members[0]!);
-    const incumbent = winnerByRoot.get(root);
-    if (!incumbent) {
-      winnerByRoot.set(root, e);
-      continue;
+    const list = byRoot.get(root);
+    if (list) list.push(e);
+    else byRoot.set(root, [e]);
+  }
+
+  const losers: NuzEncounterRow[] = [];
+  for (const group of byRoot.values()) {
+    if (group.length < 2) continue;
+    let winner = group[0]!;
+    for (let i = 1; i < group.length; i++) {
+      const other = group[i]!;
+      const loser = pickDupeLoser(winner, other);
+      winner = loser === winner ? other : winner;
     }
-    const loser = pickDupeLoser(incumbent, e);
-    winnerByRoot.set(root, loser === incumbent ? e : incumbent);
-    losers.push(loser);
+    for (const e of group) {
+      if (e.id !== winner.id && e.status === 'caught') losers.push(e);
+    }
   }
   return losers;
 }

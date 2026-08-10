@@ -78,6 +78,16 @@ export type NuzRunStatus = 'active' | 'complete' | 'failed';
 
 export interface NuzRules {
   dupes: boolean;
+  /**
+   * Dupes sub-option (ignored when `dupes` is off): once a line was caught,
+   * `dead` / `lost` rows still claim it — no second chance after a wipe.
+   */
+  dupesDead: boolean;
+  /**
+   * Dupes sub-option (ignored when `dupes` is off): `missed` / `duped` rows
+   * also claim the evolution line (encountered but never kept).
+   */
+  dupesEncounter: boolean;
   shiny: boolean;
   nicknames: boolean;
   soulLink: boolean;

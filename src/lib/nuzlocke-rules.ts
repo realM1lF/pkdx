@@ -4,6 +4,7 @@ import { routeOrder } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import type { MapNode, RegionId, RegionMap } from '@/lib/regions';
 import type { LogDraft, NuzEncounterRow, NuzRules, RunState } from '@/lib/nuzlocke-store';
+import type { NuzEncounterStatus } from '@/lib/supabase';
 
 export type LogValidationError =
   | 'duplicate'
@@ -14,6 +15,9 @@ export type LogValidationError =
 export function normalizeRules(partial?: Partial<NuzRules>): NuzRules {
   return {
     dupes: partial?.dupes ?? true,
+    /* sub-options default off — preserves living-only Dupes for legacy runs */
+    dupesDead: partial?.dupesDead ?? false,
+    dupesEncounter: partial?.dupesEncounter ?? false,
     shiny: partial?.shiny ?? true,
     nicknames: partial?.nicknames ?? true,
     soulLink: partial?.soulLink ?? false,
@@ -24,6 +28,20 @@ export function normalizeRules(partial?: Partial<NuzRules>): NuzRules {
     badgesCleared: Math.max(0, Math.min(8, Math.round(partial?.badgesCleared ?? 0))),
     randomizer: partial?.randomizer ?? false,
   };
+}
+
+/** Statuses that claim an evolution line under the current Dupes options.
+ * Empty when Dupes is off. Shinies never claim (clause-free). */
+export function dupesClaimingStatuses(rules: Pick<NuzRules, 'dupes' | 'dupesDead' | 'dupesEncounter'>): NuzEncounterStatus[] {
+  if (!rules.dupes) return [];
+  const out: NuzEncounterStatus[] = ['caught'];
+  if (rules.dupesDead) {
+    out.push('dead', 'lost');
+  }
+  if (rules.dupesEncounter) {
+    out.push('missed', 'duped');
+  }
+  return out;
 }
 
 /** A row consumes the (run, player, route) slot only when it is a real
@@ -42,44 +60,67 @@ export function speciesAlive(state: RunState, playerId: string, pokemonId: numbe
   );
 }
 
-/**
- * Dupes Clause (species / evo-line): any *living* catch in the run whose
- * current or caught form shares the candidate's evolution family blocks the
- * catch — including other players (Schiggy on P1 → no Schillok/Turtok for P2).
- * Dead / missed / lost / duped rows free the line again.
- */
-export function evoLineAliveInRun(state: RunState, familyIds: number[]): boolean {
-  if (familyIds.length === 0) return false;
-  const family = new Set(familyIds);
-  return state.encounters.some((e) => {
-    if (e.status !== 'caught') return false;
-    if (family.has(e.pokemon_id)) return true;
-    const caught = e.caught_pokemon_id;
-    return typeof caught === 'number' && family.has(caught);
-  });
+function rowSharesFamily(
+  e: Pick<NuzEncounterRow, 'pokemon_id' | 'caught_pokemon_id'>,
+  family: Set<number>,
+): boolean {
+  if (family.has(e.pokemon_id)) return true;
+  const caught = e.caught_pokemon_id;
+  return typeof caught === 'number' && family.has(caught);
 }
 
 /**
- * Bidirectional Dupes check: candidate family vs living rows, then each living
- * row's family vs the candidate. Covers fail-open when the candidate's
- * PokéAPI fetch degrades to a singleton but a living Menki still resolves
- * the full line that contains Rasaff.
+ * Dupes Clause (species / evo-line): any *claiming* row in the run whose
+ * current or caught form shares the candidate's evolution family blocks the
+ * catch — including other players (Schiggy on P1 → no Schillok/Turtok for P2).
+ * Default claiming = living `caught` only; `dupesDead` / `dupesEncounter`
+ * expand the claim set. Shinies never claim.
+ */
+export function evoLineClaimedInRun(
+  state: RunState,
+  familyIds: number[],
+  claiming: ReadonlySet<NuzEncounterStatus> | readonly NuzEncounterStatus[],
+): boolean {
+  if (familyIds.length === 0) return false;
+  const claimSet = claiming instanceof Set ? claiming : new Set(claiming);
+  if (claimSet.size === 0) return false;
+  const family = new Set(familyIds);
+  return state.encounters.some((e) => {
+    if (!claimSet.has(e.status) || e.is_shiny) return false;
+    return rowSharesFamily(e, family);
+  });
+}
+
+/** @deprecated prefer `evoLineClaimedInRun` — living-only shorthand for tests. */
+export function evoLineAliveInRun(state: RunState, familyIds: number[]): boolean {
+  return evoLineClaimedInRun(state, familyIds, ['caught']);
+}
+
+/**
+ * Bidirectional Dupes check against the run's claiming statuses. Covers
+ * fail-open when the candidate's PokéAPI fetch degrades to a singleton but a
+ * claiming Menki still resolves the full line that contains Rasaff.
  */
 export async function isEvoLineDupeCatch(
   state: RunState,
   candidatePokemonId: number,
+  rules: Pick<NuzRules, 'dupes' | 'dupesDead' | 'dupesEncounter'> = state.run.rules,
 ): Promise<boolean> {
+  const claiming = dupesClaimingStatuses(rules);
+  if (claiming.length === 0) return false;
+  const claimSet = new Set(claiming);
+
   const candidateFamily = await fetchEvolutionFamilyIds(candidatePokemonId);
-  if (evoLineAliveInRun(state, candidateFamily)) return true;
+  if (evoLineClaimedInRun(state, candidateFamily, claimSet)) return true;
 
   const candidateSet = new Set(candidateFamily);
   for (const e of state.encounters) {
-    if (e.status !== 'caught') continue;
-    const livingId = speciesIdFor(e, 'caught');
-    if (candidateSet.has(livingId) || candidateSet.has(e.pokemon_id)) return true;
-    const livingFamily = await fetchEvolutionFamilyIds(livingId);
-    if (livingFamily.includes(candidatePokemonId)) return true;
-    if (livingFamily.some((id) => candidateSet.has(id))) return true;
+    if (!claimSet.has(e.status) || e.is_shiny) continue;
+    const claimId = speciesIdFor(e, 'caught');
+    if (candidateSet.has(claimId) || candidateSet.has(e.pokemon_id)) return true;
+    const claimFamily = await fetchEvolutionFamilyIds(claimId);
+    if (claimFamily.includes(candidatePokemonId)) return true;
+    if (claimFamily.some((id) => candidateSet.has(id))) return true;
   }
   return false;
 }
@@ -121,7 +162,7 @@ export async function validateLogDraft(
     if (rules.nicknames && !draft.nickname?.trim()) return 'nicknameRequired';
 
     if (rules.dupes && !shinyBypass) {
-      if (await isEvoLineDupeCatch(state, draft.pokemonId)) return 'speciesDupe';
+      if (await isEvoLineDupeCatch(state, draft.pokemonId, rules)) return 'speciesDupe';
     }
   }
 
@@ -136,6 +177,8 @@ export type RulePresetKey = 'classic' | 'hardcoreLite' | 'soulLink';
 
 const PRESET_CLASSIC: Partial<NuzRules> = {
   dupes: true,
+  dupesDead: false,
+  dupesEncounter: false,
   shiny: true,
   nicknames: true,
   releaseOnDeath: true,
@@ -368,7 +411,7 @@ export function formatRunSummary(state: RunState, opts: RunSummaryOptions): stri
   const lines: string[] = [
     `# ${run.name}`,
     `${opts.regionLabel} · ${opts.gameLabel} · ${run.status}`,
-    `Rules: dupes ${run.rules.dupes ? 'ON' : 'OFF'} · shiny ${run.rules.shiny ? 'ON' : 'OFF'} · nicknames ${run.rules.nicknames ? 'ON' : 'OFF'}`,
+    `Rules: dupes ${run.rules.dupes ? 'ON' : 'OFF'}${run.rules.dupes && run.rules.dupesDead ? '+dead' : ''}${run.rules.dupes && run.rules.dupesEncounter ? '+enc' : ''} · shiny ${run.rules.shiny ? 'ON' : 'OFF'} · nicknames ${run.rules.nicknames ? 'ON' : 'OFF'}`,
     '',
   ];
 

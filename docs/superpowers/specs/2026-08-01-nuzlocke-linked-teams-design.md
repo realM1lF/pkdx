@@ -30,7 +30,8 @@ Scope: per-player Team Builder teams linked to a Nuzlocke run; caught vs current
 
 **Migration / normalize:** if `caught_pokemon_id` missing → treat as `pokemon_id` and persist on next write.
 
-**Dupes clause:** evolution-family, run-wide — any living catch (any player) whose
+**Dupes clause:** evolution-family, run-wide — claiming rows (default: living
+`caught`; optional `dupesDead` / `dupesEncounter`) whose
 `pokemon_id` or `caught_pokemon_id` shares the candidate's evo line blocks the
 catch (Schiggy → blocks Schillok/Turtok for everyone). Shiny clause still bypasses.
 

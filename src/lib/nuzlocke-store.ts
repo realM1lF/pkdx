@@ -24,7 +24,13 @@ import type {
 import { nodeIndex, routeOrder } from './regions';
 import { anyRegionById } from './regions-freeform';
 import { padNum } from './pokeapi';
-import { formatRunSummary, isSlotConsuming, normalizeRules, validateLogDraft } from './nuzlocke-rules';
+import {
+  dupesClaimingStatuses,
+  formatRunSummary,
+  isSlotConsuming,
+  normalizeRules,
+  validateLogDraft,
+} from './nuzlocke-rules';
 import type { LogValidationError } from './nuzlocke-rules';
 import {
   cachedEvolutionFamilyIds,
@@ -61,6 +67,8 @@ export const MAX_PLAYERS = 4;
 
 export const DEFAULT_RULES: NuzRules = {
   dupes: true,
+  dupesDead: false,
+  dupesEncounter: false,
   shiny: true,
   nicknames: true,
   soulLink: false,
@@ -1047,7 +1055,7 @@ function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
  * deterministic (created_at/id), so every online client converges on the
  * same loser without coordinating. */
 async function reconcileEvoLineDupes(entry: RunEntry, trigger?: NuzEncounterRow): Promise<void> {
-  if (!entry.state || !isCloudRun(entry.state) || !entry.state.run.rules.dupes) return;
+  if (!entry.state || !entry.state.run.rules.dupes) return;
   if (trigger && (trigger.status !== 'caught' || trigger.is_shiny)) return;
   try {
     await prefetchEvolutionFamiliesForEncounters(entry.state.encounters);
@@ -1055,8 +1063,10 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger?: NuzEncounterRow)
     return; /* offline / unknown — no re-check possible, degrade gracefully */
   }
   const s = entry.state;
-  if (!s || !isCloudRun(s)) return;
-  const losers = findEvoLineDupeViolations(s.encounters, cachedEvolutionFamilyIds);
+  if (!s?.run.rules.dupes) return;
+  const claiming = dupesClaimingStatuses(s.run.rules);
+  if (claiming.length === 0) return;
+  const losers = findEvoLineDupeViolations(s.encounters, cachedEvolutionFamilyIds, claiming);
   for (const loser of losers) {
     /* re-check right before writing — a concurrent scan (the other client's
      * own trigger) may have already turned this row into a `duped` no-op */
@@ -2230,13 +2240,21 @@ export function setRunRules(runId: string, rules: Partial<NuzRules>): void {
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return;
-  const next = normalizeRules({ ...s.run.rules, ...rules });
+  const prev = s.run.rules;
+  const next = normalizeRules({ ...prev, ...rules });
   s.run.rules = next;
   saveLocalRun(s);
   pushFeed(entry, { kind: 'rule', color: '#F6C945', title: i18n.t('nuz.feed.rulesUpdated'), meta: rulesSummary(s.run.rules) });
   if (isCloudRun(s)) {
     persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ rules: s.run.rules }).eq('id', runId));
   }
+  /* Tightening Dupes (dead/encounter claims) may invalidate living catches
+   * that were legal under the previous rules — re-scan like a TOCTOU heal. */
+  const dupesTightened =
+    (!prev.dupes && next.dupes) ||
+    (!prev.dupesDead && next.dupesDead) ||
+    (!prev.dupesEncounter && next.dupesEncounter);
+  if (dupesTightened) void reconcileEvoLineDupes(entry);
   emit(entry);
 }
 
@@ -2245,6 +2263,8 @@ function rulesSummary(r: NuzRules): string {
     i18n.t(r.dupes ? 'nuz.feed.dupesOn' : 'nuz.feed.dupesOff'),
     i18n.t(r.shiny ? 'nuz.feed.shinyOn' : 'nuz.feed.shinyOff'),
   ];
+  if (r.dupes && r.dupesDead) bits.push(i18n.t('nuz.feed.dupesDeadOn'));
+  if (r.dupes && r.dupesEncounter) bits.push(i18n.t('nuz.feed.dupesEncounterOn'));
   if (r.soulLink) bits.push('SOULLINK');
   if (r.randomizer) bits.push(i18n.t('nuz.feed.randomizerOn'));
   return bits.join(' · ');
