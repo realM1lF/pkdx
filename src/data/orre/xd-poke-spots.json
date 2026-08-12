@@ -11,7 +11,7 @@
       "nameDe": "Wüsten-Platz",
       "order": 1,
       "rarest": "trapinch",
-      "trade": { "give": "trapinch", "receive": "meditite", "npc": "Duking" },
+      "trade": { "give": "trapinch", "receive": "meditite", "npc": "Duking", "npcDe": "Grand" },
       "encounters": [
         { "species": "sandshrew", "minLevel": 10, "maxLevel": 23, "rate": 50 },
         { "species": "gligar", "minLevel": 10, "maxLevel": 20, "rate": 35 },
@@ -25,7 +25,7 @@
       "nameDe": "Oasen-Platz",
       "order": 2,
       "rarest": "surskit",
-      "trade": { "give": "surskit", "receive": "shuckle", "npc": "Duking" },
+      "trade": { "give": "surskit", "receive": "shuckle", "npc": "Duking", "npcDe": "Grand" },
       "encounters": [
         { "species": "hoppip", "minLevel": 10, "maxLevel": 20, "rate": 50 },
         { "species": "phanpy", "minLevel": 10, "maxLevel": 20, "rate": 35 },
@@ -39,7 +39,7 @@
       "nameDe": "Höhlen-Platz",
       "order": 3,
       "rarest": "wooper",
-      "trade": { "give": "wooper", "receive": "larvitar", "npc": "Duking" },
+      "trade": { "give": "wooper", "receive": "larvitar", "npc": "Duking", "npcDe": "Grand" },
       "encounters": [
         { "species": "zubat", "minLevel": 10, "maxLevel": 21, "rate": 50 },
         { "species": "aron", "minLevel": 10, "maxLevel": 21, "rate": 35 },

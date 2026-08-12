@@ -74,7 +74,7 @@ function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; 
               {t('orre.pokeSpots.tradeHint', {
                 give: monName(spot.trade.give),
                 receive: monName(spot.trade.receive),
-                npc: spot.trade.npc,
+                npc: lang === 'de' ? spot.trade.npcDe : spot.trade.npc,
               })}
             </p>
           </div>
@@ -86,14 +86,13 @@ function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; 
         {pokeSpotArtifact().visitors.map((v) => (
           <span
             key={v.species}
-            title={t('orre.pokeSpots.visitorHint')}
+            title={t(v.species === 'bonsly' ? 'orre.pokeSpots.visitorHintBonsly' : 'orre.pokeSpots.visitorHintMunchlax')}
             className="flex items-center gap-1.5 rounded-full border border-hairline2 px-2 py-0.5 text-[11px] text-tx-secondary"
           >
             {monName(v.species)}
             <span className="tabular-nums text-tx-muted">{t('orre.pokeSpots.rate', { rate: v.chance })}</span>
           </span>
         ))}
-        <span className="text-[11px] text-tx-muted">{t('orre.pokeSpots.visitorHint')}</span>
       </div>
     </section>
   )

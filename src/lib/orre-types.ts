@@ -42,6 +42,7 @@ export interface PokeSpotTrade {
   give: string
   receive: string
   npc: string
+  npcDe: string
 }
 
 export interface PokeSpot {

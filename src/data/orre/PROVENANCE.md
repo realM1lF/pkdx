@@ -359,4 +359,7 @@ plus 2 non-catchable visitors. XD only; Colosseum has no wild encounters.
   `orreRegionForGame('xd')` now yields 85 nodes instead of 83. Colosseum
   is untouched.
 - **Bait is a slug (`poke-snack`), not display text**, per the
-  English-data-model rule; the UI resolves it through i18n.
+  English-data-model rule. The UI does not resolve the slug (no
+  `nameOfItem` lookup exists for it yet); it currently renders a fixed
+  `orre.pokeSpots.bait` i18n label instead. Kept in the data for
+  provenance and for a future item-lookup wiring.
