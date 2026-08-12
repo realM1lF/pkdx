@@ -10,6 +10,7 @@ import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
 import { REGIONS, nodeIndex, nodeName } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
+import { regionForRun } from '@/lib/orre';
 import { useRegionData } from '@/lib/mapdata';
 import { useAuth } from '@/lib/auth';
 import {
@@ -65,7 +66,7 @@ export default function NuzlockeRun() {
       : rawState && (user || isDeviceLocalSoloRun(rawState))
         ? rawState
         : null;
-  const region = anyRegionById(state?.run.region) ?? REGIONS[0];
+  const region = regionForRun(state?.run.region, state?.run.game) ?? anyRegionById(state?.run.region) ?? REGIONS[0];
   const mapData = useRegionData(region, state?.run.game ?? region.defaultVersion);
 
   const [nameIdx, setNameIdx] = useState<Map<number, DexIndexEntry>>(new Map());

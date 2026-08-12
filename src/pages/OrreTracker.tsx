@@ -81,7 +81,7 @@ export default function OrreTracker() {
           {t('orre.counts', tally)}
         </p>
         <LocaleLink
-          to="/nuzlocke"
+          to="/nuzlocke?region=orre&wizard=1"
           className="mt-4 inline-flex rounded-md border border-gold/60 px-3 py-2 font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:bg-gold/10"
         >
           {t('orre.openNuzlocke')}

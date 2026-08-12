@@ -11,7 +11,6 @@ import { Check, Copy, Minus, Plus } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { REGIONS, coverageTier, regionName, versionLabel, viewBoxParts } from '@/lib/regions';
 import type { RegionId } from '@/lib/regions';
-import { isRegionId } from '@/lib/regions';
 import { FREEFORM_REGIONS, anyRegionById } from '@/lib/regions-freeform';
 import {
   DEFAULT_RULES,
@@ -59,7 +58,7 @@ interface WizardProps {
   /** set → join-by-code mode (§1.4 valid code springs into step 2) */
   joinPreset?: JoinLookup | null;
   runCount: number;
-  presetRegion?: RegionId | null;
+  presetRegion?: string | null;
   presetRouteKey?: string | null;
 }
 
@@ -103,9 +102,8 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
 
   const reset = () => {
     setStep(joinPreset ? 1 : 0);
-    const startRegion = presetRegion && isRegionId(presetRegion) ? presetRegion : 'kanto';
-    setRegionId(startRegion);
-    const startMap = REGIONS.find((r) => r.region === startRegion) ?? REGIONS[0];
+    const startMap = (presetRegion && anyRegionById(presetRegion)) || REGIONS[0];
+    setRegionId(startMap.region);
     setGame(startMap.defaultVersion);
     const suggestion = t('nuz.wizard.runNameSuggestion', { region: regionName(startMap, lang), n: runCount + 1 });
     setAutoName(suggestion);

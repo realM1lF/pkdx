@@ -7,10 +7,11 @@
       "id": "xd-shadow-teddiursa",
       "species": "teddiursa",
       "level": 11,
-      "trainer": "Cipher Peon Naps",
+      "trainer": "Spy Naps",
       "locationId": "orre-pokemon-hq-lab",
       "order": 1,
-      "required": true
+      "required": true,
+      "notes": "Trainer class is \"Spy\" for this first battle, not \"Cipher Peon\" — his affiliation with Cipher is not yet known to the player at this point in the story."
     },
     {
       "id": "xd-shadow-ledyba",

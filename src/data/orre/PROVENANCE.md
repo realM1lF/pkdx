@@ -232,6 +232,16 @@ orre-under-subway-nelis
 
 ### Conflicts resolved
 
+- **Teddiursa's trainer (post-merge correction)**: the artifact originally
+  read "Cipher Peon Naps". Bulbapedia's dedicated `Naps` character page
+  states explicitly that this first battle uses the **Spy** trainer class,
+  not Cipher Peon, "due to his affiliation with Cipher being unknown at
+  this point" — corroborated by Serebii, PKMN.NET, and a GameFAQs
+  transcript, all of which display him as "Spy Naps" for this encounter
+  only (he reappears later at the Cipher Lab correctly billed as
+  "Cipher Peon Naps", not in this dataset since that's a rebattle, not a
+  new shadow). Fixed to **Spy Naps** with a `notes` field explaining the
+  disguise, mirroring the Colosseum "Mystery Troop" pattern.
 - **Duskull's trainer**: Serebii spells it "Cipher Peon Labor"; Bulbapedia
   and TheGamer both say "Lobar". Used **Lobar** (2-source majority,
   matches Bulbapedia's dedicated `Lobar` character page).

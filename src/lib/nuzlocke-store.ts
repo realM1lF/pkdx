@@ -22,7 +22,7 @@ import type {
   NuzRunStatus,
 } from './supabase';
 import { nodeIndex, routeOrder } from './regions';
-import { anyRegionById } from './regions-freeform';
+import { regionForRun } from './orre';
 import { padNum } from './pokeapi';
 import {
   dupesClaimingStatuses,
@@ -572,7 +572,7 @@ export function registerRouteNamer(fn: ((run: NuzRunRow, routeKey: string) => st
 
 function routeLabelOf(run: NuzRunRow, routeKey: string): string {
   if (routeNamer) return routeNamer(run, routeKey);
-  const region = anyRegionById(run.region);
+  const region = regionForRun(run.region, run.game);
   return nodeIndex(region ?? { nodes: [] } as never).get(routeKey)?.label ?? routeKey;
 }
 
@@ -727,7 +727,7 @@ export function kpisOf(state: RunState): RunKpis {
   const linkGroups = soulLinkGroupsOf(state);
   /* duped/shiny rows don't resolve a route — only slot-consuming rows count */
   const routes = new Set(state.encounters.filter(isSlotConsuming).map((e) => e.route_key));
-  const region = anyRegionById(state.run.region);
+  const region = regionForRun(state.run.region, state.run.game);
   return {
     caught: state.encounters.filter((e) => e.status === 'caught').length,
     dead: state.encounters.filter((e) => e.status === 'dead').length,
@@ -740,7 +740,7 @@ export function kpisOf(state: RunState): RunKpis {
 
 /** First route in canonical order with any pending player slot (§2.3 marker). */
 export function youAreHereKey(state: RunState): string | null {
-  const region = anyRegionById(state.run.region);
+  const region = regionForRun(state.run.region, state.run.game);
   if (!region) return null;
   const used = new Set(state.encounters.filter(isSlotConsuming).map((e) => `${e.player_id}:${e.route_key}`));
   for (const node of routeOrder(region)) {
@@ -1852,7 +1852,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return { ok: false };
-  const region = anyRegionById(s.run.region);
+  const region = regionForRun(s.run.region, s.run.game);
   const node = region ? nodeIndex(region).get(draft.routeKey) : undefined;
   const violation = await validateLogDraft(s, draft, node);
   if (violation) return { ok: false, error: violation };

@@ -4,6 +4,7 @@ import {
   ORRE_EXPECTED_COUNTS,
   allLocationIds,
   artifactFor,
+  orreRegionForGame,
   shadowsFor,
   snagSpeciesForRoute,
 } from './orre'
@@ -50,5 +51,14 @@ describe('orre artifacts', () => {
     expect(sample).toBeTruthy()
     expect(snagSpeciesForRoute('colosseum', sample!.locationId)).toContain(sample!.species)
     expect(snagSpeciesForRoute('colosseum', 'orre-does-not-exist')).toEqual([])
+  })
+
+  it('orreRegionForGame only includes snag locations for that game', () => {
+    const colo = orreRegionForGame('colosseum')
+    const xd = orreRegionForGame('xd')
+    expect(colo.nodes.length).toBe(new Set(shadowsFor('colosseum').map((s) => s.locationId)).size)
+    expect(xd.nodes.length).toBe(new Set(shadowsFor('xd').map((s) => s.locationId)).size)
+    expect(colo.nodes.some((n) => n.id.startsWith('orre-citadark'))).toBe(false)
+    expect(xd.nodes.some((n) => n.id.startsWith('orre-citadark'))).toBe(true)
   })
 })

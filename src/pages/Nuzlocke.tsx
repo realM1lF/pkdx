@@ -12,7 +12,7 @@ import { LocaleLink } from '@/lib/locale-link';
 import { lookupByCode, useHubRuns } from '@/lib/nuzlocke-store';
 import type { JoinLookup } from '@/lib/nuzlocke-store';
 import { isMultiCapable } from '@/lib/supabase';
-import { isRegionId } from '@/lib/regions';
+import { anyRegionById } from '@/lib/regions-freeform';
 import { cn } from '@/lib/utils';
 import Wizard from './nuzlocke/Wizard';
 import RunCard from './nuzlocke/RunCard';
@@ -31,7 +31,7 @@ export default function Nuzlocke() {
   const [showArchive, setShowArchive] = useState(true);
   const presetRegion = useMemo(() => {
     const raw = searchParams.get('region');
-    return raw && isRegionId(raw) ? raw : null;
+    return raw && anyRegionById(raw) ? raw : null;
   }, [searchParams]);
   const presetRouteKey = searchParams.get('at');
   const [joinPreset, setJoinPreset] = useState<JoinLookup | null>(null);
@@ -95,7 +95,7 @@ export default function Nuzlocke() {
             <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.whatIs')}</span>
           </motion.p>
         </div>
-        <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, delay: 0.18 }} className="flex items-center gap-2">
+        <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, delay: 0.18 }} className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={() => {
@@ -112,6 +112,12 @@ export default function Nuzlocke() {
           >
             {t('nuz.joinWithCode')}
           </a>
+          <LocaleLink
+            to="/orre"
+            className="rounded-md border border-hairline2 px-5 py-3 text-[13px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          >
+            {t('nuz.orreTracker')}
+          </LocaleLink>
         </motion.div>
       </header>
 
