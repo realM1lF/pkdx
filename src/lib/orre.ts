@@ -60,7 +60,7 @@ export function orreRegionForGame(game: OrreGame): RegionMap {
   const base = freeformRegionById('orre')
   if (!base) {
     return {
-      region: 'orre',
+      region: 'orre' as RegionMap['region'],
       name: 'Orre',
       nameDe: 'Orre',
       gen: 'III',
