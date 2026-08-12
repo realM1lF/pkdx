@@ -1,0 +1,1348 @@
+{
+  "region": "orre",
+  "name": "Orre",
+  "nameDe": "Orre",
+  "gen": "III",
+  "accent": "#C4A35A",
+  "viewBox": "0 0 1200 840",
+  "versions": [
+    "colosseum",
+    "xd"
+  ],
+  "defaultVersion": "colosseum",
+  "coverage": 1,
+  "speciesCount": 130,
+  "nodes": [
+    {
+      "id": "orre-phenac-mayors-house",
+      "label": "Phenac Mayors House",
+      "nameDe": "Bürgermeisterhaus Phenia",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 1,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-city-verde",
+      "label": "Phenac City Verde",
+      "nameDe": "Phenia City (Verde)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 2,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-city-rosso",
+      "label": "Phenac City Rosso",
+      "nameDe": "Phenia City (Rosso)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 3,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-city-bluno",
+      "label": "Phenac City Bluno",
+      "nameDe": "Phenia City (Bluno)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 4,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-lon",
+      "label": "Pyrite Town Lon",
+      "nameDe": "Pyrite City (Lon)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 5,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-nover",
+      "label": "Pyrite Town Nover",
+      "nameDe": "Pyrite City (Nover)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 6,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-diogo",
+      "label": "Pyrite Town Diogo",
+      "nameDe": "Pyrite City (Diogo)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 7,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-leba",
+      "label": "Pyrite Town Leba",
+      "nameDe": "Pyrite City (Leba)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 8,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-divel",
+      "label": "Pyrite Town Divel",
+      "nameDe": "Pyrite City (Divel)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 9,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-vant",
+      "label": "Pyrite Town Vant",
+      "nameDe": "Pyrite City (Vant)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 10,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-cail",
+      "label": "Pyrite Town Cail",
+      "nameDe": "Pyrite City (Cail)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 11,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-town-doken",
+      "label": "Pyrite Town Doken",
+      "nameDe": "Pyrite City (Doken)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 12,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-building-nore",
+      "label": "Pyrite Building Nore",
+      "nameDe": "Pyrite-Gebäude (Nore)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 13,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-snagem-hideout",
+      "label": "Snagem Hideout",
+      "nameDe": "Team Snagem-Versteck",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 14,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-building-reath",
+      "label": "Pyrite Building Reath",
+      "nameDe": "Pyrite-Gebäude (Reath)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 15,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-mirors-hideout",
+      "label": "Mirors Hideout",
+      "nameDe": "Miror B.s Versteck",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 16,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-building-ferma",
+      "label": "Pyrite Building Ferma",
+      "nameDe": "Pyrite-Gebäude (Ferma)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 17,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-cave-twan",
+      "label": "Pyrite Cave Twan",
+      "nameDe": "Pyrite-Höhle (Twan)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 18,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-cave-sosh",
+      "label": "Pyrite Cave Sosh",
+      "nameDe": "Pyrite-Höhle (Sosh)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 19,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pyrite-cave-zalo",
+      "label": "Pyrite Cave Zalo",
+      "nameDe": "Pyrite-Höhle (Zalo)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 20,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-deep-colosseum",
+      "label": "Deep Colosseum",
+      "nameDe": "Deep Colosseum",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 21,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-relic-stone",
+      "label": "Relic Stone",
+      "nameDe": "Reliktstein",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 22,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-mt-battle",
+      "label": "Mt Battle",
+      "nameDe": "Duellberg",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 23,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-the-under-kloak",
+      "label": "The Under Kloak",
+      "nameDe": "The Under (Kloak)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 24,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-the-under-venus",
+      "label": "The Under Venus",
+      "nameDe": "The Under (Venus)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 25,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-under-subway-frena",
+      "label": "Under Subway Frena",
+      "nameDe": "Under-U-Bahn (Frena)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 26,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-under-subway-liaks",
+      "label": "Under Subway Liaks",
+      "nameDe": "Under-U-Bahn (Liaks)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 27,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-under-subway-lonia",
+      "label": "Under Subway Lonia",
+      "nameDe": "Under-U-Bahn (Lonia)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 28,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-under-subway-nelis",
+      "label": "Under Subway Nelis",
+      "nameDe": "Under-U-Bahn (Nelis)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 29,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-cole",
+      "label": "Shadow Lab Cole",
+      "nameDe": "Crypto-Labor (Cole)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 30,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-lare",
+      "label": "Shadow Lab Lare",
+      "nameDe": "Crypto-Labor (Lare)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 31,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-vana",
+      "label": "Shadow Lab Vana",
+      "nameDe": "Crypto-Labor (Vana)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 32,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-lesar",
+      "label": "Shadow Lab Lesar",
+      "nameDe": "Crypto-Labor (Lesar)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 33,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-tanie",
+      "label": "Shadow Lab Tanie",
+      "nameDe": "Crypto-Labor (Tanie)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 34,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-remil",
+      "label": "Shadow Lab Remil",
+      "nameDe": "Crypto-Labor (Remil)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 35,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-shadow-lab-ein",
+      "label": "Shadow Lab Ein",
+      "nameDe": "Crypto-Labor (Ein)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 36,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-realgam-dome-arton",
+      "label": "Realgam Dome Arton",
+      "nameDe": "Realgam-Kuppel (Arton)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 37,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-realgam-dome-baila",
+      "label": "Realgam Dome Baila",
+      "nameDe": "Realgam-Kuppel (Baila)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 38,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-realgam-dome-dioge",
+      "label": "Realgam Dome Dioge",
+      "nameDe": "Realgam-Kuppel (Dioge)",
+      "kind": "special",
+      "x": 0,
+      "y": 0,
+      "order": 39,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-realgam-tower",
+      "label": "Realgam Tower",
+      "nameDe": "Realgam Tower",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 40,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-tower-colosseum-jomas",
+      "label": "Tower Colosseum Jomas",
+      "nameDe": "Tower Colosseum (Jomas)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 41,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-tower-colosseum-delan",
+      "label": "Tower Colosseum Delan",
+      "nameDe": "Tower Colosseum (Delan)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 42,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-tower-colosseum-nella",
+      "label": "Tower Colosseum Nella",
+      "nameDe": "Tower Colosseum (Nella)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 43,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-tower-colosseum-ston",
+      "label": "Tower Colosseum Ston",
+      "nameDe": "Tower Colosseum (Ston)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 44,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-tower-colosseum-nascour",
+      "label": "Tower Colosseum Nascour",
+      "nameDe": "Tower Colosseum (Nascour)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 45,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-tower-colosseum-evice",
+      "label": "Tower Colosseum Evice",
+      "nameDe": "Tower Colosseum (Evice)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 46,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-snagem-hideout-biden",
+      "label": "Snagem Hideout Biden",
+      "nameDe": "Team Snagem-Versteck (Biden)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 47,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-snagem-hideout-agrev",
+      "label": "Snagem Hideout Agrev",
+      "nameDe": "Team Snagem-Versteck (Agrev)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 48,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-deep-colosseum-agnol",
+      "label": "Deep Colosseum Agnol",
+      "nameDe": "Deep Colosseum (Agnol)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 49,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-outskirt-stand",
+      "label": "Outskirt Stand",
+      "nameDe": "Vorstadt-Stand",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 50,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-pokemon-hq-lab",
+      "label": "Pokemon Hq Lab",
+      "nameDe": "Pokémon-HQ-Labor",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 51,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-gateon-port-1",
+      "label": "Gateon Port 1",
+      "nameDe": "Hafen Gateon (1)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 52,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-gateon-port-2",
+      "label": "Gateon Port 2",
+      "nameDe": "Hafen Gateon (2)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 53,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-1",
+      "label": "Cipher Lab 1",
+      "nameDe": "Cipher-Labor (1)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 54,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-2",
+      "label": "Cipher Lab 2",
+      "nameDe": "Cipher-Labor (2)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 55,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-3",
+      "label": "Cipher Lab 3",
+      "nameDe": "Cipher-Labor (3)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 56,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-4",
+      "label": "Cipher Lab 4",
+      "nameDe": "Cipher-Labor (4)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 57,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-5",
+      "label": "Cipher Lab 5",
+      "nameDe": "Cipher-Labor (5)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 58,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-6",
+      "label": "Cipher Lab 6",
+      "nameDe": "Cipher-Labor (6)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 59,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-7",
+      "label": "Cipher Lab 7",
+      "nameDe": "Cipher-Labor (7)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 60,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-8",
+      "label": "Cipher Lab 8",
+      "nameDe": "Cipher-Labor (8)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 61,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-9",
+      "label": "Cipher Lab 9",
+      "nameDe": "Cipher-Labor (9)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 62,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-10",
+      "label": "Cipher Lab 10",
+      "nameDe": "Cipher-Labor (10)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 63,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-lab-11",
+      "label": "Cipher Lab 11",
+      "nameDe": "Cipher-Labor (11)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 64,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cave-poke-spot",
+      "label": "Cave Poke Spot",
+      "nameDe": "Höhlen-Poké-Spot",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 65,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-onbs-1",
+      "label": "Onbs 1",
+      "nameDe": "ONBS (1)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-onbs-2",
+      "label": "Onbs 2",
+      "nameDe": "ONBS (2)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 67,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-onbs-3",
+      "label": "Onbs 3",
+      "nameDe": "ONBS (3)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 68,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-onbs-4",
+      "label": "Onbs 4",
+      "nameDe": "ONBS (4)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 69,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-onbs-5",
+      "label": "Onbs 5",
+      "nameDe": "ONBS (5)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 70,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-city-1",
+      "label": "Phenac City 1",
+      "nameDe": "Phenia City (1)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 71,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-city-2",
+      "label": "Phenac City 2",
+      "nameDe": "Phenia City (2)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 72,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-prestige-precept-center-1",
+      "label": "Prestige Precept Center 1",
+      "nameDe": "Prestige-Precept-Center (1)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 73,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-prestige-precept-center-2",
+      "label": "Prestige Precept Center 2",
+      "nameDe": "Prestige-Precept-Center (2)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 74,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-prestige-precept-center-3",
+      "label": "Prestige Precept Center 3",
+      "nameDe": "Prestige-Precept-Center (3)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 75,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-city-3",
+      "label": "Phenac City 3",
+      "nameDe": "Phenia City (3)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 76,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-stadium-1",
+      "label": "Phenac Stadium 1",
+      "nameDe": "Phenia-Stadion (1)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 77,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-stadium-2",
+      "label": "Phenac Stadium 2",
+      "nameDe": "Phenia-Stadion (2)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 78,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-stadium-3",
+      "label": "Phenac Stadium 3",
+      "nameDe": "Phenia-Stadion (3)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 79,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-phenac-stadium-4",
+      "label": "Phenac Stadium 4",
+      "nameDe": "Phenia-Stadion (4)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 80,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-outskirt-stand-1",
+      "label": "Outskirt Stand 1",
+      "nameDe": "Vorstadt-Stand (1)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 81,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-outskirt-stand-2",
+      "label": "Outskirt Stand 2",
+      "nameDe": "Vorstadt-Stand (2)",
+      "kind": "city",
+      "x": 0,
+      "y": 0,
+      "order": 82,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-1",
+      "label": "Cipher Key Lair 1",
+      "nameDe": "Cipher Key Lair (1)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 83,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-2",
+      "label": "Cipher Key Lair 2",
+      "nameDe": "Cipher Key Lair (2)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 84,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-3",
+      "label": "Cipher Key Lair 3",
+      "nameDe": "Cipher Key Lair (3)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 85,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-4",
+      "label": "Cipher Key Lair 4",
+      "nameDe": "Cipher Key Lair (4)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 86,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-5",
+      "label": "Cipher Key Lair 5",
+      "nameDe": "Cipher Key Lair (5)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 87,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-6",
+      "label": "Cipher Key Lair 6",
+      "nameDe": "Cipher Key Lair (6)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 88,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-7",
+      "label": "Cipher Key Lair 7",
+      "nameDe": "Cipher Key Lair (7)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 89,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-8",
+      "label": "Cipher Key Lair 8",
+      "nameDe": "Cipher Key Lair (8)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 90,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-9",
+      "label": "Cipher Key Lair 9",
+      "nameDe": "Cipher Key Lair (9)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 91,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-10",
+      "label": "Cipher Key Lair 10",
+      "nameDe": "Cipher Key Lair (10)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 92,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-11",
+      "label": "Cipher Key Lair 11",
+      "nameDe": "Cipher Key Lair (11)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 93,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-12",
+      "label": "Cipher Key Lair 12",
+      "nameDe": "Cipher Key Lair (12)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 94,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-13",
+      "label": "Cipher Key Lair 13",
+      "nameDe": "Cipher Key Lair (13)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 95,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cipher-key-lair-14",
+      "label": "Cipher Key Lair 14",
+      "nameDe": "Cipher Key Lair (14)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 96,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-1",
+      "label": "Citadark Isle 1",
+      "nameDe": "Citadark-Insel (1)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 97,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-2",
+      "label": "Citadark Isle 2",
+      "nameDe": "Citadark-Insel (2)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 98,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-3",
+      "label": "Citadark Isle 3",
+      "nameDe": "Citadark-Insel (3)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 99,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-4",
+      "label": "Citadark Isle 4",
+      "nameDe": "Citadark-Insel (4)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 100,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-5",
+      "label": "Citadark Isle 5",
+      "nameDe": "Citadark-Insel (5)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 101,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-6",
+      "label": "Citadark Isle 6",
+      "nameDe": "Citadark-Insel (6)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 102,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-7",
+      "label": "Citadark Isle 7",
+      "nameDe": "Citadark-Insel (7)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 103,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-8",
+      "label": "Citadark Isle 8",
+      "nameDe": "Citadark-Insel (8)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 104,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-9",
+      "label": "Citadark Isle 9",
+      "nameDe": "Citadark-Insel (9)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 105,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-10",
+      "label": "Citadark Isle 10",
+      "nameDe": "Citadark-Insel (10)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 106,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-11",
+      "label": "Citadark Isle 11",
+      "nameDe": "Citadark-Insel (11)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 107,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-12",
+      "label": "Citadark Isle 12",
+      "nameDe": "Citadark-Insel (12)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 108,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-13",
+      "label": "Citadark Isle 13",
+      "nameDe": "Citadark-Insel (13)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 109,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-14",
+      "label": "Citadark Isle 14",
+      "nameDe": "Citadark-Insel (14)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 110,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-15",
+      "label": "Citadark Isle 15",
+      "nameDe": "Citadark-Insel (15)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 111,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-16",
+      "label": "Citadark Isle 16",
+      "nameDe": "Citadark-Insel (16)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 112,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-17",
+      "label": "Citadark Isle 17",
+      "nameDe": "Citadark-Insel (17)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 113,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-18",
+      "label": "Citadark Isle 18",
+      "nameDe": "Citadark-Insel (18)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 114,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-19",
+      "label": "Citadark Isle 19",
+      "nameDe": "Citadark-Insel (19)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 115,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-20",
+      "label": "Citadark Isle 20",
+      "nameDe": "Citadark-Insel (20)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 116,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-21",
+      "label": "Citadark Isle 21",
+      "nameDe": "Citadark-Insel (21)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 117,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-22",
+      "label": "Citadark Isle 22",
+      "nameDe": "Citadark-Insel (22)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 118,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-23",
+      "label": "Citadark Isle 23",
+      "nameDe": "Citadark-Insel (23)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 119,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-24",
+      "label": "Citadark Isle 24",
+      "nameDe": "Citadark-Insel (24)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 120,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-25",
+      "label": "Citadark Isle 25",
+      "nameDe": "Citadark-Insel (25)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 121,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-26",
+      "label": "Citadark Isle 26",
+      "nameDe": "Citadark-Insel (26)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 122,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-27",
+      "label": "Citadark Isle 27",
+      "nameDe": "Citadark-Insel (27)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 123,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-28",
+      "label": "Citadark Isle 28",
+      "nameDe": "Citadark-Insel (28)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 124,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-29",
+      "label": "Citadark Isle 29",
+      "nameDe": "Citadark-Insel (29)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 125,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-30",
+      "label": "Citadark Isle 30",
+      "nameDe": "Citadark-Insel (30)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 126,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-31",
+      "label": "Citadark Isle 31",
+      "nameDe": "Citadark-Insel (31)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 127,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-32",
+      "label": "Citadark Isle 32",
+      "nameDe": "Citadark-Insel (32)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 128,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-33",
+      "label": "Citadark Isle 33",
+      "nameDe": "Citadark-Insel (33)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 129,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-34",
+      "label": "Citadark Isle 34",
+      "nameDe": "Citadark-Insel (34)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 130,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-35",
+      "label": "Citadark Isle 35",
+      "nameDe": "Citadark-Insel (35)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 131,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-citadark-isle-36",
+      "label": "Citadark Isle 36",
+      "nameDe": "Citadark-Insel (36)",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 132,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-gateon-port-lighthouse",
+      "label": "Gateon Port Lighthouse",
+      "nameDe": "Leuchtturm Gateon",
+      "kind": "dungeon",
+      "x": 0,
+      "y": 0,
+      "order": 133,
+      "locationSlug": null
+    }
+  ],
+  "edges": []
+}

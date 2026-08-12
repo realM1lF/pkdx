@@ -95,9 +95,9 @@ describe('orre-progress', () => {
   })
 
   describe('counts', () => {
-    it('returns zeros when artifact shadows are empty (stub data)', () => {
-      // colosseum.json / xd.json may still be curation stubs with shadows: []
-      expect(counts('colosseum')).toEqual({ snagged: 0, missed: 0, remaining: 0 })
+    it('returns full remaining when no progress and real artifact data', () => {
+      expect(counts('colosseum')).toEqual({ snagged: 0, missed: 0, remaining: 48 })
+      expect(counts('xd')).toEqual({ snagged: 0, missed: 0, remaining: 83 })
     })
 
     it('derives remaining from shadowsFor total minus tracked statuses', () => {

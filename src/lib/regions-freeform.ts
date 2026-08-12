@@ -1,19 +1,18 @@
-/* regions-freeform — EP5.3: MAP-LESS regions (Gen 6–9) for Nuzlocke
- * text-mode runs. These regions carry a full route/location list (generated
- * from PokéAPI by scripts/build-freeform-regions.mjs) but intentionally NO
- * map geometry (edges: [], x/y: 0) — they are decoupled from /maps and are
- * NOT part of the atlas (REGIONS in regions.ts). Nuzlocke lookups should use
- * anyRegionById(); /maps keeps using the atlas-only regionById(). */
+/* regions-freeform — MAP-LESS regions for Nuzlocke text-mode runs.
+ * Gen 6–9 lists come from scripts/build-freeform-regions.mjs; Orre is curated
+ * from src/data/orre/*.json locationIds. No map geometry (edges: [], x/y: 0) —
+ * decoupled from /maps / atlas (REGIONS). Nuzlocke: anyRegionById(); maps: regionById(). */
 
 import kalosJson from '@/data/regions/kalos.json';
 import alolaJson from '@/data/regions/alola.json';
 import galarJson from '@/data/regions/galar.json';
 import hisuiJson from '@/data/regions/hisui.json';
 import paldeaJson from '@/data/regions/paldea.json';
+import orreJson from '@/data/regions/orre.json';
 import { regionById } from './regions';
 import type { RegionMap } from './regions';
 
-export type FreeformRegionId = 'kalos' | 'alola' | 'galar' | 'hisui' | 'paldea';
+export type FreeformRegionId = 'kalos' | 'alola' | 'galar' | 'hisui' | 'paldea' | 'orre';
 
 /** Map-less Nuzlocke regions, in canonical order. */
 export const FREEFORM_REGIONS: readonly RegionMap[] = [
@@ -22,6 +21,7 @@ export const FREEFORM_REGIONS: readonly RegionMap[] = [
   galarJson as RegionMap,
   hisuiJson as RegionMap,
   paldeaJson as RegionMap,
+  orreJson as RegionMap,
 ];
 
 const FREEFORM_BY_ID = new Map<string, RegionMap>(FREEFORM_REGIONS.map((r) => [r.region, r]));

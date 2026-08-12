@@ -147,6 +147,8 @@ const SHORT_VERSIONS: Record<string, string> = {
   'alpha-sapphire': 'AS',
   'black-2': 'BLK 2',
   'white-2': 'WHT 2',
+  colosseum: 'COLO',
+  xd: 'XD',
 };
 
 export function versionChipLabel(v: string): string {

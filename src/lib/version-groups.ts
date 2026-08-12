@@ -24,6 +24,8 @@ export const VERSION_GROUPS: VersionGroupInfo[] = [
   { id: 'ruby-sapphire', label: 'RUBY · SAPPHIRE', short: 'RS', gen: 3, games: ['ruby', 'sapphire'] },
   { id: 'emerald', label: 'EMERALD', short: 'E', gen: 3, games: ['emerald'] },
   { id: 'firered-leafgreen', label: 'FIRE RED · LEAF GREEN', short: 'FRLG', gen: 3, games: ['firered', 'leafgreen'] },
+  { id: 'colosseum', label: 'COLOSSEUM', short: 'COLO', gen: 3, games: ['colosseum'] },
+  { id: 'xd', label: 'XD GALE OF DARKNESS', short: 'XD', gen: 3, games: ['xd'] },
   { id: 'diamond-pearl', label: 'DIAMOND · PEARL', short: 'DP', gen: 4, games: ['diamond', 'pearl'] },
   { id: 'platinum', label: 'PLATINUM', short: 'PT', gen: 4, games: ['platinum'] },
   { id: 'heartgold-soulsilver', label: 'HEART GOLD · SOUL SILVER', short: 'HGSS', gen: 4, games: ['heartgold', 'soulsilver'] },
