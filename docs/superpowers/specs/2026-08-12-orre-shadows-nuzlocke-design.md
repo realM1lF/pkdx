@@ -1,6 +1,6 @@
 # Orre Shadows — Tracker + Nuzlocke (Colosseum / XD)
 
-Status: draft (awaiting human review)  
+Status: approved (2026-08-12)  
 Date: 2026-08-12  
 Scope: Shadow checklist + progress for Pokémon Colosseum (48) and XD: Gale of Darkness (83); minimal Orre Nuzlocke integration. Subagent-driven delivery with a mandatory research/data-validator per theme.
 
