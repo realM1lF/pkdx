@@ -1,6 +1,768 @@
 {
   "game": "xd",
-  "source": "stub — pending curation",
+  "source": "Bulbapedia (Walkthrough:Pokémon XD/Shadow Pokémon list; List of Shadow Pokémon), cross-checked with TheGamer and Serebii",
   "verifiedAt": "2026-08-12",
-  "shadows": []
+  "shadows": [
+    {
+      "id": "xd-shadow-teddiursa",
+      "species": "teddiursa",
+      "level": 11,
+      "trainer": "Cipher Peon Naps",
+      "locationId": "orre-pokemon-hq-lab",
+      "order": 1,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-ledyba",
+      "species": "ledyba",
+      "level": 10,
+      "trainer": "Casual Guy Cyle",
+      "locationId": "orre-gateon-port-1",
+      "order": 2,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-poochyena",
+      "species": "poochyena",
+      "level": 10,
+      "trainer": "Bodybuilder Kilen",
+      "locationId": "orre-gateon-port-2",
+      "order": 3,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-houndour",
+      "species": "houndour",
+      "level": 17,
+      "trainer": "Cipher Peon Resix",
+      "locationId": "orre-cipher-lab-1",
+      "order": 4,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-baltoy",
+      "species": "baltoy",
+      "level": 17,
+      "trainer": "Cipher Peon Browsix",
+      "locationId": "orre-cipher-lab-2",
+      "order": 5,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-mareep",
+      "species": "mareep",
+      "level": 17,
+      "trainer": "Cipher Peon Yellosix",
+      "locationId": "orre-cipher-lab-3",
+      "order": 6,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-seedot",
+      "species": "seedot",
+      "level": 17,
+      "trainer": "Cipher Peon Greesix",
+      "locationId": "orre-cipher-lab-4",
+      "order": 7,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-spheal",
+      "species": "spheal",
+      "level": 17,
+      "trainer": "Cipher Peon Blusix",
+      "locationId": "orre-cipher-lab-5",
+      "order": 8,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-gulpin",
+      "species": "gulpin",
+      "level": 17,
+      "trainer": "Cipher Peon Purpsix",
+      "locationId": "orre-cipher-lab-6",
+      "order": 9,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-spinarak",
+      "species": "spinarak",
+      "level": 14,
+      "trainer": "Cipher Peon Nexir",
+      "locationId": "orre-cipher-lab-7",
+      "order": 10,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-numel",
+      "species": "numel",
+      "level": 14,
+      "trainer": "Cipher Peon Solox",
+      "locationId": "orre-cipher-lab-8",
+      "order": 11,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-carvanha",
+      "species": "carvanha",
+      "level": 15,
+      "trainer": "Cipher Peon Cabol",
+      "locationId": "orre-cipher-lab-9",
+      "order": 12,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-shroomish",
+      "species": "shroomish",
+      "level": 15,
+      "trainer": "Cipher R&D Klots",
+      "locationId": "orre-cipher-lab-10",
+      "order": 13,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-delcatty",
+      "species": "delcatty",
+      "level": 18,
+      "trainer": "Cipher Admin Lovrina",
+      "locationId": "orre-cipher-lab-11",
+      "order": 14,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-voltorb",
+      "species": "voltorb",
+      "level": 19,
+      "trainer": "Wanderer Miror B.",
+      "locationId": "orre-cave-poke-spot",
+      "order": 15,
+      "required": true,
+      "reappear": {
+        "note": "Must be snagged here — the Miror Radar (needed to track every other missed Shadow Pokémon for the rest of the game) is only obtained after this fight. A known game bug can also make Voltorb permanently unobtainable if the battle is lost without snagging.",
+        "kind": "story-lock"
+      }
+    },
+    {
+      "id": "xd-shadow-makuhita",
+      "species": "makuhita",
+      "level": 18,
+      "trainer": "Cipher Peon Torkin",
+      "locationId": "orre-onbs-1",
+      "order": 16,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-vulpix",
+      "species": "vulpix",
+      "level": 18,
+      "trainer": "Cipher Peon Mesin",
+      "locationId": "orre-onbs-2",
+      "order": 17,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-duskull",
+      "species": "duskull",
+      "level": 19,
+      "trainer": "Cipher Peon Lobar",
+      "locationId": "orre-onbs-3",
+      "order": 18,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-ralts",
+      "species": "ralts",
+      "level": 20,
+      "trainer": "Cipher Peon Feldas",
+      "locationId": "orre-onbs-4",
+      "order": 19,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-mawile",
+      "species": "mawile",
+      "level": 22,
+      "trainer": "Cipher Cmdr Exol",
+      "locationId": "orre-onbs-5",
+      "order": 20,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-snorunt",
+      "species": "snorunt",
+      "level": 20,
+      "trainer": "Cipher Peon Exinn",
+      "locationId": "orre-phenac-city-1",
+      "order": 21,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-pineco",
+      "species": "pineco",
+      "level": 20,
+      "trainer": "Cipher Peon Gonrag",
+      "locationId": "orre-phenac-city-2",
+      "order": 22,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-natu",
+      "species": "natu",
+      "level": 22,
+      "trainer": "Cipher Peon Eloin",
+      "locationId": "orre-prestige-precept-center-1",
+      "order": 23,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-roselia",
+      "species": "roselia",
+      "level": 22,
+      "trainer": "Cipher Peon Fasin",
+      "locationId": "orre-prestige-precept-center-2",
+      "order": 24,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-meowth",
+      "species": "meowth",
+      "level": 22,
+      "trainer": "Cipher Peon Fostin",
+      "locationId": "orre-prestige-precept-center-3",
+      "order": 25,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-swinub",
+      "species": "swinub",
+      "level": 22,
+      "trainer": "Cipher Peon Greck",
+      "locationId": "orre-phenac-city-3",
+      "order": 26,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-spearow",
+      "species": "spearow",
+      "level": 22,
+      "trainer": "Cipher Peon Ezin",
+      "locationId": "orre-phenac-stadium-1",
+      "order": 27,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-grimer",
+      "species": "grimer",
+      "level": 23,
+      "trainer": "Cipher Peon Faltly",
+      "locationId": "orre-phenac-stadium-2",
+      "order": 28,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-seel",
+      "species": "seel",
+      "level": 23,
+      "trainer": "Cipher Peon Egrog",
+      "locationId": "orre-phenac-stadium-3",
+      "order": 29,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-lunatone",
+      "species": "lunatone",
+      "level": 25,
+      "trainer": "Cipher Admin Snattle",
+      "locationId": "orre-phenac-stadium-4",
+      "order": 30,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-togepi",
+      "species": "togepi",
+      "level": 25,
+      "trainer": "Pokémon Trainer Hordel",
+      "locationId": "orre-outskirt-stand-1",
+      "order": 31,
+      "required": true,
+      "notes": "Gifted directly by Hordel at the Outskirt Stand rather than won from a battle."
+    },
+    {
+      "id": "xd-shadow-nosepass",
+      "species": "nosepass",
+      "level": 26,
+      "trainer": "Wanderer Miror B.",
+      "locationId": "orre-outskirt-stand-2",
+      "order": 32,
+      "required": true,
+      "reappear": {
+        "note": "Not snaggable at this first encounter — the Snag Machine is unavailable at the time. Miror B. keeps this Nosepass; the Miror Radar later leads to him at Pyrite Colosseum, Realgam Colosseum, or one of the three Poké Spots to snag it.",
+        "kind": "miror-radar"
+      }
+    },
+    {
+      "id": "xd-shadow-zangoose",
+      "species": "zangoose",
+      "level": 28,
+      "trainer": "Thug Zook",
+      "locationId": "orre-cipher-key-lair-1",
+      "order": 33,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-paras",
+      "species": "paras",
+      "level": 28,
+      "trainer": "Cipher Peon Humah",
+      "locationId": "orre-cipher-key-lair-2",
+      "order": 34,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-growlithe",
+      "species": "growlithe",
+      "level": 28,
+      "trainer": "Cipher Peon Humah",
+      "locationId": "orre-cipher-key-lair-3",
+      "order": 35,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-shellder",
+      "species": "shellder",
+      "level": 29,
+      "trainer": "Cipher Peon Gorog",
+      "locationId": "orre-cipher-key-lair-4",
+      "order": 36,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-beedrill",
+      "species": "beedrill",
+      "level": 30,
+      "trainer": "Cipher Peon Lok",
+      "locationId": "orre-cipher-key-lair-5",
+      "order": 37,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-pidgeotto",
+      "species": "pidgeotto",
+      "level": 30,
+      "trainer": "Cipher Peon Lok",
+      "locationId": "orre-cipher-key-lair-6",
+      "order": 38,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-tangela",
+      "species": "tangela",
+      "level": 30,
+      "trainer": "Cipher Peon Targ",
+      "locationId": "orre-cipher-key-lair-7",
+      "order": 39,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-butterfree",
+      "species": "butterfree",
+      "level": 30,
+      "trainer": "Cipher Peon Targ",
+      "locationId": "orre-cipher-key-lair-8",
+      "order": 40,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-magneton",
+      "species": "magneton",
+      "level": 30,
+      "trainer": "Cipher Peon Snidle",
+      "locationId": "orre-cipher-key-lair-9",
+      "order": 41,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-venomoth",
+      "species": "venomoth",
+      "level": 32,
+      "trainer": "Cipher Peon Angic",
+      "locationId": "orre-cipher-key-lair-10",
+      "order": 42,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-weepinbell",
+      "species": "weepinbell",
+      "level": 32,
+      "trainer": "Cipher Peon Angic",
+      "locationId": "orre-cipher-key-lair-11",
+      "order": 43,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-arbok",
+      "species": "arbok",
+      "level": 33,
+      "trainer": "Cipher Peon Smarton",
+      "locationId": "orre-cipher-key-lair-12",
+      "order": 44,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-primeape",
+      "species": "primeape",
+      "level": 34,
+      "trainer": "Cipher Admin Gorigan",
+      "locationId": "orre-cipher-key-lair-13",
+      "order": 45,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-hypno",
+      "species": "hypno",
+      "level": 34,
+      "trainer": "Cipher Admin Gorigan",
+      "locationId": "orre-cipher-key-lair-14",
+      "order": 46,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-golduck",
+      "species": "golduck",
+      "level": 33,
+      "trainer": "Navigator Abson",
+      "locationId": "orre-citadark-isle-1",
+      "order": 47,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-sableye",
+      "species": "sableye",
+      "level": 33,
+      "trainer": "Navigator Abson",
+      "locationId": "orre-citadark-isle-2",
+      "order": 48,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-dodrio",
+      "species": "dodrio",
+      "level": 34,
+      "trainer": "Chaser Furgy",
+      "locationId": "orre-citadark-isle-3",
+      "order": 49,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-raticate",
+      "species": "raticate",
+      "level": 34,
+      "trainer": "Chaser Furgy",
+      "locationId": "orre-citadark-isle-4",
+      "order": 50,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-farfetchd",
+      "species": "farfetchd",
+      "level": 36,
+      "trainer": "Cipher Admin Lovrina",
+      "locationId": "orre-citadark-isle-5",
+      "order": 51,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-altaria",
+      "species": "altaria",
+      "level": 36,
+      "trainer": "Cipher Admin Lovrina",
+      "locationId": "orre-citadark-isle-6",
+      "order": 52,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-kangaskhan",
+      "species": "kangaskhan",
+      "level": 35,
+      "trainer": "Cipher Peon Litnar",
+      "locationId": "orre-citadark-isle-7",
+      "order": 53,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-banette",
+      "species": "banette",
+      "level": 37,
+      "trainer": "Cipher Peon Litnar",
+      "locationId": "orre-citadark-isle-8",
+      "order": 54,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-magmar",
+      "species": "magmar",
+      "level": 36,
+      "trainer": "Cipher Peon Grupel",
+      "locationId": "orre-citadark-isle-9",
+      "order": 55,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-pinsir",
+      "species": "pinsir",
+      "level": 35,
+      "trainer": "Cipher Peon Grupel",
+      "locationId": "orre-citadark-isle-10",
+      "order": 56,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-rapidash",
+      "species": "rapidash",
+      "level": 40,
+      "trainer": "Cipher Peon Kolest",
+      "locationId": "orre-citadark-isle-11",
+      "order": 57,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-magcargo",
+      "species": "magcargo",
+      "level": 38,
+      "trainer": "Cipher Peon Kolest",
+      "locationId": "orre-citadark-isle-12",
+      "order": 58,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-hitmonchan",
+      "species": "hitmonchan",
+      "level": 38,
+      "trainer": "Cipher Peon Karbon",
+      "locationId": "orre-citadark-isle-13",
+      "order": 59,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-hitmonlee",
+      "species": "hitmonlee",
+      "level": 38,
+      "trainer": "Cipher Peon Petro",
+      "locationId": "orre-citadark-isle-14",
+      "order": 60,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-lickitung",
+      "species": "lickitung",
+      "level": 38,
+      "trainer": "Cipher Peon Geftal",
+      "locationId": "orre-citadark-isle-15",
+      "order": 61,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-scyther",
+      "species": "scyther",
+      "level": 40,
+      "trainer": "Cipher Peon Leden",
+      "locationId": "orre-citadark-isle-16",
+      "order": 62,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-chansey",
+      "species": "chansey",
+      "level": 39,
+      "trainer": "Cipher Peon Leden",
+      "locationId": "orre-citadark-isle-17",
+      "order": 63,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-solrock",
+      "species": "solrock",
+      "level": 41,
+      "trainer": "Cipher Admin Snattle",
+      "locationId": "orre-citadark-isle-18",
+      "order": 64,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-starmie",
+      "species": "starmie",
+      "level": 41,
+      "trainer": "Cipher Admin Snattle",
+      "locationId": "orre-citadark-isle-19",
+      "order": 65,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-swellow",
+      "species": "swellow",
+      "level": 43,
+      "trainer": "Cipher Admin Ardos",
+      "locationId": "orre-citadark-isle-20",
+      "order": 66,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-electabuzz",
+      "species": "electabuzz",
+      "level": 43,
+      "trainer": "Cipher Admin Ardos",
+      "locationId": "orre-citadark-isle-21",
+      "order": 67,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-snorlax",
+      "species": "snorlax",
+      "level": 43,
+      "trainer": "Cipher Admin Ardos",
+      "locationId": "orre-citadark-isle-22",
+      "order": 68,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-poliwrath",
+      "species": "poliwrath",
+      "level": 42,
+      "trainer": "Cipher Admin Gorigan",
+      "locationId": "orre-citadark-isle-23",
+      "order": 69,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-mr-mime",
+      "species": "mr-mime",
+      "level": 42,
+      "trainer": "Cipher Admin Gorigan",
+      "locationId": "orre-citadark-isle-24",
+      "order": 70,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-dugtrio",
+      "species": "dugtrio",
+      "level": 40,
+      "trainer": "Cipher Peon Kolax",
+      "locationId": "orre-citadark-isle-25",
+      "order": 71,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-manectric",
+      "species": "manectric",
+      "level": 44,
+      "trainer": "Cipher Admin Eldes",
+      "locationId": "orre-citadark-isle-26",
+      "order": 72,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-salamence",
+      "species": "salamence",
+      "level": 50,
+      "trainer": "Cipher Admin Eldes",
+      "locationId": "orre-citadark-isle-27",
+      "order": 73,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-marowak",
+      "species": "marowak",
+      "level": 44,
+      "trainer": "Cipher Admin Eldes",
+      "locationId": "orre-citadark-isle-28",
+      "order": 74,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-lapras",
+      "species": "lapras",
+      "level": 44,
+      "trainer": "Cipher Admin Eldes",
+      "locationId": "orre-citadark-isle-29",
+      "order": 75,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-lugia",
+      "species": "lugia",
+      "level": 50,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-30",
+      "order": 76,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-rhydon",
+      "species": "rhydon",
+      "level": 46,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-31",
+      "order": 77,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-moltres",
+      "species": "moltres",
+      "level": 50,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-32",
+      "order": 78,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-exeggutor",
+      "species": "exeggutor",
+      "level": 46,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-33",
+      "order": 79,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-tauros",
+      "species": "tauros",
+      "level": 46,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-34",
+      "order": 80,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-articuno",
+      "species": "articuno",
+      "level": 50,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-35",
+      "order": 81,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-zapdos",
+      "species": "zapdos",
+      "level": 50,
+      "trainer": "Grand Master Greevil",
+      "locationId": "orre-citadark-isle-36",
+      "order": 82,
+      "required": true
+    },
+    {
+      "id": "xd-shadow-dragonite",
+      "species": "dragonite",
+      "level": 55,
+      "trainer": "Wanderer Miror B.",
+      "locationId": "orre-gateon-port-lighthouse",
+      "order": 83,
+      "required": false,
+      "reappear": {
+        "locationId": "orre-gateon-port-lighthouse",
+        "note": "Only appears once all other 82 Shadow Pokémon have been snagged; the Miror Radar then alerts the player to Miror B. at the Gateon Port lighthouse for this final battle.",
+        "kind": "postgame"
+      }
+    }
+  ]
 }
