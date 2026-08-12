@@ -110,11 +110,20 @@ export function encounterOptionsForRoute(game: OrreGame, routeKey: string): Orre
  * at, ordered by first shadow `order` there. XD also lists the three Poké
  * Spots, two of which host no shadow at all. Used by Nuzlocke timeline/KPIs so
  * Colo runs do not list XD-only Citadark slots (and vice versa).
+ *
+ * Cached per game: callers (NuzlockeRun → useRegionData) treat `region` as a
+ * React dependency. Fresh objects every call re-fire setState and hit
+ * "Maximum update depth exceeded".
  */
+const ORRE_REGION_BY_GAME: Partial<Record<OrreGame, RegionMap>> = {}
+
 export function orreRegionForGame(game: OrreGame): RegionMap {
+  const cached = ORRE_REGION_BY_GAME[game]
+  if (cached) return cached
+
   const base = freeformRegionById('orre')
   if (!base) {
-    return {
+    const empty = {
       region: 'orre' as RegionMap['region'],
       name: 'Orre',
       nameDe: 'Orre',
@@ -128,6 +137,8 @@ export function orreRegionForGame(game: OrreGame): RegionMap {
       nodes: [],
       edges: [],
     } as RegionMap
+    ORRE_REGION_BY_GAME[game] = empty
+    return empty
   }
 
   const orderByLoc = new Map<string, number>()
@@ -156,13 +167,15 @@ export function orreRegionForGame(game: OrreGame): RegionMap {
     for (const spot of pokeSpots()) for (const e of spot.encounters) species.add(e.species)
   }
 
-  return {
+  const built: RegionMap = {
     ...base,
     versions: [game],
     defaultVersion: game,
     speciesCount: species.size,
     nodes,
   }
+  ORRE_REGION_BY_GAME[game] = built
+  return built
 }
 
 /** Region lookup for a run — Orre is game-scoped; everything else is anyRegionById. */

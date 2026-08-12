@@ -485,12 +485,19 @@ export function useRegionData(region: RegionMap, version: string): RegionDataSta
   const [offline, setOffline] = useState(() => (typeof navigator !== 'undefined' ? !navigator.onLine : false));
   const runId = useRef(0);
 
+  const slugSig = region.nodes
+    .filter((n) => n.locationSlug)
+    .map((n) => `${n.id}:${n.locationSlug}`)
+    .join('|');
+  /* Content signature — not `region` by reference. Unstable region objects
+   * (e.g. a rebuilt Orre filter map) must not re-fire the load effect. */
   const slugs = useMemo(
     () =>
       region.nodes
         .filter((n) => n.locationSlug)
         .map((n) => ({ nodeId: n.id, slug: n.locationSlug as string })),
-    [region],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by slugSig
+    [slugSig],
   );
   const total = slugs.length;
 

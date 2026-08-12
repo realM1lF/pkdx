@@ -62,4 +62,12 @@ describe('orre artifacts', () => {
     expect(colo.nodes.some((n) => n.id.startsWith('orre-citadark'))).toBe(false)
     expect(xd.nodes.some((n) => n.id.startsWith('orre-citadark'))).toBe(true)
   })
+
+  /* useRegionData keys off `region` by reference. A fresh Orre map every
+   * render retriggers its effect → setState → Maximum update depth. */
+  it('orreRegionForGame returns a stable reference per game', () => {
+    expect(orreRegionForGame('xd')).toBe(orreRegionForGame('xd'))
+    expect(orreRegionForGame('colosseum')).toBe(orreRegionForGame('colosseum'))
+    expect(orreRegionForGame('xd')).not.toBe(orreRegionForGame('colosseum'))
+  })
 })

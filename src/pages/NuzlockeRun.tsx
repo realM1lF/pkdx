@@ -61,7 +61,10 @@ export default function NuzlockeRun() {
    * Runs belong to an account, so logged-out visitors get the login gate below
    * instead of playing on a localStorage copy. */
   const state = authReady && user ? rawState : null;
-  const region = regionForRun(state?.run.region, state?.run.game) ?? anyRegionById(state?.run.region) ?? REGIONS[0];
+  const region = useMemo(
+    () => regionForRun(state?.run.region, state?.run.game) ?? anyRegionById(state?.run.region) ?? REGIONS[0],
+    [state?.run.region, state?.run.game],
+  );
   const mapData = useRegionData(region, state?.run.game ?? region.defaultVersion);
 
   const [nameIdx, setNameIdx] = useState<Map<number, DexIndexEntry>>(new Map());
