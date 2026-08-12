@@ -401,20 +401,51 @@ describe('account run discovery', () => {
     seedRun(RUN_A, 'Local Only');
     membersByUser.set(USER_ID, [RUN_A]);
 
-    const { syncAccountRuns, watchAccountRuns, getHubRunIds, createRun } = await loadStore();
+    const { syncAccountRuns, watchAccountRuns, getHubRunIds, createRun, NuzLoginRequiredError } =
+      await loadStore();
     await syncAccountRuns(USER_ID);
     watchAccountRuns(USER_ID);
 
-    const { state } = await createRun({
-      name: 'Solo Local',
-      region: 'kanto',
-      game: 'firered',
-      players: [{ name: 'ME', color: '#FFD60A' }],
-      rules: { ...DEFAULT_RULES },
-      online: false,
-    });
+    await expect(
+      createRun({
+        name: 'Solo Local',
+        region: 'kanto',
+        game: 'firered',
+        players: [{ name: 'ME', color: '#FFD60A' }],
+        rules: { ...DEFAULT_RULES },
+        online: false,
+      }),
+    ).rejects.toBeInstanceOf(NuzLoginRequiredError);
 
-    expect(getHubRunIds()).toEqual([state.run.id]);
+    const guestId = 'run-solo-local-guest';
+    const guest = {
+      run: {
+        id: guestId,
+        invite_code: null,
+        name: 'Solo Local',
+        game: 'firered',
+        region: 'kanto',
+        rules: { ...DEFAULT_RULES },
+        status: 'active' as const,
+        created_at: '2026-01-01T00:00:00.000Z',
+      },
+      mode: 'solo' as const,
+      players: [
+        {
+          id: 'player-solo-local',
+          run_id: guestId,
+          name: 'ME',
+          color: '#FFD60A',
+          slot: 0,
+          created_at: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+      encounters: [],
+    };
+    localStorage.setItem(`pdx2.nuz.run.${guestId}`, JSON.stringify(guest));
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([guestId, RUN_A]));
+
+    expect(getHubRunIds()).toEqual([guestId]);
     expect(getHubRunIds()).not.toContain(RUN_A);
     expect(pgHandlers).toHaveLength(0);
   });
@@ -448,28 +479,58 @@ describe('account run discovery', () => {
     mockUser = null;
     store.stopAccountRunsWatch();
 
-    /* pure guest solo created while logged out stays visible */
-    const { state: guestSolo } = await store.createRun({
-      name: 'Guest Solo',
-      region: 'kanto',
-      game: 'firered',
-      players: [{ name: 'ME', color: '#FFD60A' }],
-      rules: { ...DEFAULT_RULES },
-      online: false,
-    });
+    /* legacy guest solo still on disk (created before the account gate) stays visible */
+    const guestId = 'run-guest-solo';
+    const guestSolo = {
+      run: {
+        id: guestId,
+        invite_code: null,
+        name: 'Guest Solo',
+        game: 'firered',
+        region: 'kanto',
+        rules: { ...DEFAULT_RULES },
+        status: 'active' as const,
+        created_at: '2026-01-01T00:00:00.000Z',
+      },
+      mode: 'solo' as const,
+      players: [
+        {
+          id: 'player-guest',
+          run_id: guestId,
+          name: 'ME',
+          color: '#FFD60A',
+          slot: 0,
+          created_at: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+      encounters: [],
+    };
+    localStorage.setItem(`pdx2.nuz.run.${guestId}`, JSON.stringify(guestSolo));
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([guestId, RUN_A]));
+
+    await expect(
+      store.createRun({
+        name: 'Blocked Guest',
+        region: 'kanto',
+        game: 'firered',
+        players: [{ name: 'ME', color: '#FFD60A' }],
+        rules: { ...DEFAULT_RULES },
+        online: false,
+      }),
+    ).rejects.toBeInstanceOf(store.NuzLoginRequiredError);
 
     expect(store.getHubRunIds()).not.toContain(RUN_A);
-    expect(store.getHubRunIds()).toContain(guestSolo.run.id);
+    expect(store.getHubRunIds()).toContain(guestId);
     /* multi payload stays on disk for the next login */
     expect(store.loadLocalRun(RUN_A)).not.toBeNull();
 
     /* guest archive must not make a local solo look account-owned */
-    store.archiveRun(guestSolo.run.id);
+    store.archiveRun(guestId);
     expect(store.isDeviceLocalSoloRun(guestSolo)).toBe(true);
-    expect(store.getHubRunIds()).not.toContain(guestSolo.run.id);
+    expect(store.getHubRunIds()).not.toContain(guestId);
     /* still listed under archived when logged out */
     const archived = JSON.parse(localStorage.getItem('pdx2.nuz.archived') ?? '[]') as string[];
-    expect(archived).toContain(guestSolo.run.id);
+    expect(archived).toContain(guestId);
   });
 
   it('watchAccountRuns is idempotent — second call does not create another channel', async () => {

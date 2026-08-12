@@ -1,7 +1,7 @@
 /* SoulLink missed cascade + 'lost' status + N-player death cascade
  * (nuzlocke-store). Solo runs only — no realtime/supabase interaction
  * (vitest.setup stubs WebSocket; solo mode never touches the network). */
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   DEFAULT_RULES,
   createRun,
@@ -15,6 +15,14 @@ import {
 } from './nuzlocke-store';
 import type { NuzRules, RunState } from './nuzlocke-store';
 import { clearEvolutionFamilyCache, primeEvolutionFamilyCache } from './nuzlocke-evolution';
+
+vi.mock('./auth', () => ({
+  getAuthUser: () => ({ id: 'test-user' }),
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: { id: 'test-user' }, profile: null }),
+  ensureRunIdentity: async () => undefined,
+  onAuthChange: () => () => undefined,
+}));
 
 /* Dupes now resolve evo families async — seed singleton families so these
  * cascade tests stay offline and species-independent. */

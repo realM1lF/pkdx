@@ -1,4 +1,5 @@
-/* Online create/join/goOnline require a real account (not anonymous). */
+/* Every create (solo + online), join and goOnline requires a real account
+ * (not anonymous) — runs live in the DB so they are the same on every device. */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { NuzPlayerRow, NuzRunRow } from './supabase';
 import { DEFAULT_RULES } from './nuzlocke-store';
@@ -153,7 +154,7 @@ vi.mock('./nuzlocke-linked-teams', () => ({
   repairAllLinkedTeams: vi.fn().mockResolvedValue(undefined),
 }));
 
-describe('online login gate', () => {
+describe('nuzlocke login gate', () => {
   beforeEach(() => {
     vi.resetModules();
     installMemoryLocalStorage();
@@ -200,11 +201,28 @@ describe('online login gate', () => {
     expect(res.inviteCode).toBeTruthy();
   });
 
-  it('createRun local without account still works', async () => {
+  it('createRun solo without account throws and creates nothing', async () => {
     mockUser = null;
+    const { createRun, readRunIndex, NuzLoginRequiredError } = await loadStore();
+    await expect(
+      createRun({
+        name: 'Local Solo',
+        region: 'kanto',
+        game: 'firered',
+        players: [{ name: 'ME', color: '#FFD60A' }],
+        rules: { ...DEFAULT_RULES },
+        online: false,
+      }),
+    ).rejects.toBeInstanceOf(NuzLoginRequiredError);
+    expect(readRunIndex()).toHaveLength(0);
+    expect(insertedRuns).toHaveLength(0);
+  });
+
+  it('createRun solo with account proceeds and is cloud-backed', async () => {
+    mockUser = { id: USER_ID };
     const { createRun } = await loadStore();
     const res = await createRun({
-      name: 'Local Solo',
+      name: 'Account Solo',
       region: 'kanto',
       game: 'firered',
       players: [{ name: 'ME', color: '#FFD60A' }],
@@ -212,6 +230,8 @@ describe('online login gate', () => {
       online: false,
     });
     expect(res.state.mode).toBe('solo');
+    expect(res.inviteCode).toBeNull();
+    expect(insertedRuns).toHaveLength(1);
   });
 
   it('joinRun without account returns null', async () => {
@@ -246,8 +266,8 @@ describe('online login gate', () => {
     expect(state).toBeNull();
   });
 
-  it('goOnline without account returns false', async () => {
-    mockUser = null;
+  it('goOnline after logout returns false', async () => {
+    mockUser = { id: USER_ID };
     const { createRun, goOnline } = await loadStore();
     const { state } = await createRun({
       name: 'Stay Local',
@@ -258,6 +278,7 @@ describe('online login gate', () => {
       online: false,
     });
     expect(state).not.toBeNull();
+    mockUser = null;
     expect(await goOnline(state!.run.id)).toBe(false);
     expect(state!.mode).toBe('solo');
   });

@@ -17,6 +17,14 @@ import {
 } from './nuzlocke-store';
 import { emptyTeam, loadTeams, saveTeam, type Team } from './teambuilder';
 
+vi.mock('./auth', () => ({
+  getAuthUser: () => ({ id: 'test-user' }),
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: { id: 'test-user' }, profile: null }),
+  ensureRunIdentity: async () => undefined,
+  onAuthChange: () => () => undefined,
+}));
+
 vi.mock('./pokeapi', async () => {
   const actual = await vi.importActual<typeof import('./pokeapi')>('./pokeapi');
   return {

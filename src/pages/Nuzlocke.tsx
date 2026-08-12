@@ -25,6 +25,7 @@ import './nuzlocke/nuzlocke.css';
 export default function Nuzlocke() {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const { user, ready: authReady } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { runs, archived, loading, entries } = useHubRuns();
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -60,6 +61,8 @@ export default function Nuzlocke() {
   }, [nameIdx, lang]);
 
   const multi = isMultiCapable();
+  /* Runs live on the account — starting and continuing both need a sign-in. */
+  const needsLogin = authReady && !user;
   const visible = showAll ? runs : runs.slice(0, 6);
   const entryOf = (id: string) => entries.find((e) => e.id === id);
 
@@ -147,6 +150,23 @@ export default function Nuzlocke() {
         </motion.div>
       )}
 
+      {/* ---------- account gate (§1.2) — no run starts or continues as guest ---------- */}
+      {needsLogin && (
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md border border-gold/40 bg-gold/5 px-4 py-3">
+          <div className="min-w-0 max-w-[640px]">
+            <PixelLabel className="text-gold">{t('nuz.wizard.loginWallTitle')}</PixelLabel>
+            <p className="mt-1 text-[13px] font-semibold text-tx-primary">{t('nuz.hubLoginRequired')}</p>
+            <p className="mt-0.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.hubLoginRequiredBody')}</p>
+          </div>
+          <LocaleLink
+            to="/account"
+            className="ml-auto rounded-md border border-gold/60 px-4 py-2 font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:bg-gold/10"
+          >
+            {t('nuz.wizard.loginCta')}
+          </LocaleLink>
+        </div>
+      )}
+
       {/* ---------- join by code (§1.4) ---------- */}
       <JoinRow
         onJoin={(lookup) => {
@@ -213,7 +233,7 @@ export default function Nuzlocke() {
               </motion.button>
 
               {visible.map((s, i) => (
-                <RunCard key={s.run.id} state={s} entry={entryOf(s.run.id)} index={i + 1} nameOf={nameOf} />
+                <RunCard key={s.run.id} state={s} entry={entryOf(s.run.id)} index={i + 1} nameOf={nameOf} locked={needsLogin} />
               ))}
             </div>
             {runs.length > 6 && !showAll && (
@@ -253,7 +273,7 @@ export default function Nuzlocke() {
         ) : showArchive ? (
           <div className="mt-4 grid grid-cols-12 gap-4">
             {archived.map((s, i) => (
-              <RunCard key={s.run.id} state={s} entry={entryOf(s.run.id)} index={i} nameOf={nameOf} archived />
+              <RunCard key={s.run.id} state={s} entry={entryOf(s.run.id)} index={i} nameOf={nameOf} archived locked={needsLogin} />
             ))}
           </div>
         ) : null}

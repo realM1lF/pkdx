@@ -74,7 +74,8 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
   const lang = useLanguage();
   const { user, profile, ready: authReady } = useAuth();
   const loggedIn = !!user;
-  const needsLoginForOnline = authReady && !loggedIn;
+  /* Every run belongs to an account — creating and joining are both gated. */
+  const needsLogin = authReady && !loggedIn;
   const joinMode = !!joinPreset;
   /* Account username as trainer default when logged in (player names max 18). */
   const loginName = (profile?.username ?? '').trim().slice(0, 18);
@@ -150,8 +151,8 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
       return;
     }
     const wantOnline = online && isMultiCapable();
-    if (wantOnline && needsLoginForOnline) {
-      fail(t('nuz.wizard.failLoginOnline'));
+    if (needsLogin) {
+      fail(t(wantOnline ? 'nuz.wizard.failLoginOnline' : 'nuz.wizard.failLoginRun'));
       return;
     }
     setBusy(true);
@@ -178,7 +179,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
       }
     } catch (err) {
       if (err instanceof NuzLoginRequiredError) {
-        fail(t('nuz.wizard.failLoginOnline'));
+        fail(t(wantOnline ? 'nuz.wizard.failLoginOnline' : 'nuz.wizard.failLoginRun'));
         return;
       }
       throw err;
@@ -189,7 +190,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
 
   const doJoin = async () => {
     if (!joinPreset) return;
-    if (needsLoginForOnline) {
+    if (needsLogin) {
       fail(t('nuz.wizard.failLoginJoin'));
       return;
     }
@@ -248,7 +249,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
     <NuzModal open={open} onClose={onClose}>
       <div className="p-5">
         {/* progress dots */}
-        {!invite && (
+        {!invite && !needsLogin && (
           <div className="mb-4 flex items-center gap-3">
             {(joinMode ? [steps[1]] : steps).map((s) => {
               const idx = steps.indexOf(s);
@@ -291,15 +292,21 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 {t('nuz.wizard.enterRun')}
               </button>
             </motion.div>
+          ) : needsLogin ? (
+            /* ---------- login wall: no run starts or continues without an account ---------- */
+            <motion.div key="login" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.25 }}>
+              <PixelLabel className="text-gold">{t('nuz.wizard.loginWallTitle')}</PixelLabel>
+              <div className="mt-2">
+                <LoginRequiredNote />
+              </div>
+            </motion.div>
           ) : joinMode && joinPreset ? (
             /* ---------- join flow ---------- */
             <motion.div key="join" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
               <div className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-[12px] text-tx-secondary">
                 {t('nuz.wizard.joiningRun')} <span className="font-semibold text-tx-primary">“{joinPreset.run.name}”</span> — {joinPreset.players.length === 1 ? t('nuz.wizard.playersInside', { count: 1 }) : t('nuz.wizard.playersInsidePlural', { count: joinPreset.players.length })}
               </div>
-              {needsLoginForOnline ? (
-                <LoginRequiredNote />
-              ) : joinFull ? (
+              {joinFull ? (
                 <div className="relative">
                   <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
                     <p className="rounded-md border border-gold/40 bg-gold/5 px-3 py-3 text-[12px] text-tx-secondary">
@@ -556,13 +563,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       </button>
                     ))}
                   </div>
-                  {online && (
-                    needsLoginForOnline ? (
-                      <LoginRequiredNote />
-                    ) : (
-                      <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>
-                    )
-                  )}
+                  {online && <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>}
                 </div>
               )}
               <WizardFooter back={() => setStep(0)} next={() => setStep(2)} nextLabel={t('nuz.wizard.rulesNext')} />
@@ -642,14 +643,14 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 </button>
                 <button
                   type="button"
-                  disabled={busy || (online && isMultiCapable() && (!authReady || !loggedIn))}
+                  disabled={busy || !authReady || !loggedIn}
                   onClick={() => void startRun()}
                   className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                 >
                   {busy ? t('nuz.wizard.starting') : t('nuz.wizard.startRun')}
                 </button>
               </div>
-              {online && isMultiCapable() && needsLoginForOnline && (
+              {needsLogin && (
                 <div className="mt-3">
                   <LoginRequiredNote />
                 </div>

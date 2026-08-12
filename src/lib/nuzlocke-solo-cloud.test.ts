@@ -256,32 +256,26 @@ describe('solo cloud persistence', () => {
     expect(runsUpserts).toHaveLength(0);
   });
 
-  it('guest createRun writes nuz_solo_runs and NOT nuz_runs', async () => {
+  it('guest createRun is blocked (account required for solo too)', async () => {
     vi.useRealTimers();
     mockUser = null;
     await loadCloudSync();
-    const { createRun } = await loadStore();
+    const { createRun, NuzLoginRequiredError, readRunIndex } = await loadStore();
 
-    const { state } = await createRun({
-      name: 'Guest Solo',
-      region: 'kanto',
-      game: 'firered',
-      players: [{ name: 'ME', color: '#FFD60A' }],
-      rules: { ...DEFAULT_RULES },
-      online: false,
-    });
+    await expect(
+      createRun({
+        name: 'Guest Solo',
+        region: 'kanto',
+        game: 'firered',
+        players: [{ name: 'ME', color: '#FFD60A' }],
+        rules: { ...DEFAULT_RULES },
+        online: false,
+      }),
+    ).rejects.toBeInstanceOf(NuzLoginRequiredError);
 
+    expect(readRunIndex()).toHaveLength(0);
     expect(fromMock).not.toHaveBeenCalledWith('nuz_runs');
-    expect(fromMock).not.toHaveBeenCalledWith('nuz_run_members');
-
-    await new Promise((r) => setTimeout(r, 950));
-
-    expect(fromMock).not.toHaveBeenCalledWith('nuz_runs');
-    expect(fromMock).toHaveBeenCalledWith('nuz_solo_runs');
-    const blobForRun = soloBlobUpserts.filter((r) => (r as { id?: string }).id === state.run.id);
-    expect(blobForRun.length).toBeGreaterThanOrEqual(1);
-    expect(blobForRun[blobForRun.length - 1]).toMatchObject({ id: state.run.id, user_id: ANON_ID });
-    expect(state.mode).toBe('solo');
+    expect(fromMock).not.toHaveBeenCalledWith('nuz_solo_runs');
   });
 
   it('hydrateSoloRuns returns [] for logged-in users', async () => {

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
 import i18n from '@/i18n';
 import { motion } from 'framer-motion';
-import { Archive, ArchiveRestore, CloudUpload, Copy, CopyPlus, HardDrive, MoreVertical, Pencil, Trash2 } from 'lucide-react';
+import { Archive, ArchiveRestore, CloudUpload, Copy, CopyPlus, HardDrive, Lock, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { routeOrder, versionChipLabel } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import {
@@ -86,12 +86,15 @@ export default function RunCard({
   index,
   nameOf,
   archived = false,
+  locked = false,
 }: {
   state: RunState;
   entry?: RunEntry;
   index: number;
   nameOf: NameOf;
   archived?: boolean;
+  /** logged out: the run stays listed but cannot be opened */
+  locked?: boolean;
 }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
@@ -104,7 +107,13 @@ export default function RunCard({
   const [nameDraft, setNameDraft] = useState(state.run.name);
   const last = state.encounters[state.encounters.length - 1]?.created_at ?? state.run.created_at;
 
-  const open = () => navigate(localePath(`/nuzlocke/${state.run.id}`));
+  const open = () => {
+    if (locked) {
+      pushToast('info', i18n.t('nuz.toast.loginRequiredRun'));
+      return;
+    }
+    navigate(localePath(`/nuzlocke/${state.run.id}`));
+  };
   const multi = state.mode === 'multi';
 
   return (
@@ -116,8 +125,9 @@ export default function RunCard({
       className={cn(
         'group col-span-12 cursor-pointer rounded-lg border bg-surface1 p-4 transition-all duration-200 hover:-translate-y-1 lg:col-span-6',
         archived ? 'border-hairline/80 opacity-90 hover:border-gold/30' : 'border-hairline hover:border-gold/35',
+        locked && 'opacity-75',
       )}
-      aria-label={t('nuz.openRun', { name: state.run.name })}
+      aria-label={locked ? t('nuz.card.lockedTip') : t('nuz.openRun', { name: state.run.name })}
     >
       {/* row 1 — name / chips */}
       <div className="flex items-center gap-2">
@@ -156,6 +166,11 @@ export default function RunCard({
           </span>
         )}
         <span className="ml-auto flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+          {locked && (
+            <span title={t('nuz.card.lockedTip')} className="text-gold">
+              <Lock size={13} />
+            </span>
+          )}
           <span title={multi ? t('nuz.card.multiTip') : t('nuz.card.soloTip')} className="text-tx-muted">
             {multi ? <CloudUpload size={14} /> : <HardDrive size={14} />}
           </span>

@@ -1,5 +1,5 @@
 /* Open Lobby (Option A): host-only online create, next free slot, own rename. */
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   DEFAULT_RULES,
   MAX_PLAYERS,
@@ -10,6 +10,14 @@ import {
   renamePlayer,
   resolveCreateCrew,
 } from './nuzlocke-store';
+
+vi.mock('./auth', () => ({
+  getAuthUser: () => ({ id: 'test-user' }),
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: { id: 'test-user' }, profile: null }),
+  ensureRunIdentity: async () => undefined,
+  onAuthChange: () => () => undefined,
+}));
 
 function installMemoryLocalStorage(): void {
   const map = new Map<string, string>();

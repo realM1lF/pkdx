@@ -426,29 +426,45 @@ describe('nuzlocke run lifecycle', () => {
   });
 
   it('guest deleteRunForever deletes nuz_solo_runs and does not touch nuz_runs', async () => {
-    vi.useFakeTimers();
     mockUser = null;
     await import('./cloud-sync');
-    const { createRun, deleteRunForever, loadLocalRun } = await loadStore();
+    const { deleteRunForever, loadLocalRun } = await loadStore();
 
-    const { state } = await createRun({
-      name: 'Guest Solo',
-      region: 'kanto',
-      game: 'firered',
-      players: [{ name: 'ME', color: '#FFD60A' }],
-      rules: { ...DEFAULT_RULES },
-      online: false,
-    });
-    await vi.advanceTimersByTimeAsync(950);
-    vi.useRealTimers();
+    const guestId = 'run-guest-delete';
+    const local = {
+      run: {
+        id: guestId,
+        invite_code: null,
+        name: 'Guest Solo',
+        game: 'firered',
+        region: 'kanto',
+        rules: { ...DEFAULT_RULES },
+        status: 'active' as const,
+        created_at: '2026-01-01T00:00:00.000Z',
+      },
+      mode: 'solo' as const,
+      players: [
+        {
+          id: 'player-guest',
+          run_id: guestId,
+          name: 'ME',
+          color: '#FFD60A',
+          slot: 0,
+          created_at: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+      encounters: [],
+    };
+    localStorage.setItem(`pdx2.nuz.run.${guestId}`, JSON.stringify(local));
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([guestId]));
 
-    deleteRunForever(state.run.id);
+    deleteRunForever(guestId);
     await vi.waitFor(() => expect(soloRunsDeleted.length).toBeGreaterThan(0));
 
-    expect(soloRunsDeleted).toContain(state.run.id);
-    expect(runsDeleted.has(state.run.id)).toBe(false);
+    expect(soloRunsDeleted).toContain(guestId);
+    expect(runsDeleted.has(guestId)).toBe(false);
     expect(fromMock).not.toHaveBeenCalledWith('nuz_runs');
-    expect(loadLocalRun(state.run.id)).toBeNull();
+    expect(loadLocalRun(guestId)).toBeNull();
   });
 
   it('syncAccountRuns puts server-archived runs in archived bucket not active hub', async () => {

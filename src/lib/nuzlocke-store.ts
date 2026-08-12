@@ -1554,7 +1554,7 @@ export interface CreatedRun {
   offlineFallback: boolean;
 }
 
-/** Thrown when online create/join is attempted without a real account. */
+/** Thrown when creating or joining a run is attempted without a real account. */
 export class NuzLoginRequiredError extends Error {
   constructor() {
     super('login_required');
@@ -1593,10 +1593,11 @@ async function insertRunWithFreshInvite(
 
 export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   const wantOnline = cfg.online && isMultiCapable();
-  /* Online/Multi needs a real account so runs sync across devices. Solo stays
-   * guest-friendly (local-only). */
-  if (wantOnline && !getAuthUser()) {
-    pushToast('info', i18n.t('nuz.toast.loginRequiredOnline'));
+  /* Every run — solo included — belongs to an account: the DB row is the
+   * source of truth, localStorage only mirrors it. Without an account a run
+   * would be stuck on one browser. */
+  if (!getAuthUser()) {
+    pushToast('info', i18n.t(wantOnline ? 'nuz.toast.loginRequiredOnline' : 'nuz.toast.loginRequiredRun'));
     throw new NuzLoginRequiredError();
   }
 

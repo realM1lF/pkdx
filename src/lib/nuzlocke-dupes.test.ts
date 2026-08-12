@@ -1,9 +1,17 @@
 /* Dupes Clause — evolution family, run-wide (all living players). */
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { clearEvolutionFamilyCache, primeEvolutionFamilyCache } from './nuzlocke-evolution';
 import { evoLineAliveInRun, validateLogDraft } from './nuzlocke-rules';
 import { DEFAULT_RULES, createRun, getRunState, logEncounter, updateEncounter } from './nuzlocke-store';
 import type { RunState } from './nuzlocke-store';
+
+vi.mock('./auth', () => ({
+  getAuthUser: () => ({ id: 'test-user' }),
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: { id: 'test-user' }, profile: null }),
+  ensureRunIdentity: async () => undefined,
+  onAuthChange: () => () => undefined,
+}));
 
 const SQUIRTLE = 7;
 const WARTORTLE = 8;

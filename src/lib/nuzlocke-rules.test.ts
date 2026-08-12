@@ -1,8 +1,16 @@
 /* Badge-driven auto level cap (§A3) — `nextGymInfo` / `effectiveLevelCap`. */
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RULE_PRESETS, effectiveLevelCap, gymCapPreview, nextGymInfo, normalizeRules } from './nuzlocke-rules';
 import { DEFAULT_RULES, createRun } from './nuzlocke-store';
 import type { RunState } from './nuzlocke-store';
+
+vi.mock('./auth', () => ({
+  getAuthUser: () => ({ id: 'test-user' }),
+  isAuthReady: () => true,
+  useAuth: () => ({ ready: true, user: { id: 'test-user' }, profile: null }),
+  ensureRunIdentity: async () => undefined,
+  onAuthChange: () => () => undefined,
+}));
 
 function installMemoryLocalStorage(): void {
   const map = new Map<string, string>();

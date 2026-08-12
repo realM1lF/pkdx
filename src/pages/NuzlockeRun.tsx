@@ -14,7 +14,6 @@ import { regionForRun } from '@/lib/orre';
 import { useRegionData } from '@/lib/mapdata';
 import { useAuth } from '@/lib/auth';
 import {
-  isDeviceLocalSoloRun,
   isRunOwner,
   linkPartnerOf,
   registerRouteNamer,
@@ -58,14 +57,10 @@ export default function NuzlockeRun() {
   const { runId } = useParams<{ runId: string }>();
   const entry = useRunEntry(runId === 'new' ? undefined : runId);
   const rawState = entry?.state ?? null;
-  /* Wait for auth before gating — otherwise a signed-in multi run flashes "missing".
-   * Logged-out users may only open pure device-local solos, not cached multi/DB runs. */
-  const state =
-    !authReady
-      ? null
-      : rawState && (user || isDeviceLocalSoloRun(rawState))
-        ? rawState
-        : null;
+  /* Wait for auth before gating — otherwise a signed-in run flashes "missing".
+   * Runs belong to an account, so logged-out visitors get the login gate below
+   * instead of playing on a localStorage copy. */
+  const state = authReady && user ? rawState : null;
   const region = regionForRun(state?.run.region, state?.run.game) ?? anyRegionById(state?.run.region) ?? REGIONS[0];
   const mapData = useRegionData(region, state?.run.game ?? region.defaultVersion);
 
@@ -148,6 +143,31 @@ export default function NuzlockeRun() {
     const params = new URLSearchParams(location.search);
     params.set('wizard', '1');
     return <Navigate to={`${localePath('/nuzlocke')}?${params.toString()}`} replace />;
+  }
+
+  if (authReady && !user) {
+    return (
+      <div className="mx-auto grid max-w-[1440px] place-items-center px-4 py-32 text-center md:px-8">
+        <img src="/pokeball.svg" alt="" className="h-14 w-14 opacity-60" />
+        <PixelLabel className="mt-4 text-gold">{t('nuz.wizard.loginWallTitle')}</PixelLabel>
+        <h1 className="mt-2 font-display text-[22px] font-bold text-tx-primary">{t('nuz.runLoginRequired')}</h1>
+        <p className="mt-1 max-w-[420px] text-[13px] leading-relaxed text-tx-secondary">{t('nuz.runLoginRequiredBody')}</p>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+          <LocaleLink
+            to="/account"
+            className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-pixel text-[8px] tracking-[0.08em] text-tx-primary"
+          >
+            {t('nuz.wizard.loginCta')}
+          </LocaleLink>
+          <LocaleLink
+            to="/nuzlocke"
+            className="rounded-md border border-hairline2 px-5 py-3 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          >
+            ← {t('nuz.backToRuns')}
+          </LocaleLink>
+        </div>
+      </div>
+    );
   }
 
   if (!authReady || !entry || entry.phase === 'loading') {
