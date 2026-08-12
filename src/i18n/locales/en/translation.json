@@ -2863,6 +2863,19 @@
     "counts": "{{snagged}} snagged · {{missed}} missed · {{remaining}} left",
     "empty": "No shadows match these filters.",
     "openNuzlocke": "Start Orre Nuzlocke",
-    "noSnagHere": "No Shadow at this location for this game."
+    "noSnagHere": "No Shadow at this location for this game.",
+    "noEncounterHere": "Nothing obtainable at this location for this game.",
+    "pokeSpots": {
+      "title": "Poké Spots",
+      "intro": "XD only: place a Poké Snack, wait, then snag whatever shows up. Three species per spot.",
+      "bait": "Poké Snack",
+      "levelRange": "Lv. {{min}}–{{max}}",
+      "rate": "{{rate}}%",
+      "wildChip": "WILD",
+      "shadowChip": "SHADOW",
+      "tradeHint": "Trade {{give}} to {{npc}} for {{receive}}.",
+      "visitors": "Bait thieves",
+      "visitorHint": "Eats the bait, cannot be caught."
+    }
   }
 }

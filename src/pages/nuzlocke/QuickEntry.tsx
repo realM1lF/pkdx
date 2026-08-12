@@ -15,7 +15,7 @@ import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-sto
 import { effectiveLevelCap, isSpecialNode } from '@/lib/nuzlocke-rules';
 import type { LogValidationError } from '@/lib/nuzlocke-rules';
 import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
-import { isOrreGame, shadowsAtLocation } from '@/lib/orre';
+import { encounterOptionsForRoute, isOrreGame } from '@/lib/orre';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
 import { sprites } from '@/lib/sprites';
@@ -33,6 +33,9 @@ interface SpeciesOption {
   label: string;
   rate?: number;
   custom?: boolean;
+  /** Orre only — level band the encounter can roll in (shadows are fixed) */
+  minLevel?: number;
+  maxLevel?: number;
 }
 
 const STATUS_META: Record<NuzEncounterStatus, { labelKey: string; cls: string }> = {
@@ -133,16 +136,22 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     window.setTimeout(() => searchRef.current?.focus(), 50);
   }
 
-  /* route encounter data — Orre uses curated snag lists; else maps.md aggregation */
+  /* route encounter data — Orre uses curated shadow + Poké Spot lists; else maps.md aggregation */
   const routeOptions = useMemo<SpeciesOption[]>(() => {
     if (!routeKey) return [];
     if (isOrreGame(state.run.game)) {
       const bySlug = new Map([...nameIdx.values()].map((e) => [e.name, e]));
       const out: SpeciesOption[] = [];
-      for (const s of shadowsAtLocation(state.run.game, routeKey)) {
-        const e = bySlug.get(s.species);
+      for (const o of encounterOptionsForRoute(state.run.game, routeKey)) {
+        const e = bySlug.get(o.species);
         if (!e) continue;
-        out.push({ id: e.id, label: nameOfPokemon(e.id, lang), rate: 100 });
+        out.push({
+          id: e.id,
+          label: nameOfPokemon(e.id, lang),
+          rate: o.rate,
+          minLevel: o.minLevel,
+          maxLevel: o.maxLevel,
+        });
       }
       return out;
     }
@@ -204,16 +213,11 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     return enc ? enc.status : 'pending';
   };
 
+  /* Orre autofill: shadows are a fixed level, Poké Spot slots start at the band floor */
   const pickSpecies = (o: SpeciesOption) => {
     setSpecies(o);
     setListOpen(false);
-    if (isOrreGame(state.run.game) && routeKey) {
-      const entry = [...nameIdx.values()].find((e) => e.id === o.id);
-      const shadow = entry
-        ? shadowsAtLocation(state.run.game, routeKey).find((s) => s.species === entry.name)
-        : undefined;
-      if (shadow) setLevel(shadow.level);
-    }
+    if (o.minLevel !== undefined) setLevel(o.minLevel);
   };
 
   const fail = (msg: string) => {
@@ -254,6 +258,10 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   /* level-cap warning state (auto cap follows run progress) */
   const cap = effectiveLevelCap(state);
   const overCap = status === 'caught' && cap !== null && level > cap;
+  const levelBand =
+    species && species.minLevel !== undefined && species.maxLevel !== undefined && species.maxLevel > species.minLevel
+      ? { min: species.minLevel, max: species.maxLevel }
+      : null;
 
   useEffect(() => {
     setCapAck(false);
@@ -468,7 +476,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             {options.length === 0 && (
               <div className="px-3 py-2.5 text-[11px] text-tx-muted">
                 {isOrreGame(state.run.game)
-                  ? t('orre.noSnagHere')
+                  ? t('orre.noEncounterHere')
                   : useFullDex || mapData.data.get(routeKey)?.status === 'loaded'
                     ? t('nuz.noMatchTryDex')
                     : t('nuz.scanningEncounters')}
@@ -546,10 +554,16 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             <Plus size={11} />
           </button>
         </div>
-        {overCap && cap !== null && (
+        {overCap && cap !== null ? (
           <span className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gold bg-surface2 px-1.5 font-pixel text-[6px] tracking-[0.06em] text-gold">
             {t('nuz.overCap', { cap })}
           </span>
+        ) : (
+          levelBand && (
+            <span className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-hairline2 bg-surface2 px-1.5 font-pixel text-[6px] tracking-[0.06em] text-tx-muted">
+              {t('orre.pokeSpots.levelRange', levelBand)}
+            </span>
+          )
         )}
       </div>
 

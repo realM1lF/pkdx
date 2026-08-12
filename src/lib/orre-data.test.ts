@@ -53,11 +53,12 @@ describe('orre artifacts', () => {
     expect(snagSpeciesForRoute('colosseum', 'orre-does-not-exist')).toEqual([])
   })
 
-  it('orreRegionForGame only includes snag locations for that game', () => {
+  it('orreRegionForGame only includes obtainable locations for that game', () => {
     const colo = orreRegionForGame('colosseum')
     const xd = orreRegionForGame('xd')
     expect(colo.nodes.length).toBe(new Set(shadowsFor('colosseum').map((s) => s.locationId)).size)
-    expect(xd.nodes.length).toBe(new Set(shadowsFor('xd').map((s) => s.locationId)).size)
+    /* XD adds the Rock and Oasis Poké Spots, which host no shadow */
+    expect(xd.nodes.length).toBe(new Set(shadowsFor('xd').map((s) => s.locationId)).size + 2)
     expect(colo.nodes.some((n) => n.id.startsWith('orre-citadark'))).toBe(false)
     expect(xd.nodes.some((n) => n.id.startsWith('orre-citadark'))).toBe(true)
   })

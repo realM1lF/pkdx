@@ -1,8 +1,9 @@
 import colo from '@/data/orre/colosseum.json'
 import xd from '@/data/orre/xd.json'
+import xdPokeSpots from '@/data/orre/xd-poke-spots.json'
 import type { RegionMap } from './regions'
 import { anyRegionById, freeformRegionById } from './regions-freeform'
-import type { OrreArtifact, OrreGame, OrreShadow } from './orre-types'
+import type { OrreArtifact, OrreGame, OrreShadow, PokeSpot, PokeSpotArtifact } from './orre-types'
 
 export const ORRE_EXPECTED_COUNTS: Record<OrreGame, number> = {
   colosseum: 48,
@@ -14,8 +15,23 @@ const ARTIFACTS: Record<OrreGame, OrreArtifact> = {
   xd: xd as OrreArtifact,
 }
 
+const POKE_SPOTS = xdPokeSpots as PokeSpotArtifact
+
 export function artifactFor(game: OrreGame): OrreArtifact {
   return ARTIFACTS[game]
+}
+
+export function pokeSpotArtifact(): PokeSpotArtifact {
+  return POKE_SPOTS
+}
+
+/** The three XD Poké Spots in story order (Rock → Oasis → Cave). */
+export function pokeSpots(): PokeSpot[] {
+  return [...POKE_SPOTS.spots].sort((a, b) => a.order - b.order)
+}
+
+export function pokeSpotById(id: string): PokeSpot | undefined {
+  return POKE_SPOTS.spots.find((s) => s.id === id)
 }
 
 export function shadowsFor(game: OrreGame): OrreShadow[] {
@@ -51,9 +67,48 @@ export function snagSpeciesForRoute(game: OrreGame, routeKey: string): string[] 
   return shadowsAtLocation(game, routeKey).map((s) => s.species)
 }
 
+/** Species slugs catchable wild at a route_key. Colosseum has no wild encounters. */
+export function wildSpeciesForRoute(game: OrreGame, routeKey: string): string[] {
+  if (game !== 'xd') return []
+  return pokeSpotById(routeKey)?.encounters.map((e) => e.species) ?? []
+}
+
+export interface OrreEncounterOption {
+  species: string
+  kind: 'shadow' | 'wild'
+  /** shadows are guaranteed (100); wild slots carry their Poké Spot rate */
+  rate: number
+  minLevel: number
+  maxLevel: number
+}
+
 /**
- * Orre freeform region filtered to snag locations for one game, ordered by
- * first shadow `order` at that location. Used by Nuzlocke timeline/KPIs so
+ * Everything a Nuzlocke player can obtain at one Orre route_key: the curated
+ * shadows first, then the XD Poké Spot table. Deduped by species — a shadow
+ * always wins over a wild slot of the same species.
+ */
+export function encounterOptionsForRoute(game: OrreGame, routeKey: string): OrreEncounterOption[] {
+  const out: OrreEncounterOption[] = []
+  const seen = new Set<string>()
+  for (const s of shadowsAtLocation(game, routeKey)) {
+    if (seen.has(s.species)) continue
+    seen.add(s.species)
+    out.push({ species: s.species, kind: 'shadow', rate: 100, minLevel: s.level, maxLevel: s.level })
+  }
+  if (game === 'xd') {
+    for (const e of pokeSpotById(routeKey)?.encounters ?? []) {
+      if (seen.has(e.species)) continue
+      seen.add(e.species)
+      out.push({ species: e.species, kind: 'wild', rate: e.rate, minLevel: e.minLevel, maxLevel: e.maxLevel })
+    }
+  }
+  return out
+}
+
+/**
+ * Orre freeform region filtered to the locations one game can yield a Pokémon
+ * at, ordered by first shadow `order` there. XD also lists the three Poké
+ * Spots, two of which host no shadow at all. Used by Nuzlocke timeline/KPIs so
  * Colo runs do not list XD-only Citadark slots (and vice versa).
  */
 export function orreRegionForGame(game: OrreGame): RegionMap {
@@ -80,6 +135,15 @@ export function orreRegionForGame(game: OrreGame): RegionMap {
     const prev = orderByLoc.get(s.locationId)
     if (prev === undefined || s.order < prev) orderByLoc.set(s.locationId, s.order)
   }
+  if (game === 'xd') {
+    /* Poké Spots open right after Cipher Lab (shadow order 14), so slot them
+     * between 14 and the following ONBS block via a fractional order. */
+    for (const spot of pokeSpots()) {
+      const slotted = 14 + spot.order / 10
+      const prev = orderByLoc.get(spot.id)
+      orderByLoc.set(spot.id, prev === undefined ? slotted : Math.min(prev, slotted))
+    }
+  }
 
   const nodes = base.nodes
     .filter((n) => orderByLoc.has(n.id))
@@ -87,11 +151,16 @@ export function orreRegionForGame(game: OrreGame): RegionMap {
     .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id))
     .map((n, i) => ({ ...n, order: i + 1 }))
 
+  const species = new Set(shadowsFor(game).map((s) => s.species))
+  if (game === 'xd') {
+    for (const spot of pokeSpots()) for (const e of spot.encounters) species.add(e.species)
+  }
+
   return {
     ...base,
     versions: [game],
     defaultVersion: game,
-    speciesCount: new Set(shadowsFor(game).map((s) => s.species)).size,
+    speciesCount: species.size,
     nodes,
   }
 }

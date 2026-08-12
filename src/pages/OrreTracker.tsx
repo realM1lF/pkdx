@@ -6,17 +6,98 @@ import Sprite from '@/components/Sprite'
 import { anyRegionById } from '@/lib/regions-freeform'
 import { nodeName } from '@/lib/regions'
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data'
+import type { Lang } from '@/lib/i18n-data'
 import { LocaleLink } from '@/lib/locale-link'
 import { bootNameIndex } from '@/lib/pokeapi'
 import type { DexIndexEntry } from '@/lib/types'
 import { counts, getStatus, setStatus, subscribeOrreProgress } from '@/lib/orre-progress'
-import { shadowsFor } from '@/lib/orre'
+import { pokeSpotArtifact, pokeSpots, shadowsFor } from '@/lib/orre'
 import type { OrreGame, OrreShadow, ShadowStatus } from '@/lib/orre-types'
 import { cn } from '@/lib/utils'
 
 type StatusFilter = 'all' | ShadowStatus
 
 const STATUS_CYCLE: ShadowStatus[] = ['remaining', 'snagged', 'missed']
+
+/** XD-only wild tables — the three Poké Spots, bait-based, no trainer involved. */
+function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; lang: Lang }) {
+  const { t } = useTranslation()
+  const monName = (slug: string) => {
+    const entry = nameIdx.get(slug)
+    return entry ? nameOfPokemon(entry.id, lang) : slug
+  }
+
+  return (
+    <section className="mt-8">
+      <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 className="font-display text-lg font-extrabold tracking-wide text-tx-primary">
+          {t('orre.pokeSpots.title')}
+        </h2>
+        <span className="rounded-full border border-gold/50 px-1.5 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-gold">
+          {t('orre.pokeSpots.bait')}
+        </span>
+        <p className="w-full text-[12px] leading-relaxed text-tx-secondary">{t('orre.pokeSpots.intro')}</p>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        {pokeSpots().map((spot) => (
+          <div key={spot.id} className="rounded-md border border-hairline bg-surface1 p-2.5">
+            <p className="font-display text-[13px] font-bold text-tx-primary">
+              {lang === 'de' ? spot.nameDe : spot.label}
+            </p>
+            <ul className="mt-1.5 divide-y divide-hairline">
+              {spot.encounters.map((e) => {
+                const entry = nameIdx.get(e.species)
+                return (
+                  <li key={e.species} className="flex min-h-[36px] items-center gap-2 py-1">
+                    <span className="h-8 w-8 shrink-0">
+                      {entry ? (
+                        <Sprite id={entry.id} name={monName(e.species)} era="default" className="h-8 w-8" />
+                      ) : (
+                        <span className="block h-8 w-8 rounded bg-surface2" />
+                      )}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+                      {monName(e.species)}
+                    </span>
+                    <span className="shrink-0 font-pixel text-[7px] text-tx-muted">
+                      {t('orre.pokeSpots.levelRange', { min: e.minLevel, max: e.maxLevel })}
+                    </span>
+                    <span className="w-9 shrink-0 text-right text-[11px] tabular-nums text-gold/90">
+                      {t('orre.pokeSpots.rate', { rate: e.rate })}
+                    </span>
+                  </li>
+                )
+              })}
+            </ul>
+            <p className="mt-1.5 text-[11px] leading-snug text-tx-muted">
+              {t('orre.pokeSpots.tradeHint', {
+                give: monName(spot.trade.give),
+                receive: monName(spot.trade.receive),
+                npc: spot.trade.npc,
+              })}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span className="font-pixel text-[8px] tracking-[0.08em] text-tx-muted">{t('orre.pokeSpots.visitors')}:</span>
+        {pokeSpotArtifact().visitors.map((v) => (
+          <span
+            key={v.species}
+            title={t('orre.pokeSpots.visitorHint')}
+            className="flex items-center gap-1.5 rounded-full border border-hairline2 px-2 py-0.5 text-[11px] text-tx-secondary"
+          >
+            {monName(v.species)}
+            <span className="tabular-nums text-tx-muted">{t('orre.pokeSpots.rate', { rate: v.chance })}</span>
+          </span>
+        ))}
+        <span className="text-[11px] text-tx-muted">{t('orre.pokeSpots.visitorHint')}</span>
+      </div>
+    </section>
+  )
+}
 
 export default function OrreTracker() {
   const { t } = useTranslation()
@@ -207,6 +288,8 @@ export default function OrreTracker() {
           </ul>
         )}
       </div>
+
+      {game === 'xd' && <PokeSpotDeck nameIdx={nameIdx} lang={lang} />}
     </div>
   )
 }

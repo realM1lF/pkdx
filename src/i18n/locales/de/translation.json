@@ -2863,6 +2863,19 @@
     "counts": "{{snagged}} geschnappt · {{missed}} verpasst · {{remaining}} offen",
     "empty": "Keine Shadows für diese Filter.",
     "openNuzlocke": "Orre-Nuzlocke starten",
-    "noSnagHere": "Kein Shadow an diesem Ort für dieses Spiel."
+    "noSnagHere": "Kein Shadow an diesem Ort für dieses Spiel.",
+    "noEncounterHere": "An diesem Ort ist in diesem Spiel nichts zu holen.",
+    "pokeSpots": {
+      "title": "Poké-Plätze",
+      "intro": "Nur in XD: Pokésnack auslegen, warten, dann das erscheinende Pokémon schnappen. Drei Arten pro Platz.",
+      "bait": "Pokésnack",
+      "levelRange": "Lv. {{min}}–{{max}}",
+      "rate": "{{rate}} %",
+      "wildChip": "WILD",
+      "shadowChip": "SHADOW",
+      "tradeHint": "{{give}} bei {{npc}} gegen {{receive}} tauschen.",
+      "visitors": "Snack-Diebe",
+      "visitorHint": "Frisst den Köder, nicht fangbar."
+    }
   }
 }
