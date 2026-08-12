@@ -39,3 +39,12 @@ export function allLocationIds(game?: OrreGame): string[] {
   }
   return [...set].sort()
 }
+
+export function isOrreGame(game: string | null | undefined): game is OrreGame {
+  return game === 'colosseum' || game === 'xd'
+}
+
+/** Species slugs snaggable at a Nuzlocke route_key for an Orre game. */
+export function snagSpeciesForRoute(game: OrreGame, routeKey: string): string[] {
+  return shadowsAtLocation(game, routeKey).map((s) => s.species)
+}

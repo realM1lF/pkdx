@@ -22,7 +22,8 @@
     "about": "About",
     "feedback": "Feedback",
     "support": "Spende",
-    "more": "Mehr"
+    "more": "Mehr",
+    "orre": "Orre"
   },
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
@@ -2838,5 +2839,29 @@
       "versionOmegaRuby": "Omega Rubin",
       "versionAlphaSapphire": "Alpha Saphir"
     }
+  },
+  "orre": {
+    "eyebrow": "ORRE",
+    "title": "Shadow-Tracker",
+    "intro": "Alle Shadow-Pokémon in Colosseum (48) und XD (83) tracken. Als geschnappt oder verpasst markieren und sehen, wo Trainer wieder auftauchen.",
+    "gameColosseum": "Colosseum",
+    "gameXd": "XD",
+    "filterAll": "Alle",
+    "filterRemaining": "Offen",
+    "filterSnagged": "Geschnappt",
+    "filterMissed": "Verpasst",
+    "requiredOnly": "Nur Pflicht",
+    "searchPlaceholder": "Suche Spezies, Trainer, Ort…",
+    "location": "Ort",
+    "trainer": "Trainer",
+    "level": "Lv.",
+    "reappears": "Wieder da",
+    "statusRemaining": "Offen",
+    "statusSnagged": "Geschnappt",
+    "statusMissed": "Verpasst",
+    "counts": "{{snagged}} geschnappt · {{missed}} verpasst · {{remaining}} offen",
+    "empty": "Keine Shadows für diese Filter.",
+    "openNuzlocke": "Orre-Nuzlocke starten",
+    "noSnagHere": "Kein Shadow an diesem Ort für dieses Spiel."
   }
 }

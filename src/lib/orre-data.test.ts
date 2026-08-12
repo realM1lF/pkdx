@@ -5,6 +5,7 @@ import {
   allLocationIds,
   artifactFor,
   shadowsFor,
+  snagSpeciesForRoute,
 } from './orre'
 import type { OrreGame } from './orre-types'
 
@@ -42,5 +43,12 @@ describe('orre artifacts', () => {
     for (const id of allLocationIds()) {
       expect(nodeIds.has(id)).toBe(true)
     }
+  })
+
+  it('snagSpeciesForRoute returns curated species for a location', () => {
+    const sample = shadowsFor('colosseum')[0]
+    expect(sample).toBeTruthy()
+    expect(snagSpeciesForRoute('colosseum', sample!.locationId)).toContain(sample!.species)
+    expect(snagSpeciesForRoute('colosseum', 'orre-does-not-exist')).toEqual([])
   })
 })

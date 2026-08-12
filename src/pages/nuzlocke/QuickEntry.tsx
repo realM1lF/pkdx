@@ -15,6 +15,7 @@ import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-sto
 import { effectiveLevelCap, isSpecialNode } from '@/lib/nuzlocke-rules';
 import type { LogValidationError } from '@/lib/nuzlocke-rules';
 import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
+import { isOrreGame, shadowsAtLocation } from '@/lib/orre';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
 import { sprites } from '@/lib/sprites';
@@ -132,9 +133,19 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     window.setTimeout(() => searchRef.current?.focus(), 50);
   }
 
-  /* route encounter data (maps.md §0 aggregation, run's game version) */
+  /* route encounter data — Orre uses curated snag lists; else maps.md aggregation */
   const routeOptions = useMemo<SpeciesOption[]>(() => {
     if (!routeKey) return [];
+    if (isOrreGame(state.run.game)) {
+      const bySlug = new Map([...nameIdx.values()].map((e) => [e.name, e]));
+      const out: SpeciesOption[] = [];
+      for (const s of shadowsAtLocation(state.run.game, routeKey)) {
+        const e = bySlug.get(s.species);
+        if (!e) continue;
+        out.push({ id: e.id, label: nameOfPokemon(e.id, lang), rate: 100 });
+      }
+      return out;
+    }
     const nd = mapData.data.get(routeKey);
     if (!nd || nd.status !== 'loaded') return [];
     const best = new Map<number, SpeciesOption>();
@@ -146,7 +157,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       }
     }
     return [...best.values()].sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0));
-  }, [routeKey, mapData.data, nameIdx, lang]);
+  }, [routeKey, mapData.data, nameIdx, lang, state.run.game]);
 
   const useFullDex = randomizer || fullDex;
 
@@ -191,6 +202,18 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const nodeState = (routeK: string): NuzEncounterStatus | 'pending' => {
     const enc = player ? encounterAt(state, player.id, routeK) : undefined;
     return enc ? enc.status : 'pending';
+  };
+
+  const pickSpecies = (o: SpeciesOption) => {
+    setSpecies(o);
+    setListOpen(false);
+    if (isOrreGame(state.run.game) && routeKey) {
+      const entry = [...nameIdx.values()].find((e) => e.id === o.id);
+      const shadow = entry
+        ? shadowsAtLocation(state.run.game, routeKey).find((s) => s.species === entry.name)
+        : undefined;
+      if (shadow) setLevel(shadow.level);
+    }
   };
 
   const fail = (msg: string) => {
@@ -407,8 +430,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             } else if (e.key === 'Enter') {
               e.preventDefault();
               if (!species && options[activeIdx]) {
-                setSpecies(options[activeIdx]);
-                setListOpen(false);
+                pickSpecies(options[activeIdx]);
               } else {
                 submit();
               }
@@ -445,9 +467,11 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           >
             {options.length === 0 && (
               <div className="px-3 py-2.5 text-[11px] text-tx-muted">
-                {useFullDex || mapData.data.get(routeKey)?.status === 'loaded'
-                  ? t('nuz.noMatchTryDex')
-                  : t('nuz.scanningEncounters')}
+                {isOrreGame(state.run.game)
+                  ? t('orre.noSnagHere')
+                  : useFullDex || mapData.data.get(routeKey)?.status === 'loaded'
+                    ? t('nuz.noMatchTryDex')
+                    : t('nuz.scanningEncounters')}
               </div>
             )}
             {randomizer && (
@@ -464,8 +488,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 onMouseEnter={() => setActiveIdx(i)}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
-                  setSpecies(o);
-                  setListOpen(false);
+                  pickSpecies(o);
                 }}
                 className={cn('flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[12px]', i === activeIdx ? 'bg-surface3 text-tx-primary' : 'text-tx-secondary')}
               >

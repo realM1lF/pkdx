@@ -54,6 +54,7 @@ const About = lazyWithReload(() => import('./pages/About'));
 const Feedback = lazyWithReload(() => import('./pages/Feedback'));
 const Support = lazyWithReload(() => import('./pages/Support'));
 const Account = lazyWithReload(() => import('./pages/Account'));
+const OrreTracker = lazyWithReload(() => import('./pages/OrreTracker'));
 
 function PageFallback() {
   /* full-screen pokeball gate while lazy chunks load — same look as the
@@ -88,6 +89,7 @@ export default function App() {
                 <Route path="maps/hoenn/:slug" element={<RoutePage region="hoenn" />} />
                 <Route path="maps/:region" element={<MapRegion />} />
                 <Route path="nuzlocke" element={<Nuzlocke />} />
+                <Route path="orre" element={<OrreTracker />} />
                 {/* static SEO guides must outrank the dynamic run ID route */}
                 <Route path="nuzlocke/soul-link" element={<NuzlockeGuidePage />} />
                 <Route path="nuzlocke/firered" element={<NuzlockeGuidePage />} />

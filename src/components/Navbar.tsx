@@ -22,6 +22,7 @@ const LINKS = [
   { to: '/items', key: 'nav.items' },
   { to: '/maps', key: 'nav.maps' },
   { to: '/nuzlocke', key: 'nav.nuzlocke' },
+  { to: '/orre', key: 'nav.orre' },
   { to: '/team', key: 'nav.team' },
   { to: '/versus', key: 'nav.versus' },
 ];
