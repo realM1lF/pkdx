@@ -310,3 +310,53 @@ orre-under-subway-nelis
 `orre-prestige-precept-center-1..3`, `orre-phenac-stadium-1..4`,
 `orre-outskirt-stand-1..2`, `orre-cipher-key-lair-1..14`,
 `orre-citadark-isle-1..36`, `orre-gateon-port-lighthouse`.
+
+## XD: Poké Spots (wild encounters)
+
+**Artifact:** `src/data/orre/xd-poke-spots.json` — 3 spots × 3 species,
+plus 2 non-catchable visitors. XD only; Colosseum has no wild encounters.
+
+### Sources
+
+- Bulbapedia, [Poké Spot](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9_Spot)
+  (primary — species, rarity slots, level ranges, bait mechanic)
+- Bulbapedia, [Duking](https://bulbapedia.bulbagarden.net/wiki/Duking) and
+  [Walkthrough:Pokémon XD/Part 3](https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_XD/Part_3)
+  (the three Duking trades and when the spots open)
+- PokéWiki DE, Wüsten-Platz / Oasen-Platz / Höhlen-Platz
+  (cross-check — official German location names)
+- Serebii, [XD PokéSpot](https://serebii.net/xd/pokespot.shtml)
+  (tertiary, used only where the two wikis agreed)
+
+### Conflicts resolved
+
+- **Level ranges (Serebii vs. the wikis)**: Serebii lists a flat 10–20 for
+  every slot. Bulbapedia and PokéWiki both give species-specific maxima —
+  Sandshrew to 23, the Cave trio to 21, everything else to 20. The
+  species-specific values won (two independent wikis over one aggregator).
+- **German spot names**: `nameDe` uses the official game terms
+  **Wüsten-Platz**, **Oasen-Platz**, **Höhlen-Platz**. The literal
+  translations "Fels-Poké-Spot" / "Höhlen-Poké-Spot" appear in fan wikis
+  but not in the German release; the pre-existing region node for the Cave
+  spot carried the wrong `nameDe` and was corrected.
+- **Munchlax and Bonsly are not encounters**: both walk up and eat the
+  bait, and neither can be battled or caught. They live in `visitors`, not
+  in `encounters`, so the three encounter rates still sum to 100 % per
+  spot. Munchlax repeats (its owner refunds 10 Poké Snacks plus a herbal
+  medicine); Bonsly is a one-time story chain after the S.S. Libra and is
+  returned to its Trainer at ONBS.
+
+### Design decisions
+
+- **Rarity slot = catch difficulty, not just frequency.** The 15 % slot of
+  each spot (Trapinch / Surskit / Wooper) is exactly the species Duking
+  asks for, so the trade hint is derived from `rarest` rather than stored
+  twice.
+- **`orre-rock-poke-spot` and `orre-oasis-poke-spot` are new region
+  nodes.** They host no shadow, so before this change the region had no
+  slot for them at all. They are inserted in story order (after Cipher Lab,
+  before the Cave spot and ONBS) with `kind: "route"`, and
+  `orreRegionForGame('xd')` now yields 85 nodes instead of 83. Colosseum
+  is untouched.
+- **Bait is a slug (`poke-snack`), not display text**, per the
+  English-data-model rule; the UI resolves it through i18n.

@@ -1,0 +1,66 @@
+{
+  "game": "xd",
+  "source": "Bulbapedia (Poké Spot; Duking; Walkthrough:Pokémon XD/Part 3), cross-checked with PokéWiki DE (Wüsten-Platz, Oasen-Platz, Höhlen-Platz); Serebii (XD PokéSpot) as tertiary",
+  "verifiedAt": "2026-08-12",
+  "bait": "poke-snack",
+  "spots": [
+    {
+      "id": "orre-rock-poke-spot",
+      "terrain": "rock",
+      "label": "Rock Poké Spot",
+      "nameDe": "Wüsten-Platz",
+      "order": 1,
+      "rarest": "trapinch",
+      "trade": { "give": "trapinch", "receive": "meditite", "npc": "Duking" },
+      "encounters": [
+        { "species": "sandshrew", "minLevel": 10, "maxLevel": 23, "rate": 50 },
+        { "species": "gligar", "minLevel": 10, "maxLevel": 20, "rate": 35 },
+        { "species": "trapinch", "minLevel": 10, "maxLevel": 20, "rate": 15 }
+      ]
+    },
+    {
+      "id": "orre-oasis-poke-spot",
+      "terrain": "oasis",
+      "label": "Oasis Poké Spot",
+      "nameDe": "Oasen-Platz",
+      "order": 2,
+      "rarest": "surskit",
+      "trade": { "give": "surskit", "receive": "shuckle", "npc": "Duking" },
+      "encounters": [
+        { "species": "hoppip", "minLevel": 10, "maxLevel": 20, "rate": 50 },
+        { "species": "phanpy", "minLevel": 10, "maxLevel": 20, "rate": 35 },
+        { "species": "surskit", "minLevel": 10, "maxLevel": 20, "rate": 15 }
+      ]
+    },
+    {
+      "id": "orre-cave-poke-spot",
+      "terrain": "cave",
+      "label": "Cave Poké Spot",
+      "nameDe": "Höhlen-Platz",
+      "order": 3,
+      "rarest": "wooper",
+      "trade": { "give": "wooper", "receive": "larvitar", "npc": "Duking" },
+      "encounters": [
+        { "species": "zubat", "minLevel": 10, "maxLevel": 21, "rate": 50 },
+        { "species": "aron", "minLevel": 10, "maxLevel": 21, "rate": 35 },
+        { "species": "wooper", "minLevel": 10, "maxLevel": 21, "rate": 15 }
+      ]
+    }
+  ],
+  "visitors": [
+    {
+      "species": "munchlax",
+      "chance": 10,
+      "catchable": false,
+      "repeatable": true,
+      "note": "Eats the bait instead of a wild Pokémon appearing; no battle. Its owner (Herb Shop, Gateon Port) replaces 10 Poké Snacks and adds one random herbal medicine."
+    },
+    {
+      "species": "bonsly",
+      "chance": 30,
+      "catchable": false,
+      "repeatable": false,
+      "note": "One-time event chain after the S.S. Libra encounter. Approach slowly to return it to its Trainer at ONBS; it never appears at any Poké Spot again and the player does not keep it."
+    }
+  ]
+}

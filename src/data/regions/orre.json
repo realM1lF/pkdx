@@ -11,7 +11,7 @@
   ],
   "defaultVersion": "colosseum",
   "coverage": 1,
-  "speciesCount": 130,
+  "speciesCount": 138,
   "nodes": [
     {
       "id": "orre-phenac-mayors-house",
@@ -654,13 +654,33 @@
       "locationSlug": null
     },
     {
-      "id": "orre-cave-poke-spot",
-      "label": "Cave Poke Spot",
-      "nameDe": "Höhlen-Poké-Spot",
-      "kind": "dungeon",
+      "id": "orre-rock-poke-spot",
+      "label": "Rock Poké Spot",
+      "nameDe": "Wüsten-Platz",
+      "kind": "route",
       "x": 0,
       "y": 0,
       "order": 65,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-oasis-poke-spot",
+      "label": "Oasis Poké Spot",
+      "nameDe": "Oasen-Platz",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 66,
+      "locationSlug": null
+    },
+    {
+      "id": "orre-cave-poke-spot",
+      "label": "Cave Poké Spot",
+      "nameDe": "Höhlen-Platz",
+      "kind": "route",
+      "x": 0,
+      "y": 0,
+      "order": 67,
       "locationSlug": null
     },
     {
@@ -670,7 +690,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 66,
+      "order": 68,
       "locationSlug": null
     },
     {
@@ -680,7 +700,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 67,
+      "order": 69,
       "locationSlug": null
     },
     {
@@ -690,7 +710,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 68,
+      "order": 70,
       "locationSlug": null
     },
     {
@@ -700,7 +720,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 69,
+      "order": 71,
       "locationSlug": null
     },
     {
@@ -710,7 +730,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 70,
+      "order": 72,
       "locationSlug": null
     },
     {
@@ -720,7 +740,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 71,
+      "order": 73,
       "locationSlug": null
     },
     {
@@ -730,7 +750,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 72,
+      "order": 74,
       "locationSlug": null
     },
     {
@@ -740,7 +760,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 73,
+      "order": 75,
       "locationSlug": null
     },
     {
@@ -750,7 +770,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 74,
+      "order": 76,
       "locationSlug": null
     },
     {
@@ -760,7 +780,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 75,
+      "order": 77,
       "locationSlug": null
     },
     {
@@ -770,7 +790,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 76,
+      "order": 78,
       "locationSlug": null
     },
     {
@@ -780,7 +800,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 77,
+      "order": 79,
       "locationSlug": null
     },
     {
@@ -790,7 +810,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 78,
+      "order": 80,
       "locationSlug": null
     },
     {
@@ -800,7 +820,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 79,
+      "order": 81,
       "locationSlug": null
     },
     {
@@ -810,7 +830,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 80,
+      "order": 82,
       "locationSlug": null
     },
     {
@@ -820,7 +840,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 81,
+      "order": 83,
       "locationSlug": null
     },
     {
@@ -830,7 +850,7 @@
       "kind": "city",
       "x": 0,
       "y": 0,
-      "order": 82,
+      "order": 84,
       "locationSlug": null
     },
     {
@@ -840,7 +860,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 83,
+      "order": 85,
       "locationSlug": null
     },
     {
@@ -850,7 +870,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 84,
+      "order": 86,
       "locationSlug": null
     },
     {
@@ -860,7 +880,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 85,
+      "order": 87,
       "locationSlug": null
     },
     {
@@ -870,7 +890,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 86,
+      "order": 88,
       "locationSlug": null
     },
     {
@@ -880,7 +900,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 87,
+      "order": 89,
       "locationSlug": null
     },
     {
@@ -890,7 +910,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 88,
+      "order": 90,
       "locationSlug": null
     },
     {
@@ -900,7 +920,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 89,
+      "order": 91,
       "locationSlug": null
     },
     {
@@ -910,7 +930,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 90,
+      "order": 92,
       "locationSlug": null
     },
     {
@@ -920,7 +940,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 91,
+      "order": 93,
       "locationSlug": null
     },
     {
@@ -930,7 +950,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 92,
+      "order": 94,
       "locationSlug": null
     },
     {
@@ -940,7 +960,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 93,
+      "order": 95,
       "locationSlug": null
     },
     {
@@ -950,7 +970,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 94,
+      "order": 96,
       "locationSlug": null
     },
     {
@@ -960,7 +980,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 95,
+      "order": 97,
       "locationSlug": null
     },
     {
@@ -970,7 +990,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 96,
+      "order": 98,
       "locationSlug": null
     },
     {
@@ -980,7 +1000,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 97,
+      "order": 99,
       "locationSlug": null
     },
     {
@@ -990,7 +1010,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 98,
+      "order": 100,
       "locationSlug": null
     },
     {
@@ -1000,7 +1020,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 99,
+      "order": 101,
       "locationSlug": null
     },
     {
@@ -1010,7 +1030,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 100,
+      "order": 102,
       "locationSlug": null
     },
     {
@@ -1020,7 +1040,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 101,
+      "order": 103,
       "locationSlug": null
     },
     {
@@ -1030,7 +1050,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 102,
+      "order": 104,
       "locationSlug": null
     },
     {
@@ -1040,7 +1060,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 103,
+      "order": 105,
       "locationSlug": null
     },
     {
@@ -1050,7 +1070,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 104,
+      "order": 106,
       "locationSlug": null
     },
     {
@@ -1060,7 +1080,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 105,
+      "order": 107,
       "locationSlug": null
     },
     {
@@ -1070,7 +1090,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 106,
+      "order": 108,
       "locationSlug": null
     },
     {
@@ -1080,7 +1100,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 107,
+      "order": 109,
       "locationSlug": null
     },
     {
@@ -1090,7 +1110,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 108,
+      "order": 110,
       "locationSlug": null
     },
     {
@@ -1100,7 +1120,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 109,
+      "order": 111,
       "locationSlug": null
     },
     {
@@ -1110,7 +1130,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 110,
+      "order": 112,
       "locationSlug": null
     },
     {
@@ -1120,7 +1140,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 111,
+      "order": 113,
       "locationSlug": null
     },
     {
@@ -1130,7 +1150,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 112,
+      "order": 114,
       "locationSlug": null
     },
     {
@@ -1140,7 +1160,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 113,
+      "order": 115,
       "locationSlug": null
     },
     {
@@ -1150,7 +1170,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 114,
+      "order": 116,
       "locationSlug": null
     },
     {
@@ -1160,7 +1180,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 115,
+      "order": 117,
       "locationSlug": null
     },
     {
@@ -1170,7 +1190,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 116,
+      "order": 118,
       "locationSlug": null
     },
     {
@@ -1180,7 +1200,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 117,
+      "order": 119,
       "locationSlug": null
     },
     {
@@ -1190,7 +1210,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 118,
+      "order": 120,
       "locationSlug": null
     },
     {
@@ -1200,7 +1220,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 119,
+      "order": 121,
       "locationSlug": null
     },
     {
@@ -1210,7 +1230,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 120,
+      "order": 122,
       "locationSlug": null
     },
     {
@@ -1220,7 +1240,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 121,
+      "order": 123,
       "locationSlug": null
     },
     {
@@ -1230,7 +1250,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 122,
+      "order": 124,
       "locationSlug": null
     },
     {
@@ -1240,7 +1260,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 123,
+      "order": 125,
       "locationSlug": null
     },
     {
@@ -1250,7 +1270,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 124,
+      "order": 126,
       "locationSlug": null
     },
     {
@@ -1260,7 +1280,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 125,
+      "order": 127,
       "locationSlug": null
     },
     {
@@ -1270,7 +1290,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 126,
+      "order": 128,
       "locationSlug": null
     },
     {
@@ -1280,7 +1300,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 127,
+      "order": 129,
       "locationSlug": null
     },
     {
@@ -1290,7 +1310,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 128,
+      "order": 130,
       "locationSlug": null
     },
     {
@@ -1300,7 +1320,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 129,
+      "order": 131,
       "locationSlug": null
     },
     {
@@ -1310,7 +1330,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 130,
+      "order": 132,
       "locationSlug": null
     },
     {
@@ -1320,7 +1340,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 131,
+      "order": 133,
       "locationSlug": null
     },
     {
@@ -1330,7 +1350,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 132,
+      "order": 134,
       "locationSlug": null
     },
     {
@@ -1340,7 +1360,7 @@
       "kind": "dungeon",
       "x": 0,
       "y": 0,
-      "order": 133,
+      "order": 135,
       "locationSlug": null
     }
   ],

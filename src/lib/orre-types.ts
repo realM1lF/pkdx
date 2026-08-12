@@ -28,3 +28,47 @@ export interface OrreArtifact {
 }
 
 export type ShadowStatus = 'remaining' | 'snagged' | 'missed'
+
+export type PokeSpotTerrain = 'rock' | 'oasis' | 'cave'
+
+export interface PokeSpotEncounter {
+  species: string
+  minLevel: number
+  maxLevel: number
+  rate: number
+}
+
+export interface PokeSpotTrade {
+  give: string
+  receive: string
+  npc: string
+}
+
+export interface PokeSpot {
+  id: string
+  terrain: PokeSpotTerrain
+  label: string
+  nameDe: string
+  order: number
+  rarest: string
+  trade: PokeSpotTrade
+  encounters: PokeSpotEncounter[]
+}
+
+/** Poké Spot walk-ins that eat the bait — never battled, never caught. */
+export interface PokeSpotVisitor {
+  species: string
+  chance: number
+  catchable: false
+  repeatable: boolean
+  note: string
+}
+
+export interface PokeSpotArtifact {
+  game: 'xd'
+  source: string
+  verifiedAt: string
+  bait: string
+  spots: PokeSpot[]
+  visitors: PokeSpotVisitor[]
+}
