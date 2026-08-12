@@ -650,11 +650,6 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                   {busy ? t('nuz.wizard.starting') : t('nuz.wizard.startRun')}
                 </button>
               </div>
-              {needsLogin && (
-                <div className="mt-3">
-                  <LoginRequiredNote />
-                </div>
-              )}
             </motion.div>
           )}
         </AnimatePresence>

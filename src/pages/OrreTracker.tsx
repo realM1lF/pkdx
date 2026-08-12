@@ -11,7 +11,7 @@ import { LocaleLink } from '@/lib/locale-link'
 import { bootNameIndex } from '@/lib/pokeapi'
 import type { DexIndexEntry } from '@/lib/types'
 import { counts, getStatus, setStatus, subscribeOrreProgress } from '@/lib/orre-progress'
-import { pokeSpotArtifact, pokeSpots, shadowsFor } from '@/lib/orre'
+import { pokeSpotArtifact, pokeSpots, shadowsFor, ORRE_EXPECTED_COUNTS } from '@/lib/orre'
 import type { OrreGame, OrreShadow, ShadowStatus } from '@/lib/orre-types'
 import { cn } from '@/lib/utils'
 
@@ -158,7 +158,9 @@ export default function OrreTracker() {
         <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('orre.title')}
         </h1>
-        <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">{t('orre.intro')}</p>
+        <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">
+          {t('orre.intro', { colo: ORRE_EXPECTED_COUNTS.colosseum, xd: ORRE_EXPECTED_COUNTS.xd })}
+        </p>
         <p className="mt-2 font-pixel text-[9px] tracking-[0.08em] text-tx-muted">
           {t('orre.counts', tally)}
         </p>

@@ -2852,7 +2852,7 @@
   "orre": {
     "eyebrow": "ORRE",
     "title": "Shadow Tracker",
-    "intro": "Track every Shadow Pokémon in Colosseum (48) and XD (83). Mark snagged or missed and see where trainers reappear.",
+    "intro": "Track every Shadow Pokémon in Colosseum ({{colo}}) and XD ({{xd}}). Mark snagged or missed and see where trainers reappear.",
     "gameColosseum": "Colosseum",
     "gameXd": "XD",
     "filterAll": "All",
@@ -2881,7 +2881,7 @@
       "tradeHint": "Trade {{give}} to {{npc}} for {{receive}}.",
       "visitors": "Bait thieves",
       "visitorHintMunchlax": "Eats the bait, cannot be caught.",
-      "visitorHintBonsly": "Story visitor after S.S. Libra. Approach slowly to return it to its Trainer at ONBS — it is not kept."
+      "visitorHintBonsly": "Story visitor after S.S. Libra. Approach slowly to return it to its Trainer at ONBS. It is not kept."
     }
   }
 }

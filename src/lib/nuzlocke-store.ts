@@ -2367,6 +2367,11 @@ export function deleteRunForever(runId: string): void {
 }
 
 export function duplicateAsSolo(runId: string): string | null {
+  /* Same gate as createRun — a copy is a new run and must belong to an account. */
+  if (!getAuthUser()) {
+    pushToast('info', i18n.t('nuz.toast.loginRequiredRun'));
+    return null;
+  }
   const src = loadLocalRun(runId) ?? entries.get(runId)?.state ?? null;
   if (!src) return null;
   const id = uuid();

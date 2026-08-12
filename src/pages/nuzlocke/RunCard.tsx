@@ -174,6 +174,8 @@ export default function RunCard({
           <span title={multi ? t('nuz.card.multiTip') : t('nuz.card.soloTip')} className="text-tx-muted">
             {multi ? <CloudUpload size={14} /> : <HardDrive size={14} />}
           </span>
+          {/* Logged-out cards stay visible but must not mutate or duplicate locally. */}
+          {!locked && (
           <Popover
             open={menuOpen}
             onClose={() => {
@@ -274,6 +276,7 @@ export default function RunCard({
               <Trash2 size={13} /> {confirm === 'delete' ? t('nuz.card.confirmDelete') : t('nuz.card.deleteForever')}
             </button>
           </Popover>
+          )}
         </span>
       </div>
 

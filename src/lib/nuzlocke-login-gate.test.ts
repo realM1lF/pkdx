@@ -152,6 +152,8 @@ vi.mock('./nuzlocke-linked-teams', () => ({
   syncLinkedTeamsForRun: vi.fn().mockResolvedValue(undefined),
   ensureLinkedTeams: vi.fn().mockResolvedValue(undefined),
   repairAllLinkedTeams: vi.fn().mockResolvedValue(undefined),
+  cloneLinkedTeamsForDuplicate: vi.fn(),
+  deleteLinkedTeamsForRun: vi.fn().mockResolvedValue(undefined),
 }));
 
 describe('nuzlocke login gate', () => {
@@ -325,5 +327,42 @@ describe('nuzlocke login gate', () => {
     });
     unsub();
     stop();
+  });
+
+  it('duplicateAsSolo without account returns null and creates nothing', async () => {
+    mockUser = { id: USER_ID };
+    const { createRun, duplicateAsSolo, readRunIndex } = await loadStore();
+    const { state } = await createRun({
+      name: 'Source Solo',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ME', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const before = readRunIndex().length;
+    mockUser = null;
+    expect(duplicateAsSolo(state.run.id)).toBeNull();
+    expect(readRunIndex()).toHaveLength(before);
+  });
+
+  it('duplicateAsSolo with account creates a solo copy', async () => {
+    mockUser = { id: USER_ID };
+    const { createRun, duplicateAsSolo, loadLocalRun, readRunIndex } = await loadStore();
+    const { state } = await createRun({
+      name: 'Source Solo',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ME', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const before = readRunIndex().length;
+    const copyId = duplicateAsSolo(state.run.id);
+    expect(copyId).toBeTruthy();
+    expect(readRunIndex()).toHaveLength(before + 1);
+    const copy = loadLocalRun(copyId!);
+    expect(copy?.mode).toBe('solo');
+    expect(copy?.run.name).toContain('COPY');
   });
 });

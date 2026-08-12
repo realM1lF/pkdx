@@ -2852,7 +2852,7 @@
   "orre": {
     "eyebrow": "ORRE",
     "title": "Shadow-Tracker",
-    "intro": "Alle Shadow-Pokémon in Colosseum (48) und XD (83) tracken. Als geschnappt oder verpasst markieren und sehen, wo Trainer wieder auftauchen.",
+    "intro": "Alle Shadow-Pokémon in Colosseum ({{colo}}) und XD ({{xd}}) tracken. Als geschnappt oder verpasst markieren und sehen, wo Trainer wieder auftauchen.",
     "gameColosseum": "Colosseum",
     "gameXd": "XD",
     "filterAll": "Alle",
@@ -2881,7 +2881,7 @@
       "tradeHint": "{{give}} bei {{npc}} gegen {{receive}} tauschen.",
       "visitors": "Snack-Diebe",
       "visitorHintMunchlax": "Frisst den Köder, nicht fangbar.",
-      "visitorHintBonsly": "Story-Besuch nach der S.S. Libra. Langsam nähern, um es zu seinem Trainer bei ONBS zurückzubringen — es bleibt nicht im Team."
+      "visitorHintBonsly": "Story-Besuch nach der S.S. Libra. Langsam nähern, um es zu seinem Trainer bei ONBS zurückzubringen. Es bleibt nicht im Team."
     }
   }
 }
