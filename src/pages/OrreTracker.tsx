@@ -9,7 +9,7 @@ import { nameOfPokemon, useLanguage } from '@/lib/i18n-data'
 import { LocaleLink } from '@/lib/locale-link'
 import { bootNameIndex } from '@/lib/pokeapi'
 import type { DexIndexEntry } from '@/lib/types'
-import { counts, getStatus, setStatus } from '@/lib/orre-progress'
+import { counts, getStatus, setStatus, subscribeOrreProgress } from '@/lib/orre-progress'
 import { shadowsFor } from '@/lib/orre'
 import type { OrreGame, OrreShadow, ShadowStatus } from '@/lib/orre-types'
 import { cn } from '@/lib/utils'
@@ -34,6 +34,8 @@ export default function OrreTracker() {
       setNameIdx(new Map(list.map((e) => [e.name, e])))
     })
   }, [])
+
+  useEffect(() => subscribeOrreProgress(() => setTick((n) => n + 1)), [])
 
   const shadows = useMemo(() => shadowsFor(game), [game])
   const tally = useMemo(() => counts(game), [game, tick])

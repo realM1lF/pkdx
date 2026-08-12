@@ -132,6 +132,21 @@ vi.mock('./supabase', async () => {
         upsert: () => Promise.resolve({ data: null, error: null }),
       };
     }
+    if (table === 'orre_shadow_progress') {
+      return {
+        select: () => ({
+          eq: () => Promise.resolve({ data: [], error: null }),
+        }),
+        upsert: () => Promise.resolve({ data: null, error: null }),
+        delete: () => ({
+          eq: () => ({
+            eq: () => ({
+              eq: () => Promise.resolve({ data: null, error: null }),
+            }),
+          }),
+        }),
+      };
+    }
     return chainable({ data: null, error: null });
   });
   return {

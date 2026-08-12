@@ -117,10 +117,11 @@ if (m.body?.code === '42P17') {
 
 /* ---------- 5. account-scoped tables must stay closed ---------- */
 console.log('\n5. Account data (must never be anonymously readable):');
-for (const t of ['profiles', 'teams', 'nuz_solo_runs']) {
+for (const t of ['profiles', 'teams', 'nuz_solo_runs', 'orre_shadow_progress']) {
   const r = await req(`/rest/v1/${t}?select=*&limit=2`);
   if (Array.isArray(r.body) && r.body.length === 0) note('ok', `${t}: empty for anon`);
   else if (Array.isArray(r.body)) note('crit', `${t}: ${r.body.length} rows leaked`);
+  else if (r.body?.code === 'PGRST205' || r.status === 404) note('warn', `${t}: table not deployed yet`);
   else note('warn', `${t}: HTTP ${r.status} ${JSON.stringify(r.body).slice(0, 100)}`);
 }
 

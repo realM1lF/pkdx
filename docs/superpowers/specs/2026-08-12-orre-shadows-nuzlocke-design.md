@@ -40,7 +40,7 @@ src/data/orre/colosseum.json     curated shadows (48)
 src/data/orre/xd.json            curated shadows (83)
 src/data/regions/orre.json       freeform region nodes (locations)
 src/lib/orre.ts                  loaders, types, selectors
-src/lib/orre-progress.ts         tracker localStorage (pdx2.orre.*)
+src/lib/orre-progress.ts         tracker progress (DB truth when logged in; LS cache)
 Tracker pages                    UI under /:lang/…
 Nuzlocke wizard + run            game + region wiring, snag = encounter
 ```
@@ -107,16 +107,19 @@ interface OrreArtifact {
 
 Counts are enforced by tests, not comments: **48** Colosseum, **83** XD.
 
-### Tracker progress (`pdx2.orre.*`)
+### Tracker progress (`orre_shadow_progress` + cache)
 
 Per game, keyed by `shadow.id`:
 
 ```ts
 type ShadowStatus = 'remaining' | 'snagged' | 'missed';
 // missed still shows reappear guidance; does not delete the entry
+// remaining = no DB row (sparse)
 ```
 
-Solo localStorage only in v1 (account sync out of scope unless it falls out of existing patterns for free).
+- **Logged-in (real account):** Supabase table `orre_shadow_progress` is source of truth; `pdx2.orre.progress` is a device cache. Hydrate on login (remote wins), adopt local-only keys once, writes upsert/delete.
+- **Guest:** localStorage only until login.
+- Anonymous multiplayer identities never sync (same `getAuthUser()` / `isRealUser` filter as teams).
 
 ### Nuzlocke encounter semantics
 

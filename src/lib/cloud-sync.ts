@@ -230,6 +230,8 @@ export function bootCloudSync(): void {
       for (const t of pendingTeams) cloudPushTeam(t);
       await adoptLocalSoloRuns();
       await hydrateSoloRuns(user);
+      const orre = await import('./orre-progress');
+      await orre.hydrateOrreProgress(user);
       void import('./nuzlocke-linked-teams').then((m) => m.repairAllLinkedTeams());
     })();
   });
