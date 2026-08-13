@@ -2,11 +2,13 @@
  * (src/pages/detail/WhereToFind.tsx). Kept component-free so it stays
  * unit-testable (fast-refresh rule) and reusable.
  *
- * Wild rows are aggregated per RegionMap node across all versions (best
- * rate wins). Gift / static / trade encounters (STATIC_METHODS — e.g.
- * game-corner prizes, Poké-Flute Snorlax, in-game trades) are flagged
- * `special` with the specific sub-area ('PRIZE CORNER') and version list,
- * so a one-off gift never reads as a wild encounter. */
+ * Wild rows are aggregated per RegionMap node. Optional `version` keeps
+ * only that game's slots (Pidgey Route 1 is 20% FireRed, 45% HeartGold).
+ * Without a filter, all versions stay on one row and the best rate wins.
+ * Gift / static / trade encounters (STATIC_METHODS — e.g. game-corner
+ * prizes, Poké-Flute Snorlax, in-game trades) are flagged `special` with
+ * the specific sub-area ('PRIZE CORNER') and version list, so a one-off
+ * gift never reads as a wild encounter. */
 
 import { displayName } from './pokeapi';
 import { REGIONS } from './regions';
@@ -68,7 +70,26 @@ function resolveArea(areaName: string): NodeHit | null {
   }
 }
 
-/* ---------- aggregation (per node, across versions — best rate) ---------- */
+/* ---------- versions + maps deep-link ---------- */
+
+export function encounterVersions(areas: EncounterAreaEntry[]): string[] {
+  const set = new Set<string>();
+  for (const area of areas) {
+    for (const vd of area.version_details) {
+      if (vd.encounter_details.length > 0) set.add(vd.version.name);
+    }
+  }
+  return [...set].sort();
+}
+
+export function mapsPath(regionId: string, nodeId: string, version?: string | null): string {
+  const q = new URLSearchParams();
+  q.set('node', nodeId);
+  if (version) q.set('v', version);
+  return `/maps/${regionId}?${q.toString()}`;
+}
+
+/* ---------- aggregation (per node; optional version filter) ---------- */
 
 export interface WhereRow {
   key: string;
@@ -91,7 +112,8 @@ export interface WhereRow {
 
 const BUCKET_ORDER: Record<MethodBucket, number> = { WALK: 0, SURF: 1, FISH: 2, OTHER: 3 };
 
-export function aggregate(areas: EncounterAreaEntry[]): WhereRow[] {
+export function aggregate(areas: EncounterAreaEntry[], version?: string | null): WhereRow[] {
+  const filter = version || null;
   const byKey = new Map<
     string,
     WhereRow & { methodSet: Set<string>; versionSet: Set<string>; subSet: Set<string> }
@@ -100,34 +122,36 @@ export function aggregate(areas: EncounterAreaEntry[]): WhereRow[] {
     const base = area.location_area.name.replace(/-area$/, '');
     const hit = resolveArea(area.location_area.name);
     const key = hit ? hit.nodeId : `area:${base}`;
-    let row = byKey.get(key);
-    if (!row) {
-      row = {
-        key,
-        label: hit ? hit.label : displayName(base),
-        sub: null,
-        node: hit ? hit.node : null,
-        region: hit ? hit.region : null,
-        regionPrefix: base.split('-')[0] ?? '',
-        nodeId: hit ? hit.nodeId : null,
-        methods: [],
-        versions: [],
-        special: false,
-        methodSet: new Set<string>(),
-        versionSet: new Set<string>(),
-        subSet: new Set<string>(),
-        maxChance: 0,
-        minLevel: Infinity,
-        maxLevel: -Infinity,
-      };
-      byKey.set(key, row);
-    }
-    if (hit) row.subSet.add(areaShortLabel(area.location_area.name, hit.node.locationSlug ?? base));
     for (const vd of area.version_details) {
+      if (filter && vd.version.name !== filter) continue;
+      if (vd.encounter_details.length === 0) continue;
+      let row = byKey.get(key);
+      if (!row) {
+        row = {
+          key,
+          label: hit ? hit.label : displayName(base),
+          sub: null,
+          node: hit ? hit.node : null,
+          region: hit ? hit.region : null,
+          regionPrefix: base.split('-')[0] ?? '',
+          nodeId: hit ? hit.nodeId : null,
+          methods: [],
+          versions: [],
+          special: false,
+          methodSet: new Set<string>(),
+          versionSet: new Set<string>(),
+          subSet: new Set<string>(),
+          maxChance: 0,
+          minLevel: Infinity,
+          maxLevel: -Infinity,
+        };
+        byKey.set(key, row);
+      }
+      if (hit) row.subSet.add(areaShortLabel(area.location_area.name, hit.node.locationSlug ?? base));
       /* PokéAPI max_chance sums across mutually exclusive methods (can exceed
          100) — sum slots per exact method, then take the max (mapdata parity) */
       const byMethod = new Map<string, number>();
-      if (vd.encounter_details.length > 0) row.versionSet.add(vd.version.name);
+      row.versionSet.add(vd.version.name);
       for (const det of vd.encounter_details) {
         byMethod.set(det.method.name, (byMethod.get(det.method.name) ?? 0) + det.chance);
         row.methodSet.add(det.method.name);

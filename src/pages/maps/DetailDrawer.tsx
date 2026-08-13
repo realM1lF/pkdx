@@ -19,6 +19,8 @@ import { cn } from '@/lib/utils';
 import { aceSpeciesForNode, hasTrainersAtNode } from '@/lib/trainer-data';
 import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
 import { HOENN_ROUTE_PAGES, hoennRoutePagePath } from '@/lib/seo-routes-hoenn';
+import { JOHTO_ROUTE_PAGES, johtoRoutePagePath } from '@/lib/seo-routes-johto';
+import { SINNOH_ROUTE_PAGES, sinnohRoutePagePath } from '@/lib/seo-routes-sinnoh';
 
 const METHOD_ICON: Record<MethodBucket, typeof Footprints> = {
   WALK: Footprints,
@@ -52,14 +54,24 @@ function ItemSprite({ slug }: { slug: string }) {
   );
 }
 
-function EncounterRow({ e, region, node }: { e: EncounterEntry; region: RegionMap; node: MapNode }) {
+function EncounterRow({
+  e,
+  region,
+  node,
+  version,
+}: {
+  e: EncounterEntry;
+  region: RegionMap;
+  node: MapNode;
+  version: string;
+}) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const rgb = accentRgb(region.accent);
   const rare = e.maxChance <= 10;
   return (
     <LocaleLink
-      to={`/pokemon/${e.pokemonId}?from=${region.region}:${node.id}`}
+      to={`/pokemon/${e.pokemonId}?from=${region.region}:${node.id}&v=${version}`}
       className="maps-row group flex h-10 items-center gap-2 border-b border-hairline/60 px-3 transition-colors hover:bg-surface3"
     >
       <span className="maps-row-sprite h-[30px] w-[30px] shrink-0">
@@ -401,7 +413,7 @@ export default function DetailDrawer({
                       <span className="font-sans text-[9px] tabular-nums text-tx-muted">{staticEntries.length}</span>
                     </div>
                     {staticEntries.map((e) => (
-                      <EncounterRow key={`s-${e.pokemonId}-${e.methodChip ?? e.methods.join('-')}`} e={e} region={region} node={node} />
+                      <EncounterRow key={`s-${e.pokemonId}-${e.methodChip ?? e.methods.join('-')}`} e={e} region={region} node={node} version={version} />
                     ))}
                   </section>
                 )}
@@ -414,7 +426,7 @@ export default function DetailDrawer({
                       <span className="font-sans text-[9px] tabular-nums text-tx-muted">{g.entries.length}</span>
                     </div>
                     {g.entries.map((e) => (
-                      <EncounterRow key={`${g.areaSlug}-${e.pokemonId}-${e.methods.join('-')}-${e.methodChip ?? ''}`} e={e} region={region} node={node} />
+                      <EncounterRow key={`${g.areaSlug}-${e.pokemonId}-${e.methods.join('-')}-${e.methodChip ?? ''}`} e={e} region={region} node={node} version={version} />
                     ))}
                   </section>
                 ))}
@@ -484,8 +496,8 @@ export default function DetailDrawer({
               {t('maps.planVersus')}
             </LocaleLink>
           )}
-          {/* SEO content page exists for every Kanto/Hoenn node with
-              encounter data (localized slug from the curated mapping) */}
+          {/* SEO content page exists for every mapped node with
+              framing-version wild encounters (localized slug) */}
           {region.region === 'kanto' && ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={routePagePath(lang, node.id)}
@@ -498,6 +510,24 @@ export default function DetailDrawer({
           {region.region === 'hoenn' && HOENN_ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={hoennRoutePagePath(lang, node.id)}
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+            >
+              <ExternalLink size={12} />
+              {t('maps.openAsPage')}
+            </LocaleLink>
+          )}
+          {region.region === 'johto' && JOHTO_ROUTE_PAGES.has(node.id) && (
+            <LocaleLink
+              to={johtoRoutePagePath(lang, node.id)}
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+            >
+              <ExternalLink size={12} />
+              {t('maps.openAsPage')}
+            </LocaleLink>
+          )}
+          {region.region === 'sinnoh' && SINNOH_ROUTE_PAGES.has(node.id) && (
+            <LocaleLink
+              to={sinnohRoutePagePath(lang, node.id)}
               className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />

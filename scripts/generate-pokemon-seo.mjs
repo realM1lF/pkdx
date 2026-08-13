@@ -19,7 +19,14 @@
  * emerald) and merges a routesHoenn block into src/data/seo-meta-gen.json —
  * the Kanto artifacts stay untouched (the default call above is unchanged).
  *
- * Re-run to refresh:  node scripts/generate-pokemon-seo.mjs [kanto|hoenn]
+ * Johto / Sinnoh (SEO rollout 4, additive):
+ *   node scripts/generate-pokemon-seo.mjs johto
+ *   node scripts/generate-pokemon-seo.mjs sinnoh
+ * write src/data/routes-johto.json (HGSS, framing heartgold) and
+ * src/data/routes-sinnoh.json (DPPt, framing platinum). Pages only for
+ * nodes with wild (non-static) encounters in the framing version.
+ *
+ * Re-run to refresh:  node scripts/generate-pokemon-seo.mjs [kanto|hoenn|johto|sinnoh]
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -29,19 +36,22 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const API = 'https://pokeapi.co/api/v2';
 
 const REGION = process.argv[2] ?? 'kanto';
-if (!['kanto', 'hoenn'].includes(REGION)) {
-  console.error(`usage: node scripts/generate-pokemon-seo.mjs [kanto|hoenn]`);
+if (!['kanto', 'hoenn', 'johto', 'sinnoh'].includes(REGION)) {
+  console.error(`usage: node scripts/generate-pokemon-seo.mjs [kanto|hoenn|johto|sinnoh]`);
   process.exit(1);
 }
 /* Encounter tables are generated for every edition that is playable in the
  * region (cross-gen rollout): Kanto = FRLG + HGSS + GSC (Kanto is the full
- * HGSS/GSC post-game), Hoenn = RSE + ORAS. PokéAPI ships all of them on the
- * same location-area payload (verified live). The curated Pokémon block
- * (buildPokemon) stays FRLG-framed by design — see POKEMON_VERSIONS. */
-const VERSIONS =
-  REGION === 'hoenn'
-    ? ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire']
-    : ['firered', 'leafgreen', 'heartgold', 'soulsilver', 'gold', 'silver', 'crystal'];
+ * HGSS/GSC post-game), Hoenn = RSE + ORAS, Johto = HGSS + GSC, Sinnoh = DPPt.
+ * PokéAPI ships all of them on the same location-area payload (verified live).
+ * The curated Pokémon block (buildPokemon) stays FRLG-framed by design —
+ * see POKEMON_VERSIONS. */
+const VERSIONS = {
+  kanto: ['firered', 'leafgreen', 'heartgold', 'soulsilver', 'gold', 'silver', 'crystal'],
+  hoenn: ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire'],
+  johto: ['heartgold', 'soulsilver', 'gold', 'silver', 'crystal'],
+  sinnoh: ['diamond', 'pearl', 'platinum'],
+}[REGION];
 /* The curated 35-Pokémon location block (pokemon-seo.json) is FRLG-only —
  * the Pokémon detail SEO sections are framed "Datenstand Feuerrot". */
 const POKEMON_VERSIONS = ['firered', 'leafgreen'];
@@ -288,6 +298,15 @@ function aggregateArea(area, locationSlug, version) {
   });
 }
 
+/* PokéAPI names water routes `*-sea-route-N` (Johto already stores that
+ * in regions/johto.json; Sinnoh still has `sinnoh-route-220` etc.). */
+const LOCATION_SLUG_OVERRIDE = {
+  'sinnoh-route-220': 'sinnoh-sea-route-220',
+  'sinnoh-route-223': 'sinnoh-sea-route-223',
+  'sinnoh-route-226': 'sinnoh-sea-route-226',
+  'sinnoh-route-230': 'sinnoh-sea-route-230',
+};
+
 async function buildRoutes() {
   const nodes = kanto.nodes.filter((n) => n.locationSlug);
   const result = {};
@@ -296,8 +315,9 @@ async function buildRoutes() {
     nodes,
     async (node) => {
       let loc;
+      const locSlug = LOCATION_SLUG_OVERRIDE[node.id] ?? node.locationSlug;
       try {
-        loc = await get(`${API}/location/${node.locationSlug}`);
+        loc = await get(`${API}/location/${locSlug}`);
       } catch (e) {
         console.warn(`  [skip] ${node.id}: ${e.message}`);
         return;
@@ -309,7 +329,7 @@ async function buildRoutes() {
         const groups = areas
           .map((a) => ({
             areaSlug: a.name,
-            label: areaShortLabel(a.name, node.locationSlug),
+            label: areaShortLabel(a.name, locSlug),
             rows: aggregateArea(a, node.locationSlug, v),
           }))
           .filter((g) => g.rows.length > 0);
@@ -506,15 +526,139 @@ const HOENN_ROUTE_SLUGS = {
   'ever-grande-city': ['prachtpolis-city', 'ever-grande-city'],
 };
 
+/* slug mapping (mirror of src/lib/seo-routes-johto.ts — keep in sync!) */
+const JOHTO_ROUTE_SLUGS = {
+  'new-bark-town': ['neuborkia', 'new-bark-town'],
+  'johto-route-29': ['route-29', 'route-29'],
+  'cherrygrove-city': ['rosalia-city', 'cherrygrove-city'],
+  'johto-route-30': ['route-30', 'route-30'],
+  'johto-route-31': ['route-31', 'route-31'],
+  'violet-city': ['viola-city', 'violet-city'],
+  'sprout-tower': ['knofensa-turm', 'sprout-tower'],
+  'johto-route-32': ['route-32', 'route-32'],
+  'union-cave': ['einheitstunnel', 'union-cave'],
+  'ruins-of-alph': ['alph-ruinen', 'ruins-of-alph'],
+  'johto-route-33': ['route-33', 'route-33'],
+  'azalea-town': ['azalea-city', 'azalea-town'],
+  'slowpoke-well': ['flegmon-brunnen', 'slowpoke-well'],
+  'ilex-forest': ['steineichenwald', 'ilex-forest'],
+  'johto-route-34': ['route-34', 'route-34'],
+  'goldenrod-city': ['dukatia-city', 'goldenrod-city'],
+  'johto-route-35': ['route-35', 'route-35'],
+  'national-park': ['nationalpark', 'national-park'],
+  'johto-route-36': ['route-36', 'route-36'],
+  'ecruteak-city': ['teak-city', 'ecruteak-city'],
+  'burned-tower': ['turmruine', 'burned-tower'],
+  'johto-route-37': ['route-37', 'route-37'],
+  'johto-route-38': ['route-38', 'route-38'],
+  'johto-route-39': ['route-39', 'route-39'],
+  'olivine-city': ['oliviana-city', 'olivine-city'],
+  'johto-route-40': ['route-40', 'route-40'],
+  'johto-route-41': ['route-41', 'route-41'],
+  'whirl-islands': ['strudelinseln', 'whirl-islands'],
+  'cianwood-city': ['anemonia-city', 'cianwood-city'],
+  'bell-tower': ['glockenturm', 'bell-tower'],
+  'johto-route-42': ['route-42', 'route-42'],
+  'mt-mortar': ['kesselberg', 'mt-mortar'],
+  'mahogany-town': ['mahagonia-city', 'mahogany-town'],
+  'johto-route-43': ['route-43', 'route-43'],
+  'lake-of-rage': ['see-des-zorns', 'lake-of-rage'],
+  'johto-route-44': ['route-44', 'route-44'],
+  'ice-path': ['eispfad', 'ice-path'],
+  'blackthorn-city': ['ebenholz-city', 'blackthorn-city'],
+  'dragons-den': ['drachenhoehle', 'dragons-den'],
+  'johto-route-45': ['route-45', 'route-45'],
+  'dark-cave': ['dunkelhoehle', 'dark-cave'],
+  'johto-route-46': ['route-46', 'route-46'],
+  'mt-silver': ['silberberg', 'mt-silver'],
+  'johto-route-47': ['route-47', 'route-47'],
+  'cliff-cave': ['felsenhoehle', 'cliff-cave'],
+  'johto-route-48': ['route-48', 'route-48'],
+  'johto-safari-zone': ['safari-zone', 'safari-zone'],
+};
+
+/* slug mapping (mirror of src/lib/seo-routes-sinnoh.ts — keep in sync!) */
+const SINNOH_ROUTE_SLUGS = {
+  'twinleaf-town': ['zweiblattdorf', 'twinleaf-town'],
+  'sinnoh-route-201': ['route-201', 'route-201'],
+  'sandgem-town': ['sandgemme', 'sandgem-town'],
+  'sinnoh-route-202': ['route-202', 'route-202'],
+  'jubilife-city': ['jubelstadt', 'jubilife-city'],
+  'sinnoh-route-203': ['route-203', 'route-203'],
+  'oreburgh-city': ['erzelingen', 'oreburgh-city'],
+  'oreburgh-mine': ['erzelingen-mine', 'oreburgh-mine'],
+  'sinnoh-route-204': ['route-204', 'route-204'],
+  'ravaged-path': ['verwuesteter-pfad', 'ravaged-path'],
+  'floaroma-town': ['flori', 'floaroma-town'],
+  'sinnoh-route-205': ['route-205', 'route-205'],
+  'valley-windworks': ['windkraftwerk', 'valley-windworks'],
+  'eterna-forest': ['ewigwald', 'eterna-forest'],
+  'eterna-city': ['ewigenau', 'eterna-city'],
+  'sinnoh-route-206': ['route-206', 'route-206'],
+  'wayward-cave': ['bizarre-hoehle', 'wayward-cave'],
+  'sinnoh-route-207': ['route-207', 'route-207'],
+  'mt-coronet': ['kraterberg', 'mt-coronet'],
+  'sinnoh-route-208': ['route-208', 'route-208'],
+  'hearthome-city': ['herzhofen', 'hearthome-city'],
+  'sinnoh-route-209': ['route-209', 'route-209'],
+  'lost-tower': ['turm-der-ruhenden', 'lost-tower'],
+  'solaceon-town': ['trostu', 'solaceon-town'],
+  'solaceon-ruins': ['trostu-ruinen', 'solaceon-ruins'],
+  'sinnoh-route-210': ['route-210', 'route-210'],
+  'celestic-town': ['elyses', 'celestic-town'],
+  'sinnoh-route-211': ['route-211', 'route-211'],
+  'sinnoh-route-212': ['route-212', 'route-212'],
+  'pastoria-city': ['weideburg', 'pastoria-city'],
+  'great-marsh': ['grossmoor', 'great-marsh'],
+  'sinnoh-route-213': ['route-213', 'route-213'],
+  'sinnoh-route-214': ['route-214', 'route-214'],
+  'veilstone-city': ['schleiede', 'veilstone-city'],
+  'sinnoh-route-215': ['route-215', 'route-215'],
+  'sinnoh-route-218': ['route-218', 'route-218'],
+  'canalave-city': ['fleetburg', 'canalave-city'],
+  'iron-island': ['eiseninsel', 'iron-island'],
+  'sinnoh-route-216': ['route-216', 'route-216'],
+  'sinnoh-route-217': ['route-217', 'route-217'],
+  'snowpoint-city': ['blizzach', 'snowpoint-city'],
+  'spear-pillar': ['speersaeule', 'spear-pillar'],
+  'sunyshore-city': ['sonnewik', 'sunyshore-city'],
+  'sinnoh-victory-road': ['siegesstrasse', 'victory-road'],
+  'turnback-cave': ['hoehle-der-umkehr', 'turnback-cave'],
+  'stark-mountain': ['kahlberg', 'stark-mountain'],
+  'sinnoh-route-219': ['route-219', 'route-219'],
+  'sinnoh-route-220': ['route-220', 'route-220'],
+  'sinnoh-route-221': ['route-221', 'route-221'],
+  'sinnoh-route-222': ['route-222', 'route-222'],
+  'sinnoh-route-223': ['route-223', 'route-223'],
+  'sinnoh-route-224': ['route-224', 'route-224'],
+  'fight-area': ['kampfzone', 'fight-area'],
+  'sinnoh-route-225': ['route-225', 'route-225'],
+  'survival-area': ['ueberlebensareal', 'survival-area'],
+  'sinnoh-route-226': ['route-226', 'route-226'],
+  'sinnoh-route-227': ['route-227', 'route-227'],
+  'sinnoh-route-228': ['route-228', 'route-228'],
+  'resort-area': ['erholungsgebiet', 'resort-area'],
+  'sinnoh-route-229': ['route-229', 'route-229'],
+  'sinnoh-route-230': ['route-230', 'route-230'],
+  'distortion-world': ['zerrwelt', 'distortion-world'],
+};
+
 const writeJson = (file, data) => {
   writeFileSync(path.join(root, file), `${JSON.stringify(data, null, 1)}\n`);
   console.log(`[gen] wrote ${file}`);
 };
 
-async function mainHoenn() {
-  console.log('[gen/hoenn] routes…');
+/**
+ * Additive region snapshot (Hoenn / Johto / Sinnoh). Writes routes-*.json
+ * and merges one meta block. Kanto artifacts stay untouched.
+ * requireWild: Johto/Sinnoh skip nodes whose framing version has only
+ * static/gift encounters (doorway-page guard). Hoenn keeps the older
+ * "framing version has any encounter group" rule.
+ */
+async function mainAdditiveRegion({ tag, slugs, outFile, metaKey, framingVersion, requireWild }) {
+  console.log(`[gen/${tag}] routes…`);
   const routes = await buildRoutes();
-  console.log(`[gen/hoenn] ${Object.keys(routes).length}/${kanto.nodes.length} nodes with encounters`);
+  console.log(`[gen/${tag}] ${Object.keys(routes).length}/${kanto.nodes.length} nodes with encounters`);
 
   const speciesIds = new Set();
   for (const nd of Object.values(routes)) {
@@ -522,7 +666,7 @@ async function mainHoenn() {
       for (const g of groups) for (const r of g.rows) speciesIds.add(r.id);
     }
   }
-  console.log(`[gen/hoenn] dex for ${speciesIds.size} species…`);
+  console.log(`[gen/${tag}] dex for ${speciesIds.size} species…`);
   const dex = await buildDex([...speciesIds].sort((a, b) => a - b));
 
   const names = {};
@@ -530,18 +674,16 @@ async function mainHoenn() {
     names[id] = { de: nameDe(id) ?? nameEn(id, dex[id]?.slug ?? String(id)), en: nameEn(id, dex[id]?.slug ?? String(id)) };
   }
 
-  /* meta summary — "most common catch" counts wild encounters only, from
-   * the default version (emerald), same rule as the Kanto generator */
   const metaRoutes = {};
   for (const [nodeId, nd] of Object.entries(routes)) {
-    /* framing stays Smaragd: ORAS-only nodes get no SEO page (same rule as
-     * the Kanto generator — no page without framing-version encounters) */
-    const fr = nd.versions.emerald;
+    const fr = nd.versions[framingVersion];
     if (!fr || fr.length === 0) continue;
     const all = fr.flatMap((g) => g.rows);
-    const top = [...all].filter((r) => !r.isStatic).sort((a, b) => b.chance - a.chance)[0];
+    const wild = all.filter((r) => !r.isStatic);
+    if (requireWild && wild.length === 0) continue;
+    const top = [...wild].sort((a, b) => b.chance - a.chance)[0];
     const speciesCount = new Set(all.map((r) => r.id)).size;
-    const [de, en] = HOENN_ROUTE_SLUGS[nodeId] ?? [nodeId, nodeId];
+    const [de, en] = slugs[nodeId] ?? [nodeId, nodeId];
     metaRoutes[nodeId] = {
       slugDe: de,
       slugEn: en,
@@ -555,13 +697,46 @@ async function mainHoenn() {
     };
   }
 
-  writeJson('src/data/routes-hoenn.json', { nodes: routes, dex, names });
-  /* merge into the existing meta summary — Kanto blocks stay as committed */
+  writeJson(outFile, { nodes: routes, dex, names });
   const metaPath = path.join(root, 'src/data/seo-meta-gen.json');
   const meta = JSON.parse(readFileSync(metaPath, 'utf8'));
-  meta.routesHoenn = metaRoutes;
+  meta[metaKey] = metaRoutes;
   writeJson('src/data/seo-meta-gen.json', meta);
-  console.log('[gen/hoenn] done.');
+  console.log(`[gen/${tag}] ${Object.keys(metaRoutes).length} SEO pages (framing ${framingVersion}).`);
+  console.log(`[gen/${tag}] done.`);
+}
+
+async function mainHoenn() {
+  await mainAdditiveRegion({
+    tag: 'hoenn',
+    slugs: HOENN_ROUTE_SLUGS,
+    outFile: 'src/data/routes-hoenn.json',
+    metaKey: 'routesHoenn',
+    framingVersion: 'emerald',
+    requireWild: false,
+  });
+}
+
+async function mainJohto() {
+  await mainAdditiveRegion({
+    tag: 'johto',
+    slugs: JOHTO_ROUTE_SLUGS,
+    outFile: 'src/data/routes-johto.json',
+    metaKey: 'routesJohto',
+    framingVersion: 'heartgold',
+    requireWild: true,
+  });
+}
+
+async function mainSinnoh() {
+  await mainAdditiveRegion({
+    tag: 'sinnoh',
+    slugs: SINNOH_ROUTE_SLUGS,
+    outFile: 'src/data/routes-sinnoh.json',
+    metaKey: 'routesSinnoh',
+    framingVersion: 'platinum',
+    requireWild: true,
+  });
 }
 
 /* ---------- kanto main (default — output unchanged) ---------- */
@@ -651,7 +826,7 @@ const write = (file, data) => {
 
 write('src/data/routes-kanto.json', { nodes: routes, dex, names });
 write('src/data/pokemon-seo.json', { ids: POKEMON_IDS, pokemon, dex: Object.fromEntries(POKEMON_IDS.map((id) => [id, dex[id]])), names: Object.fromEntries(POKEMON_IDS.map((id) => [id, names[id]])) , evoNames: names });
-/* preserve additive blocks from the region generators (routesHoenn) */
+/* preserve additive blocks from the region generators (routesHoenn/Johto/Sinnoh) */
 let prevMeta = {};
 try {
   prevMeta = JSON.parse(readFileSync(path.join(root, 'src/data/seo-meta-gen.json'), 'utf8'));
@@ -662,6 +837,10 @@ console.log('[gen] done.');
 
 if (REGION === 'hoenn') {
   await mainHoenn();
+} else if (REGION === 'johto') {
+  await mainJohto();
+} else if (REGION === 'sinnoh') {
+  await mainSinnoh();
 } else {
   await mainKanto();
 }

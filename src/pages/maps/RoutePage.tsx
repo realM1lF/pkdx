@@ -1,7 +1,7 @@
 /* RoutePage — generic SEO content page for every Kanto location with FRLG
  * encounter data: /de/maps/kanto/:slug · /en/maps/kanto/:slug (SEO rollout 2),
- * region-parametrized for the Hoenn rollout (RSE encounters, framing
- * "Datenstand Smaragd"): /de/maps/hoenn/:slug · /en/maps/hoenn/:slug.
+ * region-parametrized for Hoenn (RSE, "Datenstand Smaragd"), Johto (HGSS,
+ * "Datenstand HeartGold") and Sinnoh (DPPt, "Datenstand Platin").
  *
  * Successor of the Route 1 pilot (Route1Page.tsx): all data now comes from
  * the build-time PokéAPI snapshot src/data/routes-kanto.json (slot-summed
@@ -26,13 +26,21 @@ import { padNum } from '@/lib/pokeapi';
 import { cn } from '@/lib/utils';
 import { resolveRouteParam, routeNodeName, routePagePath } from '@/lib/seo-routes-kanto';
 import { resolveHoennRouteParam, hoennRouteNodeName } from '@/lib/seo-routes-hoenn';
+import { resolveJohtoRouteParam, johtoRouteNodeName } from '@/lib/seo-routes-johto';
+import { resolveSinnohRouteParam, sinnohRouteNodeName } from '@/lib/seo-routes-sinnoh';
 import { bestCatchByBst, wildSpeciesCount } from './route-stats';
 import routesJson from '@/data/routes-kanto.json';
 import routesHoennJson from '@/data/routes-hoenn.json';
+import routesJohtoJson from '@/data/routes-johto.json';
+import routesSinnohJson from '@/data/routes-sinnoh.json';
 import kantoJson from '@/data/regions/kanto.json';
 import hoennJson from '@/data/regions/hoenn.json';
+import johtoJson from '@/data/regions/johto.json';
+import sinnohJson from '@/data/regions/sinnoh.json';
 import enrichedJson from '@/data/enriched/kanto.json';
 import enrichedHoennJson from '@/data/enriched/hoenn.json';
+import enrichedJohtoJson from '@/data/enriched/johto.json';
+import enrichedSinnohJson from '@/data/enriched/sinnoh.json';
 
 /* ---------- data shapes (mirror of the generator output) ---------- */
 
@@ -50,7 +58,11 @@ type RouteVersion =
   | 'sapphire'
   | 'emerald'
   | 'omega-ruby'
-  | 'alpha-sapphire';
+  | 'alpha-sapphire'
+  | 'diamond'
+  | 'pearl'
+  | 'platinum';
+type SeoRouteRegion = 'kanto' | 'hoenn' | 'johto' | 'sinnoh';
 type Method = 'WALK' | 'SURF' | 'FISH' | 'STATIC' | 'OTHER';
 
 interface EncounterRow {
@@ -89,9 +101,9 @@ type EnrichedTable = Record<
 /* ---------- region config (Kanto default; Hoenn additive, RSE data) ---------- */
 
 interface SeoRouteRegionConfig {
-  region: 'kanto' | 'hoenn';
+  region: SeoRouteRegion;
   /** i18n namespace of the region-specific strings */
-  ns: 'seo.route' | 'seo.routeHoenn';
+  ns: 'seo.route' | 'seo.routeHoenn' | 'seo.routeJohto' | 'seo.routeSinnoh';
   versions: RouteVersion[];
   defaultVersion: RouteVersion;
   /** framing version: encounter stats, top/rarest, default table */
@@ -110,7 +122,7 @@ interface SeoRouteRegionConfig {
   nodeName: (nodeId: string, lang: Lang) => string;
 }
 
-const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
+const REGION_CONFIG: Record<SeoRouteRegion, SeoRouteRegionConfig> = {
   kanto: {
     region: 'kanto',
     ns: 'seo.route',
@@ -131,6 +143,9 @@ const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
       emerald: 'versionFR',
       'omega-ruby': 'versionHG',
       'alpha-sapphire': 'versionSS',
+      diamond: 'versionFR',
+      pearl: 'versionLG',
+      platinum: 'versionFR',
     },
     routes: routesJson.nodes as unknown as Record<string, RouteNodeData>,
     dex: routesJson.dex as unknown as DexTable,
@@ -161,6 +176,9 @@ const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
       emerald: 'versionEmerald',
       'omega-ruby': 'versionOmegaRuby',
       'alpha-sapphire': 'versionAlphaSapphire',
+      diamond: 'versionRuby',
+      pearl: 'versionSapphire',
+      platinum: 'versionEmerald',
     },
     routes: routesHoennJson.nodes as unknown as Record<string, RouteNodeData>,
     dex: routesHoennJson.dex as unknown as DexTable,
@@ -170,6 +188,72 @@ const REGION_CONFIG: Record<'kanto' | 'hoenn', SeoRouteRegionConfig> = {
     regionEdges: hoennJson.edges as Array<{ from: string; to: string }>,
     resolveParam: resolveHoennRouteParam,
     nodeName: hoennRouteNodeName,
+  },
+  johto: {
+    region: 'johto',
+    ns: 'seo.routeJohto',
+    versions: ['heartgold', 'soulsilver', 'gold', 'silver', 'crystal'],
+    defaultVersion: 'heartgold',
+    primaryVersion: 'heartgold',
+    diffVersions: ['heartgold', 'soulsilver'],
+    versionLabelKey: {
+      firered: 'versionHG',
+      leafgreen: 'versionSS',
+      gold: 'versionGold',
+      silver: 'versionSilver',
+      crystal: 'versionCrystal',
+      heartgold: 'versionHG',
+      soulsilver: 'versionSS',
+      ruby: 'versionHG',
+      sapphire: 'versionSS',
+      emerald: 'versionCrystal',
+      'omega-ruby': 'versionHG',
+      'alpha-sapphire': 'versionSS',
+      diamond: 'versionHG',
+      pearl: 'versionSS',
+      platinum: 'versionCrystal',
+    },
+    routes: routesJohtoJson.nodes as unknown as Record<string, RouteNodeData>,
+    dex: routesJohtoJson.dex as unknown as DexTable,
+    names: routesJohtoJson.names as unknown as NameTable,
+    enriched: enrichedJohtoJson.nodes as unknown as EnrichedTable,
+    regionNodes: johtoJson.nodes as Array<{ id: string; label: string; nameDe?: string }>,
+    regionEdges: johtoJson.edges as Array<{ from: string; to: string }>,
+    resolveParam: resolveJohtoRouteParam,
+    nodeName: johtoRouteNodeName,
+  },
+  sinnoh: {
+    region: 'sinnoh',
+    ns: 'seo.routeSinnoh',
+    versions: ['platinum', 'diamond', 'pearl'],
+    defaultVersion: 'platinum',
+    primaryVersion: 'platinum',
+    diffVersions: ['diamond', 'pearl'],
+    versionLabelKey: {
+      firered: 'versionDiamond',
+      leafgreen: 'versionPearl',
+      gold: 'versionDiamond',
+      silver: 'versionPearl',
+      crystal: 'versionPlatinum',
+      heartgold: 'versionDiamond',
+      soulsilver: 'versionPearl',
+      ruby: 'versionDiamond',
+      sapphire: 'versionPearl',
+      emerald: 'versionPlatinum',
+      'omega-ruby': 'versionDiamond',
+      'alpha-sapphire': 'versionPearl',
+      diamond: 'versionDiamond',
+      pearl: 'versionPearl',
+      platinum: 'versionPlatinum',
+    },
+    routes: routesSinnohJson.nodes as unknown as Record<string, RouteNodeData>,
+    dex: routesSinnohJson.dex as unknown as DexTable,
+    names: routesSinnohJson.names as unknown as NameTable,
+    enriched: enrichedSinnohJson.nodes as unknown as EnrichedTable,
+    regionNodes: sinnohJson.nodes as Array<{ id: string; label: string; nameDe?: string }>,
+    regionEdges: sinnohJson.edges as Array<{ from: string; to: string }>,
+    resolveParam: resolveSinnohRouteParam,
+    nodeName: sinnohRouteNodeName,
   },
 };
 
@@ -402,7 +486,7 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRo
 
 /* ---------- page ---------- */
 
-export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'hoenn' }) {
+export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegion }) {
   const cfg = REGION_CONFIG[region];
   const ns = cfg.ns;
   const { slug } = useParams();

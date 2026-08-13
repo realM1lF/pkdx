@@ -13,7 +13,7 @@ import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
 import { useTranslation } from 'react-i18next';
 import { STAT_ORDER, STAT_LABELS, TYPE_COLORS } from '@/lib/types';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
-import type { DexSummary } from './dex-data';
+import { FORM_I18N_KEY, type DexSummary } from './dex-data';
 import { cn } from '@/lib/utils';
 
 const COLS =
@@ -50,7 +50,9 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
   const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
-  const label = nameOfPokemon(s.id, lang);
+  const dexId = s.speciesId ?? s.id;
+  const label = nameOfPokemon(dexId, lang);
+  const href = `/pokemon/${s.form && s.slug ? s.slug : s.id}`;
   const [override, setOverride] = useState<boolean | null>(null);
   const shiny = override ?? globalShiny;
   const t1 = (s.types[0] ?? 'normal') as PokemonType;
@@ -77,13 +79,18 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
         style={{ '--t': c1.rgb } as CSSProperties}
       >
         <span className={cn('pixel-label text-[9px]', shiny ? 'text-gold' : 'text-tx-muted')}>
-          {padNum(s.id)}
+          {padNum(dexId)}
         </span>
         <span className="relative grid h-7 w-7 place-items-center">
           <Sprite id={s.id} name={label} shiny={shiny} skeleton={false} className="h-7 w-7" />
         </span>
         <span className="flex min-w-0 items-baseline gap-1.5">
           <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">{label}</span>
+          {s.form && (
+            <span className="pixel-label min-w-0 max-w-[5.5rem] shrink truncate text-[8px] text-gold">
+              {t(FORM_I18N_KEY[s.form])}
+            </span>
+          )}
           {s.legendary && <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-gold/90" title={t('pokedex.legendary')} />}
           {s.mythical && <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-type-psychic" title={t('pokedex.mythical')} />}
         </span>
@@ -133,8 +140,8 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
         </button>
       </div>
       <LocaleLink
-        to={`/pokemon/${s.id}`}
-        aria-label={`${label} — ${padNum(s.id)}`}
+        to={href}
+        aria-label={`${label} — ${padNum(dexId)}`}
         onMouseEnter={() => prefetchPokemon(s.id)}
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10"

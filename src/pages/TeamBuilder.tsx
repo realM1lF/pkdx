@@ -94,10 +94,18 @@ export default function TeamBuilder() {
   /* async data caches */
   const [pokemonCache, setPokemonCache] = useState<Record<number, Pokemon>>({});
   const [moveDetails, setMoveDetails] = useState<Record<string, Move>>({});
-  const [meta, setMeta] = useState<{ species: string; state: MetaState; entry: SmogonSpeciesEntry | null }>({
+  const [meta, setMeta] = useState<{
+    species: string;
+    vgId: string;
+    state: MetaState;
+    entry: SmogonSpeciesEntry | null;
+    format: string | null;
+  }>({
     species: '',
+    vgId: '',
     state: 'idle',
     entry: null,
+    format: null,
   });
 
   /* ---------- decode a shared team from the URL hash (view-only) ---------- */
@@ -520,27 +528,36 @@ export default function TeamBuilder() {
   /* meta lookup key: the Smogon dump is keyed by EN species names — pass the
    * slug (parseMetaEntry de-slugifies), never the localized display name */
   const focusSpecies = focusSlot?.pokemon ?? null;
+  const versionGroup = team?.versionGroup;
 
   useEffect(() => {
-    if (!focusSpecies) return undefined;
+    if (!focusSpecies || !versionGroup) return undefined;
     let alive = true;
-    fetchMetaDump()
-      .then((dump) => {
+    fetchMetaDump(versionGroup)
+      .then(({ dump, format }) => {
         if (!alive) return;
-        setMeta({ species: focusSpecies, state: 'ready', entry: parseMetaEntry(dump, focusSpecies) });
+        setMeta({
+          species: focusSpecies,
+          vgId: versionGroup,
+          state: 'ready',
+          entry: parseMetaEntry(dump, focusSpecies),
+          format,
+        });
       })
       .catch(() => {
         if (!alive) return;
-        setMeta({ species: focusSpecies, state: 'unavailable', entry: null });
+        setMeta({ species: focusSpecies, vgId: versionGroup, state: 'unavailable', entry: null, format: null });
       });
     return () => {
       alive = false;
     };
-  }, [focusSpecies]);
+  }, [focusSpecies, versionGroup]);
 
   /* derived meta display state (no sync setState in the effect above) */
-  const metaState: MetaState = !focusSpecies ? 'idle' : meta.species === focusSpecies ? meta.state : 'loading';
-  const metaEntry = focusSpecies && meta.species === focusSpecies ? meta.entry : null;
+  const metaInSync = !!focusSpecies && !!versionGroup && meta.species === focusSpecies && meta.vgId === versionGroup;
+  const metaState: MetaState = !focusSpecies ? 'idle' : metaInSync ? meta.state : 'loading';
+  const metaEntry = metaInSync ? meta.entry : null;
+  const metaFormat = metaInSync ? meta.format : null;
 
   /* EP0.3 — auto-apply the primary meta set's EV spread right after a pick.
    * Only when: the meta lookup resolved for THIS slot's species, the gen has
@@ -756,6 +773,7 @@ export default function TeamBuilder() {
           coverageLoading={coverageLoading}
           metaState={metaState}
           metaEntry={metaEntry}
+          metaFormat={metaFormat}
           metaFocusLabel={focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null}
           onApplySet={handleApplySet}
           appliedSetName={appliedSetName}

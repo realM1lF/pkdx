@@ -87,6 +87,9 @@ export default function App() {
                 {/* Hoenn SEO pages (RSE encounters) — same static-route
                     ranking as Kanto, outranks maps/:region */}
                 <Route path="maps/hoenn/:slug" element={<RoutePage region="hoenn" />} />
+                {/* Johto / Sinnoh SEO pages — same static-route ranking */}
+                <Route path="maps/johto/:slug" element={<RoutePage region="johto" />} />
+                <Route path="maps/sinnoh/:slug" element={<RoutePage region="sinnoh" />} />
                 <Route path="maps/:region" element={<MapRegion />} />
                 <Route path="nuzlocke" element={<Nuzlocke />} />
                 <Route path="orre" element={<OrreTracker />} />

@@ -8,6 +8,7 @@ import type { CSSProperties, Ref } from 'react';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Sprite from './Sprite';
 import TypeBadge from './TypeBadge';
 import SparkleBurst from './pokedex/SparkleBurst';
@@ -15,9 +16,9 @@ import TypeChipMini from './pokedex/TypeChipMini';
 import { padNum, prefetchPokemon } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
 import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
-import { STAT_LABELS, TYPE_COLORS, genOf } from '@/lib/types';
+import { GENERATIONS, STAT_LABELS, TYPE_COLORS, genOf } from '@/lib/types';
 import type { PokemonType, StatKey } from '@/lib/types';
-import type { DexSummary } from './pokedex/dex-data';
+import { FORM_I18N_KEY, type DexSummary } from './pokedex/dex-data';
 import { cn } from '@/lib/utils';
 
 const TRIAD: StatKey[] = ['hp', 'attack', 'defense'];
@@ -33,9 +34,13 @@ interface PokemonCardProps {
 
 function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) {
   const compact = density === 'compact';
+  const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
-  const label = nameOfPokemon(s.id, lang);
+  const dexId = s.speciesId ?? s.id;
+  const label = nameOfPokemon(dexId, lang);
+  const href = `/pokemon/${s.form && s.slug ? s.slug : s.id}`;
+  const genRoman = (GENERATIONS[s.gen - 1] ?? genOf(dexId)).roman;
   const [override, setOverride] = useState<boolean | null>(null);
   const [burst, setBurst] = useState(0);
   const shiny = override ?? globalShiny;
@@ -96,10 +101,13 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
               shiny ? 'text-gold' : 'text-tx-muted',
             )}
           >
-            {padNum(s.id)}
+            {padNum(dexId)}
           </span>
-          <span className={cn('pixel-label text-tx-muted/70', compact ? 'text-[8px]' : 'text-[9px]')}>
-            GEN {genOf(s.id).roman}
+          <span className={cn('flex min-w-0 items-center justify-end gap-1', compact ? 'text-[8px]' : 'text-[9px]')}>
+            <span className="pixel-label text-tx-muted/70">GEN {genRoman}</span>
+            {s.form && (
+              <span className="pixel-label min-w-0 truncate text-gold">{t(FORM_I18N_KEY[s.form])}</span>
+            )}
           </span>
         </div>
 
@@ -136,7 +144,7 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
         {/* name */}
         <h3
           className={cn(
-            'relative w-full truncate text-center font-display font-bold text-tx-primary',
+            'relative w-full min-w-0 truncate text-center font-display font-bold text-tx-primary',
             compact ? 'h-5 text-sm leading-5' : 'h-6 text-lg leading-6',
           )}
         >
@@ -171,8 +179,8 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
 
       {/* stretched link — real anchor, prefetch on hover/focus */}
       <LocaleLink
-        to={`/pokemon/${s.id}`}
-        aria-label={`${label} — ${padNum(s.id)}`}
+        to={href}
+        aria-label={`${label} — ${padNum(dexId)}`}
         onMouseEnter={schedulePrefetch}
         onMouseLeave={cancelPrefetch}
         onFocus={() => prefetchPokemon(s.id)}

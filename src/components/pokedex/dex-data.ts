@@ -6,7 +6,7 @@
  * by scripts/build-summaries.mjs) instead of 1025 full /pokemon/{id} payloads
  * (270–425 KB each). Detail data still loads on demand via getPokemon(). */
 import { useCallback, useEffect, useState } from 'react';
-import { padNum } from '@/lib/pokeapi';
+import { displayName, padNum } from '@/lib/pokeapi';
 import { germanAliasOfPokemon, nameOfPokemon, type Lang } from '@/lib/i18n-data';
 import { POKEMON_TYPES, genOf } from '@/lib/types';
 import type { DexIndexEntry, PokemonType, StatKey } from '@/lib/types';
@@ -15,7 +15,39 @@ import type { DexIndexEntry, PokemonType, StatKey } from '@/lib/types';
 
 export type Density = 'comfort' | 'compact' | 'list';
 export type SortKey = 'id' | 'id-desc' | 'name' | 'height' | 'weight' | 'bst';
-export type Special = 'legendary' | 'mythical';
+export type Special = 'legendary' | 'mythical' | 'forms';
+export type FormKind = 'alola' | 'galar' | 'hisui' | 'paldea' | 'mega' | 'gmax';
+
+export function isSpecialToken(s: string): s is Special {
+  return s === 'legendary' || s === 'mythical' || s === 'forms';
+}
+
+/** Classify a Showdown/PokéAPI forme string. Null = skip (cosmetic, totem, ZA). */
+export function formKindOf(
+  forme: string,
+  isNonstandard?: string | null,
+  baseSpecies?: string,
+): FormKind | null {
+  if (isNonstandard === 'Future' || isNonstandard === 'CAP' || isNonstandard === 'Custom') {
+    return null;
+  }
+  const f = forme.toLowerCase();
+  if (f.includes('totem')) return null;
+  if (f === 'mega-z' || f === 'original-mega' || f.endsWith('-mega-z')) return null;
+  if (baseSpecies === 'Pikachu' && f === 'alola') return null;
+  if (f === 'gmax' || f.endsWith('-gmax')) return 'gmax';
+  if (f === 'mega' || f === 'mega-x' || f === 'mega-y' || f === 'primal') return 'mega';
+  if (f === 'alola') return 'alola';
+  if (f === 'galar' || f === 'galar-zen') return 'galar';
+  if (f === 'hisui') return 'hisui';
+  if (f.startsWith('paldea')) return 'paldea';
+  return null;
+}
+
+function nationalId(e: DexIndexEntry): number {
+  const extra = (e as DexIndexEntry & { speciesId?: number }).speciesId;
+  return extra ?? e.id;
+}
 
 /* labels are i18n keys under pokedex.sortOptions (rendered via t()) */
 export const SORT_OPTIONS: Array<{ key: SortKey; labelKey: string }> = [
@@ -40,6 +72,11 @@ export interface DexSummary {
   gen: number;
   legendary: boolean;
   mythical: boolean;
+  /** English PokéAPI slug — form rows link to `/pokemon/{slug}` */
+  slug?: string;
+  /** National-dex id (1–1025). Forms keep this separate from sprite `id`. */
+  speciesId?: number;
+  form?: FormKind;
 }
 
 /* ---------- legendary / mythical flags (mirrors PokéAPI species flags) ---------- */
@@ -107,6 +144,8 @@ function bootDex(): Promise<DexBoot> {
         const types = r.types as PokemonType[];
         summaries.set(r.id, {
           id: r.id,
+          slug: r.slug,
+          speciesId: r.id,
           label: r.name,
           types,
           stats,
@@ -235,8 +274,10 @@ export function filterEntries(
   index: DexIndexEntry[],
   f: FilterState,
   typeSets: TypeMemberSets,
+  formIndex: DexIndexEntry[] = [],
 ): DexIndexEntry[] | null {
-  let out = index;
+  const wantForms = f.special.includes('forms');
+  let out = wantForms ? [...index, ...formIndex] : index;
   const q = f.q.trim().toLowerCase().replace(/^#/, '');
   if (q) {
     out = out.filter(
@@ -245,17 +286,20 @@ export function filterEntries(
         e.name.includes(q) ||
         e.num.includes(q) ||
         String(e.id) === q ||
+        String(nationalId(e)) === q ||
         // German alias (build-time de artifact) — "bisasam" finds bulbasaur
-        (germanAliasOfPokemon(e.id)?.includes(q) ?? false),
+        (germanAliasOfPokemon(nationalId(e))?.includes(q) ?? false),
     );
   }
   if (f.gen !== null) out = out.filter((e) => e.gen === f.gen);
-  if (f.special.length > 0) {
-    const wantLegendary = f.special.includes('legendary');
-    const wantMythical = f.special.includes('mythical');
+  const restrict = f.special.filter((s) => s !== 'forms');
+  if (restrict.length > 0) {
+    const wantLegendary = restrict.includes('legendary');
+    const wantMythical = restrict.includes('mythical');
     out = out.filter(
       (e) =>
-        (wantLegendary && LEGENDARY_IDS.has(e.id)) || (wantMythical && MYTHICAL_IDS.has(e.id)),
+        (wantLegendary && LEGENDARY_IDS.has(nationalId(e))) ||
+        (wantMythical && MYTHICAL_IDS.has(nationalId(e))),
     );
   }
   if (f.types.length > 0) {
@@ -281,7 +325,7 @@ export function sortEntries(
     case 'name':
       // sort by the localized display name of the active language
       return arr.sort((a, b) =>
-        nameOfPokemon(a.id, lang).localeCompare(nameOfPokemon(b.id, lang), lang),
+        nameOfPokemon(nationalId(a), lang).localeCompare(nameOfPokemon(nationalId(b), lang), lang),
       );
     case 'height':
     case 'weight':
@@ -298,4 +342,129 @@ export function sortEntries(
 
 export function isValidType(t: string): t is PokemonType {
   return (POKEMON_TYPES as readonly string[]).includes(t);
+}
+
+export const FORM_I18N_KEY: Record<FormKind, string> = {
+  alola: 'pokedex.formsAlola',
+  galar: 'pokedex.formsGalar',
+  hisui: 'pokedex.formsHisui',
+  paldea: 'pokedex.formsPaldea',
+  mega: 'pokedex.formsMega',
+  gmax: 'pokedex.formsGmax',
+};
+
+/* ---------- form catalog (lazy artifact, only when Forms filter is on) ---------- */
+
+export interface DexFormRecord {
+  slug: string;
+  speciesId: number;
+  spriteId: number;
+  types: PokemonType[];
+  stats?: RawSummary['stats'];
+  height?: number;
+  weight?: number;
+  kind: FormKind;
+  gen: number;
+}
+
+interface FormBoot {
+  index: DexIndexEntry[];
+  summaries: ReadonlyMap<number, DexSummary>;
+  typeSets: Record<PokemonType, ReadonlySet<number>>;
+}
+
+export function hydrateFormCatalog(forms: DexFormRecord[]): FormBoot {
+  const index: DexIndexEntry[] = [];
+  const summaries = new Map<number, DexSummary>();
+  const typeSets = {} as Record<PokemonType, Set<number>>;
+  for (const t of POKEMON_TYPES) typeSets[t] = new Set<number>();
+  for (const r of forms) {
+    const stats = {} as Record<StatKey, number>;
+    let bst = 0;
+    if (r.stats) {
+      for (const [short, key] of STAT_MAP) {
+        stats[key] = r.stats[short];
+        bst += r.stats[short];
+      }
+    }
+    const entry: DexIndexEntry & { speciesId: number; form: FormKind } = {
+      id: r.spriteId,
+      name: r.slug,
+      label: displayName(r.slug),
+      num: padNum(r.speciesId),
+      gen: r.gen,
+      speciesId: r.speciesId,
+      form: r.kind,
+    };
+    index.push(entry);
+    summaries.set(r.spriteId, {
+      id: r.spriteId,
+      slug: r.slug,
+      speciesId: r.speciesId,
+      label: displayName(r.slug),
+      types: r.types,
+      stats,
+      bst,
+      height: r.height ?? 0,
+      weight: r.weight ?? 0,
+      gen: r.gen,
+      legendary: LEGENDARY_IDS.has(r.speciesId),
+      mythical: MYTHICAL_IDS.has(r.speciesId),
+      form: r.kind,
+    });
+    for (const t of r.types) typeSets[t]?.add(r.spriteId);
+  }
+  return { index, summaries, typeSets };
+}
+
+let formBootPromise: Promise<FormBoot> | null = null;
+
+function bootForms(): Promise<FormBoot> {
+  if (!formBootPromise) {
+    formBootPromise = import('@/data/dex-forms.json').then((mod) => {
+      const raw = (mod.default as { forms: DexFormRecord[] }).forms;
+      return hydrateFormCatalog(raw);
+    });
+    formBootPromise.catch(() => {
+      formBootPromise = null;
+    });
+  }
+  return formBootPromise;
+}
+
+const EMPTY_FORM_INDEX: DexIndexEntry[] = [];
+const EMPTY_FORM_SUMMARIES: ReadonlyMap<number, DexSummary> = new Map();
+
+export interface DexForms {
+  index: DexIndexEntry[];
+  summaries: ReadonlyMap<number, DexSummary>;
+  typeSets: TypeMemberSets;
+  ready: boolean;
+}
+
+export function useDexForms(enabled: boolean): DexForms {
+  const [boot, setBoot] = useState<FormBoot | null>(null);
+
+  useEffect(() => {
+    if (!enabled) return;
+    let alive = true;
+    void bootForms()
+      .then((b) => {
+        if (alive) setBoot(b);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [enabled]);
+
+  if (!enabled) {
+    return { index: EMPTY_FORM_INDEX, summaries: EMPTY_FORM_SUMMARIES, typeSets: {}, ready: true };
+  }
+  return {
+    index: boot?.index ?? EMPTY_FORM_INDEX,
+    summaries: boot?.summaries ?? EMPTY_FORM_SUMMARIES,
+    typeSets: boot?.typeSets ?? {},
+    ready: boot !== null,
+  };
 }

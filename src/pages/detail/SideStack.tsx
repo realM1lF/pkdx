@@ -10,7 +10,15 @@ import { pokemonTypes } from '@/lib/pokeapi';
 import { nameOfAbility, nameOfGrowth, nameOfType, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { computeMatchups, genderLabel, getAbilityShort, speciesExtras, typeRgb } from './data';
+import {
+  computeMatchups,
+  genOfVersionGroup,
+  genderLabel,
+  getAbilityShort,
+  newestMoveVersionGroup,
+  speciesExtras,
+  typeRgb,
+} from './data';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -135,10 +143,21 @@ function KV({ k, v }: { k: string; v: React.ReactNode }) {
 
 /* ---------- stack ---------- */
 
-export default function SideStack({ pokemon, species }: { pokemon: Pokemon; species: PokemonSpecies | null }) {
+export default function SideStack({
+  pokemon,
+  species,
+  versionGroup,
+}: {
+  pokemon: Pokemon;
+  species: PokemonSpecies | null;
+  /** move-pool version group; defaults to newest VG that teaches this Pokémon */
+  versionGroup?: string;
+}) {
   const { t } = useTranslation();
   const lang = useLanguage();
-  const matchups = computeMatchups(pokemonTypes(pokemon));
+  const vg = versionGroup || newestMoveVersionGroup(pokemon.moves);
+  const gen = genOfVersionGroup(vg);
+  const matchups = computeMatchups(pokemonTypes(pokemon), gen);
   const extras = speciesExtras(species);
   const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
@@ -162,6 +181,7 @@ export default function SideStack({ pokemon, species }: { pokemon: Pokemon; spec
 
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
         <MiniPanel eyebrow={t('detail.side.defenseEyebrow')} title={t('detail.side.matchupsTitle')}>
+          <p className="pixel-label mb-1 text-[8px] text-tx-muted">{t('detail.side.chartGen', { gen })}</p>
           {matchups.quad.length > 0 && (
             <MatchupRow label={t('detail.side.weak4')} mult="×4" types={matchups.quad} tint="#FF6B4A" />
           )}

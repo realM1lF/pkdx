@@ -17,6 +17,8 @@ import { ITEMS_SEO, localizeItemPath, resolveItemParam } from './seo-items';
 import { localizeTypePath } from './seo-types';
 import { localizeRoutePath, resolveRouteParam, routeMetaGen } from './seo-routes-kanto';
 import { hoennRouteMetaGen, localizeHoennRoutePath, resolveHoennRouteParam } from './seo-routes-hoenn';
+import { johtoRouteMetaGen, localizeJohtoRoutePath, resolveJohtoRouteParam } from './seo-routes-johto';
+import { localizeSinnohRoutePath, resolveSinnohRouteParam, sinnohRouteMetaGen } from './seo-routes-sinnoh';
 import { localizeMatchupRest, matchupMeta, resolveMatchupParam } from './seo-matchups';
 import META_GEN from '@/data/seo-meta-gen.json';
 
@@ -384,6 +386,58 @@ function hoennRouteMeta(nodeId: string): RouteMeta {
   };
 }
 
+/** Generated meta: Johto location pages (HGSS, framing "Datenstand HeartGold"). */
+function johtoRouteMeta(nodeId: string): RouteMeta {
+  const m = johtoRouteMetaGen(nodeId);
+  const nameDe = m?.nameDe ?? nodeId;
+  const nameEn = m?.nameEn ?? nodeId;
+  const topDe = m?.topNameDe ?? '';
+  const topEn = m?.topNameEn ?? '';
+  return {
+    title: {
+      de: `${nameDe} (Johto) – Pokémon & Fundorte in HeartGold/SoulSilver`,
+      en: `${nameEn} (Johto) – Pokémon & Locations in HeartGold/SoulSilver`,
+    },
+    description: {
+      de: clampDesc(
+        `Alle Pokémon auf ${nameDe} in HeartGold/SoulSilver: ${m?.speciesCount ?? ''} Arten mit Fangraten & Levels${topDe ? `. Häufigster Fang: ${topDe}` : ''}. Datenstand HeartGold.`,
+        160,
+      ),
+      en: clampDesc(
+        `Every Pokémon on ${nameEn} in HeartGold/SoulSilver: ${m?.speciesCount ?? ''} species with catch rates & levels${topEn ? `. Most common: ${topEn}` : ''}. Data as of HeartGold.`,
+        160,
+      ),
+    },
+    ogType: 'article',
+  };
+}
+
+/** Generated meta: Sinnoh location pages (DPPt, framing "Datenstand Platin"). */
+function sinnohRouteMeta(nodeId: string): RouteMeta {
+  const m = sinnohRouteMetaGen(nodeId);
+  const nameDe = m?.nameDe ?? nodeId;
+  const nameEn = m?.nameEn ?? nodeId;
+  const topDe = m?.topNameDe ?? '';
+  const topEn = m?.topNameEn ?? '';
+  return {
+    title: {
+      de: `${nameDe} (Sinnoh) – Pokémon & Fundorte in Diamant/Perl/Platin`,
+      en: `${nameEn} (Sinnoh) – Pokémon & Locations in Diamond/Pearl/Platinum`,
+    },
+    description: {
+      de: clampDesc(
+        `Alle Pokémon auf ${nameDe} in Diamant/Perl/Platin: ${m?.speciesCount ?? ''} Arten mit Fangraten & Levels${topDe ? `. Häufigster Fang: ${topDe}` : ''}. Datenstand Platin.`,
+        160,
+      ),
+      en: clampDesc(
+        `Every Pokémon on ${nameEn} in Diamond/Pearl/Platinum: ${m?.speciesCount ?? ''} species with catch rates & levels${topEn ? `. Most common: ${topEn}` : ''}. Data as of Platinum.`,
+        160,
+      ),
+    },
+    ogType: 'article',
+  };
+}
+
 /** Generated meta for the 25 curated Pokémon detail pages. */
 function pokemonSeoMeta(id: number): RouteMeta {
   const m = META_POKEMON[String(id)];
@@ -443,6 +497,16 @@ export function metaForPath(rest: string): RouteMeta {
     const nodeId = resolveHoennRouteParam(hoennMatch[1]);
     if (nodeId) return hoennRouteMeta(nodeId);
   }
+  const johtoMatch = key.match(/^\/maps\/johto\/([^/]+)$/);
+  if (johtoMatch) {
+    const nodeId = resolveJohtoRouteParam(johtoMatch[1]);
+    if (nodeId) return johtoRouteMeta(nodeId);
+  }
+  const sinnohMatch = key.match(/^\/maps\/sinnoh\/([^/]+)$/);
+  if (sinnohMatch) {
+    const nodeId = resolveSinnohRouteParam(sinnohMatch[1]);
+    if (nodeId) return sinnohRouteMeta(nodeId);
+  }
   /* curated matchup pages: '/versus/glurak-gegen-turtok' ↔ '/versus/charizard-vs-blastoise' */
   const matchupMatch = key.match(/^\/versus\/([^/]+)$/);
   if (matchupMatch) {
@@ -467,8 +531,14 @@ export function restForLang(rest: string, lang: Lang): string {
    * '/versus/charizard-vs-blastoise') */
   const matchup = localizeMatchupRest(rest, lang);
   if (matchup) return matchup;
-  const localized = localizeHoennRoutePath(
-    localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang),
+  const localized = localizeSinnohRoutePath(
+    localizeJohtoRoutePath(
+      localizeHoennRoutePath(
+        localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang),
+        lang,
+      ),
+      lang,
+    ),
     lang,
   );
   /* battle-simulator landing: '/kampf-simulator' ↔ '/battle-simulator' */

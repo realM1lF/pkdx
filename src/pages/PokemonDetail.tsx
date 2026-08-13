@@ -33,7 +33,7 @@ import { pokemonSeoMetaForParam } from '@/lib/seo';
 import { hasPokemonSeoSections } from '@/lib/seo-pilots';
 import PokemonSeoSections from './detail/PokemonSeoSections';
 import { Panel } from './detail/ui';
-import { typeRgb } from './detail/data';
+import { resolveMoveVersionGroup, typeRgb } from './detail/data';
 import './detail/detail.css';
 
 /* VERSUS matchup lab is heavy (@pkmn/dex + @smogon/calc, ~2.4MB) and hidden
@@ -51,6 +51,7 @@ export default function PokemonDetail() {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
   const [status, setStatus] = useState<Status>('loading');
+  const [moveVersionGroup, setMoveVersionGroup] = useState('');
 
   /* reset synchronously on param change (derived-state-during-render) */
   const [prevParam, setPrevParam] = useState(param);
@@ -59,6 +60,7 @@ export default function PokemonDetail() {
     setStatus('loading');
     setPokemon(null);
     setSpecies(null);
+    setMoveVersionGroup('');
   }
 
   useEffect(() => {
@@ -96,6 +98,7 @@ export default function PokemonDetail() {
   const primary = types[0] ?? 'normal';
   const secondary = types[1];
   const legendary = Boolean(species?.is_legendary || species?.is_mythical);
+  const activeMoveVg = pokemon ? resolveMoveVersionGroup(pokemon.moves, moveVersionGroup) : '';
 
   /* ---------- VERSUS tab + ?vs=<id> deep link (versus.md UI 1) ---------- */
   const [searchParams, setSearchParams] = useSearchParams();
@@ -298,11 +301,11 @@ export default function PokemonDetail() {
           className="col-span-12 lg:col-span-7"
           bodyClassName="flex min-h-[420px] flex-col"
         >
-          <MovesPanel pokemon={pokemon} />
+          <MovesPanel pokemon={pokemon} version={activeMoveVg} onVersionChange={setMoveVersionGroup} />
         </Panel>
 
         <div className="col-span-12 lg:col-span-5">
-          <SideStack pokemon={pokemon} species={species} />
+          <SideStack pokemon={pokemon} species={species} versionGroup={activeMoveVg} />
         </div>
 
         {/* ROW 3 — left stack: evolution + where to find (span 5) · museum (span 7) */}
@@ -317,7 +320,7 @@ export default function PokemonDetail() {
             className="flex-1"
             bodyClassName="p-0"
           >
-            <WhereToFind key={pokemon.id} id={pokemon.id} highlight={fromMaps} />
+            <WhereToFind key={pokemon.id} id={pokemon.id} highlight={fromMaps} version={searchParams.get('v')} />
           </Panel>
         </div>
 

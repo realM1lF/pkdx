@@ -5,7 +5,7 @@
  * 0 results → gold shake + hint bubble (never red, design.md §6.2-9). */
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
-import { ChevronDown, Crown, LayoutGrid, Grid2X2, Rows3, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
+import { ChevronDown, Crown, Layers, LayoutGrid, Grid2X2, Rows3, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
 import { fmtNum, useLanguage, nameOfType } from '@/lib/i18n-data';
@@ -320,8 +320,8 @@ function FilterPopover(p: FilterPopoverProps) {
 
               {/* special */}
               <div className="mb-3">
-                <span className={sectionLabel}>{t8n('pokedex.special')}</span>
-                <div className="flex gap-1.5">
+                <span className={sectionLabel}>{t8n('pokedex.special.label')}</span>
+                <div className="flex flex-wrap gap-1.5">
                   <button
                     type="button"
                     aria-pressed={p.special.includes('legendary')}
@@ -349,6 +349,20 @@ function FilterPopover(p: FilterPopoverProps) {
                   >
                     <img src="/sparkle.svg" alt="" className="h-3 w-3" />
                     {t8n('pokedex.mythical')}
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={p.special.includes('forms')}
+                    onClick={() => p.onToggleSpecial('forms')}
+                    className={cn(
+                      'flex h-7 items-center gap-1.5 rounded-pill border px-2.5 font-sans text-[11px] font-bold transition-all duration-150',
+                      p.special.includes('forms')
+                        ? 'border-gold/70 bg-gold-soft text-gold shadow-glow-gold'
+                        : 'border-hairline bg-surface2 text-tx-secondary hover:border-gold/40 hover:text-gold',
+                    )}
+                  >
+                    <Layers size={12} strokeWidth={1.75} />
+                    {t8n('pokedex.forms')}
                   </button>
                 </div>
               </div>

@@ -4,9 +4,13 @@
  * All location/evolution/stat data comes from the build-time PokéAPI
  * snapshot src/data/pokemon-seo.json (slot-summed per area × method,
  * scripts/generate-pokemon-seo.mjs). Weaknesses/resistances are NOT
- * hardcoded — they are computed from the gen 3 type chart via
- * src/lib/versus.ts. Editorial verdicts (Nuzlocke, evolve-timing) are
- * curated i18n strings, labelled as assessments. */
+ * hardcoded — they are computed from the gen 3 (FRLG) type chart via
+ * src/lib/versus.ts. Live overview chips use the selected move-pool
+ * version-group gen (`computeMatchups` in data.ts). This SEO block stays
+ * on gen 3 because the copy is FRLG-scoped; the species introduction gen
+ * (`genOf(id)`, e.g. Venusaur = gen 1) would mix Gen-1 Bug ×4 into FRLG
+ * text. Prerender has no version picker. Editorial verdicts (Nuzlocke,
+ * evolve-timing) are curated i18n strings, labelled as assessments. */
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Map as MapIcon, Shield, Swords, Users } from 'lucide-react';
@@ -117,7 +121,8 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
   const dex = DATA.dex[String(id)];
   const name = pokeName(id, lang);
 
-  /* defensive profile — computed from the gen 3 chart, never hardcoded */
+  /* defensive profile — FRLG gen 3 chart, never the live move-pool VG and
+   * never the species introduction gen (see file header). */
   const matchups = useMemo(() => {
     const types = dex.types;
     const ability = ABILITY_NOTE[id];
@@ -325,7 +330,7 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
         </p>
         <div className="grid gap-3 px-4 py-3 sm:grid-cols-3 sm:px-5">
           <div>
-            <p className="pixel-label mb-1.5 text-[7px] text-red-400">{t('seo.pkmn.weakCol')}</p>
+            <p className="pixel-label mb-1.5 text-[7px]" style={{ color: '#FF8A6B' }}>{t('seo.pkmn.weakCol')}</p>
             <p className="text-[12px] font-medium text-tx-primary">{weakText || '—'}</p>
           </div>
           <div>

@@ -73,7 +73,15 @@ const CAT_COLORS: Record<string, string> = {
   status: '#A8B3C7',
 };
 
-export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
+export default function MovesPanel({
+  pokemon,
+  version: versionProp,
+  onVersionChange,
+}: {
+  pokemon: Pokemon;
+  version?: string;
+  onVersionChange?: (key: string) => void;
+}) {
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   /* version groups that actually teach this Pokémon anything, newest → oldest */
@@ -83,7 +91,9 @@ export default function MovesPanel({ pokemon }: { pokemon: Pokemon }) {
     return VERSION_GROUPS.filter((g) => present.has(g.key));
   }, [pokemon]);
 
-  const [version, setVersion] = useState<string>('');
+  const [localVersion, setLocalVersion] = useState<string>('');
+  const version = versionProp ?? localVersion;
+  const setVersion = onVersionChange ?? setLocalVersion;
   const activeVersion = availableVersions.some((v) => v.key === version)
     ? version
     : (availableVersions[0]?.key ?? '');

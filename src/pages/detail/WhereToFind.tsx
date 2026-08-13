@@ -4,17 +4,15 @@
  * then longest-prefix strip sub-areas ('rock-tunnel-1f' → 'rock-tunnel');
  * kanto victory-road variants → 'kanto-victory-road-2'.
  *
- * Wild rows are aggregated per node across all versions (best rate wins).
- * Gift / static / trade encounters (STATIC_METHODS — e.g. game-corner
- * prizes, Poké-Flute Snorlax, in-game trades) are split into their own
- * "gift & static" section with the specific sub-area ('PRIZE CORNER') and
- * version chips, so a one-off gift never reads as a wild encounter.
- * Rows only deep-link /maps/{region}?node= when one of their versions is
- * actually covered by that map (a Blue-JP-only prize must not link to the
- * FRLG/RBY Kanto map). */
+ * Wild rows are aggregated per node. `?v=` (and the compact chips) keep
+ * only that game's rate — Pidgey Route 1 is 20% FireRed vs 45% HeartGold.
+ * Without a filter, all versions stay visible (best rate wins) so we
+ * never hide data. Gift / static / trade stay in their own section.
+ * Rows deep-link /maps/{region}?node=&v= when the map covers a row version. */
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { cachedJson } from '@/lib/pokeapi';
 import { nameOfMethod, useLanguage } from '@/lib/i18n-data';
@@ -23,7 +21,7 @@ import { accentRgb, nodeName, regionName, versionChipLabel } from '@/lib/regions
 import type { RegionId } from '@/lib/regions';
 import { methodBucket } from '@/lib/mapdata';
 import type { MethodBucket } from '@/lib/mapdata';
-import { aggregate } from '@/lib/wherefind';
+import { aggregate, encounterVersions, mapsPath } from '@/lib/wherefind';
 import type { EncounterAreaEntry, WhereRow } from '@/lib/wherefind';
 import { cn } from '@/lib/utils';
 import type { MapsFromRef } from './from-param';
@@ -41,7 +39,7 @@ const REGION_ABBR: Record<RegionId, string> = { kanto: 'KAN', johto: 'JOH', hoen
 
 const TOP_N = 12;
 
-function RowView({ row, highlight }: { row: WhereRow; highlight: boolean }) {
+function RowView({ row, highlight, filter }: { row: WhereRow; highlight: boolean; filter: string | null }) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const region = row.region;
@@ -50,6 +48,10 @@ function RowView({ row, highlight }: { row: WhereRow; highlight: boolean }) {
    * a Blue-JP game-corner prize must not jump to the FRLG/RBY Kanto map */
   const linked =
     nodeId !== null && region !== null && row.versions.some((v) => region.versions.includes(v));
+  const mapVersion =
+    (filter && row.versions.includes(filter) ? filter : null) ??
+    row.versions.find((v) => region?.versions.includes(v)) ??
+    null;
   const accent = region?.accent ?? null;
   const abbr = row.region ? REGION_ABBR[row.region.region] : row.regionPrefix.slice(0, 3).toUpperCase();
   const lv =
@@ -150,10 +152,10 @@ function RowView({ row, highlight }: { row: WhereRow; highlight: boolean }) {
     highlight && 'bg-gold/10 ring-1 ring-inset ring-gold/50',
   );
 
-  if (linked && region) {
+  if (linked && region && nodeId) {
     return (
       <LocaleLink
-        to={`/maps/${region.region}?node=${nodeId}`}
+        to={mapsPath(region.region, nodeId, mapVersion)}
         className={cls}
         data-wtf-from={highlight || undefined}
         title={t('detail.find.openOnMap', { label, region: regionName(region, lang) })}
@@ -177,8 +179,17 @@ function RowView({ row, highlight }: { row: WhereRow; highlight: boolean }) {
   );
 }
 
-export default function WhereToFind({ id, highlight }: { id: number; highlight?: MapsFromRef | null }) {
+export default function WhereToFind({
+  id,
+  highlight,
+  version: versionParam,
+}: {
+  id: number;
+  highlight?: MapsFromRef | null;
+  version?: string | null;
+}) {
   const { t } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [areas, setAreas] = useState<EncounterAreaEntry[] | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'empty' | 'error'>('loading');
   const [showAll, setShowAll] = useState(false);
@@ -200,7 +211,9 @@ export default function WhereToFind({ id, highlight }: { id: number; highlight?:
     };
   }, [id]);
 
-  const rows = useMemo(() => (areas ? aggregate(areas) : []), [areas]);
+  const versions = useMemo(() => (areas ? encounterVersions(areas) : []), [areas]);
+  const active = versionParam && versions.includes(versionParam) ? versionParam : null;
+  const rows = useMemo(() => (areas ? aggregate(areas, active) : []), [areas, active]);
   /* wild encounters vs. gift/static/trade — separate sections so a one-off
    * prize (e.g. Clefable @ Celadon prize corner, Blue JP only) never reads
    * as a wild encounter */
@@ -214,10 +227,21 @@ export default function WhereToFind({ id, highlight }: { id: number; highlight?:
     Boolean(highlight && row.region?.region === highlight.region && row.nodeId === highlight.nodeId);
 
   useEffect(() => {
+    setShowAll(false);
+  }, [active]);
+
+  useEffect(() => {
     if (!highlight) return;
     const beyond = wild.findIndex((r) => isFrom(r));
     if (beyond >= TOP_N) setShowAll(true);
   }, [highlight, wild]);
+
+  const setVersion = (v: string | null) => {
+    const next = new URLSearchParams(searchParams);
+    if (v) next.set('v', v);
+    else next.delete('v');
+    setSearchParams(next, { replace: true });
+  };
 
   useEffect(() => {
     document.querySelector('[data-wtf-from]')?.scrollIntoView({ block: 'nearest' });
@@ -251,7 +275,46 @@ export default function WhereToFind({ id, highlight }: { id: number; highlight?:
 
   return (
     <div>
-      <div className="dx-scroll max-h-[368px] overflow-y-auto">
+      {versions.length > 1 && (
+        <div
+          className="flex h-9 min-w-0 items-center gap-1 overflow-x-auto border-b border-hairline px-3"
+          data-lenis-prevent
+          role="group"
+          aria-label={t('detail.where.versions')}
+        >
+          <button
+            type="button"
+            aria-pressed={active === null}
+            onClick={() => setVersion(null)}
+            className={cn(
+              'shrink-0 rounded-[3px] border px-1.5 font-pixel text-[8px] leading-[18px] uppercase',
+              active === null
+                ? 'border-gold/60 bg-gold/10 text-gold'
+                : 'border-hairline text-tx-muted hover:border-hairline2 hover:text-tx-secondary',
+            )}
+          >
+            {t('detail.where.all')}
+          </button>
+          {versions.map((v) => (
+            <button
+              key={v}
+              type="button"
+              aria-pressed={active === v}
+              onClick={() => setVersion(v)}
+              title={versionChipLabel(v)}
+              className={cn(
+                'min-w-0 shrink-0 truncate rounded-[3px] border px-1.5 font-pixel text-[8px] leading-[18px] uppercase',
+                active === v
+                  ? 'border-gold/60 bg-gold/10 text-gold'
+                  : 'border-hairline text-tx-muted hover:border-hairline2 hover:text-tx-secondary',
+              )}
+            >
+              {versionChipLabel(v)}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="dx-scroll max-h-[368px] overflow-y-auto" data-lenis-prevent>
         {wild.length === 0 && (
           /* species exists only as gift/static/trade (e.g. starters) */
           <p className="border-b border-hairline px-3 py-2 text-[11px] font-semibold leading-snug text-gold">
@@ -259,7 +322,7 @@ export default function WhereToFind({ id, highlight }: { id: number; highlight?:
           </p>
         )}
         {shown.map((row) => (
-          <RowView key={row.key} row={row} highlight={isFrom(row)} />
+          <RowView key={row.key} row={row} highlight={isFrom(row)} filter={active} />
         ))}
         {special.length > 0 && (
           <>
@@ -267,7 +330,7 @@ export default function WhereToFind({ id, highlight }: { id: number; highlight?:
               {t('detail.find.special')}
             </p>
             {special.map((row) => (
-              <RowView key={row.key} row={row} highlight={isFrom(row)} />
+              <RowView key={row.key} row={row} highlight={isFrom(row)} filter={active} />
             ))}
           </>
         )}

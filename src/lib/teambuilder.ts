@@ -9,7 +9,7 @@
  * - localStorage persistence (`pdx2.teams` + draft) and URL-hash sharing
  * - Nuzlocke import bridge (read-only use of getRunTeam)
  * - Analysis math: defensive synergy (ability-aware), offensive coverage,
- *   Smogon OU meta snapshot (data.pkmn.cc, cached)
+ *   Smogon OU meta snapshot (data.pkmn.cc, version-group format, cached)
  */
 import { Generations } from '@pkmn/data';
 import { Dex } from '@pkmn/dex';
@@ -37,6 +37,20 @@ export {
 } from './version-groups';
 export type { VersionGroupInfo } from './version-groups';
 import { DEFAULT_VERSION_GROUP, versionGroupById, versionGroupForGame } from './version-groups';
+import {
+  SMOGON_OU_FALLBACK,
+  smogonCacheKey,
+  smogonFormatChain,
+  smogonSetsUrl,
+} from './smogon-format';
+export {
+  SMOGON_OU_FALLBACK,
+  smogonExtraFormats,
+  smogonFormatChain,
+  smogonFormatForVersionGroup,
+  smogonFormatLabel,
+  smogonSetsUrl,
+} from './smogon-format';
 
 /* ------------------------------------------------------------------ */
 /* Gen-aware data layer (@pkmn/data + @pkmn/dex)                       */
@@ -596,11 +610,10 @@ export function offensiveCoverage(moves: TeamMove[], vgId: string): CoverageResu
 }
 
 /* ------------------------------------------------------------------ */
-/* Smogon meta snapshot (gen9 OU via data.pkmn.cc)                     */
+/* Smogon meta snapshot (version-group OU via data.pkmn.cc)            */
 /* ------------------------------------------------------------------ */
 
-export const SMOGON_OU_URL = 'https://data.pkmn.cc/sets/gen9ou.json';
-const SMOGON_CACHE_KEY = 'meta-gen9ou';
+export const SMOGON_OU_URL = smogonSetsUrl(SMOGON_OU_FALLBACK);
 
 export interface SmogonSet {
   name: string;
@@ -622,8 +635,23 @@ export interface SmogonSpeciesEntry {
 
 type SmogonDump = Record<string, Record<string, unknown>>;
 
-export function fetchMetaDump(): Promise<SmogonDump> {
-  return cachedJson<SmogonDump>(SMOGON_CACHE_KEY, SMOGON_OU_URL);
+export interface MetaDumpResult {
+  dump: SmogonDump;
+  format: string;
+}
+
+export async function fetchMetaDump(vgId: string = DEFAULT_VERSION_GROUP): Promise<MetaDumpResult> {
+  const chain = smogonFormatChain(vgId);
+  let lastError: unknown;
+  for (const format of chain) {
+    try {
+      const dump = await cachedJson<SmogonDump>(smogonCacheKey(format), smogonSetsUrl(format));
+      return { dump, format };
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(`Smogon meta dump failed for ${vgId}`);
 }
 
 function asStringArray(v: unknown): string[] {

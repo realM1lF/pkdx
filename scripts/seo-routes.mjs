@@ -80,6 +80,17 @@ const HOENN_ROUTE_ENTRIES = Object.values(META_GEN.routesHoenn ?? {}).map((r) =>
   en: `/maps/hoenn/${r.slugEn}`,
 }));
 
+/* Johto / Sinnoh location pages: localized slugs from the generated
+ * routesJohto / routesSinnoh blocks — same pattern as Hoenn. */
+const JOHTO_ROUTE_ENTRIES = Object.values(META_GEN.routesJohto ?? {}).map((r) => ({
+  de: `/maps/johto/${r.slugDe}`,
+  en: `/maps/johto/${r.slugEn}`,
+}));
+const SINNOH_ROUTE_ENTRIES = Object.values(META_GEN.routesSinnoh ?? {}).map((r) => ({
+  de: `/maps/sinnoh/${r.slugDe}`,
+  en: `/maps/sinnoh/${r.slugEn}`,
+}));
+
 /* 35 curated Pokémon detail pages (SEO rollout 2 + Tranche 26–35) */
 const POKEMON_SEO_IDS = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 133, 143, 150, 151, 149, 130, 94, 18, 20,
@@ -128,6 +139,10 @@ export const STATIC_ROUTES = [
   ...KANTO_ROUTE_ENTRIES,
   /* Hoenn location pages (localized slugs) */
   ...HOENN_ROUTE_ENTRIES,
+  /* Johto location pages (localized slugs, HeartGold framing) */
+  ...JOHTO_ROUTE_ENTRIES,
+  /* Sinnoh location pages (localized slugs, Platinum framing) */
+  ...SINNOH_ROUTE_ENTRIES,
   /* curated Pokémon detail pages */
   ...POKEMON_SEO_IDS.map((id) => `/pokemon/${id}`),
   /* curated matchup pages (localized slugs) */

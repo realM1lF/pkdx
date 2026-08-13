@@ -11,6 +11,8 @@ import { resolveTypeParam, typeName, typeOverviewPath } from './seo-types';
 import { ITEMS_SEO, resolveItemParam } from './seo-items';
 import { resolveRouteParam, routeNodeName } from './seo-routes-kanto';
 import { resolveHoennRouteParam, hoennRouteNodeName } from './seo-routes-hoenn';
+import { resolveJohtoRouteParam, johtoRouteNodeName } from './seo-routes-johto';
+import { resolveSinnohRouteParam, sinnohRouteNodeName } from './seo-routes-sinnoh';
 import { isNuzlockeSeoSlug } from './nuzlocke-seo';
 import { nuzlockeSeoContent } from './nuzlocke-seo-content';
 import { nuzlockeGuideContent } from './nuzlocke-guide-content';
@@ -130,6 +132,8 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
      * visible breadcrumb on /maps/kanto/:slug) */
     const kantoMatch = rest.match(/^\/maps\/kanto\/([^/]+)$/);
     const hoennMatch = rest.match(/^\/maps\/hoenn\/([^/]+)$/);
+    const johtoMatch = rest.match(/^\/maps\/johto\/([^/]+)$/);
+    const sinnohMatch = rest.match(/^\/maps\/sinnoh\/([^/]+)$/);
     if (kantoMatch && resolveRouteParam(kantoMatch[1])) {
       const nodeId = resolveRouteParam(kantoMatch[1]) as string;
       trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
@@ -141,6 +145,16 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
       trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
       trail.push({ name: 'Hoenn', url: localePath(lang, '/maps/hoenn') });
       trail.push({ name: hoennRouteNodeName(nodeId, lang), url: localePath(lang, restForLang(rest, lang)) });
+    } else if (johtoMatch && resolveJohtoRouteParam(johtoMatch[1])) {
+      const nodeId = resolveJohtoRouteParam(johtoMatch[1]) as string;
+      trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
+      trail.push({ name: 'Johto', url: localePath(lang, '/maps/johto') });
+      trail.push({ name: johtoRouteNodeName(nodeId, lang), url: localePath(lang, restForLang(rest, lang)) });
+    } else if (sinnohMatch && resolveSinnohRouteParam(sinnohMatch[1])) {
+      const nodeId = resolveSinnohRouteParam(sinnohMatch[1]) as string;
+      trail.push({ name: 'Maps', url: localePath(lang, '/maps') });
+      trail.push({ name: 'Sinnoh', url: localePath(lang, '/maps/sinnoh') });
+      trail.push({ name: sinnohRouteNodeName(nodeId, lang), url: localePath(lang, restForLang(rest, lang)) });
     } else if (rest === '/typen' || rest === '/types') {
       trail.push({ name: crumbName, url: localePath(lang, restForLang(rest, lang)) });
     } else if (/^\/(typen|types)\/[^/]+$/.test(rest)) {

@@ -1,7 +1,7 @@
 /* AnalysisDeck — command deck under the 6-slot row:
  * DEFENSE (lg 8/12): single tall matrix — team header once, all 18 types stacked.
  * OFFENSE (lg 4/12): coverage strip + gap callouts with plain-language hints.
- * META (full width below): Smogon gen9 OU reference sets (template, not game law).
+ * META (full width below): Smogon OU reference sets for the team's version group.
  * All warnings gold, never red (design.md §2.3). */
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
@@ -17,6 +17,8 @@ import {
   effectivenessVsMember,
   genHasMechanics,
   seTypesAgainst,
+  smogonFormatForVersionGroup,
+  smogonFormatLabel,
   versionGroupById,
   worstCases,
 } from '@/lib/teambuilder';
@@ -334,7 +336,8 @@ interface MetaPanelProps {
   state: MetaState;
   entry: SmogonSpeciesEntry | null;
   focusLabel: string | null;
-  teamGen: number;
+  format: string | null;
+  preferredFormat: string;
   onApplySet: (set: SmogonSet) => void;
   applied: boolean;
 }
@@ -428,47 +431,49 @@ function SetCard({
   );
 }
 
-function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: MetaPanelProps) {
+function MetaPanel({ state, entry, focusLabel, format, preferredFormat, onApplySet, applied }: MetaPanelProps) {
   const { t } = useTranslation();
-  const mismatched = teamGen !== 9;
+  const sourceFormat = format ?? preferredFormat;
+  const sourceLabel = smogonFormatLabel(sourceFormat);
+  const fallback = format != null && format !== preferredFormat;
   return (
     <section className="tb-panel md:col-span-12" aria-label={t('tb.metaAria')}>
       <div className="tb-panel-head">
-        <span className="tb-micro-gold flex items-center gap-1.5" title={t('tb.metaGenNote')}>
+        <span className="tb-micro-gold flex items-center gap-1.5" title={t('team.meta.help', { format: sourceLabel })}>
           <Sparkles size={11} />
-          {t('tb.metaEyebrow')}
+          {t('team.meta.eyebrow', { format: sourceLabel })}
         </span>
         <span className="flex items-center gap-1.5">
           {applied && (
             <span className="tb-chip !border-gold/60 !bg-gold/10 !text-[8px] !text-gold">{t('tb.setApplied')}</span>
           )}
+          <span className="tb-chip !text-[8px] text-gold">{t('team.meta.source', { format: sourceLabel })}</span>
           {entry?.weight != null && (
             <span className="tb-chip !text-[8px] text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
           )}
         </span>
       </div>
       <div className="p-3">
-        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t('tb.metaHelp')}</p>
-        {/* gen-awareness: the meta data is always gen 9 OU — say so, flag mismatch */}
-        {mismatched && (
+        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t('team.meta.help', { format: sourceLabel })}</p>
+        {fallback && (
           <div
             className="mb-2 flex items-center gap-1.5 rounded-[8px] border border-gold/50 bg-gold/10 px-2 py-1.5"
-            title={t('tb.metaGenNote')}
+            title={t('team.meta.fallback', { format: sourceLabel })}
           >
             <AlertTriangle size={10} className="shrink-0 text-gold" />
-            <span className="tb-micro-gold !text-[8px]">{t('tb.metaGenMismatch', { gen: teamGen })}</span>
+            <span className="tb-micro-gold !text-[8px]">{t('team.meta.fallback', { format: sourceLabel })}</span>
           </div>
         )}
         {state === 'unavailable' && (
           <div className="flex items-center gap-2 rounded-[8px] border border-gold/50 bg-gold/10 px-2.5 py-2">
             <CloudOff size={12} className="shrink-0 text-gold" />
-            <span className="tb-micro-gold !text-[8px]">{t('tb.metaUnavailable')}</span>
+            <span className="tb-micro-gold !text-[8px]">{t('team.meta.unavailable')}</span>
           </div>
         )}
-        {state === 'loading' && <div className="tb-micro py-2">{t('tb.syncingOu')}</div>}
+        {state === 'loading' && <div className="tb-micro py-2">{t('team.meta.syncing')}</div>}
         {state !== 'unavailable' && state !== 'loading' && !entry && (
           <div className="text-[11px] text-tx-muted">
-            {focusLabel ? t('tb.noOuSets', { name: focusLabel }) : t('tb.focusSlot')}
+            {focusLabel ? t('team.meta.noSets', { name: focusLabel, format: sourceLabel }) : t('tb.focusSlot')}
           </div>
         )}
         {entry && (
@@ -478,7 +483,7 @@ function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: M
               primary
               onApply={() => onApplySet(entry.sets[0])}
               applied={applied}
-              applyLabel={mismatched ? t('tb.applyAsTemplate') : undefined}
+              applyLabel={fallback ? t('tb.applyAsTemplate') : undefined}
             />
             {entry.sets.slice(1, 3).map((s) => (
               <SetCard
@@ -487,7 +492,7 @@ function MetaPanel({ state, entry, focusLabel, teamGen, onApplySet, applied }: M
                 primary={false}
                 onApply={() => onApplySet(s)}
                 applied={false}
-                applyLabel={mismatched ? t('tb.applyAsTemplate') : undefined}
+                applyLabel={fallback ? t('tb.applyAsTemplate') : undefined}
               />
             ))}
           </div>
@@ -507,6 +512,7 @@ interface AnalysisDeckProps {
   coverageLoading: boolean;
   metaState: MetaState;
   metaEntry: SmogonSpeciesEntry | null;
+  metaFormat: string | null;
   metaFocusLabel: string | null;
   onApplySet: (set: SmogonSet) => void;
   appliedSetName: string | null;
@@ -520,6 +526,7 @@ export default function AnalysisDeck({
   coverageLoading,
   metaState,
   metaEntry,
+  metaFormat,
   metaFocusLabel,
   onApplySet,
   appliedSetName,
@@ -563,7 +570,8 @@ export default function AnalysisDeck({
           state={metaState}
           entry={metaEntry}
           focusLabel={metaFocusLabel}
-          teamGen={vg.gen}
+          format={metaFormat}
+          preferredFormat={smogonFormatForVersionGroup(versionGroup)}
           onApplySet={onApplySet}
           applied={appliedSetName === metaEntry?.sets[0]?.name}
         />
