@@ -7,8 +7,10 @@ export interface InteractiveMapLink {
   url: string;
   /** Short site name for tooltips */
   site: string;
-  /** Game edition covered by that map */
+  /** Game edition covered by that map (English fallback) */
   game: string;
+  /** Optional i18n key under maps.interactiveGame */
+  gameKey?: string;
 }
 
 type RegionInteractiveConfig = {
@@ -57,6 +59,7 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
       url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
       site: 'HGSS Ironmon Map',
       game: 'HeartGold & SoulSilver',
+      gameKey: 'hgss',
     },
     byVersion: {
       /* G/S/C: no interactive GSC map exists — the HGSS Ironmon map is the
@@ -64,27 +67,32 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
       gold: {
         url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
         site: 'HGSS Ironmon Map',
-        game: 'HeartGold & SoulSilver',
+        game: 'HGSS Ironmon (GSC stand-in)',
+        gameKey: 'hgssIronmonGsc',
       },
       silver: {
         url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
         site: 'HGSS Ironmon Map',
-        game: 'HeartGold & SoulSilver',
+        game: 'HGSS Ironmon (GSC stand-in)',
+        gameKey: 'hgssIronmonGsc',
       },
       crystal: {
         url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
         site: 'HGSS Ironmon Map',
-        game: 'HeartGold & SoulSilver',
+        game: 'HGSS Ironmon (GSC stand-in)',
+        gameKey: 'hgssIronmonGsc',
       },
       heartgold: {
         url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
         site: 'HGSS Ironmon Map',
         game: 'HeartGold & SoulSilver',
+        gameKey: 'hgss',
       },
       soulsilver: {
         url: 'https://kelseyyoung.github.io/HGSSIronmonMap/',
         site: 'HGSS Ironmon Map',
         game: 'HeartGold & SoulSilver',
+        gameKey: 'hgss',
       },
     },
   },
@@ -124,17 +132,20 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
       diamond: {
         url: 'https://pkmnmap.com/Platinum/',
         site: 'pkmnmap',
-        game: 'Diamond & Pearl',
+        game: 'Platinum',
+        gameKey: 'platinum',
       },
       pearl: {
         url: 'https://pkmnmap.com/Platinum/',
         site: 'pkmnmap',
-        game: 'Diamond & Pearl',
+        game: 'Platinum',
+        gameKey: 'platinum',
       },
       platinum: {
         url: 'https://pkmnmap4.web.app/',
         site: 'pkmnmap4',
         game: 'Platinum',
+        gameKey: 'platinum',
       },
     },
   },
@@ -145,28 +156,33 @@ const INTERACTIVE_MAPS: Record<RegionId, RegionInteractiveConfig> = {
     default: {
       url: 'https://synergymmo.com/region-maps/',
       site: 'Team Synergy',
-      game: 'Black & White',
+      game: 'PokeMMO (not retail BW)',
+      gameKey: 'pokemmoNotRetail',
     },
     byVersion: {
       black: {
         url: 'https://synergymmo.com/region-maps/',
         site: 'Team Synergy',
-        game: 'Black & White',
+        game: 'PokeMMO (not retail BW)',
+        gameKey: 'pokemmoNotRetail',
       },
       white: {
         url: 'https://synergymmo.com/region-maps/',
         site: 'Team Synergy',
-        game: 'Black & White',
+        game: 'PokeMMO (not retail BW)',
+        gameKey: 'pokemmoNotRetail',
       },
       'black-2': {
         url: 'https://synergymmo.com/region-maps/',
         site: 'Team Synergy',
-        game: 'Black 2 & White 2',
+        game: 'PokeMMO (not retail BW)',
+        gameKey: 'pokemmoNotRetail',
       },
       'white-2': {
         url: 'https://synergymmo.com/region-maps/',
         site: 'Team Synergy',
-        game: 'Black 2 & White 2',
+        game: 'PokeMMO (not retail BW)',
+        gameKey: 'pokemmoNotRetail',
       },
     },
   },

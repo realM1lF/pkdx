@@ -11,7 +11,7 @@
     "heartgold",
     "soulsilver"
   ],
-  "defaultVersion": "gold",
+  "defaultVersion": "heartgold",
   "coverage": 0.98,
   "speciesCount": 183,
   "nodes": [
@@ -480,6 +480,50 @@
       "postGame": true,
       "labelPos": "left",
       "nameDe": "Silberberg"
+    },
+    {
+      "id": "johto-route-47",
+      "label": "Route 47",
+      "kind": "route",
+      "x": 40,
+      "y": 720,
+      "order": 44,
+      "locationSlug": "johto-route-47",
+      "labelPos": "right",
+      "nameDe": "Route 47"
+    },
+    {
+      "id": "cliff-cave",
+      "label": "Cliff Cave",
+      "kind": "dungeon",
+      "x": 28,
+      "y": 640,
+      "order": 45,
+      "locationSlug": "cliff-cave",
+      "labelPos": "right",
+      "nameDe": "Felsenhöhle"
+    },
+    {
+      "id": "johto-route-48",
+      "label": "Route 48",
+      "kind": "route",
+      "x": 45,
+      "y": 540,
+      "order": 46,
+      "locationSlug": "johto-route-48",
+      "labelPos": "right",
+      "nameDe": "Route 48"
+    },
+    {
+      "id": "johto-safari-zone",
+      "label": "Safari Zone",
+      "kind": "special",
+      "x": 40,
+      "y": 450,
+      "order": 47,
+      "locationSlug": "johto-safari-zone",
+      "labelPos": "right",
+      "nameDe": "Safari-Zone"
     }
   ],
   "edges": [
@@ -711,6 +755,26 @@
     {
       "from": "blackthorn-city",
       "to": "mt-silver",
+      "kind": "land"
+    },
+    {
+      "from": "cianwood-city",
+      "to": "johto-route-47",
+      "kind": "land"
+    },
+    {
+      "from": "johto-route-47",
+      "to": "cliff-cave",
+      "kind": "land"
+    },
+    {
+      "from": "johto-route-47",
+      "to": "johto-route-48",
+      "kind": "land"
+    },
+    {
+      "from": "johto-route-48",
+      "to": "johto-safari-zone",
       "kind": "land"
     }
   ],

@@ -473,6 +473,7 @@
       "y": 730,
       "order": 42,
       "locationSlug": "aspertia-city",
+      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Eventura City"
     },
@@ -484,6 +485,7 @@
       "y": 700,
       "order": 43,
       "locationSlug": "unova-route-19",
+      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Route 19"
     },
@@ -495,6 +497,7 @@
       "y": 715,
       "order": 44,
       "locationSlug": "floccesy-ranch",
+      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Dausing-Hof"
     },
@@ -506,6 +509,7 @@
       "y": 600,
       "order": 45,
       "locationSlug": "unova-route-20",
+      "postGame": true,
       "labelPos": "right",
       "nameDe": "Route 20"
     },
@@ -517,6 +521,7 @@
       "y": 490,
       "order": 46,
       "locationSlug": "virbank-city",
+      "postGame": true,
       "labelPos": "right",
       "nameDe": "Vapydro City"
     },
@@ -528,6 +533,7 @@
       "y": 430,
       "order": 47,
       "locationSlug": "unova-route-21",
+      "postGame": true,
       "labelPos": "right",
       "nameDe": "Route 21"
     },
@@ -539,6 +545,7 @@
       "y": 320,
       "order": 48,
       "locationSlug": "humilau-city",
+      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Abidaya City"
     },
@@ -550,6 +557,7 @@
       "y": 235,
       "order": 49,
       "locationSlug": "unova-route-22",
+      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Route 22"
     },
@@ -561,8 +569,75 @@
       "y": 210,
       "order": 50,
       "locationSlug": "unova-route-23",
+      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Route 23"
+    },
+    {
+      "id": "village-bridge",
+      "label": "Village Bridge",
+      "kind": "special",
+      "x": 838,
+      "y": 150,
+      "order": 51,
+      "locationSlug": "village-bridge",
+      "labelPos": "bottom",
+      "nameDe": "Dorfbrücke"
+    },
+    {
+      "id": "marvelous-bridge",
+      "label": "Marvelous Bridge",
+      "kind": "special",
+      "x": 820,
+      "y": 350,
+      "order": 52,
+      "locationSlug": "marvelous-bridge",
+      "labelPos": "top",
+      "nameDe": "Wunderbrücke"
+    },
+    {
+      "id": "unova-route-15",
+      "label": "Route 15",
+      "kind": "route",
+      "x": 930,
+      "y": 380,
+      "order": 53,
+      "locationSlug": "unova-route-15",
+      "labelPos": "top",
+      "nameDe": "Route 15"
+    },
+    {
+      "id": "unova-route-18",
+      "label": "Route 18",
+      "kind": "route",
+      "x": 1120,
+      "y": 480,
+      "order": 54,
+      "locationSlug": "unova-route-18",
+      "labelPos": "left",
+      "nameDe": "Route 18"
+    },
+    {
+      "id": "unova-route-17",
+      "label": "Route 17",
+      "kind": "route",
+      "x": 1120,
+      "y": 580,
+      "order": 55,
+      "locationSlug": "unova-route-17",
+      "labelPos": "left",
+      "nameDe": "Route 17"
+    },
+    {
+      "id": "p2-laboratory",
+      "label": "P2 Laboratory",
+      "kind": "dungeon",
+      "x": 1120,
+      "y": 680,
+      "order": 56,
+      "locationSlug": "p2-laboratory",
+      "labelPos": "left",
+      "nameDe": "P2-Labor"
     }
   ],
   "edges": [
@@ -713,6 +788,11 @@
     },
     {
       "from": "unova-route-11",
+      "to": "village-bridge",
+      "kind": "land"
+    },
+    {
+      "from": "village-bridge",
       "to": "unova-route-12",
       "kind": "land"
     },
@@ -810,6 +890,36 @@
       "from": "unova-route-23",
       "to": "icirrus-city",
       "kind": "land"
+    },
+    {
+      "from": "unova-route-16",
+      "to": "marvelous-bridge",
+      "kind": "land"
+    },
+    {
+      "from": "marvelous-bridge",
+      "to": "unova-route-15",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-15",
+      "to": "undella-town",
+      "kind": "land"
+    },
+    {
+      "from": "undella-town",
+      "to": "unova-route-18",
+      "kind": "water"
+    },
+    {
+      "from": "unova-route-18",
+      "to": "unova-route-17",
+      "kind": "water"
+    },
+    {
+      "from": "unova-route-17",
+      "to": "p2-laboratory",
+      "kind": "water"
     }
   ],
   "nameDe": "Einall"

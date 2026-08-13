@@ -39,6 +39,7 @@ interface EncounterDetail {
   min_level: number;
   max_level: number;
   method: NamedRef;
+  condition_values?: NamedRef[];
 }
 
 interface VersionEncounter {
@@ -61,53 +62,91 @@ interface LocationAreaResponse {
 /* ---------- aggregated model ---------- */
 
 export type MethodBucket = 'WALK' | 'SURF' | 'FISH' | 'OTHER';
+/** Row-level chip when OTHER is more specific than the filter bucket. */
+export type MethodChip = 'swarm' | 'radio' | 'headbutt' | 'feebas';
 
 export const METHOD_BUCKETS: MethodBucket[] = ['WALK', 'SURF', 'FISH', 'OTHER'];
 
 /* Method census across all 5 region versions (PokéAPI scan, 2024):
- * water variants ('surf-spots', 'super-rod-spots', 'feebas-tile-fishing'),
+ * water variants ('surf-spots', 'super-rod-spots'),
  * tree variants ('honey-tree' singular, gen-2 'headbutt-low/normal/high')
  * and one-off event methods ('pokeflute', 'npc-trade', 'squirt-bottle',
- * 'devon-scope') all exist in the mapped areas — classify them correctly
- * or they leak into the OTHER bucket / the wild leaderboards. */
+ * 'devon-scope', 'feebas-tile-fishing') all exist in the mapped areas —
+ * classify them correctly or they leak into WALK / FISH leaderboards. */
 const SURF_METHODS = new Set(['surf', 'surf-spots']);
 const FISH_METHODS = new Set([
   'old-rod', 'good-rod', 'super-rod', 'fish', 'fishing',
-  'super-rod-spots', 'feebas-tile-fishing',
+  'super-rod-spots',
 ]);
 const WALK_METHODS = new Set([
   'walk', 'dark-grass', 'rustling-grass', 'grass-spots', 'cave-spots', 'bridge-spots',
-  'swarm', 'pokeradar', 'roaming', 'seaweed', 'honey-trees', 'honey-tree',
-  'headbutt', 'headbutt-low', 'headbutt-normal', 'headbutt-high',
+  'pokeradar', 'roaming', 'seaweed', 'honey-trees', 'honey-tree',
 ]);
-/** gift / one-off static / trade encounters — never wild (Poké Flute Snorlax,
- * in-game trades, Sudowoodo, Devon-Scope Kecleon included). */
+/** gift / one-off static / trade / tile-only — never wild (Poké Flute Snorlax,
+ * in-game trades, Sudowoodo, Devon-Scope Kecleon, Feebas tiles included). */
 export const STATIC_METHODS = new Set([
   'gift', 'gift-egg', 'only-one', 'static', 'pokeflute', 'npc-trade',
-  'squirt-bottle', 'devon-scope',
+  'squirt-bottle', 'devon-scope', 'feebas-tile-fishing',
 ]);
-
-/** Chance aggregation key: PokéAPI `chance` is per slot, so sum per species
- * per exact method, then take MAX across method buckets — never sum across
- * mutually exclusive methods (old/good/super rod), or rates exceed 100 %
- * (Horsea 170 %, Seeper 144 % before this fix). */
-function chanceBucketKey(method: string): string {
-  if (SURF_METHODS.has(method)) return 'surf';
-  if (method === 'old-rod') return 'old-rod';
-  if (method === 'good-rod') return 'good-rod';
-  if (method === 'super-rod') return 'super-rod';
-  if (FISH_METHODS.has(method)) return 'fish';
-  if (method === 'rock-smash') return 'rock-smash';
-  if (method.startsWith('headbutt')) return 'headbutt';
-  if (WALK_METHODS.has(method)) return 'walk';
-  return method;
-}
 
 export function methodBucket(method: string): MethodBucket {
   if (SURF_METHODS.has(method)) return 'SURF';
   if (FISH_METHODS.has(method)) return 'FISH';
   if (WALK_METHODS.has(method)) return 'WALK';
   return 'OTHER';
+}
+
+interface ExclusiveAxes {
+  time: string;
+  swarm: string;
+  radio: string;
+  headbutt: string;
+}
+
+function conditionNames(det: EncounterDetail): string[] {
+  return (det.condition_values ?? []).map((c) => c.name);
+}
+
+/** Mutually exclusive axes inside one method. Empty = default group. */
+function exclusiveAxes(names: string[]): ExclusiveAxes {
+  const axes: ExclusiveAxes = { time: '', swarm: '', radio: '', headbutt: '' };
+  for (const raw of names) {
+    const n = raw.toLowerCase();
+    if (n === 'time-morning' || n === 'morning') axes.time = 'morning';
+    else if (n === 'time-day' || n === 'day') axes.time = 'day';
+    else if (n === 'time-night' || n === 'night') axes.time = 'night';
+    else if (n === 'swarm-yes' || n === 'swarm') axes.swarm = 'yes';
+    else if (n === 'swarm-no') axes.swarm = 'no';
+    else if (n.startsWith('radio-') || n === 'radio-hoenn' || n === 'radio-sinnoh') {
+      axes.radio = n.replace(/^radio-/, '') || n;
+    } else if (n === 'headbutt-tree-common') axes.headbutt = 'common';
+    else if (n === 'headbutt-tree-rare') axes.headbutt = 'rare';
+  }
+  return axes;
+}
+
+function exclusiveGroupKey(method: string, names: string[]): string {
+  const a = exclusiveAxes(names);
+  return `${method}|t:${a.time}|s:${a.swarm}|r:${a.radio}|h:${a.headbutt}`;
+}
+
+function displayOf(
+  method: string,
+  names: string[],
+): { bucket: MethodBucket; chip?: MethodChip; isStatic: boolean } {
+  const a = exclusiveAxes(names);
+  if (method === 'feebas-tile-fishing') {
+    return { bucket: 'OTHER', chip: 'feebas', isStatic: true };
+  }
+  if (STATIC_METHODS.has(method)) {
+    return { bucket: 'OTHER', isStatic: true };
+  }
+  if (method.startsWith('headbutt') || a.headbutt) {
+    return { bucket: 'OTHER', chip: 'headbutt', isStatic: false };
+  }
+  if (a.swarm === 'yes' || method === 'swarm') return { bucket: 'OTHER', chip: 'swarm', isStatic: false };
+  if (a.radio) return { bucket: 'OTHER', chip: 'radio', isStatic: false };
+  return { bucket: methodBucket(method), isStatic: false };
 }
 
 export interface EncounterEntry {
@@ -120,6 +159,10 @@ export interface EncounterEntry {
   maxLevel: number;
   /** gift / one-off static encounter */
   isStatic: boolean;
+  /** chance per method bucket (ScoutTooltip / methodTop must not use species-max) */
+  chanceByMethod: Partial<Record<MethodBucket, number>>;
+  /** swarm / radio / headbutt / feebas — own chip, not folded into WALK */
+  methodChip?: MethodChip;
 }
 
 export interface AreaGroup {
@@ -335,10 +378,17 @@ export function aggregateArea(
   locationSlug: string,
   version: string,
 ): AreaGroup {
-  const bySpecies = new Map<
-    number,
-    { slug: string; methods: Set<MethodBucket>; maxChance: number; minLevel: number; maxLevel: number; isStatic: boolean }
-  >();
+  type Row = {
+    slug: string;
+    pokemonId: number;
+    bucket: MethodBucket;
+    chip?: MethodChip;
+    isStatic: boolean;
+    chance: number;
+    minLevel: number;
+    maxLevel: number;
+  };
+  const byRow = new Map<string, Row>();
 
   for (const enc of area.pokemon_encounters) {
     const vd = enc.version_details.find((v) => v.version.name === version);
@@ -346,53 +396,65 @@ export function aggregateArea(
     const id = idFromUrl(enc.pokemon.url);
     if (!Number.isFinite(id) || id < 1 || id > 1025) continue;
 
-    let minL = Infinity;
-    let maxL = -Infinity;
-    const buckets = new Set<MethodBucket>();
-    const chanceByMethod = new Map<string, number>();
-    let isStatic = false;
-    for (const det of vd.encounter_details) {
-      buckets.add(methodBucket(det.method.name));
-      if (STATIC_METHODS.has(det.method.name)) isStatic = true;
-      const key = chanceBucketKey(det.method.name);
-      chanceByMethod.set(key, (chanceByMethod.get(key) ?? 0) + det.chance);
-      minL = Math.min(minL, det.min_level);
-      maxL = Math.max(maxL, det.max_level);
+    const groups = new Map<
+      string,
+      { method: string; names: string[]; chance: number; minLevel: number; maxLevel: number }
+    >();
+    for (const d of vd.encounter_details) {
+      const method = d.method.name;
+      const names = conditionNames(d);
+      const key = exclusiveGroupKey(method, names);
+      const prev = groups.get(key);
+      if (prev) {
+        prev.chance += d.chance;
+        prev.minLevel = Math.min(prev.minLevel, d.min_level);
+        prev.maxLevel = Math.max(prev.maxLevel, d.max_level);
+      } else {
+        groups.set(key, {
+          method,
+          names,
+          chance: d.chance,
+          minLevel: d.min_level,
+          maxLevel: d.max_level,
+        });
+      }
     }
-    if (!Number.isFinite(minL)) {
-      minL = 0;
-      maxL = 0;
-    }
-    const maxChance = Math.min(100, Math.max(0, ...chanceByMethod.values()));
 
-    const prev = bySpecies.get(id);
-    if (prev) {
-      buckets.forEach((b) => prev.methods.add(b));
-      prev.maxChance = Math.max(prev.maxChance, maxChance);
-      prev.minLevel = Math.min(prev.minLevel, minL);
-      prev.maxLevel = Math.max(prev.maxLevel, maxL);
-      prev.isStatic = prev.isStatic || isStatic;
-    } else {
-      bySpecies.set(id, {
-        slug: enc.pokemon.name,
-        methods: buckets,
-        maxChance,
-        minLevel: minL,
-        maxLevel: maxL,
-        isStatic,
-      });
+    for (const g of groups.values()) {
+      const display = displayOf(g.method, g.names);
+      const rowKey = `${id}|${display.bucket}|${display.chip ?? ''}|${display.isStatic ? 's' : 'w'}`;
+      const chance = Math.min(100, Math.max(0, g.chance));
+      const prev = byRow.get(rowKey);
+      if (prev) {
+        prev.chance = Math.min(100, Math.max(prev.chance, chance));
+        prev.minLevel = Math.min(prev.minLevel, g.minLevel);
+        prev.maxLevel = Math.max(prev.maxLevel, g.maxLevel);
+      } else {
+        byRow.set(rowKey, {
+          slug: enc.pokemon.name,
+          pokemonId: id,
+          bucket: display.bucket,
+          chip: display.chip,
+          isStatic: display.isStatic,
+          chance,
+          minLevel: Number.isFinite(g.minLevel) ? g.minLevel : 0,
+          maxLevel: Number.isFinite(g.maxLevel) ? g.maxLevel : 0,
+        });
+      }
     }
   }
 
-  const entries: EncounterEntry[] = [...bySpecies.entries()]
-    .map(([pokemonId, e]) => ({
-      pokemonId,
+  const entries: EncounterEntry[] = [...byRow.values()]
+    .map((e) => ({
+      pokemonId: e.pokemonId,
       slug: e.slug,
-      methods: METHOD_BUCKETS.filter((b) => e.methods.has(b)),
-      maxChance: e.maxChance,
+      methods: [e.bucket],
+      maxChance: e.chance,
       minLevel: e.minLevel,
       maxLevel: e.maxLevel,
       isStatic: e.isStatic,
+      chanceByMethod: { [e.bucket]: e.chance },
+      methodChip: e.chip,
     }))
     .sort((a, b) => {
       if (a.isStatic !== b.isStatic) return a.isStatic ? -1 : 1;
@@ -411,6 +473,26 @@ function emptyNode(nodeId: string, status: NodeDataStatus = 'empty'): NodeMapDat
   return { nodeId, status, areas: [], pokemonCount: 0, bestRate: 0, methodTop: {} };
 }
 
+/** KPIs for a loaded node: bestRate is wild-only, methodTop is per-bucket chance. */
+export function summarizeAreas(
+  groups: AreaGroup[],
+): Pick<NodeMapData, 'pokemonCount' | 'bestRate' | 'methodTop'> {
+  const species = new Set<number>();
+  let bestRate = 0;
+  const methodTop: Partial<Record<MethodBucket, number>> = {};
+  for (const g of groups) {
+    for (const e of g.entries) {
+      species.add(e.pokemonId);
+      if (!e.isStatic) bestRate = Math.max(bestRate, e.maxChance);
+      for (const m of e.methods) {
+        const c = e.chanceByMethod[m] ?? e.maxChance;
+        methodTop[m] = Math.max(methodTop[m] ?? 0, c);
+      }
+    }
+  }
+  return { pokemonCount: species.size, bestRate, methodTop };
+}
+
 async function loadNodeData(nodeId: string, locationSlug: string, version: string): Promise<NodeMapData> {
   const loc = await fetchLocation(locationSlug);
   if (!loc.areas || loc.areas.length === 0) return emptyNode(nodeId);
@@ -421,23 +503,12 @@ async function loadNodeData(nodeId: string, locationSlug: string, version: strin
 
   if (groups.length === 0) return emptyNode(nodeId);
 
-  const species = new Set<number>();
-  let bestRate = 0;
-  const methodTop: Partial<Record<MethodBucket, number>> = {};
-  for (const g of groups) {
-    for (const e of g.entries) {
-      species.add(e.pokemonId);
-      bestRate = Math.max(bestRate, e.maxChance);
-      for (const m of e.methods) {
-        methodTop[m] = Math.max(methodTop[m] ?? 0, e.maxChance);
-      }
-    }
-  }
+  const { pokemonCount, bestRate, methodTop } = summarizeAreas(groups);
   return {
     nodeId,
     status: 'loaded',
     areas: groups,
-    pokemonCount: species.size,
+    pokemonCount,
     bestRate,
     methodTop,
   };

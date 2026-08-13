@@ -6,9 +6,9 @@
  *
  *   src/data/routes-kanto.json   encounter tables per Kanto node + version
  *                                (slot chances summed per species × exact
- *                                method, then MAX across methods inside a
- *                                bucket — mutually exclusive rods must not
- *                                be summed, see bucketsFromDetails)
+ *                                method × exclusive condition-group, then
+ *                                MAX across groups into a bucket — never
+ *                                morning+day+night, swarm+default, or rods)
  *   src/data/pokemon-seo.json    FRLG locations, evolution steps, types, BST
  *                                and catch rate for the 35 curated Pokémon
  *   src/data/seo-meta-gen.json   tiny summary consumed by src/lib/seo.ts
@@ -121,53 +121,86 @@ const nameDe = (id) => NAMES_DE[String(id)]?.name ?? null;
 const nameEn = (id, slug) => title(slug);
 
 const SURF = new Set(['surf', 'surf-spots']);
-const FISH = new Set(['old-rod', 'good-rod', 'super-rod', 'fish', 'fishing', 'super-rod-spots', 'feebas-tile-fishing']);
-/* gift / one-off static / trade — never wild (Poké Flute Snorlax, in-game
- * trades, Sudowoodo, Devon-Scope Kecleon). Keep in sync with
- * STATIC_METHODS in src/lib/mapdata.ts. */
+const FISH = new Set(['old-rod', 'good-rod', 'super-rod', 'fish', 'fishing', 'super-rod-spots']);
+/* gift / one-off static / trade / tile-only — never wild (Poké Flute Snorlax,
+ * in-game trades, Sudowoodo, Devon-Scope Kecleon, Feebas tiles). Keep in sync
+ * with STATIC_METHODS in src/lib/mapdata.ts. */
 const STATIC = new Set([
   'gift', 'gift-egg', 'only-one', 'static', 'pokeflute', 'npc-trade',
-  'squirt-bottle', 'devon-scope',
+  'squirt-bottle', 'devon-scope', 'feebas-tile-fishing',
 ]);
 /* PokéAPI junk entries (e.g. 'colosseum-bonus-disc-jpn' on kanto-pokecenter-area)
  * are not real FRLG encounters — excluded everywhere. */
 const isJunkMethod = (m) => m.includes('colosseum') || m.includes('bonus-disc');
-function bucket(method) {
+
+function exclusiveAxes(names) {
+  const axes = { time: '', swarm: '', radio: '', headbutt: '' };
+  for (const raw of names) {
+    const n = String(raw).toLowerCase();
+    if (n === 'time-morning' || n === 'morning') axes.time = 'morning';
+    else if (n === 'time-day' || n === 'day') axes.time = 'day';
+    else if (n === 'time-night' || n === 'night') axes.time = 'night';
+    else if (n === 'swarm-yes' || n === 'swarm') axes.swarm = 'yes';
+    else if (n === 'swarm-no') axes.swarm = 'no';
+    else if (n.startsWith('radio-')) axes.radio = n.replace(/^radio-/, '') || n;
+    else if (n === 'headbutt-tree-common') axes.headbutt = 'common';
+    else if (n === 'headbutt-tree-rare') axes.headbutt = 'rare';
+  }
+  return axes;
+}
+
+function exclusiveGroupKey(method, names) {
+  const a = exclusiveAxes(names);
+  return `${method}|t:${a.time}|s:${a.swarm}|r:${a.radio}|h:${a.headbutt}`;
+}
+
+function conditionNames(det) {
+  return (det.condition_values ?? []).map((c) => (typeof c === 'string' ? c : c.name));
+}
+
+/** SEO pages only know WALK|SURF|FISH|STATIC|OTHER — swarm/radio/headbutt
+ * land in OTHER (not grass); feebas tiles land in STATIC (not FISH). */
+function bucket(method, names = []) {
+  const a = exclusiveAxes(names);
+  if (STATIC.has(method)) return 'STATIC';
   if (SURF.has(method)) return 'SURF';
   if (FISH.has(method)) return 'FISH';
-  if (STATIC.has(method)) return 'STATIC';
+  if (method.startsWith('headbutt') || a.headbutt) return 'OTHER';
+  if (a.swarm === 'yes' || a.radio) return 'OTHER';
   if (method === 'walk' || method.endsWith('-grass') || method.endsWith('-spots')) return 'WALK';
   return 'OTHER';
 }
 const BUCKET_ORDER = ['STATIC', 'WALK', 'SURF', 'FISH', 'OTHER'];
 
 /**
- * Slot-summation done right: sum slot chances per EXACT method (the real
- * probability for one rod / one method), then take the MAX across methods
- * inside a bucket. Rods are mutually exclusive — summing them produced
- * impossible values like 120% (Magikarp old+good rod) or 299%.
+ * Sum slot chances per exact method AND exclusive condition-group, then MAX
+ * across mutually exclusive groups into a display bucket. Never sum
+ * morning+day+night, swarm with default, or fishing rods.
  */
 function bucketsFromDetails(details) {
-  const byMethod = new Map();
+  const byGroup = new Map();
   for (const det of details) {
     const m = det.method.name;
     if (isJunkMethod(m)) continue;
-    if (!byMethod.has(m)) byMethod.set(m, { chance: 0, min: Infinity, max: -Infinity });
-    const g = byMethod.get(m);
+    const names = conditionNames(det);
+    const key = exclusiveGroupKey(m, names);
+    if (!byGroup.has(key)) byGroup.set(key, { method: m, names, chance: 0, min: Infinity, max: -Infinity });
+    const g = byGroup.get(key);
     g.chance += det.chance;
     g.min = Math.min(g.min, det.min_level);
     g.max = Math.max(g.max, det.max_level);
   }
   const byBucket = new Map();
-  for (const [m, g] of byMethod) {
-    const b = bucket(m);
+  for (const g of byGroup.values()) {
+    const b = bucket(g.method, g.names);
+    const chance = Math.min(100, Math.max(0, g.chance));
     const prev = byBucket.get(b);
     if (prev) {
-      prev.chance = Math.max(prev.chance, g.chance);
+      prev.chance = Math.max(prev.chance, chance);
       prev.min = Math.min(prev.min, g.min);
       prev.max = Math.max(prev.max, g.max);
     } else {
-      byBucket.set(b, { chance: g.chance, min: g.min, max: g.max });
+      byBucket.set(b, { chance, min: g.min, max: g.max });
     }
   }
   return byBucket;
@@ -230,8 +263,9 @@ function aggregateArea(area, locationSlug, version) {
     for (const [b, g] of byBucket) {
       const key = `${id}|${b}`;
       const prev = rows.get(key);
+      const chance = Math.min(100, g.chance);
       if (prev) {
-        prev.chance += g.chance;
+        prev.chance = Math.min(100, Math.max(prev.chance, chance));
         prev.minLevel = Math.min(prev.minLevel, g.min);
         prev.maxLevel = Math.max(prev.maxLevel, g.max);
       } else {
@@ -239,8 +273,8 @@ function aggregateArea(area, locationSlug, version) {
           id,
           slug: enc.pokemon.name,
           method: b,
-          isStatic: STATIC.has(b) || vd.encounter_details.some((d) => STATIC.has(d.method.name)),
-          chance: g.chance,
+          isStatic: b === 'STATIC',
+          chance,
           minLevel: g.min,
           maxLevel: g.max,
         });

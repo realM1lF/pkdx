@@ -151,7 +151,10 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
               href={interactive.url}
               target="_blank"
               rel="noopener noreferrer"
-              title={t('maps.interactiveTitle', { site: interactive.site, game: interactive.game })}
+              title={t('maps.interactiveTitle', {
+                site: interactive.site,
+                game: interactive.gameKey ? t(`maps.interactiveGame.${interactive.gameKey}`) : interactive.game,
+              })}
               className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
             >
               {t('maps.interactiveCta')}

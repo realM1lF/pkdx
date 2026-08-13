@@ -26,7 +26,7 @@ export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean 
         <h4 className="font-sans text-[14px] font-bold text-tx-primary">{t('nuz.feed.title')}</h4>
         {live && <span className="nz-dot-live h-1.5 w-1.5 rounded-full bg-[#45C8FF]" />}
       </div>
-      <div className="nz-slim-scroll mt-2 max-h-[420px] space-y-px overflow-y-auto">
+      <div className="nz-slim-scroll mt-2 max-h-[420px] space-y-px overflow-y-auto" data-lenis-prevent>
         {feed.length === 0 && <p className="py-6 text-center text-[11px] text-tx-muted">{t('nuz.feed.empty')}</p>}
         {feed.map((ev) => (
           <motion.div

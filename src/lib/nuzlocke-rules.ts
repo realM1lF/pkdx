@@ -195,65 +195,65 @@ export const RULE_PRESETS: Record<RulePresetKey, Partial<NuzRules>> = {
 
 /* ---------- level cap ---------- */
 
-/** Gym-leader ace levels per map node (mirror of the `Leader` entries in
- * src/data/enriched/*.json — kept inline so the run chunk stays lean). */
+/** Gym-leader ace = highest-level Pokémon on the first-clear team in the
+ * binding version (Kanto FRLG, Johto HGSS, Hoenn Emerald, Sinnoh Platinum,
+ * Unova BW). Inline so the run chunk stays lean. */
 const GYM_ACE: Record<RegionId, Record<string, number>> = {
   kanto: {
-    'pewter-city': 14, // Brock
-    'cerulean-city': 21, // Misty
-    'vermilion-city': 24, // Lt. Surge
-    'celadon-city': 29, // Erika
-    'fuchsia-city': 43, // Koga
-    'saffron-city': 43, // Sabrina
-    'cinnabar-island': 47, // Blaine
-    'viridian-city': 50, // Giovanni
+    'pewter-city': 14, // Brock Onix
+    'cerulean-city': 21, // Misty Starmie
+    'vermilion-city': 24, // Lt. Surge Raichu
+    'celadon-city': 29, // Erika Victreebel/Vileplume
+    'fuchsia-city': 43, // Koga Weezing
+    'saffron-city': 43, // Sabrina Alakazam
+    'cinnabar-island': 47, // Blaine Arcanine
+    'viridian-city': 50, // Giovanni Rhyhorn
   },
   johto: {
-    'violet-city': 13, // Falkner
-    'azalea-town': 16, // Bugsy
-    'goldenrod-city': 18, // Whitney
-    'ecruteak-city': 25, // Morty
-    'cianwood-city': 30, // Chuck
-    'mahogany-town': 34, // Pryce
-    'olivine-city': 35, // Jasmine
-    'blackthorn-city': 40, // Clair
+    'violet-city': 13, // Falkner Pidgeotto
+    'azalea-town': 17, // Bugsy Scyther
+    'goldenrod-city': 19, // Whitney Miltank
+    'ecruteak-city': 25, // Morty Gengar
+    'cianwood-city': 31, // Chuck Poliwrath
+    'mahogany-town': 34, // Pryce Piloswine
+    'olivine-city': 35, // Jasmine Steelix
+    'blackthorn-city': 41, // Clair Kingdra
   },
   hoenn: {
-    'rustboro-city': 15, // Roxanne
-    'dewford-town': 19, // Brawly
-    'mauville-city': 23, // Wattson
-    'lavaridge-town': 26, // Flannery
-    'petalburg-city': 31, // Norman
-    'fortree-city': 33, // Winona
-    'mossdeep-city': 41, // Tate & Liza
-    'sootopolis-city': 46, // Wallace
+    'rustboro-city': 15, // Roxanne Nosepass
+    'dewford-town': 19, // Brawly Makuhita
+    'mauville-city': 24, // Wattson Manectric
+    'lavaridge-town': 29, // Flannery Torkoal
+    'petalburg-city': 31, // Norman Slaking
+    'fortree-city': 33, // Winona Altaria
+    'mossdeep-city': 42, // Tate & Liza Lunatone/Solrock
+    'sootopolis-city': 46, // Juan Kingdra
   },
   sinnoh: {
-    'oreburgh-city': 14, // Roark
-    'eterna-city': 22, // Gardenia
-    'veilstone-city': 22, // Maylene
-    'pastoria-city': 30, // Crasher Wake
-    'hearthome-city': 30, // Fantina
-    'canalave-city': 41, // Byron
-    'snowpoint-city': 44, // Candice
-    'sunyshore-city': 50, // Volkner
+    'oreburgh-city': 14, // Roark Cranidos
+    'eterna-city': 22, // Gardenia Roserade
+    'veilstone-city': 32, // Maylene Lucario
+    'pastoria-city': 37, // Crasher Wake Floatzel
+    'hearthome-city': 26, // Fantina Mismagius
+    'canalave-city': 41, // Byron Bastiodon
+    'snowpoint-city': 44, // Candice Froslass
+    'sunyshore-city': 50, // Volkner Electivire
   },
   unova: {
-    'striaton-city': 14, // Cilan/Chili/Cress
-    'nacrene-city': 20, // Lenora
-    'castelia-city': 23, // Burgh
-    'nimbasa-city': 27, // Elesa
-    'driftveil-city': 31, // Clay
-    'mistralton-city': 31, // Skyla
-    'icirrus-city': 35, // Brycen
-    'humilau-city': 40, // Drayden
+    'striaton-city': 14, // Cilan/Chili/Cress Pan*
+    'nacrene-city': 20, // Lenora Watchog
+    'castelia-city': 23, // Burgh Leavanny
+    'nimbasa-city': 27, // Elesa Zebstrika
+    'driftveil-city': 31, // Clay Excadrill
+    'mistralton-city': 35, // Skyla Swanna
+    'icirrus-city': 39, // Brycen Beartic
+    'opelucid-city': 43, // Drayden/Iris Haxorus
   },
 };
 
 /** Explicit badge-conquest order (not map visit order, not ace-level sort).
  * Sinnoh follows Platinum (Fantina before Maylene). Johto: Jasmine before Pryce.
- * Ace levels in `GYM_ACE` are still approximate per mainline version — owners
- * can override with a manual cap when a rom/version differs. */
+ * Unova follows BW (Opelucid 8th, not BW2 Humilau). */
 const GYM_BADGE_ORDER: Record<RegionId, readonly string[]> = {
   kanto: [
     'pewter-city',
@@ -303,7 +303,7 @@ const GYM_BADGE_ORDER: Record<RegionId, readonly string[]> = {
     'driftveil-city',
     'mistralton-city',
     'icirrus-city',
-    'humilau-city',
+    'opelucid-city',
   ],
 };
 

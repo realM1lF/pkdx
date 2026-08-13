@@ -542,6 +542,149 @@
       "locationSlug": "ever-grande-city",
       "labelPos": "bottom",
       "nameDe": "Prachtpolis City"
+    },
+    {
+      "id": "hoenn-route-106",
+      "label": "Route 106",
+      "kind": "route",
+      "x": 140,
+      "y": 700,
+      "order": 49,
+      "locationSlug": "hoenn-route-106",
+      "labelPos": "left",
+      "nameDe": "Route 106"
+    },
+    {
+      "id": "hoenn-route-107",
+      "label": "Route 107",
+      "kind": "route",
+      "x": 300,
+      "y": 750,
+      "order": 50,
+      "locationSlug": "hoenn-route-107",
+      "labelPos": "top",
+      "nameDe": "Route 107"
+    },
+    {
+      "id": "hoenn-route-115",
+      "label": "Route 115",
+      "kind": "route",
+      "x": 170,
+      "y": 150,
+      "order": 51,
+      "locationSlug": "hoenn-route-115",
+      "labelPos": "left",
+      "nameDe": "Route 115"
+    },
+    {
+      "id": "hoenn-route-122",
+      "label": "Route 122",
+      "kind": "route",
+      "x": 1080,
+      "y": 600,
+      "order": 52,
+      "locationSlug": "hoenn-route-122",
+      "labelPos": "left",
+      "nameDe": "Route 122"
+    },
+    {
+      "id": "hoenn-route-123",
+      "label": "Route 123",
+      "kind": "route",
+      "x": 880,
+      "y": 480,
+      "order": 53,
+      "locationSlug": "hoenn-route-123",
+      "labelPos": "bottom",
+      "nameDe": "Route 123"
+    },
+    {
+      "id": "hoenn-route-125",
+      "label": "Route 125",
+      "kind": "route",
+      "x": 1020,
+      "y": 740,
+      "order": 54,
+      "locationSlug": "hoenn-route-125",
+      "labelPos": "top",
+      "nameDe": "Route 125"
+    },
+    {
+      "id": "hoenn-route-126",
+      "label": "Route 126",
+      "kind": "route",
+      "x": 880,
+      "y": 740,
+      "order": 55,
+      "locationSlug": "hoenn-route-126",
+      "labelPos": "left",
+      "nameDe": "Route 126"
+    },
+    {
+      "id": "hoenn-route-127",
+      "label": "Route 127",
+      "kind": "route",
+      "x": 850,
+      "y": 720,
+      "order": 56,
+      "locationSlug": "hoenn-route-127",
+      "labelPos": "bottom",
+      "nameDe": "Route 127"
+    },
+    {
+      "id": "hoenn-route-130",
+      "label": "Route 130",
+      "kind": "route",
+      "x": 400,
+      "y": 810,
+      "order": 57,
+      "locationSlug": "hoenn-route-130",
+      "labelPos": "top",
+      "nameDe": "Route 130"
+    },
+    {
+      "id": "hoenn-route-131",
+      "label": "Route 131",
+      "kind": "route",
+      "x": 280,
+      "y": 790,
+      "order": 58,
+      "locationSlug": "hoenn-route-131",
+      "labelPos": "bottom",
+      "nameDe": "Route 131"
+    },
+    {
+      "id": "hoenn-route-132",
+      "label": "Route 132",
+      "kind": "route",
+      "x": 430,
+      "y": 770,
+      "order": 59,
+      "locationSlug": "hoenn-route-132",
+      "labelPos": "top",
+      "nameDe": "Route 132"
+    },
+    {
+      "id": "hoenn-route-133",
+      "label": "Route 133",
+      "kind": "route",
+      "x": 500,
+      "y": 750,
+      "order": 60,
+      "locationSlug": "hoenn-route-133",
+      "labelPos": "top",
+      "nameDe": "Route 133"
+    },
+    {
+      "id": "hoenn-route-134",
+      "label": "Route 134",
+      "kind": "route",
+      "x": 540,
+      "y": 740,
+      "order": 61,
+      "locationSlug": "hoenn-route-134",
+      "labelPos": "bottom",
+      "nameDe": "Route 134"
     }
   ],
   "edges": [
@@ -662,6 +805,11 @@
     },
     {
       "from": "meteor-falls",
+      "to": "hoenn-route-115",
+      "kind": "land"
+    },
+    {
+      "from": "hoenn-route-115",
       "to": "rustboro-city",
       "kind": "land"
     },
@@ -727,6 +875,21 @@
     },
     {
       "from": "dewford-town",
+      "to": "hoenn-route-106",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-106",
+      "to": "granite-cave",
+      "kind": "land"
+    },
+    {
+      "from": "hoenn-route-106",
+      "to": "hoenn-route-107",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-107",
       "to": "hoenn-route-108",
       "kind": "water"
     },
@@ -742,8 +905,28 @@
     },
     {
       "from": "lilycove-city",
+      "to": "hoenn-route-122",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-121",
+      "to": "hoenn-route-122",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-122",
       "to": "mt-pyre",
       "kind": "water"
+    },
+    {
+      "from": "hoenn-route-122",
+      "to": "hoenn-route-123",
+      "kind": "land"
+    },
+    {
+      "from": "hoenn-route-123",
+      "to": "hoenn-route-118",
+      "kind": "land"
     },
     {
       "from": "mt-pyre",
@@ -757,12 +940,32 @@
     },
     {
       "from": "mossdeep-city",
+      "to": "hoenn-route-125",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-125",
       "to": "shoal-cave",
       "kind": "water"
     },
     {
       "from": "mossdeep-city",
+      "to": "hoenn-route-126",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-126",
       "to": "sootopolis-city",
+      "kind": "water"
+    },
+    {
+      "from": "mossdeep-city",
+      "to": "hoenn-route-127",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-127",
+      "to": "hoenn-route-128",
       "kind": "water"
     },
     {
@@ -787,17 +990,47 @@
     },
     {
       "from": "hoenn-route-129",
+      "to": "hoenn-route-130",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-130",
+      "to": "hoenn-route-131",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-131",
       "to": "pacifidlog-town",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-131",
+      "to": "sky-pillar",
+      "kind": "water"
+    },
+    {
+      "from": "pacifidlog-town",
+      "to": "hoenn-route-132",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-132",
+      "to": "hoenn-route-133",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-133",
+      "to": "hoenn-route-134",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-134",
+      "to": "hoenn-route-109",
       "kind": "water"
     },
     {
       "from": "pacifidlog-town",
       "to": "sky-pillar",
-      "kind": "water"
-    },
-    {
-      "from": "hoenn-route-109",
-      "to": "pacifidlog-town",
       "kind": "water"
     }
   ],

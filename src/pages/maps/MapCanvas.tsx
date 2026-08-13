@@ -11,7 +11,7 @@ import type { MapCamera } from './useMapCamera';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/lib/i18n-data';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, nodeName, nodeIndex } from '@/lib/regions';
+import { accentRgb, nodeName, nodeIndex, regionName } from '@/lib/regions';
 import type { MethodBucket, NodeMapData } from '@/lib/mapdata';
 import { itemsForNode } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
@@ -128,7 +128,7 @@ export default function MapCanvas({
       )}
       style={{ ['--ac' as string]: rgb }}
       role="application"
-      aria-label={`${region.name} transit map — drag to pan, scroll to zoom`}
+      aria-label={t('maps.canvasAria', { name: regionName(region, lang) })}
       tabIndex={0}
       onKeyDown={(e) => {
         const step = 60;

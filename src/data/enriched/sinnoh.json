@@ -8,8 +8,9 @@
           "name": "Roark",
           "class": "Leader",
           "party": [
-            { "species": "cranidos", "level": 14, "moves": ["headbutt", "pursuit", "leer", "rock-throw"] },
-            { "species": "onix", "level": 12, "moves": ["stealth-rock", "rock-throw", "screech", "rock-tomb"] }
+            { "species": "geodude", "level": 12, "moves": ["stealth-rock", "rock-throw"] },
+            { "species": "onix", "level": 12, "moves": ["stealth-rock", "rock-throw", "screech", "bind"] },
+            { "species": "cranidos", "level": 14, "moves": ["headbutt", "pursuit", "leer", "stealth-rock"] }
           ],
           "important": true,
           "pos": null
@@ -22,9 +23,9 @@
           "name": "Gardenia",
           "class": "Leader",
           "party": [
-            { "species": "cherubi", "level": 19, "moves": ["absorb", "leech-seed", "safeguard", "magical-leaf"] },
-            { "species": "turtwig", "level": 20, "moves": ["razor-leaf", "reflect", "leech-seed", "withdraw"] },
-            { "species": "roserade", "level": 22, "moves": ["magical-leaf", "stun-spore", "leech-seed", "giga-drain"] }
+            { "species": "turtwig", "level": 20, "moves": ["grass-knot", "razor-leaf", "leech-seed", "withdraw"] },
+            { "species": "cherrim", "level": 20, "moves": ["grass-knot", "leech-seed", "magical-leaf", "safeguard"] },
+            { "species": "roserade", "level": 22, "moves": ["grass-knot", "magical-leaf", "stun-spore", "toxic-spikes"] }
           ],
           "important": true,
           "pos": null
@@ -37,8 +38,9 @@
           "name": "Maylene",
           "class": "Leader",
           "party": [
-            { "species": "meditite", "level": 18, "moves": ["drain-punch", "detect", "force-palm", "confusion"] },
-            { "species": "lucario", "level": 22, "moves": ["force-palm", "metal-claw", "counter", "work-up"] }
+            { "species": "meditite", "level": 28, "moves": ["drain-punch", "confusion", "fake-out", "rock-tomb"] },
+            { "species": "machoke", "level": 29, "moves": ["karate-chop", "strength", "focus-energy", "rock-tomb"] },
+            { "species": "lucario", "level": 32, "moves": ["drain-punch", "metal-claw", "bone-rush", "force-palm"] }
           ],
           "important": true,
           "pos": null
@@ -51,9 +53,9 @@
           "name": "Crasher Wake",
           "class": "Leader",
           "party": [
-            { "species": "gyarados", "level": 27, "moves": ["waterfall", "bite", "twister", "ice-fang"] },
-            { "species": "quagsire", "level": 27, "moves": ["water-pulse", "earthquake", "yawn", "ice-punch"] },
-            { "species": "floatzel", "level": 30, "moves": ["waterfall", "ice-punch", "brick-break", "aqua-jet"] }
+            { "species": "gyarados", "level": 33, "moves": ["brine", "waterfall", "bite", "twister"] },
+            { "species": "quagsire", "level": 34, "moves": ["water-pulse", "mud-shot", "rock-tomb", "yawn"] },
+            { "species": "floatzel", "level": 37, "moves": ["brine", "crunch", "ice-fang", "aqua-jet"] }
           ],
           "important": true,
           "pos": null
@@ -66,9 +68,9 @@
           "name": "Fantina",
           "class": "Leader",
           "party": [
-            { "species": "duskull", "level": 27, "moves": ["shadow-sneak", "future-sight", "payback", "will-o-wisp"] },
-            { "species": "haunter", "level": 27, "moves": ["shadow-ball", "hypnosis", "sucker-punch", "confuse-ray"] },
-            { "species": "mismagius", "level": 30, "moves": ["shadow-ball", "magical-leaf", "power-gem", "confuse-ray"] }
+            { "species": "duskull", "level": 24, "moves": ["will-o-wisp", "shadow-sneak", "future-sight", "pursuit"] },
+            { "species": "haunter", "level": 24, "moves": ["shadow-claw", "sucker-punch", "confuse-ray", "hypnosis"] },
+            { "species": "mismagius", "level": 26, "moves": ["shadow-ball", "psybeam", "magical-leaf", "confuse-ray"] }
           ],
           "important": true,
           "pos": null
@@ -96,10 +98,10 @@
           "name": "Candice",
           "class": "Leader",
           "party": [
-            { "species": "snover", "level": 40, "moves": ["ice-shard", "razor-leaf", "water-pulse", "ingrain"] },
-            { "species": "piloswine", "level": 40, "moves": ["earthquake", "ice-shard", "ancient-power", "hail"] },
-            { "species": "abomasnow", "level": 42, "moves": ["energy-ball", "blizzard", "focus-punch", "water-pulse"] },
-            { "species": "froslass", "level": 44, "moves": ["shadow-ball", "hail", "thunder-wave", "destiny-bond"] }
+            { "species": "sneasel", "level": 40, "moves": ["ice-shard", "slash", "feint-attack", "aerial-ace"] },
+            { "species": "piloswine", "level": 40, "moves": ["earthquake", "ice-fang", "stone-edge", "hail"] },
+            { "species": "abomasnow", "level": 42, "moves": ["giga-drain", "focus-blast", "water-pulse", "wood-hammer"] },
+            { "species": "froslass", "level": 44, "moves": ["blizzard", "shadow-ball", "psychic", "hail"] }
           ],
           "important": true,
           "pos": null
@@ -113,9 +115,9 @@
           "class": "Leader",
           "party": [
             { "species": "jolteon", "level": 46, "moves": ["thunderbolt", "signal-beam", "quick-attack", "charge-beam"] },
-            { "species": "raichu", "level": 47, "moves": ["thunderbolt", "focus-blast", "signal-beam", "charge-beam"] },
-            { "species": "luxray", "level": 49, "moves": ["thunderbolt", "ice-fang", "crunch", "charge-beam"] },
-            { "species": "electivire", "level": 50, "moves": ["thunderbolt", "focus-blast", "fire-punch", "giga-impact"] }
+            { "species": "raichu", "level": 46, "moves": ["charge-beam", "focus-blast", "signal-beam", "quick-attack"] },
+            { "species": "luxray", "level": 48, "moves": ["thunder-fang", "ice-fang", "crunch", "charge-beam"] },
+            { "species": "electivire", "level": 50, "moves": ["thunder-punch", "fire-punch", "quick-attack", "giga-impact"] }
           ],
           "important": true,
           "pos": null

@@ -224,7 +224,10 @@ export default function CommandBar({
                 href={interactive.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={t('maps.interactiveTitle', { site: interactive.site, game: interactive.game })}
+                title={t('maps.interactiveTitle', {
+                  site: interactive.site,
+                  game: interactive.gameKey ? t(`maps.interactiveGame.${interactive.gameKey}`) : interactive.game,
+                })}
                 className={cn(VIEW_TOGGLE_ITEM, 'text-tx-muted transition-colors hover:text-gold')}
               >
                 <span className={cn(VIEW_TOGGLE_LABEL, 'inline-flex items-center gap-0.5')}>

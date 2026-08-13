@@ -1,11 +1,22 @@
 -- =====================================================================
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- BREAK-GLASS — DO NOT APPLY
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+--
 -- 99_rollback_nuzlocke_rls.sql
+--
+-- This file MUST NEVER be applied in normal migrate order.
+-- The "99_" prefix is load-bearing: it sorts last so a careless
+-- `supabase db push` / folder-wide apply would UNDO every RLS
+-- hardening migration (02–13) and re-open anonymous read/write.
+--
+-- It is emergency undo only. Paste it by hand in the SQL editor
+-- when a human has explicitly decided to buy time, then re-apply
+-- stage 2 immediately afterwards.
 --
 -- Emergency undo for 02_enforce_nuzlocke_rls.sql. Restores the previous
 -- permissive behaviour so multiplayer works again immediately, at the
 -- cost of re-opening the anonymous read/write hole.
---
--- Use this only to buy time — then fix the cause and re-apply stage 2.
 --
 -- It deliberately does NOT undo 01_prepare (helpers, trigger, unique
 -- index, value constraints); none of those can break the old client.

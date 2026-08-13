@@ -16,15 +16,21 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const lockPath = join(root, 'package-lock.json');
 
-const MIRROR = 'https://npm.mirrors.msh.team/';
+const MIRRORS = ['https://npm.mirrors.msh.team/', 'https://registry.npmmirror.com/'];
 const PUBLIC = 'https://registry.npmjs.org/';
 
 try {
-  const raw = readFileSync(lockPath, 'utf8');
-  if (!raw.includes(MIRROR)) process.exit(0);
-  writeFileSync(lockPath, raw.split(MIRROR).join(PUBLIC));
-  const count = (raw.match(new RegExp(MIRROR.replace(/[/.:]/g, '\\$&'), 'g')) || []).length;
-  console.log(`[fix-lockfile-registry] ${count} Mirror-URL(s) -> registry.npmjs.org normalisiert`);
+  let raw = readFileSync(lockPath, 'utf8');
+  let total = 0;
+  for (const mirror of MIRRORS) {
+    if (!raw.includes(mirror)) continue;
+    const escaped = mirror.replace(/[/.:]/g, '\\$&');
+    total += (raw.match(new RegExp(escaped, 'g')) || []).length;
+    raw = raw.split(mirror).join(PUBLIC);
+  }
+  if (total === 0) process.exit(0);
+  writeFileSync(lockPath, raw);
+  console.log(`[fix-lockfile-registry] ${total} Mirror-URL(s) -> registry.npmjs.org normalisiert`);
 } catch (err) {
   // Lockfile fehlt o.ae. — niemals den Install dadurch brechen.
   console.warn('[fix-lockfile-registry] uebersprungen:', err.message);

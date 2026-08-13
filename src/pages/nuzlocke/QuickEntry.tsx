@@ -18,7 +18,6 @@ import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } 
 import { encounterOptionsForRoute, isOrreGame } from '@/lib/orre';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
-import { sprites } from '@/lib/sprites';
 import { cn } from '@/lib/utils';
 import { GoldHint, PixelLabel, Popover, useShake } from './ui';
 
@@ -500,7 +499,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 }}
                 className={cn('flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[12px]', i === activeIdx ? 'bg-surface3 text-tx-primary' : 'text-tx-secondary')}
               >
-                <img src={sprites.front(o.id)} alt="" loading="lazy" className="h-[32px] w-[32px] [image-rendering:pixelated]" />
+                <Sprite id={o.id} name={o.label} className="h-[32px] w-[32px]" skeleton={false} />
                 <span className="min-w-0 flex-1 truncate font-semibold">{o.label}</span>
                 {o.custom ? (
                   <span className="rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title={t('nuz.customTip')}>

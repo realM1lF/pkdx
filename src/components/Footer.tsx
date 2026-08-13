@@ -156,7 +156,7 @@ export default function Footer() {
             <a
               href="https://pokeapi.co"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="underline decoration-hairline2 underline-offset-4 transition-colors hover:text-gold"
             >
               PokéAPI
@@ -165,7 +165,7 @@ export default function Footer() {
             <a
               href="https://github.com/PokeAPI/sprites"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="underline decoration-hairline2 underline-offset-4 transition-colors hover:text-gold"
             >
               PokeAPI Sprites Repo

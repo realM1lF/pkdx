@@ -201,6 +201,30 @@
     "unova-route-23": [
       0.29,
       0.26
+    ],
+    "village-bridge": [
+      0.702,
+      0.178
+    ],
+    "marvelous-bridge": [
+      0.72,
+      0.45
+    ],
+    "unova-route-15": [
+      0.8,
+      0.48
+    ],
+    "unova-route-18": [
+      0.9,
+      0.62
+    ],
+    "unova-route-17": [
+      0.9,
+      0.72
+    ],
+    "p2-laboratory": [
+      0.92,
+      0.82
     ]
   }
 }

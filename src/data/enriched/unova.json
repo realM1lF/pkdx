@@ -56,8 +56,9 @@
           "name": "Burgh",
           "class": "Leader",
           "party": [
-            { "species": "dwebble", "level": 21, "moves": ["struggle-bug", "sand-attack", "rock-smash", "slash"] },
-            { "species": "whirlipede", "level": 23, "moves": ["struggle-bug", "iron-defense", "poison-tail", "protect"] }
+            { "species": "whirlipede", "level": 21, "moves": ["poison-tail", "struggle-bug", "pursuit", "screech"] },
+            { "species": "dwebble", "level": 21, "moves": ["smack-down", "struggle-bug", "feint-attack", "sand-attack"] },
+            { "species": "leavanny", "level": 23, "moves": ["razor-leaf", "struggle-bug", "string-shot", "protect"] }
           ],
           "important": true,
           "pos": null
@@ -85,9 +86,9 @@
           "name": "Clay",
           "class": "Leader",
           "party": [
-            { "species": "krokorok", "level": 28, "moves": ["crunch", "dig", "sandstorm", "scary-face"] },
-            { "species": "palpitoad", "level": 30, "moves": ["muddy-water", "earth-power", "bubble-beam", "rain-dance"] },
-            { "species": "excadrill", "level": 31, "moves": ["earthquake", "rock-slide", "swords-dance", "x-scissor"] }
+            { "species": "krokorok", "level": 29, "moves": ["crunch", "swagger", "bulldoze", "torment"] },
+            { "species": "palpitoad", "level": 29, "moves": ["muddy-water", "aqua-ring", "bulldoze", "bubble-beam"] },
+            { "species": "excadrill", "level": 31, "moves": ["slash", "rock-slide", "bulldoze", "hone-claws"] }
           ],
           "important": true,
           "pos": null
@@ -100,8 +101,9 @@
           "name": "Skyla",
           "class": "Leader",
           "party": [
-            { "species": "swoobat", "level": 29, "moves": ["air-slash", "heart-stamp", "attract", "heat-wave"] },
-            { "species": "unfezant", "level": 31, "moves": ["air-slash", "quick-attack", "tailwind", "detect"] }
+            { "species": "swoobat", "level": 33, "moves": ["heart-stamp", "amnesia", "acrobatics", "assurance"] },
+            { "species": "unfezant", "level": 33, "moves": ["quick-attack", "air-slash", "leer", "razor-wind"] },
+            { "species": "swanna", "level": 35, "moves": ["aqua-ring", "aerial-ace", "air-slash", "bubble-beam"] }
           ],
           "important": true,
           "pos": null
@@ -114,23 +116,24 @@
           "name": "Brycen",
           "class": "Leader",
           "party": [
-            { "species": "vanillish", "level": 29, "moves": ["icicle-spear", "mirror-shot", "acid-armor", "hail"] },
-            { "species": "cryogonal", "level": 33, "moves": ["ice-beam", "reflect", "flash-cannon", "hail"] },
-            { "species": "beartic", "level": 35, "moves": ["icicle-crash", "superpower", "aqua-jet", "grass-knot"] }
+            { "species": "vanillish", "level": 37, "moves": ["mirror-shot", "acid-armor", "frost-breath", "astonish"] },
+            { "species": "cryogonal", "level": 37, "moves": ["reflect", "aurora-beam", "frost-breath", "rapid-spin"] },
+            { "species": "beartic", "level": 39, "moves": ["slash", "brine", "icicle-crash", "swagger"] }
           ],
           "important": true,
           "pos": null
         }
       ]
     },
-    "humilau-city": {
+    "opelucid-city": {
       "trainers": [
         {
           "name": "Drayden",
           "class": "Leader",
           "party": [
-            { "species": "fraxure", "level": 37, "moves": ["dragon-claw", "dragon-dance", "dual-chop", "taunt"] },
-            { "species": "haxorus", "level": 40, "moves": ["dragon-claw", "dragon-dance", "dual-chop", "focus-blast"] }
+            { "species": "fraxure", "level": 41, "moves": ["dragon-rage", "dragon-claw", "assurance", "dragon-tail"] },
+            { "species": "druddigon", "level": 41, "moves": ["revenge", "crunch", "dragon-tail", "chip-away"] },
+            { "species": "haxorus", "level": 43, "moves": ["dragon-dance", "assurance", "dragon-tail", "slash"] }
           ],
           "important": true,
           "pos": null

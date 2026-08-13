@@ -45,6 +45,7 @@ export default function EncounterMenu({
   const [evoLoading, setEvoLoading] = useState(false);
   const [shakeKey, shake] = useShake();
   const [levelHint, setLevelHint] = useState('');
+  const [nickHint, setNickHint] = useState('');
   /* level-cap is a soft warning here too (mirrors QuickEntry's capAck):
    * first commit over cap warns, the acknowledged second commit sets it anyway */
   const [capAck, setCapAck] = useState(false);
@@ -79,6 +80,7 @@ export default function EncounterMenu({
     setEvoLoading(false);
     setCapAck(false);
     setLevelHint('');
+    setNickHint('');
   }
 
   useEffect(() => setCapAck(false), [level]);
@@ -312,13 +314,21 @@ export default function EncounterMenu({
         )}
 
         {sub === 'nick' && (
-          <div className="px-3 py-2">
+          <div className="relative px-3 py-2">
             <input
               autoFocus
               value={nick}
-              onChange={(e) => setNick(e.target.value)}
+              onChange={(e) => {
+                setNick(e.target.value);
+                setNickHint('');
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
+                  if (state.run.rules.nicknames && !nick.trim()) {
+                    shake();
+                    setNickHint(t('nuz.err.nicknameRequired'));
+                    return;
+                  }
                   updateEncounter(enc.run_id, enc.id, { nickname: nick.trim() || null });
                   onClose();
                 }
@@ -327,6 +337,7 @@ export default function EncounterMenu({
               maxLength={18}
               className="h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
             />
+            <GoldHint text={nickHint} show={!!nickHint} />
           </div>
         )}
 

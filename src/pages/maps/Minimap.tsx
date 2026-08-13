@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { Maximize, Minus, Plus } from 'lucide-react';
 import type { RegionMap } from '@/lib/regions';
-import { nodeIndex } from '@/lib/regions';
+import { nodeIndex, regionName } from '@/lib/regions';
+import { useLanguage } from '@/lib/i18n-data';
 import type { MapCamera } from './useMapCamera';
 
 const MW = 150;
@@ -18,6 +19,7 @@ interface MinimapProps {
 
 export default function Minimap({ region, camera }: MinimapProps) {
   const { t } = useTranslation();
+  const lang = useLanguage();
   const svgRef = useRef<SVGSVGElement>(null);
   const draggingRef = useRef(false);
   const byId = useMemo(() => nodeIndex(region), [region]);
@@ -57,7 +59,7 @@ export default function Minimap({ region, camera }: MinimapProps) {
           height={MH}
           className="block cursor-crosshair"
           role="img"
-          aria-label={`${region.name} minimap`}
+          aria-label={t('maps.minimapAria', { name: regionName(region, lang) })}
           onPointerDown={(e) => {
             draggingRef.current = true;
             e.currentTarget.setPointerCapture(e.pointerId);

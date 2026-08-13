@@ -519,6 +519,196 @@
       "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Kahlberg"
+    },
+    {
+      "id": "sinnoh-route-219",
+      "label": "Route 219",
+      "kind": "route",
+      "x": 240,
+      "y": 780,
+      "order": 47,
+      "locationSlug": "sinnoh-route-219",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Route 219"
+    },
+    {
+      "id": "sinnoh-route-220",
+      "label": "Route 220",
+      "kind": "route",
+      "x": 280,
+      "y": 820,
+      "order": 48,
+      "locationSlug": "sinnoh-route-220",
+      "postGame": true,
+      "labelPos": "bottom",
+      "nameDe": "Route 220"
+    },
+    {
+      "id": "sinnoh-route-221",
+      "label": "Route 221",
+      "kind": "route",
+      "x": 380,
+      "y": 830,
+      "order": 49,
+      "locationSlug": "sinnoh-route-221",
+      "postGame": true,
+      "labelPos": "bottom",
+      "nameDe": "Route 221"
+    },
+    {
+      "id": "sinnoh-route-222",
+      "label": "Route 222",
+      "kind": "route",
+      "x": 1100,
+      "y": 740,
+      "order": 50,
+      "locationSlug": "sinnoh-route-222",
+      "labelPos": "top",
+      "nameDe": "Route 222"
+    },
+    {
+      "id": "sinnoh-route-223",
+      "label": "Route 223",
+      "kind": "route",
+      "x": 1110,
+      "y": 440,
+      "order": 51,
+      "locationSlug": "sinnoh-route-223",
+      "labelPos": "left",
+      "nameDe": "Route 223"
+    },
+    {
+      "id": "sinnoh-route-224",
+      "label": "Route 224",
+      "kind": "route",
+      "x": 1180,
+      "y": 50,
+      "order": 52,
+      "locationSlug": "sinnoh-route-224",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Route 224"
+    },
+    {
+      "id": "fight-area",
+      "label": "Fight Area",
+      "kind": "city",
+      "x": 980,
+      "y": 200,
+      "order": 53,
+      "locationSlug": "fight-area",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Kampfzone"
+    },
+    {
+      "id": "sinnoh-route-225",
+      "label": "Route 225",
+      "kind": "route",
+      "x": 980,
+      "y": 140,
+      "order": 54,
+      "locationSlug": "sinnoh-route-225",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Route 225"
+    },
+    {
+      "id": "survival-area",
+      "label": "Survival Area",
+      "kind": "city",
+      "x": 980,
+      "y": 80,
+      "order": 55,
+      "locationSlug": "survival-area",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Überlebensareal"
+    },
+    {
+      "id": "sinnoh-route-226",
+      "label": "Route 226",
+      "kind": "route",
+      "x": 1050,
+      "y": 80,
+      "order": 56,
+      "locationSlug": "sinnoh-route-226",
+      "postGame": true,
+      "labelPos": "bottom",
+      "nameDe": "Route 226"
+    },
+    {
+      "id": "sinnoh-route-227",
+      "label": "Route 227",
+      "kind": "route",
+      "x": 1100,
+      "y": 150,
+      "order": 57,
+      "locationSlug": "sinnoh-route-227",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Route 227"
+    },
+    {
+      "id": "sinnoh-route-228",
+      "label": "Route 228",
+      "kind": "route",
+      "x": 1020,
+      "y": 280,
+      "order": 58,
+      "locationSlug": "sinnoh-route-228",
+      "postGame": true,
+      "labelPos": "right",
+      "nameDe": "Route 228"
+    },
+    {
+      "id": "resort-area",
+      "label": "Resort Area",
+      "kind": "city",
+      "x": 1080,
+      "y": 320,
+      "order": 59,
+      "locationSlug": "resort-area",
+      "postGame": true,
+      "labelPos": "right",
+      "nameDe": "Erholungsgebiet"
+    },
+    {
+      "id": "sinnoh-route-229",
+      "label": "Route 229",
+      "kind": "route",
+      "x": 1040,
+      "y": 360,
+      "order": 60,
+      "locationSlug": "sinnoh-route-229",
+      "postGame": true,
+      "labelPos": "bottom",
+      "nameDe": "Route 229"
+    },
+    {
+      "id": "sinnoh-route-230",
+      "label": "Route 230",
+      "kind": "route",
+      "x": 1000,
+      "y": 280,
+      "order": 61,
+      "locationSlug": "sinnoh-route-230",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Route 230"
+    },
+    {
+      "id": "distortion-world",
+      "label": "Distortion World",
+      "kind": "special",
+      "x": 580,
+      "y": 220,
+      "order": 62,
+      "locationSlug": "distortion-world",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Zerrwelt"
     }
   ],
   "edges": [
@@ -761,6 +951,106 @@
       "from": "sunyshore-city",
       "to": "stark-mountain",
       "kind": "water"
+    },
+    {
+      "from": "sandgem-town",
+      "to": "sinnoh-route-219",
+      "kind": "water"
+    },
+    {
+      "from": "sinnoh-route-219",
+      "to": "sinnoh-route-220",
+      "kind": "water"
+    },
+    {
+      "from": "sinnoh-route-220",
+      "to": "sinnoh-route-221",
+      "kind": "water"
+    },
+    {
+      "from": "pastoria-city",
+      "to": "sinnoh-route-222",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-222",
+      "to": "sunyshore-city",
+      "kind": "land"
+    },
+    {
+      "from": "sunyshore-city",
+      "to": "sinnoh-route-223",
+      "kind": "water"
+    },
+    {
+      "from": "sinnoh-route-223",
+      "to": "sinnoh-victory-road",
+      "kind": "water"
+    },
+    {
+      "from": "sinnoh-victory-road",
+      "to": "sinnoh-route-224",
+      "kind": "land"
+    },
+    {
+      "from": "snowpoint-city",
+      "to": "fight-area",
+      "kind": "water"
+    },
+    {
+      "from": "fight-area",
+      "to": "sinnoh-route-225",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-225",
+      "to": "survival-area",
+      "kind": "land"
+    },
+    {
+      "from": "survival-area",
+      "to": "sinnoh-route-226",
+      "kind": "water"
+    },
+    {
+      "from": "survival-area",
+      "to": "sinnoh-route-227",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-227",
+      "to": "stark-mountain",
+      "kind": "land"
+    },
+    {
+      "from": "survival-area",
+      "to": "sinnoh-route-228",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-228",
+      "to": "resort-area",
+      "kind": "land"
+    },
+    {
+      "from": "resort-area",
+      "to": "sinnoh-route-229",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-229",
+      "to": "sinnoh-route-230",
+      "kind": "water"
+    },
+    {
+      "from": "sinnoh-route-230",
+      "to": "fight-area",
+      "kind": "water"
+    },
+    {
+      "from": "spear-pillar",
+      "to": "distortion-world",
+      "kind": "land"
     }
   ],
   "nameDe": "Sinnoh"

@@ -198,7 +198,7 @@ export default function RunCard({
             {!archived &&
               [
                 { icon: Pencil, label: t('nuz.card.rename'), act: () => { setMenuOpen(false); setRenaming(true); } },
-                { icon: CopyPlus, label: t('nuz.card.duplicate'), act: () => { const id = duplicateAsSolo(state.run.id); if (id) pushToast('success', i18n.t('nuz.card.duplicated')); setMenuOpen(false); } },
+                { icon: CopyPlus, label: t('nuz.card.duplicate'), act: () => { void duplicateAsSolo(state.run.id).then((id) => { if (id) pushToast('success', i18n.t('nuz.card.duplicated')); }); setMenuOpen(false); } },
                 {
                   icon: Copy,
                   label: t(multi ? 'nuz.card.copyInvite' : 'nuz.card.copyInviteOnline'),

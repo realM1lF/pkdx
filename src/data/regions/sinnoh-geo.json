@@ -185,6 +185,70 @@
     "stark-mountain": [
       0.75,
       0.07
+    ],
+    "sinnoh-route-219": [
+      0.28,
+      0.9
+    ],
+    "sinnoh-route-220": [
+      0.32,
+      0.94
+    ],
+    "sinnoh-route-221": [
+      0.4,
+      0.94
+    ],
+    "sinnoh-route-222": [
+      0.92,
+      0.72
+    ],
+    "sinnoh-route-223": [
+      0.97,
+      0.55
+    ],
+    "sinnoh-route-224": [
+      0.98,
+      0.38
+    ],
+    "fight-area": [
+      0.68,
+      0.12
+    ],
+    "sinnoh-route-225": [
+      0.7,
+      0.09
+    ],
+    "survival-area": [
+      0.72,
+      0.05
+    ],
+    "sinnoh-route-226": [
+      0.74,
+      0.05
+    ],
+    "sinnoh-route-227": [
+      0.75,
+      0.08
+    ],
+    "sinnoh-route-228": [
+      0.72,
+      0.14
+    ],
+    "resort-area": [
+      0.78,
+      0.16
+    ],
+    "sinnoh-route-229": [
+      0.76,
+      0.18
+    ],
+    "sinnoh-route-230": [
+      0.7,
+      0.15
+    ],
+    "distortion-world": [
+      0.44,
+      0.24
     ]
   }
 }

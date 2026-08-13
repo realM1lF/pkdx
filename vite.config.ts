@@ -15,7 +15,7 @@ ensureSimBundle()
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [inspectAttr(), react()],
+  plugins: [{ ...inspectAttr(), apply: 'serve' }, react()],
   server: {
     port: 3000,
   },

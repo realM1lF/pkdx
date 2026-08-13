@@ -8,8 +8,8 @@
           "name": "Falkner",
           "class": "Leader",
           "party": [
-            { "species": "pidgey", "level": 7, "moves": ["tackle", "sand-attack"] },
-            { "species": "pidgeotto", "level": 13, "moves": ["tackle", "sand-attack", "gust"] }
+            { "species": "pidgey", "level": 9, "moves": ["tackle", "sand-attack"] },
+            { "species": "pidgeotto", "level": 13, "moves": ["tackle", "sand-attack", "gust", "roost"] }
           ],
           "important": true,
           "pos": null
@@ -22,8 +22,9 @@
           "name": "Bugsy",
           "class": "Leader",
           "party": [
-            { "species": "metapod", "level": 14, "moves": ["tackle", "harden"] },
-            { "species": "scyther", "level": 16, "moves": ["quick-attack", "leer", "focus-energy", "fury-cutter"] }
+            { "species": "metapod", "level": 15, "moves": ["tackle", "harden"] },
+            { "species": "kakuna", "level": 15, "moves": ["poison-sting", "harden"] },
+            { "species": "scyther", "level": 17, "moves": ["quick-attack", "leer", "focus-energy", "u-turn"] }
           ],
           "important": true,
           "pos": null
@@ -36,8 +37,8 @@
           "name": "Whitney",
           "class": "Leader",
           "party": [
-            { "species": "cleffa", "level": 8, "moves": ["pound", "charm", "encore", "attract"] },
-            { "species": "miltank", "level": 18, "moves": ["rollout", "attract", "stomp", "milk-drink"] }
+            { "species": "clefairy", "level": 17, "moves": ["pound", "attract", "double-slap", "encore"] },
+            { "species": "miltank", "level": 19, "moves": ["rollout", "attract", "stomp", "milk-drink"] }
           ],
           "important": true,
           "pos": null
@@ -52,7 +53,8 @@
           "party": [
             { "species": "gastly", "level": 21, "moves": ["hypnosis", "lick", "spite", "mean-look"] },
             { "species": "haunter", "level": 21, "moves": ["hypnosis", "lick", "spite", "mean-look"] },
-            { "species": "gengar", "level": 25, "moves": ["hypnosis", "shadow-ball", "spite", "mean-look"] }
+            { "species": "haunter", "level": 23, "moves": ["hypnosis", "shadow-ball", "mean-look", "sucker-punch"] },
+            { "species": "gengar", "level": 25, "moves": ["hypnosis", "shadow-ball", "mean-look", "sucker-punch"] }
           ],
           "important": true,
           "pos": null
@@ -65,8 +67,8 @@
           "name": "Chuck",
           "class": "Leader",
           "party": [
-            { "species": "primeape", "level": 27, "moves": ["reversal", "rage", "scary-face", "cross-chop"] },
-            { "species": "poliwrath", "level": 30, "moves": ["hypnosis", "mud-slap", "water-pulse", "dynamic-punch"] }
+            { "species": "primeape", "level": 29, "moves": ["leer", "focus-energy", "karate-chop", "rock-slide"] },
+            { "species": "poliwrath", "level": 31, "moves": ["hypnosis", "surf", "focus-punch", "dynamic-punch"] }
           ],
           "important": true,
           "pos": null
@@ -109,9 +111,10 @@
           "name": "Clair",
           "class": "Leader",
           "party": [
-            { "species": "dragonair", "level": 37, "moves": ["twister", "thunder-wave", "surf", "dragon-pulse"] },
-            { "species": "dragonair", "level": 37, "moves": ["twister", "thunder-wave", "surf", "dragon-pulse"] },
-            { "species": "kingdra", "level": 40, "moves": ["smokescreen", "twister", "surf", "dragon-pulse"] }
+            { "species": "gyarados", "level": 38, "moves": ["bite", "twister", "dragon-rage", "aqua-tail"] },
+            { "species": "dragonair", "level": 38, "moves": ["thunder-wave", "fire-blast", "slam", "dragon-pulse"] },
+            { "species": "dragonair", "level": 38, "moves": ["thunder-wave", "aqua-tail", "slam", "dragon-pulse"] },
+            { "species": "kingdra", "level": 41, "moves": ["hydro-pump", "smokescreen", "hyper-beam", "dragon-pulse"] }
           ],
           "important": true,
           "pos": null

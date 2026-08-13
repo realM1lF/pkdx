@@ -26,6 +26,7 @@ import type { MethodBucket } from '@/lib/mapdata';
 import { aggregate } from '@/lib/wherefind';
 import type { EncounterAreaEntry, WhereRow } from '@/lib/wherefind';
 import { cn } from '@/lib/utils';
+import type { MapsFromRef } from './from-param';
 
 /* ---------- presentation ---------- */
 
@@ -40,7 +41,7 @@ const REGION_ABBR: Record<RegionId, string> = { kanto: 'KAN', johto: 'JOH', hoen
 
 const TOP_N = 12;
 
-function RowView({ row }: { row: WhereRow }) {
+function RowView({ row, highlight }: { row: WhereRow; highlight: boolean }) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const region = row.region;
@@ -78,6 +79,9 @@ function RowView({ row }: { row: WhereRow }) {
       <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
         {label}
         {row.sub && <span className="font-normal text-tx-muted"> · {row.sub}</span>}
+        {highlight && (
+          <span className="ml-1 font-pixel text-[7px] uppercase tracking-[0.06em] text-gold">{t('detail.find.fromHere')}</span>
+        )}
       </span>
       {/* method chips (type-style, bucket-colored) */}
       <span className="hidden shrink-0 items-center gap-1 md:flex">
@@ -143,6 +147,7 @@ function RowView({ row }: { row: WhereRow }) {
   const cls = cn(
     'group/wtf relative flex h-9 items-center gap-2 border-b border-hairline px-3 transition-colors duration-150 last:border-0',
     linked && 'hover:bg-surface2',
+    highlight && 'bg-gold/10 ring-1 ring-inset ring-gold/50',
   );
 
   if (linked && region) {
@@ -150,6 +155,7 @@ function RowView({ row }: { row: WhereRow }) {
       <LocaleLink
         to={`/maps/${region.region}?node=${nodeId}`}
         className={cls}
+        data-wtf-from={highlight || undefined}
         title={t('detail.find.openOnMap', { label, region: regionName(region, lang) })}
       >
         {body}
@@ -159,6 +165,7 @@ function RowView({ row }: { row: WhereRow }) {
   return (
     <div
       className={cls}
+      data-wtf-from={highlight || undefined}
       title={
         row.nodeId !== null
           ? t('detail.find.otherVersions', { versions: versionTitle })
@@ -170,7 +177,7 @@ function RowView({ row }: { row: WhereRow }) {
   );
 }
 
-export default function WhereToFind({ id }: { id: number }) {
+export default function WhereToFind({ id, highlight }: { id: number; highlight?: MapsFromRef | null }) {
   const { t } = useTranslation();
   const [areas, setAreas] = useState<EncounterAreaEntry[] | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'empty' | 'error'>('loading');
@@ -203,6 +210,18 @@ export default function WhereToFind({ id }: { id: number }) {
     [rows],
   );
   const shown = showAll ? wild : wild.slice(0, TOP_N);
+  const isFrom = (row: WhereRow) =>
+    Boolean(highlight && row.region?.region === highlight.region && row.nodeId === highlight.nodeId);
+
+  useEffect(() => {
+    if (!highlight) return;
+    const beyond = wild.findIndex((r) => isFrom(r));
+    if (beyond >= TOP_N) setShowAll(true);
+  }, [highlight, wild]);
+
+  useEffect(() => {
+    document.querySelector('[data-wtf-from]')?.scrollIntoView({ block: 'nearest' });
+  }, [shown, special, highlight]);
 
   /* loading skeleton rows */
   if (status === 'loading') {
@@ -240,7 +259,7 @@ export default function WhereToFind({ id }: { id: number }) {
           </p>
         )}
         {shown.map((row) => (
-          <RowView key={row.key} row={row} />
+          <RowView key={row.key} row={row} highlight={isFrom(row)} />
         ))}
         {special.length > 0 && (
           <>
@@ -248,7 +267,7 @@ export default function WhereToFind({ id }: { id: number }) {
               {t('detail.find.special')}
             </p>
             {special.map((row) => (
-              <RowView key={row.key} row={row} />
+              <RowView key={row.key} row={row} highlight={isFrom(row)} />
             ))}
           </>
         )}

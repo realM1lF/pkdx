@@ -114,6 +114,80 @@ describe('gymCapPreview — wizard preview before a run exists', () => {
   });
 });
 
+/** Highest-level Pokémon on the gym leader's first-clear team in the binding version.
+ * Kanto FRLG, Johto HGSS, Hoenn Emerald, Sinnoh Platinum, Unova BW. */
+const BINDING_GYM_ACES: Record<string, readonly { gymNodeId: string; cap: number }[]> = {
+  kanto: [
+    { gymNodeId: 'pewter-city', cap: 14 },
+    { gymNodeId: 'cerulean-city', cap: 21 },
+    { gymNodeId: 'vermilion-city', cap: 24 },
+    { gymNodeId: 'celadon-city', cap: 29 },
+    { gymNodeId: 'fuchsia-city', cap: 43 },
+    { gymNodeId: 'saffron-city', cap: 43 },
+    { gymNodeId: 'cinnabar-island', cap: 47 },
+    { gymNodeId: 'viridian-city', cap: 50 },
+  ],
+  johto: [
+    { gymNodeId: 'violet-city', cap: 13 },
+    { gymNodeId: 'azalea-town', cap: 17 },
+    { gymNodeId: 'goldenrod-city', cap: 19 },
+    { gymNodeId: 'ecruteak-city', cap: 25 },
+    { gymNodeId: 'cianwood-city', cap: 31 },
+    { gymNodeId: 'olivine-city', cap: 35 },
+    { gymNodeId: 'mahogany-town', cap: 34 },
+    { gymNodeId: 'blackthorn-city', cap: 41 },
+  ],
+  hoenn: [
+    { gymNodeId: 'rustboro-city', cap: 15 },
+    { gymNodeId: 'dewford-town', cap: 19 },
+    { gymNodeId: 'mauville-city', cap: 24 },
+    { gymNodeId: 'lavaridge-town', cap: 29 },
+    { gymNodeId: 'petalburg-city', cap: 31 },
+    { gymNodeId: 'fortree-city', cap: 33 },
+    { gymNodeId: 'mossdeep-city', cap: 42 },
+    { gymNodeId: 'sootopolis-city', cap: 46 },
+  ],
+  sinnoh: [
+    { gymNodeId: 'oreburgh-city', cap: 14 },
+    { gymNodeId: 'eterna-city', cap: 22 },
+    { gymNodeId: 'hearthome-city', cap: 26 },
+    { gymNodeId: 'veilstone-city', cap: 32 },
+    { gymNodeId: 'pastoria-city', cap: 37 },
+    { gymNodeId: 'canalave-city', cap: 41 },
+    { gymNodeId: 'snowpoint-city', cap: 44 },
+    { gymNodeId: 'sunyshore-city', cap: 50 },
+  ],
+  unova: [
+    { gymNodeId: 'striaton-city', cap: 14 },
+    { gymNodeId: 'nacrene-city', cap: 20 },
+    { gymNodeId: 'castelia-city', cap: 23 },
+    { gymNodeId: 'nimbasa-city', cap: 27 },
+    { gymNodeId: 'driftveil-city', cap: 31 },
+    { gymNodeId: 'mistralton-city', cap: 35 },
+    { gymNodeId: 'icirrus-city', cap: 39 },
+    { gymNodeId: 'opelucid-city', cap: 43 },
+  ],
+};
+
+describe('GYM_ACE — binding game versions', () => {
+  it.each(Object.entries(BINDING_GYM_ACES))(
+    '%s: all 8 gym ace levels match the binding version',
+    (region, gyms) => {
+      expect(gyms).toHaveLength(8);
+      for (let i = 0; i < gyms.length; i++) {
+        expect(gymCapPreview(region, i)).toMatchObject(gyms[i]);
+      }
+    },
+  );
+
+  it('Unova 8th gym is opelucid-city (BW Drayden/Iris), not humilau-city (B2W2 Marlon)', () => {
+    expect(gymCapPreview('unova', 7)).toMatchObject({ gymNodeId: 'opelucid-city', cap: 43 });
+    for (let i = 0; i < 8; i++) {
+      expect(gymCapPreview('unova', i)?.gymNodeId).not.toBe('humilau-city');
+    }
+  });
+});
+
 describe('RULE_PRESETS (§B1) — only ever toggle switches that already exist', () => {
   it('classic: dupes+shiny+nicknames+releaseOnDeath on, soulLink+autoLevelCap off', () => {
     expect(RULE_PRESETS.classic).toMatchObject({

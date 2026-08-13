@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   findEvoLineDupeViolations,
   isCurrentOp,
+  cascadeRestoreTargets,
   isStatusDowngrade,
   livingCascadeTargets,
   mergeRemoteWithOutbox,
@@ -295,5 +296,27 @@ describe('livingCascadeTargets', () => {
     const alreadyLost = enc({ id: 'cam', player_id: 'cam', route_key: 'route-1', status: 'lost' });
     const stillLiving = enc({ id: 'dan', player_id: 'dan', route_key: 'route-1', status: 'caught' });
     expect(livingCascadeTargets([trigger, alreadyDead, alreadyLost, stillLiving], trigger)).toEqual([stillLiving]);
+  });
+});
+
+describe('cascadeRestoreTargets', () => {
+  it('death undo revives other dead partners on the route', () => {
+    const trigger = enc({ id: 'ann', player_id: 'ann', route_key: 'route-1', status: 'dead' });
+    const bob = enc({ id: 'bob', player_id: 'bob', route_key: 'route-1', status: 'dead' });
+    const elsewhere = enc({ id: 'cam', player_id: 'cam', route_key: 'route-2', status: 'dead' });
+    expect(cascadeRestoreTargets([trigger, bob, elsewhere], trigger, 'dead')).toEqual([bob]);
+  });
+
+  it('miss undo revives lost partners on the route', () => {
+    const trigger = enc({ id: 'ann', player_id: 'ann', route_key: 'route-1', status: 'missed' });
+    const bob = enc({ id: 'bob', player_id: 'bob', route_key: 'route-1', status: 'lost' });
+    const living = enc({ id: 'cam', player_id: 'cam', route_key: 'route-1', status: 'caught' });
+    expect(cascadeRestoreTargets([trigger, bob, living], trigger, 'missed')).toEqual([bob]);
+  });
+
+  it('lost victim undo also targets the missed trigger (whole group)', () => {
+    const missed = enc({ id: 'ann', player_id: 'ann', route_key: 'route-1', status: 'missed' });
+    const lost = enc({ id: 'bob', player_id: 'bob', route_key: 'route-1', status: 'lost' });
+    expect(cascadeRestoreTargets([missed, lost], lost, 'lost').map((e) => e.id).sort()).toEqual(['ann']);
   });
 });

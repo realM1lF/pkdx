@@ -342,7 +342,7 @@ describe('nuzlocke login gate', () => {
     });
     const before = readRunIndex().length;
     mockUser = null;
-    expect(duplicateAsSolo(state.run.id)).toBeNull();
+    expect(await duplicateAsSolo(state.run.id)).toBeNull();
     expect(readRunIndex()).toHaveLength(before);
   });
 
@@ -358,7 +358,7 @@ describe('nuzlocke login gate', () => {
       online: false,
     });
     const before = readRunIndex().length;
-    const copyId = duplicateAsSolo(state.run.id);
+    const copyId = await duplicateAsSolo(state.run.id);
     expect(copyId).toBeTruthy();
     expect(readRunIndex()).toHaveLength(before + 1);
     const copy = loadLocalRun(copyId!);

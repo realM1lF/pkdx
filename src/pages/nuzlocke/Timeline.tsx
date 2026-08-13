@@ -327,6 +327,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
       <div
         ref={scrollRef}
         className={cn('nz-timeline nz-fade-x overflow-x-auto', dragging && 'nz-dragging')}
+        data-lenis-prevent
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}

@@ -8,8 +8,9 @@
           "name": "Roxanne",
           "class": "Leader",
           "party": [
-            { "species": "geodude", "level": 12, "moves": ["tackle", "defense-curl", "rock-throw"] },
-            { "species": "nosepass", "level": 15, "moves": ["block", "harden", "rock-throw", "tackle"] }
+            { "species": "geodude", "level": 12, "moves": ["tackle", "defense-curl", "rock-throw", "rock-tomb"] },
+            { "species": "geodude", "level": 12, "moves": ["tackle", "defense-curl", "rock-throw", "rock-tomb"] },
+            { "species": "nosepass", "level": 15, "moves": ["block", "harden", "tackle", "rock-tomb"] }
           ],
           "important": true,
           "pos": null
@@ -22,8 +23,9 @@
           "name": "Brawly",
           "class": "Leader",
           "party": [
-            { "species": "machop", "level": 16, "moves": ["low-kick", "focus-energy", "karate-chop", "seismic-toss"] },
-            { "species": "makuhita", "level": 19, "moves": ["sand-attack", "focus-energy", "arm-thrust", "vital-throw"] }
+            { "species": "machop", "level": 16, "moves": ["leer", "karate-chop", "seismic-toss", "bulk-up"] },
+            { "species": "meditite", "level": 16, "moves": ["focus-punch", "light-screen", "reflect", "bulk-up"] },
+            { "species": "makuhita", "level": 19, "moves": ["arm-thrust", "vital-throw", "reversal", "bulk-up"] }
           ],
           "important": true,
           "pos": null
@@ -36,9 +38,10 @@
           "name": "Wattson",
           "class": "Leader",
           "party": [
-            { "species": "voltorb", "level": 20, "moves": ["rollout", "spark", "self-destruct"] },
-            { "species": "electrike", "level": 22, "moves": ["quick-attack", "thunder-wave", "spark", "bite"] },
-            { "species": "magneton", "level": 23, "moves": ["supersonic", "thunder-wave", "spark", "sonic-boom"] }
+            { "species": "voltorb", "level": 20, "moves": ["rollout", "spark", "self-destruct", "shock-wave"] },
+            { "species": "electrike", "level": 20, "moves": ["quick-attack", "thunder-wave", "spark", "shock-wave"] },
+            { "species": "magneton", "level": 22, "moves": ["supersonic", "spark", "thunder-wave", "shock-wave"] },
+            { "species": "manectric", "level": 24, "moves": ["quick-attack", "spark", "thunder-wave", "shock-wave"] }
           ],
           "important": true,
           "pos": null
@@ -51,9 +54,10 @@
           "name": "Flannery",
           "class": "Leader",
           "party": [
-            { "species": "slugma", "level": 24, "moves": ["overheat", "smog", "light-screen", "rock-throw"] },
-            { "species": "slugma", "level": 24, "moves": ["overheat", "smog", "light-screen", "rock-throw"] },
-            { "species": "torkoal", "level": 26, "moves": ["overheat", "body-slam", "protect", "flamethrower"] }
+            { "species": "numel", "level": 24, "moves": ["overheat", "take-down", "magma-armor", "sunny-day"] },
+            { "species": "slugma", "level": 24, "moves": ["overheat", "smog", "light-screen", "sunny-day"] },
+            { "species": "camerupt", "level": 26, "moves": ["overheat", "tackle", "sunny-day", "attract"] },
+            { "species": "torkoal", "level": 29, "moves": ["overheat", "body-slam", "flail", "attract"] }
           ],
           "important": true,
           "pos": null
@@ -66,9 +70,10 @@
           "name": "Norman",
           "class": "Leader",
           "party": [
-            { "species": "slaking", "level": 28, "moves": ["facade", "feint-attack", "encore", "slash"] },
-            { "species": "vigoroth", "level": 30, "moves": ["facade", "feint-attack", "encore", "slash"] },
-            { "species": "linoone", "level": 31, "moves": ["facade", "headbutt", "encore", "rest"] }
+            { "species": "spinda", "level": 27, "moves": ["teeter-dance", "psybeam", "facade", "encore"] },
+            { "species": "vigoroth", "level": 27, "moves": ["slash", "facade", "feint-attack", "encore"] },
+            { "species": "linoone", "level": 29, "moves": ["slash", "belly-drum", "facade", "headbutt"] },
+            { "species": "slaking", "level": 31, "moves": ["facade", "yawn", "feint-attack", "counter"] }
           ],
           "important": true,
           "pos": null
@@ -81,10 +86,10 @@
           "name": "Winona",
           "class": "Leader",
           "party": [
-            { "species": "swellow", "level": 29, "moves": ["aerial-ace", "quick-attack", "double-team", "focus-energy"] },
-            { "species": "pelipper", "level": 29, "moves": ["water-pulse", "protect", "supersonic", "stockpile"] },
-            { "species": "skarmory", "level": 31, "moves": ["aerial-ace", "steel-wing", "sand-attack", "swift"] },
-            { "species": "altaria", "level": 33, "moves": ["dragon-dance", "aerial-ace", "dragon-breath", "earthquake"] }
+            { "species": "swellow", "level": 29, "moves": ["aerial-ace", "quick-attack", "double-team", "endeavor"] },
+            { "species": "pelipper", "level": 29, "moves": ["water-gun", "aerial-ace", "supersonic", "protect"] },
+            { "species": "skarmory", "level": 31, "moves": ["aerial-ace", "steel-wing", "spikes", "sand-attack"] },
+            { "species": "altaria", "level": 33, "moves": ["aerial-ace", "earthquake", "dragon-breath", "dragon-dance"] }
           ],
           "important": true,
           "pos": null
@@ -97,8 +102,10 @@
           "name": "Tate & Liza",
           "class": "Leader",
           "party": [
-            { "species": "lunatone", "level": 41, "moves": ["psychic", "calm-mind", "light-screen", "hypnosis"] },
-            { "species": "solrock", "level": 41, "moves": ["solar-beam", "sunny-day", "light-screen", "hypnosis"] }
+            { "species": "claydol", "level": 41, "moves": ["earthquake", "ancient-power", "psychic", "light-screen"] },
+            { "species": "xatu", "level": 41, "moves": ["psychic", "sunny-day", "confuse-ray", "calm-mind"] },
+            { "species": "lunatone", "level": 42, "moves": ["light-screen", "psychic", "hypnosis", "calm-mind"] },
+            { "species": "solrock", "level": 42, "moves": ["sunny-day", "solar-beam", "psychic", "flamethrower"] }
           ],
           "important": true,
           "pos": null
@@ -108,14 +115,14 @@
     "sootopolis-city": {
       "trainers": [
         {
-          "name": "Wallace",
+          "name": "Juan",
           "class": "Leader",
           "party": [
-            { "species": "luvdisc", "level": 40, "moves": ["water-pulse", "charm", "attract", "flail"] },
-            { "species": "whiscash", "level": 42, "moves": ["water-pulse", "earthquake", "ice-beam", "amnesia"] },
-            { "species": "sealeo", "level": 42, "moves": ["ice-ball", "water-pulse", "body-slam", "rest"] },
-            { "species": "seaking", "level": 43, "moves": ["water-pulse", "ice-beam", "megahorn", "agility"] },
-            { "species": "milotic", "level": 46, "moves": ["water-pulse", "ice-beam", "recover", "toxic"] }
+            { "species": "luvdisc", "level": 41, "moves": ["water-pulse", "attract", "sweet-kiss", "flail"] },
+            { "species": "whiscash", "level": 41, "moves": ["rain-dance", "water-pulse", "amnesia", "earthquake"] },
+            { "species": "sealeo", "level": 43, "moves": ["encore", "body-slam", "hail", "ice-ball"] },
+            { "species": "crawdaunt", "level": 43, "moves": ["crabhammer", "water-pulse", "taunt", "leer"] },
+            { "species": "kingdra", "level": 46, "moves": ["water-pulse", "double-team", "ice-beam", "rest"] }
           ],
           "important": true,
           "pos": null

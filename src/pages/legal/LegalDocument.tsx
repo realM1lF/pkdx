@@ -10,7 +10,7 @@ function linkify(text: string) {
         key={`${part}-${index}`}
         href={part}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className="underline decoration-hairline2 underline-offset-4 transition-colors hover:text-gold"
       >
         {part}

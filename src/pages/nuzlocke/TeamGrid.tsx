@@ -16,6 +16,7 @@ import { myPlayerId, partyOf, pushToast, setEncounterParty, swapParty } from '@/
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { getPokemon, pokemonTypes } from '@/lib/pokeapi';
 import { TYPE_COLORS } from '@/lib/types';
+import { nameOfType, useLanguage } from '@/lib/i18n-data';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { PixelLabel } from './ui';
@@ -38,10 +39,14 @@ function useTypes(id: number): string[] {
 }
 
 function TypeChip({ type }: { type: string }) {
+  const lang = useLanguage();
   const c = TYPE_COLORS[type as PokemonType];
   return (
-    <span className="rounded-full px-1.5 text-[9px] font-bold uppercase leading-[14px]" style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}>
-      {type.slice(0, 3)}
+    <span
+      className="min-w-0 max-w-[4.5rem] truncate rounded-full px-1.5 text-[9px] font-bold uppercase leading-[14px]"
+      style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}
+    >
+      {nameOfType(type, lang)}
     </span>
   );
 }

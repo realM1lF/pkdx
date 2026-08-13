@@ -24,7 +24,8 @@ const yellow = (s) => `\x1b[33m${s}\x1b[0m`;
 
 function note(level, msg) {
   findings.push({ level, msg });
-  const tag = level === 'crit' ? red('CRITICAL') : level === 'warn' ? yellow('WARN') : green('OK');
+  const tag =
+    level === 'crit' ? red('CRITICAL') : level === 'high' ? red('HIGH') : level === 'warn' ? yellow('WARN') : green('OK');
   console.log(`  ${tag}  ${msg}`);
 }
 
@@ -149,8 +150,12 @@ if (settings.status === 200 && settings.body) {
   const s = settings.body;
   if (s.external?.anonymous_users) note('ok', 'anonymous sign-ins enabled (required by the hardened policies)');
   else note('warn', 'anonymous sign-ins DISABLED — enable before running stage 2, or guest multiplayer breaks');
-  if (s.disable_signup === false) note('warn', 'open email signup — accounts can bypass the register-account function');
-  else note('ok', 'public signup disabled');
+  if (s.disable_signup === false) {
+    note(
+      'high',
+      'public email signup is enabled — disable it in the Supabase Auth dashboard; user creation must go only through register-account',
+    );
+  } else note('ok', 'public signup disabled');
 }
 const ua = await req('/rest/v1/rpc/username_available', {
   method: 'POST',
@@ -160,14 +165,18 @@ if (ua.status === 200) note('warn', 'username_available is callable anonymously 
 
 /* ---------- verdict ---------- */
 const crit = findings.filter((f) => f.level === 'crit').length;
+const high = findings.filter((f) => f.level === 'high').length;
 const warn = findings.filter((f) => f.level === 'warn').length;
 console.log(`\n${'─'.repeat(64)}`);
-console.log(`Result: ${crit} critical · ${warn} warnings · ${findings.length - crit - warn} ok`);
+console.log(`Result: ${crit} critical · ${high} high · ${warn} warnings · ${findings.length - crit - high - warn} ok`);
 if (crit === 0) {
   console.log(green('No anonymous access to multiplayer data. Stage 2 is in effect.'));
 } else {
   console.log(red('Multiplayer data is still anonymously accessible.'));
   console.log('Apply supabase/migrations/01_prepare_nuzlocke_rls.sql, then 02_enforce_nuzlocke_rls.sql.');
+}
+if (high > 0) {
+  console.log(yellow('HIGH findings need a dashboard action (not fixable by in-repo SQL).'));
 }
 if (leaked > 0 || rpcMissing > 0) console.log(`(rows visible: ${leaked}, stage-1 RPCs missing: ${rpcMissing})`);
 console.log();

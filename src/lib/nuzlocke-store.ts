@@ -2,7 +2,7 @@
  * Solo mode  → localStorage mirror (`pdx2.nuz.*`), instant.
  * Multi mode → Supabase Postgres + Realtime (postgres_changes + presence).
  * Identical UI in both modes. All writes optimistic; failed remote writes
- * replay with a gold `RETRYING SYNC…` toast — never red. */
+ * replay with a gold retry toast — never red. */
 import { useEffect, useReducer, useState } from 'react';
 import i18n from '@/i18n';
 import type { RealtimeChannel } from '@supabase/supabase-js';
@@ -43,8 +43,10 @@ import {
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
 import { ensureRunIdentity, getAuthUser, isAuthReady, useAuth } from './auth';
 import {
+  cascadeRestoreTargets,
   findEvoLineDupeViolations,
   isCurrentOp,
+  isStatusDowngrade,
   livingCascadeTargets,
   mergeRemoteWithOutbox,
   nextOpGen,
@@ -670,7 +672,9 @@ export function isLinked(state: RunState, encId: string): boolean {
  * (localStorage from before the flag existed) fall back to the derived rule
  * "6 most recent alive catches = party" until the first manual move. */
 function hasPartyFlags(state: RunState): boolean {
-  return state.encounters.some((e) => e.in_party !== undefined);
+  /* Explicit true/false means flag-mode. Postgres `null` and missing keys
+   * are the pre-flag legacy shape — do not treat null as "boxed". */
+  return state.encounters.some((e) => e.in_party === true || e.in_party === false);
 }
 
 function aliveOf(state: RunState, playerId: string): NuzEncounterRow[] {
@@ -691,14 +695,27 @@ export function boxedOf(state: RunState, playerId: string): NuzEncounterRow[] {
   return alive.filter((e) => e.in_party !== true).reverse();
 }
 
-/** Initialize in_party on legacy rows with the old derived rule (idempotent). */
+/** Initialize in_party on legacy / null rows with the old derived rule (idempotent). */
 function ensurePartyFlags(s: RunState): void {
-  if (hasPartyFlags(s)) return;
+  const needsInit = s.encounters.some((e) => e.in_party !== true && e.in_party !== false);
+  if (!needsInit) return;
+  if (!hasPartyFlags(s)) {
+    for (const p of s.players) {
+      const alive = aliveOf(s, p.id);
+      alive.forEach((e, i) => {
+        e.in_party = i >= alive.length - 6;
+      });
+    }
+    return;
+  }
   for (const p of s.players) {
     const alive = aliveOf(s, p.id);
-    alive.forEach((e, i) => {
-      e.in_party = i >= alive.length - 6;
-    });
+    let slots = Math.max(0, 6 - alive.filter((e) => e.in_party === true).length);
+    for (const e of alive) {
+      if (e.in_party === true || e.in_party === false) continue;
+      e.in_party = slots > 0;
+      if (slots > 0) slots -= 1;
+    }
   }
 }
 
@@ -773,6 +790,9 @@ export interface RunEntry {
    * ignore a stale write's success/failure once a newer one supersedes it
    * (concurrency plan §1.2) */
   opGen: Map<string, number>;
+  /** encounter id → Date.now() of a completed local/peer restore; a delayed
+   * `dead` realtime frame must not overwrite this (Finding 6). */
+  restoreGuard: Map<string, number>;
   milestones: Set<string>;
   listeners: Set<() => void>;
   refs: number;
@@ -798,6 +818,7 @@ function newEntry(id: string): RunEntry {
     pendingSync: new Set(),
     outbox: new Map(),
     opGen: new Map(),
+    restoreGuard: new Map(),
     milestones: new Set(),
     listeners: new Set(),
     refs: 0,
@@ -848,6 +869,7 @@ function ensureEntry(runId: string): RunEntry {
       e.state = local;
       e.phase = 'ready';
       e.status = isCloudRun(local) ? 'connecting' : 'local';
+      ensurePartyFlags(local);
       seedFeed(e);
     }
     void refreshRemote(e);
@@ -953,6 +975,7 @@ async function refreshRemote(entry: RunEntry): Promise<void> {
         outbox: entry.outbox,
       });
       const merged = { ...remote, encounters };
+      ensurePartyFlags(merged);
       entry.state = merged;
       entry.phase = 'ready';
       entry.hydrateError = null;
@@ -1018,18 +1041,36 @@ function applyRemoteEncounter(entry: RunEntry, enc: NuzEncounterRow): void {
     if (normalized.status === 'caught') void reconcileEvoLineDupes(entry, normalized);
   } else {
     const prev = s.encounters[idx];
-    /* Server/realtime frames are authoritative for peer writes. Stale
-     * echoes of our own in-flight writes are already skipped via outbox
-     * above — do NOT block legitimate restores (dead→caught) for peers. */
+    const isRestore =
+      applied.status === 'caught' && isStatusDowngrade(prev.status, applied.status);
+    if (isStatusDowngrade(prev.status, applied.status) && !isRestore) {
+      /* stale less-final frame (e.g. caught echo over dead) — keep local */
+      return;
+    }
+    const guardedAt = entry.restoreGuard.get(applied.id);
+    if (
+      guardedAt &&
+      prev.status === 'caught' &&
+      applied.status !== 'caught' &&
+      Date.now() - guardedAt < 8000
+    ) {
+      /* delayed death/miss after a completed restore */
+      return;
+    }
     applied = normalized;
     s.encounters = s.encounters.map((e) => (e.id === applied.id ? applied : e));
+    if (isRestore) entry.restoreGuard.set(applied.id, Date.now());
+    if (applied.status !== 'caught') entry.restoreGuard.delete(applied.id);
     if (prev.status !== applied.status || prev.pokemon_id !== applied.pokemon_id || prev.level !== applied.level) {
       if (prev.status !== applied.status) {
         pushFeed(entry, encounterFeedEvent(s, applied, true));
         if (applied.status === 'dead') checkCascade(entry, applied);
         if (applied.status === 'missed') checkMissCascade(entry, applied);
         /* restore into a living evo-line may re-open a dupes race (§1.3) */
-        if (applied.status === 'caught') void reconcileEvoLineDupes(entry, applied);
+        if (applied.status === 'caught') {
+          checkRestoreCascade(entry, applied, prev.status);
+          void reconcileEvoLineDupes(entry, applied);
+        }
       }
     }
   }
@@ -1083,8 +1124,13 @@ async function reconcileEvoLineDupes(entry: RunEntry, trigger?: NuzEncounterRow)
 function goLive(entry: RunEntry): void {
   const s = entry.state;
   if (!s || !isCloudRun(s) || entry.channel || !isMultiCapable()) return;
-  /* Presence key = player id; solo cloud falls back to the sole player or run id. */
-  const presenceKey = myPlayerId(entry.id) ?? s.players[0]?.id ?? entry.id;
+  /* Presence key = player id. Never the run id (collides every unbound client).
+   * Multi lobby without a membership bind: unique tab key, skip track. */
+  const mine = myPlayerId(entry.id);
+  const presenceKey =
+    mine ??
+    (s.mode === 'multi' ? `pending:${uuid()}` : s.players[0]?.id);
+  if (!presenceKey) return;
   entry.status = 'connecting';
   const runId = entry.id;
   const ch = runChannel(runId, presenceKey);
@@ -1265,11 +1311,11 @@ function persistWithRetry(
         emit(entry);
         return;
       }
-      if (n === 0) pushToast('sync', 'RETRYING SYNC…');
+      if (n === 0) pushToast('sync', i18n.t('nuz.toast.retryingSync'));
       if (n >= 4) return; /* stays flagged — PENDING SYNC caption */
     } catch {
       if (!isCurrentOp(entry.opGen, syncKey, gen)) return;
-      if (n === 0) pushToast('sync', 'RETRYING SYNC…');
+      if (n === 0) pushToast('sync', i18n.t('nuz.toast.retryingSync'));
       if (n >= 4) return;
     }
     await sleep(900 * 2 ** n);
@@ -1303,7 +1349,7 @@ function applyOwnWriteResult(entry: RunEntry, rows: NuzEncounterRow[]): void {
 function persistStatusRpc(
   entry: RunEntry,
   targets: NuzEncounterRow[],
-  args: { p_encounter_id: string; p_new_status: string; p_note: string | null },
+  args: { p_encounter_id: string; p_new_status: string; p_note: string | null; p_client_op_id?: string },
 ): void {
   if (!isMultiCapable() || !entry.state || !isCloudRun(entry.state) || targets.length === 0) return;
   const gens = targets.map((row) => ({ id: row.id, row, gen: nextOpGen(entry.opGen, row.id) }));
@@ -1327,11 +1373,11 @@ function persistStatusRpc(
         if (updated?.length) applyOwnWriteResult(entry, updated);
         return;
       }
-      if (n === 0) pushToast('sync', 'RETRYING SYNC…');
+      if (n === 0) pushToast('sync', i18n.t('nuz.toast.retryingSync'));
       if (n >= 4) return;
     } catch {
       if (!gens.some((g) => isCurrentOp(entry.opGen, g.id, g.gen))) return;
-      if (n === 0) pushToast('sync', 'RETRYING SYNC…');
+      if (n === 0) pushToast('sync', i18n.t('nuz.toast.retryingSync'));
       if (n >= 4) return;
     }
     await sleep(900 * 2 ** n);
@@ -1415,6 +1461,40 @@ function checkCascade(entry: RunEntry, deadEnc: NuzEncounterRow): NuzEncounterRo
       meta: route,
     });
     pushToast('info', i18n.t(cascadeOn ? 'nuz.toast.cascade' : 'nuz.toast.cascadeBoxed', { name }));
+  }
+  return touched;
+}
+
+/** Restore cascade — undo of death/miss. Local only; caller persists via RPC. */
+function checkRestoreCascade(
+  entry: RunEntry,
+  restoredEnc: NuzEncounterRow,
+  prevStatus: NuzEncounterStatus,
+): NuzEncounterRow[] {
+  const s = entry.state;
+  if (!s || !s.run.rules.soulLink || !s.run.rules.soulLinkCascade) return [];
+  if (restoredEnc.status !== 'caught') return [];
+  const partners = cascadeRestoreTargets(s.encounters, restoredEnc, prevStatus);
+  if (partners.length === 0) return [];
+  const route = routeLabelOf(s.run, restoredEnc.route_key);
+  const touched: NuzEncounterRow[] = [];
+  for (const partner of partners) {
+    const name = partner.nickname ?? speciesNamer(partner.pokemon_id);
+    s.encounters = s.encounters.map((e) =>
+      e.id === partner.id ? { ...e, status: 'caught' as const } : e,
+    );
+    const updated = s.encounters.find((e) => e.id === partner.id)!;
+    touched.push(updated);
+    entry.restoreGuard.set(updated.id, Date.now());
+    saveLocalRun(s);
+    scheduleLinkedSync(s, partner.player_id);
+    pushFeed(entry, {
+      kind: 'link',
+      color: '#F6C945',
+      title: i18n.t('nuz.feed.linkRestored', { name }),
+      meta: route,
+    });
+    pushToast('info', i18n.t('nuz.toast.cascadeRestored', { name }));
   }
   return touched;
 }
@@ -1507,28 +1587,44 @@ export function isRouteLinkLocked(state: RunState, playerId: string, routeKey: s
   );
 }
 
+/** Restore to caught is allowed when the route slot is free. SoulLink
+ * miss-cascade victims (`lost` while a mate is still `missed`) must not
+ * restore alone — restore the missed trigger so the group stays in sync. */
+export function canRestoreEncounter(state: RunState, enc: NuzEncounterRow): boolean {
+  if (enc.status === 'caught') return true;
+  const slotTaken = state.encounters.some(
+    (e) =>
+      e.id !== enc.id &&
+      e.player_id === enc.player_id &&
+      e.route_key === enc.route_key &&
+      isSlotConsuming(e),
+  );
+  if (slotTaken) return false;
+  if (
+    state.run.rules.soulLink &&
+    enc.status === 'lost' &&
+    state.encounters.some(
+      (e) =>
+        e.id !== enc.id &&
+        e.route_key === enc.route_key &&
+        e.player_id !== enc.player_id &&
+        e.status === 'missed',
+    )
+  ) {
+    return false;
+  }
+  return true;
+}
+
 /* ---------- actions: create / join / upgrade ---------- */
 
-/** best-effort: link a coop run to the logged-in account (owner or member) */
-function linkRunToAccount(runId: string, role: 'owner' | 'member'): void {
-  const user = getAuthUser();
-  if (!user) return;
-  if (role === 'owner') {
-    /* the owner membership itself is written by the nuz_runs_grant_owner
-     * trigger — clients may not insert role='owner' (migration 10) */
-    void supabase
-      .from('nuz_runs')
-      .update({ owner_id: user.id })
-      .eq('id', runId)
-      .then(({ error }) => error && console.warn('[accounts] owner link failed', error.message));
-    return;
-  }
-  /* insert-only: rewriting an existing row would let a rejoin downgrade an
-   * owner to member, and `role` is not writable over REST anyway */
-  void supabase
-    .from('nuz_run_members')
-    .upsert({ run_id: runId, user_id: user.id, role }, { onConflict: 'run_id,user_id', ignoreDuplicates: true })
-    .then(({ error }) => error && console.warn('[accounts] member link failed', error.message));
+/** Hub cache only. Membership is never written from the REST client
+ * (migrations 12–13): owner → `nuz_runs_grant_owner` on INSERT; member →
+ * `nuz_join_by_code` / `nuz_claim_access`. Finding 19: guests cannot create
+ * runs (`getAuthUser` / `isRealUser` gate) — that is intentional. */
+function linkRunToAccount(runId: string, _role: 'owner' | 'member'): void {
+  if (!getAuthUser()) return;
+  registerAccountRun(runId);
 }
 
 
@@ -1644,7 +1740,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
       cloudBacked = true;
     } else {
       offlineFallback = true;
-      pushToast('sync', 'OFFLINE — RUN SAVED TO THIS DEVICE');
+      pushToast('sync', i18n.t('nuz.toast.offlineSaved'));
     }
   } else if (getAuthUser() && isMultiCapable()) {
     const { error: runErr } = await nuzTables.runs().insert({ ...baseRun, invite_code: null });
@@ -1654,6 +1750,9 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
         linkRunToAccount(id, 'owner');
         registerAccountRun(id);
         cloudBacked = true;
+      } else {
+        await nuzTables.runs().delete().eq('id', id);
+        pushToast('sync', i18n.t('nuz.toast.cloudPlayerFailed'));
       }
     }
   }
@@ -1743,23 +1842,33 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   if (lookup.players.length >= MAX_PLAYERS) return null;
   const taken = new Set(lookup.players.map((p) => p.color));
   const finalColor = taken.has(color) ? (PLAYER_COLORS.find((c) => !taken.has(c)) ?? color) : color;
-  const slot = nextPlayerSlot(lookup.players);
-  if (slot >= MAX_PLAYERS) return null;
-  const player: NuzPlayerRow = {
-    id: uuid(),
-    run_id: lookup.run.id,
-    name: name.trim() || `PLAYER ${slot + 1}`,
-    color: finalColor,
-    slot,
-    created_at: new Date().toISOString(),
-  };
-  const { error } = await nuzTables.players().insert(player);
-  if (error) return null;
+  let snapshot = [...lookup.players];
+  let player: NuzPlayerRow | null = null;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    if (snapshot.length >= MAX_PLAYERS) return null;
+    const slot = nextPlayerSlot(snapshot);
+    if (slot >= MAX_PLAYERS) return null;
+    player = {
+      id: uuid(),
+      run_id: lookup.run.id,
+      name: name.trim() || `PLAYER ${slot + 1}`,
+      color: finalColor,
+      slot,
+      created_at: new Date().toISOString(),
+    };
+    const { error } = await nuzTables.players().insert(player);
+    if (!error) break;
+    player = null;
+    if (!isUniqueViolation(error)) return null;
+    const { data } = await nuzTables.players().select('*').eq('run_id', lookup.run.id).order('slot');
+    snapshot = (data ?? snapshot) as NuzPlayerRow[];
+  }
+  if (!player) return null;
   linkRunToAccount(lookup.run.id, 'member');
   const state: RunState = {
     run: lookup.run,
     mode: 'multi',
-    players: [...lookup.players, player],
+    players: [...snapshot.filter((p) => p.id !== player!.id), player],
     encounters: [],
   };
   saveLocalRun(state);
@@ -1805,19 +1914,31 @@ export async function goOnline(runId: string): Promise<boolean> {
     rErr = (await nuzTables.runs().upsert(runRow)).error;
   }
   if (rErr) {
-    pushToast('sync', 'RETRYING SYNC…');
+    pushToast('sync', i18n.t('nuz.toast.retryingSync'));
     return false;
   }
   const invite = runRow.invite_code;
-  if (s.players.length > 0) await nuzTables.players().upsert(s.players);
-  if (s.encounters.length > 0) await nuzTables.encounters().upsert(s.encounters);
+  if (s.players.length > 0) {
+    const { error: pErr } = await nuzTables.players().upsert(s.players);
+    if (pErr) {
+      pushToast('sync', i18n.t('nuz.toast.goOnlineFailed'));
+      return false;
+    }
+  }
+  if (s.encounters.length > 0) {
+    const uploaded = await uploadEncountersForGoOnline(s.encounters);
+    if (!uploaded) {
+      pushToast('sync', i18n.t('nuz.toast.goOnlineFailed'));
+      return false;
+    }
+  }
   s.mode = 'multi';
   s.run = runRow;
   saveLocalRun(s);
   entry.status = 'connecting';
   goLive(entry);
   emit(entry);
-  pushToast('success', `ONLINE — INVITE ${invite}`);
+  pushToast('success', i18n.t('nuz.toast.onlineInvite', { code: invite }));
   return true;
 }
 
@@ -1853,6 +1974,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
   const entry = ensureEntry(runId);
   const s = entry.state;
   if (!s) return { ok: false };
+  ensurePartyFlags(s);
   const region = regionForRun(s.run.region, s.run.game);
   const node = region ? nodeIndex(region).get(draft.routeKey) : undefined;
   const violation = await validateLogDraft(s, draft, node);
@@ -1940,6 +2062,23 @@ function isUniqueViolation(error: unknown): boolean {
   return !!error && typeof error === 'object' && (error as { code?: string }).code === '23505';
 }
 
+/** goOnline cannot target the partial unique index via upsert — insert each
+ * row and treat 23505 as "already on the server" (PK or slot). */
+async function uploadEncountersForGoOnline(rows: NuzEncounterRow[]): Promise<boolean> {
+  const up = await nuzTables.encounters().upsert(rows);
+  if (!up.error) return true;
+  for (const enc of rows) {
+    const res = await nuzTables.encounters().insert(enc);
+    if (!res.error) continue;
+    if (isUniqueViolation(res.error)) {
+      /* already present — do not fail the upgrade */
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
+
 /** Our insert lost the race: fetch the winning server row and replace the
  * local mirror with it. Returns false when no slot-consuming row exists. */
 async function reconcileRouteConflict(entry: RunEntry, enc: NuzEncounterRow): Promise<boolean> {
@@ -1991,6 +2130,9 @@ export function updateEncounter(
   const s = entry.state;
   const enc = s?.encounters.find((e) => e.id === encId);
   if (!s || !enc) return { ok: false };
+  if (patch.nickname !== undefined && s.run.rules.nicknames && !String(patch.nickname ?? '').trim()) {
+    return { ok: false };
+  }
   const prevStatus = enc.status;
   /* leaving the living world frees the party slot (persisted too) */
   const freesSlot = Boolean(patch.status && patch.status !== 'caught');
@@ -2003,6 +2145,7 @@ export function updateEncounter(
   if (isStatusChange) {
     pushFeed(entry, encounterFeedEvent(s, enc, false));
     if (patch.status === 'dead') {
+      entry.restoreGuard.delete(enc.id);
       if (!opts?.fromCascade && s.run.rules.soulLink) cascadePartners = checkCascade(entry, enc);
       if (s.run.rules.releaseOnDeath) {
         pushToast('info', i18n.t('nuz.toast.releaseRule', { name: enc.nickname ?? speciesNamer(enc.pokemon_id) }));
@@ -2010,6 +2153,8 @@ export function updateEncounter(
     } else if (patch.status === 'missed') {
       if (!opts?.fromCascade) cascadePartners = checkMissCascade(entry, enc);
     } else if (patch.status === 'caught') {
+      cascadePartners = checkRestoreCascade(entry, enc, prevStatus);
+      entry.restoreGuard.set(enc.id, Date.now());
       /* restore may re-open an evo-line dupes race (§1.3) */
       void reconcileEvoLineDupes(entry, enc);
     }
@@ -2025,6 +2170,7 @@ export function updateEncounter(
         p_encounter_id: enc.id,
         p_new_status: enc.status,
         p_note: patch.note ?? null,
+        p_client_op_id: uuid(),
       });
     } else {
       persistWithRetry(
@@ -2266,7 +2412,7 @@ function rulesSummary(r: NuzRules): string {
   ];
   if (r.dupes && r.dupesDead) bits.push(i18n.t('nuz.feed.dupesDeadOn'));
   if (r.dupes && r.dupesEncounter) bits.push(i18n.t('nuz.feed.dupesEncounterOn'));
-  if (r.soulLink) bits.push('SOULLINK');
+  if (r.soulLink) bits.push(i18n.t('nuz.feed.soulLinkOn'));
   if (r.randomizer) bits.push(i18n.t('nuz.feed.randomizerOn'));
   return bits.join(' · ');
 }
@@ -2366,7 +2512,7 @@ export function deleteRunForever(runId: string): void {
   notifyHub();
 }
 
-export function duplicateAsSolo(runId: string): string | null {
+export async function duplicateAsSolo(runId: string): Promise<string | null> {
   /* Same gate as createRun — a copy is a new run and must belong to an account. */
   if (!getAuthUser()) {
     pushToast('info', i18n.t('nuz.toast.loginRequiredRun'));
@@ -2403,6 +2549,27 @@ export function duplicateAsSolo(runId: string): string | null {
   saveLocalRun(state);
   setRunOwner(id);
   if (players[0]) setMembership(id, players[0].id);
+  if (getAuthUser() && isMultiCapable()) {
+    const { error: runErr } = await nuzTables.runs().insert({ ...state.run, invite_code: null });
+    if (!runErr) {
+      const { error: plErr } = await nuzTables.players().insert(players);
+      if (plErr) {
+        await nuzTables.runs().delete().eq('id', id);
+        pushToast('sync', i18n.t('nuz.toast.cloudPlayerFailed'));
+      } else {
+        if (encounters.length > 0) {
+          const { error: encErr } = await nuzTables.encounters().insert(encounters);
+          if (encErr) {
+            for (const e of encounters) {
+              const res = await nuzTables.encounters().insert(e);
+              if (res.error && !isUniqueViolation(res.error)) break;
+            }
+          }
+        }
+        linkRunToAccount(id, 'owner');
+      }
+    }
+  }
   void import('./nuzlocke-linked-teams')
     .then((m) => {
       m.cloneLinkedTeamsForDuplicate(src.run.id, state, playerMap, encounterMap);

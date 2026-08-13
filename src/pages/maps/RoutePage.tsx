@@ -24,8 +24,9 @@ import { displayNameOfItem, seoItemsForNode } from '@/lib/mapdata';
 import type { Lang } from '@/lib/i18n-data';
 import { padNum } from '@/lib/pokeapi';
 import { cn } from '@/lib/utils';
-import { resolveRouteParam, routeNodeName } from '@/lib/seo-routes-kanto';
+import { resolveRouteParam, routeNodeName, routePagePath } from '@/lib/seo-routes-kanto';
 import { resolveHoennRouteParam, hoennRouteNodeName } from '@/lib/seo-routes-hoenn';
+import { bestCatchByBst, wildSpeciesCount } from './route-stats';
 import routesJson from '@/data/routes-kanto.json';
 import routesHoennJson from '@/data/routes-hoenn.json';
 import kantoJson from '@/data/regions/kanto.json';
@@ -329,8 +330,9 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRo
      * are excluded from the "most common / rarest catch" math — only wild
      * grass/surf/fish encounters count there */
     const frWildRows = frRows.filter((r) => !r.isStatic);
-    const species = new Map<number, number>();
-    for (const r of frRows) species.set(r.id, Math.max(species.get(r.id) ?? 0, r.chance));
+    const aWildRows = lgRows.filter((r) => !r.isStatic);
+    const bWildRows = diffBRows.filter((r) => !r.isStatic);
+    const speciesCount = wildSpeciesCount(frRows);
     const wildSpecies = new Map<number, number>();
     for (const r of frWildRows) wildSpecies.set(r.id, Math.max(wildSpecies.get(r.id) ?? 0, r.chance));
 
@@ -368,13 +370,8 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRo
         );
     }
 
-    /* best catch: highest base stat total among catchable species */
-    const allIds = new Set([...species.keys(), ...aSpecies.keys(), ...bSpecies.keys()]);
-    let best: { id: number; bst: number } | null = null;
-    for (const id of allIds) {
-      const bst = cfg.dex[String(id)]?.bst;
-      if (bst && (!best || bst > best.bst)) best = { id, bst };
-    }
+    /* best catch: highest BST among wild species only (gifts/statics out) */
+    const best = bestCatchByBst([...frWildRows, ...aWildRows, ...bWildRows], cfg.dex);
 
     /* items — UNION of both sources (SEO enrichment + map curation), so the
      * page never contradicts the map drawer (item-consistency fix) */
@@ -399,7 +396,7 @@ function useComputed(nodeId: string, data: RouteNodeData, lang: Lang, cfg: SeoRo
       .map((n) => (lang === 'de' ? n.nameDe ?? n.label : n.label))
       .slice(0, 3);
 
-    return { speciesCount: species.size, top3, rarest, rarestIsTie, diffs, best, items, itemNames, itemListDedup, neighbors };
+    return { speciesCount, top3, rarest, rarestIsTie, diffs, best, items, itemNames, itemListDedup, neighbors };
   }, [nodeId, data, lang, cfg, ns, t]);
 }
 
@@ -700,7 +697,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: 'kanto' | 'ho
               {override?.extraLinks === 'route1' && (
                 <>
                   <LocaleLink
-                    to="/maps/kanto?node=kanto-route-22"
+                    to={routePagePath(lang, 'kanto-route-22')}
                     className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
                   >
                     <span className="min-w-0">

@@ -5,11 +5,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
-import { ChevronRight, ExternalLink, Fish, Footprints, Sparkles, Swords, Waves, X } from 'lucide-react';
+import { Bug, ChevronRight, ExternalLink, Fish, Footprints, Radio, Sparkles, Swords, Trees, Waves, X } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, nodeIndex, nodeName, regionName, versionLabel } from '@/lib/regions';
 import { nameOfItem, nameOfPokemon, nameOfPocket, useLanguage } from '@/lib/i18n-data';
-import type { CuratedItem, EncounterEntry, MethodBucket, NodeMapData } from '@/lib/mapdata';
+import type { CuratedItem, EncounterEntry, MethodBucket, MethodChip, NodeMapData } from '@/lib/mapdata';
 import { ITEM_SPRITE_BASE, METHOD_BUCKETS, displayNameOfItem, itemsForNode, noteOfItem } from '@/lib/mapdata';
 import { padNum } from '@/lib/pokeapi';
 import Sprite from '@/components/Sprite';
@@ -25,6 +25,13 @@ const METHOD_ICON: Record<MethodBucket, typeof Footprints> = {
   SURF: Waves,
   FISH: Fish,
   OTHER: Sparkles,
+};
+
+const CHIP_ICON: Record<MethodChip, typeof Footprints> = {
+  swarm: Bug,
+  radio: Radio,
+  headbutt: Trees,
+  feebas: Fish,
 };
 
 type SortKey = 'rate' | 'name' | 'level';
@@ -66,12 +73,13 @@ function EncounterRow({ e, region, node }: { e: EncounterEntry; region: RegionMa
       </span>
       <span className="flex shrink-0 items-center gap-1">
         {e.methods.map((m) => {
-          const Icon = METHOD_ICON[m];
-          const gold = m === 'OTHER' && e.isStatic;
+          const chip = e.methodChip;
+          const Icon = (chip && CHIP_ICON[chip]) || METHOD_ICON[m];
+          const gold = (m === 'OTHER' && e.isStatic) || chip === 'feebas';
           return (
             <span
-              key={m}
-              title={t(`maps.${m.toLowerCase()}`)}
+              key={chip ?? m}
+              title={t(chip ? `maps.${chip}` : `maps.${m.toLowerCase()}`)}
               className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-sm border"
               style={{
                 color: gold ? '#F6C945' : region.accent,
@@ -307,7 +315,7 @@ export default function DetailDrawer({
       </div>
 
       {/* body */}
-      <div className="maps-drawer-scroll flex-1 overflow-y-auto">
+      <div className="maps-drawer-scroll flex-1 overflow-y-auto" data-lenis-prevent>
         {tab === 'encounters' ? (
           <>
             {/* toolbar */}
@@ -393,7 +401,7 @@ export default function DetailDrawer({
                       <span className="font-sans text-[9px] tabular-nums text-tx-muted">{staticEntries.length}</span>
                     </div>
                     {staticEntries.map((e) => (
-                      <EncounterRow key={`s-${e.pokemonId}`} e={e} region={region} node={node} />
+                      <EncounterRow key={`s-${e.pokemonId}-${e.methodChip ?? e.methods.join('-')}`} e={e} region={region} node={node} />
                     ))}
                   </section>
                 )}
@@ -406,7 +414,7 @@ export default function DetailDrawer({
                       <span className="font-sans text-[9px] tabular-nums text-tx-muted">{g.entries.length}</span>
                     </div>
                     {g.entries.map((e) => (
-                      <EncounterRow key={`${g.areaSlug}-${e.pokemonId}`} e={e} region={region} node={node} />
+                      <EncounterRow key={`${g.areaSlug}-${e.pokemonId}-${e.methods.join('-')}-${e.methodChip ?? ''}`} e={e} region={region} node={node} />
                     ))}
                   </section>
                 ))}

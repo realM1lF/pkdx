@@ -15,6 +15,7 @@ import { useRegionData } from '@/lib/mapdata';
 import { useAuth } from '@/lib/auth';
 import {
   isRunOwner,
+  canRestoreEncounter,
   linkPartnerOf,
   registerRouteNamer,
   registerSpeciesNamer,
@@ -22,7 +23,6 @@ import {
   useRunEntry,
 } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterRow } from '@/lib/nuzlocke-store';
-import { isSlotConsuming } from '@/lib/nuzlocke-rules';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { bootNameIndex, padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
@@ -209,12 +209,7 @@ export default function NuzlockeRun() {
   };
 
   const openMenu = (enc: NuzEncounterRow, x: number, y: number) => {
-    /* restoring this row to caught is only safe while its route slot is free */
-    const canRestore =
-      enc.status === 'caught' ||
-      !state.encounters.some(
-        (e) => e.id !== enc.id && e.player_id === enc.player_id && e.route_key === enc.route_key && isSlotConsuming(e),
-      );
+    const canRestore = canRestoreEncounter(state, enc);
     setMenu({ enc, x, y, canRestore });
   };
 

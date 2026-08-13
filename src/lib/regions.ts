@@ -3,6 +3,7 @@
  * node.id values are stable route keys (`kanto-route-1` …) — do NOT rename.
  * Consumers: /maps pages (Phase 04), Nuzlocke (Phase 05). */
 
+import i18n from '@/i18n';
 import kantoJson from '@/data/regions/kanto.json';
 import johtoJson from '@/data/regions/johto.json';
 import hoennJson from '@/data/regions/hoenn.json';
@@ -132,12 +133,14 @@ export function viewBoxParts(region: RegionMap): [number, number, number, number
 /** Total location count across the atlas (used on /maps header stats). */
 export const TOTAL_LOCATIONS = ALL.reduce((sum, r) => sum + r.nodes.length, 0);
 
-/** Version display label: 'firered' → 'FIRE RED', 'black-2' → 'BLACK 2'. */
+/** Localized full edition name: 'firered' → FireRed / Feuerrot. Slug stays English. */
 export function versionLabel(v: string): string {
-  return v.replace(/-/g, ' ').toUpperCase();
+  const key = `maps.versionFull.${v}`;
+  const out = i18n.t(key);
+  return out === key ? v.replace(/-/g, ' ').toUpperCase() : out;
 }
 
-/** Short chip label: 'firered' → 'FR', 'leafgreen' → 'LG', others uppercase. */
+/** Short chip label: 'firered' → FR / FR, 'leafgreen' → LG / BG. */
 const SHORT_VERSIONS: Record<string, string> = {
   firered: 'FR',
   leafgreen: 'LG',
@@ -152,5 +155,7 @@ const SHORT_VERSIONS: Record<string, string> = {
 };
 
 export function versionChipLabel(v: string): string {
-  return SHORT_VERSIONS[v] ?? v.toUpperCase();
+  const key = `maps.versionChip.${v}`;
+  const out = i18n.t(key);
+  return out === key ? (SHORT_VERSIONS[v] ?? v.toUpperCase()) : out;
 }

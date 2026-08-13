@@ -16,7 +16,7 @@ import type { RegionGeo } from '@/lib/maps-geo';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/lib/i18n-data';
 import type { MapNode, RegionMap } from '@/lib/regions';
-import { accentRgb, nodeName } from '@/lib/regions';
+import { accentRgb, nodeName, regionName } from '@/lib/regions';
 import type { MethodBucket, NodeMapData } from '@/lib/mapdata';
 import { itemsForNode } from '@/lib/mapdata';
 import { cn } from '@/lib/utils';
@@ -252,7 +252,7 @@ const OriginalMarker = memo(function OriginalMarker({
             {label}
             {node.postGame && (
               <tspan fill={GOLD} opacity={0.9} dx={6} fontSize={6.5 * S}>
-                POST
+                {t('maps.postGameMark')}
               </tspan>
             )}
           </text>
@@ -357,7 +357,7 @@ export default function OriginalCanvas({
       )}
       style={{ ['--ac' as string]: rgb }}
       role="application"
-      aria-label={`${region.name} original map — drag to pan, scroll to zoom`}
+      aria-label={t('maps.originalCanvasAria', { name: regionName(region, lang) })}
       tabIndex={0}
       onKeyDown={(e) => {
         const step = 60;

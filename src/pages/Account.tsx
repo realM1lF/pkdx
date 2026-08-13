@@ -170,13 +170,14 @@ export default function Account() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
+              maxLength={128}
             />
           </Field>
 
           {tab === 'register' && (
             <>
               <Field label={t('account.passwordConfirm')}>
-                <input className={inputCls} type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} autoComplete="new-password" />
+                <input className={inputCls} type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} autoComplete="new-password" maxLength={128} />
               </Field>
               <Field label={t('account.pin')} hint={t('account.pinHint')}>
                 <input
@@ -184,6 +185,7 @@ export default function Account() {
                   inputMode="numeric"
                   pattern="\d{6}"
                   maxLength={6}
+                  autoComplete="one-time-code"
                   value={pin}
                   onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   placeholder="••••••"
@@ -194,6 +196,7 @@ export default function Account() {
                   className={inputCls}
                   inputMode="numeric"
                   maxLength={6}
+                  autoComplete="one-time-code"
                   value={pin2}
                   onChange={(e) => setPin2(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   placeholder="••••••"
@@ -208,6 +211,7 @@ export default function Account() {
                 className={inputCls}
                 inputMode="numeric"
                 maxLength={6}
+                autoComplete="one-time-code"
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="••••••"

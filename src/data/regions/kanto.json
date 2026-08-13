@@ -664,6 +664,11 @@
     },
     {
       "from": "lavender-town",
+      "to": "pokemon-tower",
+      "kind": "land"
+    },
+    {
+      "from": "lavender-town",
       "to": "kanto-route-12",
       "kind": "land"
     },

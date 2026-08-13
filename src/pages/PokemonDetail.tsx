@@ -26,6 +26,7 @@ import PrevNextStrip from './detail/PrevNextStrip';
 import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
 import WhereToFind from './detail/WhereToFind';
+import { parseMapsFromParam } from './detail/from-param';
 import type { RegionId } from '@/lib/regions';
 import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
 import { pokemonSeoMetaForParam } from '@/lib/seo';
@@ -103,6 +104,7 @@ export default function PokemonDetail() {
   const tabParam = searchParams.get('tab');
   const versusTrainerParam = searchParams.get('versusTrainer');
   const regionParam = searchParams.get('region');
+  const fromMaps = parseMapsFromParam(searchParams.get('from'));
   const trainerRegion = regionParam && REGION_IDS.has(regionParam as RegionId) ? (regionParam as RegionId) : null;
   const versusContext = useMemo(
     () => versusContextFromGame(gameParam ?? DEFAULT_VERSUS_PAGE_GAME, trainerRegion),
@@ -195,11 +197,11 @@ export default function PokemonDetail() {
       {/* top utility row */}
       <div className="mb-3 flex items-center justify-between">
         <LocaleLink
-          to="/pokedex"
+          to={fromMaps ? `/maps/${fromMaps.region}?node=${fromMaps.nodeId}` : '/pokedex'}
           className="group inline-flex items-center gap-1.5 font-sans text-[13px] font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
         >
           <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
-          {t8n('detail.backAll')}
+          {fromMaps ? t8n('detail.backToMap') : t8n('detail.backAll')}
         </LocaleLink>
         <span className="pixel-label hidden text-[8px] text-tx-muted sm:inline">{t8n('detail.living')}</span>
       </div>
@@ -315,7 +317,7 @@ export default function PokemonDetail() {
             className="flex-1"
             bodyClassName="p-0"
           >
-            <WhereToFind key={pokemon.id} id={pokemon.id} />
+            <WhereToFind key={pokemon.id} id={pokemon.id} highlight={fromMaps} />
           </Panel>
         </div>
 

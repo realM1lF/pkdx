@@ -5,14 +5,18 @@
  *
  * Phase 1.1 — outbox merge on hydrate (`mergeRemoteWithOutbox`)
  * Phase 1.2 — op-generation / stale retry guard (`nextOpGen` / `isCurrentOp`)
- *             + status monotonicity helper (`isStatusDowngrade`, fully wired in 1.4)
+ *             + status monotonicity helper (`isStatusDowngrade`, wired in
+ *             `applyRemoteEncounter`: skip less-final remote frames except
+ *             intentional restores; skip delayed death after a local restore)
  * Phase 1.3 — Dupes Clause TOCTOU interim (`pickDupeLoser` / `findEvoLineDupeViolations`),
  *             wired into `nuzlocke-store.ts`'s `reconcileEvoLineDupes`
  * Phase 1.4 — realtime apply hygiene: PK dedupe (already in `applyRemoteEncounter`)
- *             + `isStatusDowngrade` now guards every non-outbox remote apply
+ *             + `isStatusDowngrade` guards non-outbox remote apply; restores
+ *             (caught-from-dead/lost/missed) still apply
  * Phase 2.1/2.2 — SoulLink cascade target selection (`livingCascadeTargets`),
  *             mirrored server-side by the `nuz_apply_encounter_status` RPC
  *             (supabase/migrations/07_nuz_apply_encounter_status.sql)
+ *             Restore undo: `cascadeRestoreTargets` + migration 14.
  */
 import type { NuzEncounterRow, NuzEncounterStatus } from './supabase';
 
@@ -109,11 +113,13 @@ export function isCurrentOp(map: OpGenMap, syncKey: string, gen: number): boolea
   return (map.get(syncKey) ?? 0) === gen;
 }
 
-/* ---------- status monotonicity (Phase 1.2, fully wired in 1.4) ---------- */
+/* ---------- status monotonicity (Phase 1.2, wired in 1.4) ---------- */
 
 /** Finality rank — higher = harder to walk back. `dead`/`lost` are terminal;
  * a stale or out-of-order apply must never silently downgrade one back to
- * `caught` (or any less-final state). */
+ * `caught` (or any less-final state) UNLESS the write is an intentional
+ * restore (see `applyRemoteEncounter` — restore is allowed; delayed death
+ * after a completed restore is not). */
 const STATUS_RANK: Record<NuzEncounterStatus, number> = {
   caught: 0,
   missed: 1,
@@ -145,6 +151,26 @@ export function livingCascadeTargets(
       e.route_key === trigger.route_key &&
       e.player_id !== trigger.player_id &&
       e.status === 'caught',
+  );
+}
+
+/** Partner rows a SoulLink restore must revive: mirrors forward cascade.
+ * Death undo → other `dead` on the route. Miss undo → `lost` (and the
+ * missed trigger if we restore a lost victim, so the group cannot desync). */
+export function cascadeRestoreTargets(
+  encounters: NuzEncounterRow[],
+  trigger: Pick<NuzEncounterRow, 'id' | 'route_key' | 'player_id'>,
+  prevStatus: NuzEncounterStatus,
+): NuzEncounterRow[] {
+  const wanted: NuzEncounterStatus[] =
+    prevStatus === 'dead' ? ['dead'] : prevStatus === 'missed' || prevStatus === 'lost' ? ['missed', 'lost'] : [];
+  if (wanted.length === 0) return [];
+  return encounters.filter(
+    (e) =>
+      e.id !== trigger.id &&
+      e.route_key === trigger.route_key &&
+      e.player_id !== trigger.player_id &&
+      wanted.includes(e.status),
   );
 }
 
