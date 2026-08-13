@@ -71,14 +71,11 @@
     "generation": "GENERATION",
     "region": "REGION",
     "special": {
-      "label": "BESONDERS",
-      "forms": "Formen"
+      "label": "BESONDERS"
     },
     "all": "ALLE",
     "legendary": "Legendär",
     "mythical": "Mysteriös",
-    "forms": "Formen",
-    "formsLoading": "LADE FORMEN…",
     "formsAlola": "Alola",
     "formsGalar": "Galar",
     "formsHisui": "Hisui",
@@ -194,7 +191,8 @@
       "backToGrid": "Zurück zum Raster",
       "hiddenAbbr": "(VF)",
       "artworkAlt": "{{name}} — offizielles Artwork",
-      "shinySuffix": " (schillernd)"
+      "shinySuffix": " (schillernd)",
+      "forms": "Formen"
     },
     "moves": {
       "learnMethod": "Erlernmethode",
@@ -1549,6 +1547,8 @@
     "saved": "Gespeichert ✓",
     "myTeams": "Meine teams",
     "clearTeam": "Team leeren",
+    "confirmClear": "Wirklich leeren?",
+    "confirmClearAria": "Team wirklich leeren?",
     "defenseEyebrow": "TEAM-SCHWÄCHEN",
     "defenseNote": "Zeile = gegnerischer Angriffstyp · Spalte = dein Pokémon",
     "defenseHelp": "Jede Zeile ist ein Angriffstyp. Die Zahl zeigt, wie viel Schaden dieses Team-Pokémon davon nimmt (höher = gefährlicher).",
@@ -1652,7 +1652,9 @@
       "tagline": "Bauen · analysieren · teilen",
       "newTeam": "Neues team",
       "open": "Öffnen",
-      "deleteAria": "{{name}} löschen"
+      "deleteAria": "{{name}} löschen",
+      "confirmDelete": "Wirklich löschen?",
+      "confirmDeleteAria": "{{name}} wirklich löschen?"
     },
     "import": {
       "title": "Aus Run importieren",
@@ -1715,7 +1717,8 @@
       "weak": "2 / 4 = schwach",
       "resist": "½ / ¼ = resistent",
       "immune": "0 = immun",
-      "ability": "Fähigkeiten & Generations-Chart eingerechnet"
+      "ability": "Fähigkeiten & Generations-Chart eingerechnet",
+      "hole": "Goldzeile: mehr Pokémon schwach als resistent oder immun"
     },
     "mech": {
       "items": "Items",

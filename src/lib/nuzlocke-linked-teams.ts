@@ -15,6 +15,7 @@ import {
 } from './nuzlocke-store';
 import {
   TEAM_SIZE,
+  collapseLinkedTeamDuplicates,
   deleteTeam,
   emptySlot,
   emptyTeam,
@@ -98,7 +99,7 @@ function upsertOwnedTeam(state: RunState, playerId: string): Team {
     team.versionGroup = vg;
     team.linkedSetBag = {};
     saveTeam(team);
-    return team;
+    return findLinkedTeam(state.run.id, playerId) ?? team;
   }
   const nextName = linkedTeamName(state.run.name, player?.name ?? 'Player');
   let dirty = false;
@@ -122,6 +123,7 @@ function upsertOwnedTeam(state: RunState, playerId: string): Team {
 export function ensureLinkedTeams(state: RunState): Team[] {
   const mine = ownedPlayerId(state);
   purgeForeignLinkedTeams(state.run.id, mine);
+  collapseLinkedTeamDuplicates();
   if (!mine) return [];
   return [upsertOwnedTeam(state, mine)];
 }
@@ -292,6 +294,7 @@ export function cloneLinkedTeamsForDuplicate(
 
 /** Repair after cloud hydrate / login mid-run — own team only, purge foreign. */
 export function repairAllLinkedTeams(): void {
+  collapseLinkedTeamDuplicates();
   for (const id of readRunIndex()) {
     const s = loadLocalRun(id);
     if (!s) continue;

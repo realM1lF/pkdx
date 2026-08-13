@@ -67,35 +67,6 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             </span>
           </LocaleLink>
 
-          {/* center links (desktop) */}
-          <div className="hidden items-center gap-8 md:flex">
-            {LINKS.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === '/'}
-                className={({ isActive }) =>
-                  cn(
-                    'group relative py-2 font-sans text-sm font-semibold transition-colors duration-200',
-                    isActive ? 'text-gold' : 'text-tx-secondary hover:text-tx-primary',
-                  )
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {t(l.key)}
-                    <span
-                      className={cn(
-                        'absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 bg-gold transition-all duration-300 ease-out-expo',
-                        isActive ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-60',
-                      )}
-                    />
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </div>
-
           {/* right cluster */}
           <div className="flex items-center gap-2">
             <ZoomControl className="hidden md:flex" />
@@ -124,34 +95,66 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
           </div>
         </nav>
 
-        {/* utility bar — second row: about / feedback / support (+ future).
-            desktop only; mobile gets these links in the drawer */}
+        {/* second row: main nav left, about / feedback / support right.
+            desktop/tablet only; mobile keeps the hamburger drawer */}
         <div className="hidden border-t border-hairline/60 md:block">
-          <div className="mx-auto flex h-9 max-w-content items-center justify-end gap-6 px-8">
-            {UTILITY_LINKS.map((l) => (
-              <NavLink
-                key={l.to}
-                to={withTrailingSlash(localePath(l.to))}
-                className={({ isActive }) =>
-                  cn(
-                    'pixel-label inline-flex items-center gap-1.5 text-[8px] tracking-[0.14em] transition-colors duration-200',
-                    l.key === 'nav.support'
-                      ? 'rainbow-text'
-                      : isActive
-                        ? 'text-gold'
-                        : 'text-tx-muted hover:text-tx-primary',
-                  )
-                }
-              >
-                <l.Icon
-                  size={11}
-                  strokeWidth={2}
-                  className={l.key === 'nav.support' ? 'text-gold' : undefined}
-                  aria-hidden
-                />
-                {t(l.key)}
-              </NavLink>
-            ))}
+          <div className="mx-auto flex h-9 max-w-content items-center gap-4 px-8">
+            <div
+              className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto [scrollbar-width:none] lg:gap-6 xl:gap-8 [&::-webkit-scrollbar]:hidden"
+              data-lenis-prevent
+            >
+              {LINKS.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={withTrailingSlash(localePath(l.to))}
+                  end={l.to === '/'}
+                  className={({ isActive }) =>
+                    cn(
+                      'group relative flex h-full shrink-0 items-center whitespace-nowrap font-sans text-[13px] font-semibold transition-colors duration-200 lg:text-sm',
+                      isActive ? 'text-gold' : 'text-tx-secondary hover:text-tx-primary',
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {t(l.key)}
+                      <span
+                        className={cn(
+                          'absolute inset-x-0 bottom-0 mx-auto h-0.5 bg-gold transition-all duration-300 ease-out-expo',
+                          isActive ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-60',
+                        )}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+            <div className="flex shrink-0 items-center gap-4 lg:gap-6">
+              {UTILITY_LINKS.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={withTrailingSlash(localePath(l.to))}
+                  className={({ isActive }) =>
+                    cn(
+                      'pixel-label inline-flex items-center gap-1.5 text-[8px] tracking-[0.14em] transition-colors duration-200',
+                      l.key === 'nav.support'
+                        ? 'rainbow-text'
+                        : isActive
+                          ? 'text-gold'
+                          : 'text-tx-muted hover:text-tx-primary',
+                    )
+                  }
+                >
+                  <l.Icon
+                    size={11}
+                    strokeWidth={2}
+                    className={l.key === 'nav.support' ? 'text-gold' : undefined}
+                    aria-hidden
+                  />
+                  {t(l.key)}
+                </NavLink>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -216,6 +216,8 @@ export interface Move {
   flavor_text_entries?: FlavorTextEntry[];
 }
 
+export type DexFormKind = 'alola' | 'galar' | 'hisui' | 'paldea' | 'mega' | 'gmax';
+
 /** Lightweight entry in the boot name index (search/autocomplete) */
 export interface DexIndexEntry {
   id: number;
@@ -223,6 +225,9 @@ export interface DexIndexEntry {
   label: string; // display name, e.g. "Mr. Mime"
   num: string; // padded "#025"
   gen: number;
+  /** National-dex id. Form rows keep this separate from sprite `id`. */
+  speciesId?: number;
+  form?: DexFormKind;
 }
 
 export type StatKey = 'hp' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';

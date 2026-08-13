@@ -9,7 +9,7 @@ import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
 import { getLatestRunId, loadLocalRun, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import type { RunState } from '@/lib/nuzlocke-store';
-import { loadDraft, loadTeams } from '@/lib/teambuilder';
+import { loadDraft, loadTeams, onTeamsChange } from '@/lib/teambuilder';
 import type { Team } from '@/lib/teambuilder';
 import { continueTargets } from './continue-targets';
 import type { ContinueTarget } from './continue-targets';
@@ -43,7 +43,9 @@ export default function ContinueStrip() {
   const [targets, setTargets] = useState<ContinueTarget[]>([]);
 
   useEffect(() => {
-    setTargets(readContinueTargets());
+    const refresh = () => setTargets(readContinueTargets());
+    refresh();
+    return onTeamsChange(refresh);
   }, []);
 
   if (targets.length === 0) return null;

@@ -6,7 +6,7 @@
  *   (@pkmn/data + @pkmn/dex for items/abilities/natures/species/types,
  *    PokéAPI version_group_details for move pools)
  * - Derived legality re-check (illegal slots are FLAGGED, never deleted)
- * - localStorage persistence (`pdx2.teams` + draft) and URL-hash sharing
+ * - localStorage cache (`pdx2.teams` + draft); account vault is Supabase `teams`
  * - Nuzlocke import bridge (read-only use of getRunTeam)
  * - Analysis math: defensive synergy (ability-aware), offensive coverage,
  *   Smogon OU meta snapshot (data.pkmn.cc, version-group format, cached)
@@ -734,6 +734,23 @@ export function smogonEvs(spread: Partial<Record<StatKey, number>> | undefined):
 
 const LS_TEAMS = 'pdx2.teams';
 const LS_DRAFT = 'pdx2.teams.draft';
+const LS_SYNCED = 'pdx2.teams.synced';
+const LS_TOMBSTONES = 'pdx2.teams.tombstones';
+const LS_OWNER = 'pdx2.teams.owner';
+
+const teamListeners = new Set<() => void>();
+
+function notifyTeams(): void {
+  for (const cb of teamListeners) cb();
+}
+
+/** Hub / continue-strip: cache changed (local write or cloud hydrate). */
+export function onTeamsChange(cb: () => void): () => void {
+  teamListeners.add(cb);
+  return () => {
+    teamListeners.delete(cb);
+  };
+}
 
 function readJson<T>(key: string, fallback: T): T {
   return readLocalJson(key, fallback);
@@ -743,30 +760,210 @@ function writeJson(key: string, value: unknown): boolean {
   return writeLocalJson(key, value);
 }
 
+function readIdSet(key: string): Set<string> {
+  const raw = readJson<unknown>(key, []);
+  return new Set(Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string') : []);
+}
+
+function writeIdSet(key: string, ids: Set<string>): void {
+  writeJson(key, [...ids]);
+}
+
 export function loadTeams(): Team[] {
   const list = readJson<Team[]>(LS_TEAMS, []);
   return Array.isArray(list) ? list.filter((t) => t && Array.isArray(t.slots)) : [];
 }
 
-/** upsert by id; returns the new list */
+/** Write the vault without a cloud round-trip (hydrate apply). */
+export function writeTeamsCache(list: Team[]): boolean {
+  if (!writeJson(LS_TEAMS, list)) {
+    pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    return false;
+  }
+  notifyTeams();
+  return true;
+}
+
+export function readTeamsOwner(): string | null {
+  const v = readJson<string | null>(LS_OWNER, null);
+  return typeof v === 'string' && v ? v : null;
+}
+
+export function writeTeamsOwner(userId: string | null): void {
+  if (userId) writeJson(LS_OWNER, userId);
+  else removeLocalKey(LS_OWNER);
+}
+
+export function readSyncedTeamIds(): Set<string> {
+  return readIdSet(LS_SYNCED);
+}
+
+export function markTeamSynced(id: string): void {
+  const next = readIdSet(LS_SYNCED);
+  next.add(id);
+  writeIdSet(LS_SYNCED, next);
+}
+
+export function markTeamsSynced(ids: Iterable<string>): void {
+  const next = readIdSet(LS_SYNCED);
+  for (const id of ids) next.add(id);
+  writeIdSet(LS_SYNCED, next);
+}
+
+export function unmarkTeamSynced(id: string): void {
+  const next = readIdSet(LS_SYNCED);
+  if (!next.delete(id)) return;
+  writeIdSet(LS_SYNCED, next);
+}
+
+export function readTeamTombstones(): Set<string> {
+  return readIdSet(LS_TOMBSTONES);
+}
+
+export function tombstoneTeamId(id: string): void {
+  const next = readIdSet(LS_TOMBSTONES);
+  next.add(id);
+  writeIdSet(LS_TOMBSTONES, next);
+}
+
+export function clearTeamTombstones(): void {
+  removeLocalKey(LS_TOMBSTONES);
+}
+
+export function clearSyncedTeamIds(): void {
+  removeLocalKey(LS_SYNCED);
+}
+
+function linkedVaultKey(team: Team): string | null {
+  if (!isLinkedTeam(team)) return null;
+  return `${team.linkedRunId}\0${team.linkedPlayerId}`;
+}
+
+function cloudDeleteTeamIds(ids: string[]): void {
+  if (!ids.length) return;
+  for (const id of ids) {
+    tombstoneTeamId(id);
+    unmarkTeamSynced(id);
+  }
+  void import('./cloud-sync').then((m) => {
+    for (const id of ids) m.cloudDeleteTeam(id);
+  });
+}
+
+function retargetDraft(dropIds: string[], keepId: string): void {
+  const draft = loadDraft();
+  if (draft && dropIds.includes(draft.id)) saveDraft({ ...draft, id: keepId });
+}
+
+/**
+ * One vault row per Nuzlocke (run, player). Extra ids are dropped locally
+ * and from the account mirror. Newest payload wins; oldest id stays stable.
+ */
+export function collapseLinkedTeamDuplicates(): Team[] {
+  const list = loadTeams();
+  const groups = new Map<string, Team[]>();
+  for (const t of list) {
+    const k = linkedVaultKey(t);
+    if (!k) continue;
+    const g = groups.get(k) ?? [];
+    g.push(t);
+    groups.set(k, g);
+  }
+
+  const dropIds: string[] = [];
+  const canonicalByKey = new Map<string, Team>();
+  for (const [k, g] of groups) {
+    if (g.length === 1) {
+      canonicalByKey.set(k, g[0]);
+      continue;
+    }
+    const newest = g.reduce((a, b) => (a.updatedAt >= b.updatedAt ? a : b));
+    const stableId = g[g.length - 1].id;
+    canonicalByKey.set(k, { ...newest, id: stableId });
+    for (const t of g) {
+      if (t.id !== stableId) dropIds.push(t.id);
+    }
+  }
+  if (dropIds.length === 0) return list;
+
+  const emitted = new Set<string>();
+  const next: Team[] = [];
+  for (const t of list) {
+    const k = linkedVaultKey(t);
+    if (!k) {
+      next.push(t);
+      continue;
+    }
+    if (emitted.has(k)) continue;
+    next.push(canonicalByKey.get(k)!);
+    emitted.add(k);
+  }
+
+  if (!writeJson(LS_TEAMS, next)) {
+    pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    return list;
+  }
+  notifyTeams();
+  cloudDeleteTeamIds(dropIds);
+  const draft = loadDraft();
+  if (draft && dropIds.includes(draft.id)) {
+    const k = linkedVaultKey(draft);
+    const canon = k ? canonicalByKey.get(k) : undefined;
+    saveDraft(canon ? { ...draft, id: canon.id } : null);
+  }
+  return next;
+}
+
+/** upsert by id; linked teams also collapse onto the existing (run, player) row */
 export function saveTeam(team: Team): Team[] {
   const list = loadTeams();
   const next = { ...team, updatedAt: Date.now() };
-  const idx = list.findIndex((t) => t.id === team.id);
-  const updated = [...list];
+  const originalId = team.id;
+
+  if (isLinkedTeam(next)) {
+    const dups = list.filter(
+      (t) => t.linkedRunId === next.linkedRunId && t.linkedPlayerId === next.linkedPlayerId,
+    );
+    if (dups.length > 0) next.id = dups[dups.length - 1].id;
+  }
+
+  const idx = list.findIndex((t) => t.id === next.id);
+  let updated = [...list];
   if (idx >= 0) updated[idx] = next;
   else updated.unshift(next);
+
+  const extras = isLinkedTeam(next)
+    ? updated.filter(
+        (t) =>
+          t.id !== next.id &&
+          t.linkedRunId === next.linkedRunId &&
+          t.linkedPlayerId === next.linkedPlayerId,
+      )
+    : [];
+  if (extras.length) {
+    const extraIds = new Set(extras.map((t) => t.id));
+    updated = updated.filter((t) => !extraIds.has(t.id));
+  }
+
   if (!writeJson(LS_TEAMS, updated)) {
     pushToast('sync', i18n.t('tb.toast.storageFailed'));
     return list;
   }
+  notifyTeams();
   void import('./cloud-sync').then((m) => m.cloudPushTeam(next));
+  const staleIds = extras.map((t) => t.id);
+  if (originalId !== next.id) staleIds.push(originalId);
+  cloudDeleteTeamIds([...new Set(staleIds)]);
+  retargetDraft(staleIds, next.id);
   return updated;
 }
 
 export function deleteTeam(id: string): Team[] {
+  tombstoneTeamId(id);
+  unmarkTeamSynced(id);
   const list = loadTeams().filter((t) => t.id !== id);
   if (!writeJson(LS_TEAMS, list)) pushToast('sync', i18n.t('tb.toast.storageFailed'));
+  else notifyTeams();
   void import('./cloud-sync').then((m) => m.cloudDeleteTeam(id));
   return list;
 }

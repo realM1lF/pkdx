@@ -18,6 +18,7 @@ import { useShiny } from '@/lib/shiny';
 import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
 import { GENERATIONS, STAT_LABELS, TYPE_COLORS, genOf } from '@/lib/types';
 import type { PokemonType, StatKey } from '@/lib/types';
+import { dexEntryPath } from '@/lib/dex-forms-catalog';
 import { FORM_I18N_KEY, type DexSummary } from './pokedex/dex-data';
 import { cn } from '@/lib/utils';
 
@@ -38,8 +39,8 @@ function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) 
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
   const dexId = s.speciesId ?? s.id;
-  const label = nameOfPokemon(dexId, lang);
-  const href = `/pokemon/${s.form && s.slug ? s.slug : s.id}`;
+  const label = nameOfPokemon(s.slug ?? dexId, lang);
+  const href = dexEntryPath({ id: s.id, name: s.slug, form: s.form });
   const genRoman = (GENERATIONS[s.gen - 1] ?? genOf(dexId)).roman;
   const [override, setOverride] = useState<boolean | null>(null);
   const [burst, setBurst] = useState(0);

@@ -16,6 +16,7 @@ import { getPokemon, getSpecies, pokemonTypes } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { MAX_DEX_ID } from '@/lib/types';
+import { formIdentity } from '@/lib/dex-forms-catalog';
 import AddToTeam from './detail/AddToTeam';
 import CombatPanel from './detail/CombatPanel';
 import EvolutionPanel from './detail/EvolutionPanel';
@@ -91,7 +92,7 @@ export default function PokemonDetail() {
     /* SEO pilot routes carry a registry title (src/lib/seo.ts) — keep it
      * instead of overwriting with the generic "<name> — MyPokePanion". */
     const seoTitle = pokemonSeoMetaForParam(param ?? '')?.title[lang];
-    document.title = seoTitle ?? `${nameOfPokemon(pokemon.id, lang)} — MyPokePanion`;
+    document.title = seoTitle ?? `${nameOfPokemon(pokemon.name, lang)} — MyPokePanion`;
   }, [pokemon, lang, param]);
 
   const types = useMemo(() => (pokemon ? pokemonTypes(pokemon) : []), [pokemon]);
@@ -189,6 +190,7 @@ export default function PokemonDetail() {
   }
 
   /* ---------- dashboard ---------- */
+  const ident = formIdentity(pokemon.name, pokemon.id);
   return (
     <motion.div
       key={pokemon.id}
@@ -336,9 +338,9 @@ export default function PokemonDetail() {
       </div>
 
       {/* prev / next strip */}
-      {pokemon.id >= 1 && pokemon.id <= MAX_DEX_ID && (
+      {ident.speciesId >= 1 && ident.speciesId <= MAX_DEX_ID && (
         <div className="mt-4">
-          <PrevNextStrip id={pokemon.id} />
+          <PrevNextStrip id={ident.speciesId} />
         </div>
       )}
 

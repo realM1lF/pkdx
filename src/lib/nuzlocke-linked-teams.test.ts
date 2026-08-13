@@ -6,6 +6,7 @@ import {
   findLinkedTeam,
   ownedPlayerId,
   purgeForeignLinkedTeams,
+  repairAllLinkedTeams,
   syncLinkedTeamRoster,
 } from './nuzlocke-linked-teams';
 import {
@@ -207,5 +208,84 @@ describe('canEdit / view team', () => {
     expect(view?.slots[0].pokemonId).toBe(4);
     expect(findLinkedTeam(s.run.id, state.players[1].id)).toBeNull();
     expect(purgeForeignLinkedTeams(s.run.id, ownedPlayerId(s))).toBe(0);
+  });
+});
+
+describe('linked team uniqueness (run + player)', () => {
+  it('saveTeam does not insert a second row for the same run and player', () => {
+    const first = emptyTeam('letsgo — You');
+    first.linkedRunId = 'run-letsgo';
+    first.linkedPlayerId = 'player-you';
+    saveTeam(first);
+
+    const copy = emptyTeam('letsgo — You');
+    copy.linkedRunId = 'run-letsgo';
+    copy.linkedPlayerId = 'player-you';
+    copy.slots = first.slots.map((s, i) => (i === 0 ? { ...s, pokemon: 'starmie', pokemonId: 121 } : s));
+    saveTeam(copy);
+
+    const rows = loadTeams().filter((t) => t.linkedRunId === 'run-letsgo' && t.linkedPlayerId === 'player-you');
+    expect(rows).toHaveLength(1);
+    expect(rows[0].id).toBe(first.id);
+    expect(rows[0].slots[0].pokemonId).toBe(121);
+  });
+
+  it('ensureLinkedTeams collapses extra owned copies already in the vault', async () => {
+    const { state } = await createRun({
+      name: 'letsgo',
+      region: 'kanto',
+      game: 'red',
+      players: [{ name: 'Du', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const mine = ownedPlayerId(state)!;
+    ensureLinkedTeams(state);
+    const original = findLinkedTeam(state.run.id, mine)!;
+
+    const extra = emptyTeam(original.name);
+    extra.linkedRunId = state.run.id;
+    extra.linkedPlayerId = mine;
+    extra.versionGroup = original.versionGroup;
+    extra.slots = original.slots;
+    /* already-corrupt vault: two ids, same link key (bypass saveTeam) */
+    localStorage.setItem('pdx2.teams', JSON.stringify([extra, original]));
+    expect(loadTeams().filter((t) => t.linkedRunId === state.run.id && t.linkedPlayerId === mine)).toHaveLength(2);
+
+    const ensured = ensureLinkedTeams(state);
+    const rows = loadTeams().filter((t) => t.linkedRunId === state.run.id && t.linkedPlayerId === mine);
+    expect(rows).toHaveLength(1);
+    expect(ensured).toHaveLength(1);
+    expect(ensured[0].id).toBe(rows[0].id);
+  });
+
+  it('repairAllLinkedTeams collapses leftover duplicates', async () => {
+    const { state } = await createRun({
+      name: 'test',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'You', color: '#45C8FF' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const mine = ownedPlayerId(state)!;
+    ensureLinkedTeams(state);
+    const original = findLinkedTeam(state.run.id, mine)!;
+
+    const extraA = emptyTeam(original.name);
+    extraA.linkedRunId = state.run.id;
+    extraA.linkedPlayerId = mine;
+    extraA.slots = original.slots;
+    const extraB = emptyTeam(original.name);
+    extraB.linkedRunId = state.run.id;
+    extraB.linkedPlayerId = mine;
+    extraB.slots = original.slots;
+    /* bypass uniqueness by writing the array directly — models already-corrupt vault */
+    const raw = [extraB, extraA, original];
+    localStorage.setItem('pdx2.teams', JSON.stringify(raw));
+    expect(loadTeams().filter((t) => t.linkedRunId === state.run.id)).toHaveLength(3);
+
+    repairAllLinkedTeams();
+    expect(loadTeams().filter((t) => t.linkedRunId === state.run.id && t.linkedPlayerId === mine)).toHaveLength(1);
   });
 });

@@ -1,7 +1,7 @@
 /* Micro-battle engine tests — standalone Node/vitest (no app import chain,
  * no supabase). All battles are seeded via the sim PRNG → fully deterministic. */
 import { describe, expect, it } from 'vitest';
-import { MicroBattle, parseProtocolLine } from './engine';
+import { MicroBattle, parseProtocolLine, simVendorImportUrl } from './engine';
 import type { BattleSetup, BattleSideSetup } from './types';
 
 const side = (over: Partial<BattleSideSetup>): BattleSideSetup => ({
@@ -306,5 +306,13 @@ describe('move PP fidelity', () => {
     );
     const tb = mb.snapshot().moves.find((m) => m.id === 'thunderbolt');
     expect(tb!.maxPp).toBe(15);
+  });
+});
+
+describe('sim vendor URL (Vite public-dir import)', () => {
+  it('is an absolute same-origin URL, not a /public path Vite would rewrite with ?import', () => {
+    expect(simVendorImportUrl('http://localhost:3000')).toBe('http://localhost:3000/vendor/pkmn-sim.mjs');
+    expect(simVendorImportUrl('http://localhost:3000/')).toBe('http://localhost:3000/vendor/pkmn-sim.mjs');
+    expect(simVendorImportUrl('http://localhost:3000')).not.toMatch(/\?/);
   });
 });

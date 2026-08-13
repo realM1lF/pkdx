@@ -11,6 +11,7 @@ import { useSyncExternalStore } from 'react';
 import { useTranslation } from 'react-i18next';
 import slugsJson from '@/data/pokemon-slugs.json';
 import { displayName } from './pokeapi';
+import { formNameOf } from './form-names';
 
 export type Lang = 'en' | 'de';
 
@@ -131,6 +132,10 @@ function isDe(lang: Lang): boolean {
 /* ---------- pokemon ---------- */
 
 export function nameOfPokemon(idOrSlug: number | string, lang: Lang): string {
+  if (typeof idOrSlug === 'string') {
+    const form = formNameOf(idOrSlug, lang);
+    if (form) return form;
+  }
   if (isDe(lang) && POKEMON_DE) {
     const id = typeof idOrSlug === 'number' ? idOrSlug : ID_BY_SLUG[idOrSlug];
     const entry = id ? POKEMON_DE[id] : undefined;

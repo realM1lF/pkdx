@@ -16,16 +16,10 @@ const SPECIES: DexIndexEntry[] = [
   { id: 154, name: 'meganium', label: 'Meganium', num: '#154', gen: 2 },
 ];
 
-const FORMS: DexIndexEntry[] = [
-  { id: 10091, name: 'rattata-alola', label: 'Rattata Alola', num: '#019', gen: 7 },
-  { id: 10034, name: 'charizard-mega-x', label: 'Charizard Mega X', num: '#006', gen: 6 },
-  { id: 10162, name: 'ponyta-galar', label: 'Ponyta Galar', num: '#077', gen: 8 },
-];
-
 const emptyTypes = {};
 
-function names(f: FilterState, index = SPECIES, forms = FORMS): string[] {
-  return (filterEntries(index, f, emptyTypes, forms) ?? []).map((e) => e.name);
+function names(f: FilterState, index = SPECIES): string[] {
+  return (filterEntries(index, f, emptyTypes) ?? []).map((e) => e.name);
 }
 
 describe('formKindOf', () => {
@@ -56,17 +50,18 @@ describe('formKindOf', () => {
 });
 
 describe('isSpecialToken', () => {
-  it('accepts forms alongside legendary/mythical', () => {
-    expect(isSpecialToken('forms')).toBe(true);
+  it('accepts legendary and mythical, not a forms filter', () => {
     expect(isSpecialToken('legendary')).toBe(true);
+    expect(isSpecialToken('mythical')).toBe(true);
+    expect(isSpecialToken('forms')).toBe(false);
     expect(isSpecialToken('nope')).toBe(false);
   });
 });
 
-describe('filterEntries — forms extras', () => {
+describe('filterEntries — national dex only', () => {
   const base: FilterState = { q: '', types: [], gen: null, special: [] };
 
-  it('default view excludes rattata-alola and other non-default varieties', () => {
+  it('default view is the species index, no extra form rows', () => {
     const slugs = names(base);
     expect(slugs).toEqual(['charizard', 'rattata', 'ponyta', 'meganium']);
     expect(slugs).not.toContain('rattata-alola');
@@ -74,18 +69,28 @@ describe('filterEntries — forms extras', () => {
     expect(slugs).not.toContain('ponyta-galar');
   });
 
-  it('forms filter includes rattata-alola as an extra row', () => {
-    const slugs = names({ ...base, special: ['forms'] });
-    expect(slugs).toContain('rattata');
-    expect(slugs).toContain('rattata-alola');
-    expect(slugs).toContain('charizard-mega-x');
-    expect(slugs).toContain('ponyta-galar');
+  it('searching a species name does not add mega / regional extras', () => {
+    const slugs = names({ ...base, q: 'charizard' });
+    expect(slugs).toEqual(['charizard']);
+    expect(slugs).not.toContain('charizard-mega-x');
+    expect(slugs).not.toContain('charizard-mega-y');
   });
 
-  it('forms filter keeps meganium as a species row and does not invent a mega', () => {
-    const slugs = names({ ...base, special: ['forms'] });
+  it('query mega glurak does not invent a mega row', () => {
+    const slugs = names({ ...base, q: 'mega glurak' });
+    expect(slugs).not.toContain('charizard-mega-x');
+    expect(slugs).not.toContain('charizard-mega-y');
+    expect(slugs).not.toContain('meganium');
+  });
+
+  it('query mega still matches Meganium as a species, not a forme', () => {
+    const slugs = names({ ...base, q: 'mega' });
     expect(slugs).toContain('meganium');
-    expect(slugs).not.toContain('meganium-mega');
+    expect(slugs).not.toContain('charizard-mega-x');
+  });
+
+  it('empty query still excludes forme extras', () => {
+    expect(names({ ...base, q: '   ' })).toEqual(['charizard', 'rattata', 'ponyta', 'meganium']);
   });
 });
 

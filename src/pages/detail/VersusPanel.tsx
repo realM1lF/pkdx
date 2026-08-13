@@ -34,6 +34,7 @@ import type { RegionId } from '@/lib/regions';
 import { REGIONS } from '@/lib/regions';
 import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
 import { battleLandingPath } from '@/lib/seo';
+import { dexEntryPath, formIdentity } from '@/lib/dex-forms-catalog';
 import {
   genAbilitiesOf,
   genHasMechanics,
@@ -652,12 +653,14 @@ const PORTRAIT_LINK =
 
 function PokemonDexLink({
   pokemonId,
+  slug,
   label,
   hostPokemonId,
   onHostOverview,
   children,
 }: {
   pokemonId: number;
+  slug?: string;
   label: string;
   hostPokemonId?: number;
   onHostOverview?: () => void;
@@ -665,6 +668,7 @@ function PokemonDexLink({
 }) {
   const { t } = useTranslation();
   const isHost = hostPokemonId != null && pokemonId === hostPokemonId;
+  const href = dexEntryPath({ id: pokemonId, name: slug });
 
   if (isHost && onHostOverview) {
     return (
@@ -681,7 +685,7 @@ function PokemonDexLink({
 
   return (
     <LocaleLink
-      to={`/pokemon/${pokemonId}`}
+      to={href}
       aria-label={t('versus.openDexEntry', { name: label })}
       onMouseEnter={() => prefetchPokemon(pokemonId)}
       onFocus={() => prefetchPokemon(pokemonId)}
@@ -726,7 +730,9 @@ export function SideCard({
   const { t } = useTranslation();
   const lang = useLanguage();
   const spriteEra = useMemo(() => spriteEraForVersus(gen, pokemon.id), [gen, pokemon.id]);
-  const displayName = nameOfPokemon(pokemon.id, lang);
+  const ident = formIdentity(pokemon.name, pokemon.id);
+  const displayName = nameOfPokemon(pokemon.name, lang);
+  const detailPath = dexEntryPath({ id: pokemon.id, name: pokemon.name });
   const isHost = hostPokemonId != null && pokemon.id === hostPokemonId;
   /* gen-correct types (F3): Magnemite pure Electric in gen 1/2, no Fairy retypes in gen ≤5 */
   const types = genTypesOf(versionGroup, pokemon.name, pokemonTypes(pokemon) as PokemonType[]);
@@ -758,6 +764,7 @@ export function SideCard({
       <div className="flex items-center gap-3 lg:gap-4">
         <PokemonDexLink
           pokemonId={pokemon.id}
+          slug={pokemon.name}
           label={displayName}
           hostPokemonId={hostPokemonId}
           onHostOverview={onHostOverview}
@@ -791,7 +798,7 @@ export function SideCard({
               </button>
             ) : (
               <LocaleLink
-                to={`/pokemon/${pokemon.id}`}
+                to={detailPath}
                 onMouseEnter={() => prefetchPokemon(pokemon.id)}
                 onFocus={() => prefetchPokemon(pokemon.id)}
                 className="truncate font-display text-[15px] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
@@ -799,7 +806,7 @@ export function SideCard({
                 {displayName}
               </LocaleLink>
             )}
-            <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(pokemon.id)}</span>
+            <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(ident.speciesId)}</span>
           </div>
           <div className="mt-1 flex flex-wrap gap-1">
             {types.map((t) => (
@@ -1526,7 +1533,7 @@ export default function VersusPanel({
       const chosen = side.slots.filter(Boolean);
       return {
         pokemonId: pokemon.id,
-        displayName: nameOfPokemon(pokemon.id, lang),
+        displayName: nameOfPokemon(pokemon.name, lang),
         setup: {
           species: pokemon.name,
           level: side.level,

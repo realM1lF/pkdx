@@ -1,5 +1,6 @@
 /* HeaderStrip — team name · GAME selector · IMPORT FROM RUN · SHARE · SAVE · hub · CLEAR
  * (team-builder.md "Header-Strip", density-addendum §2 command-bar) */
+import { useEffect, useState } from 'react';
 import { ArrowLeftRight, Check, ChevronDown, CopyPlus, Download, ExternalLink, Eye, Gamepad2, Pencil, Save, Share2, Trash2, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import GameSelect from '@/components/GameSelect';
@@ -46,6 +47,10 @@ export default function HeaderStrip({
 }: HeaderStripProps) {
   const { t } = useTranslation();
   const linked = isLinkedTeam(team) && !viewOnly;
+  const [confirmClear, setConfirmClear] = useState(false);
+  useEffect(() => {
+    setConfirmClear(false);
+  }, [team.id]);
   return (
     <div className="tb-panel mb-3 flex flex-wrap items-center gap-2 !rounded-[12px] px-3 py-2.5">
       <div className="flex min-w-[180px] flex-1 items-center gap-2">
@@ -126,8 +131,24 @@ export default function HeaderStrip({
           {savedCount > 0 && <span className="tb-chip !px-1.5 !py-0 !text-[9px] text-gold">{savedCount}</span>}
         </button>
         {!linked && !viewOnly && (
-          <button type="button" onClick={onClear} className="tb-btn tb-btn-icon" aria-label={t('tb.clearTeam')}>
+          <button
+            type="button"
+            onClick={() => {
+              if (!confirmClear) {
+                setConfirmClear(true);
+                return;
+              }
+              onClear();
+              setConfirmClear(false);
+            }}
+            className={cn('tb-btn shrink-0', confirmClear ? 'border-gold/50 text-gold' : 'tb-btn-icon')}
+            aria-label={confirmClear ? t('tb.confirmClearAria') : t('tb.clearTeam')}
+            title={confirmClear ? t('tb.confirmClear') : t('tb.clearTeam')}
+          >
             <Trash2 size={13} />
+            {confirmClear && (
+              <span className="text-[9px] font-semibold tracking-wide">{t('tb.confirmClear')}</span>
+            )}
           </button>
         )}
       </div>

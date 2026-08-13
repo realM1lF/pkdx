@@ -1,29 +1,26 @@
 /* AnalysisDeck — command deck under the 6-slot row:
  * DEFENSE (lg 8/12): single tall matrix — team header once, all 18 types stacked.
  * OFFENSE (lg 4/12): coverage strip + gap callouts with plain-language hints.
- * META (full width below): Smogon OU reference sets for the team's version group.
+ * Smogon sets live on the slot editor (per Pokémon), not here.
  * All warnings gold, never red (design.md §2.3). */
-import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { AlertTriangle, Check, ChevronDown, CloudOff, Crosshair, Gamepad2, Shield, Sparkles, Wrench } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { AlertTriangle, Check, Crosshair, Gamepad2, Shield, Wrench } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import TypeGlyph from '@/components/TypeGlyph';
 import { useTranslation } from 'react-i18next';
-import { nameOfItem, nameOfMove, nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
+import { nameOfMove, nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
 import {
   coverTypesFor,
   effectivenessVsMember,
   genHasMechanics,
   seTypesAgainst,
-  smogonFormatForVersionGroup,
-  smogonFormatLabel,
   versionGroupById,
   worstCases,
 } from '@/lib/teambuilder';
-import type { CoverageResult, DefenseRow, SmogonSpeciesEntry, SmogonSet, TeamMemberDefense } from '@/lib/teambuilder';
-import { POKEMON_TYPES, STAT_LABELS, STAT_ORDER, TYPE_COLORS } from '@/lib/types';
+import type { CoverageResult, DefenseRow, TeamMemberDefense } from '@/lib/teambuilder';
+import { POKEMON_TYPES, TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -150,11 +147,17 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
         </div>
 
         {/* legend before the grid — read first, then scan numbers */}
-        <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[8px] border border-hairline bg-surface2/60 px-2 py-1.5">
-          <span className="tb-micro !text-[8px]">{t('tb.legend.weak')}</span>
-          <span className="tb-micro !text-[8px]">{t('tb.legend.resist')}</span>
-          <span className="tb-micro !text-[8px]">{t('tb.legend.immune')}</span>
-          <span className="tb-micro ml-auto !text-[8px]">{t('tb.legend.ability')}</span>
+        <div className="mb-2 rounded-[8px] border border-hairline bg-surface2/60 px-2 py-1.5">
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+            <span className="tb-micro !text-[8px]">{t('tb.legend.weak')}</span>
+            <span className="tb-micro !text-[8px]">{t('tb.legend.resist')}</span>
+            <span className="tb-micro !text-[8px]">{t('tb.legend.immune')}</span>
+            <span className="tb-micro w-full !text-[8px] sm:ml-auto sm:w-auto">{t('tb.legend.ability')}</span>
+          </div>
+          <p className="mt-1.5 flex min-w-0 items-start gap-1.5 text-[10px] leading-snug text-gold/90">
+            <span className="mt-[3px] h-2.5 w-0.5 shrink-0 rounded-full bg-gold" aria-hidden />
+            <span className="min-w-0">{t('tb.legend.hole')}</span>
+          </p>
         </div>
 
         {/* one team header */}
@@ -189,6 +192,7 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
                 r.severity >= 2 && 'bg-gold/5 shadow-[inset_2px_0_0_rgba(246,201,69,0.7)]',
               )}
               style={{ gridTemplateColumns: gridCols }}
+              title={r.severity >= 2 ? t('tb.legend.hole') : undefined}
             >
               <span className="flex min-w-0 items-center gap-1.5">
                 <TypeGlyph type={r.type} size={12} className="shrink-0" style={{ color: TYPE_COLORS[r.type].base }} />
@@ -328,180 +332,6 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
   );
 }
 
-/* ============================== META SNAPSHOT ============================== */
-
-export type MetaState = 'idle' | 'loading' | 'ready' | 'unavailable';
-
-interface MetaPanelProps {
-  state: MetaState;
-  entry: SmogonSpeciesEntry | null;
-  focusLabel: string | null;
-  format: string | null;
-  preferredFormat: string;
-  onApplySet: (set: SmogonSet) => void;
-  applied: boolean;
-}
-
-function SetCard({
-  set,
-  primary,
-  onApply,
-  applied,
-  applyLabel,
-}: {
-  set: SmogonSet;
-  primary: boolean;
-  onApply: () => void;
-  applied: boolean;
-  /** override CTA (e.g. "use as template" when team gen ≠ 9) */
-  applyLabel?: string;
-}) {
-  const { t } = useTranslation();
-  const lang = useLanguage();
-  const [open, setOpen] = useState(primary);
-  const evSpread = set.evs[0];
-  const evText = evSpread
-    ? STAT_ORDER.filter((k) => (evSpread[k] ?? 0) > 0)
-        .map((k) => `${evSpread[k]} ${STAT_LABELS[k]}`)
-        .join(' · ')
-    : null;
-  return (
-    <div className={cn('rounded-[10px] border p-2', primary ? 'border-gold/40 bg-gold/5' : 'border-hairline bg-surface2')}>
-      <button type="button" onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between gap-2 text-left">
-        <span className="truncate text-[11px] font-bold uppercase tracking-wide text-tx-primary">{set.name}</span>
-        <ChevronDown size={12} className={cn('shrink-0 text-tx-muted transition-transform duration-200', open && 'rotate-180')} />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="space-y-1 pt-2 text-[10px] leading-relaxed text-tx-secondary">
-              {set.items[0] && (
-                <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.item')}</span>
-                  {/* Smogon set data is en-only (NON-GOAL); item/ability names localize when a slug matches */}
-                  <span className="truncate font-semibold">{nameOfItem(set.items[0].toLowerCase().replace(/ /g, '-'), lang)}</span>
-                </div>
-              )}
-              {set.abilities[0] && (
-                <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.ability')}</span>
-                  <span className="truncate font-semibold">{set.abilities[0]}</span>
-                </div>
-              )}
-              {set.natures[0] && (
-                <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.nature')}</span>
-                  <span className="font-semibold">{set.natures[0]}</span>
-                </div>
-              )}
-              {evText && (
-                <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.evs')}</span>
-                  <span className="text-right font-semibold tabular-nums">{evText}</span>
-                </div>
-              )}
-              <div className="border-t border-hairline pt-1">
-                {set.moves.slice(0, 4).map((slot, i) => (
-                  <div key={i} className="flex items-center gap-1.5">
-                    <span className="tb-micro w-3 !text-[7px]">{i + 1}</span>
-                    <span className="truncate font-semibold text-tx-primary">{slot[0] ?? '—'}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <button type="button" onClick={onApply} className="tb-btn tb-btn-primary mt-2 w-full justify-center !py-1.5 !text-[9px]">
-              {applied ? (
-                <>
-                  <Check size={10} /> {t('tb.applied')}
-                </>
-              ) : (
-                applyLabel ?? t('tb.applySet')
-              )}
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function MetaPanel({ state, entry, focusLabel, format, preferredFormat, onApplySet, applied }: MetaPanelProps) {
-  const { t } = useTranslation();
-  const sourceFormat = format ?? preferredFormat;
-  const sourceLabel = smogonFormatLabel(sourceFormat);
-  const fallback = format != null && format !== preferredFormat;
-  return (
-    <section className="tb-panel md:col-span-12" aria-label={t('tb.metaAria')}>
-      <div className="tb-panel-head">
-        <span className="tb-micro-gold flex items-center gap-1.5" title={t('team.meta.help', { format: sourceLabel })}>
-          <Sparkles size={11} />
-          {t('team.meta.eyebrow', { format: sourceLabel })}
-        </span>
-        <span className="flex items-center gap-1.5">
-          {applied && (
-            <span className="tb-chip !border-gold/60 !bg-gold/10 !text-[8px] !text-gold">{t('tb.setApplied')}</span>
-          )}
-          <span className="tb-chip !text-[8px] text-gold">{t('team.meta.source', { format: sourceLabel })}</span>
-          {entry?.weight != null && (
-            <span className="tb-chip !text-[8px] text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
-          )}
-        </span>
-      </div>
-      <div className="p-3">
-        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t('team.meta.help', { format: sourceLabel })}</p>
-        {fallback && (
-          <div
-            className="mb-2 flex items-center gap-1.5 rounded-[8px] border border-gold/50 bg-gold/10 px-2 py-1.5"
-            title={t('team.meta.fallback', { format: sourceLabel })}
-          >
-            <AlertTriangle size={10} className="shrink-0 text-gold" />
-            <span className="tb-micro-gold !text-[8px]">{t('team.meta.fallback', { format: sourceLabel })}</span>
-          </div>
-        )}
-        {state === 'unavailable' && (
-          <div className="flex items-center gap-2 rounded-[8px] border border-gold/50 bg-gold/10 px-2.5 py-2">
-            <CloudOff size={12} className="shrink-0 text-gold" />
-            <span className="tb-micro-gold !text-[8px]">{t('team.meta.unavailable')}</span>
-          </div>
-        )}
-        {state === 'loading' && <div className="tb-micro py-2">{t('team.meta.syncing')}</div>}
-        {state !== 'unavailable' && state !== 'loading' && !entry && (
-          <div className="text-[11px] text-tx-muted">
-            {focusLabel ? t('team.meta.noSets', { name: focusLabel, format: sourceLabel }) : t('tb.focusSlot')}
-          </div>
-        )}
-        {entry && (
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            <SetCard
-              set={entry.sets[0]}
-              primary
-              onApply={() => onApplySet(entry.sets[0])}
-              applied={applied}
-              applyLabel={fallback ? t('tb.applyAsTemplate') : undefined}
-            />
-            {entry.sets.slice(1, 3).map((s) => (
-              <SetCard
-                key={s.name}
-                set={s}
-                primary={false}
-                onApply={() => onApplySet(s)}
-                applied={false}
-                applyLabel={fallback ? t('tb.applyAsTemplate') : undefined}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
 /* ============================== DECK ============================== */
 
 interface AnalysisDeckProps {
@@ -510,12 +340,6 @@ interface AnalysisDeckProps {
   defenseRows: DefenseRow[];
   coverage: CoverageResult;
   coverageLoading: boolean;
-  metaState: MetaState;
-  metaEntry: SmogonSpeciesEntry | null;
-  metaFormat: string | null;
-  metaFocusLabel: string | null;
-  onApplySet: (set: SmogonSet) => void;
-  appliedSetName: string | null;
 }
 
 export default function AnalysisDeck({
@@ -524,12 +348,6 @@ export default function AnalysisDeck({
   defenseRows,
   coverage,
   coverageLoading,
-  metaState,
-  metaEntry,
-  metaFormat,
-  metaFocusLabel,
-  onApplySet,
-  appliedSetName,
 }: AnalysisDeckProps) {
   const { t } = useTranslation();
   const vg = versionGroupById(versionGroup);
@@ -564,17 +382,6 @@ export default function AnalysisDeck({
       <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
         <DefensePanel rows={defenseRows} members={members} vgId={versionGroup} />
         <CoveragePanel coverage={coverage} loading={coverageLoading} vgId={versionGroup} />
-      </div>
-      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-12">
-        <MetaPanel
-          state={metaState}
-          entry={metaEntry}
-          focusLabel={metaFocusLabel}
-          format={metaFormat}
-          preferredFormat={smogonFormatForVersionGroup(versionGroup)}
-          onApplySet={onApplySet}
-          applied={appliedSetName === metaEntry?.sets[0]?.name}
-        />
       </div>
     </div>
   );

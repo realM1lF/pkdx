@@ -299,7 +299,14 @@ export interface MicroBattleOptions {
 }
 
 /** prebundled sim asset (scripts/bundle-sim.mjs) — outside the rollup graph */
-const SIM_VENDOR_URL = '/vendor/pkmn-sim.mjs';
+const SIM_VENDOR_FILE = ['vendor', 'pkmn-sim.mjs'].join('/');
+
+/** Absolute URL for the static vendor file. Vite 7 rewrites a literal
+ * `/vendor/pkmn-sim.mjs` import (public/) into `?import` and then refuses it. */
+export function simVendorImportUrl(origin: string): string {
+  const base = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+  return `${base}/${SIM_VENDOR_FILE}`;
+}
 
 /** Browser: static vendor bundle (lazy, separate download). Tests (vitest,
  * node): the real @pkmn/sim package — the vendor URL doesn't resolve there. */
@@ -308,7 +315,9 @@ async function defaultSimLoader(): Promise<Sim> {
     const pkg = '@pkmn/sim'; // indirect so vite build-time analysis skips it
     return import(/* @vite-ignore */ pkg);
   }
-  return import(/* @vite-ignore */ SIM_VENDOR_URL) as Promise<Sim>;
+  const origin = globalThis.location?.origin;
+  if (!origin) throw new Error('battle sim vendor requires a browser origin');
+  return import(/* @vite-ignore */ simVendorImportUrl(origin)) as Promise<Sim>;
 }
 
 export function randomSeed(): [number, number, number, number] {

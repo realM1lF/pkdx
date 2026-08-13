@@ -17,6 +17,7 @@ import {
   emptyTeam,
   filledSlots,
   loadTeams,
+  onTeamsChange,
   saveDraft,
   saveTeam,
   versionGroupById,
@@ -53,7 +54,11 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
       if (e.key === 'Escape') setOpen(false);
     };
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    const unsub = onTeamsChange(() => setTeams(loadTeams()));
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      unsub();
+    };
   }, [open]);
 
   const addTo = async (team: Team) => {
@@ -158,7 +163,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                       <Check size={14} className="shrink-0 text-gold" />
                       <span className="text-[12px] font-semibold text-tx-primary">
                         {t8n('detail.addToTeam.added', {
-                          pokemon: nameOfPokemon(pokemon.id, lang),
+                          pokemon: nameOfPokemon(pokemon.name, lang),
                           team: phase.team.name,
                         })}
                       </span>

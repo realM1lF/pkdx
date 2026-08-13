@@ -14,7 +14,9 @@ import { typeDetailPath } from '@/lib/seo-types';
 import { getLenis } from '@/lib/smooth';
 import { useShiny } from '@/lib/shiny';
 import { sprites } from '@/lib/sprites';
-import { genOf } from '@/lib/types';
+import { genOf, GENERATIONS } from '@/lib/types';
+import { formIdentity } from '@/lib/dex-forms-catalog';
+import FormStrip from './FormStrip';
 import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { formatHeight, formatWeight, speciesExtras, typeRgb } from './data';
@@ -108,7 +110,8 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const { shiny: globalShiny } = useShiny();
   const { t } = useTranslation();
   const lang = useLanguage();
-  const name = nameOfPokemon(pokemon.id, lang);
+  const ident = formIdentity(pokemon.name, pokemon.id);
+  const name = nameOfPokemon(ident.isForm ? ident.slug : ident.speciesId, lang);
   const [shiny, setShiny] = useState(globalShiny);
   const [burst, setBurst] = useState(0);
   const [crying, setCrying] = useState(false);
@@ -139,8 +142,8 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const activeFlavor = versionChips.find((f) => f.version === version) ?? versionChips[0];
 
   const extras = speciesExtras(species);
-  const genus = lang === 'de' ? genusOfPokemon(pokemon.id, lang) : species ? englishGenus(species) : '';
-  const gen = genOf(pokemon.id);
+  const genus = lang === 'de' ? genusOfPokemon(ident.speciesId, lang) : species ? englishGenus(species) : '';
+  const gen = GENERATIONS[ident.gen - 1] ?? genOf(ident.speciesId);
   const hiddenAbbr = t('detail.hero.hiddenAbbr');
   const abilityNames = pokemon.abilities.map(
     (a) => nameOfAbility(a.ability.name, lang) + (a.is_hidden ? ` ${hiddenAbbr}` : ''),
@@ -322,7 +325,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
       {/* ---- identity column ---- */}
       <div className="relative min-w-0">
         <span aria-hidden className="dx-ghost-num hidden lg:block">
-          {String(pokemon.id).padStart(3, '0')}
+          {String(ident.speciesId).padStart(3, '0')}
         </span>
 
         <motion.div
@@ -333,7 +336,7 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
         >
           <motion.div variants={{ off: { y: 16, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.4, ease: EASE }}>
             <div className="flex items-baseline gap-3">
-              <span className="pixel-label text-[11px] text-gold">{padNum(pokemon.id)}</span>
+              <span className="pixel-label text-[11px] text-gold">{padNum(ident.speciesId)}</span>
               <span className="pixel-label text-[8px] text-tx-muted">
                 {t(`regions.${genRegionKey(gen.region)}`)} · GEN {gen.roman}
               </span>
@@ -361,6 +364,8 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
               </span>
             )}
           </motion.div>
+
+          <FormStrip speciesId={ident.speciesId} currentSlug={pokemon.name} />
 
           {/* flavor text + version chips */}
           <motion.div

@@ -1,9 +1,9 @@
 /* SlotEditor — per-slot expander (team-builder.md): 4 version-legal move slots,
  * item · ability · nature (all gen-gated) · compact EV presets + sliders. */
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
-import { AlertTriangle, Eraser, Info } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertTriangle, Check, ChevronDown, CloudOff, Eraser, Info, Sparkles } from 'lucide-react';
 import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDescModal';
 import { useDescMap } from '@/lib/desc-data';
 import { nameOfAbility, nameOfItem, nameOfMove, nameOfNature, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
@@ -18,10 +18,12 @@ import {
   genNatures,
   legalMoves,
   legalityReasonText,
+  smogonFormatForVersionGroup,
+  smogonFormatLabel,
   versionGroupById,
   zeroEvs,
 } from '@/lib/teambuilder';
-import type { LegalMoveOption, SlotLegality, TeamSlot } from '@/lib/teambuilder';
+import type { LegalMoveOption, SlotLegality, SmogonSet, SmogonSpeciesEntry, TeamSlot } from '@/lib/teambuilder';
 import { STAT_LABELS, STAT_ORDER } from '@/lib/types';
 import type { Pokemon, StatKey } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -106,6 +108,179 @@ const EV_PRESETS: EvPreset[] = [
   { label: '252 HP · 252 SPD', apply: () => evSpread([['hp', 252], ['special-defense', 252], ['defense', 4]]) },
 ];
 
+export type MetaState = 'idle' | 'loading' | 'ready' | 'unavailable';
+
+function SetCard({
+  set,
+  primary,
+  onApply,
+  applied,
+  applyLabel,
+  readOnly,
+}: {
+  set: SmogonSet;
+  primary: boolean;
+  onApply: () => void;
+  applied: boolean;
+  applyLabel?: string;
+  readOnly: boolean;
+}) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const [open, setOpen] = useState(primary);
+  const evSpread = set.evs[0];
+  const evText = evSpread
+    ? STAT_ORDER.filter((k) => (evSpread[k] ?? 0) > 0)
+        .map((k) => `${evSpread[k]} ${STAT_LABELS[k]}`)
+        .join(' · ')
+    : null;
+  return (
+    <div className={cn('rounded-[10px] border p-2', primary ? 'border-gold/40 bg-gold/5' : 'border-hairline bg-surface2')}>
+      <button type="button" onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between gap-2 text-left">
+        <span className="truncate text-[11px] font-bold uppercase tracking-wide text-tx-primary">{set.name}</span>
+        <ChevronDown size={12} className={cn('shrink-0 text-tx-muted transition-transform duration-200', open && 'rotate-180')} />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-1 pt-2 text-[10px] leading-relaxed text-tx-secondary">
+              {set.items[0] && (
+                <div className="flex justify-between gap-2">
+                  <span className="tb-micro !text-[7px]">{t('tb.item')}</span>
+                  <span className="truncate font-semibold">{nameOfItem(set.items[0].toLowerCase().replace(/ /g, '-'), lang)}</span>
+                </div>
+              )}
+              {set.abilities[0] && (
+                <div className="flex justify-between gap-2">
+                  <span className="tb-micro !text-[7px]">{t('tb.ability')}</span>
+                  <span className="truncate font-semibold">{set.abilities[0]}</span>
+                </div>
+              )}
+              {set.natures[0] && (
+                <div className="flex justify-between gap-2">
+                  <span className="tb-micro !text-[7px]">{t('tb.nature')}</span>
+                  <span className="font-semibold">{set.natures[0]}</span>
+                </div>
+              )}
+              {evText && (
+                <div className="flex justify-between gap-2">
+                  <span className="tb-micro !text-[7px]">{t('tb.evs')}</span>
+                  <span className="text-right font-semibold tabular-nums">{evText}</span>
+                </div>
+              )}
+              <div className="border-t border-hairline pt-1">
+                {set.moves.slice(0, 4).map((mv, i) => (
+                  <div key={i} className="flex items-center gap-1.5">
+                    <span className="tb-micro w-3 !text-[7px]">{i + 1}</span>
+                    <span className="truncate font-semibold text-tx-primary">{mv[0] ?? '—'}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {!readOnly && (
+              <button type="button" onClick={onApply} className="tb-btn tb-btn-primary mt-2 w-full justify-center !py-1.5 !text-[9px]">
+                {applied ? (
+                  <>
+                    <Check size={10} /> {t('tb.applied')}
+                  </>
+                ) : (
+                  applyLabel ?? t('tb.applySet')
+                )}
+              </button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function SlotMetaSets({
+  species,
+  versionGroup,
+  state,
+  entry,
+  format,
+  appliedSetName,
+  readOnly,
+  onApplySet,
+}: {
+  species: string;
+  versionGroup: string;
+  state: MetaState;
+  entry: SmogonSpeciesEntry | null;
+  format: string | null;
+  appliedSetName: string | null;
+  readOnly: boolean;
+  onApplySet: (set: SmogonSet) => void;
+}) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const preferred = smogonFormatForVersionGroup(versionGroup);
+  const sourceFormat = format ?? preferred;
+  const sourceLabel = smogonFormatLabel(sourceFormat);
+  const fallback = format != null && format !== preferred;
+  const applyLabel = fallback ? t('tb.applyAsTemplate') : undefined;
+  return (
+    <div aria-label={t('tb.metaAria')}>
+      <div className="mb-1.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="tb-micro-gold flex min-w-0 items-center gap-1.5" title={t('team.meta.help', { format: sourceLabel })}>
+          <Sparkles size={10} className="shrink-0" />
+          {t('team.meta.eyebrow', { format: sourceLabel })}
+        </span>
+        {appliedSetName && (
+          <span className="tb-chip !border-gold/60 !bg-gold/10 !text-[8px] !text-gold">{t('tb.setApplied')}</span>
+        )}
+        {entry?.weight != null && (
+          <span className="tb-chip !text-[8px] text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
+        )}
+      </div>
+      {fallback && (
+        <p className="mb-1.5 text-[10px] leading-snug text-gold/90">{t('team.meta.fallback', { format: sourceLabel })}</p>
+      )}
+      {state === 'unavailable' && (
+        <div className="flex items-center gap-1.5 text-[10px] text-gold/90">
+          <CloudOff size={11} className="shrink-0" />
+          {t('team.meta.unavailable')}
+        </div>
+      )}
+      {state === 'loading' && <div className="tb-micro py-1">{t('team.meta.syncing')}</div>}
+      {state !== 'unavailable' && state !== 'loading' && !entry && (
+        <p className="text-[10px] text-tx-muted">{t('team.meta.noSets', { name: nameOfPokemon(species, lang), format: sourceLabel })}</p>
+      )}
+      {entry && (
+        <div className="grid gap-2">
+          <SetCard
+            set={entry.sets[0]}
+            primary
+            onApply={() => onApplySet(entry.sets[0])}
+            applied={appliedSetName === entry.sets[0]?.name}
+            applyLabel={applyLabel}
+            readOnly={readOnly}
+          />
+          {entry.sets.slice(1, 3).map((s) => (
+            <SetCard
+              key={s.name}
+              set={s}
+              primary={false}
+              onApply={() => onApplySet(s)}
+              applied={appliedSetName === s.name}
+              applyLabel={applyLabel}
+              readOnly={readOnly}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface SlotEditorProps {
   slot: TeamSlot;
   pokemon: Pokemon | undefined;
@@ -113,9 +288,26 @@ interface SlotEditorProps {
   legality: SlotLegality;
   readOnly?: boolean;
   onPatch: (slotId: string, patch: Partial<TeamSlot>) => void;
+  metaState: MetaState;
+  metaEntry: SmogonSpeciesEntry | null;
+  metaFormat: string | null;
+  appliedSetName: string | null;
+  onApplySet: (set: SmogonSet) => void;
 }
 
-export default function SlotEditor({ slot, pokemon, versionGroup, legality, readOnly = false, onPatch }: SlotEditorProps) {
+export default function SlotEditor({
+  slot,
+  pokemon,
+  versionGroup,
+  legality,
+  readOnly = false,
+  onPatch,
+  metaState,
+  metaEntry,
+  metaFormat,
+  appliedSetName,
+  onApplySet,
+}: SlotEditorProps) {
   const lang = useLanguage();
   const { t } = useTranslation();
   const vg = versionGroupById(versionGroup);
@@ -223,6 +415,20 @@ export default function SlotEditor({ slot, pokemon, versionGroup, legality, read
                     );
                   })}
                 </ul>
+              </div>
+            )}
+            {slot.pokemon && (
+              <div className="mt-4 border-t border-hairline pt-3">
+                <SlotMetaSets
+                  species={slot.pokemon}
+                  versionGroup={versionGroup}
+                  state={metaState}
+                  entry={metaEntry}
+                  format={metaFormat}
+                  appliedSetName={appliedSetName}
+                  readOnly={readOnly}
+                  onApplySet={onApplySet}
+                />
               </div>
             )}
           </div>

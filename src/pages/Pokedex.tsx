@@ -18,7 +18,6 @@ import {
   isValidType,
   sortEntries,
   useDexData,
-  useDexForms,
   useOnline,
   useTypeMembers,
 } from '@/components/pokedex/dex-data';
@@ -184,48 +183,20 @@ export default function Pokedex() {
 
   /* data */
   const { index, bootFailed, retryBoot, summaries, ensure } = useDexData();
-  const wantForms = filters.special.includes('forms');
-  const {
-    index: formIndex,
-    summaries: formSummaries,
-    typeSets: formTypeSets,
-    ready: formsReady,
-  } = useDexForms(wantForms);
-  const baseTypeSets = useTypeMembers(filters.types);
-  const typeSets = useMemo(() => {
-    if (!wantForms || !formsReady) return baseTypeSets;
-    const next = { ...baseTypeSets };
-    for (const t of Object.keys(formTypeSets) as PokemonType[]) {
-      const extra = formTypeSets[t];
-      if (!extra) continue;
-      const base = baseTypeSets[t];
-      next[t] = base ? new Set([...base, ...extra]) : extra;
-    }
-    return next;
-  }, [baseTypeSets, formTypeSets, wantForms, formsReady]);
-  const allSummaries = useMemo(() => {
-    if (!wantForms || formSummaries.size === 0) return summaries;
-    const merged = new Map(summaries);
-    for (const [id, s] of formSummaries) merged.set(id, s);
-    return merged;
-  }, [summaries, formSummaries, wantForms]);
+  const typeSets = useTypeMembers(filters.types);
   const online = useOnline();
   const [bannerDismissed, setBannerDismissed] = useState(false);
 
   /* filter → sort (null while type/stat data loads) */
   const filtered = useMemo(
-    () => {
-      if (!index) return null;
-      if (wantForms && !formsReady) return null;
-      return filterEntries(index, { ...filters, q: debouncedQ }, typeSets, wantForms ? formIndex : []);
-    },
+    () => (index ? filterEntries(index, { ...filters, q: debouncedQ }, typeSets) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady re-runs de-alias matching after the lazy de load
-    [index, filters, debouncedQ, typeSets, deReady, wantForms, formsReady, formIndex],
+    [index, filters, debouncedQ, typeSets, deReady],
   );
 
   const statSort = STAT_SORTS.has(filters.sort);
   const statSortReady =
-    !statSort || (filtered !== null && filtered.every((e) => allSummaries.has(e.id)));
+    !statSort || (filtered !== null && filtered.every((e) => summaries.has(e.id)));
 
   useEffect(() => {
     if (statSort && filtered && filtered.length > 0) ensure(filtered.map((e) => e.id));
@@ -234,8 +205,8 @@ export default function Pokedex() {
   const sorted = useMemo(() => {
     if (!filtered) return null;
     if (statSort && !statSortReady) return null; // gate stat sorts on full summary data
-    return sortEntries(filtered, allSummaries, filters.sort, lang);
-  }, [filtered, statSort, statSortReady, allSummaries, filters.sort, lang]);
+    return sortEntries(filtered, summaries, filters.sort, lang);
+  }, [filtered, statSort, statSortReady, summaries, filters.sort, lang]);
 
   const total = sorted?.length ?? 0;
   const isFiltered =
@@ -447,9 +418,7 @@ export default function Pokedex() {
               <p className="pixel-label text-[9px] text-tx-muted">
                 {statSort && !statSortReady
                   ? t8n('pokedex.fetchingStats')
-                  : wantForms && !formsReady
-                    ? t8n('pokedex.formsLoading')
-                    : t8n('pokedex.loadingTypes')}
+                  : t8n('pokedex.loadingTypes')}
               </p>
             </div>
           </div>
@@ -481,7 +450,7 @@ export default function Pokedex() {
         {sorted !== null && total > 0 && (
           <>
             {mode === 'list' ? (
-              <ListView items={visible} summaries={allSummaries} />
+              <ListView items={visible} summaries={summaries} />
             ) : (
               <motion.div
                 layout
@@ -494,7 +463,7 @@ export default function Pokedex() {
               >
                 <AnimatePresence mode="popLayout" initial={false}>
                   {visible.map((e, i) => {
-                    const s = allSummaries.get(e.id);
+                    const s = summaries.get(e.id);
                     return s ? (
                       <PokemonCard key={e.id} summary={s} density={mode} index={i} />
                     ) : (

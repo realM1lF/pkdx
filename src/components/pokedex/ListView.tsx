@@ -13,6 +13,7 @@ import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
 import { useTranslation } from 'react-i18next';
 import { STAT_ORDER, STAT_LABELS, TYPE_COLORS } from '@/lib/types';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
+import { dexEntryPath } from '@/lib/dex-forms-catalog';
 import { FORM_I18N_KEY, type DexSummary } from './dex-data';
 import { cn } from '@/lib/utils';
 
@@ -51,8 +52,8 @@ function ListRow({ summary: s, index, ref }: ListRowProps) {
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
   const dexId = s.speciesId ?? s.id;
-  const label = nameOfPokemon(dexId, lang);
-  const href = `/pokemon/${s.form && s.slug ? s.slug : s.id}`;
+  const label = nameOfPokemon(s.slug ?? dexId, lang);
+  const href = dexEntryPath({ id: s.id, name: s.slug, form: s.form });
   const [override, setOverride] = useState<boolean | null>(null);
   const shiny = override ?? globalShiny;
   const t1 = (s.types[0] ?? 'normal') as PokemonType;

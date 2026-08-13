@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/prerender.mjs",
     "lint": "eslint .",
-    "i18n:data": "node scripts/build-i18n-data.mjs",
+    "i18n:data": "node scripts/build-i18n-data.mjs && node scripts/build-form-names.mjs",
     "summaries": "node scripts/build-summaries.mjs",
     "desc:data": "node scripts/build-desc-data.mjs",
     "preview": "vite preview",

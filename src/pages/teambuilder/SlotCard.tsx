@@ -13,6 +13,7 @@ import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDe
 import { padNum } from '@/lib/pokeapi';
 import { nameOfAbility, nameOfItem, nameOfMove, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
+import { formIdentity, dexEntryPath } from '@/lib/dex-forms-catalog';
 import { genTypesOf, legalityReasonText, versionGroupById } from '@/lib/teambuilder';
 import type { SlotLegality, TeamSlot } from '@/lib/teambuilder';
 import type { Move, Pokemon } from '@/lib/types';
@@ -128,6 +129,8 @@ export default function SlotCard({
   const types = genTypesOf(versionGroup, slot.pokemon, fallbackTypes);
   const primary = TYPE_COLORS[types[0] ?? 'normal'];
   const label = slot.nickname || nameOfPokemon(slot.pokemon, lang);
+  const ident = formIdentity(slot.pokemon, slot.pokemonId);
+  const detailPath = dexEntryPath({ id: slot.pokemonId, name: slot.pokemon });
   const vg = versionGroupById(versionGroup);
 
   return (
@@ -157,7 +160,7 @@ export default function SlotCard({
 
       {/* top row: dex num + illegal flag + duplicate/remove */}
       <div className="flex items-center justify-between gap-1">
-        <span className="tb-micro !text-[8px]">{padNum(slot.pokemonId)}</span>
+        <span className="tb-micro !text-[8px]">{padNum(ident.speciesId)}</span>
         <div className="flex items-center gap-0.5">
           {!legality.legal && (
             <span
@@ -210,7 +213,7 @@ export default function SlotCard({
 
       {/* sprite on aura → detail page (stopPropagation so slot focus / drag stay intact) */}
       <LocaleLink
-        to={`/pokemon/${slot.pokemonId}`}
+        to={detailPath}
         onClick={(e) => e.stopPropagation()}
         onPointerDown={(e) => e.stopPropagation()}
         className="group/detail relative mx-auto my-0.5 block h-[64px] w-[64px] outline-none focus-visible:ring-2 focus-visible:ring-gold/70"
@@ -245,7 +248,7 @@ export default function SlotCard({
       {/* name + types — name also opens detail */}
       <div className="text-center">
         <LocaleLink
-          to={`/pokemon/${slot.pokemonId}`}
+          to={detailPath}
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
           className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary outline-none transition-colors hover:text-gold focus-visible:text-gold"

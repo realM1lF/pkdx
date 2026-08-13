@@ -1,0 +1,62 @@
+/* Forme switcher on the species detail hero — catalog only (Mega/Alola/…). */
+import { useTranslation } from 'react-i18next';
+import { LocaleLink } from '@/lib/locale-link';
+import Sprite from '@/components/Sprite';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import { formsForSpecies } from '@/lib/dex-forms-catalog';
+import { FORM_I18N_KEY } from '@/components/pokedex/dex-data';
+import { cn } from '@/lib/utils';
+
+interface FormStripProps {
+  speciesId: number;
+  currentSlug: string;
+}
+
+export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
+  const { t } = useTranslation();
+  const lang = useLanguage();
+  const forms = formsForSpecies(speciesId);
+  if (forms.length === 0) return null;
+  const onBase = !forms.some((f) => f.slug === currentSlug);
+
+  return (
+    <div className="mt-1 min-w-0">
+      <span className="pixel-label mb-1 block text-[8px] text-tx-muted">{t('detail.hero.forms')}</span>
+      <div className="flex flex-wrap gap-1" data-lenis-prevent>
+        <LocaleLink
+          to={`/pokemon/${speciesId}`}
+          className={cn(
+            'flex h-8 items-center gap-1 rounded-pill border px-1.5 pr-2 transition-colors',
+            onBase
+              ? 'border-gold/60 bg-gold-soft text-gold'
+              : 'border-hairline bg-surface2 text-tx-secondary hover:border-gold/40 hover:text-gold',
+          )}
+          aria-current={onBase ? 'page' : undefined}
+        >
+          <Sprite id={speciesId} name={nameOfPokemon(speciesId, lang)} era="gen5" skeleton={false} className="h-6 w-6" />
+          <span className="max-w-[7rem] truncate font-sans text-[10px] font-semibold">{nameOfPokemon(speciesId, lang)}</span>
+        </LocaleLink>
+        {forms.map((f) => {
+          const active = f.slug === currentSlug;
+          return (
+            <LocaleLink
+              key={f.slug}
+              to={`/pokemon/${f.slug}`}
+              className={cn(
+                'flex h-8 min-w-0 items-center gap-1 rounded-pill border px-1.5 pr-2 transition-colors',
+                active
+                  ? 'border-gold/60 bg-gold-soft text-gold'
+                  : 'border-hairline bg-surface2 text-tx-secondary hover:border-gold/40 hover:text-gold',
+              )}
+              aria-current={active ? 'page' : undefined}
+            >
+              <Sprite id={f.spriteId} name={nameOfPokemon(f.slug, lang)} era="default" skeleton={false} className="h-6 w-6" />
+              <span className="max-w-[9rem] truncate font-sans text-[10px] font-semibold">{nameOfPokemon(f.slug, lang)}</span>
+              <span className="pixel-label hidden text-[7px] sm:inline">{t(FORM_I18N_KEY[f.kind])}</span>
+            </LocaleLink>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

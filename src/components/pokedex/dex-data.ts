@@ -8,18 +8,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { displayName, padNum } from '@/lib/pokeapi';
 import { germanAliasOfPokemon, nameOfPokemon, type Lang } from '@/lib/i18n-data';
+import { formNameOf } from '@/lib/form-names';
 import { POKEMON_TYPES, genOf } from '@/lib/types';
-import type { DexIndexEntry, PokemonType, StatKey } from '@/lib/types';
+import type { DexFormKind, DexIndexEntry, PokemonType, StatKey } from '@/lib/types';
 
 /* ---------- shared page types ---------- */
 
 export type Density = 'comfort' | 'compact' | 'list';
 export type SortKey = 'id' | 'id-desc' | 'name' | 'height' | 'weight' | 'bst';
-export type Special = 'legendary' | 'mythical' | 'forms';
-export type FormKind = 'alola' | 'galar' | 'hisui' | 'paldea' | 'mega' | 'gmax';
+export type Special = 'legendary' | 'mythical';
+export type FormKind = DexFormKind;
 
 export function isSpecialToken(s: string): s is Special {
-  return s === 'legendary' || s === 'mythical' || s === 'forms';
+  return s === 'legendary' || s === 'mythical';
 }
 
 /** Classify a Showdown/PokéAPI forme string. Null = skip (cosmetic, totem, ZA). */
@@ -45,8 +46,7 @@ export function formKindOf(
 }
 
 function nationalId(e: DexIndexEntry): number {
-  const extra = (e as DexIndexEntry & { speciesId?: number }).speciesId;
-  return extra ?? e.id;
+  return e.speciesId ?? e.id;
 }
 
 /* labels are i18n keys under pokedex.sortOptions (rendered via t()) */
@@ -274,11 +274,9 @@ export function filterEntries(
   index: DexIndexEntry[],
   f: FilterState,
   typeSets: TypeMemberSets,
-  formIndex: DexIndexEntry[] = [],
 ): DexIndexEntry[] | null {
-  const wantForms = f.special.includes('forms');
-  let out = wantForms ? [...index, ...formIndex] : index;
   const q = f.q.trim().toLowerCase().replace(/^#/, '');
+  let out = index;
   if (q) {
     out = out.filter(
       (e) =>
@@ -287,15 +285,13 @@ export function filterEntries(
         e.num.includes(q) ||
         String(e.id) === q ||
         String(nationalId(e)) === q ||
-        // German alias (build-time de artifact) — "bisasam" finds bulbasaur
         (germanAliasOfPokemon(nationalId(e))?.includes(q) ?? false),
     );
   }
   if (f.gen !== null) out = out.filter((e) => e.gen === f.gen);
-  const restrict = f.special.filter((s) => s !== 'forms');
-  if (restrict.length > 0) {
-    const wantLegendary = restrict.includes('legendary');
-    const wantMythical = restrict.includes('mythical');
+  if (f.special.length > 0) {
+    const wantLegendary = f.special.includes('legendary');
+    const wantMythical = f.special.includes('mythical');
     out = out.filter(
       (e) =>
         (wantLegendary && LEGENDARY_IDS.has(nationalId(e))) ||
@@ -353,7 +349,7 @@ export const FORM_I18N_KEY: Record<FormKind, string> = {
   gmax: 'pokedex.formsGmax',
 };
 
-/* ---------- form catalog (lazy artifact, only when Forms filter is on) ---------- */
+/* ---------- form catalog hydrate (grid does not merge these rows in v1) ---------- */
 
 export interface DexFormRecord {
   slug: string;
@@ -387,10 +383,10 @@ export function hydrateFormCatalog(forms: DexFormRecord[]): FormBoot {
         bst += r.stats[short];
       }
     }
-    const entry: DexIndexEntry & { speciesId: number; form: FormKind } = {
+    const entry: DexIndexEntry = {
       id: r.spriteId,
       name: r.slug,
-      label: displayName(r.slug),
+      label: formNameOf(r.slug, 'en') ?? displayName(r.slug),
       num: padNum(r.speciesId),
       gen: r.gen,
       speciesId: r.speciesId,
@@ -401,7 +397,7 @@ export function hydrateFormCatalog(forms: DexFormRecord[]): FormBoot {
       id: r.spriteId,
       slug: r.slug,
       speciesId: r.speciesId,
-      label: displayName(r.slug),
+      label: formNameOf(r.slug, 'en') ?? displayName(r.slug),
       types: r.types,
       stats,
       bst,
@@ -415,56 +411,4 @@ export function hydrateFormCatalog(forms: DexFormRecord[]): FormBoot {
     for (const t of r.types) typeSets[t]?.add(r.spriteId);
   }
   return { index, summaries, typeSets };
-}
-
-let formBootPromise: Promise<FormBoot> | null = null;
-
-function bootForms(): Promise<FormBoot> {
-  if (!formBootPromise) {
-    formBootPromise = import('@/data/dex-forms.json').then((mod) => {
-      const raw = (mod.default as { forms: DexFormRecord[] }).forms;
-      return hydrateFormCatalog(raw);
-    });
-    formBootPromise.catch(() => {
-      formBootPromise = null;
-    });
-  }
-  return formBootPromise;
-}
-
-const EMPTY_FORM_INDEX: DexIndexEntry[] = [];
-const EMPTY_FORM_SUMMARIES: ReadonlyMap<number, DexSummary> = new Map();
-
-export interface DexForms {
-  index: DexIndexEntry[];
-  summaries: ReadonlyMap<number, DexSummary>;
-  typeSets: TypeMemberSets;
-  ready: boolean;
-}
-
-export function useDexForms(enabled: boolean): DexForms {
-  const [boot, setBoot] = useState<FormBoot | null>(null);
-
-  useEffect(() => {
-    if (!enabled) return;
-    let alive = true;
-    void bootForms()
-      .then((b) => {
-        if (alive) setBoot(b);
-      })
-      .catch(() => undefined);
-    return () => {
-      alive = false;
-    };
-  }, [enabled]);
-
-  if (!enabled) {
-    return { index: EMPTY_FORM_INDEX, summaries: EMPTY_FORM_SUMMARIES, typeSets: {}, ready: true };
-  }
-  return {
-    index: boot?.index ?? EMPTY_FORM_INDEX,
-    summaries: boot?.summaries ?? EMPTY_FORM_SUMMARIES,
-    typeSets: boot?.typeSets ?? {},
-    ready: boot !== null,
-  };
 }

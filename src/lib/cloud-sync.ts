@@ -1,11 +1,27 @@
-/* cloud-sync — local-first mirror into Supabase (plan-accounts.md WP5/WP6).
- * localStorage stays the fast cache; logged-in writes mirror to the DB.
- * On login, local-only solo runs/teams are adopted silently (no dialog).
- * Guest mode never touches account tables. */
+/* cloud-sync — account vault in Supabase; localStorage is the working cache.
+ * Logged-in team set follows the DB (no silent resurrect of remote deletes).
+ * Guest rows still adopt on first login. Guest mode never touches account tables. */
 import type { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { getAuthUser, onAuthChange } from './auth';
-import { loadTeams, saveTeam, type Team } from './teambuilder';
+import {
+  clearSyncedTeamIds,
+  clearTeamTombstones,
+  collapseLinkedTeamDuplicates,
+  loadDraft,
+  loadTeams,
+  markTeamSynced,
+  markTeamsSynced,
+  readSyncedTeamIds,
+  readTeamTombstones,
+  readTeamsOwner,
+  saveDraft,
+  tombstoneTeamId,
+  unmarkTeamSynced,
+  writeTeamsCache,
+  writeTeamsOwner,
+  type Team,
+} from './teambuilder';
 import {
   isAccountManagedRun,
   loadLocalRun,
@@ -64,6 +80,7 @@ export function cloudPushTeam(team: Team): void {
       )
       .then(({ error }) => {
         if (error) console.warn('[cloud-sync] team push failed', error.message);
+        else markTeamSynced(team.id);
       });
   });
 }
@@ -71,6 +88,8 @@ export function cloudPushTeam(team: Team): void {
 export function cloudDeleteTeam(id: string): void {
   const user = getAuthUser();
   if (!user) return;
+  tombstoneTeamId(id);
+  unmarkTeamSynced(id);
   void supabase
     .from('teams')
     .delete()
@@ -87,22 +106,73 @@ interface TeamRow {
   updated_at: string;
 }
 
-async function hydrateTeams(user: User): Promise<Team[]> {
+function teamFromRow(row: TeamRow): Team {
+  const remoteTs = Date.parse(row.updated_at) || 0;
+  return { ...row.payload, id: row.id, updatedAt: remoteTs || row.payload.updatedAt };
+}
+
+/**
+ * Logged-in: the DB row set is the vault. localStorage is the working cache.
+ * - Guest / never-synced ids are adopted (pushed).
+ * - Ids we already synced that are missing remotely were deleted elsewhere: drop, never push.
+ * - Tombstones retry a failed remote delete and never re-add that id.
+ * - Fetch errors leave the cache untouched.
+ */
+async function hydrateTeams(user: { id: string }): Promise<void> {
   const { data, error } = await supabase.from('teams').select('id, payload, updated_at').eq('user_id', user.id);
-  if (error || !data) return [];
+  if (error) {
+    console.warn('[cloud-sync] team hydrate failed', error.message);
+    return;
+  }
+
+  const prevOwner = readTeamsOwner();
+  const wasSynced = readSyncedTeamIds();
+  const switching = Boolean(prevOwner && prevOwner !== user.id);
+  if (switching) {
+    clearTeamTombstones();
+    clearSyncedTeamIds();
+  }
+  writeTeamsOwner(user.id);
+
+  const tombstones = readTeamTombstones();
   const local = loadTeams();
   const localById = new Map(local.map((t) => [t.id, t]));
-  const remoteIds = new Set<string>();
-  for (const row of data as TeamRow[]) {
-    remoteIds.add(row.id);
-    const l = localById.get(row.id);
-    const remoteTs = Date.parse(row.updated_at) || 0;
-    if (!l || remoteTs > l.updatedAt) {
-      saveTeam({ ...row.payload, id: row.id, updatedAt: remoteTs });
+  const next: Team[] = [];
+  const keep = new Set<string>();
+  const toPush: Team[] = [];
+
+  for (const row of (data ?? []) as TeamRow[]) {
+    if (tombstones.has(row.id)) {
+      cloudDeleteTeam(row.id);
+      continue;
     }
+    const remote = teamFromRow(row);
+    const existing = localById.get(row.id);
+    if (!existing || remote.updatedAt > existing.updatedAt) {
+      next.push(remote);
+    } else {
+      next.push(existing);
+      if (existing.updatedAt > remote.updatedAt) toPush.push(existing);
+    }
+    keep.add(row.id);
   }
-  /* local teams missing remotely → silent adopt on login */
-  return loadTeams().filter((t) => !remoteIds.has(t.id));
+
+  for (const t of local) {
+    if (keep.has(t.id) || tombstones.has(t.id)) continue;
+    if (wasSynced.has(t.id)) continue;
+    next.push(t);
+    toPush.push(t);
+  }
+
+  writeTeamsCache(next);
+  markTeamsSynced(keep);
+  collapseLinkedTeamDuplicates();
+  for (const t of toPush) cloudPushTeam(t);
+
+  const draft = loadDraft();
+  if (draft && !next.some((t) => t.id === draft.id) && wasSynced.has(draft.id)) {
+    saveDraft(null);
+  }
 }
 
 /* ---------------- nuzlocke solo runs ---------------- */
@@ -213,6 +283,31 @@ async function adoptLocalSoloRuns(): Promise<void> {
 
 /* ---------------- boot / login hydration ---------------- */
 let booted = false;
+let stopTeamWatch: (() => void) | null = null;
+
+function watchAccountTeams(userId: string): void {
+  stopTeamWatch?.();
+  if (typeof document === 'undefined' || typeof window === 'undefined') return;
+  let t: ReturnType<typeof setTimeout> | null = null;
+  const pull = () => {
+    const user = getAuthUser();
+    if (!user || user.id !== userId) return;
+    void hydrateTeams(user);
+  };
+  const onVis = () => {
+    if (document.visibilityState !== 'visible') return;
+    if (t) clearTimeout(t);
+    t = setTimeout(pull, 400);
+  };
+  document.addEventListener('visibilitychange', onVis);
+  window.addEventListener('focus', onVis);
+  stopTeamWatch = () => {
+    document.removeEventListener('visibilitychange', onVis);
+    window.removeEventListener('focus', onVis);
+    if (t) clearTimeout(t);
+    stopTeamWatch = null;
+  };
+}
 
 export function bootCloudSync(): void {
   if (booted) return;
@@ -220,14 +315,16 @@ export function bootCloudSync(): void {
   onAuthChange((user) => {
     if (!user) {
       stopAccountRunsWatch();
+      stopTeamWatch?.();
+      writeTeamsOwner(null);
       /* never prompt while logged out — that flash is what users hated */
       return;
     }
     watchAccountRuns(user.id);
+    watchAccountTeams(user.id);
     void (async () => {
       await syncAccountRuns(user.id);
-      const pendingTeams = await hydrateTeams(user);
-      for (const t of pendingTeams) cloudPushTeam(t);
+      await hydrateTeams(user);
       await adoptLocalSoloRuns();
       await hydrateSoloRuns(user);
       const orre = await import('./orre-progress');

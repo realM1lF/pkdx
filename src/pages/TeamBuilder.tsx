@@ -6,7 +6,6 @@ import { useSearchParams } from 'react-router';
 import { AnimatePresence, Reorder } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { getMove, getPokemon } from '@/lib/pokeapi';
-import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import {
   consumeTeamHash,
   decodeTeamHash,
@@ -26,6 +25,7 @@ import {
   loadDraft,
   loadTeams,
   offensiveCoverage,
+  onTeamsChange,
   parseMetaEntry,
   saveDraft,
   saveTeam,
@@ -50,13 +50,14 @@ import type { Move, Pokemon, PokemonType } from '@/lib/types';
 import { teamToShowdown } from '@/lib/teambuilder-showdown';
 import type { ShowdownImport } from '@/lib/teambuilder-showdown';
 import AnalysisDeck from './teambuilder/AnalysisDeck';
-import type { MatrixMember, MetaState } from './teambuilder/AnalysisDeck';
+import type { MatrixMember } from './teambuilder/AnalysisDeck';
 import HeaderStrip from './teambuilder/HeaderStrip';
 import ImportRunDialog from './teambuilder/ImportRunDialog';
 import SavedTeamsHub from './teambuilder/SavedTeamsHub';
 import ShowdownDialog from './teambuilder/ShowdownDialog';
 import SlotCard from './teambuilder/SlotCard';
 import SlotEditor from './teambuilder/SlotEditor';
+import type { MetaState } from './teambuilder/SlotEditor';
 import NuzToasts from './nuzlocke/Toasts';
 import './teambuilder/teambuilder.css';
 
@@ -69,7 +70,6 @@ function slugify(name: string): string {
 }
 
 export default function TeamBuilder() {
-  const lang = useLanguage();
   const { t: t8n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const fromRunHandled = useRef(false);
@@ -90,6 +90,8 @@ export default function TeamBuilder() {
   const autoEvSlotRef = useRef<string | null>(null);
   /* slot awaiting the default moveset (wild → assumed, armed by handlePick) */
   const autoMovesSlotRef = useRef<string | null>(null);
+
+  useEffect(() => onTeamsChange(() => setTeams(loadTeams())), []);
 
   /* async data caches */
   const [pokemonCache, setPokemonCache] = useState<Record<number, Pokemon>>({});
@@ -437,9 +439,9 @@ export default function TeamBuilder() {
   const linkedReadOnly = viewMode || linkedForeign;
 
   const handleApplySet = useCallback(
-    (set: SmogonSet) => {
+    (set: SmogonSet, slotId?: string) => {
       if (linkedReadOnly) return;
-      const targetId = focusedId ?? team?.slots.find((s) => s.pokemon)?.id;
+      const targetId = slotId ?? focusedId ?? team?.slots.find((s) => s.pokemon)?.id;
       if (!targetId) return;
       const moves: TeamSlot['moves'] = [null, null, null, null];
       set.moves.slice(0, 4).forEach((slot, i) => {
@@ -519,15 +521,21 @@ export default function TeamBuilder() {
     return false;
   }, [team, moveDetails]);
 
-  /* ---------- meta snapshot (focused slot) ---------- */
+  /* ---------- meta snapshot (expanded slot, else focused) ---------- */
   const focusSlot = useMemo(() => {
     if (!team) return null;
     return team.slots.find((s) => s.id === focusedId && s.pokemon) ?? filledSlots(team)[0] ?? null;
   }, [team, focusedId]);
 
+  const metaSlot = useMemo(() => {
+    if (!team) return null;
+    const expanded = expandedId ? team.slots.find((s) => s.id === expandedId && s.pokemon) : null;
+    return expanded ?? focusSlot;
+  }, [team, expandedId, focusSlot]);
+
   /* meta lookup key: the Smogon dump is keyed by EN species names — pass the
    * slug (parseMetaEntry de-slugifies), never the localized display name */
-  const focusSpecies = focusSlot?.pokemon ?? null;
+  const focusSpecies = metaSlot?.pokemon ?? null;
   const versionGroup = team?.versionGroup;
 
   useEffect(() => {
@@ -759,6 +767,11 @@ export default function TeamBuilder() {
             legality={legalities.get(expandedSlot.id) ?? { legal: true, reasons: [] }}
             readOnly={linkedReadOnly}
             onPatch={patchSlot}
+            metaState={metaState}
+            metaEntry={metaEntry}
+            metaFormat={metaFormat}
+            appliedSetName={appliedSetName}
+            onApplySet={(set) => handleApplySet(set, expandedSlot.id)}
           />
         )}
       </AnimatePresence>
@@ -771,12 +784,6 @@ export default function TeamBuilder() {
           defenseRows={defenseRows}
           coverage={coverage}
           coverageLoading={coverageLoading}
-          metaState={metaState}
-          metaEntry={metaEntry}
-          metaFormat={metaFormat}
-          metaFocusLabel={focusSlot?.pokemon ? nameOfPokemon(focusSlot.pokemon, lang) : null}
-          onApplySet={handleApplySet}
-          appliedSetName={appliedSetName}
         />
       ) : (
         <div className="tb-panel mt-4 flex flex-col items-center gap-3 border-dashed px-6 py-10 text-center">

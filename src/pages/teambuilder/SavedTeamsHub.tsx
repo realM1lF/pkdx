@@ -1,5 +1,6 @@
 /* SavedTeamsHub — saved-teams list, hub state when no team is being edited
  * (team-builder.md "Speichern/Teilen": Teams in localStorage pdx2.teams). */
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, FolderOpen, Plus, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,7 @@ import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
 import { filledSlots, isLinkedTeam, versionGroupById } from '@/lib/teambuilder';
 import type { Team } from '@/lib/teambuilder';
+import { cn } from '@/lib/utils';
 
 interface SavedTeamsHubProps {
   teams: Team[];
@@ -34,6 +36,7 @@ function formatWhen(ts: number, lang: 'en' | 'de'): string {
 export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedTeamsHubProps) {
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   return (
     <div className="mx-auto max-w-[960px]">
       <div className="mb-4 flex items-end justify-between gap-3">
@@ -113,7 +116,14 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                   ))}
                 </div>
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={() => onLoad(t)} className="tb-btn tb-btn-primary flex-1 justify-center !py-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPendingDeleteId(null);
+                      onLoad(t);
+                    }}
+                    className="tb-btn tb-btn-primary flex-1 justify-center !py-2"
+                  >
                     <FolderOpen size={12} />
                     {t8n('tb.hub.open')}
                   </button>
@@ -129,11 +139,31 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                   )}
                   <button
                     type="button"
-                    onClick={() => onDelete(t.id)}
-                    className="tb-btn tb-btn-icon"
-                    aria-label={t8n('tb.hub.deleteAria', { name: t.name })}
+                    onClick={() => {
+                      if (pendingDeleteId !== t.id) {
+                        setPendingDeleteId(t.id);
+                        return;
+                      }
+                      onDelete(t.id);
+                      setPendingDeleteId(null);
+                    }}
+                    className={cn(
+                      'tb-btn shrink-0',
+                      pendingDeleteId === t.id ? 'border-gold/50 text-gold' : 'tb-btn-icon',
+                    )}
+                    aria-label={
+                      pendingDeleteId === t.id
+                        ? t8n('tb.hub.confirmDeleteAria', { name: t.name })
+                        : t8n('tb.hub.deleteAria', { name: t.name })
+                    }
+                    title={pendingDeleteId === t.id ? t8n('tb.hub.confirmDelete') : t8n('tb.hub.deleteTip')}
                   >
                     <Trash2 size={13} />
+                    {pendingDeleteId === t.id && (
+                      <span className="max-w-[9rem] truncate text-[9px] font-semibold tracking-wide">
+                        {t8n('tb.hub.confirmDelete')}
+                      </span>
+                    )}
                   </button>
                 </div>
               </motion.div>
