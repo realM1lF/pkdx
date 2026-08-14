@@ -41,6 +41,12 @@ describe('items-seo evolution stones', () => {
     expect(sunQa).not.toMatch(/Myrapla wird/);
   });
 
+  it('DE leaf-stone verdict names Giflor as the special attacker, not Duflor', () => {
+    const verdict = de.seo.itemData['leaf-stone'].verdict;
+    expect(verdict).toMatch(/Giflor/);
+    expect(verdict).not.toMatch(/Duflor spielt/);
+  });
+
   it('EN Q&A already names Gloom / Weepinbell, not Oddish / Bellsprout as stone targets', () => {
     const leafQa = en.seo.itemData['leaf-stone'].qa1Body;
     const sunQa = en.seo.itemData['sun-stone'].qa1Body;
