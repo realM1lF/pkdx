@@ -12,13 +12,16 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Swords } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
+import { genAbilityRows, genStatsOf, genTypesOf, statsFromPokemon } from '@/lib/gen-dex';
 import { getPokemon, getSpecies, pokemonTypes } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
-import type { Pokemon, PokemonSpecies } from '@/lib/types';
+import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
 import { MAX_DEX_ID } from '@/lib/types';
+import { VERSION_GROUPS, versionGroupById, versionGroupForGame } from '@/lib/version-groups';
 import { formIdentity } from '@/lib/dex-forms-catalog';
 import AddToTeam from './detail/AddToTeam';
 import CombatPanel from './detail/CombatPanel';
+import EditionDock from './detail/EditionDock';
 import EvolutionPanel from './detail/EvolutionPanel';
 import HeroPanel from './detail/HeroPanel';
 import MissingNo from './detail/MissingNo';
@@ -34,7 +37,7 @@ import { pokemonSeoMetaForParam } from '@/lib/seo';
 import { hasPokemonSeoSections } from '@/lib/seo-pilots';
 import PokemonSeoSections from './detail/PokemonSeoSections';
 import { Panel } from './detail/ui';
-import { resolveMoveVersionGroup, typeRgb } from './detail/data';
+import { editionFromGameParam, resolveMoveVersionGroup, typeRgb } from './detail/data';
 import './detail/detail.css';
 
 /* VERSUS matchup lab is heavy (@pkmn/dex + @smogon/calc, ~2.4MB) and hidden
@@ -52,8 +55,6 @@ export default function PokemonDetail() {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
   const [status, setStatus] = useState<Status>('loading');
-  const [moveVersionGroup, setMoveVersionGroup] = useState('');
-
   /* reset synchronously on param change (derived-state-during-render) */
   const [prevParam, setPrevParam] = useState(param);
   if (prevParam !== param) {
@@ -61,7 +62,6 @@ export default function PokemonDetail() {
     setStatus('loading');
     setPokemon(null);
     setSpecies(null);
-    setMoveVersionGroup('');
   }
 
   useEffect(() => {
@@ -95,11 +95,8 @@ export default function PokemonDetail() {
     document.title = seoTitle ?? `${nameOfPokemon(pokemon.name, lang)} — MyPokePanion`;
   }, [pokemon, lang, param]);
 
-  const types = useMemo(() => (pokemon ? pokemonTypes(pokemon) : []), [pokemon]);
-  const primary = types[0] ?? 'normal';
-  const secondary = types[1];
+  const apiTypes = useMemo(() => (pokemon ? pokemonTypes(pokemon) : []), [pokemon]);
   const legendary = Boolean(species?.is_legendary || species?.is_mythical);
-  const activeMoveVg = pokemon ? resolveMoveVersionGroup(pokemon.moves, moveVersionGroup) : '';
 
   /* ---------- VERSUS tab + ?vs=<id> deep link (versus.md UI 1) ---------- */
   const [searchParams, setSearchParams] = useSearchParams();
@@ -110,10 +107,53 @@ export default function PokemonDetail() {
   const regionParam = searchParams.get('region');
   const fromMaps = parseMapsFromParam(searchParams.get('from'));
   const trainerRegion = regionParam && REGION_IDS.has(regionParam as RegionId) ? (regionParam as RegionId) : null;
-  const versusContext = useMemo(
-    () => versusContextFromGame(gameParam ?? DEFAULT_VERSUS_PAGE_GAME, trainerRegion),
-    [gameParam, trainerRegion],
+
+  const editionOptions = useMemo(() => {
+    if (!pokemon) return [];
+    const present = new Set<string>();
+    for (const m of pokemon.moves) for (const d of m.version_group_details) present.add(d.version_group.name);
+    return VERSION_GROUPS.filter((g) => present.has(g.id));
+  }, [pokemon]);
+  const newestEdition = pokemon ? resolveMoveVersionGroup(pokemon.moves) : '';
+  const edition = editionFromGameParam(
+    gameParam,
+    editionOptions.map((g) => g.id),
+    newestEdition,
   );
+  const editionInfo = versionGroupById(edition);
+  const types = useMemo(
+    () => (pokemon ? genTypesOf(edition, pokemon.name, apiTypes as PokemonType[]) : []),
+    [pokemon, edition, apiTypes],
+  );
+  const primary = types[0] ?? 'normal';
+  const secondary = types[1];
+  const editionStats = useMemo(
+    () => (pokemon ? genStatsOf(edition, pokemon.name, statsFromPokemon(pokemon)) : null),
+    [pokemon, edition],
+  );
+  const editionAbilities = useMemo(
+    () => (pokemon ? genAbilityRows(edition, pokemon.name) : []),
+    [pokemon, edition],
+  );
+  const versusContext = useMemo(
+    () => versusContextFromGame(gameParam ?? editionInfo.games[0] ?? DEFAULT_VERSUS_PAGE_GAME, trainerRegion),
+    [gameParam, editionInfo.games, trainerRegion],
+  );
+
+  const writeGame = (game: string | null) => {
+    const next = new URLSearchParams(searchParams);
+    if (game) next.set('game', game);
+    else next.delete('game');
+    const vgId = versionGroupForGame(game);
+    const games = vgId ? versionGroupById(vgId).games : [];
+    const curV = next.get('v');
+    if (curV && games.length && !games.includes(curV)) next.delete('v');
+    setSearchParams(next, { replace: true });
+  };
+
+  const setEdition = (vgId: string) => {
+    writeGame(versionGroupById(vgId).games[0] ?? null);
+  };
   const [tab, setTab] = useState<'overview' | 'versus'>(vsParam || tabParam === 'versus' ? 'versus' : 'overview');
 
   /* external ?vs= / ?tab= changes (shared link, back-forward, sprite navigation) */
@@ -199,8 +239,8 @@ export default function PokemonDetail() {
       transition={{ duration: 0.4 }}
       className="mx-auto max-w-content px-4 pb-16 pt-4 md:px-8"
     >
-      {/* top utility row */}
-      <div className="mb-3 flex items-center justify-between">
+      {/* top utility row — edition picker is page-global (types/stats/moves/encounters) */}
+      <div className="relative z-30 mb-3 flex items-center justify-between gap-3">
         <LocaleLink
           to={fromMaps ? `/maps/${fromMaps.region}?node=${fromMaps.nodeId}` : '/pokedex'}
           className="group inline-flex items-center gap-1.5 font-sans text-[13px] font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
@@ -208,7 +248,9 @@ export default function PokemonDetail() {
           <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
           {fromMaps ? t8n('detail.backToMap') : t8n('detail.backAll')}
         </LocaleLink>
-        <span className="pixel-label hidden text-[8px] text-tx-muted sm:inline">{t8n('detail.living')}</span>
+        {editionOptions.length > 0 && (
+          <EditionDock value={edition} onChange={setEdition} options={editionOptions} />
+        )}
       </div>
 
       {/* tab strip — OVERVIEW dashboard / VERSUS matchup lab (versus.md) */}
@@ -252,6 +294,7 @@ export default function PokemonDetail() {
             initialVs={vsParam}
             onOpponentChange={writeOpponent}
             context={versusContext}
+            onGameChange={writeGame}
             initialTrainerNode={versusTrainerParam}
             initialTrainerRegion={trainerRegion}
             hostPokemonId={pokemon.id}
@@ -271,7 +314,13 @@ export default function PokemonDetail() {
               background: `radial-gradient(420px 300px at 12% 0%, rgba(${typeRgb(primary)},0.16), transparent 70%), radial-gradient(360px 280px at 95% 100%, rgba(${secondary ? typeRgb(secondary) : '246,201,69'},0.10), transparent 70%)`,
             }}
           />
-          <HeroPanel pokemon={pokemon} species={species} />
+          <HeroPanel
+            pokemon={pokemon}
+            species={species}
+            types={types}
+            abilities={editionAbilities}
+            flavorGames={editionInfo.games}
+          />
           {/* top-right actions: add to a saved team · VS shortcut (opens the VERSUS tab) */}
           <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5">
             <AddToTeam pokemon={pokemon} />
@@ -293,7 +342,7 @@ export default function PokemonDetail() {
           className="col-span-12 lg:col-span-5"
           bodyClassName="h-[calc(100%-45px)]"
         >
-          <CombatPanel pokemon={pokemon} legendary={legendary} />
+          <CombatPanel pokemon={pokemon} legendary={legendary} stats={editionStats ?? undefined} types={types} />
         </Panel>
 
         {/* ROW 2 */}
@@ -303,11 +352,17 @@ export default function PokemonDetail() {
           className="col-span-12 lg:col-span-7"
           bodyClassName="flex min-h-[420px] flex-col"
         >
-          <MovesPanel pokemon={pokemon} version={activeMoveVg} onVersionChange={setMoveVersionGroup} />
+          <MovesPanel pokemon={pokemon} version={edition} />
         </Panel>
 
         <div className="col-span-12 lg:col-span-5">
-          <SideStack pokemon={pokemon} species={species} versionGroup={activeMoveVg} />
+          <SideStack
+            pokemon={pokemon}
+            species={species}
+            versionGroup={edition}
+            types={types}
+            abilities={editionAbilities}
+          />
         </div>
 
         {/* ROW 3 — left stack: evolution + where to find (span 5) · museum (span 7) */}
@@ -322,7 +377,13 @@ export default function PokemonDetail() {
             className="flex-1"
             bodyClassName="p-0"
           >
-            <WhereToFind key={pokemon.id} id={pokemon.id} highlight={fromMaps} version={searchParams.get('v')} />
+            <WhereToFind
+              key={pokemon.id}
+              id={pokemon.id}
+              highlight={fromMaps}
+              version={searchParams.get('v')}
+              editionGames={editionInfo.games}
+            />
           </Panel>
         </div>
 

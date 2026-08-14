@@ -1,12 +1,12 @@
 /* Detail-page data helpers — type matchups, version groups, species extras.
  * Page-local only (density-addendum §5); shared lib files are untouched. */
-import { cachedJson } from '@/lib/pokeapi';
+import { cachedJson, displayName } from '@/lib/pokeapi';
 import i18n from '@/i18n';
 import { nameOfItem, nameOfType, type Lang } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource, PokemonSpecies, PokemonType } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
 import { genSplitMatchupsForSide } from '@/lib/versus';
-import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS, versionGroupById } from '@/lib/version-groups';
+import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS, versionGroupById, versionGroupForGame } from '@/lib/version-groups';
 
 /* ---------- species payload extras (present at runtime, absent from shared type) ---------- */
 
@@ -81,6 +81,28 @@ export function newestMoveVersionGroup(
   const present = new Set<string>();
   for (const m of moves) for (const d of m.version_group_details) present.add(d.version_group.name);
   return VERSION_GROUPS.find((g) => present.has(g.key))?.key;
+}
+
+/** Prefer `?game=` edition when that group teaches this Pokémon. */
+export function editionFromGameParam(
+  game: string | null | undefined,
+  available: readonly string[],
+  fallback: string,
+): string {
+  const vg = versionGroupForGame(game);
+  if (vg && available.includes(vg)) return vg;
+  return fallback;
+}
+
+function normFlavorKey(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
+/** Flavor chips use `displayName(version)`; edition games are slugs. */
+export function flavorMatchesGames(versionLabel: string, games: readonly string[]): boolean {
+  if (!games.length) return true;
+  const n = normFlavorKey(versionLabel);
+  return games.some((g) => n === normFlavorKey(g) || n === normFlavorKey(displayName(g)));
 }
 
 /** Keep a selected VG if it still teaches moves, otherwise the newest available. */

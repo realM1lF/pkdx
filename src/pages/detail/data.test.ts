@@ -3,7 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import { genSplitMatchupsForSide } from '@/lib/versus';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS } from '@/lib/version-groups';
-import { computeMatchups, genOfVersionGroup, newestMoveVersionGroup, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
+import { computeMatchups, editionFromGameParam, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
 
 function allAttacking(m: ReturnType<typeof computeMatchups>): string[] {
   return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune];
@@ -124,5 +124,23 @@ describe('detail move-pool version groups (every edition the picker can show)', 
       'brilliant-diamond-shining-pearl',
     );
     expect(resolveMoveVersionGroup(moves, undefined)).toBe('scarlet-violet');
+  });
+
+  it('editionFromGameParam keeps ?game= on a present group and otherwise uses fallback', () => {
+    const available = ['firered-leafgreen', 'heartgold-soulsilver', 'scarlet-violet'];
+    expect(editionFromGameParam('firered', available, 'scarlet-violet')).toBe('firered-leafgreen');
+    expect(editionFromGameParam('heartgold', available, 'scarlet-violet')).toBe('heartgold-soulsilver');
+    expect(editionFromGameParam('black', available, 'scarlet-violet')).toBe('scarlet-violet');
+    expect(editionFromGameParam(null, available, 'heartgold-soulsilver')).toBe('heartgold-soulsilver');
+  });
+
+  it('flavorMatchesGames joins display labels to edition slugs', () => {
+    expect(flavorMatchesGames('Firered', ['firered', 'leafgreen'])).toBe(true);
+    expect(flavorMatchesGames('Leafgreen', ['firered', 'leafgreen'])).toBe(true);
+    expect(flavorMatchesGames('Heartgold', ['firered', 'leafgreen'])).toBe(false);
+    expect(flavorMatchesGames('Black 2', ['black-2', 'white-2'])).toBe(true);
+    expect(flavorMatchesGames('Omega Ruby', ['omega-ruby', 'alpha-sapphire'])).toBe(true);
+    expect(flavorMatchesGames('Lets Go Pikachu', ['lets-go-pikachu', 'lets-go-eevee'])).toBe(true);
+    expect(flavorMatchesGames('Scarlet', [])).toBe(true);
   });
 });

@@ -4,9 +4,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import StatBar from '@/components/StatBar';
-import { statOf, totalBaseStats } from '@/lib/pokeapi';
+import type { GenStatBlock } from '@/lib/gen-dex';
+import { statsFromPokemon } from '@/lib/gen-dex';
 import { STAT_LABELS, STAT_ORDER } from '@/lib/types';
-import type { Pokemon, StatKey } from '@/lib/types';
+import type { Pokemon, PokemonType, StatKey } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { typeRgb } from './data';
 import { SegmentedControl } from './ui';
@@ -170,13 +171,24 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
 
 /* ---------- combat panel ---------- */
 
-export default function CombatPanel({ pokemon, legendary = false }: { pokemon: Pokemon; legendary?: boolean }) {
+export default function CombatPanel({
+  pokemon,
+  legendary = false,
+  stats,
+  types: typesProp,
+}: {
+  pokemon: Pokemon;
+  legendary?: boolean;
+  stats?: GenStatBlock;
+  types?: PokemonType[];
+}) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<'bars' | 'radar'>('bars');
-  const types = pokemon.types.map((t) => t.type.name);
+  const types = typesProp ?? pokemon.types.map((t) => t.type.name);
   const primary = types[0] ?? 'normal';
-  const bst = totalBaseStats(pokemon);
-  const values = useMemo(() => STAT_ORDER.map((k: StatKey) => statOf(pokemon, k)), [pokemon]);
+  const block = stats ?? statsFromPokemon(pokemon);
+  const bst = STAT_ORDER.reduce((sum, k) => sum + block[k], 0);
+  const values = useMemo(() => STAT_ORDER.map((k: StatKey) => block[k]), [block]);
   const evChips = pokemon.stats
     .filter((s) => s.effort > 0)
     .map((s) => `+${s.effort} ${STAT_LABELS[s.stat.name as StatKey] ?? s.stat.name.toUpperCase()}`);
@@ -202,16 +214,16 @@ export default function CombatPanel({ pokemon, legendary = false }: { pokemon: P
         {mode === 'bars' ? (
           <div className="flex h-full flex-col justify-center gap-2.5">
             {STAT_ORDER.map((k, i) => (
-              <StatBar key={`${pokemon.id}-${k}`} label={STAT_LABELS[k]} value={statOf(pokemon, k)} type={primary} delay={i * 90} />
+              <StatBar key={`${pokemon.id}-${k}-${block[k]}`} label={STAT_LABELS[k]} value={block[k]} type={primary} delay={i * 90} />
             ))}
           </div>
         ) : (
-          <RadarHex key={pokemon.id} values={values} type={primary} />
+          <RadarHex key={`${pokemon.id}-${bst}`} values={values} type={primary} />
         )}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3">
-        <BstRing key={pokemon.id} bst={bst} legendary={legendary} />
+        <BstRing key={`${pokemon.id}-${bst}`} bst={bst} legendary={legendary} />
         <div className="flex flex-col items-end gap-1">
           <span className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.evYield')}</span>
           <div className="flex gap-1">

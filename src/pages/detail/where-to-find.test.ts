@@ -179,6 +179,14 @@ describe('aggregate version filter', () => {
     expect(aggregate(ROUTE_1_FR_HG, null)).toEqual(open);
     expect(aggregate(ROUTE_1_FR_HG, '')).toEqual(open);
   });
+
+  it('an edition game list keeps every matching game, drops the rest', () => {
+    const rows = aggregate(ROUTE_1_FR_HG, ['firered', 'leafgreen']);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.versions).toEqual(['firered']);
+    expect(rows[0]!.maxChance).toBe(20);
+    expect(aggregate(ROUTE_1_FR_HG, ['black', 'white'])).toHaveLength(0);
+  });
 });
 
 describe('encounterVersions', () => {

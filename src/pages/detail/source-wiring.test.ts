@@ -4,6 +4,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadGermanData, nameOfAbility, nameOfMove, nameOfPokemon, nameOfType } from '@/lib/i18n-data';
 import { learnsetFor, newestVersionGroup, type LearnMethod } from '@/lib/move-pool';
+import { genAbilityRows, genMoveOf, genTypesOf } from '@/lib/gen-dex';
 import { flavorsByVersion, pokemonTypes, statOf, totalBaseStats } from '@/lib/pokeapi';
 import { POKEMON_TYPES, STAT_ORDER, genOf } from '@/lib/types';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
@@ -11,6 +12,8 @@ import { VERSION_GROUPS, versionGroupById } from '@/lib/version-groups';
 import { aggregate } from '@/lib/wherefind';
 import {
   computeMatchups,
+  editionFromGameParam,
+  flavorMatchesGames,
   genOfVersionGroup,
   newestMoveVersionGroup,
   resolveMoveVersionGroup,
@@ -228,6 +231,13 @@ describe('flavor text — language first, then version chip', () => {
     expect(flavorsByVersion(species, 'de').map((f) => f.text)).toEqual(['DE rot']);
     expect(flavorsByVersion(species, 'en').map((f) => f.text)).toEqual(['EN red', 'EN firered']);
   });
+
+  it('edition games drop flavor chips from other groups', () => {
+    const en = flavorsByVersion(species, 'en');
+    const frlg = en.filter((f) => flavorMatchesGames(f.version, ['firered', 'leafgreen']));
+    expect(frlg.map((f) => f.text)).toEqual(['EN firered']);
+    expect(en.filter((f) => flavorMatchesGames(f.version, ['red', 'blue'])).map((f) => f.text)).toEqual(['EN red']);
+  });
 });
 
 describe('where-to-find — version chip is a hard filter', () => {
@@ -258,5 +268,40 @@ describe('where-to-find — version chip is a hard filter', () => {
     expect(hg[0]!.maxChance).toBe(45);
     expect(aggregate(areas, 'black')).toHaveLength(0);
     expect(aggregate(areas, 'scarlet')).toHaveLength(0);
+  });
+
+  it('an edition game list keeps sibling games and drops the rest', () => {
+    const frlg = aggregate(areas, ['firered', 'leafgreen']);
+    expect(frlg).toHaveLength(1);
+    expect(frlg[0]!.versions).toEqual(['firered']);
+    expect(frlg[0]!.maxChance).toBe(20);
+    expect(aggregate(areas, ['black', 'white'])).toHaveLength(0);
+  });
+});
+
+describe('global edition — types, abilities, move meta, ?game=', () => {
+  it('Magnemite matchups follow Electric-only in RB, Electric/Steel from GS', () => {
+    const rb = genTypesOf('red-blue', 'magnemite', ['normal']);
+    const gs = genTypesOf('gold-silver', 'magnemite', ['normal']);
+    expect(rb).toEqual(['electric']);
+    expect(gs).toEqual(['electric', 'steel']);
+    expect(computeMatchups(rb, 1).immune).not.toContain('poison');
+    expect(computeMatchups(gs, 2).immune).toContain('poison');
+  });
+
+  it('Charizard has no abilities in RB and Blaze-only in Emerald', () => {
+    expect(genAbilityRows('red-blue', 'charizard')).toEqual([]);
+    expect(genAbilityRows('emerald', 'charizard').map((a) => a.slug)).toEqual(['blaze']);
+  });
+
+  it('Thunderbolt power follows the edition, not current PokéAPI', () => {
+    expect(genMoveOf('firered-leafgreen', 'thunderbolt')?.power).toBe(95);
+    expect(genMoveOf('x-y', 'thunderbolt')?.power).toBe(90);
+  });
+
+  it('?game= stays on a present edition and otherwise uses the newest learnset', () => {
+    const available = ['firered-leafgreen', 'heartgold-soulsilver', 'scarlet-violet'];
+    expect(editionFromGameParam('firered', available, 'scarlet-violet')).toBe('firered-leafgreen');
+    expect(editionFromGameParam('black', available, 'scarlet-violet')).toBe('scarlet-violet');
   });
 });

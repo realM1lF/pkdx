@@ -37,8 +37,8 @@ export interface GameSelectProps {
   buttonClassName?: string;
   /** custom trigger content; receives the resolved current option */
   buttonContent?: (current: GameSelectOption, open: boolean) => ReactNode;
-  /** align dropdown to the right edge of the trigger */
-  align?: 'left' | 'right';
+  /** align dropdown to the trigger; center keeps the list under a mid-page dock */
+  align?: 'left' | 'right' | 'center';
 }
 
 export default function GameSelect({
@@ -139,11 +139,15 @@ export default function GameSelect({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            initial={{ opacity: 0, y: -8, scale: 0.98, x: align === 'center' ? '-50%' : 0 }}
+            animate={{ opacity: 1, y: 0, scale: 1, x: align === 'center' ? '-50%' : 0 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98, x: align === 'center' ? '-50%' : 0 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className={cn('gs-dropdown', align === 'right' && '!left-auto right-0')}
+            className={cn(
+              'gs-dropdown',
+              align === 'right' && '!left-auto right-0',
+              align === 'center' && 'gs-dropdown-center',
+            )}
           >
             <div ref={listRef} className="gs-list py-1" role="listbox" aria-label={ariaLabel} data-lenis-prevent>
               {defaultOption && renderOption(defaultOption)}

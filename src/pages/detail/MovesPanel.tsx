@@ -1,22 +1,21 @@
 /* Moves panel — density-addendum §3 Row 2 (span 7).
  * Dense table NAME|TYPE|CAT|PWR|ACC|PP (36px rows, sticky header, own scrollbar 480px),
- * one compact toolbar row: learn-method tabs + version select + type filter.
+ * one compact toolbar row: learn-method tabs + type filter (edition lives in page chrome).
  * Move details lazy-load via getMove in batches (SWR-cached by src/lib/pokeapi). */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import GameSelect from '@/components/GameSelect';
 import TypeGlyph from '@/components/TypeGlyph';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
+import { genMoveOf, type GenMoveMeta } from '@/lib/gen-dex';
 import { getMove } from '@/lib/pokeapi';
 import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { learnsetFor, type LearnMethod } from '@/lib/move-pool';
-import { VERSION_GROUPS as ALL_VERSION_GROUPS } from '@/lib/version-groups';
 import type { Move, Pokemon } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { VERSION_GROUPS, typeRgb } from './data';
+import { typeRgb } from './data';
 import { SegmentedControl } from './ui';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -74,36 +73,31 @@ const CAT_COLORS: Record<string, string> = {
   status: '#A8B3C7',
 };
 
+function rowMeta(name: string, vg: string, cache: Map<string, Move>): GenMoveMeta & { ready: boolean } {
+  const gen = genMoveOf(vg, name);
+  if (gen) return { ...gen, ready: true };
+  const mv = cache.get(name);
+  if (!mv) return { type: 'normal', category: 'status', power: null, accuracy: null, pp: null, ready: false };
+  return {
+    type: mv.type.name,
+    category: mv.damage_class.name === 'physical' || mv.damage_class.name === 'special' ? mv.damage_class.name : 'status',
+    power: mv.power,
+    accuracy: mv.accuracy,
+    pp: mv.pp,
+    ready: true,
+  };
+}
+
 export default function MovesPanel({
   pokemon,
-  version: versionProp,
-  onVersionChange,
+  version,
 }: {
   pokemon: Pokemon;
-  version?: string;
-  onVersionChange?: (key: string) => void;
+  version: string;
 }) {
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
-  /* version groups that actually teach this Pokémon anything, newest → oldest */
-  const availableVersions = useMemo(() => {
-    const present = new Set<string>();
-    for (const m of pokemon.moves) for (const d of m.version_group_details) present.add(d.version_group.name);
-    return VERSION_GROUPS.filter((g) => present.has(g.key));
-  }, [pokemon]);
-
-  const [localVersion, setLocalVersion] = useState<string>('');
-  const version = versionProp ?? localVersion;
-  const setVersion = onVersionChange ?? setLocalVersion;
-  const activeVersion = availableVersions.some((v) => v.key === version)
-    ? version
-    : (availableVersions[0]?.key ?? '');
-
-  /* GameSelect options: full version-group info for the groups that teach moves */
-  const versionOptions = useMemo(() => {
-    const present = new Set(availableVersions.map((v) => v.key));
-    return ALL_VERSION_GROUPS.filter((vg) => present.has(vg.id));
-  }, [availableVersions]);
+  const activeVersion = version;
 
   /* rows per method for the active version — never mixes editions */
   const byMethod = useMemo(() => {
@@ -120,7 +114,10 @@ export default function MovesPanel({
   const rows = byMethod.get(activeMethod) ?? EMPTY_ROWS;
 
   const cache = useMoveDetails(rows, pokemon.id);
-  const pending = useMemo(() => rows.filter((r) => !cache.has(r.name)).length, [rows, cache]);
+  const pending = useMemo(
+    () => rows.filter((r) => !rowMeta(r.name, activeVersion, cache).ready).length,
+    [rows, cache, activeVersion],
+  );
 
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 } | null>(null);
@@ -137,24 +134,24 @@ export default function MovesPanel({
   const presentTypes = useMemo(() => {
     const set = new Set<string>();
     for (const r of rows) {
-      const mv = cache.get(r.name);
-      if (mv) set.add(mv.type.name);
+      const meta = rowMeta(r.name, activeVersion, cache);
+      if (meta.ready) set.add(meta.type);
     }
     return [...set].sort();
-  }, [rows, cache]);
+  }, [rows, cache, activeVersion]);
 
   const view = useMemo(() => {
     let out = rows.filter((r) => {
       if (!typeFilter) return true;
-      return cache.get(r.name)?.type.name === typeFilter;
+      return rowMeta(r.name, activeVersion, cache).type === typeFilter;
     });
     if (sort) {
       const dir = sort.dir;
       out = [...out].sort((a, b) => {
-        const ma = cache.get(a.name);
-        const mb = cache.get(b.name);
-        const va = sort.key === 'name' ? nameOfMove(a.name, lang) : (ma?.[sort.key] ?? -1);
-        const vb = sort.key === 'name' ? nameOfMove(b.name, lang) : (mb?.[sort.key] ?? -1);
+        const ma = rowMeta(a.name, activeVersion, cache);
+        const mb = rowMeta(b.name, activeVersion, cache);
+        const va = sort.key === 'name' ? nameOfMove(a.name, lang) : (ma[sort.key] ?? -1);
+        const vb = sort.key === 'name' ? nameOfMove(b.name, lang) : (mb[sort.key] ?? -1);
         if (typeof va === 'string' && typeof vb === 'string') return va.localeCompare(vb) * dir;
         return ((va as number) - (vb as number)) * dir;
       });
@@ -162,7 +159,7 @@ export default function MovesPanel({
       out = [...out].sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
     }
     return out;
-  }, [rows, cache, typeFilter, sort, activeMethod, lang]);
+  }, [rows, cache, typeFilter, sort, activeMethod, lang, activeVersion]);
 
   const toggleSort = (key: SortKey) =>
     setSort((s) => (s?.key === key ? (s.dir === 1 ? { key, dir: -1 } : null) : { key, dir: 1 }));
@@ -188,12 +185,6 @@ export default function MovesPanel({
               </>
             ),
           }))}
-        />
-        <GameSelect
-          value={activeVersion}
-          onChange={setVersion}
-          options={versionOptions}
-          ariaLabel={t8n('detail.moves.versionGroup')}
         />
         {/* type filter */}
         <div className="ml-auto flex items-center gap-1">
@@ -240,9 +231,9 @@ export default function MovesPanel({
             </thead>
             <tbody key={listKey}>
               {view.map((r, i) => {
-                const mv = cache.get(r.name);
-                const t = mv?.type.name ?? 'normal';
-                const cat = mv?.damage_class.name ?? 'status';
+                const meta = rowMeta(r.name, activeVersion, cache);
+                const t = meta.type;
+                const cat = meta.category;
                 return (
                   <motion.tr
                     key={r.name}
@@ -266,7 +257,7 @@ export default function MovesPanel({
                       </span>
                     </td>
                     <td>
-                      {mv ? (
+                      {meta.ready ? (
                         <span className="flex items-center gap-1" style={{ color: `rgb(${typeRgb(t)})` }}>
                           <TypeGlyph type={t} size={14} className={cn('dx-glyph', `dx-glyph-${t}`)} />
                           <span className="hidden font-sans text-[10px] font-semibold uppercase xl:inline">{nameOfType(t, lang)}</span>
@@ -276,7 +267,7 @@ export default function MovesPanel({
                       )}
                     </td>
                     <td className="text-center">
-                      {mv ? (
+                      {meta.ready ? (
                         <span
                           role="img"
                           aria-label={t8n(`detail.moves.cat${cat.charAt(0).toUpperCase() + cat.slice(1)}`)}
@@ -292,9 +283,9 @@ export default function MovesPanel({
                         <span className="dx-skel mx-auto inline-block h-3.5 w-3.5 rounded-full" />
                       )}
                     </td>
-                    <NumCell mv={mv} field="power" />
-                    <NumCell mv={mv} field="accuracy" />
-                    <NumCell mv={mv} field="pp" className="pr-3" />
+                    <NumCell value={meta.power} ready={meta.ready} />
+                    <NumCell value={meta.accuracy} ready={meta.ready} />
+                    <NumCell value={meta.pp} ready={meta.ready} className="pr-3" />
                   </motion.tr>
                 );
               })}
@@ -307,10 +298,10 @@ export default function MovesPanel({
   );
 }
 
-function NumCell({ mv, field, className }: { mv: Move | undefined; field: 'power' | 'accuracy' | 'pp'; className?: string }) {
+function NumCell({ value, ready, className }: { value: number | null; ready: boolean; className?: string }) {
   return (
     <td className={cn('text-right font-display text-[12px] font-bold tabular-nums text-tx-secondary', className)}>
-      {mv ? (mv[field] ?? '—') : <span className="dx-skel ml-auto inline-block h-3 w-6" />}
+      {ready ? (value ?? '—') : <span className="dx-skel ml-auto inline-block h-3 w-6" />}
     </td>
   );
 }

@@ -112,8 +112,11 @@ export interface WhereRow {
 
 const BUCKET_ORDER: Record<MethodBucket, number> = { WALK: 0, SURF: 1, FISH: 2, OTHER: 3 };
 
-export function aggregate(areas: EncounterAreaEntry[], version?: string | null): WhereRow[] {
-  const filter = version || null;
+export function aggregate(areas: EncounterAreaEntry[], version?: string | readonly string[] | null): WhereRow[] {
+  const allowed =
+    version == null || version === ''
+      ? null
+      : new Set(typeof version === 'string' ? [version] : [...version]);
   const byKey = new Map<
     string,
     WhereRow & { methodSet: Set<string>; versionSet: Set<string>; subSet: Set<string> }
@@ -123,7 +126,7 @@ export function aggregate(areas: EncounterAreaEntry[], version?: string | null):
     const hit = resolveArea(area.location_area.name);
     const key = hit ? hit.nodeId : `area:${base}`;
     for (const vd of area.version_details) {
-      if (filter && vd.version.name !== filter) continue;
+      if (allowed && !allowed.has(vd.version.name)) continue;
       if (vd.encounter_details.length === 0) continue;
       let row = byKey.get(key);
       if (!row) {

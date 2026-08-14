@@ -11,9 +11,7 @@
  * - Analysis math: defensive synergy (ability-aware), offensive coverage,
  *   Smogon OU meta snapshot (data.pkmn.cc, version-group format, cached)
  */
-import { Generations } from '@pkmn/data';
-import { Dex } from '@pkmn/dex';
-import type { Nature, Specie, TypeName } from '@pkmn/data';
+import type { Nature, TypeName } from '@pkmn/data';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
 import type { Lang } from './i18n-data';
@@ -53,41 +51,22 @@ export {
 } from './smogon-format';
 
 /* ------------------------------------------------------------------ */
-/* Gen-aware data layer (@pkmn/data + @pkmn/dex)                       */
+/* Gen-aware data layer — species/types/abilities live in ./gen-dex    */
+/* so the detail overview can use them without importing this module.  */
 /* ------------------------------------------------------------------ */
 
-const gens = new Generations(Dex);
-
-export function genFor(vgId: string) {
-  return gens.get(versionGroupById(vgId).gen);
-}
-
-/** gen-aware species lookup by PokéAPI slug ('mr-mime') or display name */
-export function genSpecies(vgId: string, nameOrSlug: string | null | undefined): Specie | undefined {
-  if (!nameOrSlug) return undefined;
-  const gen = genFor(vgId);
-  const direct = gen.species.get(nameOrSlug);
-  if (direct?.exists) return direct;
-  const byDisplay = gen.species.get(displayName(nameOrSlug));
-  if (byDisplay?.exists) return byDisplay;
-  return undefined;
-}
-
-/** gen-correct types for a species (e.g. Magnemite: pure Electric in gen 1) */
-export function genTypesOf(vgId: string, nameOrSlug: string, fallback: PokemonType[]): PokemonType[] {
-  const sp = genSpecies(vgId, nameOrSlug);
-  if (sp?.exists && sp.types.length) return sp.types.map((t) => t.toLowerCase() as PokemonType);
-  return fallback;
-}
-
-/** abilities available to the species in this gen ('' filtered out — gen 1/2 have none) */
-export function genAbilitiesOf(vgId: string, nameOrSlug: string | null | undefined): string[] {
-  const sp = genSpecies(vgId, nameOrSlug);
-  if (!sp?.exists) return [];
-  return [sp.abilities[0], sp.abilities[1], sp.abilities.H]
-    .filter((a): a is NonNullable<typeof a> => !!a)
-    .map(String);
-}
+export {
+  genAbilitiesOf,
+  genAbilityRows,
+  genFor,
+  genHasMechanics,
+  genMoveOf,
+  genSpecies,
+  genStatsOf,
+  genTypesOf,
+} from './gen-dex';
+export type { GenMoveMeta, GenStatBlock } from './gen-dex';
+import { genAbilitiesOf, genFor, genHasMechanics, genSpecies } from './gen-dex';
 
 /** all items existing in this gen (held items arrive gen 2) */
 export function genItems(vgId: string): string[] {
@@ -103,21 +82,6 @@ export function genNatures(vgId: string): Nature[] {
   const out: Nature[] = [];
   for (const n of gen.natures) if (n.exists) out.push(n);
   return out;
-}
-
-/* Version-group overrides where game mechanics diverge from the plain
- * generation rules (analogous to fieldMechanicsForVersionGroup in
- * versus-context.ts): LGPE has no abilities and no held items in battle;
- * Legends: Arceus has neither abilities nor held items. */
-const MECHANICS_OVERRIDES: Partial<Record<string, Partial<Record<'abilities' | 'items' | 'natures' | 'evs', boolean>>>> = {
-  'lets-go-pikachu-eevee': { abilities: false, items: false },
-  'legends-arceus': { abilities: false, items: false },
-};
-
-export function genHasMechanics(vgId: string): { abilities: boolean; items: boolean; natures: boolean; evs: boolean } {
-  const g = versionGroupById(vgId).gen;
-  const base = { abilities: g >= 3, items: g >= 2, natures: g >= 3, evs: g >= 3 };
-  return { ...base, ...MECHANICS_OVERRIDES[vgId] };
 }
 
 /* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ----------

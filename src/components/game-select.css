@@ -37,6 +37,11 @@
   overflow: hidden;
 }
 
+.gs-dropdown-center {
+  left: 50%;
+  right: auto;
+}
+
 /* scrollable list — gold scrollbar must be VISIBLE so users notice
  * that the list continues past the first generations */
 .gs-list {

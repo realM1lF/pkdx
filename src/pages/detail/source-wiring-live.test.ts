@@ -1,9 +1,11 @@
 /* Live PokéAPI wiring — real payloads, every canonical edition × method.
  * Skips only if the network is down. Failure = we drifted from the source. */
 import { describe, expect, it } from 'vitest';
+import { genAbilityRows, genMoveOf, genTypesOf } from '@/lib/gen-dex';
 import { learnsetFor, type LearnMethod } from '@/lib/move-pool';
 import { pokemonTypes, statOf, totalBaseStats } from '@/lib/pokeapi';
 import { STAT_ORDER } from '@/lib/types';
+import type { PokemonType } from '@/lib/types';
 import type { Pokemon } from '@/lib/types';
 import { VERSION_GROUPS } from '@/lib/version-groups';
 
@@ -87,6 +89,21 @@ describe('live PokéAPI — sample species, all editions × methods', () => {
       const hisui = loaded[7]!.p;
       expect(learnsetFor(hisui, 'legends-arceus', 'level-up').length).toBeGreaterThan(0);
       expect(learnsetFor(hisui, 'red-blue', 'level-up')).toEqual([]);
+
+      const magnemite = loaded[3]!.p;
+      const apiMag = pokemonTypes(magnemite) as PokemonType[];
+      expect(genTypesOf('red-blue', magnemite.name, apiMag)).toEqual(['electric']);
+      expect(genTypesOf('gold-silver', magnemite.name, apiMag)).toEqual(['electric', 'steel']);
+
+      const clefable = loaded[2]!.p;
+      const apiCle = pokemonTypes(clefable) as PokemonType[];
+      expect(genTypesOf('black-white', clefable.name, apiCle)).toEqual(['normal']);
+      expect(genTypesOf('x-y', clefable.name, apiCle)).toEqual(['fairy']);
+
+      expect(genAbilityRows('red-blue', charizard.name)).toEqual([]);
+      expect(genAbilityRows('emerald', charizard.name).map((a) => a.slug)).toEqual(['blaze']);
+      expect(genMoveOf('firered-leafgreen', 'thunderbolt')?.power).toBe(95);
+      expect(genMoveOf('x-y', 'thunderbolt')?.power).toBe(90);
     },
     60_000,
   );

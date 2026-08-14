@@ -261,3 +261,43 @@
 .dx-moves-table thead th.text-center {
   text-align: center;
 }
+
+/* edition dock — rest (chrome) vs stuck (centered under navbar) */
+.dx-edition-dock {
+  position: relative;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 201, 69, 0.38);
+  background: rgba(5, 6, 10, 0.55);
+  backdrop-filter: blur(10px) saturate(1.2);
+}
+.dx-edition-dock-stuck {
+  border-color: rgba(246, 201, 69, 0.62);
+  background: rgba(5, 6, 10, 0.88);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(246, 201, 69, 0.35),
+    0 0 32px rgba(246, 201, 69, 0.22);
+  padding: 5px 7px 5px 12px;
+}
+.dx-edition-trigger.gs-trigger,
+.dx-edition-trigger-stuck.gs-trigger {
+  height: 28px;
+  border-color: rgba(246, 201, 69, 0.28);
+  background: rgba(23, 27, 39, 0.7);
+  color: #f4f6fc;
+}
+.dx-edition-trigger-stuck.gs-trigger {
+  height: 30px;
+  border-color: rgba(246, 201, 69, 0.5);
+  background: rgba(23, 27, 39, 0.95);
+}
+.dx-edition-trigger.gs-trigger:hover,
+.dx-edition-trigger-stuck.gs-trigger:hover {
+  border-color: rgba(246, 201, 69, 0.7);
+  box-shadow: 0 0 16px rgba(246, 201, 69, 0.18);
+}

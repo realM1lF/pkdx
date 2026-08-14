@@ -19,7 +19,7 @@ import { formIdentity } from '@/lib/dex-forms-catalog';
 import FormStrip from './FormStrip';
 import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { formatHeight, formatWeight, speciesExtras, typeRgb } from './data';
+import { flavorMatchesGames, formatHeight, formatWeight, speciesExtras, typeRgb } from './data';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -101,10 +101,13 @@ function CatchMeter({ rate }: { rate: number }) {
 interface HeroPanelProps {
   pokemon: Pokemon;
   species: PokemonSpecies | null;
+  types?: PokemonType[];
+  abilities?: Array<{ slug: string; hidden: boolean }>;
+  flavorGames?: readonly string[];
 }
 
-export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
-  const types = pokemonTypes(pokemon);
+export default function HeroPanel({ pokemon, species, types: typesProp, abilities: abilitiesProp, flavorGames }: HeroPanelProps) {
+  const types = typesProp ?? pokemonTypes(pokemon);
   const primary = types[0] ?? 'normal';
   const secondary = types[1];
   const { shiny: globalShiny } = useShiny();
@@ -130,14 +133,17 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const versionChips = useMemo(() => {
     const seen = new Set<string>();
     const out: Array<{ version: string; text: string }> = [];
-    for (let i = flavors.length - 1; i >= 0 && out.length < 6; i--) {
-      if (!seen.has(flavors[i].version)) {
-        seen.add(flavors[i].version);
-        out.push(flavors[i]);
+    const scoped = flavorGames?.length
+      ? flavors.filter((f) => flavorMatchesGames(f.version, flavorGames))
+      : flavors;
+    for (let i = scoped.length - 1; i >= 0 && out.length < 6; i--) {
+      if (!seen.has(scoped[i].version)) {
+        seen.add(scoped[i].version);
+        out.push(scoped[i]);
       }
     }
     return out;
-  }, [flavors]);
+  }, [flavors, flavorGames]);
   const [version, setVersion] = useState<string | null>(null);
   const activeFlavor = versionChips.find((f) => f.version === version) ?? versionChips[0];
 
@@ -145,17 +151,24 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
   const genus = lang === 'de' ? genusOfPokemon(ident.speciesId, lang) : species ? englishGenus(species) : '';
   const gen = GENERATIONS[ident.gen - 1] ?? genOf(ident.speciesId);
   const hiddenAbbr = t('detail.hero.hiddenAbbr');
-  const abilityNames = pokemon.abilities.map(
-    (a) => nameOfAbility(a.ability.name, lang) + (a.is_hidden ? ` ${hiddenAbbr}` : ''),
+  const abilityRows = abilitiesProp ?? pokemon.abilities.map((a) => ({ slug: a.ability.name, hidden: a.is_hidden }));
+  const abilityNames = abilityRows.map(
+    (a) => nameOfAbility(a.slug, lang) + (a.hidden ? ` ${hiddenAbbr}` : ''),
   );
   const eggGroups = extras.egg_groups?.map((g) => nameOfEggGroup(g.name, lang)).join(' · ') || '—';
   const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
-  /* reset shiny per entry */
+  /* reset shiny per entry; drop flavor chip when the edition games change */
   const [prevId, setPrevId] = useState(pokemon.id);
+  const flavorKey = flavorGames?.join(',') ?? '';
+  const [prevFlavorKey, setPrevFlavorKey] = useState(flavorKey);
   if (prevId !== pokemon.id) {
     setPrevId(pokemon.id);
     setShiny(globalShiny);
+    setVersion(null);
+  }
+  if (prevFlavorKey !== flavorKey) {
+    setPrevFlavorKey(flavorKey);
     setVersion(null);
   }
 
@@ -419,14 +432,18 @@ export default function HeroPanel({ pokemon, species }: HeroPanelProps) {
             </Fact>
             <Fact label={t('detail.hero.baseExp')}>{pokemon.base_experience ?? '—'}</Fact>
             <Fact label={t('detail.hero.abilities')} span={2}>
-              <span className="text-[12px]" title={abilityNames.join(' · ')}>
-                {abilityNames.map((n, i) => (
-                  <span key={n}>
-                    {i > 0 && <span className="text-tx-muted"> · </span>}
-                    <span className={n.endsWith(hiddenAbbr) ? 'text-gold' : undefined}>{n}</span>
-                  </span>
-                ))}
-              </span>
+              {abilityNames.length ? (
+                <span className="text-[12px]" title={abilityNames.join(' · ')}>
+                  {abilityNames.map((n, i) => (
+                    <span key={n}>
+                      {i > 0 && <span className="text-tx-muted"> · </span>}
+                      <span className={n.endsWith(hiddenAbbr) ? 'text-gold' : undefined}>{n}</span>
+                    </span>
+                  ))}
+                </span>
+              ) : (
+                <span className="text-[12px] text-gold">{t('detail.hero.noAbilities')}</span>
+              )}
             </Fact>
             <Fact label={t('detail.hero.eggGroups')} span={2}>
               <span className="text-[12px]">{eggGroups}</span>

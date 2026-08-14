@@ -147,17 +147,23 @@ export default function SideStack({
   pokemon,
   species,
   versionGroup,
+  types: typesProp,
+  abilities: abilitiesProp,
 }: {
   pokemon: Pokemon;
   species: PokemonSpecies | null;
-  /** move-pool version group; defaults to newest VG that teaches this Pokémon */
+  /** edition version group; defaults to newest VG that teaches this Pokémon */
   versionGroup?: string;
+  types?: string[];
+  abilities?: Array<{ slug: string; hidden: boolean }>;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const vg = versionGroup || newestMoveVersionGroup(pokemon.moves);
   const gen = genOfVersionGroup(vg);
-  const matchups = computeMatchups(pokemonTypes(pokemon), gen);
+  const types = typesProp ?? pokemonTypes(pokemon);
+  const abilities = abilitiesProp ?? pokemon.abilities.map((a) => ({ slug: a.ability.name, hidden: a.is_hidden }));
+  const matchups = computeMatchups(types, gen);
   const extras = speciesExtras(species);
   const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
@@ -171,11 +177,15 @@ export default function SideStack({
     >
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
         <MiniPanel eyebrow={t('detail.side.traitsEyebrow')} title={t('detail.side.abilitiesTitle')}>
-          <ul>
-            {pokemon.abilities.map((a) => (
-              <AbilityRow key={a.ability.name} name={a.ability.name} hidden={a.is_hidden} pokemonId={pokemon.id} />
-            ))}
-          </ul>
+          {abilities.length ? (
+            <ul>
+              {abilities.map((a) => (
+                <AbilityRow key={a.slug} name={a.slug} hidden={a.hidden} pokemonId={pokemon.id} />
+              ))}
+            </ul>
+          ) : (
+            <p className="font-sans text-[12px] font-semibold text-gold">{t('detail.side.noAbilities')}</p>
+          )}
         </MiniPanel>
       </motion.div>
 

@@ -183,10 +183,13 @@ export default function WhereToFind({
   id,
   highlight,
   version: versionParam,
+  editionGames,
 }: {
   id: number;
   highlight?: MapsFromRef | null;
   version?: string | null;
+  /** when set and `?v=` is empty/invalid, keep only these games (the active edition) */
+  editionGames?: readonly string[];
 }) {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -211,9 +214,17 @@ export default function WhereToFind({
     };
   }, [id]);
 
-  const versions = useMemo(() => (areas ? encounterVersions(areas) : []), [areas]);
+  const versions = useMemo(() => {
+    const all = areas ? encounterVersions(areas) : [];
+    if (!editionGames?.length) return all;
+    const allowed = new Set(editionGames);
+    return all.filter((v) => allowed.has(v));
+  }, [areas, editionGames]);
   const active = versionParam && versions.includes(versionParam) ? versionParam : null;
-  const rows = useMemo(() => (areas ? aggregate(areas, active) : []), [areas, active]);
+  const rows = useMemo(
+    () => (areas ? aggregate(areas, active ?? (editionGames?.length ? editionGames : null)) : []),
+    [areas, active, editionGames],
+  );
   /* wild encounters vs. gift/static/trade — separate sections so a one-off
    * prize (e.g. Clefable @ Celadon prize corner, Blue JP only) never reads
    * as a wild encounter */
