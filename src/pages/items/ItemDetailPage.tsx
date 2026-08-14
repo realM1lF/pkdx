@@ -123,7 +123,7 @@ export default function ItemDetailPage() {
           <ol className="flex flex-wrap items-center gap-1 font-sans text-[12px] font-semibold text-tx-muted">
             <li>
               <LocaleLink to="/items" className="transition-colors hover:text-gold">
-                Items
+                {t('nav.items')}
               </LocaleLink>
             </li>
             <li aria-hidden className="flex items-center">

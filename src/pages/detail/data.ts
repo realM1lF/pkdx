@@ -2,7 +2,7 @@
  * Page-local only (density-addendum §5); shared lib files are untouched. */
 import { cachedJson, displayName } from '@/lib/pokeapi';
 import i18n from '@/i18n';
-import { nameOfItem, nameOfType, type Lang } from '@/lib/i18n-data';
+import { nameOfItem, nameOfLocation, nameOfMove, nameOfPokemon, nameOfType, type Lang } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource, PokemonSpecies, PokemonType } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
 import { genSplitMatchupsForSide } from '@/lib/versus';
@@ -26,25 +26,36 @@ export function speciesExtras(s: PokemonSpecies | null): SpeciesExtras {
 
 /* ---------- ability details (lazy one-line descriptions) ---------- */
 
-interface AbilityPayload {
+export interface AbilityPayload {
   name: string;
   effect_entries: Array<{ short_effect: string; language: NamedAPIResource }>;
   flavor_text_entries?: Array<{ flavor_text: string; language: NamedAPIResource }>;
 }
 
-export function getAbilityShort(name: string, lang: Lang = 'en'): Promise<string> {
-  return cachedJson<AbilityPayload>(`ability:${name}`, `https://pokeapi.co/api/v2/ability/${name}`).then((a) => {
-    // de: PokéAPI ships localized flavor_text_entries (short in-game text) for most
-    // abilities — the long effect_entries stay en-only (documented data limitation)
-    if (lang === 'de') {
-      const fl = a.flavor_text_entries?.filter((f) => f.language.name === 'de').pop();
-      if (fl) return fl.flavor_text.replace(/[\f\n\r]+/g, ' ');
-    }
-    const en = a.effect_entries.find((e) => e.language.name === 'en');
-    if (en) return en.short_effect;
-    const fl = a.flavor_text_entries?.filter((f) => f.language.name === 'en').pop();
-    return fl ? fl.flavor_text.replace(/[\f\n\r]+/g, ' ') : '';
-  });
+export interface AbilityShort {
+  text: string;
+  enFallback: boolean;
+}
+
+function flattenFlavor(text: string): string {
+  return text.replace(/[\f\n\r]+/g, ' ');
+}
+
+export function pickAbilityShort(a: AbilityPayload, lang: Lang): AbilityShort {
+  if (lang === 'de') {
+    const fl = a.flavor_text_entries?.filter((f) => f.language.name === 'de').pop();
+    if (fl) return { text: flattenFlavor(fl.flavor_text), enFallback: false };
+  }
+  const en = a.effect_entries.find((e) => e.language.name === 'en');
+  const fl = a.flavor_text_entries?.filter((f) => f.language.name === 'en').pop();
+  const text = en?.short_effect ?? (fl ? flattenFlavor(fl.flavor_text) : '');
+  return { text, enFallback: lang === 'de' && Boolean(text) };
+}
+
+export function getAbilityShort(name: string, lang: Lang = 'en'): Promise<AbilityShort> {
+  return cachedJson<AbilityPayload>(`ability:${name}`, `https://pokeapi.co/api/v2/ability/${name}`).then((a) =>
+    pickAbilityShort(a, lang),
+  );
 }
 
 /* ---------- version groups (move pool picker, newest → oldest) ---------- */
@@ -185,16 +196,16 @@ export function evoCondition(details: EvolutionDetail[], lang: Lang = 'en'): Evo
     parts.push(t('detail.evo.heldItem', { item: nameOfItem(d.held_item.name, lang) }));
     if (!itemIcon) itemIcon = `${ITEMS_BASE}/${d.held_item.name}.png`;
   }
-  if (d.known_move) parts.push(t('detail.evo.knownMove', { move: titleCase(d.known_move.name) }));
+  if (d.known_move) parts.push(t('detail.evo.knownMove', { move: nameOfMove(d.known_move.name, lang) }));
   if (d.min_beauty != null) parts.push(t('detail.evo.beauty'));
-  if (d.location) parts.push(t('detail.evo.location', { location: titleCase(d.location.name) }));
+  if (d.location) parts.push(t('detail.evo.location', { location: nameOfLocation(d.location.name, lang) }));
   if (d.gender != null) parts.push(t(d.gender === 1 ? 'detail.evo.female' : 'detail.evo.male'));
   if (d.needs_overworld_rain) parts.push(t('detail.evo.rain'));
-  if (d.party_species) parts.push(t('detail.evo.partySpecies', { name: titleCase(d.party_species.name) }));
+  if (d.party_species) parts.push(t('detail.evo.partySpecies', { name: nameOfPokemon(d.party_species.name, lang) }));
   if (d.party_type) parts.push(t('detail.evo.partyType', { type: nameOfType(d.party_type.name, lang) }));
   if (d.relative_physical_stats != null && d.relative_physical_stats !== 0)
     parts.push(t(d.relative_physical_stats > 0 ? 'detail.evo.atkGtDef' : 'detail.evo.atkLtDef'));
-  if (d.trade_species) parts.push(t('detail.evo.tradeSpecies', { name: titleCase(d.trade_species.name) }));
+  if (d.trade_species) parts.push(t('detail.evo.tradeSpecies', { name: nameOfPokemon(d.trade_species.name, lang) }));
   if (d.turn_upside_down) parts.push(t('detail.evo.upsideDown'));
   // rare triggers (spin, tower-of-darkness, …) fall back to the English slug label
   if (!parts.length) parts.push(titleCase(d.trigger.name));

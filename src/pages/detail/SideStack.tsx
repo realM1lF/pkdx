@@ -50,12 +50,12 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
   const { t } = useTranslation();
   const lang = useLanguage();
   const entityModal = useEntityModal();
-  const [desc, setDesc] = useState<string | null>(null);
+  const [desc, setDesc] = useState<{ text: string; enFallback: boolean } | null>(null);
   useEffect(() => {
     let on = true;
     getAbilityShort(name, lang)
       .then((d) => on && setDesc(d))
-      .catch(() => on && setDesc(''));
+      .catch(() => on && setDesc({ text: '', enFallback: false }));
     return () => {
       on = false;
     };
@@ -84,9 +84,14 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
         {desc == null ? (
           <span className="dx-skel mt-1 block h-3 w-4/5" />
         ) : (
-          <p className="truncate font-sans text-[11px] leading-snug text-tx-muted" title={desc}>
-            {desc || t('detail.side.noDesc')}
-          </p>
+          <>
+            <p className="truncate font-sans text-[11px] leading-snug text-tx-muted" title={desc.text}>
+              {desc.text || t('detail.side.noDesc')}
+            </p>
+            {desc.enFallback && (
+              <p className="truncate font-sans text-[10px] italic text-gold/80">{t('desc.enFallback')}</p>
+            )}
+          </>
         )}
       </div>
       <EntityDescModal {...entityModal.props} />

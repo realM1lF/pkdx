@@ -1197,6 +1197,7 @@
         "deadRelease": "Freigabe",
         "deadReleaseTip": "Erlegen — Tod=Freigabe ist an, dieses Pokémon muss freigelassen werden und darf nicht mehr genutzt werden.",
         "missed": "Verpasst",
+        "duped": "Dupe",
         "lost": "Link-Verlust"
       },
       "cellTipLost": "{{name}} — LV {{level}} · {{status}} · {{route}}"
@@ -2110,7 +2111,7 @@
       "revival": "Belebung",
       "pp-recovery": "AP-Auffrischung",
       "vitamins": "Vitamine",
-      "stat-boosts": "Werte-Boosts",
+      "stat-boosts": "Werte",
       "spelunking": "Höhlenforschung",
       "flutes": "Flöten",
       "collectibles": "Sammlerstücke",
@@ -2181,7 +2182,7 @@
       "battle": "Kampf",
       "machines": "TMs",
       "evolution": "Entwicklung",
-      "boost": "Boosts",
+      "boost": "Stärkung",
       "valuables": "Wertvolles",
       "key": "Basis-Items",
       "picnic": "Zutaten",
@@ -2559,7 +2560,7 @@
         "intro": "Der EP-Teiler verteilt Erfahrungspunkte aufs ganze Team, auch auf Pokémon, die nicht gekämpft haben. In Feuerrot/Blattgrün ist er ein Trage-Item, das du auf Route 15 geschenkt bekommst. Er ist der einfachste Weg, schwache Teammitglieder ohne Extra-Training mitzuziehen.",
         "qa1Lead": "50 % der Kampf-EP gehen an die Träger, der Rest an die Kämpfer.",
         "qa1Body": "In Generation 3 läuft die Rechnung so: Die Hälfte der Erfahrungspunkte wird gleichmäßig auf alle EP-Teiler-Träger aufgeteilt, die andere Hälfte auf die Pokémon, die tatsächlich gekämpft haben. Kämpft dein Starter und ein Bankhocker trägt den Teiler, bekommen beide je die Hälfte. Der Träger muss den Kampf nicht sehen und erleidet keinen Schaden. Der einzige echte Preis ist der belegte Trage-Item-Slot. Ab Generation 6 ist der EP-Teiler ein Schlüssel-Item, das automatisch fürs ganze Team gilt.",
-        "qa2Body": "Das Torhaus steht östlich von Fuchsia City, der Assistent wartet im Obergeschoss. Bedingung sind 50 gefangene Arten im Pokédex. Wer auf dem Weg nach Fuchsia normal gefangen hat, liegt meist schon darüber.",
+        "qa2Body": "Das Torhaus steht östlich von Fuchsania City, der Assistent wartet im Obergeschoss. Bedingung sind 50 gefangene Arten im Pokédex. Wer auf dem Weg nach Fuchsania normal gefangen hat, liegt meist schon darüber.",
         "verdictLead": "Im Story-Run immer einen Slot wert.",
         "verdict": "Vor allem in Nuzlocke-Runs ist der EP-Teiler stark, weil Ersatz-Pokémon aus der Box ohne Grind nachziehen. Die modernen Spiele aktivieren ihn standardmäßig fürs ganze Team, Feuerrot/Blattgrün verlangt dafür einen Trage-Item-Slot. Spätestens vor der Pokémon-Liga lohnt es sich, das komplette Team auf Arenaleiter-Niveau zu ziehen."
       },
@@ -2639,7 +2640,7 @@
         "intro": "Die Prunusbeere heilt jede Statusveränderung des Trägers, sobald sie auftritt. Sie ist die Universallösung gegen Schlaf, Verbrennung und Co. und in Feuerrot/Blattgrün versteckt zu finden.",
         "qa1Lead": "Wird bei jeder Statusveränderung automatisch gegessen, heilt auch Verwirrung.",
         "qa1Body": "Sie deckt alles ab: Schlaf, Paralyse, Verbrennung, Vergiftung, Einfrierung und Verwirrung. Einzel-Beeren wie die Amrenabeere heilen nur einen Zustand, die Prunusbeere ersetzt sie alle in einem Slot. Verzehrt wird sie in dem Moment, in dem der Status trifft, bevor Schaden oder eine verlorene Runde entsteht. Auf Setup-Sweepern sichert sie genau die Runde, in der der Gegner den Aufbau mit Hypnose oder Donnerwelle stoppen will.",
-        "qa2Body": "Auch hier gilt: versteckte Fundstellen, der Detektor hilft. Route 8 liegt östlich von Saffronia City und ist früh erreichbar, Route 23 erst im Endgame auf dem Weg zur Indigo Plateau.",
+        "qa2Body": "Auch hier gilt: versteckte Fundstellen, der Detektor hilft. Route 8 liegt östlich von Saffronia City und ist früh erreichbar, Route 23 erst im Endgame auf dem Weg zum Indigo-Plateau.",
         "verdictLead": "Die Versicherung für deinen Carry.",
         "verdict": "Eine Hypnose zur falschen Zeit killt ganze Sweeps, die Prunusbeere neutralisiert genau diesen Moment. Im Versus ist sie Standard auf Tanz-Sweepern, in der Story spart sie Heilitems gegen Arenen mit Status-Spam. Weil sie einmalig wirkt, ersetzt sie keine echte Heilung über lange Kämpfe."
       },

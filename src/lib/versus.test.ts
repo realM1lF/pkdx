@@ -260,7 +260,11 @@ describe('genMatchupsForSide', () => {
 
 describe('genHasMechanics version-group overrides', () => {
   it('LGPE has no abilities and no held items', () => {
-    expect(genHasMechanics('lets-go-pikachu-eevee')).toMatchObject({ abilities: false, items: false });
+    expect(genHasMechanics('lets-go-pikachu-eevee')).toMatchObject({
+      abilities: false,
+      items: false,
+      evs: false,
+    });
   });
 
   it('Legends: Arceus has no abilities and no held items', () => {

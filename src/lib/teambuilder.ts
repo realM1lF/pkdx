@@ -332,6 +332,7 @@ export function addToFirstFreeSlot(
 
 export type LegalityReasonKey =
   | 'species'
+  | 'noLearnset'
   | 'level'
   | 'move'
   | 'noItems'
@@ -378,7 +379,7 @@ export function slotLegality(slot: TeamSlot, vgId: string, pokemon: Pokemon | un
 
   if (pokemon) {
     const legal = new Set(legalMoves(pokemon, vgId).map((m) => m.name));
-    if (legal.size === 0) reasons.push({ key: 'species' });
+    if (legal.size === 0 && sp?.exists) reasons.push({ key: 'noLearnset' });
     for (const mv of slot.moves) {
       if (mv && !legal.has(mv)) reasons.push({ key: 'move', param: mv });
     }

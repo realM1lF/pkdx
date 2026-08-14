@@ -41,7 +41,7 @@ export function genAbilitiesOf(vgId: string, nameOrSlug: string | null | undefin
 }
 
 const MECHANICS_OVERRIDES: Partial<Record<string, Partial<Record<'abilities' | 'items' | 'natures' | 'evs', boolean>>>> = {
-  'lets-go-pikachu-eevee': { abilities: false, items: false },
+  'lets-go-pikachu-eevee': { abilities: false, items: false, evs: false },
   'legends-arceus': { abilities: false, items: false },
 };
 

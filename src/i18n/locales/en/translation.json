@@ -1197,6 +1197,7 @@
         "deadRelease": "Release",
         "deadReleaseTip": "Fainted — Death=Release is on, so this Pokémon must be released and can't be used again.",
         "missed": "Missed",
+        "duped": "Duped",
         "lost": "Link-Lost"
       },
       "cellTipLost": "{{name}} — LV {{level}} · {{status}} · {{route}}"

@@ -5,6 +5,7 @@ import {
   allLocationIds,
   artifactFor,
   orreRegionForGame,
+  shadowNotesToShow,
   shadowsFor,
   snagSpeciesForRoute,
 } from './orre'
@@ -69,5 +70,31 @@ describe('orre artifacts', () => {
     expect(orreRegionForGame('xd')).toBe(orreRegionForGame('xd'))
     expect(orreRegionForGame('colosseum')).toBe(orreRegionForGame('colosseum'))
     expect(orreRegionForGame('xd')).not.toBe(orreRegionForGame('colosseum'))
+  })
+})
+
+describe('shadowNotesToShow', () => {
+  it('returns notes when the shadow has a notes string', () => {
+    expect(shadowNotesToShow({ notes: 'Only one starter at Phenac.' })).toEqual({
+      notes: 'Only one starter at Phenac.',
+    })
+  })
+
+  it('returns reappear.note when that is the only text', () => {
+    expect(shadowNotesToShow({ reappear: { note: 'Miror Radar after the credits.' } })).toEqual({
+      reappearNote: 'Miror Radar after the credits.',
+    })
+  })
+
+  it('returns both when notes and reappear.note are present', () => {
+    expect(
+      shadowNotesToShow({
+        notes: 'Snag before the cipher admin leaves.',
+        reappear: { note: 'Returns at Realgam.' },
+      }),
+    ).toEqual({
+      notes: 'Snag before the cipher admin leaves.',
+      reappearNote: 'Returns at Realgam.',
+    })
   })
 })

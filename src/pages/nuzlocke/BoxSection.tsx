@@ -18,6 +18,7 @@ import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { PixelLabel } from './ui';
 import { ENC_DND_MIME, encDnd } from './dnd';
+import { boxStatusBadgeKey } from './box-status';
 
 type BoxFilter = 'all' | 'alive' | 'fallen' | 'missed';
 
@@ -59,10 +60,10 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
       </span>
     );
   }
-  /* missed + duped */
+  /* missed vs duped — same muted chip, distinct label */
   return (
     <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-tx-muted">
-      🌫 {t('nuz.box.badge.missed')}
+      🌫 {t(boxStatusBadgeKey(enc.status))}
     </span>
   );
 }

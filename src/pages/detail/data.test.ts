@@ -3,7 +3,9 @@
 import { describe, expect, it } from 'vitest';
 import { genSplitMatchupsForSide } from '@/lib/versus';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS } from '@/lib/version-groups';
-import { computeMatchups, editionFromGameParam, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
+import { loadGermanData, nameOfLocation, nameOfMove, nameOfPokemon } from '@/lib/i18n-data';
+import type { EvolutionDetail, NamedAPIResource } from '@/lib/types';
+import { computeMatchups, editionFromGameParam, evoCondition, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, pickAbilityShort, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
 
 function allAttacking(m: ReturnType<typeof computeMatchups>): string[] {
   return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune];
@@ -159,5 +161,84 @@ describe('detail move-pool version groups (every edition the picker can show)', 
     expect(flavorMatchesGames('Omega Ruby', ['omega-ruby', 'alpha-sapphire'])).toBe(true);
     expect(flavorMatchesGames('Lets Go Pikachu', ['lets-go-pikachu', 'lets-go-eevee'])).toBe(true);
     expect(flavorMatchesGames('Scarlet', [])).toBe(true);
+  });
+});
+
+const named = (name: string): NamedAPIResource => ({ name, url: '' });
+
+function evoDetail(partial: Partial<EvolutionDetail>): EvolutionDetail {
+  return {
+    min_level: null,
+    item: null,
+    trigger: named('level-up'),
+    held_item: null,
+    time_of_day: '',
+    min_happiness: null,
+    min_affection: null,
+    known_move_type: null,
+    location: null,
+    gender: null,
+    known_move: null,
+    min_beauty: null,
+    needs_overworld_rain: false,
+    party_species: null,
+    party_type: null,
+    relative_physical_stats: null,
+    trade_species: null,
+    turn_upside_down: false,
+    ...partial,
+  };
+}
+
+describe('pickAbilityShort', () => {
+  const enOnly = {
+    name: 'stench',
+    effect_entries: [
+      { short_effect: 'Has a 10% chance of making the foe flinch.', language: named('en') },
+    ],
+    flavor_text_entries: [] as Array<{ flavor_text: string; language: NamedAPIResource }>,
+  };
+
+  it('marks EN fallback when DE flavor is missing', () => {
+    expect(pickAbilityShort(enOnly, 'de')).toEqual({
+      text: 'Has a 10% chance of making the foe flinch.',
+      enFallback: true,
+    });
+  });
+
+  it('does not mark fallback for English or when DE flavor exists', () => {
+    expect(pickAbilityShort(enOnly, 'en')).toEqual({
+      text: 'Has a 10% chance of making the foe flinch.',
+      enFallback: false,
+    });
+    const withDe = {
+      ...enOnly,
+      flavor_text_entries: [{ flavor_text: 'Lässt den Gegner zurückschrecken.', language: named('de') }],
+    };
+    expect(pickAbilityShort(withDe, 'de')).toEqual({
+      text: 'Lässt den Gegner zurückschrecken.',
+      enFallback: false,
+    });
+  });
+});
+
+describe('evoCondition — localized entity names', () => {
+  it('uses nameOfMove / nameOfPokemon / nameOfLocation instead of titleCase', async () => {
+    await loadGermanData();
+    const known = evoCondition([evoDetail({ known_move: named('thunder-punch') })], 'de');
+    expect(known.label).toContain(nameOfMove('thunder-punch', 'de'));
+    expect(known.label).not.toContain('Thunder Punch');
+
+    const party = evoCondition([evoDetail({ party_species: named('charizard') })], 'de');
+    expect(party.label).toContain(nameOfPokemon('charizard', 'de'));
+    expect(party.label).not.toContain('Charizard');
+
+    const trade = evoCondition([evoDetail({ trade_species: named('mime-jr') })], 'en');
+    expect(trade.label).toContain(nameOfPokemon('mime-jr', 'en'));
+    expect(trade.label).toContain('Mime Jr.');
+
+    const loc = evoCondition([evoDetail({ location: named('cerulean-cave') })], 'de');
+    expect(loc.label).toContain(nameOfLocation('cerulean-cave', 'de'));
+    expect(loc.label).not.toContain('Cerulean Cave');
   });
 });

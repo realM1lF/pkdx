@@ -42,8 +42,8 @@ describe('legalMoves — Let\'s Go version-group alias', () => {
   });
 });
 
-describe('slotLegality — empty learnset flags species', () => {
-  it('flags Blaziken as illegal in FRLG when the payload has only Hoenn-edition moves', () => {
+describe('slotLegality — empty learnset vs species-not-in-game', () => {
+  it('flags Blaziken in FRLG as noLearnset: gen 3 has the species, the FRLG payload has no moves', () => {
     const slot = emptySlot();
     slot.pokemon = 'blaziken';
     slot.pokemonId = 257;
@@ -53,11 +53,40 @@ describe('slotLegality — empty learnset flags species', () => {
     ]);
     const frlg = slotLegality(slot, 'firered-leafgreen', payload);
     expect(frlg.legal).toBe(false);
-    expect(frlg.reasons.some((r) => r.key === 'species')).toBe(true);
+    expect(frlg.reasons.some((r) => r.key === 'noLearnset')).toBe(true);
+    expect(frlg.reasons.some((r) => r.key === 'species')).toBe(false);
 
     const emerald = slotLegality(slot, 'emerald', payload);
     expect(emerald.reasons.some((r) => r.key === 'species')).toBe(false);
+    expect(emerald.reasons.some((r) => r.key === 'noLearnset')).toBe(false);
     expect(emerald.legal).toBe(true);
+  });
+
+  it('keeps species when the mon is not in the VG gen, even if the learnset is also empty', () => {
+    const slot = emptySlot();
+    slot.pokemon = 'lucario';
+    slot.pokemonId = 448;
+    const payload = mon([
+      { move: 'aura-sphere', vg: 'diamond-pearl', method: 'level-up', level: 1 },
+    ]);
+    const frlg = slotLegality(slot, 'firered-leafgreen', payload);
+    expect(frlg.legal).toBe(false);
+    expect(frlg.reasons.some((r) => r.key === 'species')).toBe(true);
+    expect(frlg.reasons.some((r) => r.key === 'noLearnset')).toBe(false);
+  });
+
+  it('flags an in-VG species with an empty learnset as noLearnset, not species', () => {
+    const slot = emptySlot();
+    slot.pokemon = 'deoxys';
+    slot.pokemonId = 386;
+    const payload = mon([
+      { move: 'psycho-boost', vg: 'diamond-pearl', method: 'level-up', level: 89 },
+      { move: 'zen-headbutt', vg: 'scarlet-violet', method: 'machine', level: 0 },
+    ]);
+    const frlg = slotLegality(slot, 'firered-leafgreen', payload);
+    expect(frlg.legal).toBe(false);
+    expect(frlg.reasons.some((r) => r.key === 'noLearnset')).toBe(true);
+    expect(frlg.reasons.some((r) => r.key === 'species')).toBe(false);
   });
 
   it('keeps Charizard legal in FRLG when the payload has FRLG moves', () => {

@@ -15,7 +15,7 @@ import type { PokemonType } from '@/lib/types'
 import { bootNameIndex } from '@/lib/pokeapi'
 import type { DexIndexEntry } from '@/lib/types'
 import { counts, getStatus, setStatus, subscribeOrreProgress } from '@/lib/orre-progress'
-import { pokeSpotArtifact, pokeSpots, shadowsFor, ORRE_EXPECTED_COUNTS } from '@/lib/orre'
+import { pokeSpotArtifact, pokeSpots, shadowNotesToShow, shadowsFor, ORRE_EXPECTED_COUNTS } from '@/lib/orre'
 import type { OrreGame, OrreShadow, ShadowStatus } from '@/lib/orre-types'
 import { cn } from '@/lib/utils'
 
@@ -255,6 +255,7 @@ export default function OrreTracker() {
               const monName = entry ? nameOfPokemon(entry.id, lang) : s.species
               const node = region?.nodes.find((n) => n.id === s.locationId)
               const loc = node && region ? nodeName(node, lang) : s.locationId
+              const shown = shadowNotesToShow(s)
               return (
                 <li key={s.id} className="flex min-h-[44px] items-center gap-3 px-3 py-1.5">
                   {entry ? (
@@ -300,9 +301,12 @@ export default function OrreTracker() {
                       <span className="text-tx-muted">{t('orre.location')}: </span>
                       {loc}
                     </div>
-                    {st === 'missed' && s.reappear?.note && (
+                    {shown.notes && (
+                      <p className="mt-0.5 truncate text-[10px] text-tx-muted">{shown.notes}</p>
+                    )}
+                    {st === 'missed' && shown.reappearNote && (
                       <p className="mt-0.5 truncate text-[11px] text-gold/90">
-                        {t('orre.reappears')}: {s.reappear.note}
+                        {t('orre.reappears')}: {shown.reappearNote}
                       </p>
                     )}
                   </div>

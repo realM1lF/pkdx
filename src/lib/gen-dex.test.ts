@@ -47,6 +47,10 @@ describe('genStatsOf — @pkmn when the species is in that gen, else API fallbac
 });
 
 describe('genAbilityRows — mechanics gates', () => {
+  it('LGPE has no EVs (Awakening values, not mainline EVs)', () => {
+    expect(genHasMechanics('lets-go-pikachu-eevee').evs).toBe(false);
+  });
+
   it('Gen 1–2 and LGPE/LA expose no abilities', () => {
     expect(genHasMechanics('red-blue').abilities).toBe(false);
     expect(genHasMechanics('gold-silver').abilities).toBe(false);

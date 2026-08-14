@@ -62,6 +62,17 @@ export function isOrreGame(game: string | null | undefined): game is OrreGame {
   return game === 'colosseum' || game === 'xd'
 }
 
+/** Note strings the tracker can render. `notes` always; `reappear.note` when present. */
+export function shadowNotesToShow(shadow: Pick<OrreShadow, 'notes' | 'reappear'>): {
+  notes?: string
+  reappearNote?: string
+} {
+  const out: { notes?: string; reappearNote?: string } = {}
+  if (shadow.notes) out.notes = shadow.notes
+  if (shadow.reappear?.note) out.reappearNote = shadow.reappear.note
+  return out
+}
+
 /** Species slugs snaggable at a Nuzlocke route_key for an Orre game. */
 export function snagSpeciesForRoute(game: OrreGame, routeKey: string): string[] {
   return shadowsAtLocation(game, routeKey).map((s) => s.species)
