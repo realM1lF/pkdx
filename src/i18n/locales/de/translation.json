@@ -945,7 +945,8 @@
       "white-2": "W2",
       "colosseum": "COLO",
       "xd": "XD"
-    }
+    },
+    "seoPartial": "Rot/Blau steht auf der Live-Karte, nicht auf dieser Seite."
   },
   "nuz": {
     "eyebrow": "PHASE 05 — ÜBERLEBENSPROTOKOLL",
@@ -1730,7 +1731,8 @@
       "ability": "{{name}} nicht verfügbar",
       "noNatures": "Keine Wesen in dieser Gen",
       "nature": "Wesen nicht im Spiel",
-      "noEvs": "Keine FP in dieser Gen"
+      "noEvs": "Keine FP in dieser Gen",
+      "noLearnset": "Kein Learnset in dieser Versionsgruppe"
     },
     "metaGenNote": "Smogon-Referenzsets (Gen 9 OU) — nicht nach deinem Spiel gefiltert",
     "metaGenMismatch": "Dein Team ist Gen {{gen}}. Diese Online-Sets passen oft nicht 1:1",
@@ -3138,5 +3140,29 @@
       "visitorHintMunchlax": "Frisst den Köder, nicht fangbar.",
       "visitorHintBonsly": "Story-Besuch nach der S.S. Libra. Langsam nähern, um es zu seinem Trainer bei ONBS zurückzubringen. Es bleibt nicht im Team."
     }
+  },
+  "honesty": {
+    "editionFallback": "Kein Datensatz für das verlinkte Spiel. Anzeige: {{edition}}.",
+    "catalogTypes": "Typen sind aktuell. Der Gen-Chip filtert nur die Liste.",
+    "formNotInGame": "Diese Form gibt es in der gewählten Edition nicht.",
+    "evoCurrent": "Entwicklung ist aktuell, nicht editionsbezogen.",
+    "seoSnapshot": "Unten FRLG-Stand. Oben folgt das Editionsdock.",
+    "siblingMix": "Raten können Schwesterspiele mischen. Version wählen.",
+    "speciesCurrent": "Fangrate, Maße und Zucht sind aktuelle Artwerte.",
+    "nationalPicker": "Nationaldex. Liste ist nicht auf das gewählte Spiel gefiltert.",
+    "importUnchecked": "Import prüft nicht gegen das gewählte Spiel.",
+    "enOnlySmogon": "Set-Namen sind englische Smogon-Bezeichnungen.",
+    "maxStatExp": "Werte mit max. Stat-Exp.",
+    "defaultEdition": "Simulator startet in SV. Versus-Labor in Feuerrot.",
+    "paddedWild": "Wild-Set, mit Coverage aufgefüllt.",
+    "capUsesRegion": "Cap folgt der Standard-Edition der Region, nicht zwingend dem gewählten Spiel.",
+    "noStoredMoves": "Eigene Seite ist Level-up-Schätzung. Der Run speichert keine Attacken.",
+    "snagLevelUp": "Gesnaggte Schatten rechnen mit Level-up, nicht dem Schatten-Set.",
+    "shadowIdOptional": "Cloud-Shadow-id sync't nur, wenn Migration 15 live liegt.",
+    "starterRandom": "Nur ein Starter in Phenac. Die anderen zwei nach den Credits, zufällig verteilt.",
+    "firstEncounterSet": "Set vom Erstkontakt. Revanche-Baldorfish ggf. ohne Giftstich.",
+    "calcNeutral": "Calc nutzt 31 DV und Ernst. Colosseum würfelt beides.",
+    "modernEffect": "Wirkungszahlen sind moderne Regeln. FRLG kann abweichen. Siehe Q&A.",
+    "locationsFrlgField": "Fundorte sind nur FRLG-Gelände, keine Läden oder Sevii-Eilande."
   }
 }

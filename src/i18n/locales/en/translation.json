@@ -945,7 +945,8 @@
       "white-2": "WHT 2",
       "colosseum": "COLO",
       "xd": "XD"
-    }
+    },
+    "seoPartial": "Red/Blue tables are on the live map, not this page."
   },
   "nuz": {
     "eyebrow": "PHASE 05 — SURVIVAL PROTOCOL",
@@ -1730,7 +1731,8 @@
       "ability": "{{name}} not available",
       "noNatures": "No natures in this gen",
       "nature": "Nature not in game",
-      "noEvs": "No EVs in this gen"
+      "noEvs": "No EVs in this gen",
+      "noLearnset": "No learnset in this version group"
     },
     "metaGenNote": "Smogon Gen 9 OU reference sets — not filtered by your game",
     "metaGenMismatch": "Your team is Gen {{gen}}. These online sets often won’t match 1:1",
@@ -3138,5 +3140,29 @@
       "visitorHintMunchlax": "Eats the bait, cannot be caught.",
       "visitorHintBonsly": "Story visitor after S.S. Libra. Approach slowly to return it to its Trainer at ONBS. It is not kept."
     }
+  },
+  "honesty": {
+    "editionFallback": "No data for the linked game. Showing {{edition}}.",
+    "catalogTypes": "Types are current-gen. The gen chip only filters who appears.",
+    "formNotInGame": "This form is not in the selected game.",
+    "evoCurrent": "Evolution methods are current, not edition-scoped.",
+    "seoSnapshot": "FRLG snapshot below. Overview follows the edition dock.",
+    "siblingMix": "Rates can mix sibling games. Pick a version.",
+    "speciesCurrent": "Catch rate, size and breeding are current species data.",
+    "nationalPicker": "National Dex. This list is not filtered to the selected game.",
+    "importUnchecked": "Import is not checked against the selected game.",
+    "enOnlySmogon": "Set names are English Smogon labels.",
+    "maxStatExp": "Stats assume max Stat Exp.",
+    "defaultEdition": "Lab defaults to SV. Versus lab defaults to FireRed.",
+    "paddedWild": "Wild set, coverage padded.",
+    "capUsesRegion": "Cap uses this region's default edition, not necessarily the game you picked.",
+    "noStoredMoves": "Your side is a level-up estimate. The run does not store moves.",
+    "snagLevelUp": "Snagged Shadows still calc as level-up, not the Shadow set.",
+    "shadowIdOptional": "Cloud Shadow id syncs only if the live database has migration 15.",
+    "starterRandom": "Only one starter at Phenac. The other two are post-credits and randomized.",
+    "firstEncounterSet": "First-encounter set. Rematch Qwilfish may lack Poison Barb.",
+    "calcNeutral": "Calc uses 31 IVs and a Serious nature. Colosseum rolls both.",
+    "modernEffect": "Effect numbers are modern rules. FRLG may differ. See Q&A.",
+    "locationsFrlgField": "Locations are FRLG field finds only, not shops or Sevii."
   }
 }
