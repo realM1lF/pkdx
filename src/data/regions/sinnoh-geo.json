@@ -249,6 +249,58 @@
     "distortion-world": [
       0.44,
       0.24
+    ],
+    "lake-verity": [
+      0.155,
+      0.82
+    ],
+    "oreburgh-gate": [
+      0.585,
+      0.72
+    ],
+    "old-chateau": [
+      0.525,
+      0.4
+    ],
+    "floaroma-meadow": [
+      0.41,
+      0.29
+    ],
+    "fuego-ironworks": [
+      0.39,
+      0.25
+    ],
+    "trophy-garden": [
+      0.58,
+      0.8
+    ],
+    "galactic-hq": [
+      0.85,
+      0.45
+    ],
+    "valor-lakefront": [
+      0.835,
+      0.733
+    ],
+    "lake-valor": [
+      0.84,
+      0.78
+    ],
+    "acuity-lakefront": [
+      0.39,
+      0.11
+    ],
+    "lake-acuity": [
+      0.37,
+      0.07
+    ],
+    "sendoff-spring": [
+      0.872,
+      0.638
+    ],
+    "snowpoint-temple": [
+      0.42,
+      0.05
     ]
   }
 }

@@ -189,6 +189,38 @@
     "johto-safari-zone": [
       0.018,
       0.54
+    ],
+    "johto-lighthouse": [
+      0.21,
+      0.46
+    ],
+    "radio-tower": [
+      0.37,
+      0.69
+    ],
+    "goldenrod-tunnel": [
+      0.33,
+      0.73
+    ],
+    "team-rocket-hq": [
+      0.56,
+      0.31
+    ],
+    "tohjo-falls": [
+      0.82,
+      0.82
+    ],
+    "ss-aqua": [
+      0.175,
+      0.53
+    ],
+    "safari-zone-gate": [
+      0.02,
+      0.58
+    ],
+    "embedded-tower": [
+      0.012,
+      0.84
     ]
   }
 }

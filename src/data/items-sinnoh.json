@@ -5,7 +5,9 @@
     { "itemSlug": "quick-claw", "name": "Quick Claw", "note": "Gift — NE Jubilife Condominiums", "pocket": "ITEMS" },
     { "itemSlug": "fashion-case", "name": "Fashion Case", "note": "Reporter — after saving him from Team Galactic", "pocket": "KEY" },
     { "itemSlug": "potion", "name": "Potion", "note": "Between the buildings behind the Global Terminal", "pocket": "ITEMS" },
-    { "itemSlug": "stardust", "name": "Stardust", "note": "Small gap south of the city", "pocket": "ITEMS", "hidden": true }
+    { "itemSlug": "stardust", "name": "Stardust", "note": "Small gap south of the city", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "poketch", "name": "Pokétch", "note": "Pokétch Company president — after 3 coupons (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "town-map", "name": "Town Map", "note": "Rival — after delivering the Parcel (Platinum)", "pocket": "KEY" }
   ],
   "floaroma-town": [
     { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Soft soil near the flower shop", "pocket": "BERRIES" },
@@ -21,12 +23,18 @@
     { "itemSlug": "tm-dark", "name": "TM46 — Thief", "moveSlug": "thief", "note": "East of the Galactic building — Cut required", "pocket": "TM" },
     { "itemSlug": "super-potion", "name": "Super Potion", "note": "Right of the Gym", "pocket": "ITEMS" },
     { "itemSlug": "draco-plate", "name": "Draco Plate", "note": "Behind the Pokémon statue", "pocket": "ITEMS", "hidden": true },
-    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "NE of the north pond — Surf required", "pocket": "ITEMS", "hidden": true }
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "NE of the north pond — Surf required", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "tm-grass", "name": "TM86 — Grass Knot", "moveSlug": "grass-knot", "note": "Gardenia — Gym prize (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM67 — Recycle", "moveSlug": "recycle", "note": "Condominiums 2F (Platinum)", "pocket": "TM" }
   ],
   "hearthome-city": [
     { "itemSlug": "poffin-case", "name": "Poffin Case", "note": "Pokémon Fan Club chairman", "pocket": "KEY" },
     { "itemSlug": "shell-bell", "name": "Shell Bell", "note": "Woman — 2F of the building next to the Fan Club", "pocket": "ITEMS" },
-    { "itemSlug": "big-mushroom", "name": "Big Mushroom", "note": "By the fence near Amity Square's west exit", "pocket": "ITEMS", "hidden": true }
+    { "itemSlug": "big-mushroom", "name": "Big Mushroom", "note": "By the fence near Amity Square's west exit", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "tm-ghost", "name": "TM65 — Shadow Claw", "moveSlug": "shadow-claw", "note": "Fantina — Gym prize (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM43 — Secret Power", "moveSlug": "secret-power", "note": "Amity Square (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM45 — Attract", "moveSlug": "attract", "note": "Amity Square (Platinum)", "pocket": "TM" },
+    { "itemSlug": "amulet-coin", "name": "Amulet Coin", "note": "Amity Square (Platinum)", "pocket": "ITEMS" }
   ],
   "celestic-town": [
     { "itemSlug": "hm-water", "name": "HM03 — Surf", "moveSlug": "surf", "note": "Town elder — after Galactic", "pocket": "HM" },
@@ -44,5 +52,320 @@
     { "itemSlug": "grip-claw", "name": "Grip Claw", "note": "Between the bike bridges — B1F", "pocket": "ITEMS" },
     { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "NE, under a ramp — B1F", "pocket": "ITEMS" },
     { "itemSlug": "dusk-stone", "name": "Dusk Stone", "note": "SW corner — B1F", "pocket": "ITEMS", "hidden": true }
+  ],
+  "twinleaf-town": [
+    { "itemSlug": "journal", "name": "Journal", "note": "Mom — after leaving home the first time (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "parcel", "name": "Parcel", "note": "Mom — after the Rival on Route 201 (Platinum)", "pocket": "KEY" }
+  ],
+  "sandgem-town": [
+    { "itemSlug": "tm-normal", "name": "TM27 — Return", "moveSlug": "return", "note": "Professor Rowan — after receiving the Pokédex (Platinum)", "pocket": "TM" },
+    { "itemSlug": "poke-radar", "name": "Poké Radar", "note": "Professor Rowan — after the National Pokédex (Platinum)", "pocket": "KEY" }
+  ],
+  "sinnoh-route-201": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball west of the lake entrance (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-202": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Dawn/Lucas — catching tutorial (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-203": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Item ball on the route (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "repel", "name": "Repel", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "x-defense", "name": "X Defense", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "oreburgh-gate": [
+    { "itemSlug": "hm-fighting", "name": "HM06 — Rock Smash", "moveSlug": "rock-smash", "note": "Hiker — after defeating Roark (Platinum)", "pocket": "HM" },
+    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "moveSlug": "flash", "note": "B1F item ball (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-fighting", "name": "TM31 — Brick Break", "moveSlug": "brick-break", "note": "B1F item ball (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-fighting", "name": "TM01 — Focus Punch", "moveSlug": "focus-punch", "note": "B1F — Rock Smash required (Platinum)", "pocket": "TM" },
+    { "itemSlug": "earth-plate", "name": "Earth Plate", "note": "B1F hidden (Platinum)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "oreburgh-city": [
+    { "itemSlug": "tm-rock", "name": "TM76 — Stealth Rock", "moveSlug": "stealth-rock", "note": "Roark — Gym prize (Platinum)", "pocket": "TM" }
+  ],
+  "oreburgh-mine": [
+    { "itemSlug": "escape-rope", "name": "Escape Rope", "note": "Item ball in the mine (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball in the mine (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-204": [
+    { "itemSlug": "tm-grass", "name": "TM09 — Bullet Seed", "moveSlug": "bullet-seed", "note": "Item ball — south of Ravaged Path (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM78 — Captivate", "moveSlug": "captivate", "note": "Item ball — north of Ravaged Path (Platinum)", "pocket": "TM" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "awakening", "name": "Awakening", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "sea-incense", "name": "Sea Incense", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "ravaged-path": [
+    { "itemSlug": "tm-rock", "name": "TM39 — Rock Tomb", "moveSlug": "rock-tomb", "note": "Item ball in the cave (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-water", "name": "TM03 — Water Pulse", "moveSlug": "water-pulse", "note": "Item ball — Surf required (Platinum)", "pocket": "TM" },
+    { "itemSlug": "luck-incense", "name": "Luck Incense", "note": "Item ball in the cave (Platinum)", "pocket": "ITEMS" }
+  ],
+  "floaroma-meadow": [
+    { "itemSlug": "works-key", "name": "Works Key", "note": "Galactic grunt — after Valley Windworks (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "honey", "name": "Honey", "note": "Honey man — after recovering the Works Key (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "miracle-seed", "name": "Miracle Seed", "note": "Item ball in the meadow (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "leaf-stone", "name": "Leaf Stone", "note": "Item ball in the meadow (Platinum)", "pocket": "ITEMS" }
+  ],
+  "valley-windworks": [
+    { "itemSlug": "tm-electric", "name": "TM24 — Thunderbolt", "moveSlug": "thunderbolt", "note": "Surf platform behind the building (Platinum)", "pocket": "TM" },
+    { "itemSlug": "electirizer", "name": "Electirizer", "note": "Item ball at the Windworks (Platinum)", "pocket": "ITEMS" }
+  ],
+  "fuego-ironworks": [
+    { "itemSlug": "tm-fire", "name": "TM35 — Flamethrower", "moveSlug": "flamethrower", "note": "Item ball in the works (Platinum)", "pocket": "TM" },
+    { "itemSlug": "fire-stone", "name": "Fire Stone", "note": "Item ball in the works (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "rock-incense", "name": "Rock Incense", "note": "Item ball in the works (Platinum)", "pocket": "ITEMS" }
+  ],
+  "eterna-forest": [
+    { "itemSlug": "tm-normal", "name": "TM82 — Sleep Talk", "moveSlug": "sleep-talk", "note": "Item ball in the forest (Platinum)", "pocket": "TM" },
+    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Cheryl — after escorting her through the forest (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "insect-plate", "name": "Insect Plate", "note": "Hidden in the forest (Platinum)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "old-chateau": [
+    { "itemSlug": "tm-normal", "name": "TM90 — Substitute", "moveSlug": "substitute", "note": "Item ball in the villa (Platinum)", "pocket": "TM" },
+    { "itemSlug": "old-gateau", "name": "Old Gateau", "note": "Item ball in the villa (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "dread-plate", "name": "Dread Plate", "note": "Hidden in the villa (Platinum)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the villa (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-205": [
+    { "itemSlug": "heal-ball", "name": "Heal Ball", "note": "Item ball on the route (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-206": [
+    { "itemSlug": "exp-share", "name": "Exp. Share", "note": "Rowan's aide — after seeing 35 Pokémon (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "poison-barb", "name": "Poison Barb", "note": "Item ball on the cycling road (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "burn-heal", "name": "Burn Heal", "note": "Item ball on the cycling road (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-207": [
+    { "itemSlug": "vs-seeker", "name": "Vs. Seeker", "note": "Dawn/Lucas — on the route (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-208": [
+    { "itemSlug": "odd-keystone", "name": "Odd Keystone", "note": "Hiker — east of the Berry Master's house (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball on the route (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-209": [
+    { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fisherman on the route (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "tm-grass", "name": "TM19 — Giga Drain", "moveSlug": "giga-drain", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-steel", "name": "TM47 — Steel Wing", "moveSlug": "steel-wing", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "lost-tower": [
+    { "itemSlug": "tm-normal", "name": "TM27 — Return", "moveSlug": "return", "note": "4F item ball (Platinum)", "pocket": "TM" },
+    { "itemSlug": "cleanse-tag", "name": "Cleanse Tag", "note": "Old woman on 1F (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "oval-stone", "name": "Oval Stone", "note": "Item ball in the tower (Platinum)", "pocket": "ITEMS" }
+  ],
+  "solaceon-town": [
+    { "itemSlug": "seal-case", "name": "Seal Case", "note": "Seal House — after showing a Pokémon with a seal (Platinum)", "pocket": "KEY" }
+  ],
+  "solaceon-ruins": [
+    { "itemSlug": "hm-flying", "name": "HM05 — Defog", "moveSlug": "defog", "note": "Item ball in the ruins (Platinum)", "pocket": "HM" },
+    { "itemSlug": "odd-incense", "name": "Odd Incense", "note": "Item ball in the ruins (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "mind-plate", "name": "Mind Plate", "note": "Hidden in the ruins (Platinum)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball in the ruins (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-210": [
+    { "itemSlug": "old-charm", "name": "Old Charm", "note": "Cynthia — after the Psyduck blockade (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "tm-flying", "name": "TM51 — Roost", "moveSlug": "roost", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-ghost", "name": "TM30 — Shadow Ball", "moveSlug": "shadow-ball", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM29 — Psychic", "moveSlug": "psychic", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "smoke-ball", "name": "Smoke Ball", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-211": [
+    { "itemSlug": "tm-dark", "name": "TM12 — Taunt", "moveSlug": "taunt", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM77 — Psych Up", "moveSlug": "psych-up", "note": "Item ball on the route (Platinum)", "pocket": "TM" }
+  ],
+  "trophy-garden": [
+    { "itemSlug": "tm-normal", "name": "TM87 — Swagger", "moveSlug": "swagger", "note": "Item ball in the garden (Platinum)", "pocket": "TM" },
+    { "itemSlug": "luxury-ball", "name": "Luxury Ball", "note": "Item ball in the garden (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Item ball in the garden (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-212": [
+    { "itemSlug": "tm-poison", "name": "TM06 — Toxic", "moveSlug": "toxic", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-fire", "name": "TM11 — Sunny Day", "moveSlug": "sunny-day", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-bug", "name": "TM62 — Silver Wind", "moveSlug": "silver-wind", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-poison", "name": "TM84 — Poison Jab", "moveSlug": "poison-jab", "note": "Item ball on the route (Platinum)", "pocket": "TM" }
+  ],
+  "pastoria-city": [
+    { "itemSlug": "tm-water", "name": "TM55 — Brine", "moveSlug": "brine", "note": "Wake — Gym prize (Platinum)", "pocket": "TM" },
+    { "itemSlug": "mystic-water", "name": "Mystic Water", "note": "Item ball in the city (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "macho-brace", "name": "Macho Brace", "note": "Gift in the city (Platinum)", "pocket": "ITEMS" }
+  ],
+  "great-marsh": [
+    { "itemSlug": "toxic-plate", "name": "Toxic Plate", "note": "Hidden in the marsh (Platinum)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "sinnoh-route-213": [
+    { "itemSlug": "tm-normal", "name": "TM05 — Roar", "moveSlug": "roar", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-flying", "name": "TM40 — Aerial Ace", "moveSlug": "aerial-ace", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM92 — Trick Room", "moveSlug": "trick-room", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "valor-lakefront": [
+    { "itemSlug": "suite-key", "name": "Suite Key", "note": "Hidden on the lakefront (Platinum)", "pocket": "KEY", "hidden": true },
+    { "itemSlug": "tm-psychic", "name": "TM85 — Dream Eater", "moveSlug": "dream-eater", "note": "Item ball on the lakefront (Platinum)", "pocket": "TM" },
+    { "itemSlug": "secret-potion", "name": "Secret Potion", "note": "Cynthia — after Lake Valor (Platinum)", "pocket": "KEY" }
+  ],
+  "lake-verity": [
+    { "itemSlug": "tm-fire", "name": "TM38 — Fire Blast", "moveSlug": "fire-blast", "note": "Item ball at the lake (Platinum)", "pocket": "TM" }
+  ],
+  "lake-valor": [
+    { "itemSlug": "tm-electric", "name": "TM25 — Thunder", "moveSlug": "thunder", "note": "Item ball at the lake (Platinum)", "pocket": "TM" }
+  ],
+  "lake-acuity": [
+    { "itemSlug": "tm-ice", "name": "TM14 — Blizzard", "moveSlug": "blizzard", "note": "Item ball at the lake (Platinum)", "pocket": "TM" }
+  ],
+  "acuity-lakefront": [
+    { "itemSlug": "reaper-cloth", "name": "Reaper Cloth", "note": "Item ball on the lakefront (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-214": [
+    { "itemSlug": "tm-ground", "name": "TM28 — Dig", "moveSlug": "dig", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "razor-fang", "name": "Razor Fang", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "magmarizer", "name": "Magmarizer", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "big-root", "name": "Big Root", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "veilstone-city": [
+    { "itemSlug": "tm-fighting", "name": "TM60 — Drain Punch", "moveSlug": "drain-punch", "note": "Maylene — Gym prize (Platinum)", "pocket": "TM" },
+    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Game Corner (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "tm-dark", "name": "TM63 — Embargo", "moveSlug": "embargo", "note": "Item ball in the city (Platinum)", "pocket": "TM" }
+  ],
+  "galactic-hq": [
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "moveSlug": "fly", "note": "Cyrus's office — after the HQ (Platinum)", "pocket": "HM" },
+    { "itemSlug": "storage-key", "name": "Storage Key", "note": "Galactic Warehouse (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "galactic-key", "name": "Galactic Key", "note": "Team Galactic HQ (Platinum)", "pocket": "KEY" },
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Cyrus's office (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "tm-normal", "name": "TM21 — Frustration", "moveSlug": "frustration", "note": "Item ball in the HQ (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-poison", "name": "TM36 — Sludge Bomb", "moveSlug": "sludge-bomb", "note": "Item ball in the HQ (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM49 — Snatch", "moveSlug": "snatch", "note": "Item ball in the HQ (Platinum)", "pocket": "TM" },
+    { "itemSlug": "dubious-disc", "name": "Dubious Disc", "note": "Item ball in the HQ (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-215": [
+    { "itemSlug": "tm-electric", "name": "TM34 — Shock Wave", "moveSlug": "shock-wave", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM66 — Payback", "moveSlug": "payback", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "fist-plate", "name": "Fist Plate", "note": "Hidden on the route (Platinum)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "sinnoh-route-218": [
+    { "itemSlug": "x-accuracy", "name": "X Accuracy", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "canalave-city": [
+    { "itemSlug": "tm-steel", "name": "TM91 — Flash Cannon", "moveSlug": "flash-cannon", "note": "Byron — Gym prize (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM48 — Skill Swap", "moveSlug": "skill-swap", "note": "Item ball in the city (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-bug", "name": "TM89 — U-turn", "moveSlug": "u-turn", "note": "Item ball in the city (Platinum)", "pocket": "TM" }
+  ],
+  "iron-island": [
+    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "moveSlug": "strength", "note": "Riley — after the island (Platinum)", "pocket": "HM" },
+    { "itemSlug": "tm-steel", "name": "TM23 — Iron Tail", "moveSlug": "iron-tail", "note": "Item ball on the island (Platinum)", "pocket": "TM" },
+    { "itemSlug": "protector", "name": "Protector", "note": "Item ball on the island (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "metal-coat", "name": "Metal Coat", "note": "Item ball on the island (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "magnet", "name": "Magnet", "note": "Item ball on the island (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "shiny-stone", "name": "Shiny Stone", "note": "Item ball on the island (Platinum)", "pocket": "ITEMS" }
+  ],
+  "mt-coronet": [
+    { "itemSlug": "tm-rock", "name": "TM69 — Rock Polish", "moveSlug": "rock-polish", "note": "Item ball on the mountain (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-rock", "name": "TM80 — Rock Slide", "moveSlug": "rock-slide", "note": "Item ball on the mountain (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-dragon", "name": "TM02 — Dragon Claw", "moveSlug": "dragon-claw", "note": "Item ball on the mountain (Platinum)", "pocket": "TM" },
+    { "itemSlug": "light-clay", "name": "Light Clay", "note": "Item ball on the mountain (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "soft-sand", "name": "Soft Sand", "note": "Item ball on the mountain (Platinum)", "pocket": "ITEMS" }
+  ],
+  "spear-pillar": [
+    { "itemSlug": "adamant-orb", "name": "Adamant Orb", "note": "Spear Pillar — Dialga (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "lustrous-orb", "name": "Lustrous Orb", "note": "Spear Pillar — Palkia (Platinum)", "pocket": "ITEMS" }
+  ],
+  "distortion-world": [
+    { "itemSlug": "griseous-orb", "name": "Griseous Orb", "note": "Giratina — Distortion World (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-216": [
+    { "itemSlug": "tm-ice", "name": "TM13 — Ice Beam", "moveSlug": "ice-beam", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "mental-herb", "name": "Mental Herb", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-217": [
+    { "itemSlug": "hm-normal", "name": "HM08 — Rock Climb", "moveSlug": "rock-climb", "note": "Item ball on the route (Platinum)", "pocket": "HM" },
+    { "itemSlug": "tm-ice", "name": "TM07 — Hail", "moveSlug": "hail", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "spell-tag", "name": "Spell Tag", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "icicle-plate", "name": "Icicle Plate", "note": "Hidden on the route (Platinum)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "snowpoint-city": [
+    { "itemSlug": "tm-ice", "name": "TM72 — Avalanche", "moveSlug": "avalanche", "note": "Candice — Gym prize (Platinum)", "pocket": "TM" }
+  ],
+  "snowpoint-temple": [
+    { "itemSlug": "never-melt-ice", "name": "Never-Melt Ice", "note": "Item ball in the temple (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-219": [
+    { "itemSlug": "splash-plate", "name": "Splash Plate", "note": "Hidden on the route (Platinum)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "max-repel", "name": "Max Repel", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-221": [
+    { "itemSlug": "tm-bug", "name": "TM81 — X-Scissor", "moveSlug": "x-scissor", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "expert-belt", "name": "Expert Belt", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "focus-sash", "name": "Focus Sash", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "pure-incense", "name": "Pure Incense", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-222": [
+    { "itemSlug": "tm-dark", "name": "TM56 — Fling", "moveSlug": "fling", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "carbos", "name": "Carbos", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sunyshore-city": [
+    { "itemSlug": "tm-electric", "name": "TM57 — Charge Beam", "moveSlug": "charge-beam", "note": "Volkner — Gym prize (Platinum)", "pocket": "TM" },
+    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "moveSlug": "waterfall", "note": "Jasmine — after the Gym (Platinum)", "pocket": "HM" },
+    { "itemSlug": "zap-plate", "name": "Zap Plate", "note": "Hidden in the city (Platinum)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "sinnoh-route-223": [
+    { "itemSlug": "tm-water", "name": "TM18 — Rain Dance", "moveSlug": "rain-dance", "note": "Item ball on the sea route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "dive-ball", "name": "Dive Ball", "note": "Item ball on the sea route (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on the sea route (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on the sea route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-victory-road": [
+    { "itemSlug": "tm-dark", "name": "TM41 — Torment", "moveSlug": "torment", "note": "Item ball on Victory Road (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-rock", "name": "TM71 — Stone Edge", "moveSlug": "stone-edge", "note": "Item ball on Victory Road (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-dragon", "name": "TM59 — Dragon Pulse", "moveSlug": "dragon-pulse", "note": "Item ball on Victory Road (Platinum)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM79 — Dark Pulse", "moveSlug": "dark-pulse", "note": "Item ball on Victory Road (Platinum)", "pocket": "TM" },
+    { "itemSlug": "leftovers", "name": "Leftovers", "note": "Item ball on Victory Road (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "razor-claw", "name": "Razor Claw", "note": "Item ball on Victory Road (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-224": [
+    { "itemSlug": "destiny-knot", "name": "Destiny Knot", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "razor-claw", "name": "Razor Claw", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "up-grade", "name": "Up-Grade", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "fight-area": [
+    { "itemSlug": "super-rod", "name": "Super Rod", "note": "Fisherman in the Fight Area (Platinum)", "pocket": "KEY" }
+  ],
+  "survival-area": [
+    { "itemSlug": "tm-normal", "name": "TM42 — Facade", "moveSlug": "facade", "note": "Item ball in the Survival Area (Platinum)", "pocket": "TM" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the Survival Area (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-225": [
+    { "itemSlug": "lax-incense", "name": "Lax Incense", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "dawn-stone", "name": "Dawn Stone", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "razor-fang", "name": "Razor Fang", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-226": [
+    { "itemSlug": "tm-grass", "name": "TM53 — Energy Ball", "moveSlug": "energy-ball", "note": "Item ball on the sea route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "lagging-tail", "name": "Lagging Tail", "note": "Item ball on the sea route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-227": [
+    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "life-orb", "name": "Life Orb", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "stark-mountain": [
+    { "itemSlug": "tm-fire", "name": "TM50 — Overheat", "moveSlug": "overheat", "note": "Item ball in the mountain (Platinum)", "pocket": "TM" },
+    { "itemSlug": "flame-plate", "name": "Flame Plate", "note": "Hidden in the mountain (Platinum)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "magma-stone", "name": "Magma Stone", "note": "Buck — after the mountain (Platinum)", "pocket": "KEY" }
+  ],
+  "sinnoh-route-228": [
+    { "itemSlug": "tm-rock", "name": "TM37 — Sandstorm", "moveSlug": "sandstorm", "note": "Item ball on the route (Platinum)", "pocket": "TM" },
+    { "itemSlug": "shed-shell", "name": "Shed Shell", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "protector", "name": "Protector", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "resort-area": [
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the Resort Area (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-229": [
+    { "itemSlug": "reaper-cloth", "name": "Reaper Cloth", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" },
+    { "itemSlug": "thunder-stone", "name": "Thunder Stone", "note": "Item ball on the route (Platinum)", "pocket": "ITEMS" }
+  ],
+  "sinnoh-route-230": [
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on the sea route (Platinum)", "pocket": "BALLS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on the sea route (Platinum)", "pocket": "ITEMS" }
   ]
 }

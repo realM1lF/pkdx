@@ -528,7 +528,6 @@
       "y": 780,
       "order": 47,
       "locationSlug": "sinnoh-route-219",
-      "postGame": true,
       "labelPos": "left",
       "nameDe": "Route 219"
     },
@@ -539,8 +538,7 @@
       "x": 280,
       "y": 820,
       "order": 48,
-      "locationSlug": "sinnoh-route-220",
-      "postGame": true,
+      "locationSlug": "sinnoh-sea-route-220",
       "labelPos": "bottom",
       "nameDe": "Route 220"
     },
@@ -552,7 +550,6 @@
       "y": 830,
       "order": 49,
       "locationSlug": "sinnoh-route-221",
-      "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Route 221"
     },
@@ -574,7 +571,7 @@
       "x": 1110,
       "y": 440,
       "order": 51,
-      "locationSlug": "sinnoh-route-223",
+      "locationSlug": "sinnoh-sea-route-223",
       "labelPos": "left",
       "nameDe": "Route 223"
     },
@@ -633,7 +630,7 @@
       "x": 1050,
       "y": 80,
       "order": 56,
-      "locationSlug": "sinnoh-route-226",
+      "locationSlug": "sinnoh-sea-route-226",
       "postGame": true,
       "labelPos": "bottom",
       "nameDe": "Route 226"
@@ -693,7 +690,7 @@
       "x": 1000,
       "y": 280,
       "order": 61,
-      "locationSlug": "sinnoh-route-230",
+      "locationSlug": "sinnoh-sea-route-230",
       "postGame": true,
       "labelPos": "left",
       "nameDe": "Route 230"
@@ -706,9 +703,153 @@
       "y": 220,
       "order": 62,
       "locationSlug": "distortion-world",
-      "postGame": true,
       "labelPos": "left",
       "nameDe": "Zerrwelt"
+    },
+    {
+      "id": "lake-verity",
+      "label": "Lake Verity",
+      "kind": "special",
+      "x": 180,
+      "y": 640,
+      "order": 63,
+      "locationSlug": "lake-verity",
+      "labelPos": "top",
+      "nameDe": "See der Wahrheit"
+    },
+    {
+      "id": "oreburgh-gate",
+      "label": "Oreburgh Gate",
+      "kind": "dungeon",
+      "x": 675,
+      "y": 565,
+      "order": 64,
+      "locationSlug": "oreburgh-gate",
+      "labelPos": "top",
+      "nameDe": "Erzelingen-Tor"
+    },
+    {
+      "id": "old-chateau",
+      "label": "Old Chateau",
+      "kind": "dungeon",
+      "x": 700,
+      "y": 230,
+      "order": 65,
+      "locationSlug": "old-chateau",
+      "labelPos": "top",
+      "nameDe": "Alte Villa"
+    },
+    {
+      "id": "floaroma-meadow",
+      "label": "Floaroma Meadow",
+      "kind": "special",
+      "x": 470,
+      "y": 220,
+      "order": 66,
+      "locationSlug": "floaroma-meadow",
+      "labelPos": "left",
+      "nameDe": "Auen von Flori"
+    },
+    {
+      "id": "fuego-ironworks",
+      "label": "Fuego Ironworks",
+      "kind": "dungeon",
+      "x": 400,
+      "y": 200,
+      "order": 67,
+      "locationSlug": "fuego-ironworks",
+      "labelPos": "left",
+      "nameDe": "Feurio-Hütte"
+    },
+    {
+      "id": "trophy-garden",
+      "label": "Trophy Garden",
+      "kind": "special",
+      "x": 780,
+      "y": 680,
+      "order": 68,
+      "locationSlug": "trophy-garden",
+      "labelPos": "right",
+      "nameDe": "Pokémon-Landgut"
+    },
+    {
+      "id": "galactic-hq",
+      "label": "Galactic HQ",
+      "kind": "dungeon",
+      "x": 1120,
+      "y": 710,
+      "order": 69,
+      "locationSlug": "galactic-hq",
+      "labelPos": "right",
+      "nameDe": "Team Galaktik Zentrale"
+    },
+    {
+      "id": "valor-lakefront",
+      "label": "Valor Lakefront",
+      "kind": "special",
+      "x": 980,
+      "y": 790,
+      "order": 70,
+      "locationSlug": "valor-lakefront",
+      "labelPos": "bottom",
+      "nameDe": "Kühnheitsufer"
+    },
+    {
+      "id": "lake-valor",
+      "label": "Lake Valor",
+      "kind": "special",
+      "x": 1000,
+      "y": 830,
+      "order": 71,
+      "locationSlug": "lake-valor",
+      "labelPos": "bottom",
+      "nameDe": "See der Kühnheit"
+    },
+    {
+      "id": "acuity-lakefront",
+      "label": "Acuity Lakefront",
+      "kind": "special",
+      "x": 340,
+      "y": 100,
+      "order": 72,
+      "locationSlug": "acuity-lakefront",
+      "labelPos": "bottom",
+      "nameDe": "Stärkeufer"
+    },
+    {
+      "id": "lake-acuity",
+      "label": "Lake Acuity",
+      "kind": "special",
+      "x": 300,
+      "y": 80,
+      "order": 73,
+      "locationSlug": "lake-acuity",
+      "labelPos": "top",
+      "nameDe": "See der Stärke"
+    },
+    {
+      "id": "sendoff-spring",
+      "label": "Sendoff Spring",
+      "kind": "special",
+      "x": 1120,
+      "y": 660,
+      "order": 74,
+      "locationSlug": "sendoff-spring",
+      "postGame": true,
+      "labelPos": "right",
+      "nameDe": "Scheidequelle"
+    },
+    {
+      "id": "snowpoint-temple",
+      "label": "Snowpoint Temple",
+      "kind": "dungeon",
+      "x": 250,
+      "y": 80,
+      "order": 75,
+      "locationSlug": "snowpoint-temple",
+      "postGame": true,
+      "labelPos": "left",
+      "nameDe": "Blizzach-Tempel"
     }
   ],
   "edges": [
@@ -1050,6 +1191,96 @@
     {
       "from": "spear-pillar",
       "to": "distortion-world",
+      "kind": "land"
+    },
+    {
+      "from": "lake-verity",
+      "to": "sinnoh-route-201",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-203",
+      "to": "oreburgh-gate",
+      "kind": "land"
+    },
+    {
+      "from": "oreburgh-gate",
+      "to": "oreburgh-city",
+      "kind": "land"
+    },
+    {
+      "from": "eterna-forest",
+      "to": "old-chateau",
+      "kind": "land"
+    },
+    {
+      "from": "floaroma-town",
+      "to": "floaroma-meadow",
+      "kind": "land"
+    },
+    {
+      "from": "floaroma-meadow",
+      "to": "fuego-ironworks",
+      "kind": "land"
+    },
+    {
+      "from": "fuego-ironworks",
+      "to": "sinnoh-route-205",
+      "kind": "water"
+    },
+    {
+      "from": "sinnoh-route-212",
+      "to": "trophy-garden",
+      "kind": "land"
+    },
+    {
+      "from": "veilstone-city",
+      "to": "galactic-hq",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-213",
+      "to": "valor-lakefront",
+      "kind": "land"
+    },
+    {
+      "from": "valor-lakefront",
+      "to": "sinnoh-route-214",
+      "kind": "land"
+    },
+    {
+      "from": "valor-lakefront",
+      "to": "sinnoh-route-222",
+      "kind": "land"
+    },
+    {
+      "from": "valor-lakefront",
+      "to": "lake-valor",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-217",
+      "to": "acuity-lakefront",
+      "kind": "land"
+    },
+    {
+      "from": "acuity-lakefront",
+      "to": "lake-acuity",
+      "kind": "land"
+    },
+    {
+      "from": "sinnoh-route-214",
+      "to": "sendoff-spring",
+      "kind": "land"
+    },
+    {
+      "from": "sendoff-spring",
+      "to": "turnback-cave",
+      "kind": "land"
+    },
+    {
+      "from": "snowpoint-city",
+      "to": "snowpoint-temple",
       "kind": "land"
     }
   ],

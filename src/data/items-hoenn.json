@@ -15,7 +15,8 @@
   "mauville-city": [
     { "itemSlug": "hm-fighting", "name": "HM06 — Rock Smash", "moveSlug": "rock-smash", "note": "Rock Smash Dude — southeastern house", "pocket": "HM" },
     { "itemSlug": "mach-bike", "name": "Mach Bike", "note": "Rydel's Cycles — swappable with Acro Bike", "pocket": "KEY" },
-    { "itemSlug": "tm-electric", "name": "TM24 — Thunderbolt", "moveSlug": "thunderbolt", "note": "Wattson — after shutting down New Mauville", "pocket": "TM" }
+    { "itemSlug": "tm-electric", "name": "TM24 — Thunderbolt", "moveSlug": "thunderbolt", "note": "Wattson — after shutting down New Mauville", "pocket": "TM" },
+    { "itemSlug": "basement-key", "name": "Basement Key", "note": "Wattson after Gym (Emerald)", "pocket": "KEY" }
   ],
   "lavaridge-town": [
     { "itemSlug": "go-goggles", "name": "Go-Goggles", "note": "Brendan/May — after defeating Flannery", "pocket": "KEY" },
@@ -170,7 +171,8 @@
     { "itemSlug": "pomeg-berry", "name": "Pomeg Berry", "note": "Berry tree (regrows) (×3)", "pocket": "BERRIES" },
     { "itemSlug": "hondew-berry", "name": "Hondew Berry", "note": "Berry tree (regrows) (×2)", "pocket": "BERRIES" },
     { "itemSlug": "sitrus-berry", "name": "Sitrus Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
-    { "itemSlug": "leppa-berry", "name": "Leppa Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" }
+    { "itemSlug": "leppa-berry", "name": "Leppa Berry", "note": "Berry tree (regrows)", "pocket": "BERRIES" },
+    { "itemSlug": "tm-dark", "name": "TM46 — Thief", "moveSlug": "thief", "note": "Team Aqua/Magma at Weather Institute (Emerald)", "pocket": "TM" }
   ],
   "hoenn-route-120": [
     { "itemSlug": "devon-scope", "name": "Devon Scope", "note": "Steven — bridge battle vs. Kecleon", "pocket": "KEY" },
@@ -217,7 +219,8 @@
   "petalburg-city": [
     { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball — on the route", "pocket": "ITEMS" },
     { "itemSlug": "ether", "name": "Ether", "note": "Item ball — on the route", "pocket": "ITEMS" },
-    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "moveSlug": "surf", "note": "Wally's father after defeating Norman (Emerald)", "pocket": "HM" }
   ],
   "petalburg-woods": [
     { "itemSlug": "great-ball", "name": "Great Ball", "note": "Devon researcher — after defeating the Team Aqua/Magma grunt", "pocket": "BALLS" },
@@ -298,5 +301,144 @@
     { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball — on the route", "pocket": "ITEMS" },
     { "itemSlug": "elixir", "name": "Elixir", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true },
     { "itemSlug": "max-repel", "name": "Max Repel", "note": "Hidden — Itemfinder", "pocket": "ITEMS", "hidden": true }
+  ],
+  "littleroot-town": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Rival in Birch's lab after Pokédex (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "running-shoes", "name": "Running Shoes", "note": "Mom after leaving town first time (Emerald)", "pocket": "KEY" },
+    { "itemSlug": "amulet-coin", "name": "Amulet Coin", "note": "Mom after defeating Norman (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "ss-ticket", "name": "S.S. Ticket", "note": "Norman after Hall of Fame (Emerald)", "pocket": "KEY" }
+  ],
+  "verdanturf-town": [
+    { "itemSlug": "tm-normal", "name": "TM45 — Attract", "moveSlug": "attract", "note": "Woman in Battle Tent (Emerald)", "pocket": "TM" }
+  ],
+  "fortree-city": [
+    { "itemSlug": "tm-normal", "name": "TM10 — Hidden Power", "moveSlug": "hidden-power", "note": "Old woman NW treehouse guessing game (Emerald)", "pocket": "TM" },
+    { "itemSlug": "mental-herb", "name": "Mental Herb", "note": "Man NE treehouse after Wingull in Mossdeep (Emerald)", "pocket": "ITEMS" }
+  ],
+  "pacifidlog-town": [
+    { "itemSlug": "tm-normal", "name": "TM21 — Frustration", "moveSlug": "frustration", "note": "Fan Club brother if friendship below 50 (Emerald)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM27 — Return", "moveSlug": "return", "note": "Fan Club brother if friendship above 150 (Emerald)", "pocket": "TM" }
+  ],
+  "hoenn-route-106": [
+    { "itemSlug": "protein", "name": "Protein", "note": "West shore — Surf (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Sand east of Fisherman Ned (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "stardust", "name": "Stardust", "note": "Rock NE of Fisherman Elliot (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Far left of northern shore (Emerald)", "pocket": "BALLS", "hidden": true }
+  ],
+  "hoenn-route-115": [
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Top corner of the beach near Rustboro (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Beach, one square north of Battle Girl Cyndy (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "South of Meteor Falls exit, east ledge — Rock Smash (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Directly south of Meteor Falls exit, end of yellow path (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "bluk-berry", "name": "Bluk Berry", "note": "Soft soil south of Meteor Falls exit (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "tm-fighting", "name": "TM01 — Focus Punch", "moveSlug": "focus-punch", "note": "West of muddy slope, north end — Surf (Emerald)", "pocket": "TM" },
+    { "itemSlug": "heal-powder", "name": "Heal Powder", "note": "Grove maze northwest — Surf (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "iron", "name": "Iron", "note": "South of muddy slope, north area — Mach Bike + Surf (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "kelpsy-berry", "name": "Kelpsy Berry", "note": "Soft soil in northern grove maze — Surf (Emerald)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-123": [
+    { "itemSlug": "tm-grass", "name": "TM19 — Giga Drain", "moveSlug": "giga-drain", "note": "Girl by soft soil near Route 122 pier — show Grass-type (Emerald)", "pocket": "TM" },
+    { "itemSlug": "pecha-berry", "name": "Pecha Berry", "note": "Soft soil near Route 122 (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "rawst-berry", "name": "Rawst Berry", "note": "Soft soil near Route 122 (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "sitrus-berry", "name": "Sitrus Berry", "note": "Soft soil near Route 122 (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "leppa-berry", "name": "Leppa Berry", "note": "Soft soil east end of northern path (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Rock east of Collector Ed / Hex Maniac Kindra (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "First area of the northern path (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "super-repel", "name": "Super Repel", "note": "Empty square in grass west of Leppa berries (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "revival-herb", "name": "Revival Herb", "note": "West of Guitarist Fernando (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "West of Psychic Jacki and Expert Fredrick (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "End of middle path of far-east tree maze — Cut (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "End of bottom path of far-east tree maze — Cut (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "West of Cooltrainer Braxton, near the pond (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "South of the Berry Master's house (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Behind Berry Master's garden, walk behind the house (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "grepa-berry", "name": "Grepa Berry", "note": "Berry Master's garden soil (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "pomeg-berry", "name": "Pomeg Berry", "note": "Berry Master's garden soil (Emerald)", "pocket": "BERRIES" },
+    { "itemSlug": "qualot-berry", "name": "Qualot Berry", "note": "Berry Master's garden soil (Emerald)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-125": [
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Second island east path — Surf (Emerald)", "pocket": "ITEMS" }
+  ],
+  "hoenn-route-126": [
+    { "itemSlug": "green-shard", "name": "Green Shard", "note": "NW via Route 124 underwater — Dive (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Underwater trench — Dive (Emerald)", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "stardust", "name": "Stardust", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "yellow-shard", "name": "Yellow Shard", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "pearl", "name": "Pearl", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "iron", "name": "Iron", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "blue-shard", "name": "Blue Shard", "note": "Underwater trench — Dive (Emerald)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "hoenn-route-127": [
+    { "itemSlug": "zinc", "name": "Zinc", "note": "NW island (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "South side of NW tree island (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "carbos", "name": "Carbos", "note": "East tree island — Dive (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "star-piece", "name": "Star Piece", "note": "Hidden trench (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden trench (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Hidden trench (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "red-shard", "name": "Red Shard", "note": "Hidden trench (Emerald)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "hoenn-route-130": [
+    { "itemSlug": "liechi-berry", "name": "Liechi Berry", "note": "Soft soil east end of island (Emerald)", "pocket": "BERRIES" }
+  ],
+  "hoenn-route-132": [
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "North side of NW island (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "protein", "name": "Protein", "note": "Ring-shaped SW island (Emerald)", "pocket": "ITEMS" }
+  ],
+  "hoenn-route-133": [
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Southern of two NE islands — Surf (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Center of south island (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "star-piece", "name": "Star Piece", "note": "North side of NW island — Surf (Emerald)", "pocket": "ITEMS" }
+  ],
+  "hoenn-route-134": [
+    { "itemSlug": "carbos", "name": "Carbos", "note": "South sandy part of largest island (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "star-piece", "name": "Star Piece", "note": "SW island (Emerald)", "pocket": "ITEMS" }
+  ],
+  "abandoned-ship": [
+    { "itemSlug": "harbor-mail", "name": "Harbor Mail", "note": "1F northwest (bow-starboard) room (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "1F northern room near Tuber Charlie (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "dive-ball", "name": "Dive Ball", "note": "B1F room with a broken door (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "escape-rope", "name": "Escape Rope", "note": "B1F southwestern (bow-port) room (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "storage-key", "name": "Storage Key", "note": "Captain's office, southwestern corner (Emerald)", "pocket": "KEY" },
+    { "itemSlug": "tm-ice", "name": "TM13 — Ice Beam", "moveSlug": "ice-beam", "note": "Storage closet — needs Storage Key (Emerald)", "pocket": "TM" },
+    { "itemSlug": "water-stone", "name": "Water Stone", "note": "Room 3 — Dive (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "key-to-room-1", "name": "Rm. 1 Key", "note": "Room 3 — Dive (Emerald)", "pocket": "KEY", "hidden": true },
+    { "itemSlug": "tm-water", "name": "TM18 — Rain Dance", "moveSlug": "rain-dance", "note": "Room 1 — Dive (Emerald)", "pocket": "TM" },
+    { "itemSlug": "key-to-room-4", "name": "Rm. 4 Key", "note": "Room 1 — Dive (Emerald)", "pocket": "KEY", "hidden": true },
+    { "itemSlug": "key-to-room-6", "name": "Rm. 6 Key", "note": "Room 4 — Dive (Emerald)", "pocket": "KEY", "hidden": true },
+    { "itemSlug": "luxury-ball", "name": "Luxury Ball", "note": "Room 6 — Dive (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "key-to-room-2", "name": "Rm. 2 Key", "note": "Room 5 — Dive (Emerald)", "pocket": "KEY", "hidden": true },
+    { "itemSlug": "scanner", "name": "Scanner", "note": "Room 2 — Dive; trade to Capt. Stern in Slateport (Emerald)", "pocket": "KEY" }
+  ],
+  "jagged-pass": [
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Ash grass SW of Mt. Chimney entrance (Emerald)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "burn-heal", "name": "Burn Heal", "note": "North of tree east of Camper Ethan (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "NW of Route 112 entrance second ledge (Emerald)", "pocket": "BALLS", "hidden": true }
+  ],
+  "magma-hideout": [
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Entrance west via B1F (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "B1F west of magma lake (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "B1F east of magma lake (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "B2F west of southern magma lake (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-max", "name": "PP Max", "note": "B3F west (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "B4F west of Tabitha (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "escape-rope", "name": "Escape Rope", "note": "B5F SW corner (Emerald)", "pocket": "ITEMS" }
+  ],
+  "new-mauville": [
+    { "itemSlug": "escape-rope", "name": "Escape Rope", "note": "Center on blue switch (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Room north of entrance (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "NW on green switch (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "West/south of generator on green switch (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "thunder-stone", "name": "Thunder Stone", "note": "East of generator (Emerald)", "pocket": "ITEMS" }
+  ],
+  "seafloor-cavern": [
+    { "itemSlug": "tm-ground", "name": "TM26 — Earthquake", "moveSlug": "earthquake", "note": "Deepest room near doorway — Strength (Emerald)", "pocket": "TM" }
+  ],
+  "team-aqua-hideout": [
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "B1F middle room top-left via teleporter maze (Emerald)", "pocket": "BALLS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Same room bottom-left (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "B1F near generator via right teleport (Emerald)", "pocket": "ITEMS" },
+    { "itemSlug": "nest-ball", "name": "Nest Ball", "note": "Submarine dock NW (Emerald)", "pocket": "BALLS" }
   ]
 }

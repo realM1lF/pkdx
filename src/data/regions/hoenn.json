@@ -685,6 +685,83 @@
       "locationSlug": "hoenn-route-134",
       "labelPos": "bottom",
       "nameDe": "Route 134"
+    },
+    {
+      "id": "abandoned-ship",
+      "label": "Abandoned Ship",
+      "kind": "dungeon",
+      "x": 380,
+      "y": 775,
+      "order": 62,
+      "locationSlug": "abandoned-ship",
+      "labelPos": "bottom",
+      "nameDe": "Schiffswrack"
+    },
+    {
+      "id": "jagged-pass",
+      "label": "Jagged Pass",
+      "kind": "dungeon",
+      "x": 730,
+      "y": 160,
+      "order": 63,
+      "locationSlug": "jagged-pass",
+      "labelPos": "bottom",
+      "nameDe": "Steilpass"
+    },
+    {
+      "id": "magma-hideout",
+      "label": "Magma Hideout",
+      "kind": "dungeon",
+      "x": 740,
+      "y": 143,
+      "order": 64,
+      "locationSlug": "magma-hideout",
+      "labelPos": "bottom",
+      "nameDe": "Team Magmas Versteck"
+    },
+    {
+      "id": "new-mauville",
+      "label": "New Mauville",
+      "kind": "dungeon",
+      "x": 655,
+      "y": 505,
+      "order": 65,
+      "locationSlug": "new-mauville",
+      "labelPos": "bottom",
+      "nameDe": "Neu Malvenfroh"
+    },
+    {
+      "id": "seafloor-cavern",
+      "label": "Seafloor Cavern",
+      "kind": "dungeon",
+      "x": 780,
+      "y": 730,
+      "order": 66,
+      "locationSlug": "seafloor-cavern",
+      "labelPos": "bottom",
+      "nameDe": "Tiefseehöhle"
+    },
+    {
+      "id": "cave-of-origin",
+      "label": "Cave of Origin",
+      "kind": "dungeon",
+      "x": 805,
+      "y": 775,
+      "order": 67,
+      "locationSlug": "cave-of-origin",
+      "labelPos": "bottom",
+      "nameDe": "Urzeithöhle"
+    },
+    {
+      "id": "team-aqua-hideout",
+      "label": "Team Aqua Hideout",
+      "kind": "dungeon",
+      "x": 1165,
+      "y": 510,
+      "order": 68,
+      "locationSlug": "team-aqua-hideout",
+      "labelPos": "bottom",
+      "nameDe": "Team Aquas Versteck"
     }
   ],
   "edges": [
@@ -1031,6 +1108,56 @@
     {
       "from": "pacifidlog-town",
       "to": "sky-pillar",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-108",
+      "to": "abandoned-ship",
+      "kind": "water"
+    },
+    {
+      "from": "mt-chimney",
+      "to": "jagged-pass",
+      "kind": "land"
+    },
+    {
+      "from": "jagged-pass",
+      "to": "lavaridge-town",
+      "kind": "land"
+    },
+    {
+      "from": "jagged-pass",
+      "to": "magma-hideout",
+      "kind": "land"
+    },
+    {
+      "from": "hoenn-route-110",
+      "to": "new-mauville",
+      "kind": "tunnel"
+    },
+    {
+      "from": "hoenn-route-128",
+      "to": "seafloor-cavern",
+      "kind": "water"
+    },
+    {
+      "from": "sootopolis-city",
+      "to": "cave-of-origin",
+      "kind": "land"
+    },
+    {
+      "from": "lilycove-city",
+      "to": "team-aqua-hideout",
+      "kind": "land"
+    },
+    {
+      "from": "lilycove-city",
+      "to": "hoenn-route-124",
+      "kind": "water"
+    },
+    {
+      "from": "hoenn-route-105",
+      "to": "hoenn-route-106",
       "kind": "water"
     }
   ],

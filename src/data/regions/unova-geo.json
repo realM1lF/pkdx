@@ -225,6 +225,46 @@
     "p2-laboratory": [
       0.92,
       0.82
+    ],
+    "ns-castle": [
+      0.68,
+      0.02
+    ],
+    "cold-storage": [
+      0.338,
+      0.45
+    ],
+    "mistralton-cave": [
+      0.2,
+      0.32
+    ],
+    "challengers-cave": [
+      0.9,
+      0.36
+    ],
+    "driftveil-drawbridge": [
+      0.387,
+      0.368
+    ],
+    "tubeline-bridge": [
+      0.474,
+      0.2
+    ],
+    "undella-bay": [
+      0.91,
+      0.58
+    ],
+    "abyssal-ruins": [
+      0.96,
+      0.56
+    ],
+    "black-city": [
+      0.66,
+      0.48
+    ],
+    "white-forest": [
+      0.76,
+      0.48
     ]
   }
 }

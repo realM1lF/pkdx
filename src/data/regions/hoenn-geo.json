@@ -245,6 +245,34 @@
     "hoenn-route-134": [
       0.32,
       0.76
+    ],
+    "abandoned-ship": [
+      0.188,
+      0.838
+    ],
+    "jagged-pass": [
+      0.137,
+      0.08
+    ],
+    "magma-hideout": [
+      0.151,
+      0.095
+    ],
+    "new-mauville": [
+      0.322,
+      0.446
+    ],
+    "seafloor-cavern": [
+      0.88,
+      0.76
+    ],
+    "cave-of-origin": [
+      0.615,
+      0.455
+    ],
+    "team-aqua-hideout": [
+      0.685,
+      0.195
     ]
   }
 }

@@ -494,6 +494,16 @@
       "order": 45,
       "locationSlug": "saffron-city",
       "nameDe": "Saffronia City"
+    },
+    {
+      "id": "pokemon-mansion",
+      "label": "Pokémon Mansion",
+      "kind": "dungeon",
+      "x": 260,
+      "y": 730,
+      "order": 47,
+      "locationSlug": "pokemon-mansion",
+      "nameDe": "Pokémon-Villa"
     }
   ],
   "edges": [
@@ -726,6 +736,11 @@
       "from": "cinnabar-island",
       "to": "kanto-route-21",
       "kind": "water"
+    },
+    {
+      "from": "cinnabar-island",
+      "to": "pokemon-mansion",
+      "kind": "land"
     },
     {
       "from": "kanto-route-21",

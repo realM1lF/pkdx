@@ -638,6 +638,117 @@
       "locationSlug": "p2-laboratory",
       "labelPos": "left",
       "nameDe": "P2-Labor"
+    },
+    {
+      "id": "ns-castle",
+      "label": "N's Castle",
+      "kind": "dungeon",
+      "x": 820,
+      "y": 25,
+      "order": 57,
+      "locationSlug": "ns-castle",
+      "labelPos": "bottom",
+      "nameDe": "Schloss von N"
+    },
+    {
+      "id": "cold-storage",
+      "label": "Cold Storage",
+      "kind": "dungeon",
+      "x": 390,
+      "y": 370,
+      "order": 58,
+      "locationSlug": "cold-storage",
+      "labelPos": "bottom",
+      "nameDe": "Tiefkühlcontainer"
+    },
+    {
+      "id": "mistralton-cave",
+      "label": "Mistralton Cave",
+      "kind": "dungeon",
+      "x": 230,
+      "y": 240,
+      "order": 59,
+      "locationSlug": "mistralton-cave",
+      "labelPos": "bottom",
+      "nameDe": "Panaero-Höhle"
+    },
+    {
+      "id": "challengers-cave",
+      "label": "Challenger's Cave",
+      "kind": "dungeon",
+      "x": 1080,
+      "y": 250,
+      "order": 60,
+      "locationSlug": "challengers-cave",
+      "postGame": true,
+      "labelPos": "bottom",
+      "nameDe": "Höhle der Schulung"
+    },
+    {
+      "id": "driftveil-drawbridge",
+      "label": "Driftveil Drawbridge",
+      "kind": "special",
+      "x": 450,
+      "y": 290,
+      "order": 61,
+      "locationSlug": "driftveil-drawbridge",
+      "labelPos": "top",
+      "nameDe": "Marea-Zugbrücke"
+    },
+    {
+      "id": "tubeline-bridge",
+      "label": "Tubeline Bridge",
+      "kind": "special",
+      "x": 557,
+      "y": 175,
+      "order": 62,
+      "locationSlug": "tubeline-bridge",
+      "labelPos": "bottom",
+      "nameDe": "Zylinderbrücke"
+    },
+    {
+      "id": "undella-bay",
+      "label": "Undella Bay",
+      "kind": "special",
+      "x": 1100,
+      "y": 440,
+      "order": 63,
+      "locationSlug": "undella-bay",
+      "labelPos": "left",
+      "nameDe": "Bucht von Ondula"
+    },
+    {
+      "id": "abyssal-ruins",
+      "label": "Abyssal Ruins",
+      "kind": "dungeon",
+      "x": 1160,
+      "y": 430,
+      "order": 64,
+      "locationSlug": "abyssal-ruins",
+      "labelPos": "left",
+      "nameDe": "Unterwasserruine"
+    },
+    {
+      "id": "black-city",
+      "label": "Black City",
+      "kind": "city",
+      "x": 760,
+      "y": 380,
+      "order": 65,
+      "locationSlug": "black-city",
+      "labelPos": "bottom",
+      "nameDe": "Schwarze Stadt"
+    },
+    {
+      "id": "white-forest",
+      "label": "White Forest",
+      "kind": "special",
+      "x": 880,
+      "y": 380,
+      "order": 66,
+      "locationSlug": "white-forest",
+      "labelPos": "bottom",
+      "nameDe": "Weißer Wald"
     }
   ],
   "edges": [
@@ -718,6 +829,11 @@
     },
     {
       "from": "unova-route-5",
+      "to": "driftveil-drawbridge",
+      "kind": "land"
+    },
+    {
+      "from": "driftveil-drawbridge",
       "to": "driftveil-city",
       "kind": "land"
     },
@@ -768,7 +884,12 @@
     },
     {
       "from": "unova-route-8",
-      "to": "opelucid-city",
+      "to": "tubeline-bridge",
+      "kind": "land"
+    },
+    {
+      "from": "tubeline-bridge",
+      "to": "unova-route-9",
       "kind": "land"
     },
     {
@@ -782,7 +903,7 @@
       "kind": "land"
     },
     {
-      "from": "unova-route-9",
+      "from": "opelucid-city",
       "to": "unova-route-11",
       "kind": "land"
     },
@@ -920,6 +1041,46 @@
       "from": "unova-route-17",
       "to": "p2-laboratory",
       "kind": "water"
+    },
+    {
+      "from": "unova-victory-road",
+      "to": "ns-castle",
+      "kind": "land"
+    },
+    {
+      "from": "driftveil-city",
+      "to": "cold-storage",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-6",
+      "to": "mistralton-cave",
+      "kind": "land"
+    },
+    {
+      "from": "unova-route-13",
+      "to": "challengers-cave",
+      "kind": "land"
+    },
+    {
+      "from": "undella-town",
+      "to": "undella-bay",
+      "kind": "water"
+    },
+    {
+      "from": "undella-bay",
+      "to": "abyssal-ruins",
+      "kind": "water"
+    },
+    {
+      "from": "marvelous-bridge",
+      "to": "black-city",
+      "kind": "land"
+    },
+    {
+      "from": "marvelous-bridge",
+      "to": "white-forest",
+      "kind": "land"
     }
   ],
   "nameDe": "Einall"

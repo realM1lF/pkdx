@@ -524,6 +524,95 @@
       "locationSlug": "johto-safari-zone",
       "labelPos": "right",
       "nameDe": "Safari-Zone"
+    },
+    {
+      "id": "johto-lighthouse",
+      "label": "Olivine Lighthouse",
+      "kind": "dungeon",
+      "x": 248,
+      "y": 218,
+      "order": 48,
+      "locationSlug": "johto-lighthouse",
+      "labelPos": "right",
+      "nameDe": "Leuchtturm"
+    },
+    {
+      "id": "radio-tower",
+      "label": "Radio Tower",
+      "kind": "dungeon",
+      "x": 388,
+      "y": 198,
+      "order": 49,
+      "locationSlug": "radio-tower",
+      "labelPos": "right",
+      "nameDe": "Radio-Turm"
+    },
+    {
+      "id": "goldenrod-tunnel",
+      "label": "Goldenrod Tunnel",
+      "kind": "dungeon",
+      "x": 348,
+      "y": 268,
+      "order": 50,
+      "locationSlug": "goldenrod-tunnel",
+      "labelPos": "left",
+      "nameDe": "Dukatia-Passage"
+    },
+    {
+      "id": "team-rocket-hq",
+      "label": "Team Rocket HQ",
+      "kind": "dungeon",
+      "x": 1038,
+      "y": 298,
+      "order": 51,
+      "locationSlug": "team-rocket-hq",
+      "labelPos": "right",
+      "nameDe": "Team Rocket-Hauptquartier"
+    },
+    {
+      "id": "tohjo-falls",
+      "label": "Tohjo Falls",
+      "kind": "dungeon",
+      "x": 1158,
+      "y": 748,
+      "order": 52,
+      "locationSlug": "tohjo-falls",
+      "labelPos": "left",
+      "nameDe": "Tohjo-Fälle"
+    },
+    {
+      "id": "ss-aqua",
+      "label": "S.S. Aqua",
+      "kind": "dungeon",
+      "x": 168,
+      "y": 328,
+      "order": 53,
+      "locationSlug": "ss-aqua",
+      "labelPos": "left",
+      "nameDe": "M.S. Aqua"
+    },
+    {
+      "id": "safari-zone-gate",
+      "label": "Safari Zone Gate",
+      "kind": "city",
+      "x": 42,
+      "y": 495,
+      "order": 54,
+      "locationSlug": "safari-zone-gate",
+      "labelPos": "right",
+      "nameDe": "Safari-Eingang"
+    },
+    {
+      "id": "embedded-tower",
+      "label": "Embedded Tower",
+      "kind": "dungeon",
+      "x": 16,
+      "y": 768,
+      "order": 55,
+      "locationSlug": "embedded-tower",
+      "postGame": true,
+      "labelPos": "right",
+      "nameDe": "Felsenherzturm"
     }
   ],
   "edges": [
@@ -773,8 +862,48 @@
       "kind": "land"
     },
     {
+      "from": "olivine-city",
+      "to": "johto-lighthouse",
+      "kind": "land"
+    },
+    {
+      "from": "goldenrod-city",
+      "to": "radio-tower",
+      "kind": "land"
+    },
+    {
+      "from": "goldenrod-city",
+      "to": "goldenrod-tunnel",
+      "kind": "land"
+    },
+    {
+      "from": "mahogany-town",
+      "to": "team-rocket-hq",
+      "kind": "land"
+    },
+    {
+      "from": "new-bark-town",
+      "to": "tohjo-falls",
+      "kind": "land"
+    },
+    {
+      "from": "olivine-city",
+      "to": "ss-aqua",
+      "kind": "water"
+    },
+    {
       "from": "johto-route-48",
+      "to": "safari-zone-gate",
+      "kind": "land"
+    },
+    {
+      "from": "safari-zone-gate",
       "to": "johto-safari-zone",
+      "kind": "land"
+    },
+    {
+      "from": "johto-route-47",
+      "to": "embedded-tower",
       "kind": "land"
     }
   ],

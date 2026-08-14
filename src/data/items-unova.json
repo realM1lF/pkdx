@@ -1,8 +1,12 @@
 {
   "striaton-city": [
     { "itemSlug": "hm-normal", "name": "HM01 — Cut", "moveSlug": "cut", "note": "Fennel — after the trio badge", "pocket": "HM" },
-    { "itemSlug": "dusk-ball", "name": "Dusk Ball", "note": "Roughneck — eastmost alley", "pocket": "BALLS" },
-    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Cheren — after his Trainers' School battle (×3)", "pocket": "BERRIES" }
+    { "itemSlug": "tm-normal", "name": "TM83 — Work Up", "moveSlug": "work-up", "note": "Cilan/Chili/Cress — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "pal-pad", "name": "Pal Pad", "note": "Girl in the Pokémon Center (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball in the city (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "x-speed", "name": "X Speed", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
   ],
   "wellspring-cave": [
     { "itemSlug": "tm-dark", "name": "TM46 — Thief", "moveSlug": "thief", "note": "1F — south of the entrance", "pocket": "TM" },
@@ -18,5 +22,415 @@
     { "itemSlug": "hm-water", "name": "HM06 — Dive", "moveSlug": "dive", "note": "Girl in front of Caitlin's Villa", "pocket": "HM" },
     { "itemSlug": "big-nugget", "name": "Big Nugget", "note": "Riches' villa — behind the hedges on the right", "pocket": "ITEMS" },
     { "itemSlug": "prism-scale", "name": "Prism Scale", "note": "From a man in the Pokémon Center", "pocket": "ITEMS" }
+  ],
+  "nuvema-town": [
+    { "itemSlug": "town-map", "name": "Town Map", "note": "Mom — after the first rival battle (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "xtransceiver", "name": "Xtransceiver", "note": "Mom — after the first rival battle (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "tm-normal", "name": "TM54 — False Swipe", "moveSlug": "false-swipe", "note": "Professor Juniper — after the first gym (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM17 — Protect", "moveSlug": "protect", "note": "Professor Juniper — after the first gym (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM10 — Hidden Power", "moveSlug": "hidden-power", "note": "Professor Juniper — after the first gym (Black/White)", "pocket": "TM" },
+    { "itemSlug": "super-rod", "name": "Super Rod", "note": "Looker — after the Elite Four (Black/White)", "pocket": "KEY" }
+  ],
+  "unova-route-1": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "pearl", "name": "Pearl", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "persim-berry", "name": "Persim Berry", "note": "Berry patch on the route (Black/White)", "pocket": "BERRIES" }
+  ],
+  "accumula-town": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Girl near the Pokémon Center (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Berry patch in town (Black/White)", "pocket": "BERRIES" }
+  ],
+  "unova-route-2": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Second item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "dreamyard": [
+    { "itemSlug": "tm-normal", "name": "TM75 — Swords Dance", "moveSlug": "swords-dance", "note": "Ruins — upper floor (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM85 — Dream Eater", "moveSlug": "dream-eater", "note": "Basement — after the Team Plasma event (Black/White)", "pocket": "TM" },
+    { "itemSlug": "twisted-spoon", "name": "Twisted Spoon", "note": "Item ball in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "Item ball in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "x-defense", "name": "X Defense", "note": "Item ball in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "repel", "name": "Repel", "note": "Item ball in the ruins (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-3": [
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heal-ball", "name": "Heal Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "awakening", "name": "Awakening", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "repel", "name": "Repel", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "nacrene-city": [
+    { "itemSlug": "tm-normal", "name": "TM67 — Retaliate", "moveSlug": "retaliate", "note": "Lenora — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "dowsing-machine", "name": "Dowsing Machine", "note": "Lenora — after returning the Dragon Skull (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "light-stone", "name": "Light Stone", "note": "Nacrene Museum — after the Elite Four (Black)", "pocket": "KEY" },
+    { "itemSlug": "dark-stone", "name": "Dark Stone", "note": "Nacrene Museum — after the Elite Four (White)", "pocket": "KEY" },
+    { "itemSlug": "miracle-seed", "name": "Miracle Seed", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "mystic-water", "name": "Mystic Water", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
+  ],
+  "pinwheel-forest": [
+    { "itemSlug": "tm-grass", "name": "TM22 — Solar Beam", "moveSlug": "solar-beam", "note": "Inner forest — after the Plasma event (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-grass", "name": "TM86 — Grass Knot", "moveSlug": "grass-knot", "note": "Outer forest item ball (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-fighting", "name": "TM94 — Rock Smash", "moveSlug": "rock-smash", "note": "Outer forest — worker after the gym (Black/White)", "pocket": "TM" },
+    { "itemSlug": "dragon-skull", "name": "Dragon Skull", "note": "Team Plasma — story item (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "quick-claw", "name": "Quick Claw", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "miracle-seed", "name": "Miracle Seed", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "silver-powder", "name": "Silver Powder", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "big-root", "name": "Big Root", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "net-ball", "name": "Net Ball", "note": "Item ball in the forest (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball in the forest (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" }
+  ],
+  "castelia-city": [
+    { "itemSlug": "tm-bug", "name": "TM76 — Struggle Bug", "moveSlug": "struggle-bug", "note": "Burgh — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM44 — Rest", "moveSlug": "rest", "note": "Hotel — man on an upper floor (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM45 — Attract", "moveSlug": "attract", "note": "Passerby Analytics HQ (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "moveSlug": "flash", "note": "Game Freak office — after seeing 60 species (Black/White)", "pocket": "TM" },
+    { "itemSlug": "dusk-ball", "name": "Dusk Ball", "note": "Item ball in the city (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Looker — after the Team Plasma event (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "exp-share", "name": "Exp. Share", "note": "Professor Juniper — after the gym (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "amulet-coin", "name": "Amulet Coin", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "eviolite", "name": "Eviolite", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "choice-scarf", "name": "Choice Scarf", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "fire-stone", "name": "Fire Stone", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "leaf-stone", "name": "Leaf Stone", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-4": [
+    { "itemSlug": "tm-ground", "name": "TM28 — Dig", "moveSlug": "dig", "note": "Item ball on the desert route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM41 — Torment", "moveSlug": "torment", "note": "Item ball on the desert route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "burn-heal", "name": "Burn Heal", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "x-accuracy", "name": "X Accuracy", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "desert-resort": [
+    { "itemSlug": "tm-rock", "name": "TM39 — Rock Tomb", "moveSlug": "rock-tomb", "note": "Item ball in the desert (Black/White)", "pocket": "TM" },
+    { "itemSlug": "rage-candy-bar", "name": "Rage Candy Bar", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "black-glasses", "name": "Black Glasses", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "soft-sand", "name": "Soft Sand", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "fire-stone", "name": "Fire Stone", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "stardust", "name": "Stardust", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "fresh-water", "name": "Fresh Water", "note": "Item ball in the desert (Black/White)", "pocket": "ITEMS" }
+  ],
+  "relic-castle": [
+    { "itemSlug": "tm-psychic", "name": "TM04 — Calm Mind", "moveSlug": "calm-mind", "note": "Lower floors item ball (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-ground", "name": "TM26 — Earthquake", "moveSlug": "earthquake", "note": "Lowest floor — after the Plasma event (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-ghost", "name": "TM30 — Shadow Ball", "moveSlug": "shadow-ball", "note": "Item ball in the castle (Black/White)", "pocket": "TM" },
+    { "itemSlug": "cover-fossil", "name": "Cover Fossil", "note": "Backer — choose Cover Fossil (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "plume-fossil", "name": "Plume Fossil", "note": "Backer — choose Plume Fossil (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "sun-stone", "name": "Sun Stone", "note": "Item ball in the castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball in the castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball in the castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball in the castle (Black/White)", "pocket": "ITEMS" }
+  ],
+  "nimbasa-city": [
+    { "itemSlug": "tm-electric", "name": "TM72 — Volt Switch", "moveSlug": "volt-switch", "note": "Elesa — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "moveSlug": "strength", "note": "Alder — after the gym (Black/White)", "pocket": "HM" },
+    { "itemSlug": "bicycle", "name": "Bicycle", "note": "Bicycle shop — after the gym (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "vs-recorder", "name": "Vs. Recorder", "note": "Girl in the Pokémon Center (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "prop-case", "name": "Prop Case", "note": "Musical Theater (Black/White)", "pocket": "KEY" },
+    { "itemSlug": "sun-stone", "name": "Sun Stone", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "macho-brace", "name": "Macho Brace", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-5": [
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "zinc", "name": "Zinc", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "driftveil-drawbridge": [
+    { "itemSlug": "health-wing", "name": "Health Wing", "note": "Shadow on the bridge (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "muscle-wing", "name": "Muscle Wing", "note": "Shadow on the bridge (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "resist-wing", "name": "Resist Wing", "note": "Shadow on the bridge (Black/White)", "pocket": "ITEMS" }
+  ],
+  "driftveil-city": [
+    { "itemSlug": "tm-ground", "name": "TM78 — Bulldoze", "moveSlug": "bulldoze", "note": "Clay — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "moveSlug": "fly", "note": "Bianca — after the gym (Black/White)", "pocket": "HM" },
+    { "itemSlug": "expert-belt", "name": "Expert Belt", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "shell-bell", "name": "Shell Bell", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "water-stone", "name": "Water Stone", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "big-pearl", "name": "Big Pearl", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the city (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "repeat-ball", "name": "Repeat Ball", "note": "Item ball in the city (Black/White)", "pocket": "BALLS" }
+  ],
+  "cold-storage": [
+    { "itemSlug": "tm-dark", "name": "TM01 — Hone Claws", "moveSlug": "hone-claws", "note": "Item ball in the warehouse (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-water", "name": "TM55 — Scald", "moveSlug": "scald", "note": "Item ball in the warehouse (Black/White)", "pocket": "TM" },
+    { "itemSlug": "never-melt-ice", "name": "Never-Melt Ice", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rocky-helmet", "name": "Rocky Helmet", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "net-ball", "name": "Net Ball", "note": "Item ball in the warehouse (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "ice-heal", "name": "Ice Heal", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "protein", "name": "Protein", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Item ball in the warehouse (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-6": [
+    { "itemSlug": "tm-poison", "name": "TM84 — Poison Jab", "moveSlug": "poison-jab", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "shiny-stone", "name": "Shiny Stone", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "leaf-stone", "name": "Leaf Stone", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "silk-scarf", "name": "Silk Scarf", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "mistralton-cave": [
+    { "itemSlug": "tm-rock", "name": "TM80 — Rock Slide", "moveSlug": "rock-slide", "note": "Item ball in the cave (Black/White)", "pocket": "TM" },
+    { "itemSlug": "dusk-stone", "name": "Dusk Stone", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hard-stone", "name": "Hard Stone", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "iron", "name": "Iron", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-repel", "name": "Max Repel", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" }
+  ],
+  "chargestone-cave": [
+    { "itemSlug": "tm-rock", "name": "TM69 — Rock Polish", "moveSlug": "rock-polish", "note": "Item ball in the cave (Black/White)", "pocket": "TM" },
+    { "itemSlug": "lucky-egg", "name": "Lucky Egg", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "magnet", "name": "Magnet", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "thunder-stone", "name": "Thunder Stone", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "bright-powder", "name": "Bright Powder", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heal-ball", "name": "Heal Ball", "note": "Item ball in the cave (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "timer-ball", "name": "Timer Ball", "note": "Item ball in the cave (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" }
+  ],
+  "mistralton-city": [
+    { "itemSlug": "tm-flying", "name": "TM62 — Acrobatics", "moveSlug": "acrobatics", "note": "Skyla — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-flying", "name": "TM40 — Aerial Ace", "moveSlug": "aerial-ace", "note": "Item ball in the city (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-flying", "name": "TM58 — Sky Drop", "moveSlug": "sky-drop", "note": "Item ball in the city (Black/White)", "pocket": "TM" },
+    { "itemSlug": "sharp-beak", "name": "Sharp Beak", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-7": [
+    { "itemSlug": "tm-electric", "name": "TM57 — Charge Beam", "moveSlug": "charge-beam", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-bug", "name": "TM81 — X-Scissor", "moveSlug": "x-scissor", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "celestial-tower": [
+    { "itemSlug": "tm-fire", "name": "TM61 — Will-O-Wisp", "moveSlug": "will-o-wisp", "note": "Item ball in the tower (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-ghost", "name": "TM65 — Shadow Claw", "moveSlug": "shadow-claw", "note": "Item ball in the tower (Black/White)", "pocket": "TM" },
+    { "itemSlug": "spell-tag", "name": "Spell Tag", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" }
+  ],
+  "twist-mountain": [
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "moveSlug": "surf", "note": "Alder — after Clay (Black/White)", "pocket": "HM" },
+    { "itemSlug": "tm-steel", "name": "TM91 — Flash Cannon", "moveSlug": "flash-cannon", "note": "Item ball in the mountain (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM90 — Substitute", "moveSlug": "substitute", "note": "Item ball in the mountain (Black/White)", "pocket": "TM" },
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the mountain (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the mountain (Black/White)", "pocket": "ITEMS" }
+  ],
+  "icirrus-city": [
+    { "itemSlug": "tm-ice", "name": "TM79 — Frost Breath", "moveSlug": "frost-breath", "note": "Brycen — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-fighting", "name": "TM31 — Brick Break", "moveSlug": "brick-break", "note": "Item ball in the city (Black/White)", "pocket": "TM" },
+    { "itemSlug": "cleanse-tag", "name": "Cleanse Tag", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "exp-share", "name": "Exp. Share", "note": "Alder — after the gym (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rage-candy-bar", "name": "Rage Candy Bar", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
+  ],
+  "dragonspiral-tower": [
+    { "itemSlug": "tm-dark", "name": "TM63 — Embargo", "moveSlug": "embargo", "note": "Item ball in the tower (Black/White)", "pocket": "TM" },
+    { "itemSlug": "old-gateau", "name": "Old Gateau", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "dragon-fang", "name": "Dragon Fang", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "shiny-stone", "name": "Shiny Stone", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "star-piece", "name": "Star Piece", "note": "Item ball in the tower (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-8": [
+    { "itemSlug": "tm-poison", "name": "TM36 — Sludge Bomb", "moveSlug": "sludge-bomb", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM42 — Facade", "moveSlug": "facade", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "damp-rock", "name": "Damp Rock", "note": "Weather Institute — rain (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heat-rock", "name": "Heat Rock", "note": "Weather Institute — sun (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "icy-rock", "name": "Icy Rock", "note": "Weather Institute — hail (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "smooth-rock", "name": "Smooth Rock", "note": "Weather Institute — sand (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "poison-barb", "name": "Poison Barb", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" }
+  ],
+  "moor-of-icirrus": [
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "Item ball in the moor (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball in the moor (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball in the moor (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "carbos", "name": "Carbos", "note": "Item ball in the moor (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the moor (Black/White)", "pocket": "BALLS" }
+  ],
+  "tubeline-bridge": [
+    { "itemSlug": "tm-fire", "name": "TM43 — Flame Charge", "moveSlug": "flame-charge", "note": "Item ball on the bridge (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM56 — Fling", "moveSlug": "fling", "note": "Item ball on the bridge (Black/White)", "pocket": "TM" }
+  ],
+  "opelucid-city": [
+    { "itemSlug": "tm-dragon", "name": "TM82 — Dragon Tail", "moveSlug": "dragon-tail", "note": "Drayden/Iris — Gym prize (Black/White)", "pocket": "TM" },
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Drayden — after the Elite Four (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "cell-battery", "name": "Cell Battery", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "destiny-knot", "name": "Destiny Knot", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "float-stone", "name": "Float Stone", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ring-target", "name": "Ring Target", "note": "Item ball in the city (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-9": [
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "thunder-stone", "name": "Thunder Stone", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "lemonade", "name": "Lemonade", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-11": [
+    { "itemSlug": "tm-fire", "name": "TM50 — Overheat", "moveSlug": "overheat", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "protector", "name": "Protector", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "village-bridge": [
+    { "itemSlug": "dive-ball", "name": "Dive Ball", "note": "Item ball on the bridge (Black/White)", "pocket": "BALLS" },
+    { "itemSlug": "leftovers", "name": "Leftovers", "note": "Hidden — under a table (Black/White)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "Item ball on the bridge (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-12": [
+    { "itemSlug": "tm-grass", "name": "TM53 — Energy Ball", "moveSlug": "energy-ball", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "lacunosa-town": [
+    { "itemSlug": "gracidea", "name": "Gracidea", "note": "Flower shop — Shaymin in the party (Black/White)", "pocket": "KEY" }
+  ],
+  "unova-route-13": [
+    { "itemSlug": "tm-psychic", "name": "TM29 — Psychic", "moveSlug": "psychic", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-bug", "name": "TM89 — U-turn", "moveSlug": "u-turn", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "prism-scale", "name": "Prism Scale", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "reaper-cloth", "name": "Reaper Cloth", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "razor-claw", "name": "Razor Claw", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "electirizer", "name": "Electirizer", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "magmarizer", "name": "Magmarizer", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "dubious-disc", "name": "Dubious Disc", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "up-grade", "name": "Up-Grade", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "kings-rock", "name": "King's Rock", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "challengers-cave": [
+    { "itemSlug": "tm-rock", "name": "TM71 — Stone Edge", "moveSlug": "stone-edge", "note": "Item ball in the cave (Black/White)", "pocket": "TM" },
+    { "itemSlug": "black-belt", "name": "Black Belt", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "oval-stone", "name": "Oval Stone", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "protein", "name": "Protein", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball in the cave (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "timer-ball", "name": "Timer Ball", "note": "Item ball in the cave (Black/White)", "pocket": "BALLS" }
+  ],
+  "unova-route-14": [
+    { "itemSlug": "tm-fighting", "name": "TM08 — Bulk Up", "moveSlug": "bulk-up", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "reaper-cloth", "name": "Reaper Cloth", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on the route (Black/White)", "pocket": "BALLS" }
+  ],
+  "abundant-shrine": [
+    { "itemSlug": "tm-fire", "name": "TM35 — Flamethrower", "moveSlug": "flamethrower", "note": "Item ball at the shrine (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-psychic", "name": "TM92 — Trick Room", "moveSlug": "trick-room", "note": "Item ball at the shrine (Black/White)", "pocket": "TM" },
+    { "itemSlug": "razor-fang", "name": "Razor Fang", "note": "Item ball at the shrine (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball at the shrine (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball at the shrine (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-16": [
+    { "itemSlug": "tm-dark", "name": "TM66 — Payback", "moveSlug": "payback", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "lostlorn-forest": [
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "big-mushroom", "name": "Big Mushroom", "note": "Item ball in the forest (Black/White)", "pocket": "ITEMS" }
+  ],
+  "marvelous-bridge": [
+    { "itemSlug": "adamant-orb", "name": "Adamant Orb", "note": "Old man — after the Elite Four (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "lustrous-orb", "name": "Lustrous Orb", "note": "Old man — after the Elite Four (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "griseous-orb", "name": "Griseous Orb", "note": "Old man — after the Elite Four (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-15": [
+    { "itemSlug": "tm-poison", "name": "TM09 — Venoshock", "moveSlug": "venoshock", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "up-grade", "name": "Up-Grade", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-10": [
+    { "itemSlug": "tm-normal", "name": "TM05 — Roar", "moveSlug": "roar", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "dawn-stone", "name": "Dawn Stone", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "dusk-stone", "name": "Dusk Stone", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-victory-road": [
+    { "itemSlug": "tm-dragon", "name": "TM02 — Dragon Claw", "moveSlug": "dragon-claw", "note": "Item ball on Victory Road (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM12 — Taunt", "moveSlug": "taunt", "note": "Item ball on Victory Road (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-electric", "name": "TM93 — Wild Charge", "moveSlug": "wild-charge", "note": "Item ball on Victory Road (Black/White)", "pocket": "TM" },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "Item ball on Victory Road (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on Victory Road (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball on Victory Road (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball on Victory Road (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on Victory Road (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on Victory Road (Black/White)", "pocket": "BALLS" }
+  ],
+  "ns-castle": [
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball in N's Castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball in N's Castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball in N's Castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in N's Castle (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in N's Castle (Black/White)", "pocket": "BALLS" }
+  ],
+  "unova-route-18": [
+    { "itemSlug": "hm-water", "name": "HM05 — Waterfall", "moveSlug": "waterfall", "note": "Parasol Lady — after Surf (Black/White)", "pocket": "HM" },
+    { "itemSlug": "tm-psychic", "name": "TM19 — Telekinesis", "moveSlug": "telekinesis", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM32 — Double Team", "moveSlug": "double-team", "note": "Item ball on the route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "dragon-scale", "name": "Dragon Scale", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Item ball on the route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "unova-route-17": [
+    { "itemSlug": "tm-poison", "name": "TM06 — Toxic", "moveSlug": "toxic", "note": "Item ball on the sea route (Black/White)", "pocket": "TM" },
+    { "itemSlug": "deep-sea-tooth", "name": "Deep Sea Tooth", "note": "Item ball on the sea route (Black/White)", "pocket": "ITEMS" }
+  ],
+  "p2-laboratory": [
+    { "itemSlug": "tm-electric", "name": "TM24 — Thunderbolt", "moveSlug": "thunderbolt", "note": "Item ball in the lab (Black/White)", "pocket": "TM" },
+    { "itemSlug": "dubious-disc", "name": "Dubious Disc", "note": "Item ball in the lab (Black/White)", "pocket": "ITEMS" }
+  ],
+  "undella-bay": [
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden — underwater (Black/White)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "pearl", "name": "Pearl", "note": "Hidden — underwater (Black/White)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "abyssal-ruins": [
+    { "itemSlug": "relic-crown", "name": "Relic Crown", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "relic-statue", "name": "Relic Statue", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "relic-band", "name": "Relic Band", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "relic-vase", "name": "Relic Vase", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "relic-gold", "name": "Relic Gold", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "relic-silver", "name": "Relic Silver", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" },
+    { "itemSlug": "relic-copper", "name": "Relic Copper", "note": "Relic item in the ruins (Black/White)", "pocket": "ITEMS" }
   ]
 }

@@ -1,40 +1,346 @@
 {
+  "new-bark-town": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Elm's aide — after delivering the parcel (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "master-ball", "name": "Master Ball", "note": "Prof. Elm — after earning 8 badges (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "ss-ticket", "name": "S.S. Ticket", "note": "Prof. Elm — after the Elite Four (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "everstone", "name": "Everstone", "note": "Prof. Elm — show him Togepi (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-29": [
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Tutorial — Lyra/Ethan after the first wild battle (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Northeast item ball (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "green-apricorn", "name": "Green Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "cherrygrove-city": [
+    { "itemSlug": "mystic-water", "name": "Mystic Water", "note": "Surf islet — man on the island (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-30": [
+    { "itemSlug": "apricorn-box", "name": "Apricorn Box", "note": "Lyra/Ethan — after the first Apricorn (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "mystery-egg", "name": "Mystery Egg", "note": "Mr. Pokémon — after meeting him (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "exp-share", "name": "Exp. Share", "note": "Mr. Pokémon — trade the Red Scale (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Hidden — north of Mr. Pokémon's house (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "blue-orb", "name": "Blue Orb", "note": "Mr. Pokémon — after seeing Red (HeartGold only)", "pocket": "KEY" },
+    { "itemSlug": "red-orb", "name": "Red Orb", "note": "Mr. Pokémon — after seeing Red (SoulSilver only)", "pocket": "KEY" }
+  ],
+  "johto-route-31": [
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "tm-psychic", "name": "TM44 — Rest", "moveSlug": "rest", "note": "Kenya's mail — deliver to the Pokémon Center (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "vs-recorder", "name": "Vs. Recorder", "note": "Lyra/Ethan — Route 31 gate (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "black-apricorn", "name": "Black Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
   "violet-city": [
-    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "moveSlug": "flash", "note": "Sprout Tower — defeat Elder Li", "pocket": "TM" },
-    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Hidden — island between the bridges to Sprout Tower", "pocket": "BALLS", "hidden": true },
-    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Poké Mart — man in a suit, after the Zephyr Badge", "pocket": "ITEMS" }
+    { "itemSlug": "poke-ball", "name": "Poké Ball", "note": "Hidden — island between the bridges to Sprout Tower (HeartGold/SoulSilver)", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Poké Mart — man in a suit, after the Zephyr Badge (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "tm-flying", "name": "TM51 — Roost", "moveSlug": "roost", "note": "Falkner's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the city (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the city (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball in the city (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "yellow-apricorn", "name": "Yellow Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "sprout-tower": [
+    { "itemSlug": "tm-normal", "name": "TM70 — Flash", "moveSlug": "flash", "note": "Elder Li — after defeating him (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-32": [
+    { "itemSlug": "old-rod", "name": "Old Rod", "note": "Fishing Guru — Pokémon Center (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "tm-grass", "name": "TM09 — Bullet Seed", "moveSlug": "bullet-seed", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM05 — Roar", "moveSlug": "roar", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "miracle-seed", "name": "Miracle Seed", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "repel", "name": "Repel", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "lure-ball", "name": "Lure Ball", "note": "Kurt's daughter — after Slowpoke Well (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "shell-bell", "name": "Shell Bell", "note": "Pokémon Center — after showing a Pokémon with high friendship (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "BALLS", "hidden": true },
+    { "itemSlug": "heart-scale", "name": "Heart Scale", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "union-cave": [
+    { "itemSlug": "tm-rock", "name": "TM39 — Rock Tomb", "moveSlug": "rock-tomb", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "x-defense", "name": "X Defense", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "great-ball", "name": "Great Ball", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "potion", "name": "Potion", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Hidden in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "ruins-of-alph": [
+    { "itemSlug": "unown-report", "name": "Unown Report", "note": "Researcher — after solving a puzzle (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball in the ruins (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball in the ruins (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "life-orb", "name": "Life Orb", "note": "Item ball in the ruins (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "Item ball in the ruins (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-33": [
+    { "itemSlug": "black-apricorn", "name": "Black Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pink-apricorn", "name": "Pink Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "azalea-town": [
-    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Charcoal maker's apprentice — after the Farfetch'd errand", "pocket": "ITEMS" },
-    { "itemSlug": "fast-ball", "name": "Fast Ball", "note": "Kurt — after Team Rocket leaves Slowpoke Well", "pocket": "BALLS" },
-    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden — log pile by the charcoal kiln", "pocket": "ITEMS", "hidden": true }
+    { "itemSlug": "charcoal", "name": "Charcoal", "note": "Charcoal maker's apprentice — after the Farfetch'd errand (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "fast-ball", "name": "Fast Ball", "note": "Kurt — after Team Rocket leaves Slowpoke Well (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden — log pile by the charcoal kiln (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "tm-bug", "name": "TM89 — U-turn", "moveSlug": "u-turn", "note": "Bugsy's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "white-apricorn", "name": "White Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "slowpoke-well": [
+    { "itemSlug": "kings-rock", "name": "King's Rock", "note": "Item ball in the well (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "tm-water", "name": "TM18 — Rain Dance", "moveSlug": "rain-dance", "note": "Item ball in the well (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball in the well (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball in the well (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "ilex-forest": [
-    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "moveSlug": "cut", "note": "Farfetch'd's owner — after the herding errand", "pocket": "HM" },
-    { "itemSlug": "tm-dark", "name": "TM12 — Taunt", "moveSlug": "taunt", "note": "Gate — attendant on the way out", "pocket": "TM" }
+    { "itemSlug": "hm-normal", "name": "HM01 — Cut", "moveSlug": "cut", "note": "Farfetch'd's owner — after the herding errand (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "tm-dark", "name": "TM12 — Taunt", "moveSlug": "taunt", "note": "Gate — attendant on the way out (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the forest (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball in the forest (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Item ball in the forest (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-34": [
+    { "itemSlug": "tm-dark", "name": "TM63 — Embargo", "moveSlug": "embargo", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "power-herb", "name": "Power Herb", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "goldenrod-city": [
-    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Game Corner — from Mr. Game", "pocket": "KEY" },
-    { "itemSlug": "squirt-bottle", "name": "Squirt Bottle", "note": "Flower shop — after the Plain Badge", "pocket": "KEY" },
-    { "itemSlug": "bicycle", "name": "Bicycle", "note": "Bike Shop owner — yours to keep after his call", "pocket": "KEY" }
+    { "itemSlug": "squirt-bottle", "name": "Squirt Bottle", "note": "Flower shop — after the Plain Badge (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "bicycle", "name": "Bicycle", "note": "Bike Shop owner — yours to keep after his call (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "tm-normal", "name": "TM45 — Attract", "moveSlug": "attract", "note": "Whitney's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "amulet-coin", "name": "Amulet Coin", "note": "Game Corner — prize (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-35": [
+    { "itemSlug": "tm-dark", "name": "TM66 — Payback", "moveSlug": "payback", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "paralyze-heal", "name": "Paralyze Heal", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "green-apricorn", "name": "Green Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "national-park": [
+    { "itemSlug": "tm-ground", "name": "TM28 — Dig", "moveSlug": "dig", "note": "Item ball in the park (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "quick-claw", "name": "Quick Claw", "note": "Girl — after showing a Pokémon (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "soothe-bell", "name": "Soothe Bell", "note": "Woman in the park (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "shiny-stone", "name": "Shiny Stone", "note": "Item ball in the park (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Hidden in the park (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "johto-route-36": [
+    { "itemSlug": "hm-fighting", "name": "HM06 — Rock Smash", "moveSlug": "rock-smash", "note": "Man after moving Sudowoodo (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "berry-pots", "name": "Berry Pots", "note": "Flower shop girl — after Sudowoodo (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "oran-berry", "name": "Oran Berry", "note": "Berry tree (HeartGold/SoulSilver)", "pocket": "BERRIES" },
+    { "itemSlug": "pecha-berry", "name": "Pecha Berry", "note": "Berry tree (HeartGold/SoulSilver)", "pocket": "BERRIES" },
+    { "itemSlug": "blue-apricorn", "name": "Blue Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "ecruteak-city": [
-    { "itemSlug": "hm-water", "name": "HM03 — Surf", "moveSlug": "surf", "note": "Dance theater — old man after the Rocket grunt", "pocket": "HM" },
-    { "itemSlug": "dowsing-machine", "name": "Itemfinder", "note": "Ace Trainer — house east of the Gym", "pocket": "KEY" },
-    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — southeast corner of the north lake", "pocket": "ITEMS", "hidden": true }
+    { "itemSlug": "hm-water", "name": "HM03 — Surf", "moveSlug": "surf", "note": "Dance theater — old man after the Rocket grunt (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "dowsing-machine", "name": "Dowsing MCHN", "note": "Ace Trainer — house east of the Gym (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden — southeast corner of the north lake (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "tm-ghost", "name": "TM30 — Shadow Ball", "moveSlug": "shadow-ball", "note": "Morty's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "clear-bell", "name": "Clear Bell", "note": "Kimono Girls — after the Radio Tower (HeartGold)", "pocket": "KEY" },
+    { "itemSlug": "tidal-bell", "name": "Tidal Bell", "note": "Kimono Girls — after the Radio Tower (SoulSilver)", "pocket": "KEY" }
+  ],
+  "burned-tower": [
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "antidote", "name": "Antidote", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "tm-dark", "name": "TM12 — Taunt", "moveSlug": "taunt", "note": "B1F — requires Strength (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Hidden in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "bell-tower": [
+    { "itemSlug": "rainbow-wing", "name": "Rainbow Wing", "note": "Used here to encounter Ho-Oh (HeartGold)", "pocket": "KEY" },
+    { "itemSlug": "silver-wing", "name": "Silver Wing", "note": "Used here to encounter Lugia (SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "BALLS" }
+  ],
+  "johto-route-37": [
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "red-apricorn", "name": "Red Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "black-apricorn", "name": "Black Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-38": [
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "lax-incense", "name": "Lax Incense", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "white-apricorn", "name": "White Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "hp-up", "name": "HP Up", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "johto-route-39": [
+    { "itemSlug": "tm-fighting", "name": "TM60 — Drain Punch", "moveSlug": "drain-punch", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "tm-normal", "name": "TM83 — Natural Gift", "moveSlug": "natural-gift", "note": "Moomoo Farm — after healing Miltank (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "seal-case", "name": "Seal Case", "note": "Moomoo Farm (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "green-apricorn", "name": "Green Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "olivine-city": [
-    { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fishing Guru — house north of the Pokémon Center", "pocket": "KEY" },
-    { "itemSlug": "tm-electric", "name": "TM57 — Charge Beam", "moveSlug": "charge-beam", "note": "Beach northeast of the lighthouse (Surf)", "pocket": "TM" }
+    { "itemSlug": "good-rod", "name": "Good Rod", "note": "Fishing Guru — house north of the Pokémon Center (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "tm-electric", "name": "TM57 — Charge Beam", "moveSlug": "charge-beam", "note": "Beach northeast of the lighthouse (Surf) (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "tm-steel", "name": "TM23 — Iron Tail", "moveSlug": "iron-tail", "note": "Jasmine's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" }
+  ],
+  "johto-lighthouse": [
+    { "itemSlug": "tm-normal", "name": "TM87 — Swagger", "moveSlug": "swagger", "note": "Item ball in the lighthouse (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "ether", "name": "Ether", "note": "Item ball in the lighthouse (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the lighthouse (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "super-repel", "name": "Super Repel", "note": "Item ball in the lighthouse (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball in the lighthouse (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-40": [
+    { "itemSlug": "tm-flying", "name": "TM88 — Pluck", "moveSlug": "pluck", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-41": [
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "whirl-islands": [
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Item ball in the caves (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball in the caves (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the caves (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "Item ball in the caves (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "carbos", "name": "Carbos", "note": "Item ball in the caves (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Hidden in the caves (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
   ],
   "cianwood-city": [
-    { "itemSlug": "secret-potion", "name": "Secret Potion", "note": "Pharmacy — for Jasmine's Ampharos", "pocket": "KEY" },
-    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "moveSlug": "fly", "note": "Chuck's wife — outside the Gym after beating Chuck", "pocket": "HM" }
+    { "itemSlug": "secret-potion", "name": "Secret Potion", "note": "Pharmacy — for Jasmine's Ampharos (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "hm-flying", "name": "HM02 — Fly", "moveSlug": "fly", "note": "Chuck's wife — outside the Gym after beating Chuck (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "tm-fighting", "name": "TM01 — Focus Punch", "moveSlug": "focus-punch", "note": "Chuck's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the city (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball in the city (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-42": [
+    { "itemSlug": "hm-normal", "name": "HM04 — Strength", "moveSlug": "strength", "note": "Hiker — after the Rockets leave Mahogany (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "tm-ghost", "name": "TM65 — Shadow Claw", "moveSlug": "shadow-claw", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "super-potion", "name": "Super Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "dubious-disc", "name": "Dubious Disc", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "mt-mortar": [
+    { "itemSlug": "tm-flying", "name": "TM40 — Aerial Ace", "moveSlug": "aerial-ace", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "dragon-scale", "name": "Dragon Scale", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "protector", "name": "Protector", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-incense", "name": "Full Incense", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "iron-ball", "name": "Iron Ball", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "rare-candy", "name": "Rare Candy", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-restore", "name": "Full Restore", "note": "Hidden in the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "mahogany-town": [
+    { "itemSlug": "rage-candy-bar", "name": "Rage Candy Bar", "note": "Shop — man outside (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "tm-ice", "name": "TM07 — Hail", "moveSlug": "hail", "note": "Pryce's Gym — prize (HeartGold/SoulSilver)", "pocket": "TM" }
+  ],
+  "team-rocket-hq": [
+    { "itemSlug": "hm-water", "name": "HM05 — Whirlpool", "moveSlug": "whirlpool", "note": "Lance — after defeating the executives (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "tm-dark", "name": "TM46 — Thief", "moveSlug": "thief", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "tm-dark", "name": "TM49 — Snatch", "moveSlug": "snatch", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "guard-spec", "name": "Guard Spec.", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "protein", "name": "Protein", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the HQ (HeartGold/SoulSilver)", "pocket": "BALLS" }
+  ],
+  "johto-route-43": [
+    { "itemSlug": "tm-poison", "name": "TM36 — Sludge Bomb", "moveSlug": "sludge-bomb", "note": "Gate — attendant after the Rockets leave (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "black-apricorn", "name": "Black Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "lake-of-rage": [
     { "itemSlug": "red-scale", "name": "Red Scale", "note": "After the red Gyarados", "pocket": "KEY" },
     { "itemSlug": "tm-normal", "name": "TM10 — Hidden Power", "moveSlug": "hidden-power", "note": "Man in the hidden northwest house (Surf)", "pocket": "TM" },
     { "itemSlug": "tm-normal", "name": "TM43 — Secret Power", "moveSlug": "secret-power", "note": "Land strip north of the lake — flooded lake (Surf)", "pocket": "TM" },
     { "itemSlug": "choice-specs", "name": "Choice Specs", "note": "Northeast shore — flooded lake (Surf)", "pocket": "ITEMS" }
+  ],
+  "johto-route-44": [
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-repel", "name": "Max Repel", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "red-apricorn", "name": "Red Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "ice-path": [
+    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "moveSlug": "waterfall", "note": "Clair — after the Dragon's Den test (HeartGold/SoulSilver)", "pocket": "HM" },
+    { "itemSlug": "tm-ice", "name": "TM72 — Avalanche", "moveSlug": "avalanche", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "never-melt-ice", "name": "Never-Melt Ice", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "protein", "name": "Protein", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-up", "name": "PP Up", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "iron", "name": "Iron", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "blackthorn-city": [
+    { "itemSlug": "soft-sand", "name": "Soft Sand", "note": "Santos — Saturday (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "dragons-den": [
+    { "itemSlug": "tm-dragon", "name": "TM59 — Dragon Pulse", "moveSlug": "dragon-pulse", "note": "Clair's Gym — prize after the den test (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "dragon-fang", "name": "Dragon Fang", "note": "Item ball in the den (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "calcium", "name": "Calcium", "note": "Item ball in the den (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-max", "name": "PP Max", "note": "Item ball in the den (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-45": [
+    { "itemSlug": "nugget", "name": "Nugget", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-potion", "name": "Max Potion", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "green-apricorn", "name": "Green Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pp-max", "name": "PP Max", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "dark-cave": [
+    { "itemSlug": "tm-normal", "name": "TM54 — False Swipe", "moveSlug": "false-swipe", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "black-glasses", "name": "Black Glasses", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "hyper-potion", "name": "Hyper Potion", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "elixir", "name": "Elixir", "note": "Hidden in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true },
+    { "itemSlug": "max-revive", "name": "Max Revive", "note": "Hidden in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
+  ],
+  "johto-route-46": [
+    { "itemSlug": "dire-hit", "name": "Dire Hit", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "x-speed", "name": "X Speed", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "green-apricorn", "name": "Green Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "yellow-apricorn", "name": "Yellow Apricorn", "note": "Apricorn tree (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "mt-silver": [
+    { "itemSlug": "tm-rock", "name": "TM76 — Stealth Rock", "moveSlug": "stealth-rock", "note": "Item ball on the mountain (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "reaper-cloth", "name": "Reaper Cloth", "note": "Item ball on the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "expert-belt", "name": "Expert Belt", "note": "Item ball on the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pure-incense", "name": "Pure Incense", "note": "Item ball on the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "dawn-stone", "name": "Dawn Stone", "note": "Item ball on the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "max-elixir", "name": "Max Elixir", "note": "Item ball on the mountain (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "johto-route-47": [
+    { "itemSlug": "revive", "name": "Revive", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "lagging-tail", "name": "Lagging Tail", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "wave-incense", "name": "Wave Incense", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "pearl", "name": "Pearl", "note": "Item ball on the route (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "cliff-cave": [
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Hidden in the cave (HeartGold/SoulSilver)", "pocket": "BALLS", "hidden": true }
+  ],
+  "radio-tower": [
+    { "itemSlug": "tm-fire", "name": "TM11 — Sunny Day", "moveSlug": "sunny-day", "note": "Director — after defeating Team Rocket (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "basement-key", "name": "Basement Key", "note": "Team Rocket — after taking the tower (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "blue-card", "name": "Blue Card", "note": "Buena — after the password show (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "rainbow-wing", "name": "Rainbow Wing", "note": "Director — after defeating Team Rocket (HeartGold)", "pocket": "KEY" },
+    { "itemSlug": "silver-wing", "name": "Silver Wing", "note": "Director — after defeating Team Rocket (SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "bright-powder", "name": "Bright Powder", "note": "Item ball in the tower (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "goldenrod-tunnel": [
+    { "itemSlug": "coin-case", "name": "Coin Case", "note": "Game Corner basement — from Mr. Game (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "card-key", "name": "Card Key", "note": "Underground — after the Radio Tower takeover (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "tm-normal", "name": "TM82 — Sleep Talk", "moveSlug": "sleep-talk", "note": "Item ball in the tunnel (HeartGold/SoulSilver)", "pocket": "TM" },
+    { "itemSlug": "fashion-case", "name": "Fashion Case", "note": "Tunnel shop (HeartGold/SoulSilver)", "pocket": "KEY" },
+    { "itemSlug": "smoke-ball", "name": "Smoke Ball", "note": "Item ball in the tunnel (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "ultra-ball", "name": "Ultra Ball", "note": "Item ball in the tunnel (HeartGold/SoulSilver)", "pocket": "BALLS" },
+    { "itemSlug": "max-ether", "name": "Max Ether", "note": "Item ball in the tunnel (HeartGold/SoulSilver)", "pocket": "ITEMS" },
+    { "itemSlug": "full-heal", "name": "Full Heal", "note": "Item ball in the tunnel (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "ss-aqua": [
+    { "itemSlug": "metal-coat", "name": "Metal Coat", "note": "Sailor in the cabin (HeartGold/SoulSilver)", "pocket": "ITEMS" }
+  ],
+  "tohjo-falls": [
+    { "itemSlug": "moon-stone", "name": "Moon Stone", "note": "Item ball in the cave (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ]
 }
