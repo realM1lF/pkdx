@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import de from '@/i18n/locales/de/translation.json';
 import en from '@/i18n/locales/en/translation.json';
@@ -5,7 +7,6 @@ import {
   editionFallback,
   formNotInGame,
   paddedWild,
-  trainerArtifactMismatch,
 } from './honesty';
 
 const HONESTY_KEYS = [
@@ -62,8 +63,9 @@ describe('honesty flags', () => {
     expect(paddedWild(2, 4)).toBe(true);
     expect(paddedWild(4, 4)).toBe(false);
   });
-  it('re-exports trainerArtifactMismatch from trainer-data', () => {
-    expect(typeof trainerArtifactMismatch).toBe('function');
+  it('does not import trainer-data', () => {
+    const src = readFileSync(fileURLToPath(new URL('./honesty.ts', import.meta.url)), 'utf8');
+    expect(src).not.toMatch(/trainer-data/);
   });
 });
 

@@ -10,5 +10,3 @@ export function formNotInGame(existsInVg: boolean): boolean {
 export function paddedWild(wildCount: number, shownCount: number): boolean {
   return wildCount > 0 && shownCount > wildCount;
 }
-
-export { trainerSourceMismatchesGame as trainerArtifactMismatch } from './trainer-data';
