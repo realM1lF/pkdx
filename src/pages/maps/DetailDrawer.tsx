@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import { motion } from 'framer-motion';
 import { Bug, ChevronRight, ExternalLink, Fish, Footprints, Radio, Sparkles, Swords, Trees, Waves, X } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
@@ -97,7 +98,7 @@ function EncounterRow({
   const rare = e.maxChance <= 10;
   return (
     <LocaleLink
-      to={`/pokemon/${e.pokemonId}?from=${region.region}:${node.id}&v=${version}`}
+      to={pokemonHref(e.pokemonId, { game: version, from: `${region.region}:${node.id}`, v: version })}
       className="maps-row group flex h-10 items-center gap-2 border-b border-hairline/60 px-3 transition-colors hover:bg-surface3"
     >
       <span className="maps-row-sprite h-[30px] w-[30px] shrink-0">

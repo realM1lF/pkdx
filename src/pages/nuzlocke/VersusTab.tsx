@@ -18,6 +18,9 @@ import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
 import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
+import { shadowMovesOf } from '@/lib/orre-shadow-sets';
+import { foeShadowsForVersus, hyperModeAvailable } from '@/lib/orre-versus';
+import type { OrreGame, OrreShadow } from '@/lib/orre-types';
 import { genAbilitiesOf, genHasMechanics, genItems, genTypesOf } from '@/lib/teambuilder';
 import {
   TIER_ORDER,
@@ -124,7 +127,14 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const sel = ownMons.find((m) => m.enc.id === selEncId) ?? ownMons[0] ?? null;
 
   /* ----- foe selection ----- */
-  const [foeMode, setFoeMode] = useState<'trainers' | 'wild'>(hasTrainers ? 'trainers' : 'wild');
+  const orreGame = ctx.game === 'colosseum' || ctx.game === 'xd' ? (ctx.game as OrreGame) : null;
+  const orreShadows = useMemo(
+    () => (orreGame ? foeShadowsForVersus(orreGame, sel?.enc.route_key) : { here: [], elsewhere: [] }),
+    [orreGame, sel?.enc.route_key],
+  );
+  const [foeMode, setFoeMode] = useState<'trainers' | 'wild' | 'shadow'>(
+    orreGame ? 'shadow' : hasTrainers ? 'trainers' : 'wild',
+  );
   const [field, setField] = useState<VersusField>(() => defaultVersusField());
   useEffect(() => {
     setField((prev) => fieldForContext(prev, ctx));
@@ -156,8 +166,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   if (prevFoe !== foeRef) {
     setPrevFoe(foeRef);
     if (foeRef) {
-      setFoe({ ...blankSide(foeRef.level), slots: foeRef.moves });
-      setFoeCustom(foeRef.moves.length > 0);
+      setFoe({ ...blankSide(foeRef.level), slots: foeRef.moves, hyperMode: false });
+      setFoeCustom(foeRef.moves.length > 0 || foeRef.source === 'shadow');
       setFoeSource(foeRef.source);
     } else {
       setFoe(blankSide(5));
@@ -284,22 +294,64 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
           title={foeRef ? foeRef.context : t('versus.pickTarget')}
           className="min-h-[150px]"
           right={
-            hasTrainers ? (
+            hasTrainers || orreGame ? (
               <SegmentedControl
                 id="foe-mode"
                 size="xs"
                 ariaLabel={t('versus.opponentSource')}
                 value={foeMode}
-                onChange={(v) => setFoeMode(v as 'trainers' | 'wild')}
+                onChange={(v) => setFoeMode(v as 'trainers' | 'wild' | 'shadow')}
                 options={[
-                  { value: 'trainers', label: t('versus.trainers') },
+                  ...(orreGame ? [{ value: 'shadow', label: t('versus.shadows') }] : []),
+                  ...(hasTrainers ? [{ value: 'trainers', label: t('versus.trainers') }] : []),
                   { value: 'wild', label: t('versus.anyPokemon') },
                 ]}
               />
             ) : undefined
           }
         >
-          {foeMode === 'wild' || !hasTrainers ? (
+          {foeMode === 'shadow' && orreGame ? (
+            <div className="nz-slim-scroll max-h-[240px] overflow-auto p-2" data-lenis-prevent>
+              {([
+                ['here', orreShadows.here] as const,
+                ['elsewhere', orreShadows.elsewhere] as const,
+              ]).map(([group, list]) =>
+                list.length === 0 ? null : (
+                  <div key={group} className="mb-2 last:mb-0">
+                    <p className="px-1.5 pb-1 font-pixel text-[7px] uppercase text-tx-muted">
+                      {t(group === 'here' ? 'versus.shadowsHere' : 'versus.shadowsElsewhere')}
+                    </p>
+                    {list.map((s: OrreShadow) => {
+                      const pid = idOf(s.species);
+                      const label = nameOfPokemon(s.species, lang);
+                      const loc = group === 'here' ? (sel?.enc.route_key ?? s.locationId) : s.locationId;
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          onClick={() => {
+                            setFoeRef({
+                              slug: s.species,
+                              label,
+                              level: s.level,
+                              moves: shadowMovesOf(orreGame, s.id, loc),
+                              source: 'shadow',
+                              context: `${s.trainer} · LV${s.level}`,
+                            });
+                          }}
+                          className="flex h-9 w-full items-center gap-2 rounded-md px-1.5 text-left hover:bg-surface2"
+                        >
+                          {pid ? <Sprite id={pid} name={label} className="h-7 w-7 shrink-0" skeleton={false} /> : null}
+                          <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">{label}</span>
+                          <span className="shrink-0 font-pixel text-[7px] text-tx-muted">LV{s.level}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ),
+              )}
+            </div>
+          ) : foeMode === 'wild' || !hasTrainers ? (
             <div className="p-3">
               <OpponentAutocomplete
                 index={index}
@@ -368,14 +420,30 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                 level={you.level}
                 onLevel={(lv) => setYou((s) => ({ ...s, level: lv }))}
               />
-              <SideHeader
-                title={t('versus.foe')}
-                loading={foeStatus === 'loading'}
-                pokemon={foePokemon}
-                name={foeName}
-                level={foe.level}
-                onLevel={(lv) => setFoe((s) => ({ ...s, level: lv }))}
-              />
+              <div className="flex min-w-0 flex-col gap-2">
+                <SideHeader
+                  title={t('versus.foe')}
+                  loading={foeStatus === 'loading'}
+                  pokemon={foePokemon}
+                  name={foeName}
+                  level={foe.level}
+                  onLevel={(lv) => setFoe((s) => ({ ...s, level: lv }))}
+                />
+                {hyperModeAvailable(ctx.versionGroup, foe.slots) && (
+                  <button
+                    type="button"
+                    aria-pressed={Boolean(foe.hyperMode)}
+                    title={t('versus.hyperModeHint')}
+                    onClick={() => setFoe((s) => ({ ...s, hyperMode: !s.hyperMode }))}
+                    className={cn(
+                      'h-8 self-start rounded-md border px-2 font-pixel text-[8px] uppercase tracking-wide',
+                      foe.hyperMode ? 'border-gold bg-gold/15 text-gold' : 'border-hairline text-tx-muted',
+                    )}
+                  >
+                    {t('versus.hyperMode')}
+                  </button>
+                )}
+              </div>
             </div>
 
             {youPokemon && (
@@ -416,7 +484,11 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={foe.slots}
-                        pool={legalMoveSlugs(foePokemon, ctx.versionGroup)}
+                        pool={
+                          foeSource === 'shadow'
+                            ? [...new Set(['shadow-rush', ...legalMoveSlugs(foePokemon, ctx.versionGroup)])]
+                            : legalMoveSlugs(foePokemon, ctx.versionGroup)
+                        }
                         details={details}
                         onChange={(slots) => {
                           setFoeCustom(true);

@@ -28,6 +28,7 @@ import { fmtNum, useGermanDataReady, useLanguage, nameOfType } from '@/lib/i18n-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MAX_DEX_ID } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
+import { FIRST_GAME_BY_GEN } from '@/lib/edition-nav';
 import { cn } from '@/lib/utils';
 import './pokedex.css';
 
@@ -186,6 +187,8 @@ export default function Pokedex() {
   const typeSets = useTypeMembers(filters.types);
   const online = useOnline();
   const [bannerDismissed, setBannerDismissed] = useState(false);
+
+  const editionGame = filters.gen != null ? FIRST_GAME_BY_GEN[filters.gen] ?? null : null;
 
   /* filter → sort (null while type/stat data loads) */
   const filtered = useMemo(
@@ -450,7 +453,7 @@ export default function Pokedex() {
         {sorted !== null && total > 0 && (
           <>
             {mode === 'list' ? (
-              <ListView items={visible} summaries={summaries} />
+              <ListView items={visible} summaries={summaries} game={editionGame} />
             ) : (
               <motion.div
                 layout
@@ -465,7 +468,7 @@ export default function Pokedex() {
                   {visible.map((e, i) => {
                     const s = summaries.get(e.id);
                     return s ? (
-                      <PokemonCard key={e.id} summary={s} density={mode} index={i} />
+                      <PokemonCard key={e.id} summary={s} density={mode} index={i} game={editionGame} />
                     ) : (
                       <CardSkeleton key={e.id} id={e.id} />
                     );

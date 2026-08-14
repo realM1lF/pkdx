@@ -142,6 +142,8 @@ export interface NuzEncounterRow {
   level: number;
   status: NuzEncounterStatus;
   note: string | null;
+  /** Orre Shadow id (`colo-shadow-makuhita`). Optional; pre-migration rows omit it. */
+  shadow_id?: string | null;
   /** shiny catch — clause-free (bypasses route lock + dupes clause) and never
    * consumes the route slot; pre-migration rows may lack the flag */
   is_shiny?: boolean;

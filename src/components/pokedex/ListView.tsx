@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { STAT_ORDER, STAT_LABELS, TYPE_COLORS } from '@/lib/types';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import { dexEntryPath } from '@/lib/dex-forms-catalog';
+import { pokemonHref } from '@/lib/edition-nav';
 import { FORM_I18N_KEY, type DexSummary } from './dex-data';
 import { cn } from '@/lib/utils';
 
@@ -44,16 +45,17 @@ function ListHeader() {
 interface ListRowProps {
   summary: DexSummary;
   index: number;
+  game?: string | null;
   ref?: Ref<HTMLDivElement>;
 }
 
-function ListRow({ summary: s, index, ref }: ListRowProps) {
+function ListRow({ summary: s, index, game, ref }: ListRowProps) {
   const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
   const dexId = s.speciesId ?? s.id;
   const label = nameOfPokemon(s.slug ?? dexId, lang);
-  const href = dexEntryPath({ id: s.id, name: s.slug, form: s.form });
+  const href = pokemonHref(dexEntryPath({ id: s.id, name: s.slug, form: s.form }), { game });
   const [override, setOverride] = useState<boolean | null>(null);
   const shiny = override ?? globalShiny;
   const t1 = (s.types[0] ?? 'normal') as PokemonType;
@@ -180,9 +182,10 @@ function ListRowSkeleton({ id, ref }: { id: number; ref?: Ref<HTMLDivElement> })
 interface ListViewProps {
   items: DexIndexEntry[];
   summaries: ReadonlyMap<number, DexSummary>;
+  game?: string | null;
 }
 
-export default function ListView({ items, summaries }: ListViewProps) {
+export default function ListView({ items, summaries, game }: ListViewProps) {
   return (
     <div className="overflow-x-auto rounded-lg border border-hairline bg-surface1/40">
       <div className="min-w-[820px]">
@@ -191,7 +194,7 @@ export default function ListView({ items, summaries }: ListViewProps) {
           {items.map((e, i) => {
             const s = summaries.get(e.id);
             return s ? (
-              <MemoListRow key={e.id} summary={s} index={i} />
+              <MemoListRow key={e.id} summary={s} index={i} game={game} />
             ) : (
               <ListRowSkeleton key={e.id} id={e.id} />
             );

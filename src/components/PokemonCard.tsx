@@ -19,6 +19,7 @@ import { useLanguage, nameOfPokemon } from '@/lib/i18n-data';
 import { GENERATIONS, STAT_LABELS, TYPE_COLORS, genOf } from '@/lib/types';
 import type { PokemonType, StatKey } from '@/lib/types';
 import { dexEntryPath } from '@/lib/dex-forms-catalog';
+import { pokemonHref } from '@/lib/edition-nav';
 import { FORM_I18N_KEY, type DexSummary } from './pokedex/dex-data';
 import { cn } from '@/lib/utils';
 
@@ -30,17 +31,19 @@ interface PokemonCardProps {
   density: 'comfort' | 'compact';
   /** position within its batch — drives the entrance stagger */
   index?: number;
+  /** when the dex gen-filter is on, open detail on that generation's first game */
+  game?: string | null;
   ref?: Ref<HTMLDivElement>;
 }
 
-function PokemonCard({ summary: s, density, index = 0, ref }: PokemonCardProps) {
+function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardProps) {
   const compact = density === 'compact';
   const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
   const dexId = s.speciesId ?? s.id;
   const label = nameOfPokemon(s.slug ?? dexId, lang);
-  const href = dexEntryPath({ id: s.id, name: s.slug, form: s.form });
+  const href = pokemonHref(dexEntryPath({ id: s.id, name: s.slug, form: s.form }), { game });
   const genRoman = (GENERATIONS[s.gen - 1] ?? genOf(dexId)).roman;
   const [override, setOverride] = useState<boolean | null>(null);
   const [burst, setBurst] = useState(0);

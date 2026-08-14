@@ -5,9 +5,13 @@ import { Search } from 'lucide-react'
 import Sprite from '@/components/Sprite'
 import { anyRegionById } from '@/lib/regions-freeform'
 import { nodeName } from '@/lib/regions'
-import { nameOfPokemon, useLanguage } from '@/lib/i18n-data'
+import { nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data'
 import type { Lang } from '@/lib/i18n-data'
 import { LocaleLink } from '@/lib/locale-link'
+import { pokemonHref } from '@/lib/edition-nav'
+import { genTypesOf } from '@/lib/gen-dex'
+import { TYPE_COLORS } from '@/lib/types'
+import type { PokemonType } from '@/lib/types'
 import { bootNameIndex } from '@/lib/pokeapi'
 import type { DexIndexEntry } from '@/lib/types'
 import { counts, getStatus, setStatus, subscribeOrreProgress } from '@/lib/orre-progress'
@@ -50,16 +54,26 @@ function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; 
                 const entry = nameIdx.get(e.species)
                 return (
                   <li key={e.species} className="flex min-h-[36px] items-center gap-2 py-1">
-                    <span className="h-8 w-8 shrink-0">
-                      {entry ? (
-                        <Sprite id={entry.id} name={monName(e.species)} era="default" className="h-8 w-8" />
-                      ) : (
-                        <span className="block h-8 w-8 rounded bg-surface2" />
-                      )}
-                    </span>
-                    <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
-                      {monName(e.species)}
-                    </span>
+                    {entry ? (
+                      <LocaleLink
+                        to={pokemonHref(entry.id, { game: 'xd' })}
+                        className="flex min-w-0 flex-1 items-center gap-2"
+                      >
+                        <span className="h-8 w-8 shrink-0">
+                          <Sprite id={entry.id} name={monName(e.species)} era="default" className="h-8 w-8" />
+                        </span>
+                        <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+                          {monName(e.species)}
+                        </span>
+                      </LocaleLink>
+                    ) : (
+                      <>
+                        <span className="block h-8 w-8 shrink-0 rounded bg-surface2" />
+                        <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+                          {monName(e.species)}
+                        </span>
+                      </>
+                    )}
                     <span className="shrink-0 font-pixel text-[7px] text-tx-muted">
                       {t('orre.pokeSpots.levelRange', { min: e.minLevel, max: e.maxLevel })}
                     </span>
@@ -243,20 +257,41 @@ export default function OrreTracker() {
               const loc = node && region ? nodeName(node, lang) : s.locationId
               return (
                 <li key={s.id} className="flex min-h-[44px] items-center gap-3 px-3 py-1.5">
-                  <span className="h-9 w-9 shrink-0">
-                    {entry ? (
+                  {entry ? (
+                    <LocaleLink to={pokemonHref(entry.id, { game })} className="h-9 w-9 shrink-0">
                       <Sprite id={entry.id} name={monName} era="default" className="h-9 w-9" />
-                    ) : (
-                      <span className="block h-9 w-9 rounded bg-surface2" />
-                    )}
-                  </span>
+                    </LocaleLink>
+                  ) : (
+                    <span className="block h-9 w-9 shrink-0 rounded bg-surface2" />
+                  )}
                   <div className="min-w-0 flex-1">
                     <div className="flex min-w-0 items-baseline gap-2">
-                      <span className="truncate font-display text-[13px] font-bold text-tx-primary">{monName}</span>
+                      {entry ? (
+                        <LocaleLink
+                          to={pokemonHref(entry.id, { game })}
+                          className="truncate font-display text-[13px] font-bold text-tx-primary hover:text-gold"
+                        >
+                          {monName}
+                        </LocaleLink>
+                      ) : (
+                        <span className="truncate font-display text-[13px] font-bold text-tx-primary">{monName}</span>
+                      )}
                       <span className="shrink-0 font-pixel text-[8px] text-tx-muted">
                         {t('orre.level')}
                         {s.level}
                       </span>
+                      {genTypesOf(game, s.species, []).map((tp) => {
+                        const c = TYPE_COLORS[tp as PokemonType]
+                        return (
+                          <span
+                            key={tp}
+                            className="shrink-0 rounded-full px-1.5 text-[8px] font-bold uppercase leading-[14px]"
+                            style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}
+                          >
+                            {nameOfType(tp, lang)}
+                          </span>
+                        )
+                      })}
                     </div>
                     <div className="truncate text-[11px] text-tx-secondary">
                       <span className="text-tx-muted">{t('orre.trainer')}: </span>

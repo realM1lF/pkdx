@@ -11,10 +11,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ExternalLink, MoreVertical } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import { LocaleLink } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import { hasEvolved, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { myPlayerId, partyOf, pushToast, setEncounterParty, swapParty } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { getPokemon, pokemonTypes } from '@/lib/pokeapi';
+import { typesForPartyMon } from '@/lib/gen-dex';
+import { resolveVersionGroup } from '@/lib/edition-nav';
 import { TYPE_COLORS } from '@/lib/types';
 import { nameOfType, useLanguage } from '@/lib/i18n-data';
 import type { PokemonType } from '@/lib/types';
@@ -22,19 +25,19 @@ import { cn } from '@/lib/utils';
 import { PixelLabel } from './ui';
 import { ENC_DND_MIME, encDnd } from './dnd';
 
-function useTypes(id: number): string[] {
+function useTypes(id: number, vgId: string): string[] {
   const [types, setTypes] = useState<string[]>([]);
   useEffect(() => {
     let live = true;
     void getPokemon(id)
       .then((p) => {
-        if (live) setTypes(pokemonTypes(p));
+        if (live) setTypes(typesForPartyMon(vgId, p.name, pokemonTypes(p) as PokemonType[]));
       })
       .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [id]);
+  }, [id, vgId]);
   return types;
 }
 
@@ -59,6 +62,7 @@ function PartySlot({
   nameOf,
   encounters,
   onMenu,
+  game,
 }: {
   enc: NuzEncounterRow;
   color: string;
@@ -67,11 +71,13 @@ function PartySlot({
   nameOf: (id: number) => string;
   encounters: NuzEncounterRow[];
   onMenu: (enc: NuzEncounterRow, x: number, y: number) => void;
+  game: string;
 }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
   const { t } = useTranslation();
-  const types = useTypes(enc.pokemon_id);
+  const vgId = resolveVersionGroup(game) ?? 'scarlet-violet';
+  const types = useTypes(enc.pokemon_id, vgId);
   const [dragging, setDragging] = useState(false);
   const [swapTarget, setSwapTarget] = useState(false);
   return (
@@ -132,7 +138,7 @@ function PartySlot({
         swapTarget && 'border-gold/70 shadow-glow-gold',
       )}
       style={{ ['--pc' as string]: color }}
-      onClick={() => navigate(localePath(`/pokemon/${enc.pokemon_id}`))}
+      onClick={() => navigate(localePath(pokemonHref(enc.pokemon_id, { game })))}
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${color}88`)}
       onMouseLeave={(e) => (e.currentTarget.style.borderColor = '')}
       title={t('nuz.team.openDex', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
@@ -290,6 +296,7 @@ export default function TeamGrid({
                         nameOf={nameOf}
                         encounters={state.encounters}
                         onMenu={onMenu}
+                        game={state.run.game}
                       />
                     );
                   })}

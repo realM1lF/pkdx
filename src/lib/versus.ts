@@ -96,15 +96,18 @@ export interface VersusSide {
   item?: string | null;
   /** UI status names — mapped to calc (brn, par, psn, slp, frz) in buildMon */
   status?: 'none' | 'burn' | 'par' | 'psn' | 'slp' | 'frz' | null;
+  /** Colosseum Hyper Mode — documented crit approximation on Shadow Rush only */
+  hyperMode?: boolean;
 }
 
-export type MovesetSource = 'trainer' | 'wild' | 'assumed' | 'custom';
+export type MovesetSource = 'trainer' | 'wild' | 'assumed' | 'custom' | 'shadow';
 
 export const MOVESET_LABEL: Record<MovesetSource, string> = {
   trainer: 'TRAINER SET',
   wild: 'WILD SET',
   assumed: 'ASSUMED SET',
   custom: 'CUSTOM SET',
+  shadow: 'SHADOW SET',
 };
 
 const clampLevel = (lv: number) => Math.min(100, Math.max(1, Math.round(lv) || 1));
@@ -536,6 +539,59 @@ export function smogonReferenceRange(
   }
 }
 
+/* XD Shadow move BP from Bulbapedia / StrategyWiki. Colo Shadow Rush is 90.
+ * XD damaging Shadows are super-effective vs non-Shadow (approx. typeEff 2).
+ * Status Shadows have no damage range. Not a 1:1 Orre engine. */
+const XD_SHADOW_DAMAGE: Record<string, { bp: number; category: 'Physical' | 'Special' }> = {
+  'shadow-rush': { bp: 55, category: 'Physical' },
+  'shadow-blitz': { bp: 40, category: 'Physical' },
+  'shadow-break': { bp: 75, category: 'Physical' },
+  'shadow-end': { bp: 120, category: 'Physical' },
+  'shadow-blast': { bp: 80, category: 'Physical' },
+  'shadow-bolt': { bp: 75, category: 'Special' },
+  'shadow-chill': { bp: 75, category: 'Special' },
+  'shadow-fire': { bp: 75, category: 'Special' },
+  'shadow-rave': { bp: 70, category: 'Special' },
+  'shadow-storm': { bp: 95, category: 'Special' },
+  'shadow-wave': { bp: 50, category: 'Special' },
+};
+
+const SHADOW_STATUS = new Set([
+  'shadow-down',
+  'shadow-half',
+  'shadow-hold',
+  'shadow-mist',
+  'shadow-panic',
+  'shadow-shed',
+  'shadow-sky',
+]);
+
+type ShadowMoveSpec =
+  | { kind: 'damage'; bp: number; category: 'Physical' | 'Special'; typeEff: number; willCrit: boolean }
+  | { kind: 'status' };
+
+function shadowMoveSpec(moveSlug: string, ctx: VersusContext, hyperMode: boolean): ShadowMoveSpec | null {
+  if (SHADOW_STATUS.has(moveSlug)) return { kind: 'status' };
+  if (moveSlug === 'shadow-rush' && ctx.versionGroup !== 'xd') {
+    return {
+      kind: 'damage',
+      bp: 90,
+      category: 'Physical',
+      typeEff: 1,
+      willCrit: hyperMode && ctx.versionGroup === 'colosseum',
+    };
+  }
+  const xd = XD_SHADOW_DAMAGE[moveSlug];
+  if (!xd) return null;
+  return {
+    kind: 'damage',
+    bp: xd.bp,
+    category: xd.category,
+    typeEff: ctx.versionGroup === 'xd' ? 2 : 1,
+    willCrit: false,
+  };
+}
+
 /**
  * Damage of `moveSlug` from attacker → defender.
  * Returns null only when the move/species can't be resolved in calc data.
@@ -553,20 +609,38 @@ export function damageBetween(
   const atk = buildMon(attacker, ctx);
   const def = buildMon(defender, ctx);
   if (!atk || !def) return null;
+  const shadow = shadowMoveSpec(moveSlug, ctx, Boolean(attacker.hyperMode));
+  if (shadow?.kind === 'status') {
+    return { move: moveSlug, range: [0, 0], pct: [0, 0], koHits: 0, koChance: 0, eff: 1, category: 'status' };
+  }
   let mv: CalcMove;
   try {
-    mv = new CalcMove(gen, calcId(moveSlug));
+    if (shadow?.kind === 'damage') {
+      mv = new CalcMove(gen, 'tackle', {
+        isCrit: shadow.willCrit,
+        overrides: {
+          basePower: shadow.bp,
+          type: '???',
+          category: shadow.category,
+        },
+      });
+    } else {
+      mv = new CalcMove(gen, calcId(moveSlug));
+    }
   } catch {
     return null;
   }
   /* raw dex entry for gen-correct multihit data */
-  const moveData = gen.moves.get(calcId(moveSlug));
+  const moveData = shadow ? undefined : gen.moves.get(calcId(moveSlug));
   const calcField = buildCalcField(field, ctx);
   /* gen-correct category: the calc move is type-split in gen 1–3, so prefer it
    * over the SV-era PokéAPI damage_class (F4). */
   const category = (mv.category ?? moveDetail?.damage_class.name ?? 'status').toLowerCase();
   const moveType = (moveDetail?.type.name ?? mv.type ?? 'normal').toLowerCase();
-  const typeEff = effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()), ctx.gen);
+  const typeEff =
+    shadow?.kind === 'damage'
+      ? shadow.typeEff
+      : effectivenessOf(moveType, def.species.types.map((t) => t.toLowerCase()), ctx.gen);
   const eff = calcEffectiveMultiplier(gen, atk, def, mv, calcField, typeEff);
 
   /* fixed-damage legacy moves (immune → 0) */

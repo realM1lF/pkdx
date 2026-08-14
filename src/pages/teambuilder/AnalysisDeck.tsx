@@ -11,6 +11,7 @@ import TypeGlyph from '@/components/TypeGlyph';
 import { useTranslation } from 'react-i18next';
 import { nameOfMove, nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import {
   coverTypesFor,
   effectivenessVsMember,
@@ -168,7 +169,7 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
             return (
               <LocaleLink
                 key={m.slotId}
-                to={`/pokemon/${m.pokemonId}`}
+                to={pokemonHref(m.pokemonId, { game: vgId })}
                 className="group/m flex min-w-0 flex-col items-center gap-0.5 outline-none transition-colors hover:text-gold focus-visible:text-gold"
                 title={name}
                 aria-label={t('tb.slot.openDetail', { name })}

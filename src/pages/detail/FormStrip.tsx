@@ -1,6 +1,8 @@
 /* Forme switcher on the species detail hero — catalog only (Mega/Alola/…). */
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
+import { useSearchParams } from 'react-router';
+import { pokemonHref } from '@/lib/edition-nav';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { formsForSpecies } from '@/lib/dex-forms-catalog';
@@ -15,6 +17,8 @@ interface FormStripProps {
 export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const [searchParams] = useSearchParams();
+  const game = searchParams.get('game');
   const forms = formsForSpecies(speciesId);
   if (forms.length === 0) return null;
   const onBase = !forms.some((f) => f.slug === currentSlug);
@@ -24,7 +28,7 @@ export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
       <span className="pixel-label mb-1 block text-[8px] text-tx-muted">{t('detail.hero.forms')}</span>
       <div className="flex flex-wrap gap-1" data-lenis-prevent>
         <LocaleLink
-          to={`/pokemon/${speciesId}`}
+          to={pokemonHref(speciesId, { game })}
           className={cn(
             'flex h-8 items-center gap-1 rounded-pill border px-1.5 pr-2 transition-colors',
             onBase
@@ -41,7 +45,7 @@ export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
           return (
             <LocaleLink
               key={f.slug}
-              to={`/pokemon/${f.slug}`}
+              to={pokemonHref(f.slug, { game })}
               className={cn(
                 'flex h-8 min-w-0 items-center gap-1 rounded-pill border px-1.5 pr-2 transition-colors',
                 active

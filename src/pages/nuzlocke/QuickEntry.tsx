@@ -35,6 +35,7 @@ interface SpeciesOption {
   /** Orre only — level band the encounter can roll in (shadows are fixed) */
   minLevel?: number;
   maxLevel?: number;
+  shadowId?: string;
 }
 
 const STATUS_META: Record<NuzEncounterStatus, { labelKey: string; cls: string }> = {
@@ -150,6 +151,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           rate: o.rate,
           minLevel: o.minLevel,
           maxLevel: o.maxLevel,
+          shadowId: o.shadowId,
         });
       }
       return out;
@@ -284,6 +286,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       isShiny: state.run.rules.shiny ? isShiny : false,
       /* randomizer treats every species as legal on-route */
       offRoute: randomizer ? false : !!species.custom || fullDex,
+      shadowId: species.shadowId ?? null,
     }).then((res) => {
       if (!res.ok) {
         if (res.error) failCode(res.error);

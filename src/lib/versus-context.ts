@@ -1,7 +1,8 @@
 /* Versus calc context — ties damage math to game version / region. */
 import type { RegionId } from './regions';
 import type { RunState } from './nuzlocke-store';
-import { VERSION_GROUPS, versionGroupById, versionGroupForGame } from './version-groups';
+import { gameSlugOf, resolveVersionGroup } from './edition-nav';
+import { VERSION_GROUPS, versionGroupById } from './version-groups';
 
 export interface VersusContext {
   /** @smogon/calc generation 1–9 */
@@ -23,11 +24,11 @@ export function defaultVersusPageContext(): VersusContext {
 }
 
 export function versusContextFromGame(game: string | null | undefined, region?: RegionId | null): VersusContext {
-  const vg = versionGroupForGame(game) ?? 'scarlet-violet';
+  const vg = resolveVersionGroup(game) ?? 'scarlet-violet';
   /* gen comes from the version-group table — covers gen 1–9 games without
    * a second hand-maintained map (previously gen 6–9 fell through to 9) */
   const gen = game ? versionGroupById(vg).gen : 9;
-  return { gen, versionGroup: vg, game: game ?? null, region: region ?? null };
+  return { gen, versionGroup: vg, game: gameSlugOf(game) ?? game ?? null, region: region ?? null };
 }
 
 export function versusContextFromRun(state: RunState): VersusContext {

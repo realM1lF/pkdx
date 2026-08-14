@@ -35,6 +35,8 @@ import { REGIONS } from '@/lib/regions';
 import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
 import { battleLandingPath } from '@/lib/seo';
 import { dexEntryPath, formIdentity } from '@/lib/dex-forms-catalog';
+import { pokemonHref } from '@/lib/edition-nav';
+import { hyperModeAvailable } from '@/lib/orre-versus';
 import {
   genAbilitiesOf,
   genHasMechanics,
@@ -172,6 +174,7 @@ export interface SideState {
   ability?: string | null;
   item?: string | null;
   status?: 'none' | 'burn' | 'par' | 'psn' | 'slp' | 'frz' | null;
+  hyperMode?: boolean;
 }
 
 export const blankSide = (level = 50): SideState => ({
@@ -194,6 +197,7 @@ export function sideToVersus(side: SideState, slug: string): VersusSide {
     ability: side.ability ?? undefined,
     item: side.item ?? undefined,
     status: side.status && side.status !== 'none' ? side.status : undefined,
+    hyperMode: side.hyperMode,
   };
 }
 
@@ -657,6 +661,7 @@ function PokemonDexLink({
   label,
   hostPokemonId,
   onHostOverview,
+  game,
   children,
 }: {
   pokemonId: number;
@@ -664,11 +669,12 @@ function PokemonDexLink({
   label: string;
   hostPokemonId?: number;
   onHostOverview?: () => void;
+  game?: string | null;
   children: ReactNode;
 }) {
   const { t } = useTranslation();
   const isHost = hostPokemonId != null && pokemonId === hostPokemonId;
-  const href = dexEntryPath({ id: pokemonId, name: slug });
+  const href = pokemonHref(dexEntryPath({ id: pokemonId, name: slug }), { game });
 
   if (isHost && onHostOverview) {
     return (
@@ -732,7 +738,7 @@ export function SideCard({
   const spriteEra = useMemo(() => spriteEraForVersus(gen, pokemon.id), [gen, pokemon.id]);
   const ident = formIdentity(pokemon.name, pokemon.id);
   const displayName = nameOfPokemon(pokemon.name, lang);
-  const detailPath = dexEntryPath({ id: pokemon.id, name: pokemon.name });
+  const detailPath = pokemonHref(dexEntryPath({ id: pokemon.id, name: pokemon.name }), { game: versionGroup });
   const isHost = hostPokemonId != null && pokemon.id === hostPokemonId;
   /* gen-correct types (F3): Magnemite pure Electric in gen 1/2, no Fairy retypes in gen ≤5 */
   const types = genTypesOf(versionGroup, pokemon.name, pokemonTypes(pokemon) as PokemonType[]);
@@ -768,6 +774,7 @@ export function SideCard({
           label={displayName}
           hostPokemonId={hostPokemonId}
           onHostOverview={onHostOverview}
+          game={versionGroup}
         >
           {aura && (
             <div
@@ -955,6 +962,21 @@ export function SideCard({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {hyperModeAvailable(versionGroup, side.slots) && (
+        <button
+          type="button"
+          aria-pressed={Boolean(side.hyperMode)}
+          title={t('versus.hyperModeHint')}
+          onClick={() => onSide({ hyperMode: !side.hyperMode })}
+          className={cn(
+            'h-8 self-start rounded-md border px-2 font-pixel text-[8px] uppercase tracking-wide',
+            side.hyperMode ? 'border-gold bg-gold/15 text-gold' : 'border-hairline text-tx-muted',
+          )}
+        >
+          {t('versus.hyperMode')}
+        </button>
+      )}
 
       <MoveSlots
         slots={side.slots}

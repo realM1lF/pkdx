@@ -110,7 +110,11 @@ describe('wild species lookup', () => {
   it('unions shadow and wild species for the Cave Poké Spot', () => {
     const options = encounterOptionsForRoute('xd', 'orre-cave-poke-spot')
     expect(options.map((o) => o.species)).toEqual(['voltorb', 'zubat', 'aron', 'wooper'])
-    expect(options.find((o) => o.species === 'voltorb')).toMatchObject({ kind: 'shadow', rate: 100 })
+    expect(options.find((o) => o.species === 'voltorb')).toMatchObject({
+      kind: 'shadow',
+      rate: 100,
+      shadowId: 'xd-shadow-voltorb',
+    })
     expect(options.find((o) => o.species === 'wooper')).toMatchObject({ kind: 'wild', rate: 15, minLevel: 10, maxLevel: 21 })
   })
 

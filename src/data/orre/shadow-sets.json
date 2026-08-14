@@ -1,0 +1,1005 @@
+{
+  "source": "Colosseum: Bulbapedia Shadow Rush (every Shadow knows it). Suicune Surf/Hydro Pump from colosseum.json notes (Bulbapedia trivia). Regular Colo moves remain empty — not curated. XD battle sets: left-hand moves from Bulbapedia Walkthrough:Pokémon XD/Shadow Pokémon list (2026-08-14 dump).",
+  "verifiedAt": "2026-08-14",
+  "sets": {
+    "colo-shadow-makuhita": {
+      "species": "makuhita",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-bayleef": {
+      "species": "bayleef",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-quilava": {
+      "species": "quilava",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-croconaw": {
+      "species": "croconaw",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-slugma": {
+      "species": "slugma",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-noctowl": {
+      "species": "noctowl",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-flaaffy": {
+      "species": "flaaffy",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-skiploom": {
+      "species": "skiploom",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-quagsire": {
+      "species": "quagsire",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-misdreavus": {
+      "species": "misdreavus",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-furret": {
+      "species": "furret",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-qwilfish": {
+      "species": "qwilfish",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-yanma": {
+      "species": "yanma",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-remoraid": {
+      "species": "remoraid",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-mantine": {
+      "species": "mantine",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-meditite": {
+      "species": "meditite",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-dunsparce": {
+      "species": "dunsparce",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-swablu": {
+      "species": "swablu",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-sudowoodo": {
+      "species": "sudowoodo",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-hitmontop": {
+      "species": "hitmontop",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-entei": {
+      "species": "entei",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-ledian": {
+      "species": "ledian",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-suicune": {
+      "species": "suicune",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "surf"
+      ],
+      "variants": [
+        {
+          "locationIds": [
+            "orre-deep-colosseum"
+          ],
+          "moves": [
+            "hydro-pump"
+          ]
+        }
+      ]
+    },
+    "colo-shadow-gligar": {
+      "species": "gligar",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-stantler": {
+      "species": "stantler",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-piloswine": {
+      "species": "piloswine",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-sneasel": {
+      "species": "sneasel",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-aipom": {
+      "species": "aipom",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-murkrow": {
+      "species": "murkrow",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-forretress": {
+      "species": "forretress",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-ariados": {
+      "species": "ariados",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-granbull": {
+      "species": "granbull",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-vibrava": {
+      "species": "vibrava",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-raikou": {
+      "species": "raikou",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-delibird": {
+      "species": "delibird",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-sunflora": {
+      "species": "sunflora",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-heracross": {
+      "species": "heracross",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-skarmory": {
+      "species": "skarmory",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-miltank": {
+      "species": "miltank",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-absol": {
+      "species": "absol",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-houndoom": {
+      "species": "houndoom",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-tropius": {
+      "species": "tropius",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-metagross": {
+      "species": "metagross",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-tyranitar": {
+      "species": "tyranitar",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-smeargle": {
+      "species": "smeargle",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-ursaring": {
+      "species": "ursaring",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-shuckle": {
+      "species": "shuckle",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "colo-shadow-togetic": {
+      "species": "togetic",
+      "shadowMove": "shadow-rush",
+      "moves": []
+    },
+    "xd-shadow-teddiursa": {
+      "species": "teddiursa",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-mist",
+        "lick",
+        "metal-claw"
+      ]
+    },
+    "xd-shadow-ledyba": {
+      "species": "ledyba",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "aerial-ace",
+        "supersonic"
+      ]
+    },
+    "xd-shadow-poochyena": {
+      "species": "poochyena",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-hold",
+        "poison-fang",
+        "howl"
+      ]
+    },
+    "xd-shadow-houndour": {
+      "species": "houndour",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "ember",
+        "roar"
+      ]
+    },
+    "xd-shadow-baltoy": {
+      "species": "baltoy",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-mist",
+        "mud-slap",
+        "psybeam"
+      ]
+    },
+    "xd-shadow-mareep": {
+      "species": "mareep",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "thundershock",
+        "thunder-wave"
+      ]
+    },
+    "xd-shadow-seedot": {
+      "species": "seedot",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-hold",
+        "bullet-seed",
+        "secret-power"
+      ]
+    },
+    "xd-shadow-spheal": {
+      "species": "spheal",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-mist",
+        "water-gun",
+        "mud-slap"
+      ]
+    },
+    "xd-shadow-gulpin": {
+      "species": "gulpin",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-hold",
+        "sludge",
+        "toxic"
+      ]
+    },
+    "xd-shadow-spinarak": {
+      "species": "spinarak",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-mist",
+        "signal-beam",
+        "night-shade"
+      ]
+    },
+    "xd-shadow-numel": {
+      "species": "numel",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "dig",
+        "ember"
+      ]
+    },
+    "xd-shadow-carvanha": {
+      "species": "carvanha",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-hold",
+        "scary-face",
+        "bite"
+      ]
+    },
+    "xd-shadow-shroomish": {
+      "species": "shroomish",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-mist",
+        "mega-drain",
+        "stun-spore"
+      ]
+    },
+    "xd-shadow-delcatty": {
+      "species": "delcatty",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-wave",
+        "attract",
+        "shock-wave"
+      ]
+    },
+    "xd-shadow-voltorb": {
+      "species": "voltorb",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-panic",
+        "spark",
+        "swift"
+      ]
+    },
+    "xd-shadow-makuhita": {
+      "species": "makuhita",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "arm-thrust",
+        "rock-tomb"
+      ]
+    },
+    "xd-shadow-vulpix": {
+      "species": "vulpix",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-hold",
+        "ember",
+        "dig"
+      ]
+    },
+    "xd-shadow-duskull": {
+      "species": "duskull",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-hold",
+        "astonish",
+        "confuse-ray"
+      ]
+    },
+    "xd-shadow-ralts": {
+      "species": "ralts",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-hold",
+        "reflect",
+        "confusion"
+      ]
+    },
+    "xd-shadow-mawile": {
+      "species": "mawile",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-wave",
+        "vicegrip",
+        "iron-defense"
+      ]
+    },
+    "xd-shadow-snorunt": {
+      "species": "snorunt",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-shed",
+        "bite",
+        "icy-wind"
+      ]
+    },
+    "xd-shadow-pineco": {
+      "species": "pineco",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "spikes",
+        "counter"
+      ]
+    },
+    "xd-shadow-natu": {
+      "species": "natu",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "night-shade",
+        "aerial-ace"
+      ]
+    },
+    "xd-shadow-roselia": {
+      "species": "roselia",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-shed",
+        "grasswhistle",
+        "leech-seed"
+      ]
+    },
+    "xd-shadow-meowth": {
+      "species": "meowth",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-hold",
+        "pay-day",
+        "bite"
+      ]
+    },
+    "xd-shadow-swinub": {
+      "species": "swinub",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-wave",
+        "mist",
+        "mud-shot"
+      ]
+    },
+    "xd-shadow-spearow": {
+      "species": "spearow",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-panic",
+        "leer",
+        "aerial-ace"
+      ]
+    },
+    "xd-shadow-grimer": {
+      "species": "grimer",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-hold",
+        "shadow-punch",
+        "minimize"
+      ]
+    },
+    "xd-shadow-seel": {
+      "species": "seel",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-mist",
+        "safeguard",
+        "ice-beam"
+      ]
+    },
+    "xd-shadow-lunatone": {
+      "species": "lunatone",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-shed",
+        "shadow-sky",
+        "rock-tomb"
+      ]
+    },
+    "xd-shadow-togepi": {
+      "species": "togepi",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-shed",
+        "ancient-power",
+        "helping-hand"
+      ]
+    },
+    "xd-shadow-nosepass": {
+      "species": "nosepass",
+      "shadowMove": "shadow-wave",
+      "moves": [
+        "shadow-mist",
+        "thunder-wave",
+        "rock-slide"
+      ]
+    },
+    "xd-shadow-zangoose": {
+      "species": "zangoose",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-mist",
+        "counter",
+        "crush-claw"
+      ]
+    },
+    "xd-shadow-paras": {
+      "species": "paras",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "slash",
+        "false-swipe"
+      ]
+    },
+    "xd-shadow-growlithe": {
+      "species": "growlithe",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-wave",
+        "bite",
+        "take-down"
+      ]
+    },
+    "xd-shadow-shellder": {
+      "species": "shellder",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "surf",
+        "aurora-beam"
+      ]
+    },
+    "xd-shadow-beedrill": {
+      "species": "beedrill",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-hold",
+        "twineedle",
+        "swords-dance"
+      ]
+    },
+    "xd-shadow-pidgeotto": {
+      "species": "pidgeotto",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-panic",
+        "steel-wing",
+        "featherdance"
+      ]
+    },
+    "xd-shadow-tangela": {
+      "species": "tangela",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-hold",
+        "sunny-day",
+        "ingrain"
+      ]
+    },
+    "xd-shadow-butterfree": {
+      "species": "butterfree",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-mist",
+        "sleep-powder",
+        "aerial-ace"
+      ]
+    },
+    "xd-shadow-magneton": {
+      "species": "magneton",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-hold",
+        "shadow-sky",
+        "thunder"
+      ]
+    },
+    "xd-shadow-venomoth": {
+      "species": "venomoth",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-mist",
+        "substitute",
+        "psychic"
+      ]
+    },
+    "xd-shadow-weepinbell": {
+      "species": "weepinbell",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-hold",
+        "sludge-bomb",
+        "sweet-scent"
+      ]
+    },
+    "xd-shadow-arbok": {
+      "species": "arbok",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-half",
+        "glare",
+        "bite"
+      ]
+    },
+    "xd-shadow-primeape": {
+      "species": "primeape",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-storm",
+        "focus-energy",
+        "reversal"
+      ]
+    },
+    "xd-shadow-hypno": {
+      "species": "hypno",
+      "shadowMove": "shadow-storm",
+      "moves": [
+        "shadow-down",
+        "meditate",
+        "shadow-ball"
+      ]
+    },
+    "xd-shadow-golduck": {
+      "species": "golduck",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-mist",
+        "psych-up",
+        "brick-break"
+      ]
+    },
+    "xd-shadow-sableye": {
+      "species": "sableye",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-hold",
+        "faint-attack",
+        "recover"
+      ]
+    },
+    "xd-shadow-dodrio": {
+      "species": "dodrio",
+      "shadowMove": "shadow-blitz",
+      "moves": [
+        "shadow-shed",
+        "agility",
+        "tri-attack"
+      ]
+    },
+    "xd-shadow-raticate": {
+      "species": "raticate",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-down",
+        "scary-face",
+        "hyper-fang"
+      ]
+    },
+    "xd-shadow-farfetchd": {
+      "species": "farfetchd",
+      "shadowMove": "shadow-break",
+      "moves": [
+        "shadow-sky",
+        "shadow-panic",
+        "aerial-ace"
+      ]
+    },
+    "xd-shadow-altaria": {
+      "species": "altaria",
+      "shadowMove": "shadow-break",
+      "moves": [
+        "shadow-mist",
+        "shadow-rave",
+        "aerial-ace"
+      ]
+    },
+    "xd-shadow-kangaskhan": {
+      "species": "kangaskhan",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-mist",
+        "tail-whip",
+        "dizzy-punch"
+      ]
+    },
+    "xd-shadow-banette": {
+      "species": "banette",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-hold",
+        "shadow-ball",
+        "curse"
+      ]
+    },
+    "xd-shadow-magmar": {
+      "species": "magmar",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-rush",
+        "shadow-shed",
+        "thunderpunch"
+      ]
+    },
+    "xd-shadow-pinsir": {
+      "species": "pinsir",
+      "shadowMove": "shadow-break",
+      "moves": [
+        "shadow-shed",
+        "false-swipe",
+        "submission"
+      ]
+    },
+    "xd-shadow-rapidash": {
+      "species": "rapidash",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-down",
+        "shadow-sky",
+        "flamethrower"
+      ]
+    },
+    "xd-shadow-magcargo": {
+      "species": "magcargo",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-shed",
+        "earthquake",
+        "flamethrower"
+      ]
+    },
+    "xd-shadow-hitmonchan": {
+      "species": "hitmonchan",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-down",
+        "mind-reader",
+        "sky-uppercut"
+      ]
+    },
+    "xd-shadow-hitmonlee": {
+      "species": "hitmonlee",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-down",
+        "shadow-half",
+        "mega-kick"
+      ]
+    },
+    "xd-shadow-lickitung": {
+      "species": "lickitung",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-panic",
+        "defense-curl",
+        "rollout"
+      ]
+    },
+    "xd-shadow-scyther": {
+      "species": "scyther",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-mist",
+        "silver-wind",
+        "slash"
+      ]
+    },
+    "xd-shadow-chansey": {
+      "species": "chansey",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-hold",
+        "softboiled",
+        "skill-swap"
+      ]
+    },
+    "xd-shadow-solrock": {
+      "species": "solrock",
+      "shadowMove": "shadow-rave",
+      "moves": [
+        "shadow-panic",
+        "shadow-sky",
+        "cosmic-power"
+      ]
+    },
+    "xd-shadow-starmie": {
+      "species": "starmie",
+      "shadowMove": "shadow-storm",
+      "moves": [
+        "shadow-break",
+        "shadow-mist",
+        "recover"
+      ]
+    },
+    "xd-shadow-swellow": {
+      "species": "swellow",
+      "shadowMove": "shadow-break",
+      "moves": [
+        "shadow-sky",
+        "shadow-half",
+        "shadow-mist"
+      ]
+    },
+    "xd-shadow-electabuzz": {
+      "species": "electabuzz",
+      "shadowMove": "shadow-break",
+      "moves": [
+        "shadow-mist",
+        "shadow-half",
+        "shadow-storm"
+      ]
+    },
+    "xd-shadow-snorlax": {
+      "species": "snorlax",
+      "shadowMove": "shadow-end",
+      "moves": [
+        "shadow-shed",
+        "curse",
+        "body-slam"
+      ]
+    },
+    "xd-shadow-poliwrath": {
+      "species": "poliwrath",
+      "shadowMove": "shadow-storm",
+      "moves": [
+        "shadow-rush",
+        "shadow-sky",
+        "brick-break"
+      ]
+    },
+    "xd-shadow-mr-mime": {
+      "species": "mr-mime",
+      "shadowMove": "shadow-storm",
+      "moves": [
+        "shadow-shed",
+        "encore",
+        "thunderpunch"
+      ]
+    },
+    "xd-shadow-dugtrio": {
+      "species": "dugtrio",
+      "shadowMove": "shadow-break",
+      "moves": [
+        "shadow-shed",
+        "shadow-sky",
+        "tri-attack"
+      ]
+    },
+    "xd-shadow-manectric": {
+      "species": "manectric",
+      "shadowMove": "shadow-end",
+      "moves": [
+        "shadow-mist",
+        "shadow-sky",
+        "bite"
+      ]
+    },
+    "xd-shadow-salamence": {
+      "species": "salamence",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-hold",
+        "dragon-dance",
+        "aerial-ace"
+      ]
+    },
+    "xd-shadow-marowak": {
+      "species": "marowak",
+      "shadowMove": "shadow-end",
+      "moves": [
+        "shadow-panic",
+        "swords-dance",
+        "rock-slide"
+      ]
+    },
+    "xd-shadow-lapras": {
+      "species": "lapras",
+      "shadowMove": "shadow-storm",
+      "moves": [
+        "shadow-shed",
+        "shadow-sky",
+        "blizzard"
+      ]
+    },
+    "xd-shadow-lugia": {
+      "species": "lugia",
+      "shadowMove": "shadow-blast",
+      "moves": [
+        "shadow-shed",
+        "shadow-down",
+        "shadow-storm"
+      ]
+    },
+    "xd-shadow-rhydon": {
+      "species": "rhydon",
+      "shadowMove": "shadow-end",
+      "moves": [
+        "shadow-down",
+        "shadow-panic",
+        "shadow-hold"
+      ]
+    },
+    "xd-shadow-moltres": {
+      "species": "moltres",
+      "shadowMove": "shadow-fire",
+      "moves": [
+        "shadow-shed",
+        "shadow-hold",
+        "shadow-rush"
+      ]
+    },
+    "xd-shadow-exeggutor": {
+      "species": "exeggutor",
+      "shadowMove": "shadow-storm",
+      "moves": [
+        "shadow-shed",
+        "shadow-hold",
+        "shadow-end"
+      ]
+    },
+    "xd-shadow-tauros": {
+      "species": "tauros",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-hold",
+        "shadow-shed",
+        "shadow-sky"
+      ]
+    },
+    "xd-shadow-articuno": {
+      "species": "articuno",
+      "shadowMove": "shadow-chill",
+      "moves": [
+        "shadow-shed",
+        "shadow-sky",
+        "shadow-rush"
+      ]
+    },
+    "xd-shadow-zapdos": {
+      "species": "zapdos",
+      "shadowMove": "shadow-bolt",
+      "moves": [
+        "shadow-shed",
+        "shadow-sky",
+        "shadow-rush"
+      ]
+    },
+    "xd-shadow-dragonite": {
+      "species": "dragonite",
+      "shadowMove": "shadow-rush",
+      "moves": [
+        "shadow-down",
+        "shadow-shed",
+        "shadow-storm"
+      ]
+    }
+  }
+}

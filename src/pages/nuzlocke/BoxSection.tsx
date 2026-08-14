@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useLocalePath } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import { motion } from 'framer-motion';
 import { ArrowUpFromLine } from 'lucide-react';
 import Sprite from '@/components/Sprite';
@@ -73,6 +74,7 @@ function BoxCell({
   routeLabel,
   index,
   releaseOnDeath,
+  game,
 }: {
   enc: NuzEncounterRow;
   color: string;
@@ -80,6 +82,7 @@ function BoxCell({
   routeLabel: (key: string) => string;
   index: number;
   releaseOnDeath: boolean;
+  game: string;
 }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
@@ -111,7 +114,7 @@ function BoxCell({
         encDnd.end();
         setDragging(false);
       }}
-      onClick={() => navigate(localePath(`/pokemon/${enc.pokemon_id}`))}
+      onClick={() => navigate(localePath(pokemonHref(enc.pokemon_id, { game })))}
       onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = `${color}88`;
       }}
@@ -288,6 +291,7 @@ export default function BoxSection({
                       routeLabel={routeLabel}
                       index={i}
                       releaseOnDeath={state.run.rules.releaseOnDeath}
+                      game={state.run.game}
                     />
                   ))}
                 </div>

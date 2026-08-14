@@ -3,7 +3,7 @@
  * themselves on scroll (framer pathLength), condition chips at line midpoints,
  * branching support (Eevee-style), click navigates. */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
@@ -11,6 +11,8 @@ import { getEvolutionChain, evolutionChainId, padNum, prefetchPokemon } from '@/
 import { nameOfPokemon, useLanguage, type Lang } from '@/lib/i18n-data';
 import type { ChainLink, EvolutionChain, PokemonSpecies } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useLocalePath } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import { evoCondition } from './data';
 import type { EvoCondition } from './data';
 
@@ -49,6 +51,8 @@ function StageCard({
   registerRef: (key: string, el: HTMLButtonElement | null) => void;
 }) {
   const navigate = useNavigate();
+  const localePath = useLocalePath();
+  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
   const lang = useLanguage();
   const label = nameOfPokemon(stage.id, lang);
@@ -68,7 +72,7 @@ function StageCard({
       <button
         ref={(el) => registerRef(stage.key, el)}
         type="button"
-        onClick={() => !current && navigate(`/pokemon/${stage.id}`)}
+        onClick={() => !current && navigate(localePath(pokemonHref(stage.id, { game: searchParams.get('game') })))}
         onMouseEnter={() => prefetchPokemon(stage.id)}
         onFocus={() => prefetchPokemon(stage.id)}
         aria-label={current ? t('detail.evo.currentEntry', { name: label }) : t('detail.evo.openEntry', { name: label })}

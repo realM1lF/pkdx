@@ -1,7 +1,7 @@
 /* Prev/Next strip — density-addendum §3: 40px bar, arrows + neighbor names/sprites,
  * swipe on mobile (framer drag x, threshold 60px, rubber-band back). */
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -9,14 +9,17 @@ import Sprite from '@/components/Sprite';
 import { bootNameIndex, padNum, prefetchPokemon } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { useLocalePath } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import { MAX_DEX_ID } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 function NeighborButton({ id, dir }: { id: number; dir: 'prev' | 'next' }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
+  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
   const lang = useLanguage();
+  const game = searchParams.get('game');
   const [name, setName] = useState<string>(`#${id}`);
 
   useEffect(() => {
@@ -37,7 +40,7 @@ function NeighborButton({ id, dir }: { id: number; dir: 'prev' | 'next' }) {
   return (
     <button
       type="button"
-      onClick={() => navigate(localePath(`/pokemon/${id}`))}
+      onClick={() => navigate(localePath(pokemonHref(id, { game })))}
       onMouseEnter={() => prefetchPokemon(id)}
       onFocus={() => prefetchPokemon(id)}
       className={cn(
@@ -61,6 +64,7 @@ function NeighborButton({ id, dir }: { id: number; dir: 'prev' | 'next' }) {
 export default function PrevNextStrip({ id }: { id: number }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
+  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
   const prev = id > 1 ? id - 1 : MAX_DEX_ID;
   const next = id < MAX_DEX_ID ? id + 1 : 1;
@@ -73,8 +77,8 @@ export default function PrevNextStrip({ id }: { id: number }) {
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.18}
       onDragEnd={(_e, info) => {
-        if (info.offset.x <= -60) navigate(localePath(`/pokemon/${next}`));
-        else if (info.offset.x >= 60) navigate(localePath(`/pokemon/${prev}`));
+        if (info.offset.x <= -60) navigate(localePath(pokemonHref(next, { game: searchParams.get('game') })));
+        else if (info.offset.x >= 60) navigate(localePath(pokemonHref(prev, { game: searchParams.get('game') })));
       }}
     >
       <NeighborButton id={prev} dir="prev" />

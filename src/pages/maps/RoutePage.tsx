@@ -17,6 +17,7 @@ import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, Crosshair, Gift, Map as MapIcon, Users } from 'lucide-react';
 import { LocaleLink } from '@/lib/locale-link';
+import { pokemonHref } from '@/lib/edition-nav';
 import QaSection from '@/components/QaSection';
 import Sprite from '@/components/Sprite';
 import { nameOfItem, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
@@ -352,7 +353,7 @@ function SectionCard({
   );
 }
 
-function EncounterTable({ rows, lang, cfg }: { rows: EncounterRow[]; lang: Lang; cfg: SeoRouteRegionConfig }) {
+function EncounterTable({ rows, lang, cfg, game }: { rows: EncounterRow[]; lang: Lang; cfg: SeoRouteRegionConfig; game: string }) {
   const { t } = useTranslation();
   const ns = cfg.ns;
   return (
@@ -366,7 +367,7 @@ function EncounterTable({ rows, lang, cfg }: { rows: EncounterRow[]; lang: Lang;
       {rows.map((e) => (
         <LocaleLink
           key={`${e.id}-${e.method}`}
-          to={`/pokemon/${e.id}`}
+          to={pokemonHref(e.id, { game })}
           className="group flex h-12 items-center gap-2 border-b border-hairline/60 px-4 transition-colors last:border-b-0 hover:bg-surface2 sm:px-5"
         >
           <span className="flex min-w-0 flex-1 items-center gap-2.5">
@@ -657,7 +658,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     {g.label}
                   </p>
                 )}
-                <EncounterTable rows={g.rows} lang={lang} cfg={cfg} />
+                <EncounterTable rows={g.rows} lang={lang} cfg={cfg} game={activeVersion} />
               </div>
             ))}
             <p className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
@@ -719,7 +720,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
           {bestCatchId && bestCatchBody && (
             <SectionCard eyebrow={t(`${ns}.bestCatchEyebrow`)} title={t(`${ns}.bestCatchTitle`, { name })}>
               <div className="flex items-start gap-3 px-4 py-4 sm:px-5">
-                <LocaleLink to={`/pokemon/${bestCatchId}`} className="group shrink-0" aria-label={pokeName(bestCatchId, lang, cfg.names)}>
+                <LocaleLink to={pokemonHref(bestCatchId, { game: activeVersion })} className="group shrink-0" aria-label={pokeName(bestCatchId, lang, cfg.names)}>
                   <Sprite
                     id={bestCatchId}
                     name={pokeName(bestCatchId, lang, cfg.names)}
@@ -793,7 +794,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     <ChevronRight size={15} className="shrink-0 text-tx-muted transition-transform group-hover:translate-x-0.5 group-hover:text-gold" />
                   </LocaleLink>
                   <LocaleLink
-                    to="/pokemon/25"
+                    to={pokemonHref(25, { game: activeVersion })}
                     className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
                   >
                     <span className="flex items-center gap-2.5">

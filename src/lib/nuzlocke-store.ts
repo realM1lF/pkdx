@@ -1956,6 +1956,8 @@ export interface LogDraft {
   isShiny?: boolean;
   /** logged via full-dex override (not from route table) */
   offRoute?: boolean;
+  /** Orre Shadow id when the pick came from the curated list */
+  shadowId?: string | null;
 }
 
 export interface LogResult {
@@ -1992,6 +1994,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
     status: draft.status,
     note: draft.note ?? null,
     is_shiny: !!draft.isShiny,
+    ...(draft.shadowId ? { shadow_id: draft.shadowId } : {}),
     /* auto-join party while there is a free slot (mirrors the old derived rule) */
     in_party: draft.status === 'caught' && partyOf(s, draft.playerId).length < 6,
     created_at: new Date().toISOString(),

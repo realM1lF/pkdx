@@ -80,6 +80,8 @@ export interface OrreEncounterOption {
   rate: number
   minLevel: number
   maxLevel: number
+  /** curated Shadow id — only set for kind === 'shadow' */
+  shadowId?: string
 }
 
 /**
@@ -93,7 +95,7 @@ export function encounterOptionsForRoute(game: OrreGame, routeKey: string): Orre
   for (const s of shadowsAtLocation(game, routeKey)) {
     if (seen.has(s.species)) continue
     seen.add(s.species)
-    out.push({ species: s.species, kind: 'shadow', rate: 100, minLevel: s.level, maxLevel: s.level })
+    out.push({ species: s.species, kind: 'shadow', rate: 100, minLevel: s.level, maxLevel: s.level, shadowId: s.id })
   }
   if (game === 'xd') {
     for (const e of pokeSpotById(routeKey)?.encounters ?? []) {

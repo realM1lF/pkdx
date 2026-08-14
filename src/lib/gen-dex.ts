@@ -31,6 +31,11 @@ export function genTypesOf(vgId: string, nameOrSlug: string, fallback: PokemonTy
   return fallback;
 }
 
+/** Party / box chips: same as genTypesOf, named for Nuzlocke callers. */
+export function typesForPartyMon(vgId: string, nameOrSlug: string, fallback: PokemonType[]): PokemonType[] {
+  return genTypesOf(vgId, nameOrSlug, fallback);
+}
+
 export function genAbilitiesOf(vgId: string, nameOrSlug: string | null | undefined): string[] {
   return genAbilityRows(vgId, nameOrSlug ?? '').map((a) => displayName(a.slug));
 }

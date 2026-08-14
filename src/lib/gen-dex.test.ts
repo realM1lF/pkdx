@@ -5,6 +5,7 @@ import {
   genMoveOf,
   genStatsOf,
   genTypesOf,
+  typesForPartyMon,
 } from './gen-dex';
 import type { StatKey } from './types';
 
@@ -29,6 +30,10 @@ describe('genTypesOf — species types follow the edition gen', () => {
     expect(genTypesOf('black-white', 'clefable', ['normal'])).toEqual(['normal']);
     expect(genTypesOf('x-y', 'clefable', ['normal'])).toEqual(['fairy']);
     expect(genTypesOf('scarlet-violet', 'clefable', ['normal'])).toEqual(['fairy']);
+  });
+
+  it('typesForPartyMon keeps Clefable Normal in BW even if the API fallback is Fairy', () => {
+    expect(typesForPartyMon('black-white', 'clefable', ['fairy'])).toEqual(['normal']);
   });
 });
 
