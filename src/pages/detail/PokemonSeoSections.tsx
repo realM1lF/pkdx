@@ -22,6 +22,7 @@ import { LocaleLink } from '@/lib/locale-link';
 import QaSection from '@/components/QaSection';
 import { resolveDexId } from '@/lib/seo-pilots';
 import PokemonSeoGeneric, { POKEMON_SEO_IDS } from './PokemonSeoGeneric';
+import HonestyHint from '@/components/HonestyHint';
 import { cn } from '@/lib/utils';
 
 /* ---------- shared bits ---------- */
@@ -81,6 +82,9 @@ function PikachuSeo() {
             <FrlgToggle value={version} onChange={setVersion} />
           </div>
         </header>
+        <HonestyHint show className="border-b border-hairline px-4 py-1.5 sm:px-5">
+          {t('honesty.seoSnapshot')}
+        </HonestyHint>
         <p className="border-b border-hairline/60 px-4 py-2.5 font-sans text-[12px] text-tx-secondary sm:px-5">
           {t('seo.pikachu.whereIntro')}
         </p>

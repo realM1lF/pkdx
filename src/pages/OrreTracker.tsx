@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Search } from 'lucide-react'
+import HonestyHint from '@/components/HonestyHint'
 import Sprite from '@/components/Sprite'
 import { anyRegionById } from '@/lib/regions-freeform'
 import { nodeName } from '@/lib/regions'
@@ -241,6 +242,9 @@ export default function OrreTracker() {
         />
       </div>
 
+      <HonestyHint show={game === 'colosseum'} className="mb-2">
+        {t('honesty.starterRandom')}
+      </HonestyHint>
       <div
         data-lenis-prevent
         className="max-h-[min(70vh,720px)] overflow-y-auto rounded-md border border-hairline bg-surface1"

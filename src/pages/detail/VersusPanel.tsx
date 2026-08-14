@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Info, RotateCcw, Search, SlidersHorizontal, Swords, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
+import HonestyHint from '@/components/HonestyHint';
 import Sprite from '@/components/Sprite';
 import GameSelect from '@/components/GameSelect';
 import TypeBadge from '@/components/TypeBadge';
@@ -51,6 +52,7 @@ import {
   versionGroupById,
 } from '@/lib/teambuilder';
 import { movePowerForDisplay } from '@/lib/gen-dex';
+import { paddedWild } from '@/lib/honesty';
 import {
   NATURES,
   damageBetween,
@@ -235,6 +237,11 @@ export function resolveDefaultSet(
   }
   if (wild.length > 0) return { moves: merged, source: 'wild' };
   return { moves: merged, source: 'assumed' };
+}
+
+export function sidePaddedWild(p: Pokemon, level: number, vg: string, source: MovesetSource, slots: string[]): boolean {
+  if (source !== 'wild') return false;
+  return paddedWild(wildMoveset(p, level, vg).length, slots.filter(Boolean).length);
 }
 
 /** slugs whose details are worth prefetching for a side (slots + level-up pool for heuristics) */
@@ -537,6 +544,8 @@ export function MoveSlots({
   sourceEdition,
   showMovesFallback,
   editionNote,
+  showPaddedWild,
+  showFirstEncounter,
 }: {
   slots: string[];
   pool: string[];
@@ -551,6 +560,8 @@ export function MoveSlots({
   sourceEdition?: string;
   showMovesFallback?: boolean;
   editionNote?: { source: string; selected: string } | null;
+  showPaddedWild?: boolean;
+  showFirstEncounter?: boolean;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
@@ -596,6 +607,12 @@ export function MoveSlots({
       {source === 'shadow' && (
         <p className="min-w-0 font-sans text-[10px] leading-snug text-tx-muted">{t('versus.shadowApproxNote')}</p>
       )}
+      <HonestyHint show={source === 'shadow'}>
+        {t('honesty.calcNeutral')}
+      </HonestyHint>
+      <HonestyHint show={Boolean(showFirstEncounter)} tone="gold">
+        {t('honesty.firstEncounterSet')}
+      </HonestyHint>
       {source === 'shadow' && !slots.some(Boolean) && (
         <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">{t('versus.shadowSetMissing')}</p>
       )}
@@ -607,6 +624,9 @@ export function MoveSlots({
           {t('versus.trainerEditionNote', editionNote)}
         </p>
       )}
+      <HonestyHint show={Boolean(showPaddedWild)}>
+        {t('honesty.paddedWild')}
+      </HonestyHint>
       <div className="relative z-20 grid grid-cols-2 gap-1 overflow-visible">
         {[0, 1, 2, 3].map((i) => {
           const slug = slots[i] ?? '';
@@ -748,6 +768,8 @@ export function SideCard({
   sourceEdition,
   showMovesFallback,
   editionNote,
+  showPaddedWild,
+  showFirstEncounter,
 }: {
   pokemon: Pokemon;
   side: SideState;
@@ -766,6 +788,8 @@ export function SideCard({
   sourceEdition?: string;
   showMovesFallback?: boolean;
   editionNote?: { source: string; selected: string } | null;
+  showPaddedWild?: boolean;
+  showFirstEncounter?: boolean;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
@@ -1012,6 +1036,9 @@ export function SideCard({
         </button>
       )}
 
+      <HonestyHint show={gen < 3} truncate>
+        {t('honesty.maxStatExp')}
+      </HonestyHint>
       <MoveSlots
         slots={side.slots}
         pool={pool}
@@ -1023,6 +1050,8 @@ export function SideCard({
         sourceEdition={sourceEdition}
         showMovesFallback={showMovesFallback}
         editionNote={editionNote}
+        showPaddedWild={showPaddedWild}
+        showFirstEncounter={showFirstEncounter}
       />
     </div>
   );
@@ -1715,6 +1744,7 @@ export default function VersusPanel({
               setYou((s) => ({ ...s, slots }));
             }}
             onSlotsReset={() => setYouCustom(false)}
+            showPaddedWild={sidePaddedWild(youPokemon, you.level, ctx.versionGroup, youSource, you.slots)}
           />
         )}
       </Panel>
@@ -1821,6 +1851,7 @@ export default function VersusPanel({
                 sourceEdition={foeSourceEdition}
                 showMovesFallback={foeTrainerFallback && foeSource === 'trainer'}
                 editionNote={foeEditionNote}
+                showPaddedWild={sidePaddedWild(foePokemon, foe.level, ctx.versionGroup, foeSource, foe.slots)}
                 onSlotsChange={(slots) => {
                   setFoeCustom(true);
                   setFoeSource('custom');
@@ -1846,6 +1877,7 @@ export default function VersusPanel({
             sourceEdition={foeSourceEdition}
             showMovesFallback={foeTrainerFallback && foeSource === 'trainer'}
             editionNote={foeEditionNote}
+            showPaddedWild={sidePaddedWild(foePokemon, foe.level, ctx.versionGroup, foeSource, foe.slots)}
             onSlotsChange={(slots) => {
               setFoeCustom(true);
               setFoeSource('custom');

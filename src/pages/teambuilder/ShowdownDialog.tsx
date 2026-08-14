@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, ArrowDownToLine, ArrowUpFromLine, Check, Copy, ExternalLink, FileDown, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import HonestyHint from '@/components/HonestyHint';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { parseShowdownTeam, showdownWarningText } from '@/lib/teambuilder-showdown';
@@ -194,6 +195,9 @@ export default function ShowdownDialog({ open, initialTab, exportText, onClose, 
               {tab === 'import' && (
                 <>
                   <p className="tb-micro mb-2 !text-[8px]">{t('tb.sd.importHint')}</p>
+                  <HonestyHint show className="mb-2">
+                    {t('honesty.importUnchecked')}
+                  </HonestyHint>
                   <textarea
                     value={paste}
                     onChange={(e) => {

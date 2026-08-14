@@ -11,6 +11,7 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { ChevronRight, Crosshair, MapPin, Package, Swords } from 'lucide-react';
+import HonestyHint from '@/components/HonestyHint';
 import { ItemIcon } from '@/components/EntityDescModal';
 import QaSection from '@/components/QaSection';
 import Sprite from '@/components/Sprite';
@@ -166,6 +167,9 @@ export default function ItemDetailPage() {
               <p className="font-sans text-[13px] leading-relaxed text-tx-secondary">
                 <strong className="font-semibold text-tx-primary">{effect}</strong> {flavor}
               </p>
+              <HonestyHint show={Boolean(item.locationsFrlg?.length)} className="mt-2">
+                {t('honesty.modernEffect')}
+              </HonestyHint>
             </div>
           </SectionCard>
 
@@ -194,6 +198,9 @@ export default function ItemDetailPage() {
                   </span>
                 </LocaleLink>
               ))}
+              <HonestyHint show className="px-4 py-2 sm:px-5">
+                {t('honesty.locationsFrlgField')}
+              </HonestyHint>
               <p className="px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
                 {t('seo.item.locationsSource')}
               </p>

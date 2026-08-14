@@ -8,6 +8,7 @@ import { TYPE_COLORS } from '@/lib/types';
 import { bootNameIndex, getPokemon } from '@/lib/pokeapi';
 import { germanAliasOfPokemon, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
+import HonestyHint from '@/components/HonestyHint';
 import MiniAutocomplete from './MiniAutocomplete';
 
 interface PokemonPickerProps {
@@ -65,20 +66,25 @@ export default function PokemonPicker({ onPick, autoFocus = true, placeholder }:
   }, []);
 
   return (
-    <MiniAutocomplete
-      items={index}
-      filter={(e, q) =>
-        e.label.toLowerCase().includes(q) ||
-        e.name.includes(q) ||
-        e.num.includes(q) ||
-        (germanAliasOfPokemon(e.id)?.toLowerCase().includes(q) ?? false)
-      }
-      onSelect={onPick}
-      keyOf={(e) => String(e.id)}
-      placeholder={placeholder ?? t('tb.autocomplete.searchPokemon')}
-      autoFocus={autoFocus}
-      maxResults={10}
-      renderItem={(e) => <PokemonRow entry={e} />}
-    />
+    <div className="flex min-w-0 flex-col gap-1">
+      <HonestyHint show truncate>
+        {t('honesty.nationalPicker')}
+      </HonestyHint>
+      <MiniAutocomplete
+        items={index}
+        filter={(e, q) =>
+          e.label.toLowerCase().includes(q) ||
+          e.name.includes(q) ||
+          e.num.includes(q) ||
+          (germanAliasOfPokemon(e.id)?.toLowerCase().includes(q) ?? false)
+        }
+        onSelect={onPick}
+        keyOf={(e) => String(e.id)}
+        placeholder={placeholder ?? t('tb.autocomplete.searchPokemon')}
+        autoFocus={autoFocus}
+        maxResults={10}
+        renderItem={(e) => <PokemonRow entry={e} />}
+      />
+    </div>
   );
 }

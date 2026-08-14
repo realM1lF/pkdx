@@ -9,6 +9,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import { ArrowRight, Swords } from 'lucide-react';
+import HonestyHint from '@/components/HonestyHint';
 import GameSelect from '@/components/GameSelect';
 import PokeballLoader from '@/components/PokeballLoader';
 import QaSection from '@/components/QaSection';
@@ -30,6 +31,7 @@ import {
   OpponentAutocomplete,
   prefetchSlugs,
   resolveDefaultSet,
+  sidePaddedWild,
   SideCard,
   useDexIndex,
   useMoveDetails,
@@ -223,6 +225,9 @@ function BattleArena() {
             defaultOption={{ id: '', label: t('versus.gameDefault'), short: 'SV', gen: 9 }}
           />
         </div>
+        <HonestyHint show className="basis-full">
+          {t('honesty.defaultEdition')}
+        </HonestyHint>
         <VersusFieldControls ctx={ctx} field={field} onChange={setField} />
         <button
           type="button"
@@ -271,6 +276,7 @@ function BattleArena() {
               setYou((s) => ({ ...s, slots }));
             }}
             onSlotsReset={() => setYouCustom(false)}
+            showPaddedWild={sidePaddedWild(youPokemon, you.level, ctx.versionGroup, youSource, you.slots)}
           />
         )}
       </Panel>
@@ -322,6 +328,7 @@ function BattleArena() {
               setFoe((s) => ({ ...s, slots }));
             }}
             onSlotsReset={() => setFoeCustom(false)}
+            showPaddedWild={sidePaddedWild(foePokemon, foe.level, ctx.versionGroup, foeSource, foe.slots)}
           />
         )}
       </Panel>

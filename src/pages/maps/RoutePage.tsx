@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronRight, Crosshair, Gift, Map as MapIcon, Users } from 'lucide-react';
 import { LocaleLink } from '@/lib/locale-link';
 import { pokemonHref } from '@/lib/edition-nav';
+import HonestyHint from '@/components/HonestyHint';
 import QaSection from '@/components/QaSection';
 import Sprite from '@/components/Sprite';
 import { nameOfItem, nameOfPokemon, useLanguage } from '@/lib/i18n-data';
@@ -651,6 +652,9 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
             title={t(`${ns}.encountersTitle`)}
             right={<VersionToggle cfg={cfg} available={availableVersions} value={activeVersion} onChange={setVersion} />}
           >
+            <HonestyHint show={cfg.region === 'kanto'} className="border-b border-hairline px-4 py-2 sm:px-5">
+              {t('maps.seoPartial')}
+            </HonestyHint>
             {groups.map((g) => (
               <div key={g.areaSlug}>
                 {multiArea && (

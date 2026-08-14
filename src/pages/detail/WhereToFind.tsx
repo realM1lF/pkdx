@@ -23,6 +23,7 @@ import { methodBucket } from '@/lib/mapdata';
 import type { MethodBucket } from '@/lib/mapdata';
 import { aggregate, encounterVersions, mapsPath } from '@/lib/wherefind';
 import type { EncounterAreaEntry, WhereRow } from '@/lib/wherefind';
+import HonestyHint from '@/components/HonestyHint';
 import { cn } from '@/lib/utils';
 import type { MapsFromRef } from './from-param';
 
@@ -325,6 +326,9 @@ export default function WhereToFind({
           ))}
         </div>
       )}
+      <HonestyHint show={active === null && versions.length > 1} className="border-b border-hairline px-3 py-1.5" truncate>
+        {t('honesty.siblingMix')}
+      </HonestyHint>
       <div className="dx-scroll max-h-[368px] overflow-y-auto" data-lenis-prevent>
         {wild.length === 0 && (
           /* species exists only as gift/static/trade (e.g. starters) */

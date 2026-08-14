@@ -33,6 +33,11 @@ const HONESTY_KEYS = [
   'honesty.modernEffect',
   'honesty.locationsFrlgField',
   'maps.seoPartial',
+  'versus.trainerEditionNote',
+  'versus.trainerMovesFallback',
+  'versus.rankingHeuristic',
+  'versus.shadowApproxNote',
+  'maps.noItems',
 ] as const;
 
 function localeLeaf(obj: unknown, path: string): unknown {

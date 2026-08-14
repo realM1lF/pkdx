@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { AnimatePresence, Reorder } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import HonestyHint from '@/components/HonestyHint';
 import { getMove, getPokemon } from '@/lib/pokeapi';
 import {
   consumeTeamHash,
@@ -791,6 +792,7 @@ export default function TeamBuilder() {
         <div className="tb-panel mt-4 flex flex-col items-center gap-3 border-dashed px-6 py-10 text-center">
           <span className="tb-micro-gold">{t8n('tb.empty.title')}</span>
           <p className="max-w-[420px] text-[12px] leading-relaxed text-tx-secondary">{t8n('tb.empty.body')}</p>
+          <HonestyHint show>{t8n('honesty.nationalPicker')}</HonestyHint>
           <div className="flex flex-wrap justify-center gap-2">
             <button type="button" onClick={() => setImportOpen(true)} className="tb-btn">
               {t8n('tb.importFromRun')}

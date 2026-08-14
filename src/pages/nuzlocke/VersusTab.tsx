@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Swords, Users } from 'lucide-react';
+import HonestyHint from '@/components/HonestyHint';
 import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +15,7 @@ import { getPokemon, padNum, pokemonTypes } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonType } from '@/lib/types';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
-import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
+import { boxedOf, isCloudRun, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
 import {
@@ -52,6 +53,7 @@ import {
   blankSide,
   computeMatrix,
   resolveDefaultSet,
+  sidePaddedWild,
   sideToVersus,
   useDexIndex,
   useMoveDetails,
@@ -261,6 +263,9 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
     <div className="grid grid-cols-12 gap-4">
       {/* ================= LEFT — own picker ================= */}
       <Panel eyebrow={t('versus.yourSide')} title={t('versus.teamBox')} className="col-span-12 lg:col-span-3" bodyClassName="flex max-h-[640px] flex-col p-2">
+        <HonestyHint show={Boolean(orreGame && (state.mode === 'multi' || isCloudRun(state)))} className="mb-1.5 px-1" truncate>
+          {t('honesty.shadowIdOptional')}
+        </HonestyHint>
         {/* player filter */}
         <div className="mb-2 flex flex-wrap gap-1">
           <FilterChip active={playerFilter === 'all'} onClick={() => setPlayerFilter('all')}>
@@ -476,6 +481,15 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
             {youPokemon && (
               <OwnSideTune side={you} onSide={(patch) => setYou((s) => ({ ...s, ...patch }))} pokemon={youPokemon} versionGroup={ctx.versionGroup} />
             )}
+            <HonestyHint show={ctx.gen < 3} truncate>
+              {t('honesty.maxStatExp')}
+            </HonestyHint>
+            <HonestyHint show truncate>
+              {t('honesty.noStoredMoves')}
+            </HonestyHint>
+            <HonestyHint show={Boolean(sel.enc.shadow_id) && (youSource === 'wild' || youSource === 'assumed')} tone="gold" truncate>
+              {t('honesty.snagLevelUp')}
+            </HonestyHint>
 
             <SpeedCheckBanner check={check} youName={t('versus.you')} foeName={foeName} />
 
@@ -503,6 +517,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                         onReset={() => setYouCustom(false)}
                         source={youSource}
                         versionGroup={ctx.versionGroup}
+                        showPaddedWild={sidePaddedWild(youPokemon, you.level, ctx.versionGroup, youSource, you.slots)}
                       />
                     </div>
                   </Panel>
@@ -528,6 +543,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                         sourceEdition={foeSourceEdition}
                         showMovesFallback={foeTrainerFallback && foeSource === 'trainer'}
                         editionNote={foeEditionNote}
+                        showPaddedWild={sidePaddedWild(foePokemon, foe.level, ctx.versionGroup, foeSource, foe.slots)}
+                        showFirstEncounter={foeSource === 'shadow' && foeRef.slug === 'qwilfish'}
                       />
                     </div>
                   </Panel>

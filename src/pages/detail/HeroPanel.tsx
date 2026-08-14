@@ -16,6 +16,7 @@ import { useShiny } from '@/lib/shiny';
 import { sprites } from '@/lib/sprites';
 import { genOf, GENERATIONS } from '@/lib/types';
 import { formIdentity } from '@/lib/dex-forms-catalog';
+import HonestyHint from '@/components/HonestyHint';
 import FormStrip from './FormStrip';
 import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -104,9 +105,10 @@ interface HeroPanelProps {
   types?: PokemonType[];
   abilities?: Array<{ slug: string; hidden: boolean }>;
   flavorGames?: readonly string[];
+  edition?: string;
 }
 
-export default function HeroPanel({ pokemon, species, types: typesProp, abilities: abilitiesProp, flavorGames }: HeroPanelProps) {
+export default function HeroPanel({ pokemon, species, types: typesProp, abilities: abilitiesProp, flavorGames, edition }: HeroPanelProps) {
   const types = typesProp ?? pokemonTypes(pokemon);
   const primary = types[0] ?? 'normal';
   const secondary = types[1];
@@ -378,7 +380,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             )}
           </motion.div>
 
-          <FormStrip speciesId={ident.speciesId} currentSlug={pokemon.name} />
+          <FormStrip speciesId={ident.speciesId} currentSlug={pokemon.name} edition={edition} />
 
           {/* flavor text + version chips */}
           <motion.div
@@ -454,6 +456,9 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             <Fact label={t('detail.hero.growth')} span={2}>
               <span className="text-[12px]">{growth}</span>
             </Fact>
+            <HonestyHint show className="col-span-2 sm:col-span-4">
+              {t('honesty.speciesCurrent')}
+            </HonestyHint>
           </motion.div>
 
           {/* CTA row */}

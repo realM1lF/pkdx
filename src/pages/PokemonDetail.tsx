@@ -36,6 +36,8 @@ import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-co
 import { pokemonSeoMetaForParam } from '@/lib/seo';
 import { hasPokemonSeoSections } from '@/lib/seo-pilots';
 import PokemonSeoSections from './detail/PokemonSeoSections';
+import HonestyHint from '@/components/HonestyHint';
+import { editionFallback } from '@/lib/honesty';
 import { Panel } from './detail/ui';
 import { editionFromGameParam, presentEditionIds, resolveMoveVersionGroup, typeRgb } from './detail/data';
 import './detail/detail.css';
@@ -122,6 +124,10 @@ export default function PokemonDetail() {
     newestEdition,
   );
   const editionInfo = versionGroupById(edition);
+  const showEditionFallback = editionFallback(
+    versionGroupForGame(gameParam),
+    new Set(editionOptions.map((g) => g.id)),
+  );
   const types = useMemo(
     () => (pokemon ? genTypesOf(edition, pokemon.name, apiTypes as PokemonType[]) : []),
     [pokemon, edition, apiTypes],
@@ -250,7 +256,12 @@ export default function PokemonDetail() {
           {fromMaps ? t8n('detail.backToMap') : t8n('detail.backAll')}
         </LocaleLink>
         {editionOptions.length > 0 && (
-          <EditionDock value={edition} onChange={setEdition} options={editionOptions} />
+          <div className="flex min-w-0 flex-col items-end gap-0.5">
+            <EditionDock value={edition} onChange={setEdition} options={editionOptions} />
+            <HonestyHint show={showEditionFallback} tone="gold" truncate>
+              {t8n('honesty.editionFallback', { edition: editionInfo.label })}
+            </HonestyHint>
+          </div>
         )}
       </div>
 
@@ -321,6 +332,7 @@ export default function PokemonDetail() {
             types={types}
             abilities={editionAbilities}
             flavorGames={editionInfo.games}
+            edition={edition}
           />
           {/* top-right actions: add to a saved team · VS shortcut (opens the VERSUS tab) */}
           <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5">
@@ -369,6 +381,9 @@ export default function PokemonDetail() {
         {/* ROW 3 — left stack: evolution + where to find (span 5) · museum (span 7) */}
         <div className="col-span-12 flex flex-col gap-4 lg:col-span-5">
           <Panel eyebrow={t8n('detail.panels.evoEyebrow')} title={t8n('detail.panels.evoTitle')} bodyClassName="min-h-[140px]">
+            <HonestyHint show className="border-b border-hairline px-4 py-1.5">
+              {t8n('honesty.evoCurrent')}
+            </HonestyHint>
             <EvolutionPanel species={species} currentId={species?.id ?? pokemon.id} />
           </Panel>
 

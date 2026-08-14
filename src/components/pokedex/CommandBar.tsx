@@ -15,6 +15,7 @@ import type { PokemonType } from '@/lib/types';
 import { useShiny } from '@/lib/shiny';
 import { SORT_OPTIONS } from './dex-data';
 import type { Density, SortKey, Special } from './dex-data';
+import HonestyHint from '@/components/HonestyHint';
 import { cn } from '@/lib/utils';
 import type { CSSProperties } from 'react';
 
@@ -256,6 +257,9 @@ function FilterPopover(p: FilterPopoverProps) {
               {/* generation */}
               <div className="mb-3">
                 <span className={sectionLabel}>{t8n('pokedex.generation')}</span>
+                <HonestyHint show className="mb-1.5">
+                  {t8n('honesty.catalogTypes')}
+                </HonestyHint>
                 <div className="grid grid-cols-5 gap-1">
                   <button
                     type="button"

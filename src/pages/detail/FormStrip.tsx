@@ -3,18 +3,22 @@ import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { useSearchParams } from 'react-router';
 import { pokemonHref } from '@/lib/edition-nav';
+import HonestyHint from '@/components/HonestyHint';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { formsForSpecies } from '@/lib/dex-forms-catalog';
 import { FORM_I18N_KEY } from '@/components/pokedex/dex-data';
+import { genSpecies } from '@/lib/gen-dex';
+import { formNotInGame } from '@/lib/honesty';
 import { cn } from '@/lib/utils';
 
 interface FormStripProps {
   speciesId: number;
   currentSlug: string;
+  edition?: string;
 }
 
-export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
+export default function FormStrip({ speciesId, currentSlug, edition }: FormStripProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const [searchParams] = useSearchParams();
@@ -22,6 +26,7 @@ export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
   const forms = formsForSpecies(speciesId);
   if (forms.length === 0) return null;
   const onBase = !forms.some((f) => f.slug === currentSlug);
+  const showMissingForm = edition ? formNotInGame(Boolean(genSpecies(edition, currentSlug)?.exists)) : false;
 
   return (
     <div className="mt-1 min-w-0">
@@ -61,6 +66,9 @@ export default function FormStrip({ speciesId, currentSlug }: FormStripProps) {
           );
         })}
       </div>
+      <HonestyHint show={showMissingForm} tone="gold" className="mt-1" truncate>
+        {t('honesty.formNotInGame')}
+      </HonestyHint>
     </div>
   );
 }

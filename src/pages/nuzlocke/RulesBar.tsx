@@ -14,6 +14,7 @@ import { nodeIndex, nodeName } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
 import { useLanguage } from '@/lib/i18n-data';
 import { cn } from '@/lib/utils';
+import HonestyHint from '@/components/HonestyHint';
 import { GoldSwitch, PixelLabel } from './ui';
 
 /* number tween 300ms (§2.2) */
@@ -219,6 +220,9 @@ export function RulesEditor({ state }: { state: RunState }) {
         <PixelLabel>{t('nuz.rules.levelCap')}</PixelLabel>
         <LevelCapStepper value={r.levelCap} onChange={(v) => set({ levelCap: v })} disabled={r.autoLevelCap} />
       </span>
+      <HonestyHint show truncate>
+        {t('honesty.capUsesRegion')}
+      </HonestyHint>
     </div>
   );
 }

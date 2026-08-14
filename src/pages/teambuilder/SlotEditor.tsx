@@ -26,6 +26,7 @@ import {
 import type { LegalMoveOption, SlotLegality, SmogonSet, SmogonSpeciesEntry, TeamSlot } from '@/lib/teambuilder';
 import { STAT_LABELS, STAT_ORDER } from '@/lib/types';
 import type { Pokemon, StatKey } from '@/lib/types';
+import HonestyHint from '@/components/HonestyHint';
 import { cn } from '@/lib/utils';
 import { statsOf } from '@/lib/versus';
 import type { VersusContext } from '@/lib/versus';
@@ -243,6 +244,11 @@ function SlotMetaSets({
       </div>
       {fallback && (
         <p className="mb-1.5 text-[10px] leading-snug text-gold/90">{t('team.meta.fallback', { format: sourceLabel })}</p>
+      )}
+      {entry && (
+        <HonestyHint show className="mb-1.5">
+          {t('honesty.enOnlySmogon')}
+        </HonestyHint>
       )}
       {state === 'unavailable' && (
         <div className="flex items-center gap-1.5 text-[10px] text-gold/90">

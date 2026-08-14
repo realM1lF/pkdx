@@ -18,7 +18,9 @@ import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
-import { aceSpeciesForNode, hasTrainersAtNode, trainerCoverage, trainersAtNode } from '@/lib/trainer-data';
+import HonestyHint from '@/components/HonestyHint';
+import { aceSpeciesForNode, hasTrainersAtNode, trainerArtifactVersionGroup, trainerCoverage, trainerSourceMismatchesGame, trainersAtNode } from '@/lib/trainer-data';
+import { versionGroupById, versionGroupForGame } from '@/lib/version-groups';
 import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
 import { HOENN_ROUTE_PAGES, hoennRoutePagePath } from '@/lib/seo-routes-hoenn';
 import { JOHTO_ROUTE_PAGES, johtoRoutePagePath } from '@/lib/seo-routes-johto';
@@ -182,6 +184,9 @@ export default function DetailDrawer({
   const trainers = useMemo(() => trainersAtNode(region.region, node.id), [region.region, node.id]);
   const trainerCount = trainers.length;
   const showVersusLink = hasTrainersAtNode(region.region, node.id);
+  const trainerArtifactVg = trainerArtifactVersionGroup(region.region);
+  const trainerSelectedVg = versionGroupForGame(version);
+  const showTrainerEditionNote = Boolean(trainerArtifactVg) && trainerSourceMismatchesGame(region.region, version);
   const versusAce = useMemo(
     () => aceSpeciesForNode(region.region, node.id) ?? 'pikachu',
     [region.region, node.id],
@@ -519,6 +524,14 @@ export default function DetailDrawer({
                 <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
                   {t('maps.trainersKeyBattlesOnly')}
                 </p>
+              )}
+              {showTrainerEditionNote && trainerArtifactVg && (
+                <HonestyHint show tone="gold" className="border-b border-hairline px-3 py-2">
+                  {t('versus.trainerEditionNote', {
+                    source: versionGroupById(trainerArtifactVg).short,
+                    selected: trainerSelectedVg ? versionGroupById(trainerSelectedVg).short : version,
+                  })}
+                </HonestyHint>
               )}
               {trainers.map((tr, i) => {
                 const ace = aceSpeciesOf(tr.party);
