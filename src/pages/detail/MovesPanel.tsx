@@ -12,6 +12,7 @@ import TypeGlyph from '@/components/TypeGlyph';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { getMove } from '@/lib/pokeapi';
 import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
+import { learnsetFor, type LearnMethod } from '@/lib/move-pool';
 import { VERSION_GROUPS as ALL_VERSION_GROUPS } from '@/lib/version-groups';
 import type { Move, Pokemon } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -20,7 +21,7 @@ import { SegmentedControl } from './ui';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-type Method = 'level-up' | 'machine' | 'egg' | 'tutor';
+type Method = LearnMethod;
 /* labels are i18n keys under detail.moves */
 const METHODS: Array<{ key: Method; labelKey: string }> = [
   { key: 'level-up', labelKey: 'detail.moves.levelUp' },
@@ -104,25 +105,14 @@ export default function MovesPanel({
     return ALL_VERSION_GROUPS.filter((vg) => present.has(vg.id));
   }, [availableVersions]);
 
-  /* rows per method for the active version */
+  /* rows per method for the active version — never mixes editions */
   const byMethod = useMemo(() => {
     const map = new Map<Method, MoveRow[]>();
-    for (const { key } of METHODS) map.set(key, []);
-    for (const m of pokemon.moves) {
-      const perMethod = new Map<Method, number>();
-      for (const d of m.version_group_details) {
-        if (d.version_group.name !== activeVersion) continue;
-        const method = d.move_learn_method.name as Method;
-        if (!map.has(method)) continue;
-        const prev = perMethod.get(method);
-        if (prev == null || (d.level_learned_at > 0 && d.level_learned_at < prev)) {
-          perMethod.set(method, d.level_learned_at);
-        }
-      }
-      for (const [method, level] of perMethod) map.get(method)!.push({ name: m.move.name, level });
-    }
-    for (const rows of map.values())
+    for (const { key } of METHODS) {
+      const rows = learnsetFor(pokemon, activeVersion, key).map((e) => ({ name: e.slug, level: e.level }));
       rows.sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
+      map.set(key, rows);
+    }
     return map;
   }, [pokemon, activeVersion, lang]);
 

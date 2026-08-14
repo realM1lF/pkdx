@@ -5,6 +5,7 @@
  * everything to keep its public API stable; versus.ts re-exports from there. */
 import type { Move, Pokemon } from './types';
 import type { VersusContext } from './versus-context';
+import { VERSION_GROUPS } from './version-groups';
 
 export const DAMAGING_MOVE_CATS = new Set(['physical', 'special']);
 
@@ -14,32 +15,10 @@ export interface PoolEntry {
   method: string;
 }
 
-/** version groups newest → oldest (mirrors detail/data.ts ordering, kept lib-local) */
-const VERSION_GROUP_RANK: Record<string, number> = {
-  'scarlet-violet': 24,
-  'legends-arceus': 23,
-  'brilliant-diamond-shining-pearl': 22,
-  'sword-shield': 21,
-  'lets-go-pikachu-eevee': 20,
-  'ultra-sun-ultra-moon': 19,
-  'sun-moon': 18,
-  'omega-ruby-alpha-sapphire': 17,
-  'x-y': 16,
-  'black-2-white-2': 15,
-  'black-white': 14,
-  'heartgold-soulsilver': 13,
-  platinum: 12,
-  'diamond-pearl': 11,
-  emerald: 10,
-  'firered-leafgreen': 9,
-  'ruby-sapphire': 8,
-  colosseum: 7,
-  xd: 6,
-  crystal: 5,
-  'gold-silver': 4,
-  yellow: 3,
-  'red-blue': 2,
-};
+/** Same order as `version-groups.ts` (oldest → newest). Higher index = newer. */
+const VERSION_GROUP_RANK: Record<string, number> = Object.fromEntries(
+  VERSION_GROUPS.map((g, i) => [g.id, i]),
+);
 
 /** newest version group key that teaches this Pokémon anything */
 export function newestVersionGroup(p: Pokemon): string {
@@ -54,21 +33,28 @@ export function newestVersionGroup(p: Pokemon): string {
   return best;
 }
 
-/** level-up pool (sorted by learn level) in the given version group */
-export function levelUpPool(p: Pokemon, versionGroup?: string, ctx?: VersusContext): PoolEntry[] {
-  const vg = ctx?.versionGroup ?? versionGroup ?? newestVersionGroup(p);
+export type LearnMethod = 'level-up' | 'machine' | 'egg' | 'tutor';
+
+/** Moves taught by one method in one version group. Never mixes editions. */
+export function learnsetFor(p: Pokemon, versionGroup: string, method: LearnMethod): PoolEntry[] {
   const bySlug = new Map<string, number>();
   for (const m of p.moves) {
     for (const d of m.version_group_details) {
-      if (d.version_group.name !== vg || d.move_learn_method.name !== 'level-up') continue;
+      if (d.version_group.name !== versionGroup || d.move_learn_method.name !== method) continue;
       const prev = bySlug.get(m.move.name);
       const lv = d.level_learned_at;
       if (prev == null || (lv > 0 && lv < prev)) bySlug.set(m.move.name, lv);
     }
   }
   return [...bySlug.entries()]
-    .map(([slug, level]) => ({ slug, level, method: 'level-up' }))
+    .map(([slug, level]) => ({ slug, level, method }))
     .sort((a, b) => a.level - b.level || a.slug.localeCompare(b.slug));
+}
+
+/** level-up pool (sorted by learn level) in the given version group */
+export function levelUpPool(p: Pokemon, versionGroup?: string, ctx?: VersusContext): PoolEntry[] {
+  const vg = ctx?.versionGroup ?? versionGroup ?? newestVersionGroup(p);
+  return learnsetFor(p, vg, 'level-up');
 }
 
 /**

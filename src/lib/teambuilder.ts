@@ -286,6 +286,7 @@ export function legalMoves(pokemon: Pokemon, vgId: string): LegalMoveOption[] {
 
 export {
   DAMAGING_MOVE_CATS,
+  learnsetFor,
   levelUpPool,
   newestVersionGroup,
   pickTopMoves,

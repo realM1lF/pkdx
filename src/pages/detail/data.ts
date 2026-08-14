@@ -6,7 +6,7 @@ import { nameOfItem, nameOfType, type Lang } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource, PokemonSpecies, PokemonType } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
 import { genSplitMatchupsForSide } from '@/lib/versus';
-import { versionGroupById } from '@/lib/version-groups';
+import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS, versionGroupById } from '@/lib/version-groups';
 
 /* ---------- species payload extras (present at runtime, absent from shared type) ---------- */
 
@@ -53,26 +53,10 @@ export interface VersionGroup {
   label: string;
 }
 
-export const VERSION_GROUPS: VersionGroup[] = [
-  { key: 'scarlet-violet', label: 'Scarlet / Violet' },
-  { key: 'sword-shield', label: 'Sword / Shield' },
-  { key: 'ultra-sun-ultra-moon', label: 'Ultra Sun / Moon' },
-  { key: 'sun-moon', label: 'Sun / Moon' },
-  { key: 'omega-ruby-alpha-sapphire', label: 'Omega Ruby / Alpha Sapph.' },
-  { key: 'x-y', label: 'X / Y' },
-  { key: 'black-2-white-2', label: 'Black 2 / White 2' },
-  { key: 'black-white', label: 'Black / White' },
-  { key: 'heartgold-soulsilver', label: 'HeartGold / SoulSilver' },
-  { key: 'platinum', label: 'Platinum' },
-  { key: 'diamond-pearl', label: 'Diamond / Pearl' },
-  { key: 'emerald', label: 'Emerald' },
-  { key: 'firered-leafgreen', label: 'FireRed / LeafGreen' },
-  { key: 'ruby-sapphire', label: 'Ruby / Sapphire' },
-  { key: 'crystal', label: 'Crystal' },
-  { key: 'gold-silver', label: 'Gold / Silver' },
-  { key: 'yellow', label: 'Yellow' },
-  { key: 'red-blue', label: 'Red / Blue' },
-];
+/** Newest → oldest. Same ids as `version-groups.ts` so BDSP / LA / LGPE / Colo / XD stay selectable. */
+export const VERSION_GROUPS: VersionGroup[] = [...CANONICAL_VERSION_GROUPS]
+  .reverse()
+  .map((g) => ({ key: g.id, label: g.label }));
 
 /* ---------- defensive matchups (gen-correct via Versus / @pkmn/data) ---------- */
 

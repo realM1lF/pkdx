@@ -2,7 +2,8 @@
  * helpers — not a hardcoded Gen-VI+ chart. Versus tests are the oracle. */
 import { describe, expect, it } from 'vitest';
 import { genSplitMatchupsForSide } from '@/lib/versus';
-import { computeMatchups, genOfVersionGroup } from './data';
+import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS } from '@/lib/version-groups';
+import { computeMatchups, genOfVersionGroup, newestMoveVersionGroup, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
 
 function allAttacking(m: ReturnType<typeof computeMatchups>): string[] {
   return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune];
@@ -85,5 +86,43 @@ describe('genOfVersionGroup', () => {
   it('defaults to gen 9 when the version group is missing', () => {
     expect(genOfVersionGroup(undefined)).toBe(9);
     expect(genOfVersionGroup('')).toBe(9);
+  });
+});
+
+describe('detail move-pool version groups (every edition the picker can show)', () => {
+  it('lists the same ids as the canonical version-groups table, newest first', () => {
+    const detailKeys = VERSION_GROUPS.map((g) => g.key);
+    const canonicalIds = [...CANONICAL_VERSION_GROUPS].reverse().map((g) => g.id);
+    expect(detailKeys).toEqual(canonicalIds);
+  });
+
+  it('newestMoveVersionGroup keeps BDSP / LA / LGPE instead of falling through to SV', () => {
+    const only = (vg: string) => [
+      { version_group_details: [{ version_group: { name: vg } }] },
+    ];
+    expect(newestMoveVersionGroup(only('legends-arceus'))).toBe('legends-arceus');
+    expect(newestMoveVersionGroup(only('brilliant-diamond-shining-pearl'))).toBe(
+      'brilliant-diamond-shining-pearl',
+    );
+    expect(newestMoveVersionGroup(only('lets-go-pikachu-eevee'))).toBe('lets-go-pikachu-eevee');
+    expect(newestMoveVersionGroup(only('colosseum'))).toBe('colosseum');
+    expect(newestMoveVersionGroup(only('xd'))).toBe('xd');
+  });
+
+  it('resolveMoveVersionGroup keeps a selected older edition when that edition teaches moves', () => {
+    const moves = [
+      {
+        version_group_details: [
+          { version_group: { name: 'scarlet-violet' } },
+          { version_group: { name: 'firered-leafgreen' } },
+          { version_group: { name: 'brilliant-diamond-shining-pearl' } },
+        ],
+      },
+    ];
+    expect(resolveMoveVersionGroup(moves, 'firered-leafgreen')).toBe('firered-leafgreen');
+    expect(resolveMoveVersionGroup(moves, 'brilliant-diamond-shining-pearl')).toBe(
+      'brilliant-diamond-shining-pearl',
+    );
+    expect(resolveMoveVersionGroup(moves, undefined)).toBe('scarlet-violet');
   });
 });
