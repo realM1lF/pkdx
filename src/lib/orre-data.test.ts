@@ -86,6 +86,10 @@ describe('shadowNotesToShow', () => {
     })
   })
 
+  it('returns empty object when neither note exists', () => {
+    expect(shadowNotesToShow({})).toEqual({})
+  })
+
   it('returns both when notes and reappear.note are present', () => {
     expect(
       shadowNotesToShow({

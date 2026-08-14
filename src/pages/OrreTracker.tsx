@@ -302,10 +302,12 @@ export default function OrreTracker() {
                       {loc}
                     </div>
                     {shown.notes && (
-                      <p className="mt-0.5 truncate text-[10px] text-tx-muted">{shown.notes}</p>
+                      <p className="mt-0.5 truncate text-[10px] text-tx-muted" title={shown.notes}>
+                        {shown.notes}
+                      </p>
                     )}
                     {st === 'missed' && shown.reappearNote && (
-                      <p className="mt-0.5 truncate text-[11px] text-gold/90">
+                      <p className="mt-0.5 truncate text-[11px] text-gold/90" title={shown.reappearNote}>
                         {t('orre.reappears')}: {shown.reappearNote}
                       </p>
                     )}
