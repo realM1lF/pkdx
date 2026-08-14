@@ -150,10 +150,11 @@ item slugs are omitted when the source says None.
   cross-check and as the second source where DFC is silent)
 - altissimo Colosseum shadow table (tertiary tie-break only)
 
-Suicune in the artifact stays Surf by default and Hydro Pump at
-`orre-deep-colosseum`. The other three purification moves (Rain Dance /
-Leer / Gust) are not stored, so the existing location variant is not
-overwritten. No e-Reader shadows (Togepi / Mareep / Scizor).
+Suicune stores Leer / Gust / Surf by default (DFC Move 2–4; Rain Dance
+is Move 1 and is replaced by Shadow Rush while Shadow). Hydro Pump
+replaces Surf at `orre-deep-colosseum` only. The Under uses the default
+set. No rematch-without-item variants. No e-Reader shadows
+(Togepi / Mareep / Scizor).
 
 ### Conflicts resolved
 

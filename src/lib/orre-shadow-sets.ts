@@ -1,6 +1,6 @@
 /* Curated Orre Shadow battle sets.
  * Colo: Shadow Rush + sourced Move 2–4 (Move 1 is Rush while Shadow) and held item.
- * Suicune keeps Surf / Deep Colosseum Hydro Pump. XD: Bulbapedia walkthrough sets. */
+ * Suicune: Leer / Gust / Surf; Hydro Pump at Deep Colosseum. XD: Bulbapedia walkthrough sets. */
 import artifact from '@/data/orre/shadow-sets.json';
 import type { OrreGame } from './orre-types';
 

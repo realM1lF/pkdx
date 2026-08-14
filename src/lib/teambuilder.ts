@@ -87,7 +87,8 @@ export function genNatures(vgId: string): Nature[] {
 /* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ----------
  * Lives in ./effectiveness (pure module, shared with the battle engine);
  * re-exported here to keep the teambuilder API stable. */
-export { genEffectivenessOf, genTypeSlugs } from './effectiveness';
+import { genEffectivenessOf, genTypeSlugs } from './effectiveness';
+export { genEffectivenessOf, genTypeSlugs };
 
 /* ------------------------------------------------------------------ */
 /* Team state model                                                    */
@@ -226,7 +227,7 @@ function normalizeMethod(m: string): LearnMethod {
 export function legalMoves(pokemon: Pokemon, vgId: string): LegalMoveOption[] {
   const out: LegalMoveOption[] = [];
   for (const m of pokemon.moves) {
-    const details = m.version_group_details.filter((d) => d.version_group.name === vgId);
+    const details = m.version_group_details.filter((d) => sameVersionGroup(d.version_group.name, vgId));
     if (!details.length) continue;
     let method: LearnMethod = 'other';
     let level = 0;
@@ -260,7 +261,7 @@ export {
   wildMoveset,
 } from './move-pool';
 export type { PoolEntry, ScoredMove } from './move-pool';
-import { levelUpPool, pickTopMoves, pokemonBaseTypes, preferredCategory, wildMoveset } from './move-pool';
+import { levelUpPool, pickTopMoves, pokemonBaseTypes, preferredCategory, sameVersionGroup, wildMoveset } from './move-pool';
 
 /**
  * Default 4 moves for a freshly picked team slot (wild → assumed, the same
@@ -377,6 +378,7 @@ export function slotLegality(slot: TeamSlot, vgId: string, pokemon: Pokemon | un
 
   if (pokemon) {
     const legal = new Set(legalMoves(pokemon, vgId).map((m) => m.name));
+    if (legal.size === 0) reasons.push({ key: 'species' });
     for (const mv of slot.moves) {
       if (mv && !legal.has(mv)) reasons.push({ key: 'move', param: mv });
     }
@@ -494,7 +496,8 @@ export interface DefenseRow {
 }
 
 export function defensiveSynergy(members: TeamMemberDefense[], vgId: string): DefenseRow[] {
-  return POKEMON_TYPES.map((type) => {
+  return genTypeSlugs(genFor(vgId).num).map((slug) => {
+    const type = slug as PokemonType;
     let weak = 0;
     let resist = 0;
     let immune = 0;

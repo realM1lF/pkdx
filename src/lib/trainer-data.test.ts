@@ -3,7 +3,15 @@ import kanto from '@/data/enriched/kanto.json';
 import johto from '@/data/enriched/johto.json';
 import unova from '@/data/enriched/unova.json';
 import itemsJohto from '@/data/items-johto.json';
-import { hasTrainersAtNode, trainerGroupKey, trainersAtNode } from './trainer-data';
+import {
+  hasTrainersAtNode,
+  trainerArtifactGame,
+  trainerArtifactVersionGroup,
+  trainerCoverage,
+  trainerGroupKey,
+  trainerSourceMismatchesGame,
+  trainersAtNode,
+} from './trainer-data';
 
 function leader(json: typeof kanto, node: string, name: string) {
   return json.nodes[node as keyof typeof json.nodes]?.trainers?.find((t) => t.name === name);
@@ -104,5 +112,48 @@ describe('trainerGroupKey', () => {
     expect(trainerGroupKey({ class: 'Elite Four' })).toBe('e4');
     expect(trainerGroupKey({ class: 'Champion' })).toBe('e4');
     expect(trainerGroupKey({ class: 'Boss' })).toBe('boss');
+  });
+});
+
+describe('trainerCoverage', () => {
+  it('marks kanto as routes and later regions as key-battles only', () => {
+    expect(trainerCoverage('kanto')).toBe('routes');
+    expect(trainerCoverage('johto')).toBe('key-battles');
+    expect(trainerCoverage('hoenn')).toBe('key-battles');
+    expect(trainerCoverage('sinnoh')).toBe('key-battles');
+    expect(trainerCoverage('unova')).toBe('key-battles');
+  });
+});
+
+describe('trainerArtifactGame', () => {
+  it('reads the enriched JSON game field per region', () => {
+    expect(trainerArtifactGame('kanto')).toBe('firered');
+    expect(trainerArtifactGame('johto')).toBe('heartgold');
+    expect(trainerArtifactGame('hoenn')).toBe('emerald');
+    expect(trainerArtifactGame('sinnoh')).toBe('platinum');
+    expect(trainerArtifactGame('unova')).toBe('black-white');
+  });
+});
+
+describe('trainerArtifactVersionGroup', () => {
+  it('maps artifact games to version groups, including VG ids', () => {
+    expect(trainerArtifactVersionGroup('kanto')).toBe('firered-leafgreen');
+    expect(trainerArtifactVersionGroup('johto')).toBe('heartgold-soulsilver');
+    expect(trainerArtifactVersionGroup('hoenn')).toBe('emerald');
+    expect(trainerArtifactVersionGroup('sinnoh')).toBe('platinum');
+    expect(trainerArtifactVersionGroup('unova')).toBe('black-white');
+  });
+});
+
+describe('trainerSourceMismatchesGame', () => {
+  it('flags Crystal vs Johto HGSS and Diamond vs Sinnoh Platinum', () => {
+    expect(trainerSourceMismatchesGame('johto', 'crystal')).toBe(true);
+    expect(trainerSourceMismatchesGame('sinnoh', 'diamond')).toBe(true);
+  });
+
+  it('does not flag matching artifact editions', () => {
+    expect(trainerSourceMismatchesGame('hoenn', 'emerald')).toBe(false);
+    expect(trainerSourceMismatchesGame('kanto', 'firered')).toBe(false);
+    expect(trainerSourceMismatchesGame('unova', 'black')).toBe(false);
   });
 });

@@ -70,6 +70,8 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
     );
   }
 
+  const keyBattlesOnly = trainers.every((tr) => trainerGroupKey(tr) !== 'route');
+
   return (
     <div>
       <div className="border-b border-hairline px-3 py-2">
@@ -84,6 +86,11 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
           />
         </div>
       </div>
+      {keyBattlesOnly && (
+        <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
+          {t('versus.trainersKeyBattlesOnly')}
+        </p>
+      )}
       <div className="nz-slim-scroll max-h-[300px] overflow-auto" data-lenis-prevent>
         {GROUPS.map((g) => {
           const rows = filtered.filter((tr) => trainerGroupKey(tr) === g.key);

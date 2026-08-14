@@ -14,12 +14,8 @@ describe('shadow-sets artifact', () => {
       const set = shadowSetById('colosseum', s.id);
       expect(set, s.id).toBeDefined();
       expect(set!.shadowMove).toBe('shadow-rush');
-      if (s.id === 'colo-shadow-suicune') {
-        expect(set!.moves).toEqual(['surf']);
-      } else {
-        expect(set!.moves.length, s.id).toBe(3);
-        expect(set!.moves.includes('shadow-rush'), s.id).toBe(false);
-      }
+      expect(set!.moves.length, s.id).toBe(3);
+      expect(set!.moves.includes('shadow-rush'), s.id).toBe(false);
     }
   });
 
@@ -42,13 +38,27 @@ describe('shadow-sets artifact', () => {
   });
 
   it('Suicune uses Surf by default and Hydro Pump at Deep Colosseum', () => {
-    expect(shadowMovesOf('colosseum', 'colo-shadow-suicune')).toEqual(['shadow-rush', 'surf']);
+    const set = shadowSetById('colosseum', 'colo-shadow-suicune');
+    expect(set).toBeDefined();
+    expect(set!.moves).toEqual(['leer', 'gust', 'surf']);
+    expect(set!.moves).not.toContain('rain-dance');
+    expect(set!.moves).not.toContain('shadow-rush');
+    expect(shadowMovesOf('colosseum', 'colo-shadow-suicune')).toEqual([
+      'shadow-rush',
+      'leer',
+      'gust',
+      'surf',
+    ]);
     expect(shadowMovesOf('colosseum', 'colo-shadow-suicune', 'orre-the-under-venus')).toEqual([
       'shadow-rush',
+      'leer',
+      'gust',
       'surf',
     ]);
     expect(shadowMovesOf('colosseum', 'colo-shadow-suicune', 'orre-deep-colosseum')).toEqual([
       'shadow-rush',
+      'leer',
+      'gust',
       'hydro-pump',
     ]);
   });

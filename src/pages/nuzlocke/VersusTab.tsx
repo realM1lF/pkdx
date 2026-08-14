@@ -17,11 +17,16 @@ import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
-import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
+import {
+  loadTrainersForRegion,
+  trainerArtifactVersionGroup,
+  trainersForRegion,
+  trainerSourceMismatchesGame,
+} from '@/lib/trainer-data';
 import { shadowMovesOf, shadowSetById } from '@/lib/orre-shadow-sets';
 import { foeShadowsForVersus, hyperModeAvailable } from '@/lib/orre-versus';
 import type { OrreGame, OrreShadow } from '@/lib/orre-types';
-import { genAbilitiesOf, genHasMechanics, genItems, genTypesOf } from '@/lib/teambuilder';
+import { genAbilitiesOf, genHasMechanics, genItems, genTypesOf, versionGroupById } from '@/lib/teambuilder';
 import {
   TIER_ORDER,
   damageBetween,
@@ -86,7 +91,7 @@ interface FoeRef {
   slug: string;
   label: string;
   level: number;
-  moves: string[]; // exact trainer moves, [] → wild resolution
+  moves: string[]; // exact trainer moves, [] → level-up fallback while source stays trainer
   source: MovesetSource;
   context: string; // e.g. "ERIKA · Leader"
   item?: string;
@@ -162,6 +167,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const [foe, setFoe] = useState<SideState>(() => blankSide(5));
   const [foeCustom, setFoeCustom] = useState(false);
   const [foeSource, setFoeSource] = useState<MovesetSource>('wild');
+  const [foeTrainerFallback, setFoeTrainerFallback] = useState(false);
 
   const [prevFoe, setPrevFoe] = useState(foeRef);
   if (prevFoe !== foeRef) {
@@ -175,10 +181,12 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
       });
       setFoeCustom(foeRef.moves.length > 0 || foeRef.source === 'shadow');
       setFoeSource(foeRef.source);
+      setFoeTrainerFallback(foeRef.source === 'trainer' && foeRef.moves.length === 0);
     } else {
       setFoe(blankSide(5));
       setFoeCustom(false);
       setFoeSource('wild');
+      setFoeTrainerFallback(false);
     }
   }
 
@@ -210,9 +218,9 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
     const def = resolveDefaultSet(foePokemon, foe.level, details, ctx);
     if (def.moves.length) {
       setFoe((s) => ({ ...s, slots: def.moves }));
-      setFoeSource(def.source);
+      if (!foeTrainerFallback) setFoeSource(def.source);
     }
-  }, [foePokemon, foe.level, details, foeCustom, ctx]);
+  }, [foePokemon, foe.level, details, foeCustom, ctx, foeTrainerFallback]);
 
   /* ----- computed matchup ----- */
   const youV = useMemo(() => (youPokemon ? sideToVersus(you, youPokemon.name) : null), [you, youPokemon]);
@@ -236,6 +244,18 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
     : foePokemon
       ? nameOfPokemon(foePokemon.id, lang)
       : t('versus.foe');
+
+  const trainerEditionVg = trainerArtifactVersionGroup(runRegion);
+  const trainerEditionShort = trainerEditionVg ? versionGroupById(trainerEditionVg).short : undefined;
+  const selectedEditionShort = versionGroupById(ctx.versionGroup).short;
+  const showTrainerEditionNote =
+    (foeSource === 'trainer' || foeTrainerFallback) &&
+    trainerSourceMismatchesGame(runRegion, ctx.game ?? ctx.versionGroup);
+  const foeEditionNote =
+    showTrainerEditionNote && trainerEditionShort
+      ? { source: trainerEditionShort, selected: selectedEditionShort }
+      : null;
+  const foeSourceEdition = foeSource === 'trainer' || foeTrainerFallback ? trainerEditionShort : undefined;
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -394,7 +414,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                   label: member.species,
                   level: member.level,
                   moves: member.moves ?? [],
-                  source: (member.moves?.length ?? 0) > 0 ? 'trainer' : 'wild',
+                  source: 'trainer',
                   context: `${tr.name} · ${tr.class}`,
                 });
               }}
@@ -505,6 +525,9 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                         onReset={() => setFoeCustom(false)}
                         source={foeSource}
                         versionGroup={ctx.versionGroup}
+                        sourceEdition={foeSourceEdition}
+                        showMovesFallback={foeTrainerFallback && foeSource === 'trainer'}
+                        editionNote={foeEditionNote}
                       />
                     </div>
                   </Panel>
@@ -782,6 +805,9 @@ function BestAnswerRanking({
         </div>
       }
     >
+      <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
+        {t('versus.rankingHeuristic')}
+      </p>
       {pending > 0 && (
         <div className="flex h-20 items-center justify-center gap-2">
           <PokeballLoader variant="inline" />

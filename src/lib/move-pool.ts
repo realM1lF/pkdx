@@ -35,12 +35,21 @@ export function newestVersionGroup(p: Pokemon): string {
 
 export type LearnMethod = 'level-up' | 'machine' | 'egg' | 'tutor';
 
+/** App id vs PokéAPI slug for the same Let's Go edition. Do not rename the app id. */
+const LETS_GO_VG = new Set(['lets-go-pikachu-eevee', 'lets-go-pikachu-lets-go-eevee']);
+
+/** True when both strings name the same version group (incl. Let's Go alias). */
+export function sameVersionGroup(a: string, b: string): boolean {
+  if (a === b) return true;
+  return LETS_GO_VG.has(a) && LETS_GO_VG.has(b);
+}
+
 /** Moves taught by one method in one version group. Never mixes editions. */
 export function learnsetFor(p: Pokemon, versionGroup: string, method: LearnMethod): PoolEntry[] {
   const bySlug = new Map<string, number>();
   for (const m of p.moves) {
     for (const d of m.version_group_details) {
-      if (d.version_group.name !== versionGroup || d.move_learn_method.name !== method) continue;
+      if (!sameVersionGroup(d.version_group.name, versionGroup) || d.move_learn_method.name !== method) continue;
       const prev = bySlug.get(m.move.name);
       const lv = d.level_learned_at;
       if (prev == null || (lv > 0 && lv < prev)) bySlug.set(m.move.name, lv);

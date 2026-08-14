@@ -184,15 +184,15 @@
           "pos": null
         },
         {
-          "name": "Steven",
+          "name": "Wallace",
           "class": "Champion",
           "party": [
-            { "species": "skarmory", "level": 49, "moves": ["aerial-ace", "steel-wing", "earthquake", "spikes"] },
-            { "species": "claydol", "level": 49, "moves": ["earthquake", "psychic", "light-screen", "reflect"] },
-            { "species": "aggron", "level": 50, "moves": ["iron-tail", "earthquake", "rock-slide", "protect"] },
-            { "species": "cradily", "level": 50, "moves": ["giga-drain", "ancient-power", "ingrain", "confuse-ray"] },
-            { "species": "armaldo", "level": 50, "moves": ["slash", "rock-tomb", "protect", "aerial-ace"] },
-            { "species": "metagross", "level": 52, "moves": ["meteor-mash", "earthquake", "psychic", "hyper-beam"] }
+            { "species": "wailord", "level": 57, "moves": ["rain-dance", "water-spout", "double-edge", "blizzard"] },
+            { "species": "tentacruel", "level": 55, "moves": ["toxic", "hydro-pump", "sludge-bomb", "ice-beam"] },
+            { "species": "ludicolo", "level": 56, "moves": ["giga-drain", "surf", "leech-seed", "double-team"] },
+            { "species": "whiscash", "level": 56, "moves": ["earthquake", "surf", "amnesia", "hyper-beam"] },
+            { "species": "gyarados", "level": 56, "moves": ["dragon-dance", "earthquake", "hyper-beam", "surf"] },
+            { "species": "milotic", "level": 58, "moves": ["recover", "surf", "ice-beam", "toxic"] }
           ],
           "important": true,
           "pos": null

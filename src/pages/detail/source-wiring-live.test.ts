@@ -2,7 +2,7 @@
  * Skips only if the network is down. Failure = we drifted from the source. */
 import { describe, expect, it } from 'vitest';
 import { genAbilityRows, genMoveOf, genTypesOf } from '@/lib/gen-dex';
-import { learnsetFor, type LearnMethod } from '@/lib/move-pool';
+import { learnsetFor, sameVersionGroup, type LearnMethod } from '@/lib/move-pool';
 import { pokemonTypes, statOf, totalBaseStats } from '@/lib/pokeapi';
 import { STAT_ORDER } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -16,7 +16,7 @@ function oracle(p: Pokemon, vg: string, method: LearnMethod) {
   const bySlug = new Map<string, number>();
   for (const m of p.moves) {
     for (const d of m.version_group_details) {
-      if (d.version_group.name !== vg || d.move_learn_method.name !== method) continue;
+      if (!sameVersionGroup(d.version_group.name, vg) || d.move_learn_method.name !== method) continue;
       const prev = bySlug.get(m.move.name);
       const lv = d.level_learned_at;
       if (prev == null || (lv > 0 && lv < prev)) bySlug.set(m.move.name, lv);

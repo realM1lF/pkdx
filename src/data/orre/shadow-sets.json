@@ -212,6 +212,8 @@
       "species": "suicune",
       "shadowMove": "shadow-rush",
       "moves": [
+        "leer",
+        "gust",
         "surf"
       ],
       "variants": [
@@ -220,6 +222,8 @@
             "orre-deep-colosseum"
           ],
           "moves": [
+            "leer",
+            "gust",
             "hydro-pump"
           ]
         }

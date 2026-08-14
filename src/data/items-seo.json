@@ -5,8 +5,8 @@
   "nameEn": "Exp. Share",
   "nameDe": "EP-Teiler",
   "category": "training",
-  "flavorEn": "Turning on this special device will allow all the Pokémon on your team to receive Exp. Points from battles.",
-  "flavorDe": "Solange der EP-Teiler angeschaltet ist, erhält jedes Team-Pokémon nach einem Sieg Erfahrungspunkte.",
+  "flavorEn": "An item to be held by a POKéMON. The holder gets a share of EXP. points without having to battle.",
+  "flavorDe": "Ein Item, das einem POKéMON zum Tragen gegeben werden kann. Es teilt die Kampf-E.-Punkte.",
   "effectEn": "Half the Exp. Points from a battle are split between Pokémon holding this item.",
   "effectDe": "Die Hälfte der EP aus einem Kampf wird auf die Pokémon aufgeteilt, die dieses Item tragen.",
   "locationsFrlg": [

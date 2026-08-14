@@ -32,7 +32,12 @@ import { MAX_DEX_ID, STAT_LABELS, STAT_ORDER } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
 import { REGIONS } from '@/lib/regions';
-import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
+import {
+  loadTrainersForRegion,
+  trainerArtifactVersionGroup,
+  trainersForRegion,
+  trainerSourceMismatchesGame,
+} from '@/lib/trainer-data';
 import { battleLandingPath } from '@/lib/seo';
 import { dexEntryPath, formIdentity } from '@/lib/dex-forms-catalog';
 import { pokemonHref } from '@/lib/edition-nav';
@@ -527,7 +532,10 @@ export function MoveSlots({
   onChange,
   onReset,
   source,
-  versionGroup,
+  versionGroup: _versionGroup,
+  sourceEdition,
+  showMovesFallback,
+  editionNote,
 }: {
   slots: string[];
   pool: string[];
@@ -538,16 +546,20 @@ export function MoveSlots({
   /** version group context — trainer sets come from FRLG data (kanto.json);
    * in a gen-1 (RBY) context the label is tagged accordingly */
   versionGroup?: string;
+  /** Artifact edition short (FRLG, HGSS, E, PT, BW) for trainer source label */
+  sourceEdition?: string;
+  showMovesFallback?: boolean;
+  editionNote?: { source: string; selected: string } | null;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [q, setQ] = useState('');
   const entityModal = useEntityModal();
-  const sourceKey =
-    source === 'trainer' && versionGroup && versionGroupById(versionGroup).gen === 1
-      ? 'versus.sourceTrainerFrlg'
-      : `versus.source${source.charAt(0).toUpperCase() + source.slice(1)}`;
+  const sourceLabel =
+    source === 'trainer' && sourceEdition
+      ? t('versus.sourceTrainerEdition', { edition: sourceEdition })
+      : t(`versus.source${source.charAt(0).toUpperCase() + source.slice(1)}`);
   const items = useMemo<ComboItem[]>(
     () =>
       pool.map((slug) => {
@@ -566,7 +578,7 @@ export function MoveSlots({
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <span className="pixel-label text-[7px] text-tx-muted">
-          {t('versus.movesSource', { source: t(sourceKey) })}
+          {t('versus.movesSource', { source: sourceLabel })}
         </span>
         {onReset && (
           <button
@@ -581,6 +593,17 @@ export function MoveSlots({
       </div>
       {source === 'shadow' && (
         <p className="min-w-0 font-sans text-[10px] leading-snug text-tx-muted">{t('versus.shadowApproxNote')}</p>
+      )}
+      {source === 'shadow' && !slots.some(Boolean) && (
+        <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">{t('versus.shadowSetMissing')}</p>
+      )}
+      {showMovesFallback && (
+        <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">{t('versus.trainerMovesFallback')}</p>
+      )}
+      {editionNote && (
+        <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">
+          {t('versus.trainerEditionNote', editionNote)}
+        </p>
       )}
       <div className="relative z-20 grid grid-cols-2 gap-1 overflow-visible">
         {[0, 1, 2, 3].map((i) => {
@@ -720,6 +743,9 @@ export function SideCard({
   showStatus = false,
   hostPokemonId,
   onHostOverview,
+  sourceEdition,
+  showMovesFallback,
+  editionNote,
 }: {
   pokemon: Pokemon;
   side: SideState;
@@ -735,6 +761,9 @@ export function SideCard({
   showStatus?: boolean;
   hostPokemonId?: number;
   onHostOverview?: () => void;
+  sourceEdition?: string;
+  showMovesFallback?: boolean;
+  editionNote?: { source: string; selected: string } | null;
 }) {
   const { t } = useTranslation();
   const lang = useLanguage();
@@ -989,6 +1018,9 @@ export function SideCard({
         onReset={onSlotsReset}
         source={slotsSource}
         versionGroup={versionGroup}
+        sourceEdition={sourceEdition}
+        showMovesFallback={showMovesFallback}
+        editionNote={editionNote}
       />
     </div>
   );
@@ -1408,6 +1440,7 @@ export default function VersusPanel({
   const [foeCustom, setFoeCustom] = useState(false);
   const [youSource, setYouSource] = useState<MovesetSource>('wild');
   const [foeSource, setFoeSource] = useState<MovesetSource>('wild');
+  const [foeTrainerFallback, setFoeTrainerFallback] = useState(false);
 
   /* move details for both pools (slots + level-up candidates) */
   const wanted = useMemo(
@@ -1431,9 +1464,9 @@ export default function VersusPanel({
     const def = resolveDefaultSet(foePokemon, foe.level, details, ctx);
     if (def.moves.length) {
       setFoe((s) => ({ ...s, slots: def.moves }));
-      setFoeSource(def.source);
+      if (!foeTrainerFallback) setFoeSource(def.source);
     }
-  }, [foePokemon, foe.level, details, foeCustom, ctx]);
+  }, [foePokemon, foe.level, details, foeCustom, ctx, foeTrainerFallback]);
 
   /* reset your side when Pokémon changes */
   const [prevYouId, setPrevYouId] = useState(youId);
@@ -1449,7 +1482,7 @@ export default function VersusPanel({
   const [prevFoeId, setPrevFoeId] = useState(foeId);
   if (prevFoeId !== foeId) {
     setPrevFoeId(foeId);
-    if (!foeCustom) {
+    if (!foeCustom && !foeTrainerFallback) {
       setFoe(blankSide(50));
       setFoeSource('wild');
     }
@@ -1494,14 +1527,16 @@ export default function VersusPanel({
 
   const pickTrainerMon = (tr: EnrichedTrainer, member: { species: string; level: number; moves?: string[] }) => {
     const id = idOf(member.species);
+    const hasMoves = (member.moves?.length ?? 0) > 0;
     if (id) setFoeId(id);
     setTrainerCtx(`${tr.name} · ${tr.class}`);
     setFoe({
       ...blankSide(member.level),
-      slots: member.moves?.length ? member.moves : [],
+      slots: hasMoves ? member.moves! : [],
     });
-    setFoeCustom((member.moves?.length ?? 0) > 0);
-    setFoeSource((member.moves?.length ?? 0) > 0 ? 'trainer' : 'wild');
+    setFoeCustom(hasMoves);
+    setFoeSource('trainer');
+    setFoeTrainerFallback(!hasMoves);
   };
 
   const trainerDeepLinkHandled = useRef(false);
@@ -1539,6 +1574,17 @@ export default function VersusPanel({
   };
 
   const trainers = trainersForRegion(trainerRegion);
+  const trainerEditionVg = trainerArtifactVersionGroup(trainerRegion);
+  const trainerEditionShort = trainerEditionVg ? versionGroupById(trainerEditionVg).short : undefined;
+  const selectedEditionShort = versionGroupById(ctx.versionGroup).short;
+  const showTrainerEditionNote =
+    (foeSource === 'trainer' || foeTrainerFallback) &&
+    trainerSourceMismatchesGame(trainerRegion, ctx.game ?? ctx.versionGroup);
+  const foeEditionNote =
+    showTrainerEditionNote && trainerEditionShort
+      ? { source: trainerEditionShort, selected: selectedEditionShort }
+      : null;
+  const foeSourceEdition = foeSource === 'trainer' || foeTrainerFallback ? trainerEditionShort : undefined;
 
   /* ----- 1:1 micro-battle (lazy arena, takes over the current versus state) ----- */
   const [battleOpen, setBattleOpen] = useState(false);
@@ -1704,7 +1750,14 @@ export default function VersusPanel({
             />
             {foeMode === 'dex' && (
               <div className="w-36">
-                <OpponentAutocomplete index={index} excludeId={youId ?? undefined} onPick={(id) => setFoeId(id)} />
+                <OpponentAutocomplete
+                  index={index}
+                  excludeId={youId ?? undefined}
+                  onPick={(id) => {
+                    setFoeTrainerFallback(false);
+                    setFoeId(id);
+                  }}
+                />
               </div>
             )}
           </div>
@@ -1763,6 +1816,9 @@ export default function VersusPanel({
                 showStatus
                 hostPokemonId={hostPokemonId}
                 onHostOverview={onHostOverview}
+                sourceEdition={foeSourceEdition}
+                showMovesFallback={foeTrainerFallback && foeSource === 'trainer'}
+                editionNote={foeEditionNote}
                 onSlotsChange={(slots) => {
                   setFoeCustom(true);
                   setFoeSource('custom');
@@ -1785,6 +1841,9 @@ export default function VersusPanel({
             showStatus
             hostPokemonId={hostPokemonId}
             onHostOverview={onHostOverview}
+            sourceEdition={foeSourceEdition}
+            showMovesFallback={foeTrainerFallback && foeSource === 'trainer'}
+            editionNote={foeEditionNote}
             onSlotsChange={(slots) => {
               setFoeCustom(true);
               setFoeSource('custom');

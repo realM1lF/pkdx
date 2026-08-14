@@ -18,7 +18,7 @@ import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
-import { aceSpeciesForNode, hasTrainersAtNode, trainersAtNode } from '@/lib/trainer-data';
+import { aceSpeciesForNode, hasTrainersAtNode, trainerCoverage, trainersAtNode } from '@/lib/trainer-data';
 import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
 import { HOENN_ROUTE_PAGES, hoennRoutePagePath } from '@/lib/seo-routes-hoenn';
 import { JOHTO_ROUTE_PAGES, johtoRoutePagePath } from '@/lib/seo-routes-johto';
@@ -509,10 +509,18 @@ export default function DetailDrawer({
           <div>
             {trainers.length === 0 ? (
               <div className="flex flex-col items-center gap-2.5 px-6 py-14 text-center">
-                <p className="text-[12px] font-medium text-tx-muted">{t('maps.noTrainers')}</p>
+                <p className="text-[12px] font-medium text-tx-muted">
+                  {t(trainerCoverage(region.region) === 'key-battles' ? 'maps.noTrainersKeyBattles' : 'maps.noTrainers')}
+                </p>
               </div>
             ) : (
-              trainers.map((tr, i) => {
+              <>
+              {trainerCoverage(region.region) === 'key-battles' && (
+                <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
+                  {t('maps.trainersKeyBattlesOnly')}
+                </p>
+              )}
+              {trainers.map((tr, i) => {
                 const ace = aceSpeciesOf(tr.party);
                 const aceId = dexIdOf(ace);
                 return (
@@ -544,7 +552,8 @@ export default function DetailDrawer({
                     </span>
                   </LocaleLink>
                 );
-              })
+              })}
+              </>
             )}
           </div>
         )}

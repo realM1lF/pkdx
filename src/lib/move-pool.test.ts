@@ -84,3 +84,29 @@ describe('learnsetFor — edition isolation', () => {
     expect(newestVersionGroup(hisui)).toBe('legends-arceus');
   });
 });
+
+describe('learnsetFor — Let\'s Go version-group alias', () => {
+  const pokeapiLetsGo = 'lets-go-pikachu-lets-go-eevee';
+  const appLetsGo = 'lets-go-pikachu-eevee';
+  const pikachuish = mon([
+    { move: 'thunder-shock', vg: pokeapiLetsGo, method: 'level-up', level: 1 },
+    { move: 'quick-attack', vg: pokeapiLetsGo, method: 'level-up', level: 6 },
+    { move: 'thunderbolt', vg: pokeapiLetsGo, method: 'machine', level: 0 },
+    { move: 'ember', vg: 'firered-leafgreen', method: 'level-up', level: 1 },
+  ]);
+
+  it('returns PokéAPI Let\'s Go details when asked for the app vg id', () => {
+    const levelUp = learnsetFor(pikachuish, appLetsGo, 'level-up');
+    const machines = learnsetFor(pikachuish, appLetsGo, 'machine');
+    expect(levelUp.map((e) => [e.slug, e.level])).toEqual([
+      ['thunder-shock', 1],
+      ['quick-attack', 6],
+    ]);
+    expect(machines.map((e) => e.slug)).toEqual(['thunderbolt']);
+  });
+
+  it('does not leak FRLG moves into the Let\'s Go pool', () => {
+    expect(learnsetFor(pikachuish, appLetsGo, 'level-up').some((e) => e.slug === 'ember')).toBe(false);
+    expect(learnsetFor(pikachuish, 'firered-leafgreen', 'level-up').map((e) => e.slug)).toEqual(['ember']);
+  });
+});
