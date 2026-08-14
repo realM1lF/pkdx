@@ -110,7 +110,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   }, [runRegion]);
 
   const trainers = trainersForRegion(runRegion);
-  const hasTrainers = trainers.some((tr) => tr.important);
+  const hasTrainers = trainers.length > 0;
   const idOf = useMemo(() => {
     const map = new Map<string, number>();
     for (const e of index) map.set(e.name, e.id);

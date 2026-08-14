@@ -198,12 +198,12 @@
           "name": "Alder",
           "class": "Champion",
           "party": [
-            { "species": "bouffalant", "level": 48, "moves": ["head-charge", "megahorn", "wild-charge", "stone-edge"] },
-            { "species": "vanilluxe", "level": 49, "moves": ["blizzard", "flash-cannon", "explosion", "light-screen"] },
-            { "species": "escavalier", "level": 49, "moves": ["x-scissor", "iron-head", "reversal", "swords-dance"] },
-            { "species": "chandelure", "level": 50, "moves": ["shadow-ball", "flamethrower", "energy-ball", "calm-mind"] },
-            { "species": "accelgor", "level": 51, "moves": ["bug-buzz", "focus-blast", "energy-ball", "calm-mind"] },
-            { "species": "haxorus", "level": 53, "moves": ["outrage", "earthquake", "dragon-dance", "x-scissor"] }
+            { "species": "accelgor", "level": 75, "moves": ["bug-buzz", "focus-blast", "me-first", "energy-ball"] },
+            { "species": "bouffalant", "level": 75, "moves": ["head-charge", "megahorn", "stone-edge", "earthquake"] },
+            { "species": "druddigon", "level": 75, "moves": ["night-slash", "outrage", "superpower", "payback"] },
+            { "species": "vanilluxe", "level": 75, "moves": ["blizzard", "light-screen", "flash-cannon", "acid-armor"] },
+            { "species": "escavalier", "level": 75, "moves": ["x-scissor", "giga-impact", "iron-head", "aerial-ace"] },
+            { "species": "volcarona", "level": 77, "moves": ["overheat", "bug-buzz", "quiver-dance", "hyper-beam"] }
           ],
           "important": true,
           "pos": null

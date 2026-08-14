@@ -34,6 +34,19 @@ export function trainersForRegion(region: RegionId): EnrichedTrainer[] {
   return cache.get(region) ?? trainerIndex(SYNC_JSON[region]);
 }
 
+/** Trainers attached to one map node (same join as gyms / versus picker). */
+export function trainersAtNode(region: RegionId, nodeId: string): EnrichedTrainer[] {
+  return trainersForRegion(region).filter((t) => t.node === nodeId);
+}
+
+export function trainerGroupKey(t: { class: string }): 'leaders' | 'e4' | 'boss' | 'rival' | 'route' {
+  if (t.class === 'Leader') return 'leaders';
+  if (t.class === 'Elite Four' || t.class === 'Champion') return 'e4';
+  if (t.class === 'Boss') return 'boss';
+  if (t.class === 'Rival') return 'rival';
+  return 'route';
+}
+
 /** Whether a map node has curated trainer data (sync, for maps drawer). */
 export function hasTrainersAtNode(region: RegionId, nodeId: string): boolean {
   const node = SYNC_JSON[region]?.nodes?.[nodeId];

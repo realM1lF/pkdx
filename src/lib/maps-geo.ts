@@ -35,3 +35,13 @@ export function originalGeoFor(region: string): OriginalGeoEntry | null {
 export function originalAvailable(region: string): boolean {
   return region in ORIGINAL_GEO;
 }
+
+export function artworkVersionId(region: string): string | null {
+  return originalGeoFor(region)?.geo.version ?? null;
+}
+
+/** true when the ripped image is a different edition than the atlas default */
+export function artworkEditionMismatchesDefault(region: string, defaultVersion: string): boolean {
+  const art = artworkVersionId(region);
+  return !!art && art !== defaultVersion;
+}

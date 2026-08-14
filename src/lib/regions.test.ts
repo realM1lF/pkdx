@@ -138,6 +138,19 @@ describe('johto remaining map data', () => {
       expect(ids.has(id), `orphan geo ${id}`).toBe(true);
     }
   });
+
+  it('Johto league is johto-pokemon-league, not mt-silver', () => {
+    const ids = nodeIds('johto');
+    expect(ids.has('johto-pokemon-league')).toBe(true);
+    const n = regionById('johto')!.nodes.find((x) => x.id === 'johto-pokemon-league')!;
+    expect(n.nameDe).toBe('Pokémon Liga');
+    expect(n.label).toBe('Pokémon League');
+    expect(n.kind).toBe('special');
+    expect(n.locationSlug).toBe('indigo-plateau');
+    expect(n.postGame).toBeFalsy();
+    expect(hasEdge('johto', 'tohjo-falls', 'johto-pokemon-league')).toBe(true);
+    expect(johtoGeo.nodes['johto-pokemon-league']).toEqual(expect.any(Array));
+  });
 });
 
 describe('hoenn numbered routes', () => {

@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Bug, ChevronRight, ExternalLink, Fish, Footprints, Radio, Sparkles, Swords, Trees, Waves, X } from 'lucide-react';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { accentRgb, nodeIndex, nodeName, regionName, versionLabel } from '@/lib/regions';
+import slugsJson from '@/data/pokemon-slugs.json';
 import { nameOfItem, nameOfPokemon, nameOfPocket, useLanguage } from '@/lib/i18n-data';
 import type { CuratedItem, EncounterEntry, MethodBucket, MethodChip, NodeMapData } from '@/lib/mapdata';
 import { ITEM_SPRITE_BASE, METHOD_BUCKETS, displayNameOfItem, itemsForNode, noteOfItem } from '@/lib/mapdata';
@@ -16,7 +17,7 @@ import Sprite from '@/components/Sprite';
 import PokeballLoader from '@/components/PokeballLoader';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
-import { aceSpeciesForNode, hasTrainersAtNode } from '@/lib/trainer-data';
+import { aceSpeciesForNode, hasTrainersAtNode, trainersAtNode } from '@/lib/trainer-data';
 import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
 import { HOENN_ROUTE_PAGES, hoennRoutePagePath } from '@/lib/seo-routes-hoenn';
 import { JOHTO_ROUTE_PAGES, johtoRoutePagePath } from '@/lib/seo-routes-johto';
@@ -37,6 +38,31 @@ const CHIP_ICON: Record<MethodChip, typeof Footprints> = {
 };
 
 type SortKey = 'rate' | 'name' | 'level';
+type DrawerTab = 'encounters' | 'items' | 'trainers';
+
+const DEX_ID_BY_SLUG = new Map((slugsJson as string[]).map((slug, i) => [slug, i + 1] as const));
+
+function dexIdOf(slug: string): number {
+  return DEX_ID_BY_SLUG.get(slug) ?? 0;
+}
+
+function aceSpeciesOf(party: Array<{ species: string; level: number }>): string {
+  if (!party.length) return 'pikachu';
+  return party.reduce((best, m) => (m.level > best.level ? m : best), party[0]).species;
+}
+
+function PartySprite({ id, name }: { id: number; name: string }) {
+  if (!id) return <span className="inline-block h-5 w-5 rounded-full bg-surface3" aria-hidden />;
+  return (
+    <Sprite
+      id={id}
+      name={name}
+      era={id <= 649 ? 'gen5' : 'default'}
+      className="h-5 w-5 shrink-0 rounded-full bg-surface2 ring-1 ring-hairline"
+      skeleton={false}
+    />
+  );
+}
 
 function ItemSprite({ slug }: { slug: string }) {
   const [err, setErr] = useState(false);
@@ -148,10 +174,12 @@ export default function DetailDrawer({
 }: DetailDrawerProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
-  const [tab, setTab] = useState<'encounters' | 'items'>('encounters');
+  const [tab, setTab] = useState<DrawerTab>('encounters');
   const [sort, setSort] = useState<SortKey>('rate');
   const entityModal = useEntityModal();
   const items = useMemo(() => itemsForNode(region.region, node.id), [region, node]);
+  const trainers = useMemo(() => trainersAtNode(region.region, node.id), [region.region, node.id]);
+  const trainerCount = trainers.length;
   const showVersusLink = hasTrainersAtNode(region.region, node.id);
   const versusAce = useMemo(
     () => aceSpeciesForNode(region.region, node.id) ?? 'pikachu',
@@ -307,7 +335,8 @@ export default function DetailDrawer({
           [
             ['encounters', t('maps.encountersTab', { count: nd?.status === 'loaded' ? totalAll : '…' })],
             ['items', t('maps.itemsTab', { count: items.length })],
-          ] as Array<['encounters' | 'items', string]>
+            ['trainers', t('maps.trainersTab', { count: trainerCount })],
+          ] as Array<[DrawerTab, string]>
         ).map(([key, label]) => (
           <button
             key={key}
@@ -433,7 +462,7 @@ export default function DetailDrawer({
               </div>
             )}
           </>
-        ) : (
+        ) : tab === 'items' ? (
           /* items tab */
           <div>
             {items.length === 0 ? (
@@ -472,6 +501,49 @@ export default function DetailDrawer({
                   </span>
                 </button>
               ))
+            )}
+          </div>
+        ) : (
+          /* trainers tab */
+          <div>
+            {trainers.length === 0 ? (
+              <div className="flex flex-col items-center gap-2.5 px-6 py-14 text-center">
+                <p className="text-[12px] font-medium text-tx-muted">{t('maps.noTrainers')}</p>
+              </div>
+            ) : (
+              trainers.map((tr, i) => {
+                const ace = aceSpeciesOf(tr.party);
+                const aceId = dexIdOf(ace);
+                return (
+                  <LocaleLink
+                    key={`${tr.node}:${tr.name}:${i}`}
+                    to={`/pokemon/${ace}?tab=versus&versusTrainer=${node.id}&region=${region.region}&game=${version}`}
+                    className="group flex h-11 w-full items-center gap-2.5 border-b border-hairline/60 px-3 transition-colors hover:bg-surface2"
+                  >
+                    <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center">
+                      {aceId ? (
+                        <Sprite
+                          id={aceId}
+                          name={nameOfPokemon(ace, lang)}
+                          era={aceId <= 649 ? 'gen5' : 'default'}
+                          className="h-[30px] w-[30px]"
+                        />
+                      ) : (
+                        <span className="h-[30px] w-[30px] rounded-sm bg-surface3" aria-hidden />
+                      )}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13px] font-medium text-tx-primary">{tr.name}</span>
+                      <span className="block truncate text-[10px] text-tx-muted">{tr.class}</span>
+                    </span>
+                    <span className="flex shrink-0 -space-x-1.5">
+                      {tr.party.slice(0, 6).map((m, j) => (
+                        <PartySprite key={j} id={dexIdOf(m.species)} name={nameOfPokemon(m.species, lang)} />
+                      ))}
+                    </span>
+                  </LocaleLink>
+                );
+              })
             )}
           </div>
         )}

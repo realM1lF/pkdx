@@ -1,23 +1,23 @@
-/* Shared trainer picker — gym leaders, E4, champion (versus community overhaul). */
+/* Shared trainer picker — gym leaders, E4, champion, rivals, route (versus community overhaul). */
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { ChevronDown, Crown, Search, Shield, Skull } from 'lucide-react';
+import { ChevronDown, Crown, Footprints, Search, Shield, Skull, Swords } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { RegionId } from '@/lib/regions';
+import { trainerGroupKey } from '@/lib/trainer-data';
 import type { EnrichedTrainer } from '@/lib/versus';
 import { cn } from '@/lib/utils';
 
-const GROUPS: Array<{ key: string; labelKey: string; icon: ReactNode; match: (t: EnrichedTrainer) => boolean }> = [
-  { key: 'leaders', labelKey: 'versus.trainerGroupLeaders', icon: <Shield size={9} />, match: (t) => t.class === 'Leader' },
-  {
-    key: 'e4',
-    labelKey: 'versus.trainerGroupE4',
-    icon: <Crown size={9} />,
-    match: (t) => t.class === 'Elite Four' || t.class === 'Champion',
-  },
-  { key: 'boss', labelKey: 'versus.trainerGroupBoss', icon: <Skull size={9} />, match: (t) => t.class === 'Boss' },
+type TrainerGroup = ReturnType<typeof trainerGroupKey>;
+
+const GROUPS: Array<{ key: TrainerGroup; labelKey: string; icon: ReactNode }> = [
+  { key: 'leaders', labelKey: 'versus.trainerGroupLeaders', icon: <Shield size={9} /> },
+  { key: 'e4', labelKey: 'versus.trainerGroupE4', icon: <Crown size={9} /> },
+  { key: 'boss', labelKey: 'versus.trainerGroupBoss', icon: <Skull size={9} /> },
+  { key: 'rival', labelKey: 'versus.trainerGroupRival', icon: <Swords size={9} /> },
+  { key: 'route', labelKey: 'versus.trainerGroupRoute', icon: <Footprints size={9} /> },
 ];
 
 export interface TrainerPickerProps {
@@ -50,21 +50,19 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
   const [openKey, setOpenKey] = useState<string | null>(null);
   const [q, setQ] = useState('');
 
-  const important = useMemo(() => trainers.filter((tr) => tr.important), [trainers]);
-
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    if (!needle) return important;
-    return important.filter(
+    if (!needle) return trainers;
+    return trainers.filter(
       (tr) =>
         tr.name.toLowerCase().includes(needle) ||
         tr.class.toLowerCase().includes(needle) ||
         nodeLabel(tr.node, region).includes(needle) ||
         tr.party.some((m) => m.species.includes(needle) || nameOfPokemon(m.species, lang).toLowerCase().includes(needle)),
     );
-  }, [important, q, region, lang]);
+  }, [trainers, q, region, lang]);
 
-  if (!important.length) {
+  if (!trainers.length) {
     return (
       <div className="flex h-24 items-center justify-center px-4">
         <p className="text-center font-sans text-[11px] text-tx-muted">{t('versus.noTrainersRegion')}</p>
@@ -88,7 +86,7 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
       </div>
       <div className="nz-slim-scroll max-h-[300px] overflow-auto" data-lenis-prevent>
         {GROUPS.map((g) => {
-          const rows = filtered.filter(g.match);
+          const rows = filtered.filter((tr) => trainerGroupKey(tr) === g.key);
           if (!rows.length) return null;
           return (
             <div key={g.key}>

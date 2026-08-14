@@ -257,7 +257,6 @@
     { "itemSlug": "elixir", "name": "Elixir", "note": "Hidden on the route (HeartGold/SoulSilver)", "pocket": "ITEMS", "hidden": true }
   ],
   "ice-path": [
-    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "moveSlug": "waterfall", "note": "Clair — after the Dragon's Den test (HeartGold/SoulSilver)", "pocket": "HM" },
     { "itemSlug": "tm-ice", "name": "TM72 — Avalanche", "moveSlug": "avalanche", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "TM" },
     { "itemSlug": "never-melt-ice", "name": "Never-Melt Ice", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
     { "itemSlug": "protein", "name": "Protein", "note": "Item ball on the path (HeartGold/SoulSilver)", "pocket": "ITEMS" },
@@ -270,6 +269,7 @@
     { "itemSlug": "soft-sand", "name": "Soft Sand", "note": "Santos — Saturday (HeartGold/SoulSilver)", "pocket": "ITEMS" }
   ],
   "dragons-den": [
+    { "itemSlug": "hm-water", "name": "HM07 — Waterfall", "moveSlug": "waterfall", "note": "Clair — after the Dragon's Den test (HeartGold/SoulSilver)", "pocket": "HM" },
     { "itemSlug": "tm-dragon", "name": "TM59 — Dragon Pulse", "moveSlug": "dragon-pulse", "note": "Clair's Gym — prize after the den test (HeartGold/SoulSilver)", "pocket": "TM" },
     { "itemSlug": "dragon-fang", "name": "Dragon Fang", "note": "Item ball in the den (HeartGold/SoulSilver)", "pocket": "ITEMS" },
     { "itemSlug": "calcium", "name": "Calcium", "note": "Item ball in the den (HeartGold/SoulSilver)", "pocket": "ITEMS" },

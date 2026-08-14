@@ -11,7 +11,7 @@ import { AnimatePresence } from 'framer-motion';
 import { Maximize, Minus, Plus } from 'lucide-react';
 import ScoutTooltip from './ScoutTooltip';
 import { useMapCamera } from './useMapCamera';
-import { originalGeoFor } from '@/lib/maps-geo';
+import { artworkEditionMismatchesDefault, artworkVersionId, originalGeoFor } from '@/lib/maps-geo';
 import type { RegionGeo } from '@/lib/maps-geo';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/lib/i18n-data';
@@ -343,6 +343,8 @@ export default function OriginalCanvas({
     return !Object.keys(nd.methodTop).some((m) => methods.has(m as MethodBucket));
   };
 
+  const artId = artworkVersionId(region.region);
+  const showArtworkEdition = artworkEditionMismatchesDefault(region.region, region.defaultVersion);
   const showAllLabels = camera.relZoom >= 0.85;
   const hoveredNode = hoveredId ? posById.get(hoveredId)?.node ?? null : null;
   const hoveredPos = hoveredId ? posById.get(hoveredId) : undefined;
@@ -522,8 +524,15 @@ export default function OriginalCanvas({
       </div>
 
       {/* source credit (see public/maps/CREDITS.txt) — clears the zoom stack */}
-      <div className="pixel-label pointer-events-none absolute bottom-2 right-14 text-[7px] text-tx-muted/60">
-        {SOURCE_CREDIT[region.region] ?? 'MAP © NINTENDO/GAME FREAK'}
+      <div className="pointer-events-none absolute bottom-2 right-14 flex flex-col items-end gap-1">
+        {showArtworkEdition && artId && (
+          <span className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[7px] text-gold">
+            {t('maps.artworkEdition', { version: t(`maps.versionFull.${artId}`) })}
+          </span>
+        )}
+        <div className="pixel-label text-[7px] text-tx-muted/60">
+          {SOURCE_CREDIT[region.region] ?? 'MAP © NINTENDO/GAME FREAK'}
+        </div>
       </div>
     </div>
   );

@@ -613,6 +613,17 @@
       "postGame": true,
       "labelPos": "right",
       "nameDe": "Felsenherzturm"
+    },
+    {
+      "id": "johto-pokemon-league",
+      "label": "Pokémon League",
+      "kind": "special",
+      "x": 1188,
+      "y": 360,
+      "order": 56,
+      "locationSlug": "indigo-plateau",
+      "labelPos": "left",
+      "nameDe": "Pokémon Liga"
     }
   ],
   "edges": [
@@ -904,6 +915,11 @@
     {
       "from": "johto-route-47",
       "to": "embedded-tower",
+      "kind": "land"
+    },
+    {
+      "from": "tohjo-falls",
+      "to": "johto-pokemon-league",
       "kind": "land"
     }
   ],
