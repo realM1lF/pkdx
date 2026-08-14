@@ -579,6 +579,9 @@ export function MoveSlots({
           </button>
         )}
       </div>
+      {source === 'shadow' && (
+        <p className="min-w-0 font-sans text-[10px] leading-snug text-tx-muted">{t('versus.shadowApproxNote')}</p>
+      )}
       <div className="relative z-20 grid grid-cols-2 gap-1 overflow-visible">
         {[0, 1, 2, 3].map((i) => {
           const slug = slots[i] ?? '';

@@ -130,6 +130,42 @@ sub-areas a trainer stands in). No contradiction required escalation.
   location) is recorded in `notes` since it's a well-documented,
   verifiable in-game fact (Bulbapedia's Shadow Pokémon trivia section)
   rather than an invented purification detail.
+
+## Colosseum battle sets (`shadow-sets.json`)
+
+**Artifact:** `src/data/orre/shadow-sets.json` — Colo rows store
+`shadowMove: "shadow-rush"` plus the three regulars that remain in
+battle (source Move 1 is replaced by Shadow Rush until purified). Held
+item slugs are omitted when the source says None.
+
+### Sources
+
+- dragonflycave.com, [Shadow List](https://www.dragonflycave.com/orre/shadow-pokemon-list/)
+  (primary for this pass — purification Move 1–4; page states
+  "Move 1 is replaced with Shadow Rush until purified")
+- Bulbapedia, [List of Shadow Pokémon](https://bulbapedia.bulbagarden.net/wiki/List_of_Shadow_Pok%C3%A9mon)
+  (items; Suicune Surf vs Hydro Pump trivia)
+- Bulbapedia, [Walkthrough:Pokémon Colosseum/Obtainable Pokémon](https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Colosseum/Obtainable_Pok%C3%A9mon)
+  (battle sets already listing Shadow Rush in slot 1; used as
+  cross-check and as the second source where DFC is silent)
+- altissimo Colosseum shadow table (tertiary tie-break only)
+
+Suicune in the artifact stays Surf by default and Hydro Pump at
+`orre-deep-colosseum`. The other three purification moves (Rain Dance /
+Leer / Gust) are not stored, so the existing location variant is not
+overwritten. No e-Reader shadows (Togepi / Mareep / Scizor).
+
+### Conflicts resolved
+
+- **Granbull missing on dragonflycave:** DFC's list jumps from Ariados
+  to Vibrava. Bulbapedia walkthrough + altissimo both give Bite
+  (replaced by Rush) / Scary Face / Roar / Strength, item None. Used
+  those three regulars.
+- **Togetic Move 2:** DFC says Encore; Bulbapedia walkthrough and
+  altissimo say Charm (with Metronome as the replaced Move 1). Used
+  **Charm** (2-source majority).
+- **Ariados held item:** DFC + altissimo say Silver Powder; Bulbapedia
+  List says None. Used **silver-powder** (2-source majority).
 - No purification-mechanic optimizer tips or XD data were added, per
   task instructions. Colosseum has no Miror Radar (that mechanic is
   XD-only); none of these 48 entries use `kind: "miror-radar"`.

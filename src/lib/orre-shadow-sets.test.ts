@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
+import de from '@/i18n/locales/de/translation.json';
+import en from '@/i18n/locales/en/translation.json';
 import { shadowsFor } from './orre';
 import { shadowMovesOf, shadowSetById } from './orre-shadow-sets';
 import { damageBetween } from './versus';
 import { versusContextFromGame } from './versus-context';
 
 describe('shadow-sets artifact', () => {
-  it('gives every Colosseum shadow Shadow Rush and no invented extras except Suicune', () => {
+  it('gives every Colosseum shadow Shadow Rush plus sourced regulars (not Move 1)', () => {
     const shadows = shadowsFor('colosseum');
     expect(shadows.length).toBeGreaterThan(0);
     for (const s of shadows) {
@@ -15,13 +17,28 @@ describe('shadow-sets artifact', () => {
       if (s.id === 'colo-shadow-suicune') {
         expect(set!.moves).toEqual(['surf']);
       } else {
-        expect(set!.moves).toEqual([]);
+        expect(set!.moves.length, s.id).toBe(3);
+        expect(set!.moves.includes('shadow-rush'), s.id).toBe(false);
       }
     }
   });
 
-  it('shadowMovesOf puts Shadow Rush first', () => {
-    expect(shadowMovesOf('colosseum', 'colo-shadow-makuhita')).toEqual(['shadow-rush']);
+  it('Makuhita battle set drops Foresight (Move 1) and has no held item', () => {
+    const set = shadowSetById('colosseum', 'colo-shadow-makuhita');
+    expect(set).toBeDefined();
+    expect(set!.moves).toEqual(['focus-energy', 'vital-throw', 'cross-chop']);
+    expect(set!.moves).not.toContain('foresight');
+    expect(set!.item).toBeUndefined();
+    expect(shadowMovesOf('colosseum', 'colo-shadow-makuhita')).toEqual([
+      'shadow-rush',
+      'focus-energy',
+      'vital-throw',
+      'cross-chop',
+    ]);
+  });
+
+  it('Metagross holds Metal Coat from both sources', () => {
+    expect(shadowSetById('colosseum', 'colo-shadow-metagross')?.item).toBe('metal-coat');
   });
 
   it('Suicune uses Surf by default and Hydro Pump at Deep Colosseum', () => {
@@ -54,6 +71,15 @@ describe('shadow-sets artifact', () => {
       expect(shadowSetById('xd', s.id), s.id).toBeDefined();
       expect(shadowMovesOf('xd', s.id).length).toBeGreaterThan(0);
     }
+  });
+
+  it('has versus.shadowApproxNote in EN and DE', () => {
+    expect(en.versus.shadowApproxNote).toBeTruthy();
+    expect(de.versus.shadowApproxNote).toBeTruthy();
+    expect(en.versus.hyperModeHint).toBeTruthy();
+    expect(de.versus.hyperModeHint).toBeTruthy();
+    expect(en.versus.shadowSetMissing).toBeTruthy();
+    expect(de.versus.shadowSetMissing).toBeTruthy();
   });
 });
 

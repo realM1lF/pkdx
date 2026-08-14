@@ -1,116 +1,212 @@
 {
-  "source": "Colosseum: Bulbapedia Shadow Rush (every Shadow knows it). Suicune Surf/Hydro Pump from colosseum.json notes (Bulbapedia trivia). Regular Colo moves remain empty — not curated. XD battle sets: left-hand moves from Bulbapedia Walkthrough:Pokémon XD/Shadow Pokémon list (2026-08-14 dump).",
+  "source": "Colosseum battle sets: dragonflycave.com/orre/shadow-pokemon-list (Move 1 replaced by Shadow Rush while Shadow). Items + Suicune Surf/Hydro Pump cross-checked against Bulbapedia List of Shadow Pokémon. Granbull omitted on DFC — moves from Bulbapedia Walkthrough:Pokémon Colosseum/Obtainable Pokémon + altissimo (Bite→Rush, Scary Face, Roar, Strength). Togetic Move 2: Charm (Bulbapedia walkthrough + altissimo) over DFC Encore. Ariados item: Silver Powder (DFC + altissimo) over Bulbapedia List None. No e-Reader shadows. XD battle sets unchanged: left-hand moves from Bulbapedia Walkthrough:Pokémon XD/Shadow Pokémon list (2026-08-14 dump).",
   "verifiedAt": "2026-08-14",
   "sets": {
     "colo-shadow-makuhita": {
       "species": "makuhita",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "focus-energy",
+        "vital-throw",
+        "cross-chop"
+      ]
     },
     "colo-shadow-bayleef": {
       "species": "bayleef",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "synthesis",
+        "razor-leaf",
+        "body-slam"
+      ],
+      "item": "miracle-seed"
     },
     "colo-shadow-quilava": {
       "species": "quilava",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "smokescreen",
+        "dig",
+        "flame-wheel"
+      ],
+      "item": "charcoal"
     },
     "colo-shadow-croconaw": {
       "species": "croconaw",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "scary-face",
+        "bite",
+        "surf"
+      ],
+      "item": "mystic-water"
     },
     "colo-shadow-slugma": {
       "species": "slugma",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "yawn",
+        "rock-throw",
+        "flamethrower"
+      ]
     },
     "colo-shadow-noctowl": {
       "species": "noctowl",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "hypnosis",
+        "reflect",
+        "fly"
+      ]
     },
     "colo-shadow-flaaffy": {
       "species": "flaaffy",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "thunder-wave",
+        "cotton-spore",
+        "thunder-shock"
+      ]
     },
     "colo-shadow-skiploom": {
       "species": "skiploom",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "sleep-powder",
+        "cotton-spore",
+        "mega-drain"
+      ]
     },
     "colo-shadow-quagsire": {
       "species": "quagsire",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "amnesia",
+        "slam",
+        "surf"
+      ]
     },
     "colo-shadow-misdreavus": {
       "species": "misdreavus",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "confuse-ray",
+        "mean-look",
+        "shadow-ball"
+      ],
+      "item": "spell-tag"
     },
     "colo-shadow-furret": {
       "species": "furret",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "helping-hand",
+        "quick-attack",
+        "strength"
+      ]
     },
     "colo-shadow-qwilfish": {
       "species": "qwilfish",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "minimize",
+        "poison-sting",
+        "surf"
+      ],
+      "item": "poison-barb"
     },
     "colo-shadow-yanma": {
       "species": "yanma",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "supersonic",
+        "sonic-boom",
+        "uproar"
+      ]
     },
     "colo-shadow-remoraid": {
       "species": "remoraid",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "lock-on",
+        "psybeam",
+        "aurora-beam"
+      ]
     },
     "colo-shadow-mantine": {
       "species": "mantine",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "supersonic",
+        "bubble-beam",
+        "take-down"
+      ]
     },
     "colo-shadow-meditite": {
       "species": "meditite",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "calm-mind",
+        "confusion",
+        "high-jump-kick"
+      ],
+      "item": "twisted-spoon"
     },
     "colo-shadow-dunsparce": {
       "species": "dunsparce",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "glare",
+        "yawn",
+        "take-down"
+      ]
     },
     "colo-shadow-swablu": {
       "species": "swablu",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "sing",
+        "safeguard",
+        "fly"
+      ]
     },
     "colo-shadow-sudowoodo": {
       "species": "sudowoodo",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "block",
+        "low-kick",
+        "rock-slide"
+      ],
+      "item": "hard-stone"
     },
     "colo-shadow-hitmontop": {
       "species": "hitmontop",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "focus-energy",
+        "triple-kick",
+        "rapid-spin"
+      ],
+      "item": "black-belt"
     },
     "colo-shadow-entei": {
       "species": "entei",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "leer",
+        "bite",
+        "fire-blast"
+      ]
     },
     "colo-shadow-ledian": {
       "species": "ledian",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "safeguard",
+        "supersonic",
+        "comet-punch"
+      ]
     },
     "colo-shadow-suicune": {
       "species": "suicune",
@@ -132,127 +228,234 @@
     "colo-shadow-gligar": {
       "species": "gligar",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "sand-attack",
+        "poison-sting",
+        "slash"
+      ]
     },
     "colo-shadow-stantler": {
       "species": "stantler",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "hypnosis",
+        "leer",
+        "take-down"
+      ]
     },
     "colo-shadow-piloswine": {
       "species": "piloswine",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "odor-sleuth",
+        "dig",
+        "blizzard"
+      ],
+      "item": "soft-sand"
     },
     "colo-shadow-sneasel": {
       "species": "sneasel",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "screech",
+        "fury-swipes",
+        "icy-wind"
+      ]
     },
     "colo-shadow-aipom": {
       "species": "aipom",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "tickle",
+        "fury-swipes",
+        "swift"
+      ]
     },
     "colo-shadow-murkrow": {
       "species": "murkrow",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "mean-look",
+        "night-shade",
+        "fly"
+      ]
     },
     "colo-shadow-forretress": {
       "species": "forretress",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "protect",
+        "bide",
+        "rapid-spin"
+      ]
     },
     "colo-shadow-ariados": {
       "species": "ariados",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "scary-face",
+        "leech-life",
+        "sludge-bomb"
+      ],
+      "item": "silver-powder"
     },
     "colo-shadow-granbull": {
       "species": "granbull",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "scary-face",
+        "roar",
+        "strength"
+      ]
     },
     "colo-shadow-vibrava": {
       "species": "vibrava",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "screech",
+        "sand-tomb",
+        "dragon-breath"
+      ],
+      "item": "dragon-fang"
     },
     "colo-shadow-raikou": {
       "species": "raikou",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "leer",
+        "quick-attack",
+        "thunder"
+      ]
     },
     "colo-shadow-delibird": {
       "species": "delibird",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "attract",
+        "present",
+        "fly"
+      ],
+      "item": "never-melt-ice"
     },
     "colo-shadow-sunflora": {
       "species": "sunflora",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "growth",
+        "ingrain",
+        "solar-beam"
+      ]
     },
     "colo-shadow-heracross": {
       "species": "heracross",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "endure",
+        "counter",
+        "brick-break"
+      ]
     },
     "colo-shadow-skarmory": {
       "species": "skarmory",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "metal-sound",
+        "air-cutter",
+        "steel-wing"
+      ],
+      "item": "sharp-beak"
     },
     "colo-shadow-miltank": {
       "species": "miltank",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "defense-curl",
+        "rollout",
+        "body-slam"
+      ]
     },
     "colo-shadow-absol": {
       "species": "absol",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "swords-dance",
+        "slash",
+        "feint-attack"
+      ]
     },
     "colo-shadow-houndoom": {
       "species": "houndoom",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "howl",
+        "smog",
+        "flamethrower"
+      ]
     },
     "colo-shadow-tropius": {
       "species": "tropius",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "synthesis",
+        "magical-leaf",
+        "fly"
+      ]
     },
     "colo-shadow-metagross": {
       "species": "metagross",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "iron-defense",
+        "metal-claw",
+        "psychic"
+      ],
+      "item": "metal-coat"
     },
     "colo-shadow-tyranitar": {
       "species": "tyranitar",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "thunder",
+        "rock-slide",
+        "blizzard"
+      ],
+      "item": "nugget"
     },
     "colo-shadow-smeargle": {
       "species": "smeargle",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "tail-whip",
+        "double-slap",
+        "iron-tail"
+      ]
     },
     "colo-shadow-ursaring": {
       "species": "ursaring",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "fake-tears",
+        "lick",
+        "slash"
+      ]
     },
     "colo-shadow-shuckle": {
       "species": "shuckle",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "encore",
+        "rest",
+        "bide"
+      ]
     },
     "colo-shadow-togetic": {
       "species": "togetic",
       "shadowMove": "shadow-rush",
-      "moves": []
+      "moves": [
+        "charm",
+        "sweet-kiss",
+        "yawn"
+      ]
     },
     "xd-shadow-teddiursa": {
       "species": "teddiursa",

@@ -18,7 +18,7 @@ import { boxedOf, myPlayerId, partyOf } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import type { RegionId } from '@/lib/regions';
 import { loadTrainersForRegion, trainersForRegion } from '@/lib/trainer-data';
-import { shadowMovesOf } from '@/lib/orre-shadow-sets';
+import { shadowMovesOf, shadowSetById } from '@/lib/orre-shadow-sets';
 import { foeShadowsForVersus, hyperModeAvailable } from '@/lib/orre-versus';
 import type { OrreGame, OrreShadow } from '@/lib/orre-types';
 import { genAbilitiesOf, genHasMechanics, genItems, genTypesOf } from '@/lib/teambuilder';
@@ -89,6 +89,7 @@ interface FoeRef {
   moves: string[]; // exact trainer moves, [] → wild resolution
   source: MovesetSource;
   context: string; // e.g. "ERIKA · Leader"
+  item?: string;
 }
 
 /* ================================================================== */
@@ -166,7 +167,12 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   if (prevFoe !== foeRef) {
     setPrevFoe(foeRef);
     if (foeRef) {
-      setFoe({ ...blankSide(foeRef.level), slots: foeRef.moves, hyperMode: false });
+      setFoe({
+        ...blankSide(foeRef.level),
+        slots: foeRef.moves,
+        item: foeRef.item ?? null,
+        hyperMode: false,
+      });
       setFoeCustom(foeRef.moves.length > 0 || foeRef.source === 'shadow');
       setFoeSource(foeRef.source);
     } else {
@@ -337,6 +343,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                               moves: shadowMovesOf(orreGame, s.id, loc),
                               source: 'shadow',
                               context: `${s.trainer} · LV${s.level}`,
+                              item: shadowSetById(orreGame, s.id)?.item,
                             });
                           }}
                           className="flex h-9 w-full items-center gap-2 rounded-md px-1.5 text-left hover:bg-surface2"

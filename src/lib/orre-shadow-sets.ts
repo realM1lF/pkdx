@@ -1,6 +1,6 @@
 /* Curated Orre Shadow battle sets.
- * Colo: Shadow Rush only, plus sourced Suicune Surf/Hydro Pump.
- * XD: walkthrough battle sets (Bulbapedia). Do not invent missing Colo regulars. */
+ * Colo: Shadow Rush + sourced Move 2–4 (Move 1 is Rush while Shadow) and held item.
+ * Suicune keeps Surf / Deep Colosseum Hydro Pump. XD: Bulbapedia walkthrough sets. */
 import artifact from '@/data/orre/shadow-sets.json';
 import type { OrreGame } from './orre-types';
 

@@ -352,6 +352,7 @@
     "hyperMode": "Hypermodus",
     "hyperModeHint": "Näherungswert: Krit bei Shadow-Stoß. Kein 1:1-Colosseum-Kampf.",
     "shadowSetMissing": "Kein kuratiertes Shadow-Set. Nur Art und Level.",
+    "shadowApproxNote": "Shadow-Sets aus Quellen. Schaden ist Näherung: keine 1:1-Colosseum/XD-Engine, kein Doppelkampf, Hypermodus ≈ Krit nur bei Shadow-Stoß.",
     "shadowsHere": "Diese Route",
     "shadowsElsewhere": "Andere Orte",
     "resetDefault": "Auf Level-up-Standard zurücksetzen",

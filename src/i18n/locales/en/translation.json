@@ -352,6 +352,7 @@
     "hyperMode": "Hyper Mode",
     "hyperModeHint": "Approx. crit on Shadow Rush. Not a 1:1 Colosseum engine.",
     "shadowSetMissing": "No curated Shadow moveset. Species and level only.",
+    "shadowApproxNote": "Shadow sets are sourced. Damage is an approximation: no 1:1 Colosseum/XD engine, no double battle, Hyper Mode ≈ crit on Shadow Rush only.",
     "shadowsHere": "This route",
     "shadowsElsewhere": "Other locations",
     "resetDefault": "Reset to level-up default",
