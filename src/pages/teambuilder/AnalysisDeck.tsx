@@ -13,6 +13,7 @@ import { nameOfMove, nameOfPokemon, nameOfType, useLanguage } from '@/lib/i18n-d
 import { LocaleLink } from '@/lib/locale-link';
 import { pokemonHref } from '@/lib/edition-nav';
 import {
+  coverageTypeSlugs,
   coverTypesFor,
   effectivenessVsMember,
   genHasMechanics,
@@ -21,7 +22,7 @@ import {
   worstCases,
 } from '@/lib/teambuilder';
 import type { CoverageResult, DefenseRow, TeamMemberDefense } from '@/lib/teambuilder';
-import { POKEMON_TYPES, TYPE_COLORS } from '@/lib/types';
+import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -232,7 +233,8 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
 function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; loading: boolean; vgId: string }) {
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
-  const covered = POKEMON_TYPES.filter((t) => coverage.se[t].length > 0);
+  const types = coverageTypeSlugs(vgId);
+  const covered = types.filter((t) => (coverage.se[t] ?? []).length > 0);
   return (
     <section className="tb-panel md:col-span-12 lg:col-span-4" aria-label={t8n('tb.offenseAria')}>
       <div className="tb-panel-head">
@@ -249,8 +251,8 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
 
         {/* 18-type coverage strip — glyph + hitter count */}
         <div className="mb-2.5 grid grid-cols-3 gap-1.5 sm:grid-cols-6 lg:grid-cols-3">
-          {POKEMON_TYPES.map((t) => {
-            const hitters = coverage.se[t];
+          {types.map((t) => {
+            const hitters = coverage.se[t] ?? [];
             const isGap = hitters.length === 0;
             return (
               <div

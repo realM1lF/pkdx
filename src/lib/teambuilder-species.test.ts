@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { defensiveSynergy, emptySlot, legalMoves, slotLegality } from './teambuilder';
+import { genMoveOf } from './gen-dex';
+import {
+  coverTypesFor,
+  defensiveSynergy,
+  emptySlot,
+  legalMoves,
+  moveTypeForCoverage,
+  offensiveCoverage,
+  seTypesAgainst,
+  slotLegality,
+} from './teambuilder';
 import type { Pokemon } from './types';
 
 function mon(
@@ -71,6 +81,42 @@ describe('defensiveSynergy — gen-correct type rows', () => {
     const frlg = defensiveSynergy(members, 'firered-leafgreen').map((r) => r.type);
     const sv = defensiveSynergy(members, 'scarlet-violet').map((r) => r.type);
     expect(frlg).not.toContain('fairy');
+    expect(frlg).not.toContain('???');
     expect(sv).toContain('fairy');
+  });
+
+  it('omits ??? on Crystal / gen 2', () => {
+    const crystal = defensiveSynergy(members, 'crystal').map((r) => r.type);
+    expect(crystal).not.toContain('???');
+    expect(crystal).not.toContain('fairy');
+  });
+});
+
+describe('offensive coverage — gen-scoped types', () => {
+  const vg = 'firered-leafgreen';
+
+  it('offensiveCoverage / coverTypesFor / seTypesAgainst omit fairy and ??? in FRLG', () => {
+    const cov = offensiveCoverage([], vg);
+    expect(Object.keys(cov.se)).not.toContain('fairy');
+    expect(Object.keys(cov.se)).not.toContain('???');
+    expect(cov.gaps).not.toContain('fairy');
+    expect(cov.gaps).not.toContain('???');
+
+    const cover = coverTypesFor('fire', vg);
+    expect([...cover.resists, ...cover.immunes]).not.toContain('fairy');
+    expect([...cover.resists, ...cover.immunes]).not.toContain('???');
+
+    expect(seTypesAgainst('fire', vg)).not.toContain('fairy');
+    expect(seTypesAgainst('fire', vg)).not.toContain('???');
+  });
+
+  it('Bite in red-blue is Normal and coverage does not treat it as Dark', () => {
+    expect(genMoveOf('red-blue', 'bite')?.type).toBe('normal');
+    expect(moveTypeForCoverage('red-blue', 'bite', 'dark')).toBe('normal');
+
+    const rby = offensiveCoverage([{ name: 'bite', type: 'normal', stab: false }], 'red-blue');
+    const gs = offensiveCoverage([{ name: 'bite', type: 'dark', stab: false }], 'gold-silver');
+    expect(rby.se.psychic ?? []).toHaveLength(0);
+    expect((gs.se.psychic ?? []).length).toBeGreaterThan(0);
   });
 });

@@ -66,7 +66,7 @@ export {
   genTypesOf,
 } from './gen-dex';
 export type { GenMoveMeta, GenStatBlock } from './gen-dex';
-import { genAbilitiesOf, genFor, genHasMechanics, genSpecies } from './gen-dex';
+import { genAbilitiesOf, genFor, genHasMechanics, genMoveOf, genSpecies } from './gen-dex';
 
 /** all items existing in this gen (held items arrive gen 2) */
 export function genItems(vgId: string): string[] {
@@ -87,8 +87,8 @@ export function genNatures(vgId: string): Nature[] {
 /* ---------- gen-correct type chart (VERSUS effectiveness + profiles) ----------
  * Lives in ./effectiveness (pure module, shared with the battle engine);
  * re-exported here to keep the teambuilder API stable. */
-import { genEffectivenessOf, genTypeSlugs } from './effectiveness';
-export { genEffectivenessOf, genTypeSlugs };
+import { chartTypeSlugs, genEffectivenessOf, genTypeSlugs } from './effectiveness';
+export { chartTypeSlugs, genEffectivenessOf, genTypeSlugs };
 
 /* ------------------------------------------------------------------ */
 /* Team state model                                                    */
@@ -456,6 +456,7 @@ function toTypeName(t: PokemonType): TypeName {
 
 /** raw chart multiplier (gen-correct) of attacking type vs defending type */
 export function chartEff(atk: PokemonType, def: PokemonType, vgId: string): number {
+  if ((atk as string) === '???' || (def as string) === '???') return 1;
   const chart = genFor(vgId).types.get(toTypeName(atk));
   const eff = chart?.effectiveness[toTypeName(def)];
   return typeof eff === 'number' ? eff : 1;
@@ -495,9 +496,23 @@ export interface DefenseRow {
   severity: 0 | 1 | 2 | 3;
 }
 
+/** attacking/defending types that exist in this version group, never `???` */
+export function coverageTypeSlugs(vgId: string): PokemonType[] {
+  return chartTypeSlugs(genFor(vgId).num).filter((s): s is PokemonType =>
+    (POKEMON_TYPES as readonly string[]).includes(s),
+  );
+}
+
+/** gen-correct damaging-move type for coverage; skips `???` / unknown */
+export function moveTypeForCoverage(vgId: string, slug: string, apiType?: string): PokemonType | null {
+  const raw = (genMoveOf(vgId, slug)?.type ?? apiType ?? '').toLowerCase();
+  if (!raw || raw === '???') return null;
+  if (!(POKEMON_TYPES as readonly string[]).includes(raw)) return null;
+  return raw as PokemonType;
+}
+
 export function defensiveSynergy(members: TeamMemberDefense[], vgId: string): DefenseRow[] {
-  return genTypeSlugs(genFor(vgId).num).map((slug) => {
-    const type = slug as PokemonType;
+  return coverageTypeSlugs(vgId).map((type) => {
     let weak = 0;
     let resist = 0;
     let immune = 0;
@@ -527,7 +542,7 @@ export function worstCases(rows: DefenseRow[]): DefenseRow[] {
 export function coverTypesFor(atk: PokemonType, vgId: string): { resists: PokemonType[]; immunes: PokemonType[] } {
   const resists: PokemonType[] = [];
   const immunes: PokemonType[] = [];
-  for (const def of POKEMON_TYPES) {
+  for (const def of coverageTypeSlugs(vgId)) {
     const eff = chartEff(atk, def, vgId);
     if (eff === 0) immunes.push(def);
     else if (eff < 1) resists.push(def);
@@ -538,7 +553,7 @@ export function coverTypesFor(atk: PokemonType, vgId: string): { resists: Pokemo
 /** attacking types that hit a defending type super-effectively —
  * basis for "which move type closes this coverage gap" hints */
 export function seTypesAgainst(def: PokemonType, vgId: string): PokemonType[] {
-  return POKEMON_TYPES.filter((atk) => chartEff(atk, def, vgId) > 1);
+  return coverageTypeSlugs(vgId).filter((atk) => chartEff(atk, def, vgId) > 1);
 }
 
 /* ------------------------------------------------------------------ */
@@ -565,7 +580,7 @@ export interface CoverageResult {
 export function offensiveCoverage(moves: TeamMove[], vgId: string): CoverageResult {
   const se = {} as Record<PokemonType, string[]>;
   const gaps: PokemonType[] = [];
-  for (const def of POKEMON_TYPES) {
+  for (const def of coverageTypeSlugs(vgId)) {
     const hitters: string[] = [];
     for (const mv of moves) {
       if (chartEff(mv.type, def, vgId) > 1) hitters.push(mv.name);

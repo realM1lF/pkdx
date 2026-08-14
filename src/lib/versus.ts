@@ -14,7 +14,7 @@ import { nameOfMove } from './i18n-data';
 import {
   DAMAGING_MOVE_CATS,
   genEffectivenessOf,
-  genTypeSlugs,
+  chartTypeSlugs,
   newestVersionGroup,
   pickTopMoves,
   preferredCategory,
@@ -310,7 +310,7 @@ export function genMatchupsOf(defendingTypes: string[], gen = 9): GenMatchups {
   const weak: string[] = [];
   const resist: string[] = [];
   const immune: string[] = [];
-  for (const atk of genTypeSlugs(g)) {
+  for (const atk of chartTypeSlugs(g)) {
     const mult = genEffectivenessOf(g, atk, defendingTypes);
     if (mult === 0) immune.push(atk);
     else if (mult >= 2) weak.push(atk);

@@ -6,6 +6,7 @@ import { nameOfItem, nameOfType, type Lang } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource, PokemonSpecies, PokemonType } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
 import { genSplitMatchupsForSide } from '@/lib/versus';
+import { sameVersionGroup } from '@/lib/move-pool';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS, versionGroupById, versionGroupForGame } from '@/lib/version-groups';
 
 /* ---------- species payload extras (present at runtime, absent from shared type) ---------- */
@@ -74,12 +75,29 @@ export function genOfVersionGroup(vg?: string | null): number {
   return versionGroupById(vg).gen;
 }
 
+/** App edition ids present in a PokéAPI move payload (Let's Go aliases match). */
+export function presentEditionIds(apiNames: Iterable<string>): Set<string> {
+  const names = [...apiNames];
+  const present = new Set<string>();
+  for (const g of VERSION_GROUPS) {
+    if (names.some((n) => n === g.key || sameVersionGroup(n, g.key))) present.add(g.key);
+  }
+  return present;
+}
+
+function collectApiVgNames(
+  moves: Array<{ version_group_details: Array<{ version_group: { name: string } }> }>,
+): string[] {
+  const names: string[] = [];
+  for (const m of moves) for (const d of m.version_group_details) names.push(d.version_group.name);
+  return names;
+}
+
 /** Newest move-pool version group that teaches this Pokémon anything (VERSION_GROUPS order). */
 export function newestMoveVersionGroup(
   moves: Array<{ version_group_details: Array<{ version_group: { name: string } }> }>,
 ): string | undefined {
-  const present = new Set<string>();
-  for (const m of moves) for (const d of m.version_group_details) present.add(d.version_group.name);
+  const present = presentEditionIds(collectApiVgNames(moves));
   return VERSION_GROUPS.find((g) => present.has(g.key))?.key;
 }
 
@@ -112,8 +130,7 @@ export function resolveMoveVersionGroup(
 ): string {
   const newest = newestMoveVersionGroup(moves) ?? '';
   if (!selected) return newest;
-  const present = new Set<string>();
-  for (const m of moves) for (const d of m.version_group_details) present.add(d.version_group.name);
+  const present = presentEditionIds(collectApiVgNames(moves));
   return present.has(selected) ? selected : newest;
 }
 

@@ -33,6 +33,11 @@ export function genTypeSlugs(genNum: GenerationNum): string[] {
   return [...gens.get(genNum).types].map((t) => t.name.toLowerCase());
 }
 
+/** chart / UI types — skips the gen 2–4 Curse placeholder `???` */
+export function chartTypeSlugs(genNum: GenerationNum): string[] {
+  return genTypeSlugs(genNum).filter((s) => s !== '???');
+}
+
 /** exact glyphs for every multiplier the chart + abilities can produce
  * (Filter/Solid Rock 4→3, 2→1½, ½→⅜…; Dry Skin 1→1¼, 2→2½, 4→5, ½→⅝…) */
 const MULT_LABELS: Record<number, string> = {
@@ -80,7 +85,7 @@ export function splitMatchups(defendingTypes: string[], genNum: GenerationNum): 
   const resist: string[] = [];
   const quarter: string[] = [];
   const immune: string[] = [];
-  for (const atk of genTypeSlugs(genNum)) {
+  for (const atk of chartTypeSlugs(genNum)) {
     const mult = genEffectivenessOf(genNum, atk, defendingTypes);
     if (mult === 0) immune.push(atk);
     else if (mult >= 4) quad.push(atk);

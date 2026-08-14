@@ -322,6 +322,12 @@
     "kind": "ball",
     "nameEn": "Seafoam Islands",
     "nameDe": "Seeschauminseln"
+   },
+   {
+    "node": "seafoam-islands",
+    "kind": "hidden",
+    "nameEn": "Seafoam Islands",
+    "nameDe": "Seeschauminseln"
    }
   ],
   "evolutionTargets": [
@@ -329,7 +335,7 @@
    90,
    120,
    133,
-   270,
+   271,
    515
   ],
   "evolutionKind": "stone"
@@ -381,7 +387,7 @@
   ],
   "evolutionTargets": [
    44,
-   69,
+   70,
    102,
    274,
    511

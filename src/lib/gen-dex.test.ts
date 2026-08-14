@@ -3,6 +3,7 @@ import {
   genAbilityRows,
   genHasMechanics,
   genMoveOf,
+  movePowerForDisplay,
   genStatsOf,
   genTypesOf,
   typesForPartyMon,
@@ -79,5 +80,11 @@ describe('genMoveOf — historical power / category', () => {
   it('Bite is Normal in Gen 1 and Dark from Gen 2', () => {
     expect(genMoveOf('red-blue', 'bite')?.type).toBe('normal');
     expect(genMoveOf('gold-silver', 'bite')?.type).toBe('dark');
+  });
+
+  it('movePowerForDisplay prefers genMoveOf when a version group is set', () => {
+    expect(movePowerForDisplay('firered-leafgreen', 'thunderbolt', 90)).toBe(95);
+    expect(movePowerForDisplay(undefined, 'thunderbolt', 90)).toBe(90);
+    expect(movePowerForDisplay('x-y', 'thunderbolt', 95)).toBe(90);
   });
 });

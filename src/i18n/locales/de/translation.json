@@ -2670,10 +2670,10 @@
       "sun-stone": {
         "intro": "Der Sonnenstein ist ein Entwicklungsstein für eine kleine Liste bestimmter Pokémon. Er kam in Generation 2 dazu und ist der seltenste der Steine, weil kaum eine Art ihn braucht.",
         "qa1Lead": "Entwickelt eine Handvoll Arten in dem Moment, in dem du ihn einsetzt.",
-        "qa1Body": "Die Entwicklung per Stein passiert sofort und ohne Level-Bedingung. In Feuerrot/Blattgrün betrifft das genau ein Kanto-Pokémon: Myrapla wird zu Blubella, und das erst, sobald du den Nationalen Dex hast. Die übrigen Ziel-Arten wie Sonnkern stammen aus späteren Spielen. Die übliche Stein-Regel gilt: Nach der Entwicklung lernt die neue Form kaum noch Level-Attacken, also vorher die Wunsch-Attacken sichern.",
+        "qa1Body": "Die Entwicklung per Stein passiert sofort und ohne Level-Bedingung. In Feuerrot/Blattgrün betrifft das genau ein Kanto-Pokémon: Duflor wird zu Blubella, und das erst, sobald du den Nationalen Dex hast. Die übrigen Ziel-Arten wie Sonnkern stammen aus späteren Spielen. Die übliche Stein-Regel gilt: Nach der Entwicklung lernt die neue Form kaum noch Level-Attacken, also vorher die Wunsch-Attacken sichern.",
         "qa2Body": "In Feuerrot/Blattgrün liegt ein Sonnenstein im Ruinental auf den Sevii-Eilanden. Unsere Kanto-Karte deckt die Sevii-Eilande nicht ab, deshalb steht oben kein Fundort. Kaufen kannst du den Stein dort nicht.",
         "verdictLead": "Erst checken, dann horten.",
-        "verdict": "Die Liste der Ziel-Pokémon ist kurz. Ohne Myrapla oder Sonnkern im Team bleibt der Stein im Beutel liegen. Spielst du ein Pflanzen-Team, ist Blubella die defensivere Alternative zu Duflor per Blattstein."
+        "verdict": "Die Liste der Ziel-Pokémon ist kurz. Ohne Duflor oder Sonnkern im Team bleibt der Stein im Beutel liegen. Spielst du ein Pflanzen-Team, ist Blubella die defensivere Alternative zu Giflor per Blattstein."
       },
       "fire-stone": {
         "intro": "Der Feuerstein entwickelt einige der beliebtesten Feuer-Pokémon sofort weiter. In Feuerrot/Blattgrün kaufst du ihn einfach im Einkaufszentrum von Prismania City.",
@@ -2702,7 +2702,7 @@
       "leaf-stone": {
         "intro": "Der Blattstein entwickelt mehrere Pflanzen-Pokémon sofort weiter. In Feuerrot/Blattgrün kaufst du ihn im Einkaufszentrum von Prismania City oder findest ihn versteckt in der Safari-Zone.",
         "qa1Lead": "Sofortige Entwicklung, keine Level-Bedingung.",
-        "qa1Body": "In Kanto sind Myrapla, Knofensa und Owei die Ziele. Sarzenia und Kokowei werden dadurch zu physischen Angreifern, Duflor spielt speziell. Die bekannte Stein-Regel gilt auch hier: Nach der Entwicklung kommen per Level kaum neue Attacken, also vorher lernen, was du behalten willst.",
+        "qa1Body": "In Kanto sind Duflor, Ultrigaria und Owei die Ziele. Sarzenia und Kokowei werden dadurch zu physischen Angreifern, Giflor spielt speziell. Die bekannte Stein-Regel gilt auch hier: Nach der Entwicklung kommen per Level kaum neue Attacken, also vorher lernen, was du behalten willst.",
         "qa2Body": "Das Einkaufszentrum von Prismania City verkauft den Stein im 4. OG für 2100 ₽. Das Gratis-Exemplar in der Safari-Zone ist versteckt, nimm den Detektor mit.",
         "verdictLead": "Die schnellste Route zu einem fertigen Pflanzen-Angreifer.",
         "verdict": "Sarzenia und Kokowei decken physische Arbeit ab, Duflor spielt die spezielle Seite. Gegenüber dem Sonnenstein ist der Blattstein die flexiblere Wahl, weil mehr Arten ihn nutzen. Das Moveset-Timing bleibt die einzige echte Falle."

@@ -3,7 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import { genSplitMatchupsForSide } from '@/lib/versus';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS } from '@/lib/version-groups';
-import { computeMatchups, editionFromGameParam, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
+import { computeMatchups, editionFromGameParam, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
 
 function allAttacking(m: ReturnType<typeof computeMatchups>): string[] {
   return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune];
@@ -105,8 +105,25 @@ describe('detail move-pool version groups (every edition the picker can show)', 
       'brilliant-diamond-shining-pearl',
     );
     expect(newestMoveVersionGroup(only('lets-go-pikachu-eevee'))).toBe('lets-go-pikachu-eevee');
+    expect(newestMoveVersionGroup(only('lets-go-pikachu-lets-go-eevee'))).toBe('lets-go-pikachu-eevee');
     expect(newestMoveVersionGroup(only('colosseum'))).toBe('colosseum');
     expect(newestMoveVersionGroup(only('xd'))).toBe('xd');
+  });
+
+  it('presentEditionIds maps PokéAPI Let\'s Go slug to the app id', () => {
+    const present = presentEditionIds(['lets-go-pikachu-lets-go-eevee', 'firered-leafgreen']);
+    expect(present.has('lets-go-pikachu-eevee')).toBe(true);
+    expect(present.has('firered-leafgreen')).toBe(true);
+  });
+
+  it('resolveMoveVersionGroup keeps Let\'s Go when the payload uses the API slug', () => {
+    const moves = [
+      {
+        version_group_details: [{ version_group: { name: 'lets-go-pikachu-lets-go-eevee' } }],
+      },
+    ];
+    expect(resolveMoveVersionGroup(moves, 'lets-go-pikachu-eevee')).toBe('lets-go-pikachu-eevee');
+    expect(resolveMoveVersionGroup(moves, undefined)).toBe('lets-go-pikachu-eevee');
   });
 
   it('resolveMoveVersionGroup keeps a selected older edition when that edition teaches moves', () => {

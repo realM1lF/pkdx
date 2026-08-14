@@ -3,7 +3,7 @@
  * Squirt Bottle, Devon Scope) must stay out of the wild buckets, and the
  * fishing/surfing/walking variants must land in their proper bucket. */
 import { describe, expect, it } from 'vitest';
-import { aggregateArea, areaShortLabel, methodBucket, spawnLeaders, STATIC_METHODS, summarizeAreas } from './mapdata';
+import { aggregateArea, areaShortLabel, bestWildBySpecies, methodBucket, spawnLeaders, STATIC_METHODS, summarizeAreas } from './mapdata';
 import type { NodeMapData } from './mapdata';
 import routesKantoJson from '@/data/routes-kanto.json';
 import routesHoennJson from '@/data/routes-hoenn.json';
@@ -284,6 +284,58 @@ describe('feebas-tile-fishing is not a route-wide FISH rate', () => {
     const { common } = spawnLeaders(new Map([['hoenn-route-119', nd]]));
     expect(common.map((c) => c.slug)).not.toContain('feebas');
     expect(common.map((c) => c.slug)).toContain('magikarp');
+  });
+
+  it('excludes swarm-only 90% from common leaders and bestRate', () => {
+    const g = aggregateArea(
+      areaOf('johto-route-32-area', 'heartgold', [
+        {
+          slug: 'qwilfish',
+          id: 211,
+          details: [det(90, 'good-rod', ['swarm-yes'], 10, 40)],
+        },
+        {
+          slug: 'rattata',
+          id: 19,
+          details: [det(30, 'walk', [], 4, 7)],
+        },
+      ]),
+      'johto-route-32',
+      'heartgold',
+    );
+    const qwil = g.entries.find((e) => e.slug === 'qwilfish');
+    expect(qwil!.methodChip).toBe('swarm');
+    expect(qwil!.isStatic).toBe(false);
+    expect(qwil!.maxChance).toBe(90);
+
+    const kpi = summarizeAreas([g]);
+    expect(kpi.bestRate).toBe(30);
+
+    const nd: NodeMapData = {
+      nodeId: 'johto-route-32',
+      status: 'loaded',
+      areas: [g],
+      pokemonCount: 2,
+      bestRate: kpi.bestRate,
+      methodTop: kpi.methodTop,
+    };
+    const { common } = spawnLeaders(new Map([['johto-route-32', nd]]));
+    expect(common.map((c) => c.slug)).not.toContain('qwilfish');
+    expect(common.map((c) => c.slug)).toContain('rattata');
+    expect(common[0]!.rate).toBe(30);
+  });
+});
+
+describe('bestWildBySpecies — static gifts stay out of the % mix', () => {
+  it('does not let a 100% static gift beat a 30% walk', () => {
+    const best = bestWildBySpecies([
+      { pokemonId: 1, slug: 'bulbasaur', maxChance: 100, isStatic: true },
+      { pokemonId: 1, slug: 'bulbasaur', maxChance: 30, isStatic: false },
+      { pokemonId: 16, slug: 'pidgey', maxChance: 40, isStatic: false },
+    ]);
+    expect(best.get(1)?.maxChance).toBe(30);
+    expect(best.get(16)?.maxChance).toBe(40);
+    expect(best.size).toBe(2);
   });
 });
 

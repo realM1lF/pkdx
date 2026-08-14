@@ -24,6 +24,7 @@ import {
   isLinkedTeam,
   loadDraft,
   loadTeams,
+  moveTypeForCoverage,
   offensiveCoverage,
   onTeamsChange,
   parseMetaEntry,
@@ -500,7 +501,8 @@ export default function TeamBuilder() {
         if (!m) continue;
         const d = moveDetails[m];
         if (!d || d.damage_class.name === 'status') continue;
-        const type = d.type.name as PokemonType;
+        const type = moveTypeForCoverage(team.versionGroup, m, d.type.name);
+        if (!type) continue;
         moves.push({ name: m, type, stab: memberTypes.includes(type) });
       }
     }

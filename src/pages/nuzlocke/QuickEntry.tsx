@@ -9,7 +9,7 @@ import Sprite from '@/components/Sprite';
 import { routeOrder } from '@/lib/regions';
 import { nodeName } from '@/lib/regions';
 import type { RegionMap } from '@/lib/regions';
-import type { RegionDataState } from '@/lib/mapdata';
+import { bestWildBySpecies, type RegionDataState } from '@/lib/mapdata';
 import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
 import { effectiveLevelCap, isSpecialNode } from '@/lib/nuzlocke-rules';
@@ -158,15 +158,14 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
     }
     const nd = mapData.data.get(routeKey);
     if (!nd || nd.status !== 'loaded') return [];
-    const best = new Map<number, SpeciesOption>();
-    for (const g of nd.areas) {
-      for (const e of g.entries) {
-        const prev = best.get(e.pokemonId);
-        const label = nameIdx.has(e.pokemonId) ? nameOfPokemon(e.pokemonId, lang) : e.slug;
-        if (!prev || e.maxChance > (prev.rate ?? 0)) best.set(e.pokemonId, { id: e.pokemonId, label, rate: e.maxChance });
-      }
-    }
-    return [...best.values()].sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0));
+    const best = bestWildBySpecies(nd.areas.flatMap((g) => g.entries));
+    return [...best.values()]
+      .map((e) => ({
+        id: e.pokemonId,
+        label: nameIdx.has(e.pokemonId) ? nameOfPokemon(e.pokemonId, lang) : e.slug,
+        rate: e.maxChance,
+      }))
+      .sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0));
   }, [routeKey, mapData.data, nameIdx, lang, state.run.game]);
 
   const useFullDex = randomizer || fullDex;

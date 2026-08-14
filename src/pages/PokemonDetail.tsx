@@ -37,7 +37,7 @@ import { pokemonSeoMetaForParam } from '@/lib/seo';
 import { hasPokemonSeoSections } from '@/lib/seo-pilots';
 import PokemonSeoSections from './detail/PokemonSeoSections';
 import { Panel } from './detail/ui';
-import { editionFromGameParam, resolveMoveVersionGroup, typeRgb } from './detail/data';
+import { editionFromGameParam, presentEditionIds, resolveMoveVersionGroup, typeRgb } from './detail/data';
 import './detail/detail.css';
 
 /* VERSUS matchup lab is heavy (@pkmn/dex + @smogon/calc, ~2.4MB) and hidden
@@ -110,8 +110,9 @@ export default function PokemonDetail() {
 
   const editionOptions = useMemo(() => {
     if (!pokemon) return [];
-    const present = new Set<string>();
-    for (const m of pokemon.moves) for (const d of m.version_group_details) present.add(d.version_group.name);
+    const present = presentEditionIds(
+      pokemon.moves.flatMap((m) => m.version_group_details.map((d) => d.version_group.name)),
+    );
     return VERSION_GROUPS.filter((g) => present.has(g.id));
   }, [pokemon]);
   const newestEdition = pokemon ? resolveMoveVersionGroup(pokemon.moves) : '';

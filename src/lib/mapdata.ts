@@ -483,7 +483,7 @@ export function summarizeAreas(
   for (const g of groups) {
     for (const e of g.entries) {
       species.add(e.pokemonId);
-      if (!e.isStatic) bestRate = Math.max(bestRate, e.maxChance);
+      if (!e.isStatic && e.methodChip !== 'swarm') bestRate = Math.max(bestRate, e.maxChance);
       for (const m of e.methods) {
         const c = e.chanceByMethod[m] ?? e.maxChance;
         methodTop[m] = Math.max(methodTop[m] ?? 0, c);
@@ -632,6 +632,19 @@ export interface SpawnLeader {
   nodeId: string;
 }
 
+/** Best wild rate per species. Static gifts (and similar) stay out of the % mix. */
+export function bestWildBySpecies<T extends { pokemonId: number; slug: string; maxChance: number; isStatic?: boolean }>(
+  entries: readonly T[],
+): Map<number, T> {
+  const best = new Map<number, T>();
+  for (const e of entries) {
+    if (e.isStatic) continue;
+    const prev = best.get(e.pokemonId);
+    if (!prev || e.maxChance > prev.maxChance) best.set(e.pokemonId, e);
+  }
+  return best;
+}
+
 /** Most common / rarest species across all loaded nodes (selected version). */
 export function spawnLeaders(data: ReadonlyMap<string, NodeMapData>): { common: SpawnLeader[]; rare: SpawnLeader[] } {
   const best = new Map<number, SpawnLeader>();
@@ -639,7 +652,7 @@ export function spawnLeaders(data: ReadonlyMap<string, NodeMapData>): { common: 
     if (nd.status !== 'loaded') continue;
     for (const g of nd.areas) {
       for (const e of g.entries) {
-        if (e.isStatic) continue;
+        if (e.isStatic || e.methodChip === 'swarm') continue;
         const prev = best.get(e.pokemonId);
         if (!prev || e.maxChance > prev.rate) {
           best.set(e.pokemonId, { pokemonId: e.pokemonId, slug: e.slug, rate: e.maxChance, nodeId });

@@ -50,6 +50,7 @@ import {
   prefillTeamFromVersus,
   versionGroupById,
 } from '@/lib/teambuilder';
+import { movePowerForDisplay } from '@/lib/gen-dex';
 import {
   NATURES,
   damageBetween,
@@ -532,7 +533,7 @@ export function MoveSlots({
   onChange,
   onReset,
   source,
-  versionGroup: _versionGroup,
+  versionGroup,
   sourceEdition,
   showMovesFallback,
   editionNote,
@@ -564,15 +565,16 @@ export function MoveSlots({
     () =>
       pool.map((slug) => {
         const mv = details.get(slug);
+        const bp = movePowerForDisplay(versionGroup, slug, mv?.power);
         return {
           key: slug,
           label: nameOfMove(slug, lang),
           type: mv?.type.name,
-          sub: mv?.power ? String(mv.power) : '—',
+          sub: bp ? String(bp) : '—',
           alias: slug,
         };
       }),
-    [pool, details, lang],
+    [pool, details, lang, versionGroup],
   );
   return (
     <div className="flex flex-col gap-1">

@@ -93,6 +93,19 @@ export interface GenMoveMeta {
   pp: number | null;
 }
 
+/** Battle-power shown in Versus slots: gen-correct when a VG is set. */
+export function movePowerForDisplay(
+  vgId: string | undefined,
+  slug: string,
+  apiPower?: number | null,
+): number | null {
+  if (vgId) {
+    const gen = genMoveOf(vgId, slug);
+    if (gen) return gen.power;
+  }
+  return apiPower && apiPower > 0 ? apiPower : null;
+}
+
 export function genMoveOf(vgId: string, slug: string): GenMoveMeta | null {
   const gen = genFor(vgId);
   const mv = gen.moves.get(slug) ?? gen.moves.get(displayName(slug));

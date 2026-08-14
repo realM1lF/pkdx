@@ -23,6 +23,7 @@ const REGION_NODE_IDS = new Set(johtoJson.nodes.map((n) => n.id));
 
 interface EncounterRow {
   id: number;
+  slug?: string;
   method: string;
   chance: number;
   isStatic?: boolean;
@@ -117,6 +118,15 @@ describe('seo-routes-johto', () => {
     expect(localizeJohtoRoutePath('/maps/johto/steineichenwald', 'en')).toBe('/maps/johto/ilex-forest');
     expect(localizeJohtoRoutePath('/maps/johto/ilex-forest', 'de')).toBe('/maps/johto/steineichenwald');
     expect(localizeJohtoRoutePath('/maps/johto/unknown', 'de')).toBe('/maps/johto/unknown');
+  });
+
+  it('Route 32 HeartGold Qwilfish swarm is OTHER, not FISH 90', () => {
+    const hg = NODES['johto-route-32']?.versions.heartgold ?? [];
+    const qwil = hg.flatMap((g) => g.rows).filter((r) => r.id === 211 || r.slug === 'qwilfish');
+    expect(qwil.length).toBeGreaterThan(0);
+    const swarmish = qwil.find((r) => r.chance === 90) ?? qwil[0];
+    expect(swarmish.method).not.toBe('FISH');
+    expect(swarmish.method).toBe('OTHER');
   });
 
   it('meta descriptions stay ≤ 160 chars in both locales', () => {
