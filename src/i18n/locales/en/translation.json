@@ -1676,6 +1676,7 @@
       "team": "{{filled}}/6 · {{game}}",
       "justNow": "Just Now",
       "vaultCount": "{{count}} SAVED TEAMS · LOCAL VAULT",
+      "vaultCountAccount": "{{count}} SAVED TEAMS · ACCOUNT VAULT",
       "tagline": "Build · Analyze · Share",
       "newTeam": "New Team",
       "open": "Open",
@@ -1705,6 +1706,7 @@
       "linkCopied": "Share Link Copied",
       "setApplied": "SET APPLIED — {{name}}",
       "imported": "Team Imported From Run",
+      "openedLinked": "Opened Linked Nuzlocke Team",
       "cleared": "Team Cleared",
       "deleted": "Team Deleted",
       "storageFailed": "STORAGE FULL — could not save team. Old PokéAPI cache was trimmed; please try again."

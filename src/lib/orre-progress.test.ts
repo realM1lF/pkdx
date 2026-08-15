@@ -199,4 +199,44 @@ describe('orre-progress', () => {
     expect(getStatus('colosseum', 'local-only')).toBe('snagged') // adopted
     expect(upserted.some((r) => (r as { shadow_id: string }).shadow_id === 'local-only')).toBe(true)
   })
+
+  it('does not adopt previous-account local-only progress', async () => {
+    const { hydrateOrreProgress } = await import('./orre-progress')
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        colosseum: { 'old-user': 'snagged' },
+        xd: {},
+      }),
+    )
+    localStorage.setItem('pdx2.orre.owner', JSON.stringify('user-a'))
+    __resetOrreProgressCacheForTests()
+
+    const upserted: unknown[] = []
+    orreMocks.from.mockImplementation(() => ({
+      select: () => ({
+        eq: async () => ({ data: [], error: null }),
+      }),
+      upsert: async (row: unknown) => {
+        upserted.push(row)
+        return { error: null }
+      },
+    }))
+
+    await hydrateOrreProgress({ id: 'user-b' } as never)
+
+    expect(getStatus('colosseum', 'old-user')).toBe('remaining')
+    expect(upserted).toHaveLength(0)
+    expect(localStorage.getItem('pdx2.orre.owner')).toBe(JSON.stringify('user-b'))
+  })
+
+  it('clearOrreLocalProgress wipes cache and owner', async () => {
+    const { clearOrreLocalProgress } = await import('./orre-progress')
+    setStatus('colosseum', 'shadow-wipe', 'snagged')
+    localStorage.setItem('pdx2.orre.owner', 'user-a')
+    clearOrreLocalProgress()
+    expect(getStatus('colosseum', 'shadow-wipe')).toBe('remaining')
+    expect(localStorage.getItem(KEY)).toBeNull()
+    expect(localStorage.getItem('pdx2.orre.owner')).toBeNull()
+  })
 })

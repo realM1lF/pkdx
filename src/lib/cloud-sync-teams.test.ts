@@ -163,7 +163,7 @@ function seedLocal(teams: Team[], extra?: { synced?: string[]; owner?: string | 
   localStorage.setItem('pdx2.teams', JSON.stringify(teams));
   if (extra?.synced) localStorage.setItem('pdx2.teams.synced', JSON.stringify(extra.synced));
   if (extra?.owner !== undefined) {
-    if (extra.owner) localStorage.setItem('pdx2.teams.owner', extra.owner);
+    if (extra.owner) localStorage.setItem('pdx2.teams.owner', JSON.stringify(extra.owner));
     else localStorage.removeItem('pdx2.teams.owner');
   }
   if (extra?.tombstones) localStorage.setItem('pdx2.teams.tombstones', JSON.stringify(extra.tombstones));
@@ -256,6 +256,38 @@ describe('cloud-sync teams', () => {
     const { loadTeams } = await import('./teambuilder');
     expect(loadTeams().find((t) => t.id === 'same-2')?.name).toBe('Remote newer');
     expect(teamUpserts.some((r) => (r as { payload: Team }).payload.name === 'Stale local')).toBe(false);
+  });
+
+  it('does not adopt unsynced teams from a previous account owner', async () => {
+    const leftover = stubTeam('a-unsynced', 'Leftover A', 1_000);
+    seedLocal([leftover], { owner: USER_A });
+    const bTeam = stubTeam('b-1', 'Account B', 2_000);
+    remoteTeams.push({
+      id: bTeam.id,
+      payload: bTeam,
+      updated_at: new Date(2_000).toISOString(),
+    });
+    await login(USER_B);
+    const { loadTeams } = await import('./teambuilder');
+    expect(loadTeams().map((t) => t.id)).toEqual(['b-1']);
+    expect(teamUpserts.some((r) => (r as { id: string }).id === 'a-unsynced')).toBe(false);
+  });
+
+  it('logout wipes the local team vault', async () => {
+    const aTeam = stubTeam('a-1', 'Account A', 1_000);
+    seedLocal([aTeam], { synced: ['a-1'], owner: USER_A });
+    remoteTeams.push({
+      id: aTeam.id,
+      payload: aTeam,
+      updated_at: new Date(1_000).toISOString(),
+    });
+    await login(USER_A);
+    const cloud = await import('./cloud-sync');
+    cloud.clearAccountLocalVault();
+    const { loadTeams } = await import('./teambuilder');
+    expect(loadTeams()).toEqual([]);
+    expect(localStorage.getItem('pdx2.teams.owner')).toBeNull();
+    expect(JSON.parse(localStorage.getItem('pdx2.teams') ?? '[]')).toEqual([]);
   });
 
   it('does not upload the previous account cache when another user logs in', async () => {

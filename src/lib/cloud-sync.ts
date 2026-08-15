@@ -159,6 +159,7 @@ async function hydrateTeams(user: { id: string }): Promise<void> {
 
   for (const t of local) {
     if (keep.has(t.id) || tombstones.has(t.id)) continue;
+    if (switching) continue;
     if (wasSynced.has(t.id)) continue;
     next.push(t);
     toPush.push(t);
@@ -309,6 +310,16 @@ function watchAccountTeams(userId: string): void {
   };
 }
 
+/** Drop the account working cache on logout so a shared browser stays empty. */
+export function clearAccountLocalVault(): void {
+  writeTeamsCache([]);
+  clearSyncedTeamIds();
+  clearTeamTombstones();
+  writeTeamsOwner(null);
+  saveDraft(null);
+  void import('./orre-progress').then((m) => m.clearOrreLocalProgress());
+}
+
 export function bootCloudSync(): void {
   if (booted) return;
   booted = true;
@@ -316,8 +327,7 @@ export function bootCloudSync(): void {
     if (!user) {
       stopAccountRunsWatch();
       stopTeamWatch?.();
-      writeTeamsOwner(null);
-      /* never prompt while logged out — that flash is what users hated */
+      clearAccountLocalVault();
       return;
     }
     watchAccountRuns(user.id);

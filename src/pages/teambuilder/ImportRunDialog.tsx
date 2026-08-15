@@ -8,8 +8,9 @@ import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
 import Sprite from '@/components/Sprite';
 import { versionChipLabel } from '@/lib/regions';
-import { importRunTeams, listImportableRuns } from '@/lib/teambuilder';
-import type { ImportableRun, ImportedRunTeam } from '@/lib/teambuilder';
+import { listImportableRuns } from '@/lib/teambuilder';
+import type { ImportableRun, ImportedRunTeam, Team } from '@/lib/teambuilder';
+import { resolveRunImport } from '@/lib/nuzlocke-linked-teams';
 import { cn } from '@/lib/utils';
 
 interface ImportRunDialogProps {
@@ -17,6 +18,8 @@ interface ImportRunDialogProps {
   onClose: () => void;
   /** picked player team → parent builds slots + inherits version group */
   onImport: (team: ImportedRunTeam) => void;
+  /** own run with a linked team → open that vault row instead of copying */
+  onOpenLinked: (team: Team) => void;
 }
 
 type Phase =
@@ -25,7 +28,7 @@ type Phase =
   | { kind: 'players'; run: ImportableRun; teams: ImportedRunTeam[] }
   | { kind: 'error'; message: string };
 
-export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDialogProps) {
+export default function ImportRunDialog({ open, onClose, onImport, onOpenLinked }: ImportRunDialogProps) {
   const { t: t8n } = useTranslation();
   const [runs, setRuns] = useState<ImportableRun[]>([]);
   const [phase, setPhase] = useState<Phase>({ kind: 'runs' });
@@ -52,7 +55,13 @@ export default function ImportRunDialog({ open, onClose, onImport }: ImportRunDi
   const pickRun = async (run: ImportableRun) => {
     setPhase({ kind: 'loading', run });
     try {
-      const teams = await importRunTeams(run.id);
+      const resolved = await resolveRunImport(run.id);
+      if (resolved.kind === 'linked') {
+        onOpenLinked(resolved.team);
+        onClose();
+        return;
+      }
+      const teams = resolved.teams;
       const alive = teams.filter((t) => t.members.length > 0);
       if (!alive.length) {
         setPhase({ kind: 'error', message: t8n('tb.import.noAlive') });

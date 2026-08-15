@@ -19,8 +19,13 @@ import { cachedJson, displayName, getMove, getPokemon } from './pokeapi';
 import type { Move, Pokemon } from './types';
 import { POKEMON_TYPES, STAT_ORDER } from './types';
 import type { PokemonType, StatKey } from './types';
-import { getRunTeam, loadLocalRun, pushToast, readRunIndex } from './nuzlocke-store';
 import { readLocalJson, removeLocalKey, writeLocalJson } from './storage';
+
+function teamStorageToast(): void {
+  void import('./nuzlocke-store')
+    .then((m) => m.pushToast('sync', i18n.t('tb.toast.storageFailed')))
+    .catch(() => undefined);
+}
 
 /* ------------------------------------------------------------------ */
 /* Version groups                                                      */
@@ -761,7 +766,7 @@ export function loadTeams(): Team[] {
 /** Write the vault without a cloud round-trip (hydrate apply). */
 export function writeTeamsCache(list: Team[]): boolean {
   if (!writeJson(LS_TEAMS, list)) {
-    pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    teamStorageToast();
     return false;
   }
   notifyTeams();
@@ -884,7 +889,7 @@ export function collapseLinkedTeamDuplicates(): Team[] {
   }
 
   if (!writeJson(LS_TEAMS, next)) {
-    pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    teamStorageToast();
     return list;
   }
   notifyTeams();
@@ -930,7 +935,7 @@ export function saveTeam(team: Team): Team[] {
   }
 
   if (!writeJson(LS_TEAMS, updated)) {
-    pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    teamStorageToast();
     return list;
   }
   notifyTeams();
@@ -946,7 +951,7 @@ export function deleteTeam(id: string): Team[] {
   tombstoneTeamId(id);
   unmarkTeamSynced(id);
   const list = loadTeams().filter((t) => t.id !== id);
-  if (!writeJson(LS_TEAMS, list)) pushToast('sync', i18n.t('tb.toast.storageFailed'));
+  if (!writeJson(LS_TEAMS, list)) teamStorageToast();
   else notifyTeams();
   void import('./cloud-sync').then((m) => m.cloudDeleteTeam(id));
   return list;
@@ -959,7 +964,7 @@ export function loadDraft(): Team | null {
 
 export function saveDraft(team: Team | null): void {
   if (team) {
-    if (!writeJson(LS_DRAFT, team)) pushToast('sync', i18n.t('tb.toast.storageFailed'));
+    if (!writeJson(LS_DRAFT, team)) teamStorageToast();
   } else {
     removeLocalKey(LS_DRAFT);
   }
@@ -1112,18 +1117,35 @@ export interface ImportableRun {
   versionGroup: string | null;
 }
 
-/** list local + online runs (from the nuzlocke store index — read-only) */
+export function teamVaultCountKey(hasAccount: boolean): 'tb.hub.vaultCount' | 'tb.hub.vaultCountAccount' {
+  return hasAccount ? 'tb.hub.vaultCountAccount' : 'tb.hub.vaultCount';
+}
+
+function readRunIdList(key: string): string[] {
+  const raw = readLocalJson<unknown>(key, []);
+  return Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string') : [];
+}
+
+/** list hub + archived + account-cached runs without importing the store (cycle). */
 export function listImportableRuns(): ImportableRun[] {
   const out: ImportableRun[] = [];
-  for (const id of readRunIndex()) {
-    const state = loadLocalRun(id);
-    if (!state) continue;
+  const ids = [...new Set([
+    ...readRunIdList('pdx2.nuz.runs'),
+    ...readRunIdList('pdx2.nuz.archived'),
+    ...readRunIdList('pdx2.nuz.accountRuns'),
+  ])];
+  for (const id of ids) {
+    const state = readLocalJson<{
+      run?: { name?: string; game?: string; status?: string };
+      mode?: string;
+    } | null>(`pdx2.nuz.run.${id}`, null);
+    if (!state?.run?.name || !state.run.game) continue;
     out.push({
       id,
       name: state.run.name,
       game: state.run.game,
       mode: state.mode === 'multi' ? 'online' : 'local',
-      status: state.run.status,
+      status: state.run.status ?? 'active',
       versionGroup: versionGroupForGame(state.run.game),
     });
   }
@@ -1147,6 +1169,7 @@ export interface ImportedRunTeam {
 
 /** alive team per player (≤6) via the nuzlocke store; resolves slugs via PokéAPI */
 export async function importRunTeams(runId: string): Promise<ImportedRunTeam[]> {
+  const { getRunTeam, loadLocalRun } = await import('./nuzlocke-store');
   const state = loadLocalRun(runId);
   const players = await getRunTeam(runId);
   const vg = versionGroupForGame(state?.run.game);

@@ -25,7 +25,7 @@ import {
   trainerSourceMismatchesGame,
 } from '@/lib/trainer-data';
 import { shadowMovesOf, shadowSetById } from '@/lib/orre-shadow-sets';
-import { foeShadowsForVersus, hyperModeAvailable } from '@/lib/orre-versus';
+import { foeShadowsForVersus, hyperModeAvailable, ownShadowMoveSlugs } from '@/lib/orre-versus';
 import type { OrreGame, OrreShadow } from '@/lib/orre-types';
 import { genAbilitiesOf, genHasMechanics, genItems, genTypesOf, versionGroupById } from '@/lib/teambuilder';
 import {
@@ -160,9 +160,20 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   const [prevSel, setPrevSel] = useState(sel?.enc.id);
   if (prevSel !== sel?.enc.id) {
     setPrevSel(sel?.enc.id);
-    setYou(blankSide(sel?.enc.level ?? 5));
-    setYouCustom(false);
-    setYouSource('wild');
+    const shadowMoves =
+      orreGame && sel?.enc.shadow_id
+        ? ownShadowMoveSlugs(orreGame, sel.enc.shadow_id, sel.enc.route_key)
+        : [];
+    const base = blankSide(sel?.enc.level ?? 5);
+    if (shadowMoves.length) {
+      setYou({ ...base, slots: shadowMoves.slice(0, 4) });
+      setYouCustom(true);
+      setYouSource('shadow');
+    } else {
+      setYou(base);
+      setYouCustom(false);
+      setYouSource('wild');
+    }
   }
 
   /* ----- foe side state ----- */

@@ -1,0 +1,1 @@
+function f(e,n){return e?n.size>0&&!n.has(e):!1}function t(e){return!e}function r(e,n){return e>0&&n>e}function a(e){return e.slug==="exp-share"?!0:/\d/.test(`${e.effectEn??""} ${e.effectDe??""}`)}export{f as e,t as f,a as i,r as p};

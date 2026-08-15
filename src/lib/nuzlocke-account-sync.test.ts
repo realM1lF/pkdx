@@ -137,12 +137,16 @@ vi.mock('./auth', () => ({
   onAuthChange: vi.fn(() => () => undefined),
 }));
 
-vi.mock('./nuzlocke-linked-teams', () => ({
-  syncLinkedTeamsForRun: vi.fn().mockResolvedValue(undefined),
-  ensureLinkedTeams: vi.fn().mockResolvedValue(undefined),
-  repairAllLinkedTeams: vi.fn().mockResolvedValue(undefined),
-  cloneLinkedTeamsForDuplicate: vi.fn(),
-}));
+vi.mock('./nuzlocke-linked-teams', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./nuzlocke-linked-teams')>();
+  return {
+    ...actual,
+    syncLinkedTeamsForRun: vi.fn().mockResolvedValue(undefined),
+    ensureLinkedTeams: vi.fn().mockResolvedValue(undefined),
+    repairAllLinkedTeams: vi.fn().mockResolvedValue(undefined),
+    cloneLinkedTeamsForDuplicate: vi.fn(),
+  };
+});
 
 vi.mock('./supabase', async () => {
   const actual = await vi.importActual<typeof import('./supabase')>('./supabase');
@@ -556,9 +560,28 @@ describe('account run discovery', () => {
     expect(store.getHubRunIds()).toContain(RUN_A);
     expect(store.loadLocalRun(RUN_A)).not.toBeNull();
 
+    localStorage.setItem(
+      'pdx2.teams',
+      JSON.stringify([
+        {
+          id: 'linked-ghost',
+          name: 'Ghost NUZ',
+          versionGroup: 'firered-leafgreen',
+          slots: [{ id: 's0' }, { id: 's1' }, { id: 's2' }, { id: 's3' }, { id: 's4' }, { id: 's5' }],
+          updatedAt: 1,
+          linkedRunId: RUN_A,
+          linkedPlayerId: `player-${RUN_A}`,
+        },
+      ]),
+    );
+
     membersByUser.set(USER_ID, []);
     localStorage.setItem('pdx2.nuz.runs', JSON.stringify([RUN_A]));
     await hubRefreshLike(store);
+    await vi.waitFor(() => {
+      const leftover = JSON.parse(localStorage.getItem('pdx2.teams') ?? '[]') as Array<{ linkedRunId?: string }>;
+      expect(leftover.some((t) => t.linkedRunId === RUN_A)).toBe(false);
+    });
 
     expect(store.getHubRunIds()).not.toContain(RUN_A);
     expect(store.loadLocalRun(RUN_A)).toBeNull();

@@ -1,6 +1,26 @@
 /* Orre Versus helpers — location-scoped foes + Hyper Mode gate. */
 import { shadowsFor } from './orre';
-import type { OrreGame, OrreShadow } from './orre-types';
+import { shadowMovesOf } from './orre-shadow-sets';
+import type { OrreGame, OrreShadow, ShadowStatus } from './orre-types';
+
+export function orreGameFromRunGame(game: string | null | undefined): OrreGame | null {
+  return game === 'colosseum' || game === 'xd' ? game : null;
+}
+
+export function trackerStatusFromEncounter(status: string): ShadowStatus | null {
+  if (status === 'caught') return 'snagged';
+  if (status === 'missed') return 'missed';
+  return null;
+}
+
+export function ownShadowMoveSlugs(
+  game: OrreGame,
+  shadowId: string | null | undefined,
+  locationId?: string | null,
+): string[] {
+  if (!shadowId) return [];
+  return shadowMovesOf(game, shadowId, locationId);
+}
 
 export function shadowsVersusAtLocation(game: OrreGame, routeKey: string): OrreShadow[] {
   return shadowsFor(game).filter(

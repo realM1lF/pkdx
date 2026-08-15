@@ -5,14 +5,40 @@
  * Other players are viewed via ephemeral view-teams (party snapshot) or a
  * share hash — never auto-created in someone else's tresor. */
 import { getPokemon } from './pokeapi';
-import {
-  isRunArchived,
-  loadLocalRun,
-  myPlayerId,
-  partyOf,
-  readRunIndex,
-  type RunState,
-} from './nuzlocke-store';
+import type { NuzEncounterRow } from './supabase';
+import type { RunState } from './nuzlocke-store';
+import { readLocalJson } from './storage';
+
+function readRunIndex(): string[] {
+  const raw = readLocalJson<unknown>('pdx2.nuz.runs', []);
+  return Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string') : [];
+}
+
+function readArchivedIndex(): string[] {
+  const raw = readLocalJson<unknown>('pdx2.nuz.archived', []);
+  return Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string') : [];
+}
+
+function isRunArchived(runId: string): boolean {
+  return readArchivedIndex().includes(runId);
+}
+
+function myPlayerId(runId: string): string | null {
+  const members = readLocalJson<Record<string, string>>('pdx2.nuz.memberships', {});
+  return typeof members[runId] === 'string' ? members[runId] : null;
+}
+
+function loadLocalRun(id: string): RunState | null {
+  const s = readLocalJson<RunState | null>(`pdx2.nuz.run.${id}`, null);
+  return s?.run ? s : null;
+}
+
+function partyOf(state: RunState, playerId: string): NuzEncounterRow[] {
+  const alive = state.encounters.filter((e) => e.player_id === playerId && e.status === 'caught');
+  const flagged = state.encounters.some((e) => e.in_party === true || e.in_party === false);
+  if (!flagged) return alive.slice(-6);
+  return alive.filter((e) => e.in_party === true);
+}
 import {
   TEAM_SIZE,
   collapseLinkedTeamDuplicates,
@@ -292,12 +318,54 @@ export function cloneLinkedTeamsForDuplicate(
   void syncLinkedTeamsForRun(dst);
 }
 
-/** Repair after cloud hydrate / login mid-run — own team only, purge foreign. */
+function liveLinkedRunIds(): Set<string> {
+  return new Set([...readRunIndex(), ...readArchivedIndex()]);
+}
+
+/** Drop NUZ vault rows whose run payload and hub/archive index are gone. */
+export function purgeOrphanLinkedTeams(): number {
+  const live = liveLinkedRunIds();
+  let removed = 0;
+  for (const t of loadTeams()) {
+    if (!isLinkedTeam(t) || !t.linkedRunId) continue;
+    if (live.has(t.linkedRunId) || loadLocalRun(t.linkedRunId)) continue;
+    deleteTeam(t.id);
+    removed++;
+  }
+  const draft = loadDraft();
+  if (draft?.linkedRunId && !live.has(draft.linkedRunId) && !loadLocalRun(draft.linkedRunId)) {
+    saveDraft(null);
+  }
+  return removed;
+}
+
+export type RunImportResult =
+  | { kind: 'linked'; team: Team }
+  | { kind: 'copy'; teams: import('./teambuilder').ImportedRunTeam[] };
+
+/** Own run with a party → open the linked team. Otherwise a one-shot copy. */
+export async function resolveRunImport(runId: string): Promise<RunImportResult> {
+  const state = loadLocalRun(runId);
+  const mine = state ? ownedPlayerId(state) : null;
+  if (state && mine && partyOf(state, mine).length > 0) {
+    await syncLinkedTeamRoster(state, mine);
+    const team = findLinkedTeam(runId, mine);
+    if (team) return { kind: 'linked', team };
+  }
+  const { importRunTeams } = await import('./teambuilder');
+  return { kind: 'copy', teams: await importRunTeams(runId) };
+}
+
+/** Repair after cloud hydrate / login mid-run — own team only, purge foreign + orphans. */
 export function repairAllLinkedTeams(): void {
   collapseLinkedTeamDuplicates();
-  for (const id of readRunIndex()) {
+  purgeOrphanLinkedTeams();
+  for (const id of liveLinkedRunIds()) {
     const s = loadLocalRun(id);
     if (!s) continue;
+    const mine = ownedPlayerId(s);
+    if (!mine) continue;
+    if (partyOf(s, mine).length === 0 && !findLinkedTeam(s.run.id, mine)) continue;
     ensureLinkedTeams(s);
     void syncLinkedTeamsForRun(s);
   }

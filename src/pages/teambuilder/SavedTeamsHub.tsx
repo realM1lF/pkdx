@@ -8,7 +8,8 @@ import i18n from '@/i18n';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { LocaleLink } from '@/lib/locale-link';
-import { filledSlots, isLinkedTeam, versionGroupById } from '@/lib/teambuilder';
+import { useAuth } from '@/lib/auth';
+import { filledSlots, isLinkedTeam, teamVaultCountKey, versionGroupById } from '@/lib/teambuilder';
 import type { Team } from '@/lib/teambuilder';
 import { cn } from '@/lib/utils';
 
@@ -36,6 +37,7 @@ function formatWhen(ts: number, lang: 'en' | 'de'): string {
 export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedTeamsHubProps) {
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
+  const { user } = useAuth();
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   return (
     <div className="mx-auto max-w-[960px]">
@@ -45,7 +47,7 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
             {t8n('tb.page.title')}
           </h1>
           <p className="tb-micro mt-1.5">
-            {teams.length ? t8n('tb.hub.vaultCount', { count: teams.length }) : t8n('tb.hub.tagline')}
+            {teams.length ? t8n(teamVaultCountKey(Boolean(user)), { count: teams.length }) : t8n('tb.hub.tagline')}
           </p>
         </div>
         <button type="button" onClick={onNew} className="tb-btn tb-btn-primary">

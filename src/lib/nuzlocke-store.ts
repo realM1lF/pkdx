@@ -23,6 +23,7 @@ import type {
 } from './supabase';
 import { nodeIndex, routeOrder } from './regions';
 import { regionForRun } from './orre';
+import { orreGameFromRunGame, trackerStatusFromEncounter } from './orre-versus';
 import { padNum } from './pokeapi';
 import {
   dupesClaimingStatuses,
@@ -1767,11 +1768,6 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
   entry.status = cloudBacked ? 'connecting' : 'local';
   seedFeed(entry);
   if (cloudBacked) goLive(entry);
-  void import('./nuzlocke-linked-teams')
-    .then((m) => {
-      m.ensureLinkedTeams(state);
-    })
-    .catch((err) => console.warn('[nuzlocke] linked team init failed', err));
   emit(entry);
   notifyHub();
   return { state, inviteCode: invite, offlineFallback };
@@ -1877,9 +1873,6 @@ export async function joinRun(lookup: JoinLookup, name: string, color: string): 
   entry.state = state;
   entry.phase = 'ready';
   seedFeed(entry);
-  void import('./nuzlocke-linked-teams')
-    .then((m) => m.ensureLinkedTeams(state))
-    .catch((err) => console.warn('[nuzlocke] linked team init failed', err));
   void refreshRemote(entry).then(() => {
     goLive(entry);
     if (entry.state) scheduleLinkedSync(entry.state);
@@ -2055,6 +2048,7 @@ export async function logEncounter(runId: string, draft: LogDraft): Promise<LogR
     );
   }
   scheduleLinkedSync(s, enc.player_id);
+  syncOrreTrackerFromEncounter(s, enc);
   emit(entry);
   return { ok: true, encounter: enc, linkedWith };
 }
@@ -2185,6 +2179,7 @@ export function updateEncounter(
     }
   }
   scheduleLinkedSync(s, enc.player_id);
+  syncOrreTrackerFromEncounter(s, enc);
   emit(entry);
   return {
     ok: true,
@@ -2482,11 +2477,24 @@ function clearLocalRunMeta(runId: string): void {
 }
 
 /** Drop local mirror only — no server rows, no cloud solo delete (lost membership). */
+function syncOrreTrackerFromEncounter(state: RunState, enc: NuzEncounterRow): void {
+  const game = orreGameFromRunGame(state.run.game);
+  if (!game || !enc.shadow_id) return;
+  const status = trackerStatusFromEncounter(enc.status);
+  if (!status) return;
+  void import('./orre-progress')
+    .then((m) => m.setStatus(game, enc.shadow_id as string, status))
+    .catch((err) => console.warn('[nuzlocke] orre tracker sync failed', err));
+}
+
 function purgeLocalRunMirror(runId: string): void {
   writeRunIndex(readRunIndex().filter((id) => id !== runId));
   writeArchivedIndex(readArchivedIndex().filter((id) => id !== runId));
   removeLocalKey(LS_RUN(runId));
   clearLocalRunMeta(runId);
+  void import('./nuzlocke-linked-teams')
+    .then((m) => m.deleteLinkedTeamsForRun(runId))
+    .catch((err) => console.warn('[nuzlocke] linked team cleanup failed', err));
   const entry = entries.get(runId);
   if (entry) {
     dropLive(entry);

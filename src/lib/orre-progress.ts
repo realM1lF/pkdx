@@ -6,10 +6,11 @@ import type { User } from '@supabase/supabase-js'
 import { getAuthUser } from './auth'
 import { shadowsFor, shadowById } from './orre'
 import type { OrreGame, ShadowStatus } from './orre-types'
-import { readLocalJson, writeLocalJson } from './storage'
+import { readLocalJson, removeLocalKey, writeLocalJson } from './storage'
 import { supabase } from './supabase'
 
 const KEY = 'pdx2.orre.progress'
+const OWNER_KEY = 'pdx2.orre.owner'
 const DEBOUNCE_MS = 400
 
 type ProgressStore = Record<OrreGame, Partial<Record<string, ShadowStatus>>>
@@ -169,8 +170,22 @@ function storeFromRows(rows: ProgressRow[]): ProgressStore {
  * On login: pull remote progress (authority), then push any local-only
  * statuses that the server does not have yet (silent adopt).
  */
+export function clearOrreLocalProgress(): void {
+  cache = null
+  removeLocalKey(KEY)
+  removeLocalKey(OWNER_KEY)
+  emit()
+}
+
+function readOrreOwner(): string | null {
+  const v = readLocalJson<string | null>(OWNER_KEY, null)
+  return typeof v === 'string' && v ? v : null
+}
+
 export async function hydrateOrreProgress(user: User): Promise<void> {
-  const localBefore = readCache()
+  const prevOwner = readOrreOwner()
+  const switching = Boolean(prevOwner && prevOwner !== user.id)
+  const localBefore = switching ? emptyProgress() : readCache()
   let data: ProgressRow[] | null = null
   try {
     const res = await supabase
@@ -189,6 +204,8 @@ export async function hydrateOrreProgress(user: User): Promise<void> {
 
   const remote = storeFromRows(data ?? [])
   writeCache(remote)
+  writeLocalJson(OWNER_KEY, user.id)
+  if (switching) return
 
   /* adopt local-only keys missing remotely */
   for (const game of ['colosseum', 'xd'] as OrreGame[]) {

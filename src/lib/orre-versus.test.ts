@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { foeShadowsForVersus, hyperModeAvailable, shadowsVersusAtLocation } from './orre-versus';
+import {
+  foeShadowsForVersus,
+  hyperModeAvailable,
+  orreGameFromRunGame,
+  ownShadowMoveSlugs,
+  shadowsVersusAtLocation,
+  trackerStatusFromEncounter,
+} from './orre-versus';
 
 describe('foeShadowsForVersus', () => {
   it('lists Mayor House shadows first when the party mon is from that route', () => {
@@ -18,6 +25,27 @@ describe('foeShadowsForVersus', () => {
     const { here, elsewhere } = foeShadowsForVersus('colosseum', null);
     expect(here).toEqual([]);
     expect(elsewhere.length).toBeGreaterThan(40);
+  });
+});
+
+describe('orre nuzlocke bridge', () => {
+  it('maps run game slugs to Orre games', () => {
+    expect(orreGameFromRunGame('colosseum')).toBe('colosseum');
+    expect(orreGameFromRunGame('xd')).toBe('xd');
+    expect(orreGameFromRunGame('firered')).toBeNull();
+  });
+
+  it('maps encounter status to tracker status without downgrading a death', () => {
+    expect(trackerStatusFromEncounter('caught')).toBe('snagged');
+    expect(trackerStatusFromEncounter('missed')).toBe('missed');
+    expect(trackerStatusFromEncounter('dead')).toBeNull();
+    expect(trackerStatusFromEncounter('duped')).toBeNull();
+  });
+
+  it('returns curated own-side shadow moves when a shadow id is set', () => {
+    const moves = ownShadowMoveSlugs('colosseum', 'colo-shadow-makuhita', 'orre-phenac-mayors-house');
+    expect(moves.length).toBeGreaterThan(0);
+    expect(ownShadowMoveSlugs('colosseum', null, 'orre-phenac-mayors-house')).toEqual([]);
   });
 });
 

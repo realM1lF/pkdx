@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { AnimatePresence, Reorder } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import HonestyHint from '@/components/HonestyHint';
 import { getMove, getPokemon } from '@/lib/pokeapi';
 import {
@@ -37,7 +38,7 @@ import {
   versionGroupById,
   zeroEvs,
 } from '@/lib/teambuilder';
-import { getRunState, myPlayerId, updateEncounter } from '@/lib/nuzlocke-store';
+import { getRunState, myPlayerId, pushToast, updateEncounter } from '@/lib/nuzlocke-store';
 import type {
   CoverageResult,
   ImportedRunTeam,
@@ -317,6 +318,16 @@ export default function TeamBuilder() {
     },
     [patchTeam],
   );
+
+  const handleOpenLinked = useCallback((linked: Team) => {
+    setViewMode(false);
+    setTeam(linked);
+    saveDraft(linked);
+    setFocusedId(linked.slots.find((s) => s.pokemon)?.id ?? null);
+    setExpandedId(null);
+    setAppliedSetName(null);
+    pushToast('success', i18n.t('tb.toast.openedLinked'));
+  }, []);
 
   /* Open own linked team for edit */
   useEffect(() => {
@@ -804,7 +815,12 @@ export default function TeamBuilder() {
         </div>
       )}
 
-      <ImportRunDialog open={importOpen} onClose={() => setImportOpen(false)} onImport={handleImport} />
+      <ImportRunDialog
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onImport={handleImport}
+        onOpenLinked={handleOpenLinked}
+      />
       <ShowdownDialog
         open={showdownTab !== 'closed'}
         initialTab={showdownTab === 'closed' ? 'export' : showdownTab}

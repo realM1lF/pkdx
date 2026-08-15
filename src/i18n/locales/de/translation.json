@@ -1676,6 +1676,7 @@
       "team": "{{filled}}/6 · {{game}}",
       "justNow": "Gerade eben",
       "vaultCount": "{{count}} GESPEICHERTE TEAMS · LOKALER TRESOR",
+      "vaultCountAccount": "{{count}} GESPEICHERTE TEAMS · ACCOUNT-TRESOR",
       "tagline": "Bauen · analysieren · teilen",
       "newTeam": "Neues team",
       "open": "Öffnen",
@@ -1705,6 +1706,7 @@
       "linkCopied": "Share-link kopiert",
       "setApplied": "SET ÜBERNOMMEN — {{name}}",
       "imported": "Team aus Run importiert",
+      "openedLinked": "Verknüpftes Nuzlocke-Team geöffnet",
       "cleared": "Team geleert",
       "deleted": "Team gelöscht",
       "storageFailed": "SPEICHER VOLL — Team konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen."

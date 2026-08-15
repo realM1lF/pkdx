@@ -7,6 +7,7 @@ import {
   ownedPlayerId,
   purgeForeignLinkedTeams,
   repairAllLinkedTeams,
+  resolveRunImport,
   syncLinkedTeamRoster,
 } from './nuzlocke-linked-teams';
 import {
@@ -16,7 +17,7 @@ import {
   logEncounter,
   setEncounterParty,
 } from './nuzlocke-store';
-import { emptyTeam, loadTeams, saveTeam, type Team } from './teambuilder';
+import { emptyTeam, listImportableRuns, loadTeams, saveTeam, teamVaultCountKey, type Team } from './teambuilder';
 
 vi.mock('./auth', () => ({
   getAuthUser: () => ({ id: 'test-user' }),
@@ -259,6 +260,80 @@ describe('linked team uniqueness (run + player)', () => {
     expect(ensured[0].id).toBe(rows[0].id);
   });
 
+  it('createRun does not insert an empty linked team', async () => {
+    await createRun({
+      name: 'Kalos-Protokoll Nr. 1',
+      region: 'kalos',
+      game: 'scarlet',
+      players: [{ name: 'Du', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    expect(loadTeams()).toEqual([]);
+  });
+
+  it('first catch creates the owned linked team', async () => {
+    const { state } = await createRun({
+      name: 'Catch Then Link',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ANN', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    expect(loadTeams()).toEqual([]);
+    const res = await logEncounter(state.run.id, {
+      playerId: state.players[0].id,
+      routeKey: 'route-1',
+      pokemonId: 25,
+      nickname: 'Pika',
+      level: 5,
+      status: 'caught',
+    });
+    expect(res.ok).toBe(true);
+    await vi.waitFor(() => {
+      expect(findLinkedTeam(state.run.id, state.players[0].id)).not.toBeNull();
+    });
+    expect(findLinkedTeam(state.run.id, state.players[0].id)?.slots[0].pokemonId).toBe(25);
+  });
+
+  it('repairAllLinkedTeams deletes teams whose run is gone', async () => {
+    const { state } = await createRun({
+      name: 'Orphan Source',
+      region: 'kalos',
+      game: 'scarlet',
+      players: [{ name: 'Du', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    ensureLinkedTeams(state);
+    expect(findLinkedTeam(state.run.id, ownedPlayerId(state)!)).not.toBeNull();
+
+    localStorage.removeItem(`pdx2.nuz.run.${state.run.id}`);
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([]));
+    localStorage.setItem('pdx2.nuz.archived', JSON.stringify([]));
+
+    repairAllLinkedTeams();
+    expect(loadTeams().filter((t) => t.linkedRunId === state.run.id)).toHaveLength(0);
+  });
+
+  it('repairAllLinkedTeams keeps a team for an archived run', async () => {
+    const { state } = await createRun({
+      name: 'Archived Keep',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ANN', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    ensureLinkedTeams(state);
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([]));
+    localStorage.setItem('pdx2.nuz.archived', JSON.stringify([state.run.id]));
+
+    repairAllLinkedTeams();
+    expect(findLinkedTeam(state.run.id, ownedPlayerId(state)!)).not.toBeNull();
+  });
+
   it('repairAllLinkedTeams collapses leftover duplicates', async () => {
     const { state } = await createRun({
       name: 'test',
@@ -287,5 +362,53 @@ describe('linked team uniqueness (run + player)', () => {
 
     repairAllLinkedTeams();
     expect(loadTeams().filter((t) => t.linkedRunId === state.run.id && t.linkedPlayerId === mine)).toHaveLength(1);
+  });
+});
+
+describe('import + vault labels', () => {
+  it('listImportableRuns includes archived runs missing from the active index', async () => {
+    const { state } = await createRun({
+      name: 'Archived Import',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ANN', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    localStorage.setItem('pdx2.nuz.runs', JSON.stringify([]));
+    localStorage.setItem('pdx2.nuz.archived', JSON.stringify([state.run.id]));
+    expect(listImportableRuns().map((r) => r.id)).toContain(state.run.id);
+  });
+
+  it('resolveRunImport opens the owned linked team instead of copying', async () => {
+    const { state } = await createRun({
+      name: 'No Copy',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ANN', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const res = await logEncounter(state.run.id, {
+      playerId: state.players[0].id,
+      routeKey: 'route-1',
+      pokemonId: 1,
+      nickname: 'Bisa',
+      level: 5,
+      status: 'caught',
+    });
+    expect(res.ok).toBe(true);
+    await vi.waitFor(() => {
+      expect(findLinkedTeam(state.run.id, state.players[0].id)).not.toBeNull();
+    });
+    const linked = findLinkedTeam(state.run.id, state.players[0].id)!;
+    const resolved = await resolveRunImport(state.run.id);
+    expect(resolved.kind).toBe('linked');
+    if (resolved.kind === 'linked') expect(resolved.team.id).toBe(linked.id);
+  });
+
+  it('teamVaultCountKey distinguishes account vs local', () => {
+    expect(teamVaultCountKey(true)).toBe('tb.hub.vaultCountAccount');
+    expect(teamVaultCountKey(false)).toBe('tb.hub.vaultCount');
   });
 });
