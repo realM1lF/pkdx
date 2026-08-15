@@ -67,7 +67,7 @@ export default function PokemonPicker({ onPick, autoFocus = true, placeholder }:
 
   return (
     <div className="flex min-w-0 flex-col gap-1">
-      <HonestyHint show truncate>
+      <HonestyHint show>
         {t('honesty.nationalPicker')}
       </HonestyHint>
       <MiniAutocomplete

@@ -3,9 +3,11 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import de from '@/i18n/locales/de/translation.json';
 import en from '@/i18n/locales/en/translation.json';
+import { ITEMS_SEO } from './seo-items';
 import {
   editionFallback,
   formNotInGame,
+  itemEffectIsMixedGen,
   paddedWild,
 } from './honesty';
 
@@ -62,6 +64,12 @@ describe('honesty flags', () => {
   it('paddedWild when wild count < 4 and extra slots filled', () => {
     expect(paddedWild(2, 4)).toBe(true);
     expect(paddedWild(4, 4)).toBe(false);
+  });
+  it('itemEffectIsMixedGen for numeric modern effects, not everstone', () => {
+    expect(itemEffectIsMixedGen(ITEMS_SEO['exp-share'])).toBe(true);
+    expect(itemEffectIsMixedGen(ITEMS_SEO['lucky-egg'])).toBe(true);
+    expect(itemEffectIsMixedGen(ITEMS_SEO['everstone'])).toBe(false);
+    expect(itemEffectIsMixedGen(ITEMS_SEO['lum-berry'])).toBe(false);
   });
   it('does not import trainer-data', () => {
     const src = readFileSync(fileURLToPath(new URL('./honesty.ts', import.meta.url)), 'utf8');

@@ -220,7 +220,7 @@ export function RulesEditor({ state }: { state: RunState }) {
         <PixelLabel>{t('nuz.rules.levelCap')}</PixelLabel>
         <LevelCapStepper value={r.levelCap} onChange={(v) => set({ levelCap: v })} disabled={r.autoLevelCap} />
       </span>
-      <HonestyHint show truncate>
+      <HonestyHint show>
         {t('honesty.capUsesRegion')}
       </HonestyHint>
     </div>

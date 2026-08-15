@@ -215,19 +215,21 @@ function BattleArena() {
     <div className="grid grid-cols-12 gap-4">
       {/* ---------- toolbar: game + field + start ---------- */}
       <div className="col-span-12 flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
-        <div className="flex items-center gap-1.5">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('versus.gameSelect')}</span>
-          <GameSelect
-            value={ctx.game ?? ''}
-            onChange={pickGame}
-            options={gameOptions}
-            ariaLabel={t('versus.gameSelect')}
-            defaultOption={{ id: '', label: t('versus.gameDefault'), short: 'SV', gen: 9 }}
-          />
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <div className="flex items-center gap-1.5">
+            <span className="pixel-label text-[7px] text-tx-muted">{t('versus.gameSelect')}</span>
+            <GameSelect
+              value={ctx.game ?? ''}
+              onChange={pickGame}
+              options={gameOptions}
+              ariaLabel={t('versus.gameSelect')}
+              defaultOption={{ id: '', label: t('versus.gameDefault'), short: 'SV', gen: 9 }}
+            />
+          </div>
+          <HonestyHint show={!ctx.game && ctx.versionGroup === defaultVersusContext().versionGroup}>
+            {t('honesty.defaultEdition')}
+          </HonestyHint>
         </div>
-        <HonestyHint show className="basis-full">
-          {t('honesty.defaultEdition')}
-        </HonestyHint>
         <VersusFieldControls ctx={ctx} field={field} onChange={setField} />
         <button
           type="button"

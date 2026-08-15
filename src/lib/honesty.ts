@@ -10,3 +10,14 @@ export function formNotInGame(existsInVg: boolean): boolean {
 export function paddedWild(wildCount: number, shownCount: number): boolean {
   return wildCount > 0 && shownCount > wildCount;
 }
+
+/** True when the published effect text carries modern numbers (or a known
+ * mechanic that changed without digits in the short line, e.g. Exp. Share). */
+export function itemEffectIsMixedGen(item: {
+  slug?: string;
+  effectEn?: string;
+  effectDe?: string;
+}): boolean {
+  if (item.slug === 'exp-share') return true;
+  return /\d/.test(`${item.effectEn ?? ''} ${item.effectDe ?? ''}`);
+}

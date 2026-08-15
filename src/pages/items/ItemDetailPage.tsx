@@ -17,6 +17,7 @@ import QaSection from '@/components/QaSection';
 import Sprite from '@/components/Sprite';
 import { LocaleLink, useLocale } from '@/lib/locale-link';
 import { nameOfPokemon } from '@/lib/i18n-data';
+import { itemEffectIsMixedGen } from '@/lib/honesty';
 import { ITEMS_SEO, resolveItemParam } from '@/lib/seo-items';
 import type { ItemSeoEntry } from '@/lib/seo-items';
 
@@ -167,7 +168,7 @@ export default function ItemDetailPage() {
               <p className="font-sans text-[13px] leading-relaxed text-tx-secondary">
                 <strong className="font-semibold text-tx-primary">{effect}</strong> {flavor}
               </p>
-              <HonestyHint show={Boolean(effect)} className="mt-2">
+              <HonestyHint show={itemEffectIsMixedGen(item)} className="mt-2">
                 {t('honesty.modernEffect')}
               </HonestyHint>
             </div>

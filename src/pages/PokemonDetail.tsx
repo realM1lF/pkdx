@@ -258,8 +258,8 @@ export default function PokemonDetail() {
         {editionOptions.length > 0 && (
           <div className="flex min-w-0 flex-col items-end gap-0.5">
             <EditionDock value={edition} onChange={setEdition} options={editionOptions} />
-            <HonestyHint show={showEditionFallback} tone="gold" truncate>
-              {t8n('honesty.editionFallback', { edition: editionInfo.label })}
+            <HonestyHint show={showEditionFallback} tone="gold">
+              {t8n('honesty.editionFallback', { edition: editionInfo.short })}
             </HonestyHint>
           </div>
         )}

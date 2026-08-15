@@ -263,7 +263,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
     <div className="grid grid-cols-12 gap-4">
       {/* ================= LEFT — own picker ================= */}
       <Panel eyebrow={t('versus.yourSide')} title={t('versus.teamBox')} className="col-span-12 lg:col-span-3" bodyClassName="flex max-h-[640px] flex-col p-2">
-        <HonestyHint show={Boolean(orreGame && (state.mode === 'multi' || isCloudRun(state)))} className="mb-1.5 px-1" truncate>
+        <HonestyHint show={Boolean(orreGame && (state.mode === 'multi' || isCloudRun(state)))} className="mb-1.5 px-1">
           {t('honesty.shadowIdOptional')}
         </HonestyHint>
         {/* player filter */}
@@ -484,10 +484,10 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
             <HonestyHint show={ctx.gen < 3} truncate>
               {t('honesty.maxStatExp')}
             </HonestyHint>
-            <HonestyHint show truncate>
+            <HonestyHint show>
               {t('honesty.noStoredMoves')}
             </HonestyHint>
-            <HonestyHint show={Boolean(sel.enc.shadow_id) && (youSource === 'wild' || youSource === 'assumed')} tone="gold" truncate>
+            <HonestyHint show={Boolean(sel.enc.shadow_id) && (youSource === 'wild' || youSource === 'assumed')} tone="gold">
               {t('honesty.snagLevelUp')}
             </HonestyHint>
 
