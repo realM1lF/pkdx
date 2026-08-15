@@ -1,5 +1,5 @@
 /* Hero — "THE LIVING DEX" (home.md §1). 100svh, bleeds under fixed nav (-mt-16). */
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
@@ -7,13 +7,15 @@ import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, Dices } from 'lucide-react';
 import HeroBackdrop from './HeroBackdrop';
-import ParticleField from './ParticleField';
 import Sprite from '@/components/Sprite';
-import { sprites } from '@/lib/sprites';
-import { getLatestRunId, loadLocalRun } from '@/lib/nuzlocke-store';
+import { heroArtworkSrc } from '@/lib/img-priority';
+import { isDeferredChromeAllowed, scheduleIdle } from '@/lib/idle-boot';
+import type { RunState } from '@/lib/nuzlocke-store';
 import { MAX_DEX_ID, TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
+
+const ParticleField = lazy(() => import('./ParticleField'));
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -46,7 +48,7 @@ function SplitChars({
         <span key={i} aria-hidden className="inline-block overflow-hidden align-bottom">
           <motion.span
             className={cn('inline-block will-change-transform', gradient && 'text-gradient-alive')}
-            initial={{ y: 60, rotate: 6, opacity: 0 }}
+            initial={started ? false : { y: 60, rotate: 6, opacity: 0 }}
             animate={started ? { y: 0, rotate: 0, opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: baseDelay + i * 0.022, ease: EASE }}
           >
@@ -76,7 +78,7 @@ function SpotlightPedestal({ started }: { started: boolean }) {
   return (
     <motion.div
       className="relative mx-auto h-[300px] w-[300px] lg:h-[520px] lg:w-[520px]"
-      initial={{ scale: 0.8, opacity: 0 }}
+      initial={started ? false : { scale: 0.8, opacity: 0 }}
       animate={started ? { scale: 1, opacity: 1 } : {}}
       transition={{ type: 'spring', stiffness: 180, damping: 22, delay: 0.5 }}
     >
@@ -112,11 +114,14 @@ function SpotlightPedestal({ started }: { started: boolean }) {
         <AnimatePresence mode="sync">
           <motion.img
             key={current.id}
-            src={sprites.artwork(current.id)}
+            src={heroArtworkSrc(current.id)}
             alt={t('home.hero.artworkAlt', { name: nameOfPokemon(current.id, lang) })}
+            width={475}
+            height={475}
+            decoding="async"
             draggable={false}
             className="absolute inset-0 h-full w-full object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.5)]"
-            initial={{ opacity: 0 }}
+            initial={started ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: EASE }}
@@ -159,11 +164,12 @@ function SpotlightPedestal({ started }: { started: boolean }) {
 export default function Hero({ started }: { started: boolean }) {
   const navigate = useNavigate();
   const localePath = useLocalePath();
-  const latestRun = loadLocalRun(getLatestRunId() ?? '');
   const { t } = useTranslation();
   const lang = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
   const [rattling, setRattling] = useState(false);
+  const [particlesReady, setParticlesReady] = useState(false);
+  const [latestRun, setLatestRun] = useState<RunState | null>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const contentY = useTransform(scrollYProgress, [0, 0.6], [0, 48]); // soft exit — 0.92× scroll speed
 
@@ -174,10 +180,24 @@ export default function Hero({ started }: { started: boolean }) {
     window.setTimeout(() => navigate(localePath(`/pokemon/${id}`)), 500);
   };
 
+  useEffect(() => {
+    if (!isDeferredChromeAllowed()) return;
+    return scheduleIdle(() => {
+      setParticlesReady(true);
+      void import('@/lib/nuzlocke-store').then((m) => {
+        setLatestRun(m.loadLocalRun(m.getLatestRunId() ?? ''));
+      });
+    });
+  }, []);
+
   return (
     <section ref={heroRef} className="relative -mt-16 flex min-h-[100svh] items-center overflow-hidden md:-mt-[6.25rem]">
       <HeroBackdrop />
-      <ParticleField />
+      {particlesReady && (
+        <Suspense fallback={null}>
+          <ParticleField />
+        </Suspense>
+      )}
 
       <motion.div
         style={{ y: contentY }}
@@ -185,16 +205,7 @@ export default function Hero({ started }: { started: boolean }) {
       >
         {/* left — copy */}
         <div className="lg:col-span-7">
-          <motion.p
-            className="pixel-label text-[11px] text-gold"
-            initial={{ opacity: 0, letterSpacing: '0.3em' }}
-            animate={started ? { opacity: 1, letterSpacing: '0.08em' } : {}}
-            transition={{ duration: 0.4 }}
-          >
-            {t('home.hero.eyebrow')}
-          </motion.p>
-
-          <h1 className="mt-6 font-display text-[clamp(48px,8vw,96px)] font-black leading-[1.02] tracking-[0.01em]">
+          <h1 className="font-display text-[clamp(48px,8vw,96px)] font-black leading-[1.02] tracking-[0.01em]">
             <SplitChars text={t('home.hero.titleA')} started={started} baseDelay={0.15} />
             <br />
             <SplitChars text={t('home.hero.titleB')} started={started} baseDelay={0.45} />
@@ -202,7 +213,7 @@ export default function Hero({ started }: { started: boolean }) {
 
           <motion.p
             className="mt-6 max-w-[56ch] font-sans text-lg leading-[1.6] text-tx-secondary"
-            initial={{ y: 24, opacity: 0 }}
+            initial={started ? false : { y: 24, opacity: 0 }}
             animate={started ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.7, ease: EASE }}
           >
@@ -211,7 +222,7 @@ export default function Hero({ started }: { started: boolean }) {
 
           <motion.div
             className="mt-8 flex flex-wrap items-center gap-4"
-            initial={{ y: 24, opacity: 0 }}
+            initial={started ? false : { y: 24, opacity: 0 }}
             animate={started ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.79, ease: EASE }}
           >
@@ -249,7 +260,7 @@ export default function Hero({ started }: { started: boolean }) {
 
           <motion.p
             className="pixel-label mt-8 text-[9px] text-tx-muted"
-            initial={{ y: 24, opacity: 0 }}
+            initial={started ? false : { y: 24, opacity: 0 }}
             animate={started ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.88, ease: EASE }}
           >

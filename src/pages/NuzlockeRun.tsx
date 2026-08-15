@@ -6,6 +6,7 @@ import { Navigate, useLocation, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { AnimatePresence, motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { Swords } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
 import { REGIONS, nodeIndex, nodeName } from '@/lib/regions';
@@ -214,6 +215,7 @@ export default function NuzlockeRun() {
   };
 
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-[1440px] px-4 md:px-8">
       <RunHeader entry={entry} nameOf={nameOf} routeLabel={routeLabel} />
       <RulesBar state={state} owner={owner} />
@@ -337,5 +339,6 @@ export default function NuzlockeRun() {
         )}
       </AnimatePresence>
     </div>
+    </MotionRoot>
   );
 }

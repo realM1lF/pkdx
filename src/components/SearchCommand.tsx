@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Fuse from 'fuse.js';
 import { AnimatePresence, motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { Search, X } from 'lucide-react';
 import Sprite from './Sprite';
 import TypeBadge from './TypeBadge';
@@ -316,14 +317,17 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   if (!isModal) {
     const showPanel = focused && (results.length > 0 || noResults || (!debounced && recents.length > 0));
     return (
+      <MotionRoot>
       <div className={cn('relative w-full', className)}>
         {inputRow}
         {showPanel && <div className="absolute inset-x-0 top-full z-40">{resultList}</div>}
       </div>
+      </MotionRoot>
     );
   }
 
   return (
+    <MotionRoot>
     <AnimatePresence>
       {open && (
         <motion.div
@@ -360,5 +364,6 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
         </motion.div>
       )}
     </AnimatePresence>
+    </MotionRoot>
   );
 }

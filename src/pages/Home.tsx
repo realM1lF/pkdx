@@ -1,8 +1,9 @@
 /* Home — `/` (home.md). First-visit preloader → hero → search gateway → continue → toolkit →
  * spotlight → type spectrum → generations rail → features → stats band. */
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import PokeballLoader from '@/components/PokeballLoader';
+import { isBootPrerendered, shouldShowHomePreloader } from '@/lib/cwv-paint';
 import Hero from './home/Hero';
 import SearchGateway from './home/SearchGateway';
 import ContinueStrip from './home/ContinueStrip';
@@ -15,14 +16,21 @@ import StatsBand from './home/StatsBand';
 
 const SESSION_KEY = 'pdx:preloader-done';
 
+function sessionPreloaderDone(): boolean {
+  try {
+    return Boolean(sessionStorage.getItem(SESSION_KEY));
+  } catch {
+    return true;
+  }
+}
+
 export default function Home() {
-  const [loading, setLoading] = useState(() => {
-    try {
-      return !sessionStorage.getItem(SESSION_KEY);
-    } catch {
-      return false;
-    }
-  });
+  const [loading, setLoading] = useState(() =>
+    shouldShowHomePreloader({
+      sessionDone: sessionPreloaderDone(),
+      prerendered: isBootPrerendered(),
+    }),
+  );
 
   const finish = () => {
     try {
@@ -34,7 +42,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -57,6 +65,6 @@ export default function Home() {
       <GenerationsRail />
       <Features />
       <StatsBand />
-    </>
+    </MotionConfig>
   );
 }

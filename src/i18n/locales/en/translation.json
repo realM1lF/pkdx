@@ -8,6 +8,7 @@
     "search": "Search…",
     "searchDrawer": "Search the dex…",
     "openSearch": "Open search",
+    "searchHint": "Search Pokémon, Items, Maps, Teams, Nuz, Versus, Orre",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menu": "Menu",
@@ -112,7 +113,6 @@
   },
   "footer": {
     "tagline": "A living Pokédex for trainers.",
-    "phase": "PHASE 01 — CORE DEX",
     "explore": "Explore",
     "home": "Home",
     "pokedex": "Pokédex",
@@ -132,6 +132,7 @@
     "fanProject": "Fan project. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
     "madeWith": "Made With ♥ & Type Energy",
     "items": "Items",
+    "orre": "Orre",
     "site": "The Site",
     "about": "About",
     "feedback": "Feedback & ideas",
@@ -782,7 +783,7 @@
     "varianceNote": "For close matchups the win rate can vary by roughly 10 to 15 points between simulation runs."
   },
   "maps": {
-    "atlasEyebrow": "PHASE 04 — ATLAS",
+    "atlasEyebrow": "ATLAS",
     "atlasTitle": "Interactive Maps",
     "atlasBlurb": "Every region as a living transit map. Hover a route to scout it — click it to see exactly what walks, swims, and bites there.",
     "regions": "Regions",
@@ -801,7 +802,7 @@
     "full": "Full",
     "partial": "Partial",
     "soonAria": "More regions — locked",
-    "soonNote": "These regions join the atlas in a later phase.",
+    "soonNote": "Kalos, Alola, Galar, and Paldea are not yet on the interactive atlas.",
     "uncharted": "This sector is uncharted",
     "unchartedBody": "No region data lives at this coordinate. The atlas, however, is fully mapped.",
     "backToAtlas": "Back to Atlas",
@@ -950,7 +951,7 @@
     "seoPartial": "Red/Blue tables are on the live map, not this page."
   },
   "nuz": {
-    "eyebrow": "PHASE 05 — SURVIVAL PROTOCOL",
+    "eyebrow": "SURVIVAL PROTOCOL",
     "title": "Nuzlocke Tracker",
     "blurb": "One encounter per route. Fainting is forever. Track your run as a living timeline — alone, or SoulLinked with a partner.",
     "nuzTip": "A self-imposed challenge: catch only the first Pokémon you meet on each route; if it faints, it's gone for good. Nickname everything.",
@@ -1473,7 +1474,7 @@
       "count": "{{count}} POKÉMON"
     },
     "features": {
-      "eyebrow": "PHASE 01 — WHAT'S INSIDE",
+      "eyebrow": "WHAT'S INSIDE",
       "title": "Built for Trainers",
       "filterTitle": "Filter in a flash",
       "filterCaption": "Type, generation, region — the whole dex reshuffles instantly.",
@@ -1486,7 +1487,7 @@
       "toolkitEyebrow": "BEYOND THE DEX",
       "open": "Open",
       "live": "Live",
-      "lockedTip": "Locked — arrives in a later phase.",
+      "lockedTip": "Locked.",
       "toolkit": {
         "maps": {
           "title": "Interactive Region Maps",
@@ -1504,6 +1505,14 @@
           "title": "Versus — 1v1 Matchups",
           "caption": "Pick two Pokémon, get the full damage math: best moves, KO ranges, speed tiers. On every dex page."
         },
+        "items": {
+          "title": "Item Lexicon",
+          "caption": "Every item with sprite, category, and effect. Filter and search in English or German."
+        },
+        "orre": {
+          "title": "Orre Shadow Tracker",
+          "caption": "Colosseum and XD: mark shadows, see trainer reappearances, track Poké Spots."
+        },
         "stats": {
           "regions": "Regions",
           "locations": "Spots",
@@ -1511,16 +1520,22 @@
           "species": "MON",
           "mode": "Mode",
           "export": "Export",
-          "engine": "Engine"
+          "engine": "Engine",
+          "items": "Items",
+          "groups": "Groups",
+          "lang": "Language",
+          "colo": "Colo",
+          "xd": "XD",
+          "games": "Games"
         }
       },
       "roadmap": {
-        "p2": "PHASE 02 — VERSUS MATCHUPS",
-        "p3": "PHASE 03 — TEAM BUILDER",
-        "p4": "PHASE 04 — INTERACTIVE MAPS",
-        "p5": "PHASE 05 — NUZLOCKE TRACKER",
-        "p6": "PHASE 06 — LIVING DEX",
-        "p7": "PHASE 07 — TCG CARDS"
+        "p2": "VERSUS MATCHUPS",
+        "p3": "TEAM BUILDER",
+        "p4": "INTERACTIVE MAPS",
+        "p5": "NUZLOCKE TRACKER",
+        "p6": "LIVING DEX",
+        "p7": "TCG CARDS"
       }
     },
     "statsband": {
@@ -1713,7 +1728,7 @@
       "storageFailed": "STORAGE FULL — could not save team. Old PokéAPI cache was trimmed; please try again."
     },
     "page": {
-      "eyebrow": "PHASE 03 — TEAM BUILDER",
+      "eyebrow": "TEAM BUILDER",
       "title": "Team Builder",
       "blurb": "Six slots, full legality per game version, live coverage & weakness analysis. Share your squad as a link — no account needed.",
       "slotsAria": "Team slots",
@@ -1802,7 +1817,7 @@
       "title": "Imprint",
       "sections": [
         {
-          "heading": "Information pursuant to § 5 TMG",
+          "heading": "Information pursuant to § 5 DDG",
           "subsections": [
             {
               "heading": "Responsible for content",
@@ -1824,7 +1839,7 @@
         {
           "heading": "Liability for content",
           "paragraphs": [
-            "As a service provider, we are responsible for our own content on these pages in accordance with § 7 (1) TMG under general law. According to §§ 8 to 10 TMG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
+            "As a service provider, we are responsible for our own content on these pages in accordance with § 7 (1) DDG under general law. According to §§ 8 to 10 DDG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
             "Obligations to remove or block the use of information under general law remain unaffected. Liability in this regard is only possible from the time we become aware of a specific legal violation. If we become aware of corresponding legal violations, we will remove this content immediately."
           ]
         },
@@ -1891,7 +1906,8 @@
         {
           "heading": "2. Hosting",
           "paragraphs": [
-            "This website is provided via the hosting provider Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA. When you visit the website, technically necessary data such as IP address, browser type, and access time are processed on Netlify's servers. Personal data may also be transferred to Netlify servers in the USA. Further information can be found in Netlify's privacy policy: https://www.netlify.com/privacy/",
+            "This website is provided via the hosting provider Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA. When you visit the website, technically necessary data such as IP address, browser type, and access time are processed on Netlify's servers. Legal basis: Art. 6(1)(f) GDPR (legitimate interest in securely hosting and delivering the website).",
+            "Personal data may be transferred to the USA. Transfers rely on the EU-US Data Privacy Framework (adequacy decision) where Netlify is certified, otherwise on Standard Contractual Clauses under Art. 46 GDPR. Further information: https://www.netlify.com/privacy/",
             "The site's typefaces (Orbitron, Press Start 2P, Space Grotesk) are served locally from our own server — no requests are made to Google Fonts."
           ]
         },
@@ -1914,15 +1930,15 @@
               "heading": "Local storage in your browser",
               "paragraphs": [
                 "Many MyPokePanion features store data locally in your browser (LocalStorage and SessionStorage) when you use solo mode or do not create multiplayer Nuzlocke runs. This includes, among other things:",
-                "Language preference, PokéAPI cache, saved teams, solo Nuzlocke runs, recent search history, Pokédex view density, and map display mode.",
+                "Language preference, zoom, PokéAPI cache, saved teams, solo Nuzlocke runs, recent search history, Pokédex view density, and map display mode.",
                 "This locally stored data is not automatically transmitted to our servers. You can delete it at any time in your browser settings under \"Clear site data\"."
               ]
             },
             {
               "heading": "Multiplayer Nuzlocke (Supabase)",
               "paragraphs": [
-                "When you create a multiplayer Nuzlocke run or join one via invite code, run name, player name, rules, encounters, nicknames, levels, status, and related metadata are stored on servers operated by Supabase Inc. (USA/EU depending on region) and synchronized in real time between participants.",
-                "The legal basis is your voluntary use of this feature. Without this information, multiplayer mode cannot be used. Further information: https://supabase.com/privacy"
+                "When you create a multiplayer Nuzlocke run or join one via invite code, run name, player name, rules, encounters, nicknames, levels, status, and related metadata are stored on servers operated by Supabase Inc. and synchronized in real time between participants. The project database is in the EU region.",
+                "Legal basis: Art. 6(1)(b) GDPR (processing to provide the multiplayer feature you request). Without this information, multiplayer mode cannot be used. Further information: https://supabase.com/privacy"
               ]
             },
             {
@@ -1969,19 +1985,19 @@
             {
               "heading": "PokéAPI",
               "paragraphs": [
-                "For Pokémon data, moves, encounters, and similar content, your browser sends direct requests to pokeapi.co. Technical data such as your IP address may be processed by the PokéAPI operator. Responses are also cached locally in your browser."
+                "For Pokémon data, moves, encounters, and similar content, your browser sends direct requests to pokeapi.co. Technical data such as your IP address may be processed by the PokéAPI operator. Responses are also cached locally in your browser. Legal basis: Art. 6(1)(f) GDPR (legitimate interest in providing game data)."
               ]
             },
             {
               "heading": "GitHub (sprites & media)",
               "paragraphs": [
-                "Sprites, item graphics, and Pokémon cries are loaded directly from the GitHub repository raw.githubusercontent.com. When retrieved, technical connection data may be transmitted to GitHub/Microsoft."
+                "Sprites, item graphics, and Pokémon cries are loaded directly from the GitHub repository raw.githubusercontent.com. When retrieved, technical connection data may be transmitted to GitHub/Microsoft (USA). Legal basis: Art. 6(1)(f) GDPR. Transfers to the USA rely on the EU-US Data Privacy Framework or Standard Contractual Clauses where applicable."
               ]
             },
             {
               "heading": "Smogon / data.pkmn.cc",
               "paragraphs": [
-                "In the Team Builder, Smogon standard sets can optionally be loaded from data.pkmn.cc. Your browser connects directly to this service; no personal profiles are transmitted, but technical access data may arise."
+                "In the Team Builder, Smogon standard sets can optionally be loaded from data.pkmn.cc. Your browser connects directly to this service; no personal profiles are transmitted, but technical access data may arise. Legal basis: Art. 6(1)(f) GDPR."
               ]
             },
             {
@@ -1995,27 +2011,40 @@
         {
           "heading": "6. Your rights",
           "paragraphs": [
-            "You have the right at any time to obtain information about the personal data stored about you, its origin and recipients, and the purpose of data processing. You also have the right to rectification, deletion, or restriction of processing of this data.",
-            "For this and other questions about privacy, you can contact us at any time using the address given in the imprint."
+            "You have the following rights under the GDPR vis-à-vis the controller:",
+            "Access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20), and objection to processing based on Art. 6(1)(f) GDPR (Art. 21).",
+            "You also have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR). The competent authority is typically the Bavarian Data Protection Commissioner (Bayerischer Landesbeauftragter für den Datenschutz), Wagmüllerstraße 18, 80538 Munich, Germany, https://www.datenschutz-bayern.de/",
+            "For this and other privacy questions, you can contact us at any time using the address given in the imprint."
           ]
         },
         {
-          "heading": "7. Deleting your data",
+          "heading": "7. Retention and deletion",
           "paragraphs": [
-            "Locally stored data (teams, solo Nuzlocke runs, cache, settings) exists only in your browser and can be deleted there at any time.",
-            "For multiplayer Nuzlocke runs, you can contact us by email if you want server-side run data deleted. Please include the run name or invite code where possible."
+            "Locally stored data (teams, solo Nuzlocke runs, cache, zoom, language, settings) stays in your browser until you delete it or the browser removes it.",
+            "Server log files at the host are deleted after the host's usual periods, typically a few days to weeks, unless longer retention is needed to fix incidents.",
+            "Multiplayer runs and account data remain stored while the account or run exists. You can request deletion by email to the imprint address. Please include the run name, invite code, or username where possible."
           ]
         },
         {
-          "heading": "Account (optional)",
+          "heading": "8. Cookies and local storage (TDDDG)",
+          "paragraphs": [
+            "This website does not set tracking cookies. Plausible Analytics works without cookies. LocalStorage and SessionStorage only store functional data (language, zoom, teams, solo runs, search, view settings). That is technically necessary under § 25 (2) TDDDG; no cookie-banner consent is required for it."
+          ]
+        },
+        {
+          "heading": "9. Account (optional)",
           "subsections": [
             {
-              "title": "Registration and sign-in",
-              "body": "You can optionally create an account to sync your teams and Nuzlocke runs across devices. We only store: your chosen username, a cryptographic hash of your password (via Supabase Auth/bcrypt — the password itself is never stored), a hash of your 6-digit recovery code, and your game data (teams, Nuzlocke runs). No email address is collected."
+              "heading": "Registration and sign-in",
+              "paragraphs": [
+                "You can optionally create an account to sync teams and Nuzlocke runs across devices. We store: your chosen username, a cryptographic hash of your password (Supabase Auth/bcrypt; the password itself is never stored with us), a hash of your 6-digit recovery code, and your game data (teams, Nuzlocke runs). No email address is collected. Legal basis: Art. 6(1)(b) GDPR."
+              ]
             },
             {
-              "title": "Storage location and deletion",
-              "body": "Data is stored in a Supabase database (EU region). You can request deletion of your account and all associated data at any time via a GitHub issue or a message to the operator. Without an account, all data is stored locally in your browser only."
+              "heading": "Storage location and deletion",
+              "paragraphs": [
+                "Data is stored in a Supabase database (EU region). You can request deletion of your account and all associated data at any time by messaging the operator. Without an account, all data stays locally in your browser only."
+              ]
             }
           ]
         }

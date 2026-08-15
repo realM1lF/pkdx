@@ -1,6 +1,7 @@
 /* Support — donation page. Warm, honest, zero pressure. */
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { Coffee, ExternalLink, Heart, Sparkles } from 'lucide-react';
 import { LocaleLink } from '@/lib/locale-link';
 import { PAYPAL_ME_URL } from '@/lib/support';
@@ -11,6 +12,7 @@ export default function Support() {
   const { t } = useTranslation();
 
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -80,5 +82,6 @@ export default function Support() {
         </div>
       </motion.div>
     </div>
+    </MotionRoot>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Info, Plus, X } from 'lucide-react';
 import { bootNameIndex, padNum } from '@/lib/pokeapi';
@@ -72,6 +73,7 @@ export default function Nuzlocke() {
   };
 
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-[1440px] px-4 pb-24 pt-12 md:px-8">
       {/* ---------- header (§1.1) ---------- */}
       <header className="flex flex-wrap items-end justify-between gap-4">
@@ -292,6 +294,7 @@ export default function Nuzlocke() {
       />
       <NuzToasts />
     </div>
+    </MotionRoot>
   );
 }
 

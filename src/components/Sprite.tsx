@@ -4,6 +4,7 @@
 import { useMemo, useState } from 'react';
 import { ERA_LABELS, PIXELATED_ERAS, spriteFallbackChain } from '@/lib/sprites';
 import type { SpriteEra } from '@/lib/sprites';
+import { spriteImgAttrs, spritePaintVisible } from '@/lib/img-priority';
 import { cn } from '@/lib/utils';
 
 interface SpriteProps {
@@ -15,6 +16,10 @@ interface SpriteProps {
   className?: string;
   /** skip lazy-loading (above-the-fold heroes) */
   eager?: boolean;
+  /** LCP candidate: eager + fetchpriority=high */
+  priority?: boolean;
+  width?: number;
+  height?: number;
   /** show the pulsing silhouette skeleton while loading (default true) */
   skeleton?: boolean;
   onLoad?: () => void;
@@ -28,12 +33,15 @@ export default function Sprite({
   back = false,
   className,
   eager = false,
+  priority = false,
+  width,
+  height,
   skeleton = true,
   onLoad,
 }: SpriteProps) {
   const chain = useMemo(() => spriteFallbackChain(era, id, shiny, back), [era, id, shiny, back]);
   const [step, setStep] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(() => spritePaintVisible({ priority }));
 
   /* reset on chain change — derived-state-during-render pattern */
   const [prevChain, setPrevChain] = useState(chain);
@@ -58,7 +66,7 @@ export default function Sprite({
       <img
         src={chain[Math.min(step, chain.length - 1)]}
         alt={`${name} — ${ERA_LABELS[era]} sprite${shiny ? ' (shiny)' : ''}`}
-        loading={eager ? 'eager' : 'lazy'}
+        {...spriteImgAttrs({ eager, priority, width, height })}
         decoding="async"
         draggable={false}
         onLoad={() => {

@@ -3,6 +3,7 @@
  * "how it reads" legend strip, compact header stats. */
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { useTranslation } from 'react-i18next';
 import RegionCard, { SoonCard } from './maps/RegionCard';
 import { LinkKindGlyphs, NodeKindGlyphs } from './maps/LegendGlyphs';
@@ -45,6 +46,7 @@ export default function Maps() {
   const locations = useCountUp(TOTAL_LOCATIONS, 1200, 350);
 
   return (
+    <MotionRoot>
     <div className="relative">
       {/* §1.1 header */}
       <header className="mx-auto flex max-w-content flex-wrap items-end justify-between gap-6 px-4 pb-10 pt-12 sm:px-8">
@@ -115,5 +117,6 @@ export default function Maps() {
         {t('maps.footerNote')}
       </p>
     </div>
+    </MotionRoot>
   );
 }

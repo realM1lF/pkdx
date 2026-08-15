@@ -38,6 +38,7 @@ export default function Footer() {
     { to: '/team', key: 'footer.team' },
     { to: '/versus', key: 'footer.versus' },
     { to: '/items', key: 'footer.items' },
+    { to: '/orre', key: 'footer.orre' },
   ] as const;
 
   const legalLinks = [
@@ -78,7 +79,6 @@ export default function Footer() {
             </span>
           </div>
           <p className="font-sans text-sm text-tx-secondary">{t('footer.tagline')}</p>
-          <span className="pixel-label text-[9px] text-tx-muted">{t('footer.phase')}</span>
         </div>
 
         {/* Features */}
@@ -189,7 +189,7 @@ export default function Footer() {
               {t('footer.licenses')}
             </LocaleLink>
             <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] text-gold">
-              v1.0-phase-01
+              v1.0
             </span>
           </div>
         </div>

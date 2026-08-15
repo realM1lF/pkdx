@@ -245,10 +245,7 @@ export default function OrreTracker() {
       <HonestyHint show={game === 'colosseum'} className="mb-2">
         {t('honesty.starterRandom')}
       </HonestyHint>
-      <div
-        data-lenis-prevent
-        className="max-h-[min(70vh,720px)] overflow-y-auto rounded-md border border-hairline bg-surface1"
-      >
+      <div className="pdx-nested-scroll max-h-[min(70vh,720px)] overflow-y-auto rounded-md border border-hairline bg-surface1">
         {rows.length === 0 ? (
           <p className="px-4 py-8 text-center text-[13px] text-tx-muted">{t('orre.empty')}</p>
         ) : (

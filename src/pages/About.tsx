@@ -1,6 +1,7 @@
 /* About — why MyPokePanion exists. Calm, personal, not overloaded. */
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { ArrowRight, Gamepad2, Hammer, Heart, Layers } from 'lucide-react';
 import { LocaleLink } from '@/lib/locale-link';
 
@@ -16,6 +17,7 @@ export default function About() {
   ];
 
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <motion.header
         initial={{ opacity: 0, y: 16 }}
@@ -78,5 +80,6 @@ export default function About() {
         </LocaleLink>
       </motion.div>
     </div>
+    </MotionRoot>
   );
 }

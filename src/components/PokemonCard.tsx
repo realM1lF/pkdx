@@ -21,6 +21,8 @@ import type { PokemonType, StatKey } from '@/lib/types';
 import { dexEntryPath } from '@/lib/dex-forms-catalog';
 import { pokemonHref } from '@/lib/edition-nav';
 import { FORM_I18N_KEY, type DexSummary } from './pokedex/dex-data';
+import { isAboveFoldDexItem } from '@/lib/img-priority';
+import { dexItemMotion, dexItemUsesMotion } from '@/lib/dex-motion';
 import { cn } from '@/lib/utils';
 
 const TRIAD: StatKey[] = ['hp', 'attack', 'defense'];
@@ -38,6 +40,9 @@ interface PokemonCardProps {
 
 function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardProps) {
   const compact = density === 'compact';
+  const priority = isAboveFoldDexItem(index);
+  const itemMotion = dexItemMotion(index);
+  const spritePx = compact ? 80 : 112;
   const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
@@ -68,22 +73,9 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
     ? `linear-gradient(135deg, rgba(${c1.rgb},0.16), transparent 40%, transparent 60%, rgba(${c2.rgb},0.16))`
     : `linear-gradient(180deg, rgba(${c1.rgb},0.14) 0%, transparent 45%)`;
 
-  return (
-    <motion.div
-      ref={ref}
-      layout="position"
-      initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
-      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.2 } }}
-      transition={{
-        duration: 0.5,
-        ease: EASE_OUT,
-        delay: Math.min(index % 24, 16) * 0.025,
-        layout: { type: 'spring', stiffness: 180, damping: 22 },
-      }}
-      className="pdx-card-wrap group relative"
-      data-type={t1}
-    >
+  const wrapClass = cn('pdx-card-wrap group relative', priority && 'pdx-card-wrap--lcp');
+  const body = (
+    <>
       <div
         className={cn(
           'pdx-card relative flex h-full flex-col items-center overflow-hidden rounded-lg border border-hairline bg-surface1',
@@ -140,6 +132,9 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
             id={s.id}
             name={label}
             shiny={shiny}
+            priority={priority}
+            width={spritePx}
+            height={spritePx}
             className={cn('pdx-sprite relative z-[1]', compact ? 'h-20 w-20' : 'h-28 w-28')}
           />
           {burst > 0 && <SparkleBurst key={burst} spread={compact ? 0.7 : 1} />}
@@ -209,6 +204,33 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
       >
         <Sparkles size={14} strokeWidth={1.75} />
       </button>
+    </>
+  );
+
+  if (!dexItemUsesMotion(index)) {
+    return (
+      <div ref={ref} className={wrapClass} data-type={t1}>
+        {body}
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      layout={itemMotion.layout}
+      initial={itemMotion.initial}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.2 } }}
+      transition={{
+        duration: 0.5,
+        ease: EASE_OUT,
+        delay: Math.min(index % 24, 16) * 0.025,
+      }}
+      className={wrapClass}
+      data-type={t1}
+    >
+      {body}
     </motion.div>
   );
 }

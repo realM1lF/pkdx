@@ -2,6 +2,7 @@
  * Two accent cards (like the toolkit cards) linking to pre-templated issues. */
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { Bug, Lightbulb, ArrowUpRight, Github } from 'lucide-react';
 import { accentRgb } from '@/lib/regions';
 
@@ -44,6 +45,7 @@ export default function Feedback() {
   const { t } = useTranslation();
 
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <header className="mb-8">
         <p className="pixel-label text-[9px] text-gold">{t('feedback.eyebrow')}</p>
@@ -127,5 +129,6 @@ export default function Feedback() {
         </a>
       </p>
     </div>
+    </MotionRoot>
   );
 }

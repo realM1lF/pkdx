@@ -1,15 +1,10 @@
 /* HeroBackdrop — nebula + floating type glyphs with GSAP scroll parallax
  * (home.md §1 layers 1 & 3). Dedicated GSAP component — no Framer Motion inside. */
-import { useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import { useEffect, useRef, useState } from 'react';
 import TypeGlyph from '@/components/TypeGlyph';
-import { getLenis } from '@/lib/smooth';
+import { isDeferredChromeAllowed } from '@/lib/idle-boot';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const GLYPHS = [
   { type: 'fire', size: 72, pos: { left: '6%', top: '22%' }, opacity: 0.12, dur: 7, rate: 0.6 },
@@ -23,43 +18,87 @@ const GLYPHS = [
 
 export default function HeroBackdrop() {
   const scope = useRef<HTMLDivElement>(null);
+  const [parallaxReady, setParallaxReady] = useState(false);
 
-  useGSAP(
-    () => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (window.matchMedia('(pointer: coarse)').matches) return; // parallax off on mobile
-      const hero = scope.current?.closest('section');
-      if (!hero) return;
+  useEffect(() => {
+    if (!isDeferredChromeAllowed()) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    setParallaxReady(true);
+  }, []);
 
-      /* keep ScrollTrigger in sync with Lenis smooth scroll */
-      const lenis = getLenis();
-      const sync = () => ScrollTrigger.update();
-      lenis?.on('scroll', sync);
-
-      gsap.to('[data-layer="nebula"]', {
-        yPercent: 18, // parallax factor ~0.3 — scrolls slower
-        ease: 'none',
-        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 },
-      });
-      gsap.utils.toArray<HTMLElement>('[data-glyph]').forEach((el) => {
-        const rate = Number(el.dataset.rate ?? 0.5);
-        gsap.to(el, {
-          y: -rate * 180,
-          ease: 'none',
-          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 },
+  useEffect(() => {
+    if (!parallaxReady) return;
+    const root = scope.current;
+    if (!root) return;
+    let dead = false;
+    let cleanup = () => {};
+    void Promise.all([import('gsap'), import('gsap/ScrollTrigger'), import('@/lib/smooth')]).then(
+      ([gsapMod, stMod, smooth]) => {
+        if (dead) return;
+        const gsap = gsapMod.default;
+        const { ScrollTrigger } = stMod;
+        gsap.registerPlugin(ScrollTrigger);
+        const hero = root.closest('section');
+        if (!hero) return;
+        const sync = () => ScrollTrigger.update();
+        const tweens: { scrollTrigger?: { kill: () => void }; kill: () => void }[] = [];
+        tweens.push(
+          gsap.to(root.querySelector('[data-layer="nebula"]'), {
+            yPercent: 18,
+            ease: 'none',
+            scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 },
+          }),
+        );
+        root.querySelectorAll<HTMLElement>('[data-glyph]').forEach((el) => {
+          const rate = Number(el.dataset.rate ?? 0.5);
+          tweens.push(
+            gsap.to(el, {
+              y: -rate * 180,
+              ease: 'none',
+              scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 },
+            }),
+          );
         });
-      });
-
-      return () => lenis?.off('scroll', sync);
-    },
-    { scope },
-  );
+        let lenis = smooth.getLenis();
+        const unsub = smooth.onLenisReady((instance) => {
+          if (dead) return;
+          lenis = instance;
+          instance.on('scroll', sync);
+        });
+        cleanup = () => {
+          unsub();
+          lenis?.off('scroll', sync);
+          tweens.forEach((tw) => {
+            tw.scrollTrigger?.kill();
+            tw.kill();
+          });
+        };
+      },
+    );
+    return () => {
+      dead = true;
+      cleanup();
+    };
+  }, [parallaxReady]);
 
   return (
     <div ref={scope} className="absolute inset-0" aria-hidden>
       {/* layer 1 — nebula */}
-      <div data-layer="nebula" className="absolute -inset-y-24 inset-x-0">
-        <img src="/hero-nebula.png" alt="" className="h-full w-full object-cover" />
+      <div data-layer="nebula" className="absolute -inset-y-24 inset-x-0 min-h-[100svh]">
+        <picture>
+          <source type="image/avif" srcSet="/hero-nebula.avif" />
+          <source type="image/webp" srcSet="/hero-nebula.webp" />
+          <img
+            src="/hero-nebula.png"
+            alt=""
+            width={1600}
+            height={900}
+            fetchPriority="high"
+            decoding="async"
+            className="h-[100svh] w-full min-h-[100svh] object-cover"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-b from-void/40 via-transparent to-void" />
       </div>
       {/* layer 3 — floating type glyphs */}

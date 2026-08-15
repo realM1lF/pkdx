@@ -192,7 +192,7 @@ export function SoonCard({ index }: { index: number }) {
       <Lock size={20} className="text-tx-muted" />
       <div className="text-center">
         <div className="pixel-label text-[9px] text-tx-muted">KALOS · ALOLA · GALAR · PALDEA</div>
-        <div className="pixel-label mt-2 text-[8px] text-tx-muted/70">PHASE XX — LOCKED</div>
+        <div className="pixel-label mt-2 text-[8px] text-tx-muted/70">{t('maps.soon')}</div>
       </div>
       <div
         role="tooltip"

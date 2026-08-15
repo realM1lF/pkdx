@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { Check, KeyRound, Loader2, LogIn, LogOut, ShieldCheck, UserRound } from 'lucide-react';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import {
@@ -92,6 +93,7 @@ export default function Account() {
   /* logged-in view */
   if (user && profile) {
     return (
+      <MotionRoot>
       <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }} className="mx-auto max-w-md">
           <p className="pixel-label text-[9px] text-gold">{t('account.eyebrow')}</p>
@@ -123,10 +125,12 @@ export default function Account() {
           <p className="mt-4 font-sans text-[12px] leading-relaxed text-tx-muted">{t('account.dataNote')}</p>
         </motion.div>
       </div>
+      </MotionRoot>
     );
   }
 
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }} className="mx-auto max-w-md">
         <p className="pixel-label text-[9px] text-gold">{t('account.eyebrow')}</p>
@@ -245,5 +249,6 @@ export default function Account() {
         </p>
       </motion.div>
     </div>
+    </MotionRoot>
   );
 }

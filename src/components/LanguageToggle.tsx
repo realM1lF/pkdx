@@ -2,7 +2,6 @@
  * Used in the navbar (desktop) and the mobile drawer. Switching is live. */
 import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { localePath, stripLocalePrefix, useLocale } from '@/lib/locale-link';
 import { cn } from '@/lib/utils';
 
@@ -55,17 +54,16 @@ export default function LanguageToggle({ className }: LanguageToggleProps) {
           <span key={lng} className="flex items-center">
             {i > 0 && <span className="mx-1 text-[10px] text-tx-muted/50">|</span>}
             {lng === 'de' ? (
-              <Tooltip>
-                <TooltipTrigger asChild>{button}</TooltipTrigger>
-                <TooltipContent
-                  side="bottom"
-                  sideOffset={6}
-                  className="max-w-[220px] border border-hairline2 border-l-2 border-l-gold bg-surface2 px-2.5 py-2 text-[10px] leading-snug text-tx-secondary shadow-[0_8px_32px_rgba(0,0,0,0.45)] [&>svg]:hidden"
+              <span className="group relative">
+                {button}
+                <span
+                  role="tooltip"
+                  className="pointer-events-none invisible absolute right-0 top-full z-50 mt-2 w-[220px] rounded-md border border-hairline2 border-l-2 border-l-gold bg-surface2 px-2.5 py-2 text-[10px] leading-snug text-tx-secondary opacity-0 shadow-[0_8px_32px_rgba(0,0,0,0.45)] transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
                 >
                   <p>{t('nav.deCoverageNoteEn')}</p>
                   <p className="mt-1 text-tx-muted">{t('nav.deCoverageNoteDe')}</p>
-                </TooltipContent>
-              </Tooltip>
+                </span>
+              </span>
             ) : (
               button
             )}

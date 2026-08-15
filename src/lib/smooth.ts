@@ -3,6 +3,7 @@ import Lenis from 'lenis';
 
 let lenis: Lenis | null = null;
 let rafId = 0;
+const readyListeners = new Set<(instance: Lenis) => void>();
 
 function lenisPreventNode(node: Element): boolean {
   if (!(node instanceof HTMLElement)) return false;
@@ -29,11 +30,24 @@ export function initLenis(): Lenis | null {
     rafId = requestAnimationFrame(loop);
   };
   rafId = requestAnimationFrame(loop);
+  for (const cb of readyListeners) cb(lenis);
   return lenis;
 }
 
 export function getLenis(): Lenis | null {
   return lenis;
+}
+
+/** Subscribe to the singleton. Fires now if Lenis already booted (idle race). */
+export function onLenisReady(cb: (instance: Lenis) => void): () => void {
+  if (lenis) {
+    cb(lenis);
+    return () => {};
+  }
+  readyListeners.add(cb);
+  return () => {
+    readyListeners.delete(cb);
+  };
 }
 
 export function scrollToTop(duration = 0.8): void {

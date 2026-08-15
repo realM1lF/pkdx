@@ -1,10 +1,13 @@
 /* Search Gateway — "FIND YOUR POKÉMON" (home.md §2). */
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { isDeferredChromeAllowed, scheduleIdle } from '@/lib/idle-boot';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { nameOfType, useLanguage } from '@/lib/i18n-data';
 import { motion } from 'framer-motion';
-import SearchCommand from '@/components/SearchCommand';
 import TypeGlyph from '@/components/TypeGlyph';
+
+const SearchCommand = lazy(() => import('@/components/SearchCommand'));
 import Reveal from './Reveal';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -15,6 +18,11 @@ const POPULAR: PokemonType[] = ['fire', 'water', 'grass', 'electric', 'psychic',
 export default function SearchGateway() {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const [searchReady, setSearchReady] = useState(false);
+  useEffect(() => {
+    if (!isDeferredChromeAllowed()) return;
+    return scheduleIdle(() => setSearchReady(true));
+  }, []);
   return (
     <section id="search-gateway" className="relative z-10 bg-abyss pt-24 pb-12">
       {/* z-10: the inline search dropdown must paint above the following
@@ -33,7 +41,13 @@ export default function SearchGateway() {
           {t('home.gateway.title')}
         </h2>
 
-        <SearchCommand variant="inline" className="w-full" />
+        {searchReady ? (
+          <Suspense fallback={<div className="h-16 w-full rounded-md border border-hairline bg-surface2" aria-hidden />}>
+            <SearchCommand variant="inline" className="w-full" />
+          </Suspense>
+        ) : (
+          <div className="h-16 w-full rounded-md border border-hairline bg-surface2" aria-hidden />
+        )}
 
         <div className="flex flex-wrap items-center justify-center gap-2">
           <span className="pixel-label mr-1 text-[9px] text-tx-muted">{t('home.gateway.popular')}</span>

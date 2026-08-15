@@ -4,11 +4,12 @@
  * Row 2 (32px, conditional): removable active-filter chips + reset.
  * 0 results → gold shake + hint bubble (never red, design.md §6.2-9). */
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import { ChevronDown, Crown, LayoutGrid, Grid2X2, Rows3, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import TypeGlyph from '@/components/TypeGlyph';
-import { fmtNum, useLanguage, nameOfType } from '@/lib/i18n-data';
+import { useLanguage, nameOfType } from '@/lib/i18n-data';
 import CommandSearch from './CommandSearch';
 import { GENERATIONS, POKEMON_TYPES, TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
@@ -161,14 +162,12 @@ interface FilterPopoverProps {
   onToggleSpecial: (s: Special) => void;
   sort: SortKey;
   onSort: (s: SortKey) => void;
-  resultCount: number;
   activeCount: number;
   onClear: () => void;
 }
 
 function FilterPopover(p: FilterPopoverProps) {
   const { t: t8n } = useTranslation();
-  const lang = useLanguage();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -213,13 +212,16 @@ function FilterPopover(p: FilterPopoverProps) {
       <AnimatePresence>
         {open && (
           <>
-            <button
-              type="button"
-              aria-label={t8n('pokedex.closeFilters')}
-              tabIndex={-1}
-              onClick={() => setOpen(false)}
-              className="fixed inset-0 z-30 cursor-default"
-            />
+            {createPortal(
+              <button
+                type="button"
+                aria-label={t8n('pokedex.closeFilters')}
+                tabIndex={-1}
+                onClick={() => setOpen(false)}
+                className="fixed inset-0 z-[35] cursor-default"
+              />,
+              document.body,
+            )}
             <motion.div
               role="dialog"
               aria-label={t8n('pokedex.filters')}
@@ -357,7 +359,6 @@ function FilterPopover(p: FilterPopoverProps) {
                 </div>
               </div>
 
-              {/* footer */}
               <div className="flex items-center border-t border-hairline pt-2.5">
                 <button
                   type="button"
@@ -368,13 +369,6 @@ function FilterPopover(p: FilterPopoverProps) {
                 >
                   <RotateCcw size={11} strokeWidth={1.75} />
                   {t8n('pokedex.clearAll')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="ml-auto h-8 rounded-md border border-gold/60 bg-gold-soft px-3 font-sans text-[11px] font-bold text-gold transition-all duration-200 hover:shadow-glow-gold"
-                >
-                  {t8n('pokedex.showResults', { count: fmtNum(p.resultCount, lang) })}
                 </button>
               </div>
             </motion.div>
@@ -461,7 +455,6 @@ export interface CommandBarProps {
   density: Density;
   onDensity: (d: Density) => void;
   onResetAll: () => void;
-  resultCount: number;
   shakeKey: number;
   showEmptyHint: boolean;
 }
@@ -550,7 +543,6 @@ export default function CommandBar(p: CommandBarProps) {
               onToggleSpecial={p.onToggleSpecial}
               sort={p.sort}
               onSort={p.onSort}
-              resultCount={p.resultCount}
               activeCount={popoverCount}
               onClear={p.onResetAll}
             />

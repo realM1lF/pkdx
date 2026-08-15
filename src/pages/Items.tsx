@@ -5,6 +5,7 @@
  * filter + a hard render cap, so no virtualization is needed; images lazy. */
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { Package, Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDescModal';
@@ -129,6 +130,7 @@ export default function Items() {
   const nameOf = (e: ItemEntry) => (lang === 'de' && e.desc.de ? e.desc.de : e.desc.n);
 
   return (
+    <MotionRoot>
     <div className="relative">
       {/* header */}
       <header className="mx-auto flex max-w-content flex-wrap items-end justify-between gap-6 px-4 pb-8 pt-12 sm:px-8">
@@ -268,5 +270,6 @@ export default function Items() {
 
       <EntityDescModal {...entityModal.props} />
     </div>
+    </MotionRoot>
   );
 }

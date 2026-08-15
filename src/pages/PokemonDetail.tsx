@@ -9,6 +9,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { ArrowLeft, Swords } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
@@ -239,6 +240,7 @@ export default function PokemonDetail() {
   /* ---------- dashboard ---------- */
   const ident = formIdentity(pokemon.name, pokemon.id);
   return (
+    <MotionRoot>
     <motion.div
       key={pokemon.id}
       initial={{ opacity: 0 }}
@@ -430,5 +432,6 @@ export default function PokemonDetail() {
       </>
       )}
     </motion.div>
+    </MotionRoot>
   );
 }

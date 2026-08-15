@@ -8,6 +8,7 @@
     "search": "Suchen…",
     "searchDrawer": "Pokédex durchsuchen…",
     "openSearch": "Suche öffnen",
+    "searchHint": "Suche nach Pokémon, Items, Maps, Teams, Nuz, Versus, Orre",
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
     "menu": "Menü",
@@ -112,7 +113,6 @@
   },
   "footer": {
     "tagline": "Ein lebendiger Pokédex für Trainer.",
-    "phase": "PHASE 01 — CORE-DEX",
     "explore": "Entdecken",
     "home": "Start",
     "pokedex": "Pokédex",
@@ -132,6 +132,7 @@
     "fanProject": "Fanprojekt. Pokémon © Nintendo/Creatures Inc./GAME FREAK inc.",
     "madeWith": "Made with ♥ & typ-energie",
     "items": "Items",
+    "orre": "Orre",
     "site": "Die seite",
     "about": "About",
     "feedback": "Feedback & Ideen",
@@ -782,7 +783,7 @@
     "varianceNote": "Bei ausgeglichenen Duellen kann die Quote je nach Simulationslauf um rund 10 bis 15 Punkte schwanken."
   },
   "maps": {
-    "atlasEyebrow": "PHASE 04 — ATLAS",
+    "atlasEyebrow": "ATLAS",
     "atlasTitle": "Interaktive Maps",
     "atlasBlurb": "Jede Region als lebendige Linien-Map. Fahre über eine Route zum Scouting — klicke, um genau zu sehen, was dort läuft, schwimmt und beißt.",
     "regions": "Regionen",
@@ -801,7 +802,7 @@
     "full": "Voll",
     "partial": "Teilweise",
     "soonAria": "Weitere Regionen — gesperrt",
-    "soonNote": "Diese Regionen kommen in einer späteren Phase in den Atlas.",
+    "soonNote": "Kalos, Alola, Galar und Paldea sind noch nicht als interaktive Maps im Atlas.",
     "uncharted": "Dieser Sektor ist unerforscht",
     "unchartedBody": "An dieser Koordinate liegen keine Regionsdaten. Der Atlas ist jedoch vollständig kartiert.",
     "backToAtlas": "Zurück zum Atlas",
@@ -950,7 +951,7 @@
     "seoPartial": "Rot/Blau steht auf der Live-Karte, nicht auf dieser Seite."
   },
   "nuz": {
-    "eyebrow": "PHASE 05 — ÜBERLEBENSPROTOKOLL",
+    "eyebrow": "ÜBERLEBENSPROTOKOLL",
     "title": "Nuzlocke-Tracker",
     "blurb": "Eine Begegnung pro Route. Kampfunfähig ist für immer. Tracke deinen Run als lebendige Timeline — allein oder SoulLinked mit einem Partner.",
     "nuzTip": "Eine selbstauferlegte Challenge: Fange nur das erste Pokémon pro Route; wird es kampfunfähig, ist es für immer weg. Gib allem Spitznamen.",
@@ -1473,7 +1474,7 @@
       "count": "{{count}} POKÉMON"
     },
     "features": {
-      "eyebrow": "PHASE 01 — INHALT",
+      "eyebrow": "INHALT",
       "title": "Für Trainer gebaut",
       "filterTitle": "Blitzschnell filtern",
       "filterCaption": "Typ, Generation, Region — der ganze Dex sortiert sich sofort neu.",
@@ -1486,7 +1487,7 @@
       "toolkitEyebrow": "JENSEITS DES DEX",
       "open": "Öffnen",
       "live": "Live",
-      "lockedTip": "Gesperrt — kommt in einer späteren Phase.",
+      "lockedTip": "Gesperrt.",
       "toolkit": {
         "maps": {
           "title": "Interaktive Regions-Maps",
@@ -1504,6 +1505,14 @@
           "title": "Versus — 1v1-Matchups",
           "caption": "Wähle zwei Pokémon und erhalte die komplette Schadensrechnung: beste Attacken, KO-Bereiche, Initiative. Auf jeder Dex-Seite."
         },
+        "items": {
+          "title": "Item-Lexikon",
+          "caption": "Alle Items mit Sprite, Kategorie und Effekt. Filtern und auf Deutsch oder Englisch suchen."
+        },
+        "orre": {
+          "title": "Orre Shadow-Tracker",
+          "caption": "Colosseum und XD: Shadows markieren, Trainer-Wiederkehr sehen, Poképlätze tracken."
+        },
         "stats": {
           "regions": "Regionen",
           "locations": "Orte",
@@ -1511,16 +1520,22 @@
           "species": "MON",
           "mode": "Modus",
           "export": "Export",
-          "engine": "Engine"
+          "engine": "Engine",
+          "items": "Items",
+          "groups": "Gruppen",
+          "lang": "Sprache",
+          "colo": "Colo",
+          "xd": "XD",
+          "games": "Spiele"
         }
       },
       "roadmap": {
-        "p2": "PHASE 02 — VERSUS-MATCHUPS",
-        "p3": "PHASE 03 — TEAM-BUILDER",
-        "p4": "PHASE 04 — INTERAKTIVE MAPS",
-        "p5": "PHASE 05 — NUZLOCKE-TRACKER",
-        "p6": "PHASE 06 — LEBENDER DEX",
-        "p7": "PHASE 07 — TCG-KARTEN"
+        "p2": "VERSUS-MATCHUPS",
+        "p3": "TEAM-BUILDER",
+        "p4": "INTERAKTIVE MAPS",
+        "p5": "NUZLOCKE-TRACKER",
+        "p6": "LEBENDER DEX",
+        "p7": "TCG-KARTEN"
       }
     },
     "statsband": {
@@ -1713,7 +1728,7 @@
       "storageFailed": "SPEICHER VOLL — Team konnte nicht gespeichert werden. Alte PokéAPI-Daten wurden bereinigt; bitte erneut versuchen."
     },
     "page": {
-      "eyebrow": "PHASE 03 — TEAM-BUILDER",
+      "eyebrow": "TEAM-BUILDER",
       "title": "Team-Builder",
       "blurb": "Sechs Slots, volle Legalität pro Spielversion, Live-Coverage- & Schwächen-Analyse. Teile dein Team als Link — kein Konto nötig.",
       "slotsAria": "Team-Slots",
@@ -1802,7 +1817,7 @@
       "title": "Impressum",
       "sections": [
         {
-          "heading": "Angaben gemäß § 5 TMG",
+          "heading": "Angaben gemäß § 5 DDG",
           "subsections": [
             {
               "heading": "Verantwortlich für den Inhalt",
@@ -1824,7 +1839,7 @@
         {
           "heading": "Haftung für Inhalte",
           "paragraphs": [
-            "Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
+            "Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
             "Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen."
           ]
         },
@@ -1891,7 +1906,8 @@
         {
           "heading": "2. Hosting",
           "paragraphs": [
-            "Diese Website wird über den Hosting-Anbieter Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA, bereitgestellt. Beim Besuch der Website werden technisch notwendige Daten wie IP-Adresse, Browsertyp und Zugriffszeit auf den Servern von Netlify verarbeitet. Hierbei können auch personenbezogene Daten an Server von Netlify in den USA übermittelt werden. Weitere Informationen findest du in der Datenschutzerklärung von Netlify: https://www.netlify.com/privacy/",
+            "Diese Website wird über den Hosting-Anbieter Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, California 94107, USA, bereitgestellt. Beim Besuch der Website werden technisch notwendige Daten wie IP-Adresse, Browsertyp und Zugriffszeit auf den Servern von Netlify verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer sicheren, erreichbaren Bereitstellung der Website).",
+            "Dabei können personenbezogene Daten in die USA übermittelt werden. Die Übermittlung stützt sich auf den EU-US Data Privacy Framework (Angemessenheitsbeschluss) soweit Netlify zertifiziert ist, hilfsweise auf Standardvertragsklauseln nach Art. 46 DSGVO. Weitere Informationen: https://www.netlify.com/privacy/",
             "Die Schriftarten der Website (Orbitron, Press Start 2P, Space Grotesk) werden lokal von unserem Server ausgeliefert — es erfolgt kein Abruf bei Google Fonts."
           ]
         },
@@ -1914,15 +1930,15 @@
               "heading": "Lokale Speicherung in deinem Browser",
               "paragraphs": [
                 "Viele Funktionen von MyPokePanion speichern Daten ausschließlich lokal in deinem Browser (LocalStorage und SessionStorage), solange du den Solo-Modus nutzt oder keine Multiplayer-Nuzlocke-Runs erstellst. Dazu gehören unter anderem:",
-                "Spracheinstellung, PokéAPI-Cache, gespeicherte Teams, Nuzlocke-Solo-Runs, zuletzt genutzte Suche, Pokédex-Ansichtsdichte und Map-Darstellungsmodus.",
+                "Spracheinstellung, Zoom, PokéAPI-Cache, gespeicherte Teams, Nuzlocke-Solo-Runs, zuletzt genutzte Suche, Pokédex-Ansichtsdichte und Map-Darstellungsmodus.",
                 "Diese lokal gespeicherten Daten werden nicht automatisch an unsere Server übermittelt. Du kannst sie jederzeit in deinen Browser-Einstellungen unter „Website-Daten löschen“ entfernen."
               ]
             },
             {
               "heading": "Multiplayer-Nuzlocke (Supabase)",
               "paragraphs": [
-                "Wenn du einen Multiplayer-Nuzlocke-Run erstellst oder einem per Einladungscode beitrittst, werden Run-Name, Spielername, Regeln, Encounters, Nicknames, Level, Status und zugehörige Metadaten auf Servern von Supabase Inc. (USA/EU je nach Region) gespeichert und per Echtzeit-Synchronisation zwischen Teilnehmenden ausgetauscht.",
-                "Rechtsgrundlage ist deine freiwillige Nutzung dieser Funktion. Ohne diese Angaben ist der Multiplayer-Modus nicht nutzbar. Weitere Informationen: https://supabase.com/privacy"
+                "Wenn du einen Multiplayer-Nuzlocke-Run erstellst oder einem per Einladungscode beitrittst, werden Run-Name, Spielername, Regeln, Encounters, Nicknames, Level, Status und zugehörige Metadaten auf Servern von Supabase Inc. gespeichert und per Echtzeit-Synchronisation zwischen Teilnehmenden ausgetauscht. Die Projektdatenbank liegt in der EU-Region.",
+                "Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Verarbeitung zur Erfüllung der von dir angeforderten Multiplayer-Funktion). Ohne diese Angaben ist der Multiplayer-Modus nicht nutzbar. Weitere Informationen: https://supabase.com/privacy"
               ]
             },
             {
@@ -1969,19 +1985,19 @@
             {
               "heading": "PokéAPI",
               "paragraphs": [
-                "Für Pokémon-Daten, Attacken, Begegnungen und ähnliche Inhalte stellt dein Browser direkte Anfragen an pokeapi.co. Dabei können technische Daten wie deine IP-Adresse beim Betreiber der PokéAPI verarbeitet werden. Antworten werden zusätzlich lokal in deinem Browser zwischengespeichert."
+                "Für Pokémon-Daten, Attacken, Begegnungen und ähnliche Inhalte stellt dein Browser direkte Anfragen an pokeapi.co. Dabei können technische Daten wie deine IP-Adresse beim Betreiber der PokéAPI verarbeitet werden. Antworten werden zusätzlich lokal in deinem Browser zwischengespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bereitstellung der Spieldaten)."
               ]
             },
             {
               "heading": "GitHub (Sprites & Medien)",
               "paragraphs": [
-                "Sprites, Item-Grafiken und Pokémon-Rufe werden direkt aus dem GitHub-Repository raw.githubusercontent.com geladen. Beim Abruf können technische Verbindungsdaten an GitHub/Microsoft übermittelt werden."
+                "Sprites, Item-Grafiken und Pokémon-Rufe werden direkt aus dem GitHub-Repository raw.githubusercontent.com geladen. Beim Abruf können technische Verbindungsdaten an GitHub/Microsoft (USA) übermittelt werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Die Übermittlung in die USA stützt sich auf den EU-US Data Privacy Framework bzw. Standardvertragsklauseln, soweit anwendbar."
               ]
             },
             {
               "heading": "Smogon / data.pkmn.cc",
               "paragraphs": [
-                "Im Team-Builder können optional Smogon-Standard-Sets von data.pkmn.cc geladen werden. Dabei wird dein Browser direkt mit diesem Dienst verbunden; es werden keine personenbezogenen Profile übermittelt, jedoch können technische Zugriffsdaten anfallen."
+                "Im Team-Builder können optional Smogon-Standard-Sets von data.pkmn.cc geladen werden. Dabei wird dein Browser direkt mit diesem Dienst verbunden; es werden keine personenbezogenen Profile übermittelt, jedoch können technische Zugriffsdaten anfallen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO."
               ]
             },
             {
@@ -1995,27 +2011,40 @@
         {
           "heading": "6. Ihre Rechte",
           "paragraphs": [
-            "Sie haben jederzeit das Recht auf Auskunft über die bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger sowie den Zweck der Datenverarbeitung. Sie haben außerdem ein Recht auf Berichtigung, Löschung oder Einschränkung der Verarbeitung dieser Daten.",
+            "Sie haben gegenüber dem Verantwortlichen folgende Rechte nach der DSGVO:",
+            "Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen Verarbeitungen auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (Art. 21).",
+            "Sie haben außerdem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO). Zuständig ist in der Regel der Bayerische Landesbeauftragte für den Datenschutz, Wagmüllerstraße 18, 80538 München, https://www.datenschutz-bayern.de/",
             "Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden."
           ]
         },
         {
-          "heading": "7. Löschung deiner Daten",
+          "heading": "7. Speicherdauer und Löschung",
           "paragraphs": [
-            "Lokal gespeicherte Daten (Teams, Solo-Nuzlocke-Runs, Cache, Einstellungen) liegen ausschließlich in deinem Browser und kannst du dort jederzeit löschen.",
-            "Für Multiplayer-Nuzlocke-Runs kannst du uns per E-Mail kontaktieren, wenn du die Löschung serverseitig gespeicherter Run-Daten wünschst. Bitte nenne dabei den Run-Namen oder Einladungscode, soweit möglich."
+            "Lokal gespeicherte Daten (Teams, Solo-Nuzlocke-Runs, Cache, Zoom, Sprache, Einstellungen) liegen ausschließlich in Ihrem Browser, bis Sie sie dort löschen oder der Browser sie entfernt.",
+            "Server-Logdateien beim Hoster werden nach dessen üblichen Fristen gelöscht, in der Regel nach wenigen Tagen bis Wochen, soweit keine längere Aufbewahrung zur Störungsbeseitigung nötig ist.",
+            "Multiplayer-Runs und Kontodaten bleiben gespeichert, solange das Konto bzw. der Run besteht. Sie können die Löschung per E-Mail an die Impressums-Adresse verlangen. Bitte nennen Sie Run-Namen, Einladungscode oder Nutzernamen, soweit möglich."
           ]
         },
         {
-          "heading": "Konto (optional)",
+          "heading": "8. Cookies und lokale Speicherung (TDDDG)",
+          "paragraphs": [
+            "Diese Website setzt keine Tracking-Cookies. Plausible Analytics arbeitet ohne Cookies. LocalStorage und SessionStorage speichern nur Funktionsdaten (Sprache, Zoom, Teams, Solo-Runs, Suche, Ansicht). Das ist nach § 25 Abs. 2 TDDDG technisch erforderlich; eine Einwilligung über ein Cookie-Banner ist dafür nicht nötig."
+          ]
+        },
+        {
+          "heading": "9. Konto (optional)",
           "subsections": [
             {
-              "title": "Registrierung und Anmeldung",
-              "body": "Du kannst freiwillig ein Konto anlegen, um deine Teams und Nuzlocke-Runs geräteübergreifend zu synchronisieren. Dabei speichern wir ausschließlich: deinen gewählten Nutzernamen, einen kryptografischen Hash deines Passworts (über Supabase Auth/bcrypt — das Passwort selbst liegt nie bei uns), einen Hash deines 6-stelligen Recovery-Codes sowie deine Spielstand-Daten (Teams, Nuzlocke-Runs). Eine E-Mail-Adresse wird nicht erhoben."
+              "heading": "Registrierung und Anmeldung",
+              "paragraphs": [
+                "Sie können freiwillig ein Konto anlegen, um Teams und Nuzlocke-Runs geräteübergreifend zu synchronisieren. Gespeichert werden: gewählter Nutzername, ein kryptografischer Hash des Passworts (Supabase Auth/bcrypt, das Passwort selbst liegt nicht bei uns), ein Hash des 6-stelligen Recovery-Codes sowie Spielstand-Daten (Teams, Nuzlocke-Runs). Eine E-Mail-Adresse wird nicht erhoben. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO."
+              ]
             },
             {
-              "title": "Speicherort und Löschung",
-              "body": "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Du kannst dein Konto und alle damit verbundenen Daten jederzeit per Issue oder Nachricht an den Betreiber löschen lassen. Ohne Konto werden alle Daten ausschließlich lokal in deinem Browser gespeichert."
+              "heading": "Speicherort und Löschung",
+              "paragraphs": [
+                "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Sie können Konto und alle verbundenen Daten jederzeit per Nachricht an den Betreiber löschen lassen. Ohne Konto bleiben alle Daten ausschließlich lokal im Browser."
+              ]
             }
           ]
         }

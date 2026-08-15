@@ -19,7 +19,8 @@ import type { MapNode } from '@/lib/regions';
 import { nodeIndex, regionById, viewBoxParts } from '@/lib/regions';
 import type { MethodBucket } from '@/lib/mapdata';
 import { METHOD_BUCKETS, useRegionData } from '@/lib/mapdata';
-import { getLenis } from '@/lib/smooth';
+import { onLenisReady } from '@/lib/smooth';
+import MotionRoot from '@/components/MotionRoot';
 import { cn } from '@/lib/utils';
 import './maps/maps.css';
 
@@ -118,11 +119,15 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
     if (isMobile) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const lenis = getLenis();
-    lenis?.stop();
+    let instance: { stop: () => void; start: () => void } | null = null;
+    const unsub = onLenisReady((lenis) => {
+      instance = lenis;
+      lenis.stop();
+    });
     return () => {
       document.body.style.overflow = prev;
-      lenis?.start();
+      instance?.start();
+      unsub();
     };
   }, [isMobile]);
 
@@ -315,6 +320,16 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
 export default function MapRegion() {
   const { region: regionParam } = useParams();
   const region = regionById(regionParam);
-  if (!region) return <UnchartedSector />;
-  return <MapRegionDeck key={region.region} region={region} />;
+  if (!region) {
+    return (
+      <MotionRoot>
+        <UnchartedSector />
+      </MotionRoot>
+    );
+  }
+  return (
+    <MotionRoot>
+      <MapRegionDeck key={region.region} region={region} />
+    </MotionRoot>
+  );
 }

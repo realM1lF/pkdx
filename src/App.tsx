@@ -1,10 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route } from 'react-router';
-import { MotionConfig } from 'framer-motion';
 import Layout from './components/Layout';
-import PokeballLoader from './components/PokeballLoader';
 import { LangGate, LangHomeRedirect, LangRedirect } from './components/LangGate';
 import { ShinyProvider } from './lib/shiny';
+import { isFirstPaintPrerender, markFirstPaintDone, shouldCoverPaintWithFallback } from './lib/cwv-paint';
 
 /* Route-level code splitting (design.md §11) — Three.js + GSAP ship only with Home.
  * lazyWithReload: if a lazy chunk 404s (stale index.html after a deploy, the
@@ -58,22 +57,33 @@ const OrreTracker = lazyWithReload(() => import('./pages/OrreTracker'));
 
 function PageFallback() {
   /* full-screen pokeball gate while lazy chunks load — same look as the
-   * initial home loader; covers the previous footer flash (user feedback) */
+   * initial home loader; covers the previous footer flash (user feedback).
+   * Skip on the prerendered first paint so LCP stays the hero, not the spinner. */
+  if (
+    !shouldCoverPaintWithFallback({
+      prerendered: isFirstPaintPrerender(document.getElementById('root')),
+    })
+  ) {
+    return null;
+  }
   return (
     <div className="fixed inset-0 z-[90] grid place-items-center bg-void">
       <div className="grain-overlay absolute inset-0" />
-      <PokeballLoader variant="inline" className="relative h-16 w-16" />
+      <img src="/pokeball.svg" alt="" className="relative h-16 w-16 animate-wobble" draggable={false} />
     </div>
   );
 }
 
 export default function App() {
+  useEffect(() => {
+    markFirstPaintDone();
+  }, []);
+
   return (
-    <MotionConfig reducedMotion="user">
-      <ShinyProvider>
-        <Layout>
-          <Suspense fallback={<PageFallback />}>
-            <Routes>
+    <ShinyProvider>
+      <Layout>
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
               {/* every app route lives once under the /:lang prefix (WP7);
                   unprefixed legacy URLs redirect to the detected language */}
               <Route path="/:lang" element={<LangGate />}>
@@ -132,6 +142,5 @@ export default function App() {
           </Suspense>
         </Layout>
       </ShinyProvider>
-    </MotionConfig>
   );
 }

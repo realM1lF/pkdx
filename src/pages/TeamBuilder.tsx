@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { AnimatePresence, Reorder } from 'framer-motion';
+import MotionRoot from '@/components/MotionRoot';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import HonestyHint from '@/components/HonestyHint';
@@ -697,6 +698,7 @@ export default function TeamBuilder() {
 
   /* ---------- builder ---------- */
   return (
+    <MotionRoot>
     <div className="mx-auto max-w-content px-4 pb-20 pt-4 md:px-8">
       <HeaderStrip
         team={team}
@@ -830,5 +832,6 @@ export default function TeamBuilder() {
       />
       <NuzToasts />
     </div>
+    </MotionRoot>
   );
 }

@@ -1,1 +1,0 @@
-import{j as i,k as a}from"./index-SlSp3Goq.js";function m({show:e,tone:n="muted",truncate:s=!1,className:o,children:t}){if(!e)return null;const x=typeof t=="string"?t:void 0;return i.jsx("p",{className:a("min-w-0 font-sans text-[10px] leading-snug",n==="gold"?"text-gold/90":"text-tx-muted",s&&"truncate",o),title:s?x:void 0,children:t})}export{m as H};

@@ -23,6 +23,9 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 220px;
 }
+.pdx-card-wrap--lcp {
+  content-visibility: visible;
+}
 
 /* ---- card hover / focus-within: lift + type glow (design.md §6.2-2) ---- */
 .pdx-card {

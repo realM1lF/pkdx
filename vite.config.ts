@@ -24,6 +24,26 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          /* React must be its own chunk. Named vendor chunks for gsap/motion
+           * otherwise absorb react and the entry modulepreloads them. */
+          if (
+            id.includes('node_modules/react-dom') ||
+            id.includes('node_modules/react/') ||
+            id.includes('node_modules/scheduler')
+          ) {
+            return 'react';
+          }
+          if (id.includes('node_modules/fuse.js')) return 'fuse';
+          if (id.includes('node_modules/three')) return 'three';
+          if (id.includes('node_modules/gsap') || id.includes('node_modules/@gsap')) return 'gsap';
+        },
+      },
+    },
+  },
   test: {
     environment: 'node',
     setupFiles: ['./vitest.setup.ts'],

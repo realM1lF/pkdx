@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Ref } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { AnimatePresence, animate, motion, useMotionValue } from 'framer-motion';
+import { AnimatePresence, animate, motion, MotionConfig, useMotionValue } from 'framer-motion';
 import { RotateCcw, WifiOff } from 'lucide-react';
 import PokeballLoader from '@/components/PokeballLoader';
 import PokemonCard from '@/components/PokemonCard';
@@ -102,7 +102,7 @@ function CardSkeleton({ id, ref }: { id: number; ref?: Ref<HTMLDivElement> }) {
   return (
     <motion.div
       ref={ref}
-      layout="position"
+      layout={false}
       exit={{ opacity: 0, transition: { duration: 0.15 } }}
       className="flex flex-col items-center gap-1 rounded-lg border border-hairline bg-surface1 p-3"
       aria-hidden
@@ -311,14 +311,11 @@ export default function Pokedex() {
           : t8n('pokedex.hintFilter');
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="relative">
       {/* page header — compact per density addendum §1 */}
       <header className="mx-auto max-w-content px-4 pb-3 pt-6 md:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-        >
+        <div>
           <p className="pixel-label text-[10px] text-gold">{t8n('pokedex.eyebrow')}</p>
           <div className="mt-1.5 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
             <h1 className="font-display text-[clamp(26px,3.5vw,40px)] font-extrabold leading-none tracking-wide">
@@ -330,7 +327,7 @@ export default function Pokedex() {
               {t8n('pokedex.species')}
             </p>
           </div>
-        </motion.div>
+        </div>
       </header>
 
       {/* sticky command bar */}
@@ -348,7 +345,6 @@ export default function Pokedex() {
         density={density}
         onDensity={setDensity}
         onResetAll={onResetAll}
-        resultCount={total}
         shakeKey={shakeKey}
         showEmptyHint={isEmpty}
       />
@@ -455,8 +451,7 @@ export default function Pokedex() {
             {mode === 'list' ? (
               <ListView items={visible} summaries={summaries} game={editionGame} />
             ) : (
-              <motion.div
-                layout
+              <div
                 className={cn(
                   'grid',
                   mode === 'comfort'
@@ -464,17 +459,15 @@ export default function Pokedex() {
                     : 'pdx-grid-compact gap-3',
                 )}
               >
-                <AnimatePresence mode="popLayout" initial={false}>
-                  {visible.map((e, i) => {
-                    const s = summaries.get(e.id);
-                    return s ? (
-                      <PokemonCard key={e.id} summary={s} density={mode} index={i} game={editionGame} />
-                    ) : (
-                      <CardSkeleton key={e.id} id={e.id} />
-                    );
-                  })}
-                </AnimatePresence>
-              </motion.div>
+                {visible.map((e, i) => {
+                  const s = summaries.get(e.id);
+                  return s ? (
+                    <PokemonCard key={e.id} summary={s} density={mode} index={i} game={editionGame} />
+                  ) : (
+                    <CardSkeleton key={e.id} id={e.id} />
+                  );
+                })}
+              </div>
             )}
 
             {/* infinite-scroll sentinel + inline loader */}
@@ -512,5 +505,6 @@ export default function Pokedex() {
         {announce}
       </span>
     </div>
+    </MotionConfig>
   );
 }

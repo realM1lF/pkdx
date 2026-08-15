@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleLink } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
-import { ArrowRight, GitCompareArrows, Map as MapIcon, Swords, Users } from 'lucide-react';
+import { ArrowRight, Ghost, GitCompareArrows, Map as MapIcon, Package, Swords, Users } from 'lucide-react';
 import { REGIONS } from '@/lib/regions';
 import { FREEFORM_REGIONS } from '@/lib/regions-freeform';
 import { accentRgb } from '@/lib/regions';
@@ -73,6 +73,32 @@ const CARDS: ToolkitCard[] = [
       ['home.features.toolkit.stats.mode', '1v1'],
       ['home.features.toolkit.stats.gens', 'I–IX'],
       ['home.features.toolkit.stats.engine', 'SMOGON'],
+    ],
+  },
+  {
+    to: '/items',
+    Icon: Package,
+    tag: 'ITEMS',
+    accent: '#D4A017',
+    titleKey: 'home.features.toolkit.items.title',
+    captionKey: 'home.features.toolkit.items.caption',
+    stats: [
+      ['home.features.toolkit.stats.items', '1000+'],
+      ['home.features.toolkit.stats.groups', 12],
+      ['home.features.toolkit.stats.lang', 'DE+EN'],
+    ],
+  },
+  {
+    to: '/orre',
+    Icon: Ghost,
+    tag: 'ORRE',
+    accent: '#7B6CFF',
+    titleKey: 'home.features.toolkit.orre.title',
+    captionKey: 'home.features.toolkit.orre.caption',
+    stats: [
+      ['home.features.toolkit.stats.colo', 48],
+      ['home.features.toolkit.stats.xd', 83],
+      ['home.features.toolkit.stats.games', 'COLO+XD'],
     ],
   },
 ];

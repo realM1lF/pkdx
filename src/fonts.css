@@ -5,7 +5,8 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/orbitron/orbitron-700.ttf') format('truetype');
+  src: url('/fonts/orbitron/orbitron-700.woff2') format('woff2'),
+    url('/fonts/orbitron/orbitron-700.ttf') format('truetype');
 }
 
 @font-face {
@@ -13,7 +14,8 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url('/fonts/orbitron/orbitron-800.ttf') format('truetype');
+  src: url('/fonts/orbitron/orbitron-800.woff2') format('woff2'),
+    url('/fonts/orbitron/orbitron-800.ttf') format('truetype');
 }
 
 @font-face {
@@ -21,7 +23,8 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url('/fonts/orbitron/orbitron-900.ttf') format('truetype');
+  src: url('/fonts/orbitron/orbitron-900.woff2') format('woff2'),
+    url('/fonts/orbitron/orbitron-900.ttf') format('truetype');
 }
 
 @font-face {
@@ -29,7 +32,8 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/press-start-2p/press-start-2p-400.ttf') format('truetype');
+  src: url('/fonts/press-start-2p/press-start-2p-400.woff2') format('woff2'),
+    url('/fonts/press-start-2p/press-start-2p-400.ttf') format('truetype');
 }
 
 @font-face {
@@ -37,7 +41,8 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/space-grotesk/space-grotesk-400.ttf') format('truetype');
+  src: url('/fonts/space-grotesk/space-grotesk-400.woff2') format('woff2'),
+    url('/fonts/space-grotesk/space-grotesk-400.ttf') format('truetype');
 }
 
 @font-face {
@@ -45,7 +50,8 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/space-grotesk/space-grotesk-500.ttf') format('truetype');
+  src: url('/fonts/space-grotesk/space-grotesk-500.woff2') format('woff2'),
+    url('/fonts/space-grotesk/space-grotesk-500.ttf') format('truetype');
 }
 
 @font-face {
@@ -53,7 +59,8 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/space-grotesk/space-grotesk-600.ttf') format('truetype');
+  src: url('/fonts/space-grotesk/space-grotesk-600.woff2') format('woff2'),
+    url('/fonts/space-grotesk/space-grotesk-600.ttf') format('truetype');
 }
 
 @font-face {
@@ -61,5 +68,6 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/space-grotesk/space-grotesk-700.ttf') format('truetype');
+  src: url('/fonts/space-grotesk/space-grotesk-700.woff2') format('woff2'),
+    url('/fonts/space-grotesk/space-grotesk-700.ttf') format('truetype');
 }

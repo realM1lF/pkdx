@@ -16,6 +16,8 @@ import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import { dexEntryPath } from '@/lib/dex-forms-catalog';
 import { pokemonHref } from '@/lib/edition-nav';
 import { FORM_I18N_KEY, type DexSummary } from './dex-data';
+import { isAboveFoldDexItem } from '@/lib/img-priority';
+import { dexItemMotion, dexItemUsesMotion, dexPresenceMode } from '@/lib/dex-motion';
 import { cn } from '@/lib/utils';
 
 const COLS =
@@ -60,23 +62,11 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
   const shiny = override ?? globalShiny;
   const t1 = (s.types[0] ?? 'normal') as PokemonType;
   const c1 = TYPE_COLORS[t1] ?? TYPE_COLORS.normal;
+  const priority = isAboveFoldDexItem(index);
+  const itemMotion = dexItemMotion(index, 'row');
 
-  return (
-    <motion.div
-      ref={ref}
-      layout="position"
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, transition: { duration: 0.15 } }}
-      transition={{
-        duration: 0.3,
-        ease: EASE_OUT,
-        delay: Math.min(index % 24, 16) * 0.02,
-        layout: { type: 'spring', stiffness: 180, damping: 22 },
-      }}
-      className="pdx-row-wrap group relative"
-      data-type={t1}
-    >
+  const body = (
+    <>
       <div
         className={cn(COLS, 'pdx-row pointer-events-none relative h-11 border-b border-hairline px-2')}
         style={{ '--t': c1.rgb } as CSSProperties}
@@ -85,7 +75,16 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
           {padNum(dexId)}
         </span>
         <span className="relative grid h-7 w-7 place-items-center">
-          <Sprite id={s.id} name={label} shiny={shiny} skeleton={false} className="h-7 w-7" />
+          <Sprite
+            id={s.id}
+            name={label}
+            shiny={shiny}
+            skeleton={false}
+            priority={priority}
+            width={28}
+            height={28}
+            className="h-7 w-7"
+          />
         </span>
         <span className="flex min-w-0 items-baseline gap-1.5">
           <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">{label}</span>
@@ -149,6 +148,33 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10"
       />
+    </>
+  );
+
+  if (!dexItemUsesMotion(index)) {
+    return (
+      <div ref={ref} className="pdx-row-wrap group relative" data-type={t1}>
+        {body}
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      layout={itemMotion.layout}
+      initial={itemMotion.initial}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.15 } }}
+      transition={{
+        duration: 0.3,
+        ease: EASE_OUT,
+        delay: Math.min(index % 24, 16) * 0.02,
+      }}
+      className="pdx-row-wrap group relative"
+      data-type={t1}
+    >
+      {body}
     </motion.div>
   );
 }
@@ -159,7 +185,7 @@ function ListRowSkeleton({ id, ref }: { id: number; ref?: Ref<HTMLDivElement> })
   return (
     <motion.div
       ref={ref}
-      layout="position"
+      layout={false}
       exit={{ opacity: 0, transition: { duration: 0.15 } }}
       className={cn(COLS, 'h-11 border-b border-hairline px-2')}
       aria-hidden
@@ -190,7 +216,7 @@ export default function ListView({ items, summaries, game }: ListViewProps) {
     <div className="overflow-x-auto rounded-lg border border-hairline bg-surface1/40">
       <div className="min-w-[820px]">
         <ListHeader />
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode={dexPresenceMode()} initial={false}>
           {items.map((e, i) => {
             const s = summaries.get(e.id);
             return s ? (
