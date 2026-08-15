@@ -30,7 +30,7 @@ import { resolveRouteParam, routeNodeName, routePagePath } from '@/lib/seo-route
 import { resolveHoennRouteParam, hoennRouteNodeName } from '@/lib/seo-routes-hoenn';
 import { resolveJohtoRouteParam, johtoRouteNodeName } from '@/lib/seo-routes-johto';
 import { resolveSinnohRouteParam, sinnohRouteNodeName } from '@/lib/seo-routes-sinnoh';
-import { trainerCoverage } from '@/lib/trainer-data';
+import { mapsTrainerEmptyKey } from '@/lib/trainer-data';
 import { bestCatchByBst, wildSpeciesCount } from './route-stats';
 import routesJson from '@/data/routes-kanto.json';
 import routesHoennJson from '@/data/routes-hoenn.json';
@@ -708,7 +708,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
           <SectionCard eyebrow={t(`${ns}.trainersEyebrow`)} title={t(`${ns}.trainersTitle`, { name })}>
             {trainers.length === 0 ? (
               <HonestyHint show className="px-4 py-2.5 sm:px-5">
-                {t(trainerCoverage(cfg.region) === 'key-battles' ? 'maps.noTrainersKeyBattles' : 'maps.noTrainers')}
+                {t(mapsTrainerEmptyKey(cfg.region))}
               </HonestyHint>
             ) : (
               trainers.map((tr, i) => (

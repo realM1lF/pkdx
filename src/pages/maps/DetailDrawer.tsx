@@ -19,7 +19,7 @@ import PokeballLoader from '@/components/PokeballLoader';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { cn } from '@/lib/utils';
 import HonestyHint from '@/components/HonestyHint';
-import { aceSpeciesForNode, hasTrainersAtNode, trainerArtifactVersionGroup, trainerCoverage, trainerSourceMismatchesGame, trainersAtNode } from '@/lib/trainer-data';
+import { aceSpeciesForNode, hasTrainersAtNode, mapsTrainerEmptyKey, mapsTrainerTabCount, trainerArtifactVersionGroup, trainerCoverage, trainerSourceMismatchesGame, trainersAtNode } from '@/lib/trainer-data';
 import { versionGroupById, versionGroupForGame } from '@/lib/version-groups';
 import { ROUTE_PAGES, routePagePath } from '@/lib/seo-routes-kanto';
 import { HOENN_ROUTE_PAGES, hoennRoutePagePath } from '@/lib/seo-routes-hoenn';
@@ -183,6 +183,7 @@ export default function DetailDrawer({
   const items = useMemo(() => itemsForNode(region.region, node.id), [region, node]);
   const trainers = useMemo(() => trainersAtNode(region.region, node.id), [region.region, node.id]);
   const trainerCount = trainers.length;
+  const trainerTabCount = mapsTrainerTabCount(region.region, trainerCount);
   const showVersusLink = hasTrainersAtNode(region.region, node.id);
   const trainerArtifactVg = trainerArtifactVersionGroup(region.region);
   const trainerSelectedVg = versionGroupForGame(version);
@@ -341,7 +342,7 @@ export default function DetailDrawer({
           [
             ['encounters', t('maps.encountersTab', { count: nd?.status === 'loaded' ? totalAll : '…' })],
             ['items', t('maps.itemsTab', { count: items.length })],
-            ['trainers', t('maps.trainersTab', { count: trainerCount })],
+            ['trainers', trainerTabCount === null ? t('maps.trainersTabUnknown') : t('maps.trainersTab', { count: trainerTabCount })],
           ] as Array<[DrawerTab, string]>
         ).map(([key, label]) => (
           <button
@@ -514,9 +515,9 @@ export default function DetailDrawer({
           <div>
             {trainers.length === 0 ? (
               <div className="flex flex-col items-center gap-2.5 px-6 py-14 text-center">
-                <p className="text-[12px] font-medium text-tx-muted">
-                  {t(trainerCoverage(region.region) === 'key-battles' ? 'maps.noTrainersKeyBattles' : 'maps.noTrainers')}
-                </p>
+                <HonestyHint show className="max-w-[280px]">
+                  {t(mapsTrainerEmptyKey(region.region))}
+                </HonestyHint>
               </div>
             ) : (
               <>

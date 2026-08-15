@@ -5,6 +5,8 @@ import unova from '@/data/enriched/unova.json';
 import itemsJohto from '@/data/items-johto.json';
 import {
   hasTrainersAtNode,
+  mapsTrainerEmptyKey,
+  mapsTrainerTabCount,
   trainerArtifactGame,
   trainerArtifactVersionGroup,
   trainerCoverage,
@@ -122,6 +124,26 @@ describe('trainerCoverage', () => {
     expect(trainerCoverage('hoenn')).toBe('key-battles');
     expect(trainerCoverage('sinnoh')).toBe('key-battles');
     expect(trainerCoverage('unova')).toBe('key-battles');
+  });
+});
+
+describe('maps trainer honesty (gap ≠ zero trainers)', () => {
+  it('hides a 0 count when the region only has key battles', () => {
+    expect(mapsTrainerTabCount('sinnoh', 0)).toBeNull();
+    expect(mapsTrainerTabCount('johto', 0)).toBeNull();
+    expect(mapsTrainerTabCount('kanto', 0)).toBe(0);
+    expect(mapsTrainerTabCount('sinnoh', 2)).toBe(2);
+  });
+
+  it('uses the gap copy for key-battle regions, not a fake empty location', async () => {
+    expect(mapsTrainerEmptyKey('sinnoh')).toBe('maps.noTrainersKeyBattles');
+    expect(mapsTrainerEmptyKey('kanto')).toBe('maps.noTrainers');
+    const de = (await import('@/i18n/locales/de/translation.json')).default;
+    const en = (await import('@/i18n/locales/en/translation.json')).default;
+    expect(de.maps.noTrainersKeyBattles).not.toMatch(/Keine Trainer an diesem Ort/i);
+    expect(en.maps.noTrainersKeyBattles).not.toMatch(/No trainers at this place/i);
+    expect(de.maps.noTrainersKeyBattles).toMatch(/fehlen/i);
+    expect(en.maps.noTrainersKeyBattles).toMatch(/missing|not in the data/i);
   });
 });
 

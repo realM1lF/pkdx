@@ -58,6 +58,16 @@ export function trainerCoverage(region: RegionId): TrainerCoverage {
   return 'key-battles';
 }
 
+/** Tab count: `null` when 0 would lie (region has no route trainers in data). */
+export function mapsTrainerTabCount(region: RegionId, count: number): number | null {
+  if (count > 0) return count;
+  return trainerCoverage(region) === 'routes' ? 0 : null;
+}
+
+export function mapsTrainerEmptyKey(region: RegionId): 'maps.noTrainers' | 'maps.noTrainersKeyBattles' {
+  return trainerCoverage(region) === 'key-battles' ? 'maps.noTrainersKeyBattles' : 'maps.noTrainers';
+}
+
 function resolveVersionGroup(game: string | null | undefined): string | null {
   if (!game) return null;
   return versionGroupForGame(game) ?? (VERSION_GROUPS.some((v) => v.id === game) ? game : null);

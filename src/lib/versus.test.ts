@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   damageBetween,
+  damageRowKind,
   genMatchupsForSide,
   koLabelFromHits,
   pokemonFromVersusSide,
@@ -430,6 +431,50 @@ describe('Focus Sash / Sturdy at the defender', () => {
     );
     expect(cell!.multihit).toBeTruthy();
     expect(cell!.koHits).toBe(1); // 2+ hits per use: hit 1 pops the sash, hit 2 KOs
+  });
+});
+
+describe('damageRowKind (immune ≠ status)', () => {
+  it('labels gen-5 Sludge vs Empoleon as immune, not status', () => {
+    const ctx5 = versusContextFromGame('black', null);
+    const cell = damageBetween(
+      { slug: 'muk', level: 50, moves: ['sludge'] },
+      { slug: 'empoleon', level: 50, moves: [] },
+      'sludge',
+      undefined,
+      ctx5,
+    );
+    expect(cell).toBeTruthy();
+    expect(cell!.category?.toLowerCase()).toBe('special');
+    expect(cell!.eff).toBe(0);
+    expect(cell!.range).toEqual([0, 0]);
+    expect(damageRowKind(cell)).toBe('immune');
+  });
+
+  it('keeps true status moves as status', () => {
+    const ctx5 = versusContextFromGame('black', null);
+    const cell = damageBetween(
+      { slug: 'muk', level: 50, moves: ['toxic'] },
+      { slug: 'empoleon', level: 50, moves: [] },
+      'toxic',
+      undefined,
+      ctx5,
+    );
+    expect(damageRowKind(cell)).toBe('status');
+  });
+
+  it('keeps a damaging cell as damage even when the roll is small', () => {
+    expect(
+      damageRowKind({
+        move: 'sludge',
+        range: [20, 24],
+        pct: [10, 12],
+        koHits: 9,
+        koChance: 0,
+        eff: 0.5,
+        category: 'special',
+      }),
+    ).toBe('damage');
   });
 });
 

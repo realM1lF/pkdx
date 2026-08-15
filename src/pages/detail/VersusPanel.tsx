@@ -56,6 +56,7 @@ import { paddedWild } from '@/lib/honesty';
 import {
   NATURES,
   damageBetween,
+  damageRowKind,
   EFF_LABEL,
   genSplitMatchupsForSide,
   koLabel,
@@ -1091,8 +1092,10 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
         const cat = (row.cell?.category ?? mv?.damage_class.name ?? 'status').toLowerCase();
         const cell = row.cell;
         const [lo, hi] = cell?.pct ?? [0, 0];
-        const damaging = cell ? cell.range[1] > 0 : false;
-        const isOhko = Boolean(cell?.ohko);
+        const rowKind = damageRowKind(cell);
+        const damaging = rowKind === 'damage';
+        const isOhko = rowKind === 'ohko';
+        const isImmune = rowKind === 'immune';
         const koN = damaging && cell ? Math.min(4, cell.koHits) : 0;
         const eff = cell?.eff ?? 1;
         /* multi-hit: per-hit HP range × hit count, full total via tooltip;
@@ -1158,11 +1161,13 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
               >
                 {t('versus.ohkoShort', { acc: cell!.ohko!.accuracy })}
               </span>
+            ) : isImmune ? (
+              <span className="font-sans text-[9px] font-semibold text-tx-secondary">{t('versus.immune')}</span>
             ) : (
               <span className="font-sans text-[9px] text-tx-muted">{mv ? (cell ? t('versus.statusMove') : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
             )}
-            <span className="vs-eff" data-e={damaging || isOhko ? String(eff) : '1'}>
-              {damaging || isOhko ? EFF_LABEL(eff) : '—'}
+            <span className="vs-eff" data-e={damaging || isOhko || isImmune ? String(eff) : '1'}>
+              {damaging || isOhko || isImmune ? EFF_LABEL(eff) : '—'}
             </span>
             <span className="text-right">
               <span className="vs-ko" data-n={isOhko ? 1 : koN} title={koTitle}>

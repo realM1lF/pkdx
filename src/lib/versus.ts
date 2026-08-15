@@ -416,6 +416,20 @@ export interface DamageCell {
   survivesFirstHit?: boolean;
 }
 
+export type DamageRowKind = 'pending' | 'status' | 'ohko' | 'immune' | 'damage';
+
+/** How the damage matrix should render a cell. Immune damaging moves stay
+ * damaging (×0), they are not status. */
+export function damageRowKind(cell: DamageCell | null | undefined): DamageRowKind {
+  if (!cell) return 'pending';
+  if (cell.ohko) return 'ohko';
+  const cat = (cell.category ?? 'status').toLowerCase();
+  if (cat === 'physical' || cat === 'special') {
+    return cell.eff === 0 ? 'immune' : 'damage';
+  }
+  return 'status';
+}
+
 function normalizeEff(eff: number): number {
   if (eff <= 0) return 0;
   for (const step of [0.25, 0.5, 1, 2, 4]) {
