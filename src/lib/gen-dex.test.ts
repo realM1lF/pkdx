@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import pokemonSeoJson from '@/data/pokemon-seo.json';
 import {
   genAbilityRows,
   genHasMechanics,
@@ -43,6 +44,16 @@ describe('genStatsOf — @pkmn when the species is in that gen, else API fallbac
     const api = { ...ZERO, 'special-attack': 150 };
     expect(genStatsOf('black-white', 'alakazam', api)['special-attack']).toBe(135);
     expect(genStatsOf('scarlet-violet', 'alakazam', api)['special-attack']).toBe(150);
+  });
+
+  it('FRLG Alakazam BST is the gen3 total (SpD 85) and pokemon-seo.json matches', () => {
+    const stats = genStatsOf('firered-leafgreen', 'alakazam', ZERO);
+    const frlgBst = (Object.values(stats) as number[]).reduce((sum, n) => sum + n, 0);
+    expect(stats['special-defense']).toBe(85);
+    expect(frlgBst).toBeGreaterThan(0);
+    const seo = pokemonSeoJson as { dex: Record<string, { slug: string; bst: number }> };
+    expect(seo.dex['65']?.slug).toBe('alakazam');
+    expect(seo.dex['65']?.bst).toBe(frlgBst);
   });
 });
 

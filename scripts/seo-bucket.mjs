@@ -38,3 +38,24 @@ export function bucket(method, names = []) {
   if (method === 'walk' || method.endsWith('-grass') || method.endsWith('-spots')) return 'WALK';
   return 'OTHER';
 }
+
+/** Same chip class as mapdata `methodChip` — swarm/radio/headbutt stay OTHER. */
+export function methodChip(method, names = []) {
+  const a = exclusiveAxes(names);
+  if (STATIC.has(method)) return undefined;
+  if (a.swarm === 'yes' || method === 'swarm') return 'swarm';
+  if (a.radio) return 'radio';
+  if (method.startsWith('headbutt') || a.headbutt) return 'headbutt';
+  return undefined;
+}
+
+export function isSwarmRow(row) {
+  return row?.chip === 'swarm' || row?.methodChip === 'swarm';
+}
+
+/** Häufigster Fang: wild only, same swarm skip as spawnLeaders. */
+export function pickTopWild(rows) {
+  return [...(rows ?? [])]
+    .filter((r) => !r.isStatic && !isSwarmRow(r))
+    .sort((a, b) => b.chance - a.chance)[0];
+}

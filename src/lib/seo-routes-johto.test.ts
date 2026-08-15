@@ -129,6 +129,23 @@ describe('seo-routes-johto', () => {
     expect(swarmish.method).toBe('OTHER');
   });
 
+  it('Route 32 HeartGold top catch is not the 90% swarm Qwilfish', () => {
+    const meta = (metaGen as unknown as {
+      routesJohto: Record<string, { topId: number | null; topChance: number | null }>;
+    }).routesJohto['johto-route-32'];
+    expect(meta).toBeDefined();
+    const swarmTop = meta.topId === 211 && meta.topChance === 90;
+    expect(swarmTop, 'häufigster Fang must skip swarm OTHER 90 Qwilfish').toBe(false);
+    const hg = NODES['johto-route-32']?.versions.heartgold ?? [];
+    const winner = hg
+      .flatMap((g) => g.rows)
+      .find((r) => r.id === meta.topId && r.chance === meta.topChance);
+    if (winner) {
+      const swarmChip = (winner as EncounterRow & { chip?: string }).chip === 'swarm';
+      expect(swarmChip && winner.method === 'OTHER' && winner.chance === 90).toBe(false);
+    }
+  });
+
   it('meta descriptions stay ≤ 160 chars in both locales', () => {
     for (const nodeId of JOHTO_ROUTE_PAGES) {
       const slugs = JOHTO_ROUTE_SLUGS[nodeId];

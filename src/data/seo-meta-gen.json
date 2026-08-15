@@ -1,15 +1,15 @@
 {
  "routes": {
-  "kanto-route-22": {
-   "slugDe": "route-22",
-   "slugEn": "route-22",
-   "nameDe": "Route 22",
-   "nameEn": "Route 22",
-   "topId": 54,
-   "topNameDe": "Enton",
-   "topNameEn": "Psyduck",
-   "topChance": 100,
-   "speciesCount": 9
+  "kanto-route-1": {
+   "slugDe": "route-1",
+   "slugEn": "route-1",
+   "nameDe": "Route 1",
+   "nameEn": "Route 1",
+   "topId": 16,
+   "topNameDe": "Taubsi",
+   "topNameEn": "Pidgey",
+   "topChance": 50,
+   "speciesCount": 2
   },
   "pallet-town": {
    "slugDe": "alabastia",
@@ -22,6 +22,28 @@
    "topChance": 100,
    "speciesCount": 11
   },
+  "viridian-forest": {
+   "slugDe": "vertania-wald",
+   "slugEn": "viridian-forest",
+   "nameDe": "Vertania-Wald",
+   "nameEn": "Viridian Forest",
+   "topId": 10,
+   "topNameDe": "Raupy",
+   "topNameEn": "Caterpie",
+   "topChance": 40,
+   "speciesCount": 5
+  },
+  "kanto-route-22": {
+   "slugDe": "route-22",
+   "slugEn": "route-22",
+   "nameDe": "Route 22",
+   "nameEn": "Route 22",
+   "topId": 54,
+   "topNameDe": "Enton",
+   "topNameEn": "Psyduck",
+   "topChance": 100,
+   "speciesCount": 9
+  },
   "kanto-route-2": {
    "slugDe": "route-2",
    "slugEn": "route-2",
@@ -32,17 +54,6 @@
    "topNameEn": "Pidgey",
    "topChance": 45,
    "speciesCount": 4
-  },
-  "kanto-route-1": {
-   "slugDe": "route-1",
-   "slugEn": "route-1",
-   "nameDe": "Route 1",
-   "nameEn": "Route 1",
-   "topId": 16,
-   "topNameDe": "Taubsi",
-   "topNameEn": "Pidgey",
-   "topChance": 50,
-   "speciesCount": 2
   },
   "digletts-cave": {
    "slugDe": "digda-hoehle",
@@ -55,27 +66,16 @@
    "topChance": 95,
    "speciesCount": 2
   },
-  "viridian-forest": {
-   "slugDe": "vertania-wald",
-   "slugEn": "viridian-forest",
-   "nameDe": "Vertania-Wald",
-   "nameEn": "Viridian Forest",
-   "topId": 10,
-   "topNameDe": "Raupy",
-   "topNameEn": "Caterpie",
-   "topChance": 40,
-   "speciesCount": 5
-  },
-  "viridian-city": {
-   "slugDe": "vertania-city",
-   "slugEn": "viridian-city",
-   "nameDe": "Vertania City",
-   "nameEn": "Viridian City",
-   "topId": 54,
-   "topNameDe": "Enton",
-   "topNameEn": "Psyduck",
+  "kanto-route-4": {
+   "slugDe": "route-4",
+   "slugEn": "route-4",
+   "nameDe": "Route 4",
+   "nameEn": "Route 4",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
    "topChance": 100,
-   "speciesCount": 6
+   "speciesCount": 10
   },
   "kanto-route-24": {
    "slugDe": "route-24",
@@ -88,27 +88,27 @@
    "topChance": 100,
    "speciesCount": 13
   },
-  "kanto-route-4": {
-   "slugDe": "route-4",
-   "slugEn": "route-4",
-   "nameDe": "Route 4",
-   "nameEn": "Route 4",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
+  "kanto-route-25": {
+   "slugDe": "route-25",
+   "slugEn": "route-25",
+   "nameDe": "Route 25",
+   "nameEn": "Route 25",
+   "topId": 54,
+   "topNameDe": "Enton",
+   "topNameEn": "Psyduck",
    "topChance": 100,
-   "speciesCount": 10
+   "speciesCount": 13
   },
-  "kanto-route-3": {
-   "slugDe": "route-3",
-   "slugEn": "route-3",
-   "nameDe": "Route 3",
-   "nameEn": "Route 3",
-   "topId": 21,
-   "topNameDe": "Habitak",
-   "topNameEn": "Spearow",
-   "topChance": 35,
-   "speciesCount": 7
+  "viridian-city": {
+   "slugDe": "vertania-city",
+   "slugEn": "viridian-city",
+   "nameDe": "Vertania City",
+   "nameEn": "Viridian City",
+   "topId": 54,
+   "topNameDe": "Enton",
+   "topNameEn": "Psyduck",
+   "topChance": 100,
+   "speciesCount": 6
   },
   "cerulean-city": {
    "slugDe": "azuria-city",
@@ -132,11 +132,66 @@
    "topChance": 100,
    "speciesCount": 19
   },
+  "kanto-route-3": {
+   "slugDe": "route-3",
+   "slugEn": "route-3",
+   "nameDe": "Route 3",
+   "nameEn": "Route 3",
+   "topId": 21,
+   "topNameDe": "Habitak",
+   "topNameEn": "Spearow",
+   "topChance": 35,
+   "speciesCount": 7
+  },
+  "kanto-route-6": {
+   "slugDe": "route-6",
+   "slugEn": "route-6",
+   "nameDe": "Route 6",
+   "nameEn": "Route 6",
+   "topId": 54,
+   "topNameDe": "Enton",
+   "topNameEn": "Psyduck",
+   "topChance": 100,
+   "speciesCount": 9
+  },
+  "vermilion-city": {
+   "slugDe": "orania-city",
+   "slugEn": "vermilion-city",
+   "nameDe": "Orania City",
+   "nameEn": "Vermilion City",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 100,
+   "speciesCount": 7
+  },
   "kanto-route-11": {
    "slugDe": "route-11",
    "slugEn": "route-11",
    "nameDe": "Route 11",
    "nameEn": "Route 11",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 100,
+   "speciesCount": 9
+  },
+  "kanto-route-9": {
+   "slugDe": "route-9",
+   "slugEn": "route-9",
+   "nameDe": "Route 9",
+   "nameEn": "Route 9",
+   "topId": 19,
+   "topNameDe": "Rattfratz",
+   "topNameEn": "Rattata",
+   "topChance": 40,
+   "speciesCount": 3
+  },
+  "kanto-route-10": {
+   "slugDe": "route-10",
+   "slugEn": "route-10",
+   "nameDe": "Route 10",
+   "nameEn": "Route 10",
    "topId": 72,
    "topNameDe": "Tentacha",
    "topNameEn": "Tentacool",
@@ -154,17 +209,6 @@
    "topChance": 100,
    "speciesCount": 4
   },
-  "kanto-route-9": {
-   "slugDe": "route-9",
-   "slugEn": "route-9",
-   "nameDe": "Route 9",
-   "nameEn": "Route 9",
-   "topId": 19,
-   "topNameDe": "Rattfratz",
-   "topNameEn": "Rattata",
-   "topChance": 40,
-   "speciesCount": 3
-  },
   "kanto-route-5": {
    "slugDe": "route-5",
    "slugEn": "route-5",
@@ -176,39 +220,6 @@
    "topChance": 40,
    "speciesCount": 3
   },
-  "kanto-route-10": {
-   "slugDe": "route-10",
-   "slugEn": "route-10",
-   "nameDe": "Route 10",
-   "nameEn": "Route 10",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 100,
-   "speciesCount": 9
-  },
-  "power-plant": {
-   "slugDe": "kraftwerk",
-   "slugEn": "power-plant",
-   "nameDe": "Kraftwerk",
-   "nameEn": "Power Plant",
-   "topId": 81,
-   "topNameDe": "Magnetilo",
-   "topNameEn": "Magnemite",
-   "topChance": 30,
-   "speciesCount": 7
-  },
-  "vermilion-city": {
-   "slugDe": "orania-city",
-   "slugEn": "vermilion-city",
-   "nameDe": "Orania City",
-   "nameEn": "Vermilion City",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 100,
-   "speciesCount": 7
-  },
   "kanto-route-8": {
    "slugDe": "route-8",
    "slugEn": "route-8",
@@ -218,6 +229,17 @@
    "topNameDe": "Taubsi",
    "topNameEn": "Pidgey",
    "topChance": 30,
+   "speciesCount": 4
+  },
+  "kanto-route-7": {
+   "slugDe": "route-7",
+   "slugEn": "route-7",
+   "nameDe": "Route 7",
+   "nameEn": "Route 7",
+   "topId": 52,
+   "topNameDe": "Mauzi",
+   "topNameEn": "Meowth",
+   "topChance": 40,
    "speciesCount": 4
   },
   "pokemon-tower": {
@@ -231,38 +253,16 @@
    "topChance": 90,
    "speciesCount": 3
   },
-  "kanto-route-25": {
-   "slugDe": "route-25",
-   "slugEn": "route-25",
-   "nameDe": "Route 25",
-   "nameEn": "Route 25",
-   "topId": 54,
-   "topNameDe": "Enton",
-   "topNameEn": "Psyduck",
-   "topChance": 100,
-   "speciesCount": 13
-  },
-  "kanto-route-7": {
-   "slugDe": "route-7",
-   "slugEn": "route-7",
-   "nameDe": "Route 7",
-   "nameEn": "Route 7",
-   "topId": 52,
-   "topNameDe": "Mauzi",
-   "topNameEn": "Meowth",
-   "topChance": 40,
-   "speciesCount": 4
-  },
-  "kanto-route-16": {
-   "slugDe": "route-16",
-   "slugEn": "route-16",
-   "nameDe": "Route 16",
-   "nameEn": "Route 16",
-   "topId": 84,
-   "topNameDe": "Dodu",
-   "topNameEn": "Doduo",
-   "topChance": 35,
-   "speciesCount": 5
+  "rock-tunnel": {
+   "slugDe": "felstunnel",
+   "slugEn": "rock-tunnel",
+   "nameDe": "Felstunnel",
+   "nameEn": "Rock Tunnel",
+   "topId": 74,
+   "topNameDe": "Kleinstein",
+   "topNameEn": "Geodude",
+   "topChance": 95,
+   "speciesCount": 6
   },
   "kanto-route-17": {
    "slugDe": "route-17",
@@ -275,11 +275,11 @@
    "topChance": 35,
    "speciesCount": 5
   },
-  "kanto-route-18": {
-   "slugDe": "route-18",
-   "slugEn": "route-18",
-   "nameDe": "Route 18",
-   "nameEn": "Route 18",
+  "kanto-route-16": {
+   "slugDe": "route-16",
+   "slugEn": "route-16",
+   "nameDe": "Route 16",
+   "nameEn": "Route 16",
    "topId": 84,
    "topNameDe": "Dodu",
    "topNameEn": "Doduo",
@@ -297,6 +297,28 @@
    "topChance": 100,
    "speciesCount": 6
   },
+  "power-plant": {
+   "slugDe": "kraftwerk",
+   "slugEn": "power-plant",
+   "nameDe": "Kraftwerk",
+   "nameEn": "Power Plant",
+   "topId": 81,
+   "topNameDe": "Magnetilo",
+   "topNameEn": "Magnemite",
+   "topChance": 30,
+   "speciesCount": 7
+  },
+  "kanto-route-18": {
+   "slugDe": "route-18",
+   "slugEn": "route-18",
+   "nameDe": "Route 18",
+   "nameEn": "Route 18",
+   "topId": 84,
+   "topNameDe": "Dodu",
+   "topNameEn": "Doduo",
+   "topChance": 35,
+   "speciesCount": 5
+  },
   "safari-zone": {
    "slugDe": "safari-zone",
    "slugEn": "safari-zone",
@@ -307,72 +329,6 @@
    "topNameEn": "Psyduck",
    "topChance": 100,
    "speciesCount": 22
-  },
-  "rock-tunnel": {
-   "slugDe": "felstunnel",
-   "slugEn": "rock-tunnel",
-   "nameDe": "Felstunnel",
-   "nameEn": "Rock Tunnel",
-   "topId": 74,
-   "topNameDe": "Kleinstein",
-   "topNameEn": "Geodude",
-   "topChance": 95,
-   "speciesCount": 6
-  },
-  "kanto-route-13": {
-   "slugDe": "route-13",
-   "slugEn": "route-13",
-   "nameDe": "Route 13",
-   "nameEn": "Route 13",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 100,
-   "speciesCount": 12
-  },
-  "kanto-route-14": {
-   "slugDe": "route-14",
-   "slugEn": "route-14",
-   "nameDe": "Route 14",
-   "nameEn": "Route 14",
-   "topId": 43,
-   "topNameDe": "Myrapla",
-   "topNameEn": "Oddish",
-   "topChance": 35,
-   "speciesCount": 6
-  },
-  "kanto-route-15": {
-   "slugDe": "route-15",
-   "slugEn": "route-15",
-   "nameDe": "Route 15",
-   "nameEn": "Route 15",
-   "topId": 43,
-   "topNameDe": "Myrapla",
-   "topNameEn": "Oddish",
-   "topChance": 35,
-   "speciesCount": 6
-  },
-  "kanto-route-6": {
-   "slugDe": "route-6",
-   "slugEn": "route-6",
-   "nameDe": "Route 6",
-   "nameEn": "Route 6",
-   "topId": 54,
-   "topNameDe": "Enton",
-   "topNameEn": "Psyduck",
-   "topChance": 100,
-   "speciesCount": 9
-  },
-  "celadon-city": {
-   "slugDe": "prismania-city",
-   "slugEn": "celadon-city",
-   "nameDe": "Prismania City",
-   "nameEn": "Celadon City",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 10
   },
   "kanto-route-12": {
    "slugDe": "route-12",
@@ -385,16 +341,38 @@
    "topChance": 100,
    "speciesCount": 11
   },
-  "kanto-route-23": {
-   "slugDe": "route-23",
-   "slugEn": "route-23",
-   "nameDe": "Route 23",
-   "nameEn": "Route 23",
-   "topId": 54,
-   "topNameDe": "Enton",
-   "topNameEn": "Psyduck",
+  "kanto-route-13": {
+   "slugDe": "route-13",
+   "slugEn": "route-13",
+   "nameDe": "Route 13",
+   "nameEn": "Route 13",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
    "topChance": 100,
    "speciesCount": 12
+  },
+  "kanto-route-15": {
+   "slugDe": "route-15",
+   "slugEn": "route-15",
+   "nameDe": "Route 15",
+   "nameEn": "Route 15",
+   "topId": 43,
+   "topNameDe": "Myrapla",
+   "topNameEn": "Oddish",
+   "topChance": 35,
+   "speciesCount": 6
+  },
+  "kanto-route-14": {
+   "slugDe": "route-14",
+   "slugEn": "route-14",
+   "nameDe": "Route 14",
+   "nameEn": "Route 14",
+   "topId": 43,
+   "topNameDe": "Myrapla",
+   "topNameEn": "Oddish",
+   "topChance": 35,
+   "speciesCount": 6
   },
   "kanto-route-20": {
    "slugDe": "route-20",
@@ -418,27 +396,16 @@
    "topChance": 100,
    "speciesCount": 7
   },
-  "cinnabar-island": {
-   "slugDe": "zinnoberinsel",
-   "slugEn": "cinnabar-island",
-   "nameDe": "Zinnoberinsel",
-   "nameEn": "Cinnabar Island",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 100,
-   "speciesCount": 11
-  },
-  "seafoam-islands": {
-   "slugDe": "seeschauminseln",
-   "slugEn": "seafoam-islands",
-   "nameDe": "Seeschauminseln",
-   "nameEn": "Seafoam Islands",
+  "celadon-city": {
+   "slugDe": "prismania-city",
+   "slugEn": "celadon-city",
+   "nameDe": "Prismania City",
+   "nameEn": "Celadon City",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 11
+   "speciesCount": 10
   },
   "kanto-route-21": {
    "slugDe": "route-21",
@@ -461,6 +428,50 @@
    "topNameEn": "Onix",
    "topChance": 30,
    "speciesCount": 9
+  },
+  "kanto-route-23": {
+   "slugDe": "route-23",
+   "slugEn": "route-23",
+   "nameDe": "Route 23",
+   "nameEn": "Route 23",
+   "topId": 54,
+   "topNameDe": "Enton",
+   "topNameEn": "Psyduck",
+   "topChance": 100,
+   "speciesCount": 12
+  },
+  "pokemon-mansion": {
+   "slugDe": "pokemon-mansion",
+   "slugEn": "pokemon-mansion",
+   "nameDe": "Pokémon-Villa",
+   "nameEn": "Pokémon Mansion",
+   "topId": 20,
+   "topNameDe": "Rattikarl",
+   "topNameEn": "Raticate",
+   "topChance": 30,
+   "speciesCount": 7
+  },
+  "seafoam-islands": {
+   "slugDe": "seeschauminseln",
+   "slugEn": "seafoam-islands",
+   "nameDe": "Seeschauminseln",
+   "nameEn": "Seafoam Islands",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 11
+  },
+  "cinnabar-island": {
+   "slugDe": "zinnoberinsel",
+   "slugEn": "cinnabar-island",
+   "nameDe": "Zinnoberinsel",
+   "nameEn": "Cinnabar Island",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 100,
+   "speciesCount": 11
   },
   "saffron-city": {
    "slugDe": "saffronia-city",
@@ -548,9 +559,9 @@
   "20": {
    "nameDe": "Rattikarl",
    "nameEn": "Raticate",
-   "locDe": "Route 17",
-   "locEn": "Route 17",
-   "topChance": 25
+   "locDe": "Pokémon-Villa",
+   "locEn": "Pokémon Mansion",
+   "topChance": 30
   },
   "24": {
    "nameDe": "Arbok",
@@ -722,17 +733,6 @@
   }
  },
  "routesHoenn": {
-  "petalburg-city": {
-   "slugDe": "bluetenburg-city",
-   "slugEn": "petalburg-city",
-   "nameDe": "Blütenburg City",
-   "nameEn": "Petalburg City",
-   "topId": 183,
-   "topNameDe": "Marill",
-   "topNameEn": "Marill",
-   "topChance": 100,
-   "speciesCount": 4
-  },
   "littleroot-town": {
    "slugDe": "wurzelheim",
    "slugEn": "littleroot-town",
@@ -743,28 +743,6 @@
    "topNameEn": null,
    "topChance": null,
    "speciesCount": 3
-  },
-  "hoenn-route-101": {
-   "slugDe": "route-101",
-   "slugEn": "route-101",
-   "nameDe": "Route 101",
-   "nameEn": "Route 101",
-   "topId": 261,
-   "topNameDe": "Fiffyen",
-   "topNameEn": "Poochyena",
-   "topChance": 45,
-   "speciesCount": 6
-  },
-  "hoenn-route-104": {
-   "slugDe": "route-104",
-   "slugEn": "route-104",
-   "nameDe": "Route 104",
-   "nameEn": "Route 104",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 7
   },
   "hoenn-route-102": {
    "slugDe": "route-102",
@@ -777,6 +755,39 @@
    "topChance": 100,
    "speciesCount": 10
   },
+  "hoenn-route-104": {
+   "slugDe": "route-104",
+   "slugEn": "route-104",
+   "nameDe": "Route 104",
+   "nameEn": "Route 104",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 7
+  },
+  "hoenn-route-101": {
+   "slugDe": "route-101",
+   "slugEn": "route-101",
+   "nameDe": "Route 101",
+   "nameEn": "Route 101",
+   "topId": 261,
+   "topNameDe": "Fiffyen",
+   "topNameEn": "Poochyena",
+   "topChance": 45,
+   "speciesCount": 6
+  },
+  "petalburg-city": {
+   "slugDe": "bluetenburg-city",
+   "slugEn": "petalburg-city",
+   "nameDe": "Blütenburg City",
+   "nameEn": "Petalburg City",
+   "topId": 183,
+   "topNameDe": "Marill",
+   "topNameEn": "Marill",
+   "topChance": 100,
+   "speciesCount": 4
+  },
   "petalburg-woods": {
    "slugDe": "bluetenburgwald",
    "slugEn": "petalburg-woods",
@@ -787,17 +798,6 @@
    "topNameEn": "Poochyena",
    "topChance": 30,
    "speciesCount": 7
-  },
-  "rustboro-city": {
-   "slugDe": "metarost-city",
-   "slugEn": "rustboro-city",
-   "nameDe": "Metarost City",
-   "nameEn": "Rustboro City",
-   "topId": null,
-   "topNameDe": null,
-   "topNameEn": null,
-   "topChance": null,
-   "speciesCount": 3
   },
   "hoenn-route-116": {
    "slugDe": "route-116",
@@ -810,16 +810,27 @@
    "topChance": 28,
    "speciesCount": 6
   },
-  "rusturf-tunnel": {
-   "slugDe": "metaflurtunnel",
-   "slugEn": "rusturf-tunnel",
-   "nameDe": "Metaflurtunnel",
-   "nameEn": "Rusturf Tunnel",
-   "topId": 293,
-   "topNameDe": "Flurmel",
-   "topNameEn": "Whismur",
+  "rustboro-city": {
+   "slugDe": "metarost-city",
+   "slugEn": "rustboro-city",
+   "nameDe": "Metarost City",
+   "nameEn": "Rustboro City",
+   "topId": null,
+   "topNameDe": null,
+   "topNameEn": null,
+   "topChance": null,
+   "speciesCount": 3
+  },
+  "hoenn-route-108": {
+   "slugDe": "route-108",
+   "slugEn": "route-108",
+   "nameDe": "Route 108",
+   "nameEn": "Route 108",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
    "topChance": 100,
-   "speciesCount": 1
+   "speciesCount": 5
   },
   "hoenn-route-105": {
    "slugDe": "route-105",
@@ -831,6 +842,28 @@
    "topNameEn": "Wailmer",
    "topChance": 100,
    "speciesCount": 5
+  },
+  "slateport-city": {
+   "slugDe": "graphitport-city",
+   "slugEn": "slateport-city",
+   "nameDe": "Graphitport City",
+   "nameEn": "Slateport City",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
+   "topChance": 100,
+   "speciesCount": 5
+  },
+  "rusturf-tunnel": {
+   "slugDe": "metaflurtunnel",
+   "slugEn": "rusturf-tunnel",
+   "nameDe": "Metaflurtunnel",
+   "nameEn": "Rusturf Tunnel",
+   "topId": 293,
+   "topNameDe": "Flurmel",
+   "topNameEn": "Whismur",
+   "topChance": 100,
+   "speciesCount": 1
   },
   "dewford-town": {
    "slugDe": "faustauhaven",
@@ -865,27 +898,16 @@
    "topChance": 100,
    "speciesCount": 5
   },
-  "hoenn-route-108": {
-   "slugDe": "route-108",
-   "slugEn": "route-108",
-   "nameDe": "Route 108",
-   "nameEn": "Route 108",
+  "hoenn-route-110": {
+   "slugDe": "route-110",
+   "slugEn": "route-110",
+   "nameDe": "Route 110",
+   "nameEn": "Route 110",
    "topId": 320,
    "topNameDe": "Wailmer",
    "topNameEn": "Wailmer",
    "topChance": 100,
-   "speciesCount": 5
-  },
-  "slateport-city": {
-   "slugDe": "graphitport-city",
-   "slugEn": "slateport-city",
-   "nameDe": "Graphitport City",
-   "nameEn": "Slateport City",
-   "topId": 320,
-   "topNameDe": "Wailmer",
-   "topNameEn": "Wailmer",
-   "topChance": 100,
-   "speciesCount": 5
+   "speciesCount": 11
   },
   "hoenn-route-117": {
    "slugDe": "route-117",
@@ -897,17 +919,6 @@
    "topNameEn": "Corphish",
    "topChance": 100,
    "speciesCount": 9
-  },
-  "hoenn-route-110": {
-   "slugDe": "route-110",
-   "slugEn": "route-110",
-   "nameDe": "Route 110",
-   "nameEn": "Route 110",
-   "topId": 320,
-   "topNameDe": "Wailmer",
-   "topNameEn": "Wailmer",
-   "topChance": 100,
-   "speciesCount": 11
   },
   "hoenn-route-112": {
    "slugDe": "route-112",
@@ -942,28 +953,6 @@
    "topChance": 30,
    "speciesCount": 6
   },
-  "hoenn-route-103": {
-   "slugDe": "route-103",
-   "slugEn": "route-103",
-   "nameDe": "Route 103",
-   "nameEn": "Route 103",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 8
-  },
-  "hoenn-route-118": {
-   "slugDe": "route-118",
-   "slugEn": "route-118",
-   "nameDe": "Route 118",
-   "nameEn": "Route 118",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 11
-  },
   "hoenn-route-113": {
    "slugDe": "route-113",
    "slugEn": "route-113",
@@ -986,27 +975,16 @@
    "topChance": 100,
    "speciesCount": 10
   },
-  "meteor-falls": {
-   "slugDe": "meteorfaelle",
-   "slugEn": "meteor-falls",
-   "nameDe": "Meteorfälle",
-   "nameEn": "Meteor Falls",
-   "topId": 339,
-   "topNameDe": "Schmerbe",
-   "topNameEn": "Barboach",
-   "topChance": 100,
-   "speciesCount": 8
-  },
-  "lavaridge-town": {
-   "slugDe": "bad-lavastadt",
-   "slugEn": "lavaridge-town",
-   "nameDe": "Bad Lavastadt",
-   "nameEn": "Lavaridge Town",
-   "topId": null,
-   "topNameDe": null,
-   "topNameEn": null,
-   "topChance": null,
-   "speciesCount": 1
+  "hoenn-route-118": {
+   "slugDe": "route-118",
+   "slugEn": "route-118",
+   "nameDe": "Route 118",
+   "nameEn": "Route 118",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
+   "speciesCount": 11
   },
   "hoenn-route-120": {
    "slugDe": "route-120",
@@ -1019,6 +997,50 @@
    "topChance": 100,
    "speciesCount": 10
   },
+  "lavaridge-town": {
+   "slugDe": "bad-lavastadt",
+   "slugEn": "lavaridge-town",
+   "nameDe": "Bad Lavastadt",
+   "nameEn": "Lavaridge Town",
+   "topId": null,
+   "topNameDe": null,
+   "topNameEn": null,
+   "topChance": null,
+   "speciesCount": 1
+  },
+  "meteor-falls": {
+   "slugDe": "meteorfaelle",
+   "slugEn": "meteor-falls",
+   "nameDe": "Meteorfälle",
+   "nameEn": "Meteor Falls",
+   "topId": 339,
+   "topNameDe": "Schmerbe",
+   "topNameEn": "Barboach",
+   "topChance": 100,
+   "speciesCount": 8
+  },
+  "hoenn-route-121": {
+   "slugDe": "route-121",
+   "slugEn": "route-121",
+   "nameDe": "Route 121",
+   "nameEn": "Route 121",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
+   "topChance": 100,
+   "speciesCount": 11
+  },
+  "hoenn-route-103": {
+   "slugDe": "route-103",
+   "slugEn": "route-103",
+   "nameDe": "Route 103",
+   "nameEn": "Route 103",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
+   "speciesCount": 8
+  },
   "fortree-city": {
    "slugDe": "baumhausen-city",
    "slugEn": "fortree-city",
@@ -1029,6 +1051,17 @@
    "topNameEn": null,
    "topChance": null,
    "speciesCount": 1
+  },
+  "hoenn-safari-zone": {
+   "slugDe": "safari-zone",
+   "slugEn": "safari-zone",
+   "nameDe": "Safari-Zone",
+   "nameEn": "Safari Zone",
+   "topId": 74,
+   "topNameDe": "Kleinstein",
+   "topNameEn": "Geodude",
+   "topChance": 100,
+   "speciesCount": 38
   },
   "hoenn-route-119": {
    "slugDe": "route-119",
@@ -1041,16 +1074,27 @@
    "topChance": 100,
    "speciesCount": 12
   },
-  "hoenn-route-121": {
-   "slugDe": "route-121",
-   "slugEn": "route-121",
-   "nameDe": "Route 121",
-   "nameEn": "Route 121",
+  "mt-pyre": {
+   "slugDe": "pyroberg",
+   "slugEn": "mt-pyre",
+   "nameDe": "Pyroberg",
+   "nameEn": "Mt. Pyre",
+   "topId": 353,
+   "topNameDe": "Shuppet",
+   "topNameEn": "Shuppet",
+   "topChance": 100,
+   "speciesCount": 5
+  },
+  "lilycove-city": {
+   "slugDe": "seegrasulb-city",
+   "slugEn": "lilycove-city",
+   "nameDe": "Seegrasulb City",
+   "nameEn": "Lilycove City",
    "topId": 320,
    "topNameDe": "Wailmer",
    "topNameEn": "Wailmer",
-   "topChance": 100,
-   "speciesCount": 11
+   "topChance": 85,
+   "speciesCount": 6
   },
   "mossdeep-city": {
    "slugDe": "moosbach-city",
@@ -1074,50 +1118,6 @@
    "topChance": 70,
    "speciesCount": 9
   },
-  "lilycove-city": {
-   "slugDe": "seegrasulb-city",
-   "slugEn": "lilycove-city",
-   "nameDe": "Seegrasulb City",
-   "nameEn": "Lilycove City",
-   "topId": 320,
-   "topNameDe": "Wailmer",
-   "topNameEn": "Wailmer",
-   "topChance": 85,
-   "speciesCount": 6
-  },
-  "hoenn-safari-zone": {
-   "slugDe": "safari-zone",
-   "slugEn": "safari-zone",
-   "nameDe": "Safari-Zone",
-   "nameEn": "Safari Zone",
-   "topId": 74,
-   "topNameDe": "Kleinstein",
-   "topNameEn": "Geodude",
-   "topChance": 100,
-   "speciesCount": 38
-  },
-  "hoenn-route-129": {
-   "slugDe": "route-129",
-   "slugEn": "route-129",
-   "nameDe": "Route 129",
-   "nameEn": "Route 129",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 7
-  },
-  "pacifidlog-town": {
-   "slugDe": "flossbrunn",
-   "slugEn": "pacifidlog-town",
-   "nameDe": "Floßbrunn",
-   "nameEn": "Pacifidlog Town",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 7
-  },
   "hoenn-route-128": {
    "slugDe": "route-128",
    "slugEn": "route-128",
@@ -1127,6 +1127,17 @@
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 70,
+   "speciesCount": 7
+  },
+  "shoal-cave": {
+   "slugDe": "kuestenhoehle",
+   "slugEn": "shoal-cave",
+   "nameDe": "Küstenhöhle",
+   "nameEn": "Shoal Cave",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
+   "topChance": 100,
    "speciesCount": 7
   },
   "sky-pillar": {
@@ -1140,16 +1151,16 @@
    "topChance": 30,
    "speciesCount": 6
   },
-  "mt-pyre": {
-   "slugDe": "pyroberg",
-   "slugEn": "mt-pyre",
-   "nameDe": "Pyroberg",
-   "nameEn": "Mt. Pyre",
-   "topId": 353,
-   "topNameDe": "Shuppet",
-   "topNameEn": "Shuppet",
-   "topChance": 100,
-   "speciesCount": 5
+  "hoenn-route-129": {
+   "slugDe": "route-129",
+   "slugEn": "route-129",
+   "nameDe": "Route 129",
+   "nameEn": "Route 129",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
+   "speciesCount": 7
   },
   "sootopolis-city": {
    "slugDe": "xeneroville",
@@ -1162,16 +1173,27 @@
    "topChance": 100,
    "speciesCount": 3
   },
-  "shoal-cave": {
-   "slugDe": "kuestenhoehle",
-   "slugEn": "shoal-cave",
-   "nameDe": "Küstenhöhle",
-   "nameEn": "Shoal Cave",
-   "topId": 320,
-   "topNameDe": "Wailmer",
-   "topNameEn": "Wailmer",
-   "topChance": 100,
+  "pacifidlog-town": {
+   "slugDe": "flossbrunn",
+   "slugEn": "pacifidlog-town",
+   "nameDe": "Floßbrunn",
+   "nameEn": "Pacifidlog Town",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
    "speciesCount": 7
+  },
+  "hoenn-victory-road": {
+   "slugDe": "siegesstrasse",
+   "slugEn": "victory-road",
+   "nameDe": "Siegesstraße",
+   "nameEn": "Victory Road",
+   "topId": 42,
+   "topNameDe": "Golbat",
+   "topNameEn": "Golbat",
+   "topChance": 100,
+   "speciesCount": 16
   },
   "hoenn-route-115": {
    "slugDe": "hoenn-route-115",
@@ -1183,6 +1205,39 @@
    "topNameEn": "Wailmer",
    "topChance": 100,
    "speciesCount": 9
+  },
+  "hoenn-route-107": {
+   "slugDe": "hoenn-route-107",
+   "slugEn": "hoenn-route-107",
+   "nameDe": "Route 107",
+   "nameEn": "Route 107",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
+   "topChance": 100,
+   "speciesCount": 5
+  },
+  "hoenn-route-106": {
+   "slugDe": "hoenn-route-106",
+   "slugEn": "hoenn-route-106",
+   "nameDe": "Route 106",
+   "nameEn": "Route 106",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
+   "topChance": 100,
+   "speciesCount": 5
+  },
+  "ever-grande-city": {
+   "slugDe": "prachtpolis-city",
+   "slugEn": "ever-grande-city",
+   "nameDe": "Prachtpolis City",
+   "nameEn": "Ever Grande City",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
+   "speciesCount": 7
   },
   "hoenn-route-122": {
    "slugDe": "hoenn-route-122",
@@ -1206,33 +1261,22 @@
    "topChance": 70,
    "speciesCount": 6
   },
-  "hoenn-victory-road": {
-   "slugDe": "siegesstrasse",
-   "slugEn": "victory-road",
-   "nameDe": "Siegesstraße",
-   "nameEn": "Victory Road",
-   "topId": 42,
-   "topNameDe": "Golbat",
-   "topNameEn": "Golbat",
+  "hoenn-route-123": {
+   "slugDe": "hoenn-route-123",
+   "slugEn": "hoenn-route-123",
+   "nameDe": "Route 123",
+   "nameEn": "Route 123",
+   "topId": 320,
+   "topNameDe": "Wailmer",
+   "topNameEn": "Wailmer",
    "topChance": 100,
-   "speciesCount": 16
+   "speciesCount": 11
   },
-  "hoenn-route-127": {
-   "slugDe": "hoenn-route-127",
-   "slugEn": "hoenn-route-127",
-   "nameDe": "Route 127",
-   "nameEn": "Route 127",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 6
-  },
-  "ever-grande-city": {
-   "slugDe": "prachtpolis-city",
-   "slugEn": "ever-grande-city",
-   "nameDe": "Prachtpolis City",
-   "nameEn": "Ever Grande City",
+  "hoenn-route-133": {
+   "slugDe": "hoenn-route-133",
+   "slugEn": "hoenn-route-133",
+   "nameDe": "Route 133",
+   "nameEn": "Route 133",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
@@ -1250,16 +1294,16 @@
    "topChance": 70,
    "speciesCount": 9
   },
-  "hoenn-route-106": {
-   "slugDe": "hoenn-route-106",
-   "slugEn": "hoenn-route-106",
-   "nameDe": "Route 106",
-   "nameEn": "Route 106",
-   "topId": 320,
-   "topNameDe": "Wailmer",
-   "topNameEn": "Wailmer",
-   "topChance": 100,
-   "speciesCount": 5
+  "hoenn-route-131": {
+   "slugDe": "hoenn-route-131",
+   "slugEn": "hoenn-route-131",
+   "nameDe": "Route 131",
+   "nameEn": "Route 131",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
+   "speciesCount": 6
   },
   "hoenn-route-130": {
    "slugDe": "hoenn-route-130",
@@ -1272,44 +1316,11 @@
    "topChance": 100,
    "speciesCount": 7
   },
-  "hoenn-route-107": {
-   "slugDe": "hoenn-route-107",
-   "slugEn": "hoenn-route-107",
-   "nameDe": "Route 107",
-   "nameEn": "Route 107",
-   "topId": 320,
-   "topNameDe": "Wailmer",
-   "topNameEn": "Wailmer",
-   "topChance": 100,
-   "speciesCount": 5
-  },
-  "hoenn-route-131": {
-   "slugDe": "hoenn-route-131",
-   "slugEn": "hoenn-route-131",
-   "nameDe": "Route 131",
-   "nameEn": "Route 131",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 6
-  },
   "hoenn-route-132": {
    "slugDe": "hoenn-route-132",
    "slugEn": "hoenn-route-132",
    "nameDe": "Route 132",
    "nameEn": "Route 132",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 70,
-   "speciesCount": 7
-  },
-  "hoenn-route-133": {
-   "slugDe": "hoenn-route-133",
-   "slugEn": "hoenn-route-133",
-   "nameDe": "Route 133",
-   "nameEn": "Route 133",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
@@ -1327,40 +1338,106 @@
    "topChance": 70,
    "speciesCount": 7
   },
-  "hoenn-route-123": {
-   "slugDe": "hoenn-route-123",
-   "slugEn": "hoenn-route-123",
-   "nameDe": "Route 123",
-   "nameEn": "Route 123",
+  "magma-hideout": {
+   "slugDe": "magma-hideout",
+   "slugEn": "magma-hideout",
+   "nameDe": "Team Magmas Versteck",
+   "nameEn": "Magma Hideout",
+   "topId": 74,
+   "topNameDe": "Kleinstein",
+   "topNameEn": "Geodude",
+   "topChance": 55,
+   "speciesCount": 3
+  },
+  "hoenn-route-127": {
+   "slugDe": "hoenn-route-127",
+   "slugEn": "hoenn-route-127",
+   "nameDe": "Route 127",
+   "nameEn": "Route 127",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 70,
+   "speciesCount": 6
+  },
+  "jagged-pass": {
+   "slugDe": "jagged-pass",
+   "slugEn": "jagged-pass",
+   "nameDe": "Steilpass",
+   "nameEn": "Jagged Pass",
+   "topId": 322,
+   "topNameDe": "Camaub",
+   "topNameEn": "Numel",
+   "topChance": 55,
+   "speciesCount": 3
+  },
+  "new-mauville": {
+   "slugDe": "new-mauville",
+   "slugEn": "new-mauville",
+   "nameDe": "Neu Malvenfroh",
+   "nameEn": "New Mauville",
+   "topId": 81,
+   "topNameDe": "Magnetilo",
+   "topNameEn": "Magnemite",
+   "topChance": 50,
+   "speciesCount": 4
+  },
+  "team-aqua-hideout": {
+   "slugDe": "team-aqua-hideout",
+   "slugEn": "team-aqua-hideout",
+   "nameDe": "Team Aquas Versteck",
+   "nameEn": "Team Aqua Hideout",
+   "topId": null,
+   "topNameDe": null,
+   "topNameEn": null,
+   "topChance": null,
+   "speciesCount": 1
+  },
+  "abandoned-ship": {
+   "slugDe": "abandoned-ship",
+   "slugEn": "abandoned-ship",
+   "nameDe": "Schiffswrack",
+   "nameEn": "Abandoned Ship",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 99,
+   "speciesCount": 3
+  },
+  "seafloor-cavern": {
+   "slugDe": "seafloor-cavern",
+   "slugEn": "seafloor-cavern",
+   "nameDe": "Tiefseehöhle",
+   "nameEn": "Seafloor Cavern",
    "topId": 320,
    "topNameDe": "Wailmer",
    "topNameEn": "Wailmer",
    "topChance": 100,
-   "speciesCount": 11
+   "speciesCount": 5
+  },
+  "cave-of-origin": {
+   "slugDe": "cave-of-origin",
+   "slugEn": "cave-of-origin",
+   "nameDe": "Urzeithöhle",
+   "nameEn": "Cave of Origin",
+   "topId": 41,
+   "topNameDe": "Zubat",
+   "topNameEn": "Zubat",
+   "topChance": 90,
+   "speciesCount": 3
   }
  },
  "routesJohto": {
-  "johto-route-29": {
-   "slugDe": "route-29",
-   "slugEn": "route-29",
-   "nameDe": "Route 29",
-   "nameEn": "Route 29",
-   "topId": 163,
-   "topNameDe": "Hoothoot",
-   "topNameEn": "Hoothoot",
-   "topChance": 50,
-   "speciesCount": 10
-  },
-  "violet-city": {
-   "slugDe": "viola-city",
-   "slugEn": "violet-city",
-   "nameDe": "Viola City",
-   "nameEn": "Violet City",
-   "topId": 340,
-   "topNameDe": "Welsar",
-   "topNameEn": "Whiscash",
-   "topChance": 100,
-   "speciesCount": 11
+  "johto-route-31": {
+   "slugDe": "route-31",
+   "slugEn": "route-31",
+   "nameDe": "Route 31",
+   "nameEn": "Route 31",
+   "topId": 60,
+   "topNameDe": "Quapsel",
+   "topNameEn": "Poliwag",
+   "topChance": 90,
+   "speciesCount": 16
   },
   "new-bark-town": {
    "slugDe": "neuborkia",
@@ -1373,28 +1450,6 @@
    "topChance": 90,
    "speciesCount": 13
   },
-  "cherrygrove-city": {
-   "slugDe": "rosalia-city",
-   "slugEn": "cherrygrove-city",
-   "nameDe": "Rosalia City",
-   "nameEn": "Cherrygrove City",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 90,
-   "speciesCount": 12
-  },
-  "johto-route-31": {
-   "slugDe": "route-31",
-   "slugEn": "route-31",
-   "nameDe": "Route 31",
-   "nameEn": "Route 31",
-   "topId": 60,
-   "topNameDe": "Quapsel",
-   "topNameEn": "Poliwag",
-   "topChance": 90,
-   "speciesCount": 16
-  },
   "johto-route-30": {
    "slugDe": "route-30",
    "slugEn": "route-30",
@@ -1405,6 +1460,28 @@
    "topNameEn": "Poliwag",
    "topChance": 90,
    "speciesCount": 15
+  },
+  "violet-city": {
+   "slugDe": "viola-city",
+   "slugEn": "violet-city",
+   "nameDe": "Viola City",
+   "nameEn": "Violet City",
+   "topId": 60,
+   "topNameDe": "Quapsel",
+   "topNameEn": "Poliwag",
+   "topChance": 90,
+   "speciesCount": 11
+  },
+  "johto-route-29": {
+   "slugDe": "route-29",
+   "slugEn": "route-29",
+   "nameDe": "Route 29",
+   "nameEn": "Route 29",
+   "topId": 163,
+   "topNameDe": "Hoothoot",
+   "topNameEn": "Hoothoot",
+   "topChance": 50,
+   "speciesCount": 10
   },
   "sprout-tower": {
    "slugDe": "knofensa-turm",
@@ -1417,16 +1494,38 @@
    "topChance": 45,
    "speciesCount": 6
   },
+  "cherrygrove-city": {
+   "slugDe": "rosalia-city",
+   "slugEn": "cherrygrove-city",
+   "nameDe": "Rosalia City",
+   "nameEn": "Cherrygrove City",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 90,
+   "speciesCount": 12
+  },
   "johto-route-32": {
    "slugDe": "route-32",
    "slugEn": "route-32",
    "nameDe": "Route 32",
    "nameEn": "Route 32",
-   "topId": 211,
-   "topNameDe": "Baldorfish",
-   "topNameEn": "Qwilfish",
-   "topChance": 90,
+   "topId": 163,
+   "topNameDe": "Hoothoot",
+   "topNameEn": "Hoothoot",
+   "topChance": 80,
    "speciesCount": 18
+  },
+  "union-cave": {
+   "slugDe": "einheitstunnel",
+   "slugEn": "union-cave",
+   "nameDe": "Einheitstunnel",
+   "nameEn": "Union Cave",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 85,
+   "speciesCount": 23
   },
   "johto-route-33": {
    "slugDe": "route-33",
@@ -1450,28 +1549,6 @@
    "topChance": 80,
    "speciesCount": 3
   },
-  "union-cave": {
-   "slugDe": "einheitstunnel",
-   "slugEn": "union-cave",
-   "nameDe": "Einheitstunnel",
-   "nameEn": "Union Cave",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 85,
-   "speciesCount": 23
-  },
-  "ruins-of-alph": {
-   "slugDe": "alph-ruinen",
-   "slugEn": "ruins-of-alph",
-   "nameDe": "Alph-Ruinen",
-   "nameEn": "Ruins of Alph",
-   "topId": 74,
-   "topNameDe": "Kleinstein",
-   "topNameEn": "Geodude",
-   "topChance": 100,
-   "speciesCount": 12
-  },
   "ilex-forest": {
    "slugDe": "steineichenwald",
    "slugEn": "ilex-forest",
@@ -1482,28 +1559,6 @@
    "topNameEn": "Psyduck",
    "topChance": 90,
    "speciesCount": 17
-  },
-  "johto-route-35": {
-   "slugDe": "route-35",
-   "slugEn": "route-35",
-   "nameDe": "Route 35",
-   "nameEn": "Route 35",
-   "topId": 54,
-   "topNameDe": "Enton",
-   "topNameEn": "Psyduck",
-   "topChance": 90,
-   "speciesCount": 19
-  },
-  "slowpoke-well": {
-   "slugDe": "flegmon-brunnen",
-   "slugEn": "slowpoke-well",
-   "nameDe": "Flegmon-Brunnen",
-   "nameEn": "Slowpoke Well",
-   "topId": 79,
-   "topNameDe": "Flegmon",
-   "topNameEn": "Slowpoke",
-   "topChance": 100,
-   "speciesCount": 11
   },
   "johto-route-34": {
    "slugDe": "route-34",
@@ -1516,16 +1571,38 @@
    "topChance": 90,
    "speciesCount": 20
   },
-  "johto-route-38": {
-   "slugDe": "route-38",
-   "slugEn": "route-38",
-   "nameDe": "Route 38",
-   "nameEn": "Route 38",
-   "topId": 102,
-   "topNameDe": "Owei",
-   "topNameEn": "Exeggcute",
-   "topChance": 65,
-   "speciesCount": 15
+  "ruins-of-alph": {
+   "slugDe": "alph-ruinen",
+   "slugEn": "ruins-of-alph",
+   "nameDe": "Alph-Ruinen",
+   "nameEn": "Ruins of Alph",
+   "topId": 74,
+   "topNameDe": "Kleinstein",
+   "topNameEn": "Geodude",
+   "topChance": 100,
+   "speciesCount": 12
+  },
+  "slowpoke-well": {
+   "slugDe": "flegmon-brunnen",
+   "slugEn": "slowpoke-well",
+   "nameDe": "Flegmon-Brunnen",
+   "nameEn": "Slowpoke Well",
+   "topId": 79,
+   "topNameDe": "Flegmon",
+   "topNameEn": "Slowpoke",
+   "topChance": 100,
+   "speciesCount": 11
+  },
+  "johto-route-35": {
+   "slugDe": "route-35",
+   "slugEn": "route-35",
+   "nameDe": "Route 35",
+   "nameEn": "Route 35",
+   "topId": 54,
+   "topNameDe": "Enton",
+   "topNameEn": "Psyduck",
+   "topChance": 90,
+   "speciesCount": 19
   },
   "national-park": {
    "slugDe": "nationalpark",
@@ -1538,17 +1615,6 @@
    "topChance": 65,
    "speciesCount": 31
   },
-  "ecruteak-city": {
-   "slugDe": "teak-city",
-   "slugEn": "ecruteak-city",
-   "nameDe": "Teak City",
-   "nameEn": "Ecruteak City",
-   "topId": 60,
-   "topNameDe": "Quapsel",
-   "topNameEn": "Poliwag",
-   "topChance": 90,
-   "speciesCount": 7
-  },
   "johto-route-36": {
    "slugDe": "route-36",
    "slugEn": "route-36",
@@ -1559,6 +1625,17 @@
    "topNameEn": "Hoothoot",
    "topChance": 50,
    "speciesCount": 13
+  },
+  "ecruteak-city": {
+   "slugDe": "teak-city",
+   "slugEn": "ecruteak-city",
+   "nameDe": "Teak City",
+   "nameEn": "Ecruteak City",
+   "topId": 60,
+   "topNameDe": "Quapsel",
+   "topNameEn": "Poliwag",
+   "topChance": 90,
+   "speciesCount": 7
   },
   "burned-tower": {
    "slugDe": "turmruine",
@@ -1571,6 +1648,28 @@
    "topChance": 30,
    "speciesCount": 9
   },
+  "johto-route-37": {
+   "slugDe": "route-37",
+   "slugEn": "route-37",
+   "nameDe": "Route 37",
+   "nameEn": "Route 37",
+   "topId": 163,
+   "topNameDe": "Hoothoot",
+   "topNameEn": "Hoothoot",
+   "topChance": 50,
+   "speciesCount": 11
+  },
+  "johto-route-38": {
+   "slugDe": "route-38",
+   "slugEn": "route-38",
+   "nameDe": "Route 38",
+   "nameEn": "Route 38",
+   "topId": 102,
+   "topNameDe": "Owei",
+   "topNameEn": "Exeggcute",
+   "topChance": 65,
+   "speciesCount": 15
+  },
   "johto-route-39": {
    "slugDe": "route-39",
    "slugEn": "route-39",
@@ -1582,17 +1681,6 @@
    "topChance": 50,
    "speciesCount": 13
   },
-  "johto-route-41": {
-   "slugDe": "route-41",
-   "slugEn": "route-41",
-   "nameDe": "Route 41",
-   "nameEn": "Route 41",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 85,
-   "speciesCount": 7
-  },
   "olivine-city": {
    "slugDe": "oliviana-city",
    "slugEn": "olivine-city",
@@ -1602,6 +1690,28 @@
    "topNameDe": "Tentacha",
    "topNameEn": "Tentacool",
    "topChance": 90,
+   "speciesCount": 7
+  },
+  "johto-route-40": {
+   "slugDe": "route-40",
+   "slugEn": "route-40",
+   "nameDe": "Route 40",
+   "nameEn": "Route 40",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 90,
+   "speciesCount": 7
+  },
+  "johto-route-41": {
+   "slugDe": "route-41",
+   "slugEn": "route-41",
+   "nameDe": "Route 41",
+   "nameEn": "Route 41",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 85,
    "speciesCount": 7
   },
   "whirl-islands": {
@@ -1615,39 +1725,6 @@
    "topChance": 85,
    "speciesCount": 15
   },
-  "johto-route-40": {
-   "slugDe": "route-40",
-   "slugEn": "route-40",
-   "nameDe": "Route 40",
-   "nameEn": "Route 40",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 90,
-   "speciesCount": 7
-  },
-  "johto-route-37": {
-   "slugDe": "route-37",
-   "slugEn": "route-37",
-   "nameDe": "Route 37",
-   "nameEn": "Route 37",
-   "topId": 163,
-   "topNameDe": "Hoothoot",
-   "topNameEn": "Hoothoot",
-   "topChance": 50,
-   "speciesCount": 11
-  },
-  "cianwood-city": {
-   "slugDe": "anemonia-city",
-   "slugEn": "cianwood-city",
-   "nameDe": "Anemonia City",
-   "nameEn": "Cianwood City",
-   "topId": 72,
-   "topNameDe": "Tentacha",
-   "topNameEn": "Tentacool",
-   "topChance": 90,
-   "speciesCount": 8
-  },
   "johto-route-42": {
    "slugDe": "route-42",
    "slugEn": "route-42",
@@ -1657,61 +1734,6 @@
    "topNameDe": "Goldini",
    "topNameEn": "Goldeen",
    "topChance": 90,
-   "speciesCount": 14
-  },
-  "lake-of-rage": {
-   "slugDe": "see-des-zorns",
-   "slugEn": "lake-of-rage",
-   "nameDe": "See des Zorns",
-   "nameEn": "Lake of Rage",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 6
-  },
-  "johto-route-44": {
-   "slugDe": "route-44",
-   "slugEn": "route-44",
-   "nameDe": "Route 44",
-   "nameEn": "Route 44",
-   "topId": 60,
-   "topNameDe": "Quapsel",
-   "topNameEn": "Poliwag",
-   "topChance": 90,
-   "speciesCount": 15
-  },
-  "johto-route-43": {
-   "slugDe": "route-43",
-   "slugEn": "route-43",
-   "nameDe": "Route 43",
-   "nameEn": "Route 43",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 15
-  },
-  "bell-tower": {
-   "slugDe": "glockenturm",
-   "slugEn": "bell-tower",
-   "nameDe": "Glockenturm",
-   "nameEn": "Bell Tower",
-   "topId": 19,
-   "topNameDe": "Rattfratz",
-   "topNameEn": "Rattata",
-   "topChance": 40,
-   "speciesCount": 7
-  },
-  "johto-route-45": {
-   "slugDe": "route-45",
-   "slugEn": "route-45",
-   "nameDe": "Route 45",
-   "nameEn": "Route 45",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
    "speciesCount": 14
   },
   "mt-mortar": {
@@ -1725,16 +1747,60 @@
    "topChance": 90,
    "speciesCount": 17
   },
-  "johto-route-46": {
-   "slugDe": "route-46",
-   "slugEn": "route-46",
-   "nameDe": "Route 46",
-   "nameEn": "Route 46",
-   "topId": 21,
-   "topNameDe": "Habitak",
-   "topNameEn": "Spearow",
-   "topChance": 80,
+  "johto-route-43": {
+   "slugDe": "route-43",
+   "slugEn": "route-43",
+   "nameDe": "Route 43",
+   "nameEn": "Route 43",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 15
+  },
+  "cianwood-city": {
+   "slugDe": "anemonia-city",
+   "slugEn": "cianwood-city",
+   "nameDe": "Anemonia City",
+   "nameEn": "Cianwood City",
+   "topId": 72,
+   "topNameDe": "Tentacha",
+   "topNameEn": "Tentacool",
+   "topChance": 90,
    "speciesCount": 8
+  },
+  "lake-of-rage": {
+   "slugDe": "see-des-zorns",
+   "slugEn": "lake-of-rage",
+   "nameDe": "See des Zorns",
+   "nameEn": "Lake of Rage",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 6
+  },
+  "bell-tower": {
+   "slugDe": "glockenturm",
+   "slugEn": "bell-tower",
+   "nameDe": "Glockenturm",
+   "nameEn": "Bell Tower",
+   "topId": 19,
+   "topNameDe": "Rattfratz",
+   "topNameEn": "Rattata",
+   "topChance": 40,
+   "speciesCount": 7
+  },
+  "johto-route-44": {
+   "slugDe": "route-44",
+   "slugEn": "route-44",
+   "nameDe": "Route 44",
+   "nameEn": "Route 44",
+   "topId": 60,
+   "topNameDe": "Quapsel",
+   "topNameEn": "Poliwag",
+   "topChance": 90,
+   "speciesCount": 15
   },
   "dragons-den": {
    "slugDe": "drachenhoehle",
@@ -1747,6 +1813,17 @@
    "topChance": 100,
    "speciesCount": 3
   },
+  "blackthorn-city": {
+   "slugDe": "ebenholz-city",
+   "slugEn": "blackthorn-city",
+   "nameDe": "Ebenholz City",
+   "nameEn": "Blackthorn City",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 2
+  },
   "ice-path": {
    "slugDe": "eispfad",
    "slugEn": "ice-path",
@@ -1757,6 +1834,17 @@
    "topNameEn": "Swinub",
    "topChance": 30,
    "speciesCount": 8
+  },
+  "johto-route-45": {
+   "slugDe": "route-45",
+   "slugEn": "route-45",
+   "nameDe": "Route 45",
+   "nameEn": "Route 45",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 14
   },
   "dark-cave": {
    "slugDe": "dunkelhoehle",
@@ -1769,6 +1857,17 @@
    "topChance": 100,
    "speciesCount": 13
   },
+  "johto-route-46": {
+   "slugDe": "route-46",
+   "slugEn": "route-46",
+   "nameDe": "Route 46",
+   "nameEn": "Route 46",
+   "topId": 21,
+   "topNameDe": "Habitak",
+   "topNameEn": "Spearow",
+   "topChance": 80,
+   "speciesCount": 8
+  },
   "johto-route-47": {
    "slugDe": "route-47",
    "slugEn": "route-47",
@@ -1779,17 +1878,6 @@
    "topNameEn": "Magikarp",
    "topChance": 100,
    "speciesCount": 45
-  },
-  "blackthorn-city": {
-   "slugDe": "ebenholz-city",
-   "slugEn": "blackthorn-city",
-   "nameDe": "Ebenholz City",
-   "nameEn": "Blackthorn City",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 2
   },
   "johto-route-48": {
    "slugDe": "route-48",
@@ -1802,28 +1890,6 @@
    "topChance": 50,
    "speciesCount": 15
   },
-  "johto-safari-zone": {
-   "slugDe": "safari-zone",
-   "slugEn": "safari-zone",
-   "nameDe": "Safari-Zone",
-   "nameEn": "Safari Zone",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 152
-  },
-  "safari-zone-gate": {
-   "slugDe": "safari-zone-gate",
-   "slugEn": "safari-zone-gate",
-   "nameDe": "Safari-Eingang",
-   "nameEn": "Safari Zone Gate",
-   "topId": 163,
-   "topNameDe": "Hoothoot",
-   "topNameEn": "Hoothoot",
-   "topChance": 50,
-   "speciesCount": 4
-  },
   "mt-silver": {
    "slugDe": "silberberg",
    "slugEn": "mt-silver",
@@ -1835,6 +1901,17 @@
    "topChance": 91,
    "speciesCount": 35
   },
+  "johto-safari-zone": {
+   "slugDe": "safari-zone",
+   "slugEn": "safari-zone",
+   "nameDe": "Safari-Zone",
+   "nameEn": "Safari Zone",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 152
+  },
   "tohjo-falls": {
    "slugDe": "tohjo-falls",
    "slugEn": "tohjo-falls",
@@ -1845,41 +1922,30 @@
    "topNameEn": "Magikarp",
    "topChance": 85,
    "speciesCount": 12
+  },
+  "safari-zone-gate": {
+   "slugDe": "safari-zone-gate",
+   "slugEn": "safari-zone-gate",
+   "nameDe": "Safari-Eingang",
+   "nameEn": "Safari Zone Gate",
+   "topId": 163,
+   "topNameDe": "Hoothoot",
+   "topNameEn": "Hoothoot",
+   "topChance": 50,
+   "speciesCount": 4
   }
  },
  "routesSinnoh": {
-  "sinnoh-route-202": {
-   "slugDe": "route-202",
-   "slugEn": "route-202",
-   "nameDe": "Route 202",
-   "nameEn": "Route 202",
-   "topId": 263,
-   "topNameDe": "Zigzachs",
-   "topNameEn": "Zigzagoon",
-   "topChance": 40,
-   "speciesCount": 7
-  },
   "sinnoh-route-201": {
    "slugDe": "route-201",
    "slugEn": "route-201",
    "nameDe": "Route 201",
    "nameEn": "Route 201",
-   "topId": 84,
-   "topNameDe": "Dodu",
-   "topNameEn": "Doduo",
-   "topChance": 40,
+   "topId": 396,
+   "topNameDe": "Staralili",
+   "topNameEn": "Starly",
+   "topChance": 36,
    "speciesCount": 10
-  },
-  "sinnoh-route-203": {
-   "slugDe": "route-203",
-   "slugEn": "route-203",
-   "nameDe": "Route 203",
-   "nameEn": "Route 203",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 16
   },
   "twinleaf-town": {
    "slugDe": "zweiblattdorf",
@@ -1892,49 +1958,27 @@
    "topChance": 100,
    "speciesCount": 6
   },
-  "ravaged-path": {
-   "slugDe": "verwuesteter-pfad",
-   "slugEn": "ravaged-path",
-   "nameDe": "Verwüsteter Pfad",
-   "nameEn": "Ravaged Path",
+  "sinnoh-route-202": {
+   "slugDe": "route-202",
+   "slugEn": "route-202",
+   "nameDe": "Route 202",
+   "nameEn": "Route 202",
+   "topId": 399,
+   "topNameDe": "Bidiza",
+   "topNameEn": "Bidoof",
+   "topChance": 36,
+   "speciesCount": 7
+  },
+  "sinnoh-route-203": {
+   "slugDe": "route-203",
+   "slugEn": "route-203",
+   "nameDe": "Route 203",
+   "nameEn": "Route 203",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 8
-  },
-  "valley-windworks": {
-   "slugDe": "windkraftwerk",
-   "slugEn": "valley-windworks",
-   "nameDe": "Windkraftwerk",
-   "nameEn": "Valley Windworks",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 22
-  },
-  "eterna-forest": {
-   "slugDe": "ewigwald",
-   "slugEn": "eterna-forest",
-   "nameDe": "Ewigwald",
-   "nameEn": "Eterna Forest",
-   "topId": 446,
-   "topNameDe": "Mampfaxo",
-   "topNameEn": "Munchlax",
-   "topChance": 100,
-   "speciesCount": 25
-  },
-  "sinnoh-route-204": {
-   "slugDe": "route-204",
-   "slugEn": "route-204",
-   "nameDe": "Route 204",
-   "nameEn": "Route 204",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 19
+   "speciesCount": 16
   },
   "oreburgh-mine": {
    "slugDe": "erzelingen-mine",
@@ -1958,38 +2002,49 @@
    "topChance": 100,
    "speciesCount": 33
   },
-  "eterna-city": {
-   "slugDe": "ewigenau",
-   "slugEn": "eterna-city",
-   "nameDe": "Ewigenau",
-   "nameEn": "Eterna City",
+  "valley-windworks": {
+   "slugDe": "windkraftwerk",
+   "slugEn": "valley-windworks",
+   "nameDe": "Windkraftwerk",
+   "nameEn": "Valley Windworks",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 7
+   "speciesCount": 22
   },
-  "sinnoh-route-206": {
-   "slugDe": "route-206",
-   "slugEn": "route-206",
-   "nameDe": "Route 206",
-   "nameEn": "Route 206",
+  "sinnoh-route-204": {
+   "slugDe": "route-204",
+   "slugEn": "route-204",
+   "nameDe": "Route 204",
+   "nameEn": "Route 204",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 19
+  },
+  "ravaged-path": {
+   "slugDe": "verwuesteter-pfad",
+   "slugEn": "ravaged-path",
+   "nameDe": "Verwüsteter Pfad",
+   "nameEn": "Ravaged Path",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 8
+  },
+  "eterna-forest": {
+   "slugDe": "ewigwald",
+   "slugEn": "eterna-forest",
+   "nameDe": "Ewigwald",
+   "nameEn": "Eterna Forest",
    "topId": 446,
    "topNameDe": "Mampfaxo",
    "topNameEn": "Munchlax",
    "topChance": 100,
-   "speciesCount": 15
-  },
-  "wayward-cave": {
-   "slugDe": "bizarre-hoehle",
-   "slugEn": "wayward-cave",
-   "nameDe": "Bizarre Höhle",
-   "nameEn": "Wayward Cave",
-   "topId": 74,
-   "topNameDe": "Kleinstein",
-   "topNameEn": "Geodude",
-   "topChance": 57,
-   "speciesCount": 6
+   "speciesCount": 25
   },
   "sinnoh-route-207": {
    "slugDe": "route-207",
@@ -2002,6 +2057,17 @@
    "topChance": 100,
    "speciesCount": 14
   },
+  "sinnoh-route-206": {
+   "slugDe": "route-206",
+   "slugEn": "route-206",
+   "nameDe": "Route 206",
+   "nameEn": "Route 206",
+   "topId": 446,
+   "topNameDe": "Mampfaxo",
+   "topNameEn": "Munchlax",
+   "topChance": 100,
+   "speciesCount": 15
+  },
   "sinnoh-route-208": {
    "slugDe": "route-208",
    "slugEn": "route-208",
@@ -2013,38 +2079,27 @@
    "topChance": 100,
    "speciesCount": 23
   },
-  "sinnoh-route-209": {
-   "slugDe": "route-209",
-   "slugEn": "route-209",
-   "nameDe": "Route 209",
-   "nameEn": "Route 209",
+  "eterna-city": {
+   "slugDe": "ewigenau",
+   "slugEn": "eterna-city",
+   "nameDe": "Ewigenau",
+   "nameEn": "Eterna City",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 24
+   "speciesCount": 7
   },
-  "mt-coronet": {
-   "slugDe": "kraterberg",
-   "slugEn": "mt-coronet",
-   "nameDe": "Kraterberg",
-   "nameEn": "Mt. Coronet",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 29
-  },
-  "celestic-town": {
-   "slugDe": "elyses",
-   "slugEn": "celestic-town",
-   "nameDe": "Elyses",
-   "nameEn": "Celestic Town",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 8
+  "wayward-cave": {
+   "slugDe": "bizarre-hoehle",
+   "slugEn": "wayward-cave",
+   "nameDe": "Bizarre Höhle",
+   "nameEn": "Wayward Cave",
+   "topId": 74,
+   "topNameDe": "Kleinstein",
+   "topNameEn": "Geodude",
+   "topChance": 57,
+   "speciesCount": 6
   },
   "lost-tower": {
    "slugDe": "turm-der-ruhenden",
@@ -2057,6 +2112,28 @@
    "topChance": 61,
    "speciesCount": 4
   },
+  "mt-coronet": {
+   "slugDe": "kraterberg",
+   "slugEn": "mt-coronet",
+   "nameDe": "Kraterberg",
+   "nameEn": "Mt. Coronet",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 29
+  },
+  "sinnoh-route-209": {
+   "slugDe": "route-209",
+   "slugEn": "route-209",
+   "nameDe": "Route 209",
+   "nameEn": "Route 209",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 24
+  },
   "sinnoh-route-211": {
    "slugDe": "route-211",
    "slugEn": "route-211",
@@ -2067,6 +2144,28 @@
    "topNameEn": "Munchlax",
    "topChance": 100,
    "speciesCount": 19
+  },
+  "celestic-town": {
+   "slugDe": "elyses",
+   "slugEn": "celestic-town",
+   "nameDe": "Elyses",
+   "nameEn": "Celestic Town",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 8
+  },
+  "pastoria-city": {
+   "slugDe": "weideburg",
+   "slugEn": "pastoria-city",
+   "nameDe": "Weideburg",
+   "nameEn": "Pastoria City",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 9
   },
   "sinnoh-route-210": {
    "slugDe": "route-210",
@@ -2090,16 +2189,16 @@
    "topChance": 100,
    "speciesCount": 32
   },
-  "pastoria-city": {
-   "slugDe": "weideburg",
-   "slugEn": "pastoria-city",
-   "nameDe": "Weideburg",
-   "nameEn": "Pastoria City",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
+  "solaceon-ruins": {
+   "slugDe": "trostu-ruinen",
+   "slugEn": "solaceon-ruins",
+   "nameDe": "Trostu-Ruinen",
+   "nameEn": "Solaceon Ruins",
+   "topId": 201,
+   "topNameDe": "Icognito",
+   "topNameEn": "Unown",
    "topChance": 100,
-   "speciesCount": 9
+   "speciesCount": 1
   },
   "sinnoh-route-213": {
    "slugDe": "route-213",
@@ -2112,16 +2211,16 @@
    "topChance": 100,
    "speciesCount": 19
   },
-  "solaceon-ruins": {
-   "slugDe": "trostu-ruinen",
-   "slugEn": "solaceon-ruins",
-   "nameDe": "Trostu-Ruinen",
-   "nameEn": "Solaceon Ruins",
-   "topId": 201,
-   "topNameDe": "Icognito",
-   "topNameEn": "Unown",
+  "great-marsh": {
+   "slugDe": "grossmoor",
+   "slugEn": "great-marsh",
+   "nameDe": "Großmoor",
+   "nameEn": "Great Marsh",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 1
+   "speciesCount": 25
   },
   "sinnoh-route-214": {
    "slugDe": "route-214",
@@ -2134,16 +2233,16 @@
    "topChance": 100,
    "speciesCount": 21
   },
-  "great-marsh": {
-   "slugDe": "grossmoor",
-   "slugEn": "great-marsh",
-   "nameDe": "Großmoor",
-   "nameEn": "Great Marsh",
+  "sinnoh-route-218": {
+   "slugDe": "route-218",
+   "slugEn": "route-218",
+   "nameDe": "Route 218",
+   "nameEn": "Route 218",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 25
+   "speciesCount": 19
   },
   "sinnoh-route-215": {
    "slugDe": "route-215",
@@ -2167,16 +2266,16 @@
    "topChance": 100,
    "speciesCount": 9
   },
-  "sinnoh-route-218": {
-   "slugDe": "route-218",
-   "slugEn": "route-218",
-   "nameDe": "Route 218",
-   "nameEn": "Route 218",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 19
+  "sinnoh-route-217": {
+   "slugDe": "route-217",
+   "slugEn": "route-217",
+   "nameDe": "Route 217",
+   "nameEn": "Route 217",
+   "topId": 215,
+   "topNameDe": "Sniebel",
+   "topNameEn": "Sneasel",
+   "topChance": 31,
+   "speciesCount": 7
   },
   "sinnoh-route-216": {
    "slugDe": "route-216",
@@ -2187,28 +2286,6 @@
    "topNameDe": "Shnebedeck",
    "topNameEn": "Snover",
    "topChance": 46,
-   "speciesCount": 7
-  },
-  "iron-island": {
-   "slugDe": "eiseninsel",
-   "slugEn": "iron-island",
-   "nameDe": "Eiseninsel",
-   "nameEn": "Iron Island",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 18
-  },
-  "sinnoh-route-217": {
-   "slugDe": "route-217",
-   "slugEn": "route-217",
-   "nameDe": "Route 217",
-   "nameEn": "Route 217",
-   "topId": 225,
-   "topNameDe": "Botogel",
-   "topNameEn": "Delibird",
-   "topChance": 40,
    "speciesCount": 7
   },
   "sunyshore-city": {
@@ -2222,16 +2299,49 @@
    "topChance": 100,
    "speciesCount": 9
   },
-  "sinnoh-route-219": {
-   "slugDe": "route-219",
-   "slugEn": "route-219",
-   "nameDe": "Route 219",
-   "nameEn": "Route 219",
+  "iron-island": {
+   "slugDe": "eiseninsel",
+   "slugEn": "iron-island",
+   "nameDe": "Eiseninsel",
+   "nameEn": "Iron Island",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 8
+   "speciesCount": 18
+  },
+  "sinnoh-route-221": {
+   "slugDe": "route-221",
+   "slugEn": "route-221",
+   "nameDe": "Route 221",
+   "nameEn": "Route 221",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 22
+  },
+  "turnback-cave": {
+   "slugDe": "hoehle-der-umkehr",
+   "slugEn": "turnback-cave",
+   "nameDe": "Höhle der Umkehr",
+   "nameEn": "Turnback Cave",
+   "topId": 92,
+   "topNameDe": "Nebulak",
+   "topNameEn": "Gastly",
+   "topChance": 30,
+   "speciesCount": 12
+  },
+  "sinnoh-route-220": {
+   "slugDe": "route-220",
+   "slugEn": "route-220",
+   "nameDe": "Route 220",
+   "nameEn": "Route 220",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 9
   },
   "stark-mountain": {
    "slugDe": "kahlberg",
@@ -2255,38 +2365,16 @@
    "topChance": 100,
    "speciesCount": 14
   },
-  "turnback-cave": {
-   "slugDe": "hoehle-der-umkehr",
-   "slugEn": "turnback-cave",
-   "nameDe": "Höhle der Umkehr",
-   "nameEn": "Turnback Cave",
-   "topId": 92,
-   "topNameDe": "Nebulak",
-   "topNameEn": "Gastly",
-   "topChance": 30,
-   "speciesCount": 12
-  },
-  "sinnoh-route-221": {
-   "slugDe": "route-221",
-   "slugEn": "route-221",
-   "nameDe": "Route 221",
-   "nameEn": "Route 221",
+  "sinnoh-route-219": {
+   "slugDe": "route-219",
+   "slugEn": "route-219",
+   "nameDe": "Route 219",
+   "nameEn": "Route 219",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 22
-  },
-  "sinnoh-route-224": {
-   "slugDe": "route-224",
-   "slugEn": "route-224",
-   "nameDe": "Route 224",
-   "nameEn": "Route 224",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 18
+   "speciesCount": 8
   },
   "sinnoh-route-222": {
    "slugDe": "route-222",
@@ -2310,49 +2398,16 @@
    "topChance": 100,
    "speciesCount": 16
   },
-  "sinnoh-route-227": {
-   "slugDe": "route-227",
-   "slugEn": "route-227",
-   "nameDe": "Route 227",
-   "nameEn": "Route 227",
+  "sinnoh-route-226": {
+   "slugDe": "route-226",
+   "slugEn": "route-226",
+   "nameDe": "Route 226",
+   "nameEn": "Route 226",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
    "speciesCount": 17
-  },
-  "sinnoh-route-228": {
-   "slugDe": "route-228",
-   "slugEn": "route-228",
-   "nameDe": "Route 228",
-   "nameEn": "Route 228",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 14
-  },
-  "resort-area": {
-   "slugDe": "erholungsgebiet",
-   "slugEn": "resort-area",
-   "nameDe": "Erholungsgebiet",
-   "nameEn": "Resort Area",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 3
-  },
-  "sinnoh-route-229": {
-   "slugDe": "route-229",
-   "slugEn": "route-229",
-   "nameDe": "Route 229",
-   "nameEn": "Route 229",
-   "topId": 129,
-   "topNameDe": "Karpador",
-   "topNameEn": "Magikarp",
-   "topChance": 100,
-   "speciesCount": 20
   },
   "sinnoh-route-223": {
    "slugDe": "route-223",
@@ -2365,6 +2420,28 @@
    "topChance": 100,
    "speciesCount": 9
   },
+  "sinnoh-route-224": {
+   "slugDe": "route-224",
+   "slugEn": "route-224",
+   "nameDe": "Route 224",
+   "nameEn": "Route 224",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 18
+  },
+  "resort-area": {
+   "slugDe": "erholungsgebiet",
+   "slugEn": "resort-area",
+   "nameDe": "Erholungsgebiet",
+   "nameEn": "Resort Area",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 3
+  },
   "sinnoh-route-230": {
    "slugDe": "route-230",
    "slugEn": "route-230",
@@ -2376,27 +2453,170 @@
    "topChance": 100,
    "speciesCount": 18
   },
-  "sinnoh-route-220": {
-   "slugDe": "route-220",
-   "slugEn": "route-220",
-   "nameDe": "Route 220",
-   "nameEn": "Route 220",
+  "sinnoh-route-229": {
+   "slugDe": "route-229",
+   "slugEn": "route-229",
+   "nameDe": "Route 229",
+   "nameEn": "Route 229",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 20
+  },
+  "sinnoh-route-227": {
+   "slugDe": "route-227",
+   "slugEn": "route-227",
+   "nameDe": "Route 227",
+   "nameEn": "Route 227",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 17
+  },
+  "fuego-ironworks": {
+   "slugDe": "fuego-ironworks",
+   "slugEn": "fuego-ironworks",
+   "nameDe": "Feurio-Hütte",
+   "nameEn": "Fuego Ironworks",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 20
+  },
+  "sinnoh-route-228": {
+   "slugDe": "route-228",
+   "slugEn": "route-228",
+   "nameDe": "Route 228",
+   "nameEn": "Route 228",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 14
+  },
+  "oreburgh-gate": {
+   "slugDe": "oreburgh-gate",
+   "slugEn": "oreburgh-gate",
+   "nameDe": "Erzelingen-Tor",
+   "nameEn": "Oreburgh Gate",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
    "speciesCount": 9
   },
-  "sinnoh-route-226": {
-   "slugDe": "route-226",
-   "slugEn": "route-226",
-   "nameDe": "Route 226",
-   "nameEn": "Route 226",
+  "lake-verity": {
+   "slugDe": "lake-verity",
+   "slugEn": "lake-verity",
+   "nameDe": "See der Wahrheit",
+   "nameEn": "Lake Verity",
    "topId": 129,
    "topNameDe": "Karpador",
    "topNameEn": "Magikarp",
    "topChance": 100,
-   "speciesCount": 17
+   "speciesCount": 11
+  },
+  "trophy-garden": {
+   "slugDe": "trophy-garden",
+   "slugEn": "trophy-garden",
+   "nameDe": "Pokémon-Landgut",
+   "nameEn": "Trophy Garden",
+   "topId": 172,
+   "topNameDe": "Pichu",
+   "topNameEn": "Pichu",
+   "topChance": 30,
+   "speciesCount": 21
+  },
+  "valor-lakefront": {
+   "slugDe": "valor-lakefront",
+   "slugEn": "valor-lakefront",
+   "nameDe": "Kühnheitsufer",
+   "nameEn": "Valor Lakefront",
+   "topId": 400,
+   "topNameDe": "Bidifas",
+   "topNameEn": "Bibarel",
+   "topChance": 30,
+   "speciesCount": 7
+  },
+  "floaroma-meadow": {
+   "slugDe": "floaroma-meadow",
+   "slugEn": "floaroma-meadow",
+   "nameDe": "Auen von Flori",
+   "nameEn": "Floaroma Meadow",
+   "topId": 446,
+   "topNameDe": "Mampfaxo",
+   "topNameEn": "Munchlax",
+   "topChance": 100,
+   "speciesCount": 7
+  },
+  "old-chateau": {
+   "slugDe": "old-chateau",
+   "slugEn": "old-chateau",
+   "nameDe": "Alte Villa",
+   "nameEn": "Old Chateau",
+   "topId": 92,
+   "topNameDe": "Nebulak",
+   "topNameEn": "Gastly",
+   "topChance": 100,
+   "speciesCount": 3
+  },
+  "sendoff-spring": {
+   "slugDe": "sendoff-spring",
+   "slugEn": "sendoff-spring",
+   "nameDe": "Scheidequelle",
+   "nameEn": "Sendoff Spring",
+   "topId": 55,
+   "topNameDe": "Entoron",
+   "topNameEn": "Golduck",
+   "topChance": 100,
+   "speciesCount": 13
+  },
+  "lake-valor": {
+   "slugDe": "lake-valor",
+   "slugEn": "lake-valor",
+   "nameDe": "See der Kühnheit",
+   "nameEn": "Lake Valor",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 12
+  },
+  "acuity-lakefront": {
+   "slugDe": "acuity-lakefront",
+   "slugEn": "acuity-lakefront",
+   "nameDe": "Stärkeufer",
+   "nameEn": "Acuity Lakefront",
+   "topId": 459,
+   "topNameDe": "Shnebedeck",
+   "topNameEn": "Snover",
+   "topChance": 46,
+   "speciesCount": 5
+  },
+  "lake-acuity": {
+   "slugDe": "lake-acuity",
+   "slugEn": "lake-acuity",
+   "nameDe": "See der Stärke",
+   "nameEn": "Lake Acuity",
+   "topId": 129,
+   "topNameDe": "Karpador",
+   "topNameEn": "Magikarp",
+   "topChance": 100,
+   "speciesCount": 14
+  },
+  "snowpoint-temple": {
+   "slugDe": "snowpoint-temple",
+   "slugEn": "snowpoint-temple",
+   "nameDe": "Blizzach-Tempel",
+   "nameEn": "Snowpoint Temple",
+   "topId": 42,
+   "topNameDe": "Golbat",
+   "topNameEn": "Golbat",
+   "topChance": 80,
+   "speciesCount": 5
   }
  }
 }

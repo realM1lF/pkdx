@@ -449,6 +449,46 @@
    "locations": {
     "firered": [
      {
+      "area": "pokemon-mansion-1f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 32,
+      "maxLevel": 36
+     },
+     {
+      "area": "pokemon-mansion-2f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 32,
+      "maxLevel": 36
+     },
+     {
+      "area": "pokemon-mansion-3f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 32,
+      "maxLevel": 36
+     },
+     {
+      "area": "pokemon-mansion-b1f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 34,
+      "maxLevel": 38
+     },
+     {
       "area": "kanto-route-17-area",
       "nodeId": "kanto-route-17",
       "nodeDe": "Route 17",
@@ -480,6 +520,46 @@
      }
     ],
     "leafgreen": [
+     {
+      "area": "pokemon-mansion-1f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 32,
+      "maxLevel": 36
+     },
+     {
+      "area": "pokemon-mansion-2f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 32,
+      "maxLevel": 36
+     },
+     {
+      "area": "pokemon-mansion-3f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 32,
+      "maxLevel": 36
+     },
+     {
+      "area": "pokemon-mansion-b1f",
+      "nodeId": "pokemon-mansion",
+      "nodeDe": "Pokémon-Villa",
+      "nodeEn": "Pokémon Mansion",
+      "method": "WALK",
+      "chance": 30,
+      "minLevel": 34,
+      "maxLevel": 38
+     },
      {
       "area": "kanto-route-17-area",
       "nodeId": "kanto-route-17",
@@ -2081,7 +2161,7 @@
     "flying"
    ],
    "pastTypes": null,
-   "bst": 479
+   "bst": 469
   },
   "20": {
    "slug": "raticate",
@@ -2097,7 +2177,7 @@
     "poison"
    ],
    "pastTypes": null,
-   "bst": 448
+   "bst": 438
   },
   "25": {
    "slug": "pikachu",
@@ -2105,7 +2185,7 @@
     "electric"
    ],
    "pastTypes": null,
-   "bst": 320
+   "bst": 300
   },
   "26": {
    "slug": "raichu",
@@ -2113,7 +2193,7 @@
     "electric"
    ],
    "pastTypes": null,
-   "bst": 485
+   "bst": 475
   },
   "59": {
    "slug": "arcanine",
@@ -2129,7 +2209,7 @@
     "psychic"
    ],
    "pastTypes": null,
-   "bst": 500
+   "bst": 490
   },
   "68": {
    "slug": "machamp",
@@ -2815,6 +2895,10 @@
   "109": {
    "de": "Smogon",
    "en": "Koffing"
+  },
+  "110": {
+   "de": "Smogmog",
+   "en": "Weezing"
   },
   "111": {
    "de": "Rihorn",

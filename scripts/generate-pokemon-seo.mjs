@@ -31,7 +31,20 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { bucket, exclusiveAxes } from './seo-bucket.mjs';
+import { Generations } from '@pkmn/data';
+import { Dex } from '@pkmn/dex';
+import { bucket, exclusiveAxes, methodChip, pickTopWild } from './seo-bucket.mjs';
+
+const pkmnGens = new Generations(Dex);
+const GEN3 = pkmnGens.get(3);
+
+function gen3Bst(slug, fallback) {
+  const direct = GEN3.species.get(slug);
+  const sp = direct?.exists ? direct : GEN3.species.get(String(slug).replace(/(^|-)([a-z])/g, (_, p, c) => (p ? ' ' : '') + c.toUpperCase()));
+  if (!sp?.exists) return fallback;
+  const b = sp.baseStats;
+  return b.hp + b.atk + b.def + b.spa + b.spd + b.spe;
+}
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const API = 'https://pokeapi.co/api/v2';
@@ -167,14 +180,18 @@ function bucketsFromDetails(details) {
   const byBucket = new Map();
   for (const g of byGroup.values()) {
     const b = bucket(g.method, g.names);
+    const chip = methodChip(g.method, g.names);
     const chance = Math.min(100, Math.max(0, g.chance));
     const prev = byBucket.get(b);
     if (prev) {
-      prev.chance = Math.max(prev.chance, chance);
+      if (chance > prev.chance) {
+        prev.chance = chance;
+        prev.chip = chip;
+      }
       prev.min = Math.min(prev.min, g.min);
       prev.max = Math.max(prev.max, g.max);
     } else {
-      byBucket.set(b, { chance, min: g.min, max: g.max });
+      byBucket.set(b, { chance, min: g.min, max: g.max, chip });
     }
   }
   return byBucket;
@@ -239,7 +256,13 @@ function aggregateArea(area, locationSlug, version) {
       const prev = rows.get(key);
       const chance = Math.min(100, g.chance);
       if (prev) {
-        prev.chance = Math.min(100, Math.max(prev.chance, chance));
+        if (chance > prev.chance) {
+          prev.chance = Math.min(100, chance);
+          if (g.chip) prev.chip = g.chip;
+          else delete prev.chip;
+        } else {
+          prev.chance = Math.min(100, Math.max(prev.chance, chance));
+        }
         prev.minLevel = Math.min(prev.minLevel, g.min);
         prev.maxLevel = Math.max(prev.maxLevel, g.max);
       } else {
@@ -251,6 +274,7 @@ function aggregateArea(area, locationSlug, version) {
           chance,
           minLevel: g.min,
           maxLevel: g.max,
+          ...(g.chip ? { chip: g.chip } : {}),
         });
       }
     }
@@ -645,7 +669,7 @@ async function mainAdditiveRegion({ tag, slugs, outFile, metaKey, framingVersion
     const all = fr.flatMap((g) => g.rows);
     const wild = all.filter((r) => !r.isStatic);
     if (requireWild && wild.length === 0) continue;
-    const top = [...wild].sort((a, b) => b.chance - a.chance)[0];
+    const top = pickTopWild(wild);
     const speciesCount = new Set(all.map((r) => r.id)).size;
     const [de, en] = slugs[nodeId] ?? [nodeId, nodeId];
     metaRoutes[nodeId] = {
@@ -753,8 +777,9 @@ for (const [nodeId, nd] of Object.entries(routes)) {
   if (!fr || fr.length === 0) continue;
   const all = fr.flatMap((g) => g.rows);
   /* "most common catch" counts wild encounters only — static gift/bought
-   * encounters (e.g. the Magikarp salesman) are excluded */
-  const top = [...all].filter((r) => !r.isStatic).sort((a, b) => b.chance - a.chance)[0];
+   * encounters (e.g. the Magikarp salesman) and swarm rows are excluded
+   * (same class as spawnLeaders: methodChip === 'swarm') */
+  const top = pickTopWild(all);
   const speciesCount = new Set(all.map((r) => r.id)).size;
   const [de, en] = ROUTE_SLUGS[nodeId] ?? [nodeId, nodeId];
   metaRoutes[nodeId] = {
@@ -789,7 +814,18 @@ const write = (file, data) => {
 };
 
 write('src/data/routes-kanto.json', { nodes: routes, dex, names });
-write('src/data/pokemon-seo.json', { ids: POKEMON_IDS, pokemon, dex: Object.fromEntries(POKEMON_IDS.map((id) => [id, dex[id]])), names: Object.fromEntries(POKEMON_IDS.map((id) => [id, names[id]])) , evoNames: names });
+write('src/data/pokemon-seo.json', {
+  ids: POKEMON_IDS,
+  pokemon,
+  dex: Object.fromEntries(
+    POKEMON_IDS.map((id) => {
+      const d = dex[id];
+      return [id, { ...d, bst: gen3Bst(d?.slug ?? String(id), d?.bst ?? 0) }];
+    }),
+  ),
+  names: Object.fromEntries(POKEMON_IDS.map((id) => [id, names[id]])),
+  evoNames: names,
+});
 /* preserve additive blocks from the region generators (routesHoenn/Johto/Sinnoh) */
 let prevMeta = {};
 try {
