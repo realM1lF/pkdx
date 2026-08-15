@@ -8,7 +8,7 @@
     "search": "Suchen…",
     "searchDrawer": "Pokédex durchsuchen…",
     "openSearch": "Suche öffnen",
-    "searchHint": "Suche nach Pokémon, Items, Maps, Teams, Nuz, Versus, Orre",
+    "searchHint": "Suche nach Pokémon, Items, Maps",
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
     "menu": "Menü",
@@ -1427,9 +1427,15 @@
   "search": {
     "recent": "ZULETZT",
     "clear": "LÖSCHEN",
-    "noMatch": "Kein Pokémon passt zu „{{q}}“ — Schreibweise prüfen oder Dex-Nummer versuchen.",
-    "dialogAria": "Pokémon suchen",
-    "closeSearch": "Suche schließen"
+    "noMatch": "Kein Treffer für „{{q}}“. Schreibweise prüfen oder Dex-Nummer versuchen.",
+    "dialogAria": "Pokémon, Items und Maps suchen",
+    "closeSearch": "Suche schließen",
+    "placeholder": "POKÉMON, ITEM, MAP …",
+    "kind": {
+      "pokemon": "Pokémon",
+      "item": "Item",
+      "map": "Map"
+    }
   },
   "home": {
     "hero": {

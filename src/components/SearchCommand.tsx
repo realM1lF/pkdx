@@ -1,39 +1,50 @@
 /* SearchCommand — global search + autocomplete (design.md §9.6).
  * variant="modal": top-anchored glass panel (navbar trigger / "/" hotkey).
- * variant="inline": embedded large search (Home + /pokedex). */
+ * variant="inline": embedded large search (Home + /pokedex).
+ * Catalog: Pokémon, items, maps. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import Fuse from 'fuse.js';
 import { AnimatePresence, motion } from 'framer-motion';
 import MotionRoot from '@/components/MotionRoot';
-import { Search, X } from 'lucide-react';
+import { Map, Search, X } from 'lucide-react';
 import Sprite from './Sprite';
 import TypeBadge from './TypeBadge';
+import { ItemIcon } from './EntityDescModal';
 import { bootNameIndex, getPokemon, padNum } from '@/lib/pokeapi';
-import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
+import { loadItemDescs } from '@/lib/desc-data';
+import { germanAliasOfPokemon, nameOfItem, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
 import { useLocalePath } from '@/lib/locale-link';
+import { REGIONS } from '@/lib/regions';
+import {
+  docsFromItems,
+  docsFromMaps,
+  docsFromPokemon,
+  parseRecentEntry,
+  pathForDoc,
+  pathForRecent,
+  pushRecent,
+  recentFromDoc,
+  RECENT_KEY,
+  searchDocs,
+  type RecentEntry,
+  type SearchDoc,
+} from '@/lib/global-search';
 import type { DexIndexEntry, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-const RECENT_KEY = 'pdx:recent-searches';
-const MAX_RESULTS = 8;
-
-interface RecentEntry {
-  id: number;
-  label: string;
-}
-
 function loadRecents(): RecentEntry[] {
   try {
-    return JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]') as RecentEntry[];
+    const raw = JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]') as unknown;
+    if (!Array.isArray(raw)) return [];
+    return raw.map(parseRecentEntry).filter((e): e is RecentEntry => e !== null);
   } catch {
     return [];
   }
 }
 
-function pushRecent(entry: RecentEntry): RecentEntry[] {
-  const next = [entry, ...loadRecents().filter((r) => r.id !== entry.id)].slice(0, 5);
+function storeRecent(entry: RecentEntry): RecentEntry[] {
+  const next = pushRecent(entry, loadRecents());
   try {
     localStorage.setItem(RECENT_KEY, JSON.stringify(next));
   } catch {
@@ -56,6 +67,9 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   const lang = useLanguage();
   const deReady = useGermanDataReady();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
+  const [itemInputs, setItemInputs] = useState<Array<{ slug: string; nameEn: string; nameDe?: string; skip?: boolean }>>(
+    [],
+  );
   const [query, setQuery] = useState('');
   const [debounced, setDebounced] = useState('');
   const [active, setActive] = useState(0);
@@ -68,11 +82,23 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   const isModal = variant === 'modal';
   const visible = isModal ? open : true;
 
-  /* boot name index */
   useEffect(() => {
     let alive = true;
     bootNameIndex()
       .then((entries) => alive && setIndex(entries))
+      .catch(() => undefined);
+    loadItemDescs()
+      .then((descs) => {
+        if (!alive) return;
+        setItemInputs(
+          Object.entries(descs).map(([slug, d]) => ({
+            slug,
+            nameEn: d.n,
+            nameDe: d.de,
+            skip: d.nospr === 1,
+          })),
+        );
+      })
       .catch(() => undefined);
     return () => {
       alive = false;
@@ -88,57 +114,41 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
     }
   }, [visible]);
 
-  /* 120ms debounce */
   useEffect(() => {
-    const t = window.setTimeout(() => setDebounced(query.trim()), 120);
-    return () => window.clearTimeout(t);
+    const timer = window.setTimeout(() => setDebounced(query.trim()), 120);
+    return () => window.clearTimeout(timer);
   }, [query]);
 
-  const fuse = useMemo(
-    () =>
-      new Fuse(
-        index.map((e) => ({ ...e, idStr: String(e.id), de: germanAliasOfPokemon(e.id) ?? '' })),
-        {
-          keys: [
-            { name: 'label', weight: 2 },
-            { name: 'name', weight: 1.5 },
-            { name: 'de', weight: 2 },
-            { name: 'idStr', weight: 1 },
-            { name: 'num', weight: 1 },
-          ],
-          threshold: 0.3,
-          ignoreLocation: true,
-        },
-      ),
+  const docs = useMemo(
+    () => [
+      ...docsFromPokemon(index, (id) => germanAliasOfPokemon(id)),
+      ...docsFromItems(itemInputs),
+      ...docsFromMaps(REGIONS),
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps -- deReady rebuilds aliases after the lazy de load
-    [index, deReady],
+    [index, itemInputs, deReady],
   );
 
-  const results = useMemo(() => {
-    if (!debounced) return [];
-    return fuse
-      .search(debounced.replace(/^#/, ''))
-      .slice(0, MAX_RESULTS)
-      .map((r) => r.item);
-  }, [fuse, debounced]);
+  const results = useMemo(() => searchDocs(debounced, docs), [docs, debounced]);
 
   useEffect(() => setActive(0), [results]);
 
-  /* lazy type badges for visible results (cached by the data layer) */
   useEffect(() => {
     let alive = true;
-    const missing = results.filter((r) => !typesMap[r.id]);
+    const missing = results
+      .filter((r) => r.kind === 'pokemon' && r.pokemonId != null && !typesMap[r.pokemonId])
+      .map((r) => r.pokemonId as number);
     if (missing.length === 0) return;
     Promise.all(
-      missing.map((r) =>
-        getPokemon(r.id)
+      missing.map((id) =>
+        getPokemon(id)
           .then(
             (p): [number, PokemonType[]] => [
-              r.id,
-              p.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name) as PokemonType[],
+              id,
+              p.types.sort((a, b) => a.slot - b.slot).map((tp) => tp.type.name) as PokemonType[],
             ],
           )
-          .catch((): [number, PokemonType[]] => [r.id, []]),
+          .catch((): [number, PokemonType[]] => [id, []]),
       ),
     ).then((pairs) => {
       if (!alive) return;
@@ -154,14 +164,38 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
-  const pick = useCallback(
-    (entry: DexIndexEntry | RecentEntry) => {
-      setRecents(pushRecent({ id: entry.id, label: entry.label }));
+  const labelOf = useCallback(
+    (doc: SearchDoc) => {
+      if (doc.kind === 'pokemon' && doc.pokemonId != null) return nameOfPokemon(doc.pokemonId, lang);
+      if (doc.kind === 'item' && doc.itemSlug) return nameOfItem(doc.itemSlug, lang);
+      return lang === 'de' ? doc.labelDe : doc.labelEn;
+    },
+    [lang],
+  );
+
+  const go = useCallback(
+    (path: string) => {
       setQuery('');
       onClose?.();
-      navigate(localePath(`/pokemon/${entry.id}`));
+      navigate(localePath(path));
     },
-    [navigate, onClose],
+    [navigate, localePath, onClose],
+  );
+
+  const pick = useCallback(
+    (doc: SearchDoc) => {
+      setRecents(storeRecent(recentFromDoc(doc, labelOf(doc))));
+      go(pathForDoc(doc, lang));
+    },
+    [go, labelOf, lang],
+  );
+
+  const pickRecent = useCallback(
+    (entry: RecentEntry) => {
+      setRecents(storeRecent(entry));
+      go(pathForRecent(entry, lang));
+    },
+    [go, lang],
   );
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -182,12 +216,15 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
   };
 
   const noResults = debounced.length > 0 && results.length === 0;
+  const activeKey = results[active]?.key;
 
   const inputRow = (
     <div
       className={cn(
         'glass flex items-center gap-3 border border-hairline px-5 transition-all duration-300',
-        isModal ? 'h-14 rounded-t-xl border-b-0' : 'h-16 rounded-xl focus-within:border-gold/70 focus-within:shadow-glow-gold focus-within:-translate-y-0.5',
+        isModal
+          ? 'h-14 rounded-t-xl border-b-0'
+          : 'h-16 rounded-xl focus-within:border-gold/70 focus-within:shadow-glow-gold focus-within:-translate-y-0.5',
       )}
     >
       <Search size={20} className="shrink-0 text-tx-muted" strokeWidth={1.75} />
@@ -198,11 +235,11 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
         onKeyDown={onKeyDown}
         onFocus={() => setFocused(true)}
         onBlur={() => window.setTimeout(() => setFocused(false), 120)}
-        placeholder={t('pokedex.searchPlaceholder')}
+        placeholder={t('search.placeholder')}
         role="combobox"
         aria-expanded={results.length > 0}
         aria-controls="pdx-search-listbox"
-        aria-activedescendant={results[active] ? `pdx-search-opt-${results[active].id}` : undefined}
+        aria-activedescendant={activeKey ? `pdx-search-opt-${activeKey}` : undefined}
         className="h-full min-w-0 flex-1 bg-transparent font-sans text-lg font-medium text-tx-primary outline-none placeholder:font-pixel placeholder:text-[10px] placeholder:tracking-[0.08em] placeholder:text-tx-muted"
       />
       {query ? (
@@ -226,8 +263,6 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
     <div
       className={cn(
         'overflow-hidden border border-hairline',
-        // inline panels float above page content (popular type chips etc.) —
-        // translucent glass lets that content bleed through, so stay solid.
         isModal ? 'glass rounded-b-xl border-t-0' : 'mt-2 rounded-xl bg-surface1',
       )}
     >
@@ -239,9 +274,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
           className="flex flex-col items-center gap-3 px-6 py-8 text-center"
         >
           <img src="/pokeball-open.svg" alt="" className="h-12 w-10 opacity-50" />
-          <p className="font-sans text-sm font-semibold text-gold">
-            {t('search.noMatch', { q: debounced })}
-          </p>
+          <p className="font-sans text-sm font-semibold text-gold">{t('search.noMatch', { q: debounced })}</p>
         </motion.div>
       )}
 
@@ -262,15 +295,17 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
           </div>
           <ul>
             {recents.map((r) => (
-              <li key={r.id}>
+              <li key={recentRowKey(r)}>
                 <button
                   type="button"
-                  onClick={() => pick(r)}
+                  onClick={() => pickRecent(r)}
                   className="flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-surface3"
                 >
-                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="default" skeleton={false} className="h-8 w-8" />
-                  <span className="flex-1 font-sans text-sm font-medium text-tx-secondary">{nameOfPokemon(r.id, lang)}</span>
-                  <span className="pixel-label text-[9px] text-tx-muted">{padNum(r.id)}</span>
+                  <RecentGlyph entry={r} lang={lang} />
+                  <span className="min-w-0 flex-1 truncate font-sans text-sm font-medium text-tx-secondary">
+                    {recentLabel(r, lang)}
+                  </span>
+                  <span className="pixel-label shrink-0 text-[9px] text-tx-muted">{t(`search.kind.${r.kind}`)}</span>
                 </button>
               </li>
             ))}
@@ -279,12 +314,18 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
       )}
 
       {results.length > 0 && (
-        <ul ref={listRef} role="listbox" id="pdx-search-listbox" data-lenis-prevent className="max-h-[340px] overflow-y-auto py-1">
+        <ul
+          ref={listRef}
+          role="listbox"
+          id="pdx-search-listbox"
+          data-lenis-prevent
+          className="max-h-[340px] overflow-y-auto py-1"
+        >
           {results.map((r, i) => {
-            const types = typesMap[r.id] ?? [];
+            const types = r.pokemonId != null ? (typesMap[r.pokemonId] ?? []) : [];
             const tColor = types[0] ? `var(--type-${types[0]})` : 'transparent';
             return (
-              <li key={r.id} role="option" id={`pdx-search-opt-${r.id}`} aria-selected={i === active}>
+              <li key={r.key} role="option" id={`pdx-search-opt-${r.key}`} aria-selected={i === active}>
                 <button
                   type="button"
                   onMouseEnter={() => setActive(i)}
@@ -293,18 +334,24 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
                     'flex w-full items-center gap-3 border-l-2 px-4 py-2 text-left transition-colors duration-150',
                     i === active ? 'bg-surface3' : 'border-transparent',
                   )}
-                  style={i === active ? { borderColor: tColor } : undefined}
+                  style={i === active && types[0] ? { borderColor: tColor } : i === active ? { borderColor: 'var(--gold)' } : undefined}
                 >
-                  <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="default" skeleton={false} className="h-10 w-10 shrink-0" />
+                  <ResultGlyph doc={r} lang={lang} />
                   <span className="min-w-0 flex-1 truncate font-sans text-base font-semibold text-tx-primary">
-                    {nameOfPokemon(r.id, lang)}
+                    {labelOf(r)}
                   </span>
-                  <span className="pixel-label shrink-0 text-[9px] text-tx-muted">{r.num}</span>
-                  <span className="hidden shrink-0 items-center gap-1 sm:flex">
-                    {types.map((t) => (
-                      <TypeBadge key={t} type={t} />
-                    ))}
-                  </span>
+                  {r.kind === 'pokemon' && r.pokemonId != null ? (
+                    <span className="pixel-label shrink-0 text-[9px] text-tx-muted">{padNum(r.pokemonId)}</span>
+                  ) : (
+                    <span className="pixel-label shrink-0 text-[9px] text-tx-muted">{t(`search.kind.${r.kind}`)}</span>
+                  )}
+                  {types.length > 0 && (
+                    <span className="hidden shrink-0 items-center gap-1 sm:flex">
+                      {types.map((tp) => (
+                        <TypeBadge key={tp} type={tp} />
+                      ))}
+                    </span>
+                  )}
                 </button>
               </li>
             );
@@ -318,52 +365,100 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
     const showPanel = focused && (results.length > 0 || noResults || (!debounced && recents.length > 0));
     return (
       <MotionRoot>
-      <div className={cn('relative w-full', className)}>
-        {inputRow}
-        {showPanel && <div className="absolute inset-x-0 top-full z-40">{resultList}</div>}
-      </div>
+        <div className={cn('relative w-full', className)}>
+          {inputRow}
+          {showPanel && <div className="absolute inset-x-0 top-full z-40">{resultList}</div>}
+        </div>
       </MotionRoot>
     );
   }
 
   return (
     <MotionRoot>
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          className="fixed inset-0 z-[90] flex items-start justify-center px-4 pt-24"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <motion.button
-            aria-label={t('search.closeSearch')}
-            className="absolute inset-0 cursor-default bg-void/60 backdrop-blur-sm"
-            onClick={onClose}
-            tabIndex={-1}
-          />
+      <AnimatePresence>
+        {open && (
           <motion.div
-            role="dialog"
-            aria-label={t('search.dialogAria')}
-            className="relative w-full max-w-[640px]"
-            initial={{ y: -16, scale: 0.98, opacity: 0 }}
-            animate={{ y: 0, scale: 1, opacity: 1 }}
-            exit={{ y: -16, scale: 0.98, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+            className="fixed inset-0 z-[90] flex items-start justify-center px-4 pt-24"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
+            <motion.button
+              aria-label={t('search.closeSearch')}
+              className="absolute inset-0 cursor-default bg-void/60 backdrop-blur-sm"
+              onClick={onClose}
+              tabIndex={-1}
+            />
             <motion.div
-              animate={noResults ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="rounded-xl shadow-elevate"
+              role="dialog"
+              aria-label={t('search.dialogAria')}
+              className="relative w-full max-w-[640px]"
+              initial={{ y: -16, scale: 0.98, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: -16, scale: 0.98, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 180, damping: 22 }}
             >
-              {inputRow}
-              {resultList}
+              <motion.div
+                animate={noResults ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+                transition={{ duration: 0.4 }}
+                className="rounded-xl shadow-elevate"
+              >
+                {inputRow}
+                {resultList}
+              </motion.div>
             </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
     </MotionRoot>
+  );
+}
+
+function recentRowKey(entry: RecentEntry): string {
+  if (entry.kind === 'pokemon') return `pokemon:${entry.id}`;
+  if (entry.kind === 'item') return `item:${entry.slug}`;
+  return `map:${entry.region}:${entry.nodeId ?? ''}`;
+}
+
+function recentLabel(entry: RecentEntry, lang: 'de' | 'en'): string {
+  if (entry.kind === 'pokemon') return nameOfPokemon(entry.id, lang);
+  if (entry.kind === 'item') return nameOfItem(entry.slug, lang);
+  return entry.label;
+}
+
+function RecentGlyph({ entry, lang }: { entry: RecentEntry; lang: 'de' | 'en' }) {
+  if (entry.kind === 'pokemon') {
+    return <Sprite id={entry.id} name={nameOfPokemon(entry.id, lang)} era="default" skeleton={false} className="h-8 w-8" />;
+  }
+  if (entry.kind === 'item') {
+    return <ItemIcon slug={entry.slug} name={nameOfItem(entry.slug, lang)} size={32} />;
+  }
+  return (
+    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-hairline bg-surface2 text-tx-muted">
+      <Map size={14} strokeWidth={1.75} />
+    </span>
+  );
+}
+
+function ResultGlyph({ doc, lang }: { doc: SearchDoc; lang: 'de' | 'en' }) {
+  if (doc.kind === 'pokemon' && doc.pokemonId != null) {
+    return (
+      <Sprite
+        id={doc.pokemonId}
+        name={nameOfPokemon(doc.pokemonId, lang)}
+        era="default"
+        skeleton={false}
+        className="h-10 w-10 shrink-0"
+      />
+    );
+  }
+  if (doc.kind === 'item' && doc.itemSlug) {
+    return <ItemIcon slug={doc.itemSlug} name={nameOfItem(doc.itemSlug, lang)} size={40} />;
+  }
+  return (
+    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-hairline bg-surface2 text-tx-muted">
+      <Map size={16} strokeWidth={1.75} />
+    </span>
   );
 }

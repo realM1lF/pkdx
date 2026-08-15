@@ -3,7 +3,8 @@
  * JSON load on first visit): icon grid, grouped category filter chips, DE+EN
  * search, tile click → EntityDescModal. List size stays bounded via the group
  * filter + a hard render cap, so no virtualization is needed; images lazy. */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { motion } from 'framer-motion';
 import MotionRoot from '@/components/MotionRoot';
 import { Package, Search, X } from 'lucide-react';
@@ -99,8 +100,20 @@ export default function Items() {
   const lang = useLanguage();
   const descs = useDescMap('item');
   const entityModal = useEntityModal();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState('');
   const [group, setGroup] = useState<string | null>(null);
+
+  useEffect(() => {
+    const slug = searchParams.get('item');
+    if (!slug || !descs?.[slug] || hasItemPage(slug)) return;
+    entityModal.open('item', entitySlug(slug));
+    const next = new URLSearchParams(searchParams);
+    next.delete('item');
+    setSearchParams(next, { replace: true });
+    // entityModal identity is stable enough for this deep-link open
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [descs, searchParams, setSearchParams]);
 
   const all = useMemo<ItemEntry[]>(() => {
     if (!descs) return [];
