@@ -60,7 +60,7 @@ export function hydrateRouteId(pathname: string): HydrateRouteId | null {
     const slug = rest.slice('/nuzlocke/'.length);
     return NUZ_GUIDES.has(slug) ? 'nuzlocke-guide' : null;
   }
-  if (rest === '/team') return 'team';
+  if (rest === '/team' || rest.startsWith('/team/')) return 'team';
   if (rest === '/versus') return 'versus';
   if (rest.startsWith('/versus/')) return 'matchup';
   if (rest === '/about') return 'about';

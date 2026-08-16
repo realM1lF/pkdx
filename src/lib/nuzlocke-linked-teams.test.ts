@@ -27,6 +27,10 @@ vi.mock('./auth', () => ({
   onAuthChange: () => () => undefined,
 }));
 
+const { learnsetById } = vi.hoisted(() => ({
+  learnsetById: {} as Record<number, Array<{ slug: string; level: number; vg: string }>>,
+}));
+
 vi.mock('./pokeapi', async () => {
   const actual = await vi.importActual<typeof import('./pokeapi')>('./pokeapi');
   return {
@@ -38,7 +42,16 @@ vi.mock('./pokeapi', async () => {
       types: [],
       stats: [],
       abilities: [],
-      moves: [],
+      moves: (learnsetById[Number(id)] ?? []).map((m) => ({
+        move: { name: m.slug, url: '' },
+        version_group_details: [
+          {
+            level_learned_at: m.level,
+            move_learn_method: { name: 'level-up', url: '' },
+            version_group: { name: m.vg, url: '' },
+          },
+        ],
+      })),
       height: 1,
       weight: 1,
       base_experience: 1,
@@ -81,6 +94,7 @@ function installMemoryLocalStorage(): void {
 
 beforeEach(() => {
   installMemoryLocalStorage();
+  for (const key of Object.keys(learnsetById)) delete learnsetById[Number(key)];
 });
 
 describe('ensureLinkedTeams (own only)', () => {
@@ -157,6 +171,58 @@ describe('syncLinkedTeamRoster', () => {
     await syncLinkedTeamRoster(s, playerId);
     team = findLinkedTeam(s.run.id, playerId)!;
     expect(team.slots[0].ability).toBe('Torrent');
+  });
+
+  it('seeds level-up moves once when a catch first enters the party', async () => {
+    learnsetById[7] = [
+      { slug: 'tackle', level: 1, vg: 'firered-leafgreen' },
+      { slug: 'tail-whip', level: 1, vg: 'firered-leafgreen' },
+      { slug: 'water-gun', level: 1, vg: 'firered-leafgreen' },
+      { slug: 'withdraw', level: 1, vg: 'firered-leafgreen' },
+    ];
+    const { state } = await createRun({
+      name: 'First Set',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ANN', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const playerId = state.players[0].id;
+    const res = await logEncounter(state.run.id, {
+      playerId,
+      routeKey: 'route-1',
+      pokemonId: 7,
+      nickname: 'Shelly',
+      level: 5,
+      status: 'caught',
+    });
+    expect(res.ok).toBe(true);
+    const encId = res.encounter!.id;
+
+    await vi.waitFor(() => {
+      const seeded = findLinkedTeam(state.run.id, playerId);
+      expect(seeded?.slots[0].moves).toEqual(['tackle', 'tail-whip', 'water-gun', 'withdraw']);
+    });
+    let s = getRunState(state.run.id)!;
+    let team = findLinkedTeam(s.run.id, playerId)!;
+
+    team = {
+      ...team,
+      slots: team.slots.map((slot, i) =>
+        i === 0 ? { ...slot, moves: ['surf', null, null, null] as Team['slots'][0]['moves'] } : slot,
+      ),
+    };
+    saveTeam(team);
+
+    setEncounterParty(s.run.id, encId, false);
+    s = getRunState(s.run.id)!;
+    await syncLinkedTeamRoster(s, playerId);
+    setEncounterParty(s.run.id, encId, true);
+    s = getRunState(s.run.id)!;
+    await syncLinkedTeamRoster(s, playerId);
+    team = findLinkedTeam(s.run.id, playerId)!;
+    expect(team.slots[0].moves).toEqual(['surf', null, null, null]);
   });
 
   it('does not sync another player', async () => {

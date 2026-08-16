@@ -22,16 +22,16 @@ describe('continueTargets', () => {
     ]);
   });
 
-  it('only team → one item linking to /team (draft wins over saved)', () => {
+  it('only team → one item linking to /team/:id (draft wins over saved)', () => {
     expect(
       continueTargets({
-        draft: { name: 'OU Draft', partyIds: [6], updatedAt: 1 },
-        teams: [{ name: 'Older Save', partyIds: [25], updatedAt: 99 }],
+        draft: { id: 'draft-1', name: 'OU Draft', partyIds: [6], updatedAt: 1 },
+        teams: [{ id: 'saved-1', name: 'Older Save', partyIds: [25], updatedAt: 99 }],
       }),
     ).toEqual([
       {
         kind: 'team',
-        to: '/team',
+        to: '/team/draft-1',
         name: 'OU Draft',
         partyIds: [6],
       },
@@ -40,14 +40,14 @@ describe('continueTargets', () => {
     expect(
       continueTargets({
         teams: [
-          { name: 'Old', partyIds: [7], updatedAt: 10 },
-          { name: 'Newest', partyIds: [150], updatedAt: 50 },
+          { id: 'old', name: 'Old', partyIds: [7], updatedAt: 10 },
+          { id: 'new', name: 'Newest', partyIds: [150], updatedAt: 50 },
         ],
       }),
     ).toEqual([
       {
         kind: 'team',
-        to: '/team',
+        to: '/team/new',
         name: 'Newest',
         partyIds: [150],
       },
@@ -57,10 +57,10 @@ describe('continueTargets', () => {
   it('both → two items (run then team)', () => {
     const targets = continueTargets({
       run: { id: 'abc', name: 'Hoenn', partyIds: [258] },
-      draft: { name: 'VGC', partyIds: [445] },
+      draft: { id: 'vgc-1', name: 'VGC', partyIds: [445] },
     });
     expect(targets).toHaveLength(2);
     expect(targets[0]).toMatchObject({ kind: 'run', to: '/nuzlocke/abc', name: 'Hoenn' });
-    expect(targets[1]).toMatchObject({ kind: 'team', to: '/team', name: 'VGC' });
+    expect(targets[1]).toMatchObject({ kind: 'team', to: '/team/vgc-1', name: 'VGC' });
   });
 });

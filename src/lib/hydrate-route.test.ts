@@ -21,6 +21,8 @@ describe('hydrateRouteId', () => {
     expect(hydrateRouteId('/de/maps/kanto/route-1')).toBe('route-page');
     expect(hydrateRouteId('/en/pokemon/1')).toBe('pokemon');
     expect(hydrateRouteId('/en/team')).toBe('team');
+    expect(hydrateRouteId('/de/team/abc-1')).toBe('team');
+    expect(hydrateRouteId('/en/team/s/zPAYLOAD')).toBe('team');
     expect(hydrateRouteId('/de/items')).toBe('items');
     expect(hydrateRouteId('/de/items/ep-teiler')).toBe('item-detail');
     expect(hydrateRouteId('/en/types/water')).toBe('type-detail');

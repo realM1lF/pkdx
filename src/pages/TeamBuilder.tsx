@@ -1,8 +1,16 @@
-/* TeamBuilder — /team (team-builder.md, Option A full version)
+/* TeamBuilder — /team hub, /team/:id editor, /team/s/:payload view-only share.
  * 6-slot builder with GAME legality, synergy deck, Smogon meta, nuzlocke import.
  * State lives in src/lib/teambuilder.ts; this page wires data → components. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useLocale, useLocalePath } from '@/lib/locale-link';
+import {
+  legacyShareRedirectPath,
+  teamEditPath,
+  teamForEditPath,
+  teamHubPath,
+  teamShareHref,
+} from '@/lib/team-routes';
 import { AnimatePresence, Reorder } from 'framer-motion';
 import MotionRoot from '@/components/MotionRoot';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +18,6 @@ import i18n from '@/i18n';
 import HonestyHint from '@/components/HonestyHint';
 import { getMove, getPokemon } from '@/lib/pokeapi';
 import {
-  consumeTeamHash,
   decodeTeamHash,
   defaultMoveset,
   defensiveSynergy,
@@ -75,13 +82,20 @@ function slugify(name: string): string {
 
 export default function TeamBuilder() {
   const { t: t8n } = useTranslation();
+  const { teamId, sharePayload } = useParams();
+  const localePath = useLocalePath();
+  const lang = useLocale();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const fromRunHandled = useRef(false);
   const viewRunHandled = useRef(false);
-  /* shared-team hash is consumed once at mount — always opens as view-only */
-  const [sharedPayload] = useState<string | null>(() => consumeTeamHash());
-  const [viewMode, setViewMode] = useState(!!sharedPayload);
-  const [team, setTeam] = useState<Team | null>(() => (sharedPayload ? null : loadDraft()));
+  const [viewMode, setViewMode] = useState(!!sharePayload);
+  const [shareInvalid, setShareInvalid] = useState(false);
+  const [team, setTeam] = useState<Team | null>(() => {
+    if (sharePayload) return null;
+    if (teamId) return teamForEditPath(teamId, loadTeams(), loadDraft());
+    return null;
+  });
   const [teams, setTeams] = useState<Team[]>(() => loadTeams());
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
@@ -114,21 +128,40 @@ export default function TeamBuilder() {
     format: null,
   });
 
-  /* ---------- decode a shared team from the URL hash (view-only) ---------- */
+  /* legacy `#team=` links → durable /team/s/:payload page */
   useEffect(() => {
-    if (!sharedPayload) return undefined;
+    const next = legacyShareRedirectPath(window.location.hash);
+    if (next) navigate(localePath(next), { replace: true });
+  }, [navigate, localePath]);
+
+  /* ---------- decode a shared team from the URL (view-only, payload stays) ---------- */
+  useEffect(() => {
+    if (!sharePayload) return undefined;
     let alive = true;
-    void decodeTeamHash(sharedPayload).then((shared) => {
-      if (alive && shared) {
-        setViewMode(true);
+    setViewMode(true);
+    setShareInvalid(false);
+    void decodeTeamHash(sharePayload).then((shared) => {
+      if (!alive) return;
+      if (shared) {
         setTeam(shared);
         setFocusedId(shared.slots.find((s) => s.pokemon)?.id ?? null);
+      } else {
+        setShareInvalid(true);
       }
     });
     return () => {
       alive = false;
     };
-  }, [sharedPayload]);
+  }, [sharePayload]);
+
+  /* /team/:id is the editor source of truth — missing id drops back to the hub */
+  useEffect(() => {
+    if (sharePayload || !teamId) return;
+    if (teamForEditPath(teamId, loadTeams(), loadDraft())) return;
+    navigate(localePath(teamHubPath()), { replace: true });
+    // localePath/navigate are render-unstable; teamId is the only load trigger
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teamId, sharePayload]);
 
   /* ---------- draft autosave (debounced) — never for view-only ---------- */
   const draftTimer = useRef<number | null>(null);
@@ -321,14 +354,10 @@ export default function TeamBuilder() {
   );
 
   const handleOpenLinked = useCallback((linked: Team) => {
-    setViewMode(false);
-    setTeam(linked);
     saveDraft(linked);
-    setFocusedId(linked.slots.find((s) => s.pokemon)?.id ?? null);
-    setExpandedId(null);
-    setAppliedSetName(null);
     pushToast('success', i18n.t('tb.toast.openedLinked'));
-  }, []);
+    navigate(localePath(teamEditPath(linked.id)));
+  }, [navigate, localePath]);
 
   /* Open own linked team for edit */
   useEffect(() => {
@@ -351,10 +380,8 @@ export default function TeamBuilder() {
           await syncLinkedTeamRoster(state, pid);
           const linked = findLinkedTeam(runId, pid);
           if (alive && linked) {
-            setViewMode(false);
-            setTeam(linked);
             saveDraft(linked);
-            setFocusedId(linked.slots.find((s) => s.pokemon)?.id ?? null);
+            navigate(localePath(teamEditPath(linked.id)), { replace: true });
             return;
           }
         }
@@ -371,7 +398,7 @@ export default function TeamBuilder() {
     return () => {
       alive = false;
     };
-  }, [searchParams, setSearchParams, handleImport]);
+  }, [searchParams, setSearchParams, handleImport, navigate, localePath]);
 
   /* View another player's party (read-only, not saved to vault) */
   useEffect(() => {
@@ -409,16 +436,14 @@ export default function TeamBuilder() {
     if (!team) return;
     try {
       const payload = await encodeTeamHash(team);
-      /* share URL opens view-only for recipients — do not leave #team in our bar */
-      const url = `${window.location.origin}${window.location.pathname}#team=${payload}`;
+      const url = teamShareHref(window.location.origin, lang, payload);
       await navigator.clipboard.writeText(url);
       setShareState('copied');
       window.setTimeout(() => setShareState('idle'), 2200);
     } catch {
-      setShareState('copied');
-      window.setTimeout(() => setShareState('idle'), 2200);
+      pushToast('sync', i18n.t('tb.shareFailed'));
     }
-  }, [team]);
+  }, [team, lang]);
 
   const handleSave = useCallback(() => {
     if (!team || viewMode) return;
@@ -433,14 +458,11 @@ export default function TeamBuilder() {
     if (!team) return;
     const { detachAsCopy } = await import('@/lib/nuzlocke-linked-teams');
     const copy = detachAsCopy(team);
-    setViewMode(false);
-    setTeam(copy);
     const next = saveTeam(copy);
     setTeams(next);
     saveDraft(copy);
-    setSavedFlash(true);
-    window.setTimeout(() => setSavedFlash(false), 2200);
-  }, [team]);
+    navigate(localePath(teamEditPath(copy.id)));
+  }, [team, navigate, localePath]);
 
   const linked = !!team && isLinkedTeam(team);
   const linkedRunState = linked && team.linkedRunId ? getRunState(team.linkedRunId) : null;
@@ -671,6 +693,27 @@ export default function TeamBuilder() {
     };
   }, [team]);
 
+  /* ---------- share page: invalid / still decoding ---------- */
+  if (sharePayload && (shareInvalid || !team)) {
+    return (
+      <div className="mx-auto max-w-content px-4 pb-20 pt-8 md:px-8">
+        <div className="tb-panel mx-auto max-w-[480px] px-6 py-10 text-center">
+          <span className="tb-micro-gold">{t8n(shareInvalid ? 'tb.sharePage.invalid' : 'tb.sharePage.loading')}</span>
+          {shareInvalid && (
+            <button
+              type="button"
+              onClick={() => navigate(localePath(teamHubPath()))}
+              className="tb-btn tb-btn-primary mx-auto mt-4"
+            >
+              {t8n('tb.sharePage.back')}
+            </button>
+          )}
+        </div>
+        <NuzToasts />
+      </div>
+    );
+  }
+
   /* ---------- hub (no team being edited) ---------- */
   if (!team) {
     return (
@@ -679,15 +722,12 @@ export default function TeamBuilder() {
           teams={teams}
           onNew={() => {
             const t = emptyTeam();
-            setViewMode(false);
-            setTeam(t);
             saveDraft(t);
+            navigate(localePath(teamEditPath(t.id)));
           }}
           onLoad={(t) => {
-            setViewMode(false);
-            setTeam(t);
             saveDraft(t);
-            setFocusedId(t.slots.find((s) => s.pokemon)?.id ?? null);
+            navigate(localePath(teamEditPath(t.id)));
           }}
           onDelete={(id) => setTeams(deleteTeam(id))}
         />
@@ -723,12 +763,11 @@ export default function TeamBuilder() {
         onOpenHub={() => {
           if (!viewMode && team && filledSlots(team).length > 0) {
             setTeams(saveTeam(team));
+            saveDraft(team);
           } else {
             setTeams(loadTeams());
           }
-          if (!viewMode) saveDraft(null);
-          setViewMode(false);
-          setTeam(null);
+          navigate(localePath(teamHubPath()));
         }}
         savedCount={teams.length}
       />

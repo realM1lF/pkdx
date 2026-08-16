@@ -46,8 +46,11 @@ export default function ContinueStrip() {
         setTargets(
           continueTargets({
             run: run ? { id: run.run.id, name: run.run.name, partyIds: partyIdsFromRun(run, nuz) } : null,
-            draft: draft ? { name: draft.name, updatedAt: draft.updatedAt, partyIds: partyIdsFromTeam(draft) } : null,
+            draft: draft
+              ? { id: draft.id, name: draft.name, updatedAt: draft.updatedAt, partyIds: partyIdsFromTeam(draft) }
+              : null,
             teams: teams.map((team) => ({
+              id: team.id,
               name: team.name,
               updatedAt: team.updatedAt,
               partyIds: partyIdsFromTeam(team),

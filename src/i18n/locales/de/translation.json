@@ -1590,7 +1590,13 @@
     },
     "importFromRun": "Aus Run importieren",
     "share": "Teilen",
-    "shareTip": "View-only-Link kopieren — Empfänger sehen das Team, ändern nicht den Tresor",
+    "shareTip": "View-only-Seite kopieren. Empfänger sehen das Team, ändern nicht den Tresor.",
+    "shareFailed": "Link konnte nicht kopiert werden",
+    "sharePage": {
+      "loading": "Lade geteiltes Team…",
+      "invalid": "Dieser Share-Link ist ungültig oder unvollständig.",
+      "back": "Zurück zu meinen Teams"
+    },
     "linkCopied": "Link kopiert",
     "save": "Speichern",
     "saved": "Gespeichert ✓",

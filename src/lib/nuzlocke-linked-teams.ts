@@ -42,6 +42,7 @@ function partyOf(state: RunState, playerId: string): NuzEncounterRow[] {
 import {
   TEAM_SIZE,
   collapseLinkedTeamDuplicates,
+  defaultMoveset,
   deleteTeam,
   emptySlot,
   emptyTeam,
@@ -175,6 +176,23 @@ function applyBagOrPrior(
   return prior ? extractLinkedSet(prior) : null;
 }
 
+function padMoves(slugs: string[]): TeamSlot['moves'] {
+  const moves: TeamSlot['moves'] = [null, null, null, null];
+  slugs.slice(0, 4).forEach((m, i) => {
+    moves[i] = m;
+  });
+  return moves;
+}
+
+async function seedCatchMoves(pokemonId: number, level: number, vgId: string): Promise<TeamSlot['moves']> {
+  try {
+    const p = await getPokemon(pokemonId);
+    return padMoves(await defaultMoveset(p, level, vgId));
+  } catch {
+    return [null, null, null, null];
+  }
+}
+
 async function projectPartySlots(
   state: RunState,
   playerId: string,
@@ -188,6 +206,7 @@ async function projectPartySlots(
   let bag = prior ? stashLeavingParty(prior, partyIds) : {};
   const livingIds = new Set(state.encounters.map((e) => e.id));
   bag = Object.fromEntries(Object.entries(bag).filter(([id]) => livingIds.has(id)));
+  const vgId = versionGroupForGame(state.run.game) ?? prior?.versionGroup ?? 'scarlet-violet';
 
   const slots: TeamSlot[] = Array.from({ length: TEAM_SIZE }, emptySlot);
   for (let i = 0; i < party.length; i++) {
@@ -195,17 +214,20 @@ async function projectPartySlots(
     const slug = await slugFor(enc.pokemon_id);
     const saved = applyBagOrPrior(bag, priorByEnc, enc.id);
     delete bag[enc.id];
+    const level = Math.min(100, Math.max(1, enc.level || 1));
     const base = emptySlot();
+    /* first party insert only — later syncs keep the bag/prior set, even if empty */
+    const moves = saved ? saved.moves : await seedCatchMoves(enc.pokemon_id, level, vgId);
     slots[i] = {
       ...base,
       id: priorByEnc.get(enc.id)?.id ?? base.id,
       pokemon: slug,
       pokemonId: enc.pokemon_id,
       nickname: enc.nickname,
-      level: Math.min(100, Math.max(1, enc.level || 1)),
+      level,
       shiny: !!enc.is_shiny || !!saved?.shiny,
       encounterId: enc.id,
-      moves: saved?.moves ?? base.moves,
+      moves,
       item: saved?.item ?? null,
       ability: saved?.ability ?? null,
       nature: saved?.nature ?? null,

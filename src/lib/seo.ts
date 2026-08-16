@@ -476,6 +476,19 @@ export function pokemonSeoMetaForParam(param: string): RouteMeta | null {
 export function metaForPath(rest: string): RouteMeta {
   const key = rest === '' ? '/' : rest;
   if (ROUTE_META[key]) return ROUTE_META[key];
+  if (key.startsWith('/team/s/')) {
+    return {
+      title: {
+        de: 'Geteiltes Pokémon-Team · nur Ansicht',
+        en: 'Shared Pokémon team · view only',
+      },
+      description: {
+        de: 'Geteiltes Team zum Ansehen. Movesets, Items und Typabdeckung, ohne den eigenen Tresor zu ändern.',
+        en: 'A shared team for viewing. Movesets, items and type coverage, without changing your vault.',
+      },
+    };
+  }
+  if (key.startsWith('/team/')) return ROUTE_META['/team'];
   if (key === '/typen' || key === '/types') return TYPES_OVERVIEW_META;
   const typeMatch = key.match(/^\/(typen|types)\/([^/]+)$/);
   if (typeMatch) {

@@ -22,6 +22,7 @@ import {
   saveTeam,
   versionGroupById,
 } from '@/lib/teambuilder';
+import { addableTeams, teamEditPath } from '@/lib/team-routes';
 import type { Team } from '@/lib/teambuilder';
 import type { Pokemon } from '@/lib/types';
 
@@ -43,7 +44,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
   if (prevOpen !== open) {
     setPrevOpen(open);
     if (open) {
-      setTeams(loadTeams());
+      setTeams(addableTeams(loadTeams()));
       setPhase({ kind: 'pick' });
     }
   }
@@ -54,7 +55,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
       if (e.key === 'Escape') setOpen(false);
     };
     document.addEventListener('keydown', onKey);
-    const unsub = onTeamsChange(() => setTeams(loadTeams()));
+    const unsub = onTeamsChange(() => setTeams(addableTeams(loadTeams())));
     return () => {
       document.removeEventListener('keydown', onKey);
       unsub();
@@ -72,7 +73,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
       return;
     }
     saveTeam(updated);
-    setTeams(loadTeams());
+    setTeams(addableTeams(loadTeams()));
     setPhase({ kind: 'done', team: updated });
   };
 
@@ -169,7 +170,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                       </span>
                     </div>
                     <LocaleLink
-                      to="/team"
+                      to={teamEditPath(phase.team.id)}
                       onClick={() => saveDraft(phase.team)}
                       className="flex w-full items-center justify-center gap-1.5 rounded-[8px] border border-gold/60 bg-gold/15 px-3 py-2 font-display text-[11px] font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
                     >

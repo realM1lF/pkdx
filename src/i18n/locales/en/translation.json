@@ -1590,7 +1590,13 @@
     },
     "importFromRun": "Import From Run",
     "share": "Share",
-    "shareTip": "Copy a view-only link — recipients can inspect, not edit your vault",
+    "shareTip": "Copy a view-only page. Recipients can inspect the team, not edit your vault.",
+    "shareFailed": "Could not copy the link",
+    "sharePage": {
+      "loading": "Loading shared team…",
+      "invalid": "This share link is invalid or incomplete.",
+      "back": "Back to my teams"
+    },
     "linkCopied": "Link Copied",
     "save": "Save",
     "saved": "Saved ✓",

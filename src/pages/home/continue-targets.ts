@@ -14,6 +14,7 @@ export interface ContinueRunSource {
 }
 
 export interface ContinueTeamSource {
+  id: string;
   name: string;
   updatedAt?: number;
   partyIds?: number[];
@@ -37,7 +38,7 @@ export function continueTargets(input: {
   if (team) {
     out.push({
       kind: 'team',
-      to: '/team',
+      to: `/team/${team.id}`,
       name: team.name,
       partyIds: team.partyIds ?? [],
     });

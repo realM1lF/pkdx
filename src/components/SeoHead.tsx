@@ -60,6 +60,11 @@ export default function SeoHead({ lang }: { lang: Lang }) {
     const meta = metaForPath(rest);
     const managed: Element[] = [];
 
+    /* user vault + share pages are not indexable (no unique editorial content) */
+    if (/^\/team\/.+/.test(rest)) {
+      upsertMeta('name', 'robots', 'noindex, nofollow', managed);
+    }
+
     /* title + description + Open Graph */
     document.title = meta.title[lang];
     upsertMeta('name', 'description', meta.description[lang], managed);

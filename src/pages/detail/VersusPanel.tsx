@@ -1593,7 +1593,7 @@ export default function VersusPanel({
 
   const addToTeam = () => {
     if (!youPokemon) return;
-    prefillTeamFromVersus(
+    const created = prefillTeamFromVersus(
       {
         pokemonId: youPokemon.id,
         slug: youPokemon.name,
@@ -1606,7 +1606,7 @@ export default function VersusPanel({
       },
       ctx.versionGroup,
     );
-    navigate(localePath('/team'));
+    navigate(localePath(`/team/${created.id}`));
   };
 
   const trainers = trainersForRegion(trainerRegion);

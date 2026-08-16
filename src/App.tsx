@@ -112,6 +112,8 @@ export default function App() {
                 <Route path="nuzlocke/black-white" element={<NuzlockeGuidePage />} />
                 <Route path="nuzlocke/:runId" element={<NuzlockeRun />} />
                 <Route path="team" element={<TeamBuilder />} />
+                <Route path="team/s/:sharePayload" element={<TeamBuilder />} />
+                <Route path="team/:teamId" element={<TeamBuilder />} />
                 <Route path="items" element={<Items />} />
                 <Route path="items/:slug" element={<ItemDetailPage />} />
                 {/* type SEO pages use localized paths: /de/typen/* · /en/types/* */}
