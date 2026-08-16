@@ -6,9 +6,11 @@ import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { useLocale, useLocalePath } from '@/lib/locale-link';
 import {
   legacyShareRedirectPath,
+  resolveTeamRoute,
   teamEditPath,
   teamForEditPath,
   teamHubPath,
+  teamRouteKey,
   teamShareHref,
 } from '@/lib/team-routes';
 import { AnimatePresence, Reorder } from 'framer-motion';
@@ -80,7 +82,14 @@ function slugify(name: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-export default function TeamBuilder() {
+/** Default export remounts when the team URL changes. Sibling /team routes
+ * otherwise reuse this instance and keep hub/editor state after navigate. */
+export default function TeamPage() {
+  const { teamId, sharePayload } = useParams();
+  return <TeamBuilder key={teamRouteKey(teamId, sharePayload)} />;
+}
+
+function TeamBuilder() {
   const { t: t8n } = useTranslation();
   const { teamId, sharePayload } = useParams();
   const localePath = useLocalePath();
@@ -154,11 +163,23 @@ export default function TeamBuilder() {
     };
   }, [sharePayload]);
 
-  /* /team/:id is the editor source of truth — missing id drops back to the hub */
+  /* URL is the view source of truth. Sibling /team routes reuse this instance
+   * unless keyed; this keeps hub ↔ editor in sync even without a remount. */
   useEffect(() => {
-    if (sharePayload || !teamId) return;
-    if (teamForEditPath(teamId, loadTeams(), loadDraft())) return;
-    navigate(localePath(teamHubPath()), { replace: true });
+    const view = resolveTeamRoute(teamId, sharePayload, loadTeams(), loadDraft());
+    if (view.kind === 'share') return;
+    if (view.kind === 'hub') {
+      setViewMode(false);
+      setTeam(null);
+      return;
+    }
+    if (view.kind === 'missing') {
+      navigate(localePath(teamHubPath()), { replace: true });
+      return;
+    }
+    setViewMode(false);
+    setTeam(view.team);
+    setFocusedId(view.team.slots.find((s) => s.pokemon)?.id ?? null);
     // localePath/navigate are render-unstable; teamId is the only load trigger
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teamId, sharePayload]);

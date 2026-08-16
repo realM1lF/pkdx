@@ -7,6 +7,8 @@ import {
   teamEditPath,
   teamForEditPath,
   teamHubPath,
+  resolveTeamRoute,
+  teamRouteKey,
   teamShareHref,
   teamSharePath,
 } from './team-routes';
@@ -32,6 +34,22 @@ describe('team routes', () => {
     expect(legacyShareRedirectPath('#team=zABC')).toBe('/team/s/zABC');
     expect(legacyShareRedirectPath('#other=1')).toBeNull();
     expect(legacyShareRedirectPath('#team=')).toBeNull();
+  });
+
+  it('changes the remount key when hub, editor or share URL changes', () => {
+    expect(teamRouteKey(undefined, undefined)).toBe('hub');
+    expect(teamRouteKey('abc-1')).toBe('edit:abc-1');
+    expect(teamRouteKey(undefined, 'zABC')).toBe('share:zABC');
+    expect(teamRouteKey('abc-1')).not.toBe(teamRouteKey('abc-2'));
+    expect(teamRouteKey('abc-1')).not.toBe(teamRouteKey(undefined, undefined));
+  });
+
+  it('resolves hub, missing editor and share without keeping a previous team', () => {
+    const team = emptyTeam('Vault');
+    expect(resolveTeamRoute(undefined, undefined, [team], null)).toEqual({ kind: 'hub' });
+    expect(resolveTeamRoute(undefined, 'zABC', [team], null)).toEqual({ kind: 'share' });
+    expect(resolveTeamRoute('missing', undefined, [team], null)).toEqual({ kind: 'missing' });
+    expect(resolveTeamRoute(team.id, undefined, [team], null)).toEqual({ kind: 'edit', team });
   });
 });
 

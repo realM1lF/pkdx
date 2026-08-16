@@ -48,3 +48,28 @@ export function teamForEditPath(teamId: string, vault: Team[], draft: Team | nul
   if (draft?.id === teamId && (!fromVault || draft.updatedAt >= fromVault.updatedAt)) return draft;
   return fromVault;
 }
+
+/** React key so hub / editor / share remount instead of reusing stale state. */
+export function teamRouteKey(teamId?: string, sharePayload?: string): string {
+  if (sharePayload) return `share:${sharePayload}`;
+  if (teamId) return `edit:${teamId}`;
+  return 'hub';
+}
+
+export type TeamRouteView =
+  | { kind: 'hub' }
+  | { kind: 'share' }
+  | { kind: 'edit'; team: Team }
+  | { kind: 'missing' };
+
+export function resolveTeamRoute(
+  teamId: string | undefined,
+  sharePayload: string | undefined,
+  vault: Team[],
+  draft: Team | null,
+): TeamRouteView {
+  if (sharePayload) return { kind: 'share' };
+  if (!teamId) return { kind: 'hub' };
+  const team = teamForEditPath(teamId, vault, draft);
+  return team ? { kind: 'edit', team } : { kind: 'missing' };
+}
