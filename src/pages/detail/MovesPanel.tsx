@@ -1,31 +1,33 @@
 /* Moves panel — density-addendum §3 Row 2 (span 7).
  * Dense table NAME|TYPE|CAT|PWR|ACC|PP (36px rows, sticky header, own scrollbar 480px),
  * one compact toolbar row: learn-method tabs + type filter (edition lives in page chrome).
- * Move details lazy-load via getMove in batches (SWR-cached by src/lib/pokeapi). */
-import { useEffect, useMemo, useRef, useState } from 'react';
+ * Power/type/PP come from @pkmn for the selected edition; missing moves stay blank. */
+import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import HonestyHint from '@/components/HonestyHint';
 import TypeGlyph from '@/components/TypeGlyph';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
-import { genMoveOf, type GenMoveMeta } from '@/lib/gen-dex';
-import { getMove } from '@/lib/pokeapi';
+import { moveMetaForDisplay, type GenMoveMeta } from '@/lib/gen-dex';
 import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
-import { learnMethodsForGen, learnsetFor, type LearnMethod } from '@/lib/move-pool';
+import { machineLabel, machineOf } from '@/lib/machines';
+import { eggLearnsetFor, learnMethodTabsForGen, learnsetFor, type LearnMethodTab } from '@/lib/move-pool';
 import { versionGroupById } from '@/lib/version-groups';
-import type { Move, Pokemon } from '@/lib/types';
+import type { Pokemon } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { typeRgb } from './data';
 import { SegmentedControl } from './ui';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-type Method = LearnMethod;
+type Method = LearnMethodTab;
 /* labels are i18n keys under detail.moves */
 const METHODS: Array<{ key: Method; labelKey: string }> = [
   { key: 'level-up', labelKey: 'detail.moves.levelUp' },
-  { key: 'machine', labelKey: 'detail.moves.machine' },
+  { key: 'tm', labelKey: 'detail.moves.tm' },
+  { key: 'hm', labelKey: 'detail.moves.hm' },
   { key: 'egg', labelKey: 'detail.moves.egg' },
   { key: 'tutor', labelKey: 'detail.moves.tutor' },
 ];
@@ -37,36 +39,8 @@ interface MoveRow {
 
 type SortKey = 'name' | 'power' | 'accuracy' | 'pp';
 
-/** batch-fetch move details with limited concurrency, filling `cache` incrementally */
-function useMoveDetails(rows: MoveRow[], pokemonId: number) {
-  const cacheRef = useRef(new Map<string, Move>());
-  const [cache, setCache] = useState<Map<string, Move>>(new Map());
-
-  useEffect(() => {
-    const missing = rows.map((r) => r.name).filter((n) => !cacheRef.current.has(n));
-    if (!missing.length) return;
-    let cancelled = false;
-    (async () => {
-      const BATCH = 12;
-      for (let i = 0; i < missing.length; i += BATCH) {
-        const slice = missing.slice(i, i + BATCH);
-        const results = await Promise.allSettled(slice.map((n) => getMove(n)));
-        if (cancelled) return;
-        results.forEach((r, j) => {
-          if (r.status === 'fulfilled') cacheRef.current.set(slice[j], r.value);
-        });
-        setCache(new Map(cacheRef.current));
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [rows, pokemonId]);
-
-  return cache;
-}
-
 const EMPTY_ROWS: MoveRow[] = [];
+const EMPTY_ANCESTORS: Pokemon[] = [];
 
 const CAT_COLORS: Record<string, string> = {
   physical: '#FB923C',
@@ -74,59 +48,57 @@ const CAT_COLORS: Record<string, string> = {
   status: '#A8B3C7',
 };
 
-function rowMeta(name: string, vg: string, cache: Map<string, Move>): GenMoveMeta & { ready: boolean } {
-  const gen = genMoveOf(vg, name);
-  if (gen) return { ...gen, ready: true };
-  const mv = cache.get(name);
-  if (!mv) return { type: 'normal', category: 'status', power: null, accuracy: null, pp: null, ready: false };
-  return {
-    type: mv.type.name,
-    category: mv.damage_class.name === 'physical' || mv.damage_class.name === 'special' ? mv.damage_class.name : 'status',
-    power: mv.power,
-    accuracy: mv.accuracy,
-    pp: mv.pp,
-    ready: true,
-  };
+function rowMeta(name: string, vg: string): GenMoveMeta & { ready: boolean } {
+  return moveMetaForDisplay(vg, name);
 }
 
 export default function MovesPanel({
   pokemon,
   version,
+  ancestors = EMPTY_ANCESTORS,
 }: {
   pokemon: Pokemon;
   version: string;
+  ancestors?: Pokemon[];
 }) {
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   const activeVersion = version;
   const gen = versionGroupById(activeVersion).gen;
   const methodTabs = useMemo(() => {
-    const allowed = new Set(learnMethodsForGen(gen));
+    const allowed = new Set(learnMethodTabsForGen(gen));
     return METHODS.filter((m) => allowed.has(m.key));
   }, [gen]);
 
   /* rows per method for the active version — never mixes editions */
+  const eggs = useMemo(
+    () => eggLearnsetFor(pokemon, ancestors, activeVersion),
+    [pokemon, ancestors, activeVersion],
+  );
   const byMethod = useMemo(() => {
     const map = new Map<Method, MoveRow[]>();
     for (const { key } of methodTabs) {
-      const rows = learnsetFor(pokemon, activeVersion, key).map((e) => ({ name: e.slug, level: e.level }));
+      const pool =
+        key === 'tm' || key === 'hm'
+          ? learnsetFor(pokemon, activeVersion, 'machine').filter((e) => {
+              const info = machineOf(activeVersion, e.slug);
+              return key === 'hm' ? info?.kind === 'hm' : info?.kind !== 'hm';
+            })
+          : key === 'egg'
+            ? eggs.entries
+            : learnsetFor(pokemon, activeVersion, key);
+      const rows = pool.map((e) => ({ name: e.slug, level: e.level }));
       rows.sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
       map.set(key, rows);
     }
     return map;
-  }, [pokemon, activeVersion, lang, methodTabs]);
+  }, [pokemon, activeVersion, lang, methodTabs, eggs]);
 
   const [activeMethod, setMethod] = useState<Method>('level-up');
   if (!methodTabs.some((m) => m.key === activeMethod)) {
     setMethod('level-up');
   }
   const rows = byMethod.get(activeMethod) ?? EMPTY_ROWS;
-
-  const cache = useMoveDetails(rows, pokemon.id);
-  const pending = useMemo(
-    () => rows.filter((r) => !rowMeta(r.name, activeVersion, cache).ready).length,
-    [rows, cache, activeVersion],
-  );
 
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 } | null>(null);
@@ -143,22 +115,22 @@ export default function MovesPanel({
   const presentTypes = useMemo(() => {
     const set = new Set<string>();
     for (const r of rows) {
-      const meta = rowMeta(r.name, activeVersion, cache);
-      if (meta.ready) set.add(meta.type);
+      const meta = rowMeta(r.name, activeVersion);
+      if (meta.ready && meta.type) set.add(meta.type);
     }
     return [...set].sort();
-  }, [rows, cache, activeVersion]);
+  }, [rows, activeVersion]);
 
   const view = useMemo(() => {
     let out = rows.filter((r) => {
       if (!typeFilter) return true;
-      return rowMeta(r.name, activeVersion, cache).type === typeFilter;
+      return rowMeta(r.name, activeVersion).type === typeFilter;
     });
     if (sort) {
       const dir = sort.dir;
       out = [...out].sort((a, b) => {
-        const ma = rowMeta(a.name, activeVersion, cache);
-        const mb = rowMeta(b.name, activeVersion, cache);
+        const ma = rowMeta(a.name, activeVersion);
+        const mb = rowMeta(b.name, activeVersion);
         const va = sort.key === 'name' ? nameOfMove(a.name, lang) : (ma[sort.key] ?? -1);
         const vb = sort.key === 'name' ? nameOfMove(b.name, lang) : (mb[sort.key] ?? -1);
         if (typeof va === 'string' && typeof vb === 'string') return va.localeCompare(vb) * dir;
@@ -168,7 +140,7 @@ export default function MovesPanel({
       out = [...out].sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
     }
     return out;
-  }, [rows, cache, typeFilter, sort, activeMethod, lang, activeVersion]);
+  }, [rows, typeFilter, sort, activeMethod, lang, activeVersion]);
 
   const toggleSort = (key: SortKey) =>
     setSort((s) => (s?.key === key ? (s.dir === 1 ? { key, dir: -1 } : null) : { key, dir: 1 }));
@@ -177,6 +149,9 @@ export default function MovesPanel({
 
   return (
     <div className="flex h-full flex-col">
+      <HonestyHint show={activeMethod === 'egg' && eggs.inheritedFromPrevo} className="border-b border-hairline px-3 py-1.5">
+        {t8n('honesty.eggFromPrevo')}
+      </HonestyHint>
       {/* compact toolbar row */}
       <div className="flex flex-wrap items-center gap-2 px-3 py-2">
         <SegmentedControl
@@ -215,7 +190,6 @@ export default function MovesPanel({
               <TypeGlyph type={t} size={13} />
             </button>
           ))}
-          {pending > 0 && <span className="pixel-label pl-1 text-[8px] text-tx-muted">+{pending}</span>}
         </div>
       </div>
 
@@ -240,9 +214,10 @@ export default function MovesPanel({
             </thead>
             <tbody key={listKey}>
               {view.map((r, i) => {
-                const meta = rowMeta(r.name, activeVersion, cache);
+                const meta = rowMeta(r.name, activeVersion);
                 const t = meta.type;
                 const cat = meta.category;
+                const machine = activeMethod === 'tm' || activeMethod === 'hm' ? machineOf(activeVersion, r.name) : null;
                 return (
                   <motion.tr
                     key={r.name}
@@ -260,23 +235,26 @@ export default function MovesPanel({
                         {activeMethod === 'level-up' && r.level > 0 && (
                           <span className="pixel-label w-6 shrink-0 text-[8px] text-gold">{r.level}</span>
                         )}
+                        {machine && (
+                          <span className="pixel-label w-10 shrink-0 text-[8px] text-gold">{machineLabel(machine, lang, activeVersion)}</span>
+                        )}
                         <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">
                           {nameOfMove(r.name, lang)}
                         </span>
                       </span>
                     </td>
                     <td>
-                      {meta.ready ? (
+                      {meta.ready && t ? (
                         <span className="flex items-center gap-1" style={{ color: `rgb(${typeRgb(t)})` }}>
                           <TypeGlyph type={t} size={14} className={cn('dx-glyph', `dx-glyph-${t}`)} />
                           <span className="hidden font-sans text-[10px] font-semibold uppercase xl:inline">{nameOfType(t, lang)}</span>
                         </span>
                       ) : (
-                        <span className="dx-skel inline-block h-3.5 w-8" />
+                        <span className="font-sans text-[11px] text-tx-muted">—</span>
                       )}
                     </td>
                     <td className="text-center">
-                      {meta.ready ? (
+                      {meta.ready && t ? (
                         <span
                           role="img"
                           aria-label={t8n(`detail.moves.cat${cat.charAt(0).toUpperCase() + cat.slice(1)}`)}
@@ -289,7 +267,7 @@ export default function MovesPanel({
                           }}
                         />
                       ) : (
-                        <span className="dx-skel mx-auto inline-block h-3.5 w-3.5 rounded-full" />
+                        <span className="font-sans text-[11px] text-tx-muted">—</span>
                       )}
                     </td>
                     <NumCell value={meta.power} ready={meta.ready} />

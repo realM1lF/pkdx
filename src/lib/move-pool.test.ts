@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { learnMethodsForGen, learnsetFor, levelUpPool, newestVersionGroup } from './move-pool';
+import { learnMethodTabsForGen, learnsetFor, eggLearnsetFor, levelUpPool, newestVersionGroup } from './move-pool';
 import type { Pokemon } from './types';
 
 function mon(
@@ -111,14 +111,43 @@ describe('learnsetFor — Let\'s Go version-group alias', () => {
   });
 });
 
-describe('learnMethodsForGen — Serebii-style method tabs per generation', () => {
-  it('Gen 1 has level-up and TM/HM only (no breeding, no tutors)', () => {
-    expect(learnMethodsForGen(1)).toEqual(['level-up', 'machine']);
+describe('learnMethodTabsForGen — Serebii-style method tabs per generation', () => {
+  it('Gen 1 has level-up, TM and HM (no breeding, no tutors)', () => {
+    expect(learnMethodTabsForGen(1)).toEqual(['level-up', 'tm', 'hm']);
   });
 
-  it('Gen 2 adds egg moves; tutors start in Gen 3', () => {
-    expect(learnMethodsForGen(2)).toEqual(['level-up', 'machine', 'egg']);
-    expect(learnMethodsForGen(3)).toEqual(['level-up', 'machine', 'egg', 'tutor']);
-    expect(learnMethodsForGen(9)).toEqual(['level-up', 'machine', 'egg', 'tutor']);
+  it('Gen 2 adds egg moves; tutors start in Gen 3; HMs stop after Gen 6', () => {
+    expect(learnMethodTabsForGen(2)).toEqual(['level-up', 'tm', 'hm', 'egg']);
+    expect(learnMethodTabsForGen(3)).toEqual(['level-up', 'tm', 'hm', 'egg', 'tutor']);
+    expect(learnMethodTabsForGen(7)).toEqual(['level-up', 'tm', 'egg', 'tutor']);
+    expect(learnMethodTabsForGen(9)).toEqual(['level-up', 'tm', 'egg', 'tutor']);
+  });
+});
+
+describe('eggLearnsetFor — inherit first-stage eggs (Serebii lists them on evolutions)', () => {
+  it('Venusaur-shaped: empty own eggs, inherit prevo eggs in the same edition', () => {
+    const venusaur = mon([{ move: 'razor-leaf', vg: 'firered-leafgreen', method: 'level-up', level: 20 }]);
+    const bulba = mon([
+      { move: 'petal-dance', vg: 'firered-leafgreen', method: 'egg', level: 0 },
+      { move: 'ingrain', vg: 'scarlet-violet', method: 'egg', level: 0 },
+    ]);
+    const r = eggLearnsetFor(venusaur, [bulba], 'firered-leafgreen');
+    expect(r.entries.map((e) => e.slug)).toEqual(['petal-dance']);
+    expect(r.inheritedFromPrevo).toBe(true);
+  });
+
+  it('does not leak another edition from the prevo', () => {
+    const venusaur = mon([]);
+    const bulba = mon([{ move: 'ingrain', vg: 'scarlet-violet', method: 'egg', level: 0 }]);
+    const r = eggLearnsetFor(venusaur, [bulba], 'firered-leafgreen');
+    expect(r.entries).toEqual([]);
+    expect(r.inheritedFromPrevo).toBe(false);
+  });
+
+  it('base form with its own eggs is not marked inherited', () => {
+    const bulba = mon([{ move: 'petal-dance', vg: 'firered-leafgreen', method: 'egg', level: 0 }]);
+    const r = eggLearnsetFor(bulba, [], 'firered-leafgreen');
+    expect(r.entries.map((e) => e.slug)).toEqual(['petal-dance']);
+    expect(r.inheritedFromPrevo).toBe(false);
   });
 });

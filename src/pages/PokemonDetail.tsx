@@ -13,8 +13,8 @@ import MotionRoot from '@/components/MotionRoot';
 import { ArrowLeft, Swords } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
-import { genAbilityRows, genStatsOf, genTypesOf, statsFromPokemon } from '@/lib/gen-dex';
-import { getPokemon, getSpecies, pokemonTypes } from '@/lib/pokeapi';
+import { genAbilityRows, genStatsOf, genTypesOf, statsFromPokemon, usedApiStatFallback } from '@/lib/gen-dex';
+import { getPokemon, getSpecies, loadPokemonAncestors, pokemonTypes } from '@/lib/pokeapi';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
 import { MAX_DEX_ID } from '@/lib/types';
@@ -57,6 +57,7 @@ export default function PokemonDetail() {
   const lang = useLanguage();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
+  const [ancestors, setAncestors] = useState<Pokemon[]>([]);
   const [status, setStatus] = useState<Status>('loading');
   /* reset synchronously on param change (derived-state-during-render) */
   const [prevParam, setPrevParam] = useState(param);
@@ -65,6 +66,7 @@ export default function PokemonDetail() {
     setStatus('loading');
     setPokemon(null);
     setSpecies(null);
+    setAncestors([]);
   }
 
   useEffect(() => {
@@ -89,6 +91,24 @@ export default function PokemonDetail() {
       on = false;
     };
   }, [param]);
+
+  useEffect(() => {
+    if (!species) {
+      setAncestors([]);
+      return;
+    }
+    if (!species.evolves_from_species?.name) {
+      setAncestors([]);
+      return;
+    }
+    let on = true;
+    loadPokemonAncestors(species)
+      .then((list) => on && setAncestors(list))
+      .catch(() => on && setAncestors([]));
+    return () => {
+      on = false;
+    };
+  }, [species]);
 
   useEffect(() => {
     if (!pokemon) return;
@@ -129,6 +149,7 @@ export default function PokemonDetail() {
     versionGroupForGame(gameParam),
     new Set(editionOptions.map((g) => g.id)),
   );
+  const showDexFallback = Boolean(pokemon && usedApiStatFallback(edition, pokemon.name));
   const types = useMemo(
     () => (pokemon ? genTypesOf(edition, pokemon.name, apiTypes as PokemonType[]) : []),
     [pokemon, edition, apiTypes],
@@ -263,6 +284,9 @@ export default function PokemonDetail() {
             <HonestyHint show={showEditionFallback} tone="gold">
               {t8n('honesty.editionFallback', { edition: editionInfo.short })}
             </HonestyHint>
+            <HonestyHint show={showDexFallback} tone="gold">
+              {t8n('honesty.dexFallback')}
+            </HonestyHint>
           </div>
         )}
       </div>
@@ -367,7 +391,7 @@ export default function PokemonDetail() {
           className="col-span-12 lg:col-span-7"
           bodyClassName="flex min-h-[420px] flex-col"
         >
-          <MovesPanel pokemon={pokemon} version={edition} />
+          <MovesPanel pokemon={pokemon} version={edition} ancestors={ancestors} />
         </Panel>
 
         <div className="col-span-12 lg:col-span-5">

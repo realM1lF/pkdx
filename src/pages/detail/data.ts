@@ -5,6 +5,7 @@ import i18n from '@/i18n';
 import { nameOfItem, nameOfLocation, nameOfMove, nameOfPokemon, nameOfType, type Lang } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource, PokemonSpecies, PokemonType } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
+import { genHasMechanics } from '@/lib/gen-dex';
 import { genSplitMatchupsForSide } from '@/lib/versus';
 import { sameVersionGroup } from '@/lib/move-pool';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS, versionGroupById, versionGroupForGame } from '@/lib/version-groups';
@@ -78,6 +79,7 @@ export interface Matchups {
   resist: string[]; // ×0.5 (but better than ×0.25)
   quarter: string[]; // ×0.25 double resist
   immune: string[]; // ×0
+  extra: Array<{ mult: number; types: string[] }>;
 }
 
 /** @pkmn generation for a move-pool version-group slug. Missing/unknown → 9. */
@@ -146,8 +148,17 @@ export function resolveMoveVersionGroup(
 }
 
 /** Same buckets as `genSplitMatchupsForSide` (×4 / ×¼ rows kept). */
-export function computeMatchups(defending: string[], gen = 9): Matchups {
-  return genSplitMatchupsForSide(defending, gen);
+export function computeMatchups(defending: string[], gen = 9, ability?: string | null): Matchups {
+  return genSplitMatchupsForSide(defending, gen, ability);
+}
+
+/** Versus default: first non-hidden ability, never in editions without abilities. */
+export function defaultMatchupAbility(
+  abilities: Array<{ slug: string; hidden?: boolean }>,
+  vgId: string | null | undefined,
+): string | null {
+  if (!vgId || !genHasMechanics(vgId).abilities) return null;
+  return abilities.find((a) => !a.hidden)?.slug ?? null;
 }
 
 /* ---------- evolution condition formatting ---------- */

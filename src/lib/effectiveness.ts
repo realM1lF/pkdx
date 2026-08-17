@@ -77,6 +77,8 @@ export interface SplitMatchups {
   quarter: string[];
   /** attacking types that cannot hit (×0) */
   immune: string[];
+  /** ability-modified leftovers (×3, ×1½, ×1¼, ×¾, …) */
+  extra: Array<{ mult: number; types: string[] }>;
 }
 
 export function splitMatchups(defendingTypes: string[], genNum: GenerationNum): SplitMatchups {
@@ -93,5 +95,5 @@ export function splitMatchups(defendingTypes: string[], genNum: GenerationNum): 
     else if (mult <= 0.25) quarter.push(atk);
     else if (mult < 1) resist.push(atk);
   }
-  return { quad, weak, resist, quarter, immune };
+  return { quad, weak, resist, quarter, immune, extra: [] };
 }

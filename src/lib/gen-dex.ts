@@ -103,6 +103,11 @@ export function genStatsOf(vgId: string, nameOrSlug: string, fallback: GenStatBl
   };
 }
 
+/** True when @pkmn has no species for this edition, so stats/types use PokéAPI. */
+export function usedApiStatFallback(vgId: string, nameOrSlug: string): boolean {
+  return !genSpecies(vgId, nameOrSlug)?.exists;
+}
+
 export interface GenMoveMeta {
   type: string;
   category: 'physical' | 'special' | 'status';
@@ -122,6 +127,51 @@ export function movePowerForDisplay(
     if (gen) return gen.power;
   }
   return apiPower && apiPower > 0 ? apiPower : null;
+}
+
+type ApiMoveBits = {
+  type: { name: string };
+  damage_class: { name: string };
+  power: number | null;
+  accuracy: number | null;
+  pp: number | null;
+};
+
+const UNKNOWN_MOVE_META: GenMoveMeta & { ready: boolean } = {
+  type: '',
+  category: 'status',
+  power: null,
+  accuracy: null,
+  pp: null,
+  ready: true,
+};
+
+/**
+ * Detail-table move row. If a version group is set, @pkmn wins; a miss
+ * stays empty (never modern PokéAPI power/type/PP).
+ */
+export function moveMetaForDisplay(
+  vgId: string | undefined,
+  slug: string,
+  api?: ApiMoveBits | null,
+): GenMoveMeta & { ready: boolean } {
+  if (vgId) {
+    const gen = genMoveOf(vgId, slug);
+    if (gen) return { ...gen, ready: true };
+    return UNKNOWN_MOVE_META;
+  }
+  if (!api) {
+    return { type: 'normal', category: 'status', power: null, accuracy: null, pp: null, ready: false };
+  }
+  const cat = api.damage_class.name;
+  return {
+    type: api.type.name,
+    category: cat === 'physical' || cat === 'special' ? cat : 'status',
+    power: api.power,
+    accuracy: api.accuracy,
+    pp: api.pp,
+    ready: true,
+  };
 }
 
 export function genMoveOf(vgId: string, slug: string): GenMoveMeta | null {

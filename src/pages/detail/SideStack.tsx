@@ -4,14 +4,17 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import HonestyHint from '@/components/HonestyHint';
 import TypeGlyph from '@/components/TypeGlyph';
 import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { pokemonTypes } from '@/lib/pokeapi';
 import { nameOfAbility, nameOfGrowth, nameOfType, useLanguage } from '@/lib/i18n-data';
+import { effMultLabel } from '@/lib/effectiveness';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
   computeMatchups,
+  defaultMatchupAbility,
   genOfVersionGroup,
   genderLabel,
   getAbilityShort,
@@ -168,7 +171,12 @@ export default function SideStack({
   const gen = genOfVersionGroup(vg);
   const types = typesProp ?? pokemonTypes(pokemon);
   const abilities = abilitiesProp ?? pokemon.abilities.map((a) => ({ slug: a.ability.name, hidden: a.is_hidden }));
-  const matchups = computeMatchups(types, gen);
+  const matchupAbility = defaultMatchupAbility(abilities, vg);
+  const matchups = computeMatchups(types, gen, matchupAbility);
+  const bare = matchupAbility ? computeMatchups(types, gen) : matchups;
+  const abilityHint = Boolean(
+    matchupAbility && JSON.stringify(matchups) !== JSON.stringify(bare),
+  );
   const extras = speciesExtras(species);
   const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
@@ -196,15 +204,45 @@ export default function SideStack({
 
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
         <MiniPanel eyebrow={t('detail.side.defenseEyebrow')} title={t('detail.side.matchupsTitle')}>
-          <p className="pixel-label mb-1 text-[8px] text-tx-muted">{t('detail.side.chartGen', { gen })}</p>
+          <p className="pixel-label mb-1 text-[8px] text-tx-muted">
+            {t('detail.side.chartGen', { gen })}
+            {abilityHint && matchupAbility
+              ? ` · ${t('detail.side.abilityHint', { ability: nameOfAbility(matchupAbility, lang) })}`
+              : ''}
+          </p>
+          <HonestyHint show={Boolean(matchupAbility)} className="mb-1.5">
+            {t('honesty.defaultAbility', { ability: nameOfAbility(matchupAbility ?? '', lang) })}
+          </HonestyHint>
           {matchups.quad.length > 0 && (
             <MatchupRow label={t('detail.side.weak4')} mult="×4" types={matchups.quad} tint="#FF6B4A" />
           )}
           <MatchupRow label={t('detail.side.weak')} mult="×2" types={matchups.weak} tint="#FF8A6B" />
+          {matchups.extra
+            .filter((row) => row.mult > 1)
+            .map((row) => (
+              <MatchupRow
+                key={row.mult}
+                label={effMultLabel(row.mult)}
+                mult={effMultLabel(row.mult)}
+                types={row.types}
+                tint="#FF8A6B"
+              />
+            ))}
           <MatchupRow label={t('detail.side.resist')} mult="×½" types={matchups.resist} tint="#63D96B" />
           {matchups.quarter.length > 0 && (
             <MatchupRow label={t('detail.side.resistQuarter')} mult="×¼" types={matchups.quarter} tint="#3EB58A" />
           )}
+          {matchups.extra
+            .filter((row) => row.mult < 1)
+            .map((row) => (
+              <MatchupRow
+                key={row.mult}
+                label={effMultLabel(row.mult)}
+                mult={effMultLabel(row.mult)}
+                types={row.types}
+                tint="#63D96B"
+              />
+            ))}
           <MatchupRow label={t('detail.side.immune')} mult="×0" types={matchups.immune} tint="#5E6680" />
         </MiniPanel>
       </motion.div>

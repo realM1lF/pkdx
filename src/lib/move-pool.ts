@@ -35,12 +35,23 @@ export function newestVersionGroup(p: Pokemon): string {
 
 export type LearnMethod = 'level-up' | 'machine' | 'egg' | 'tutor';
 
-/** Serebii/PokéWiki gen-dex tabs: egg from Gen 2, tutors from Gen 3. */
+/** UI tabs. PokéAPI still stores TM+HM as `machine`; the panel splits them. */
+export type LearnMethodTab = 'level-up' | 'tm' | 'hm' | 'egg' | 'tutor';
+
+/** Serebii/PokéWiki gen-dex tabs: egg from Gen 2, tutors from Gen 3, HMs through Gen 6. */
 export function learnMethodsForGen(gen: number): LearnMethod[] {
   const methods: LearnMethod[] = ['level-up', 'machine'];
   if (gen >= 2) methods.push('egg');
   if (gen >= 3) methods.push('tutor');
   return methods;
+}
+
+export function learnMethodTabsForGen(gen: number): LearnMethodTab[] {
+  const tabs: LearnMethodTab[] = ['level-up', 'tm'];
+  if (gen <= 6) tabs.push('hm');
+  if (gen >= 2) tabs.push('egg');
+  if (gen >= 3) tabs.push('tutor');
+  return tabs;
 }
 
 /** App id vs PokéAPI slug for the same Let's Go edition. Do not rename the app id. */
@@ -66,6 +77,31 @@ export function learnsetFor(p: Pokemon, versionGroup: string, method: LearnMetho
   return [...bySlug.entries()]
     .map(([slug, level]) => ({ slug, level, method }))
     .sort((a, b) => a.level - b.level || a.slug.localeCompare(b.slug));
+}
+
+/**
+ * Egg moves for this Pokémon in one edition.
+ * PokéAPI only lists eggs on the first stage; Serebii/Wiki show the line on
+ * evolutions too. Union the same-edition eggs from `ancestors` (closest first).
+ * Never mixes version groups.
+ */
+export function eggLearnsetFor(
+  self: Pokemon,
+  ancestors: Pokemon[],
+  versionGroup: string,
+): { entries: PoolEntry[]; inheritedFromPrevo: boolean } {
+  const own = learnsetFor(self, versionGroup, 'egg');
+  const bySlug = new Map(own.map((e) => [e.slug, e]));
+  let inheritedFromPrevo = false;
+  for (const pre of ancestors) {
+    for (const e of learnsetFor(pre, versionGroup, 'egg')) {
+      if (bySlug.has(e.slug)) continue;
+      bySlug.set(e.slug, e);
+      inheritedFromPrevo = true;
+    }
+  }
+  const entries = [...bySlug.values()].sort((a, b) => a.level - b.level || a.slug.localeCompare(b.slug));
+  return { entries, inheritedFromPrevo };
 }
 
 /** level-up pool (sorted by learn level) in the given version group */

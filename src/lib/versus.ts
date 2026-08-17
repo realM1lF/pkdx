@@ -8,7 +8,7 @@
 import { calculate, Field, Generations, Move as CalcMove, Pokemon as CalcPokemon, toID } from '@smogon/calc';
 import type { StatsTable } from '@smogon/calc';
 import type { Move, Pokemon, StatKey } from './types';
-import { STAT_ORDER } from './types';
+import { POKEMON_TYPES, STAT_ORDER } from './types';
 import i18n from '@/i18n';
 import { nameOfMove } from './i18n-data';
 import {
@@ -19,7 +19,7 @@ import {
   pickTopMoves,
   preferredCategory,
 } from './teambuilder';
-import { effMultLabel, splitMatchups } from './effectiveness';
+import { effMultLabel } from './effectiveness';
 import type { SplitMatchups } from './effectiveness';
 import type { GenerationNum } from '@pkmn/data';
 import {
@@ -319,36 +319,107 @@ export function genMatchupsOf(defendingTypes: string[], gen = 9): GenMatchups {
   return { weak, resist, immune };
 }
 
-/** Ability slugs (lowercase) → attacking types they grant immunity to in calc. */
+/** Ability slugs (hyphenated) → attacking types they grant immunity to in calc. */
 const ABILITY_TYPE_IMMUNITIES: Record<string, string[]> = {
   levitate: ['ground'],
-  'volt absorb': ['electric'],
-  'water absorb': ['water'],
-  'flash fire': ['fire'],
-  'sap sipper': ['grass'],
-  'motor drive': ['electric'],
-  'earth eater': ['ground'],
+  'earth-eater': ['ground'],
+  'flash-fire': ['fire'],
+  'well-baked-body': ['fire'],
+  'water-absorb': ['water'],
+  'dry-skin': ['water'],
+  'storm-drain': ['water'],
+  'volt-absorb': ['electric'],
+  'lightning-rod': ['electric'],
+  'motor-drive': ['electric'],
+  'sap-sipper': ['grass'],
   bulbproof: ['grass'],
 };
 
+/** abilities whose immunity only exists from gen 5 onward — in gen 3/4
+ * Lightning Rod / Storm Drain merely redirect moves in double battles */
+const GEN5_IMMUNITY_ABILITIES = new Set(['lightning-rod', 'storm-drain']);
+
+/** Same tables as teambuilder `RESIST_ABILITIES` (keep in sync). */
+const RESIST_ABILITIES: Record<string, { types: readonly string[]; mult: number }> = {
+  'thick-fat': { types: ['fire', 'ice'], mult: 0.5 },
+  'dry-skin': { types: ['fire'], mult: 1.25 },
+  heatproof: { types: ['fire'], mult: 0.5 },
+  'water-bubble': { types: ['fire'], mult: 0.5 },
+  filter: { types: POKEMON_TYPES, mult: 0.75 },
+  'solid-rock': { types: POKEMON_TYPES, mult: 0.75 },
+  'prism-armor': { types: POKEMON_TYPES, mult: 0.75 },
+};
+
+const CONDITIONAL_SE_MULT = new Set(['filter', 'solid-rock', 'prism-armor']);
+
+function abilityKey(ability: string): string {
+  return ability.toLowerCase().replace(/ /g, '-');
+}
+
+function immunitiesForAbility(ability: string | null | undefined, gen: number): string[] {
+  if (!ability || gen < 3) return [];
+  const key = abilityKey(ability);
+  if (GEN5_IMMUNITY_ABILITIES.has(key) && gen < 5) return [];
+  return ABILITY_TYPE_IMMUNITIES[key] ?? [];
+}
+
+function abilityAdjustedMult(
+  attackType: string,
+  defendingTypes: string[],
+  gen: number,
+  ability?: string | null,
+): number {
+  let eff = genEffectivenessOf(gen as GenerationNum, attackType, defendingTypes);
+  if (!ability || gen < 3) return eff;
+  const key = abilityKey(ability);
+  if (key === 'wonder-guard') return eff > 1 ? eff : 0;
+  const granted = immunitiesForAbility(ability, gen);
+  if (granted.includes(attackType)) return 0;
+  const res = RESIST_ABILITIES[key];
+  if (res && (res.types as readonly string[]).includes(attackType)) {
+    if (CONDITIONAL_SE_MULT.has(key) ? eff > 1 : true) eff *= res.mult;
+  }
+  return eff;
+}
+
+function bucketsFromMults(defendingTypes: string[], gen: number, ability?: string | null): SplitMatchups {
+  const quad: string[] = [];
+  const weak: string[] = [];
+  const resist: string[] = [];
+  const quarter: string[] = [];
+  const immune: string[] = [];
+  const extraMap = new Map<number, string[]>();
+  for (const atk of chartTypeSlugs(gen as GenerationNum)) {
+    const mult = abilityAdjustedMult(atk, defendingTypes, gen, ability);
+    if (mult === 0) immune.push(atk);
+    else if (mult === 4) quad.push(atk);
+    else if (mult === 2) weak.push(atk);
+    else if (mult === 0.5) resist.push(atk);
+    else if (mult === 0.25) quarter.push(atk);
+    else if (mult !== 1) {
+      const list = extraMap.get(mult) ?? [];
+      list.push(atk);
+      extraMap.set(mult, list);
+    }
+  }
+  const extra = [...extraMap.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([mult, types]) => ({ mult, types }));
+  return { quad, weak, resist, quarter, immune, extra };
+}
+
 /**
- * Defensive profile adjusted for a known held ability (Levitate → Ground immune, etc.).
- * Typ chart stays gen-correct; ability only moves types between weak and immune.
+ * Defensive profile adjusted for a known held ability (Levitate → Ground immune,
+ * Thick Fat → Fire/Ice ×½, Filter → SE ×¾, Wonder Guard → non-SE immune).
+ * Type chart stays gen-correct; ability rebuckets attacking types.
  */
 export function genMatchupsForSide(defendingTypes: string[], gen = 9, ability?: string | null): GenMatchups {
-  const base = genMatchupsOf(defendingTypes, gen);
-  if (!ability) return base;
-  const granted = ABILITY_TYPE_IMMUNITIES[ability.toLowerCase()];
-  if (!granted?.length) return base;
-  const immune = new Set(base.immune);
-  const weak = base.weak.filter((t) => {
-    if (granted.includes(t)) {
-      immune.add(t);
-      return false;
-    }
-    return true;
-  });
-  return { weak, resist: base.resist, immune: [...immune].sort() };
+  const split = bucketsFromMults(defendingTypes, gen, ability);
+  return {
+    weak: [...split.quad, ...split.weak, ...split.extra.filter((e) => e.mult > 1).flatMap((e) => e.types)],
+    resist: [...split.resist, ...split.quarter, ...split.extra.filter((e) => e.mult < 1).flatMap((e) => e.types)],
+    immune: split.immune,
+  };
 }
 
 /** display label for an effectiveness multiplier — shared helper, exact
@@ -357,30 +428,10 @@ export const EFF_LABEL = effMultLabel;
 
 /**
  * Defensive profile with dual-type extremes kept separate (×4 / ×¼ rows),
- * adjusted for a known held ability (Levitate → Ground immune, etc.).
- * Type chart stays gen-correct; ability only moves types between buckets.
+ * plus ability mods. Non-standard multipliers (×3, ×1½, …) live in `extra`.
  */
 export function genSplitMatchupsForSide(defendingTypes: string[], gen = 9, ability?: string | null): SplitMatchups {
-  const base = splitMatchups(defendingTypes, gen as GenerationNum);
-  if (!ability) return base;
-  const granted = ABILITY_TYPE_IMMUNITIES[ability.toLowerCase()];
-  if (!granted?.length) return base;
-  const immune = new Set(base.immune);
-  const strip = (list: string[]) =>
-    list.filter((t) => {
-      if (granted.includes(t)) {
-        immune.add(t);
-        return false;
-      }
-      return true;
-    });
-  return {
-    quad: strip(base.quad),
-    weak: strip(base.weak),
-    resist: base.resist,
-    quarter: base.quarter,
-    immune: [...immune].sort(),
-  };
+  return bucketsFromMults(defendingTypes, gen, ability);
 }
 
 /* ---------- damage ---------- */

@@ -5,10 +5,10 @@ import { genSplitMatchupsForSide } from '@/lib/versus';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS } from '@/lib/version-groups';
 import { loadGermanData, nameOfLocation, nameOfMove, nameOfPokemon } from '@/lib/i18n-data';
 import type { EvolutionDetail, NamedAPIResource } from '@/lib/types';
-import { computeMatchups, editionFromGameParam, evoCondition, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, pickAbilityShort, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
+import { computeMatchups, defaultMatchupAbility, editionFromGameParam, evoCondition, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, pickAbilityShort, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
 
 function allAttacking(m: ReturnType<typeof computeMatchups>): string[] {
-  return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune];
+  return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune, ...m.extra.flatMap((e) => e.types)];
 }
 
 describe('computeMatchups — same buckets as genSplitMatchupsForSide', () => {
@@ -45,6 +45,107 @@ describe('computeMatchups — same buckets as genSplitMatchupsForSide', () => {
     expect(m).toEqual(genSplitMatchupsForSide(['water', 'flying'], 9));
     expect(m.quad).toContain('electric');
     expect(m.weak).not.toContain('electric');
+  });
+});
+
+describe('computeMatchups — default ability immunities (Versus DefenseColumn / Smogon)', () => {
+  it('Gengar + Levitate: Ground is immune, not neutral', () => {
+    const types = ['ghost', 'poison'];
+    const bare = computeMatchups(types, 3);
+    expect(bare.immune).not.toContain('ground');
+    const withLev = computeMatchups(types, 3, 'levitate');
+    expect(withLev).toEqual(genSplitMatchupsForSide(types, 3, 'levitate'));
+    expect(withLev.immune).toContain('ground');
+    expect(withLev.weak).not.toContain('ground');
+  });
+
+  it('Gen 1 ignores Levitate (no abilities)', () => {
+    const m = computeMatchups(['ghost', 'poison'], 1, 'levitate');
+    expect(m.immune).not.toContain('ground');
+  });
+
+  it('Lightning Rod is not an Electric immunity before Gen 5', () => {
+    expect(computeMatchups(['water'], 4, 'lightning-rod').immune).not.toContain('electric');
+    expect(computeMatchups(['water'], 5, 'lightning-rod').immune).toContain('electric');
+  });
+
+  it('Levitate grants Ground immunity even when Ground is neutral', () => {
+    expect(computeMatchups(['electric'], 3, 'levitate').immune).toContain('ground');
+  });
+
+  it('hyphenated genAbilityRows slugs match (Volt Absorb)', () => {
+    const m = computeMatchups(['electric'], 3, 'volt-absorb');
+    expect(m.immune).toContain('electric');
+    expect(m.resist).not.toContain('electric');
+  });
+});
+
+describe('computeMatchups — resist / wonder-guard abilities (Smogon, Serebii ability pages)', () => {
+  it('Snorlax + Thick Fat: Fire and Ice become ×½, not neutral', () => {
+    const bare = computeMatchups(['normal'], 3);
+    expect(bare.resist).not.toContain('fire');
+    expect(bare.resist).not.toContain('ice');
+    const m = computeMatchups(['normal'], 3, 'thick-fat');
+    expect(m).toEqual(genSplitMatchupsForSide(['normal'], 3, 'thick-fat'));
+    expect(m.resist).toContain('fire');
+    expect(m.resist).toContain('ice');
+    expect(m.weak).not.toContain('fire');
+  });
+
+  it('Gen 1 ignores Thick Fat (no abilities)', () => {
+    const m = computeMatchups(['normal'], 1, 'thick-fat');
+    expect(m.resist).not.toContain('fire');
+    expect(m.resist).not.toContain('ice');
+  });
+
+  it('Shedinja + Wonder Guard: non-SE types are immune', () => {
+    const m = computeMatchups(['bug', 'ghost'], 3, 'wonder-guard');
+    expect(m.immune).toContain('water');
+    expect(m.immune).toContain('grass');
+    expect(m.resist).not.toContain('water');
+    expect(m.weak).toEqual(expect.arrayContaining(['fire', 'flying', 'rock', 'ghost', 'dark']));
+    expect(m.quad).toEqual([]);
+  });
+
+  it('Aggron + Filter: SE hits drop to ×3 / ×1½, not the raw ×4 / ×2 chips', () => {
+    const bare = computeMatchups(['steel', 'rock'], 4);
+    expect(bare.quad).toEqual(expect.arrayContaining(['fighting', 'ground']));
+    expect(bare.weak).toContain('water');
+    const m = computeMatchups(['steel', 'rock'], 4, 'filter');
+    expect(m.quad).toEqual([]);
+    expect(m.weak).not.toContain('water');
+    expect(m.extra).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ mult: 3, types: expect.arrayContaining(['fighting', 'ground']) }),
+        expect.objectContaining({ mult: 1.5, types: expect.arrayContaining(['water']) }),
+      ]),
+    );
+  });
+});
+
+describe('defaultMatchupAbility — first non-hidden, edition-gated', () => {
+  const gengar = [
+    { slug: 'cursed-body', hidden: false },
+    { slug: 'levitate', hidden: true },
+  ];
+  const bronzong = [
+    { slug: 'levitate', hidden: false },
+    { slug: 'heatproof', hidden: false },
+    { slug: 'heavy-metal', hidden: true },
+  ];
+
+  it('uses the first non-hidden ability (Bronzong Levitate, not Heatproof)', () => {
+    expect(defaultMatchupAbility(bronzong, 'diamond-pearl')).toBe('levitate');
+  });
+
+  it('does not default to a hidden ability', () => {
+    expect(defaultMatchupAbility(gengar, 'black-white')).toBe('cursed-body');
+    expect(defaultMatchupAbility([{ slug: 'sheer-force', hidden: true }], 'x-y')).toBeNull();
+  });
+
+  it('returns null when the edition has no abilities (RBY, Let\'s Go)', () => {
+    expect(defaultMatchupAbility(bronzong, 'red-blue')).toBeNull();
+    expect(defaultMatchupAbility(bronzong, 'lets-go-pikachu-eevee')).toBeNull();
   });
 });
 

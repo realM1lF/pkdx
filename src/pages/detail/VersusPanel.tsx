@@ -1306,8 +1306,18 @@ function DefenseColumn({
       {/* dual-type extremes first: ×4 double weakness / ×¼ double resist */}
       {m.quad.length > 0 && <MatchupRow label={t('versus.weak')} types={m.quad} mult="×4" color="#FF8A6B" />}
       <MatchupRow label={t('versus.weak')} types={m.weak} mult="×2" color="#F6C945" />
+      {m.extra
+        .filter((row) => row.mult > 1)
+        .map((row) => (
+          <MatchupRow key={row.mult} label={t('versus.weak')} types={row.types} mult={EFF_LABEL(row.mult)} color="#F6C945" />
+        ))}
       <MatchupRow label={t('versus.resist')} types={m.resist} mult="×½" color="#63D96B" />
       {m.quarter.length > 0 && <MatchupRow label={t('versus.resist')} types={m.quarter} mult="×¼" color="#3EB58A" />}
+      {m.extra
+        .filter((row) => row.mult < 1)
+        .map((row) => (
+          <MatchupRow key={row.mult} label={t('versus.resist')} types={row.types} mult={EFF_LABEL(row.mult)} color="#63D96B" />
+        ))}
       <MatchupRow label={t('versus.immune')} types={m.immune} mult="×0" color="#5E6680" />
     </div>
   );

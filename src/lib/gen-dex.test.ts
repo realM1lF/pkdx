@@ -12,6 +12,8 @@ import {
   statKeysForGen,
   statLabelForGen,
   typesForPartyMon,
+  moveMetaForDisplay,
+  usedApiStatFallback,
 } from './gen-dex';
 import type { StatKey } from './types';
 import { STAT_ORDER } from './types';
@@ -55,6 +57,8 @@ describe('genStatsOf — @pkmn when the species is in that gen, else API fallbac
     const api = { ...ZERO, 'special-attack': 150 };
     expect(genStatsOf('black-white', 'alakazam', api)['special-attack']).toBe(135);
     expect(genStatsOf('scarlet-violet', 'alakazam', api)['special-attack']).toBe(150);
+    expect(usedApiStatFallback('black-white', 'alakazam')).toBe(false);
+    expect(usedApiStatFallback('scarlet-violet', 'alakazam')).toBe(true);
   });
 
   it('FRLG Alakazam BST is the gen3 total (SpD 85) and pokemon-seo.json matches', () => {
@@ -197,6 +201,35 @@ describe('genMoveOf — historical power / category', () => {
     expect(genMoveOf('firered-leafgreen', 'disable')?.accuracy).toBe(55);
     expect(genMoveOf('diamond-pearl', 'disable')?.accuracy).toBe(80);
     expect(genMoveOf('black-white', 'disable')?.accuracy).toBe(100);
+  });
+
+  it('moveMetaForDisplay never fills modern PokéAPI stats when @pkmn has no gen entry', () => {
+    const api = {
+      type: { name: 'normal' },
+      damage_class: { name: 'special' },
+      power: 80,
+      accuracy: 100,
+      pp: 10,
+    };
+    const missing = moveMetaForDisplay('red-blue', 'tera-blast', api);
+    expect(missing.ready).toBe(true);
+    expect(missing.power).toBeNull();
+    expect(missing.accuracy).toBeNull();
+    expect(missing.pp).toBeNull();
+    expect(missing.type).toBe('');
+  });
+
+  it('moveMetaForDisplay still uses @pkmn when the move exists in that gen', () => {
+    const api = {
+      type: { name: 'electric' },
+      damage_class: { name: 'special' },
+      power: 90,
+      accuracy: 100,
+      pp: 15,
+    };
+    const tb = moveMetaForDisplay('firered-leafgreen', 'thunderbolt', api);
+    expect(tb.power).toBe(95);
+    expect(tb.type).toBe('electric');
   });
 
   it('movePowerForDisplay prefers genMoveOf when a version group is set', () => {

@@ -201,6 +201,8 @@
       "learnMethod": "Learn method",
       "levelUp": "Level-Up",
       "machine": "TM/HM",
+      "tm": "TM",
+      "hm": "HM",
       "egg": "EGG",
       "tutor": "Tutor",
       "versionGroup": "Version group",
@@ -254,6 +256,7 @@
       "defenseEyebrow": "DEFENSE",
       "matchupsTitle": "Type Matchups",
       "chartGen": "Gen {{gen}} chart",
+      "abilityHint": "incl. {{ability}}",
       "weak": "Weak ×2",
       "weak4": "Weak ×4",
       "resist": "Resist ×½",
@@ -3208,6 +3211,9 @@
     "firstEncounterSet": "First-encounter set. Rematch Qwilfish may lack Poison Barb.",
     "calcNeutral": "Calc uses 31 IVs and a Serious nature. Colosseum rolls both.",
     "modernEffect": "Effect numbers are modern rules. FRLG may differ. See Q&A.",
-    "locationsFrlgField": "Locations are FRLG field finds only, not shops or Sevii."
+    "locationsFrlgField": "Locations are FRLG field finds only, not shops or Sevii.",
+    "eggFromPrevo": "Egg moves from the pre-evolution. The API only lists them there.",
+    "defaultAbility": "Chart is for {{ability}}. Other abilities can change these matchups.",
+    "dexFallback": "No edition-accurate stats for this form. Showing current PokéAPI values."
   }
 }

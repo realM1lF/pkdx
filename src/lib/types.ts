@@ -167,6 +167,8 @@ export interface PokemonSpecies {
   is_mythical: boolean;
   evolution_chain: { url: string };
   generation: NamedAPIResource;
+  /** PokéAPI field; null on first-stage species. Optional on partial test fixtures. */
+  evolves_from_species?: NamedAPIResource | null;
 }
 
 export interface EvolutionDetail {

@@ -178,6 +178,20 @@ export function getSpecies(id: number | string, onUpdate?: (s: PokemonSpecies) =
   return cachedJson<PokemonSpecies>(`species:${id}`, `${API}/pokemon-species/${id}`, onUpdate);
 }
 
+/** Pre-evolutions closest-first (Ivysaur then Bulbasaur). Empty for a first stage. */
+export async function loadPokemonAncestors(species: PokemonSpecies): Promise<Pokemon[]> {
+  const out: Pokemon[] = [];
+  const seen = new Set<string>();
+  let name = species.evolves_from_species?.name;
+  while (name && !seen.has(name)) {
+    seen.add(name);
+    const [p, s] = await Promise.all([getPokemon(name), getSpecies(name)]);
+    out.push(p);
+    name = s.evolves_from_species?.name;
+  }
+  return out;
+}
+
 export function getEvolutionChain(id: number | string): Promise<EvolutionChain> {
   return cachedJson<EvolutionChain>(`evo:${id}`, `${API}/evolution-chain/${id}`);
 }
