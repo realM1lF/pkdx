@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { learnsetFor, levelUpPool, newestVersionGroup } from './move-pool';
+import { learnMethodsForGen, learnsetFor, levelUpPool, newestVersionGroup } from './move-pool';
 import type { Pokemon } from './types';
 
 function mon(
@@ -108,5 +108,17 @@ describe('learnsetFor — Let\'s Go version-group alias', () => {
   it('does not leak FRLG moves into the Let\'s Go pool', () => {
     expect(learnsetFor(pikachuish, appLetsGo, 'level-up').some((e) => e.slug === 'ember')).toBe(false);
     expect(learnsetFor(pikachuish, 'firered-leafgreen', 'level-up').map((e) => e.slug)).toEqual(['ember']);
+  });
+});
+
+describe('learnMethodsForGen — Serebii-style method tabs per generation', () => {
+  it('Gen 1 has level-up and TM/HM only (no breeding, no tutors)', () => {
+    expect(learnMethodsForGen(1)).toEqual(['level-up', 'machine']);
+  });
+
+  it('Gen 2 adds egg moves; tutors start in Gen 3', () => {
+    expect(learnMethodsForGen(2)).toEqual(['level-up', 'machine', 'egg']);
+    expect(learnMethodsForGen(3)).toEqual(['level-up', 'machine', 'egg', 'tutor']);
+    expect(learnMethodsForGen(9)).toEqual(['level-up', 'machine', 'egg', 'tutor']);
   });
 });

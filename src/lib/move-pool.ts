@@ -35,6 +35,14 @@ export function newestVersionGroup(p: Pokemon): string {
 
 export type LearnMethod = 'level-up' | 'machine' | 'egg' | 'tutor';
 
+/** Serebii/PokéWiki gen-dex tabs: egg from Gen 2, tutors from Gen 3. */
+export function learnMethodsForGen(gen: number): LearnMethod[] {
+  const methods: LearnMethod[] = ['level-up', 'machine'];
+  if (gen >= 2) methods.push('egg');
+  if (gen >= 3) methods.push('tutor');
+  return methods;
+}
+
 /** App id vs PokéAPI slug for the same Let's Go edition. Do not rename the app id. */
 const LETS_GO_VG = new Set(['lets-go-pikachu-eevee', 'lets-go-pikachu-lets-go-eevee']);
 

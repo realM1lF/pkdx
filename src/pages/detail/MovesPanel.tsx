@@ -12,7 +12,8 @@ import EntityDescModal, { useEntityModal } from '@/components/EntityDescModal';
 import { genMoveOf, type GenMoveMeta } from '@/lib/gen-dex';
 import { getMove } from '@/lib/pokeapi';
 import { nameOfMove, nameOfType, useLanguage } from '@/lib/i18n-data';
-import { learnsetFor, type LearnMethod } from '@/lib/move-pool';
+import { learnMethodsForGen, learnsetFor, type LearnMethod } from '@/lib/move-pool';
+import { versionGroupById } from '@/lib/version-groups';
 import type { Move, Pokemon } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { typeRgb } from './data';
@@ -98,19 +99,27 @@ export default function MovesPanel({
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   const activeVersion = version;
+  const gen = versionGroupById(activeVersion).gen;
+  const methodTabs = useMemo(() => {
+    const allowed = new Set(learnMethodsForGen(gen));
+    return METHODS.filter((m) => allowed.has(m.key));
+  }, [gen]);
 
   /* rows per method for the active version — never mixes editions */
   const byMethod = useMemo(() => {
     const map = new Map<Method, MoveRow[]>();
-    for (const { key } of METHODS) {
+    for (const { key } of methodTabs) {
       const rows = learnsetFor(pokemon, activeVersion, key).map((e) => ({ name: e.slug, level: e.level }));
       rows.sort((a, b) => a.level - b.level || nameOfMove(a.name, lang).localeCompare(nameOfMove(b.name, lang), lang));
       map.set(key, rows);
     }
     return map;
-  }, [pokemon, activeVersion, lang]);
+  }, [pokemon, activeVersion, lang, methodTabs]);
 
   const [activeMethod, setMethod] = useState<Method>('level-up');
+  if (!methodTabs.some((m) => m.key === activeMethod)) {
+    setMethod('level-up');
+  }
   const rows = byMethod.get(activeMethod) ?? EMPTY_ROWS;
 
   const cache = useMoveDetails(rows, pokemon.id);
@@ -176,7 +185,7 @@ export default function MovesPanel({
           ariaLabel={t8n('detail.moves.learnMethod')}
           value={activeMethod}
           onChange={(v) => setMethod(v as Method)}
-          options={METHODS.map((m) => ({
+          options={methodTabs.map((m) => ({
             value: m.key,
             label: (
               <>

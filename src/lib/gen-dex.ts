@@ -7,6 +7,7 @@ import { Dex } from '@pkmn/dex';
 import type { Specie } from '@pkmn/data';
 import { displayName } from './pokeapi';
 import type { PokemonType, StatKey } from './types';
+import { STAT_LABELS, STAT_ORDER } from './types';
 import { versionGroupById } from './version-groups';
 
 const gens = new Generations(Dex);
@@ -70,6 +71,23 @@ export function genAbilityRows(vgId: string, nameOrSlug: string): Array<{ slug: 
 }
 
 export type GenStatBlock = Record<StatKey, number>;
+
+/** Gen 1 has one Special stat. Encyclopedias count it once (BST 590 for Mewtwo, not 744). */
+const GEN1_STAT_ORDER: readonly StatKey[] = ['hp', 'attack', 'defense', 'special-attack', 'speed'];
+
+export function statKeysForGen(gen: number): readonly StatKey[] {
+  return gen < 2 ? GEN1_STAT_ORDER : STAT_ORDER;
+}
+
+export function statLabelForGen(key: StatKey, gen: number): string {
+  if (gen < 2 && key === 'special-attack') return 'SPC';
+  return STAT_LABELS[key];
+}
+
+/** Display BST: Gen 1 sums five stats; Gen 2+ sums all six. */
+export function bstOf(block: GenStatBlock, gen: number): number {
+  return statKeysForGen(gen).reduce((sum, k) => sum + block[k], 0);
+}
 
 export function genStatsOf(vgId: string, nameOrSlug: string, fallback: GenStatBlock): GenStatBlock {
   const sp = genSpecies(vgId, nameOrSlug);

@@ -357,7 +357,7 @@ export default function PokemonDetail() {
           className="col-span-12 lg:col-span-5"
           bodyClassName="h-[calc(100%-45px)]"
         >
-          <CombatPanel pokemon={pokemon} legendary={legendary} stats={editionStats ?? undefined} types={types} />
+          <CombatPanel pokemon={pokemon} legendary={legendary} stats={editionStats ?? undefined} types={types} gen={editionInfo.gen} vgId={edition} />
         </Panel>
 
         {/* ROW 2 */}

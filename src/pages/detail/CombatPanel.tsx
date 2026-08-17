@@ -1,12 +1,11 @@
 /* Combat panel — density-addendum §3 Row 1 (span 5).
- * 6 StatBars + BARS/RADAR SegmentedControl + BST ring, all in one panel. */
+ * StatBars (5 in Gen 1, 6 from Gen 2) + BARS/RADAR + BST ring. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import StatBar from '@/components/StatBar';
 import type { GenStatBlock } from '@/lib/gen-dex';
-import { statsFromPokemon } from '@/lib/gen-dex';
-import { STAT_LABELS, STAT_ORDER } from '@/lib/types';
+import { bstOf, genHasMechanics, statKeysForGen, statLabelForGen, statsFromPokemon } from '@/lib/gen-dex';
 import type { Pokemon, PokemonType, StatKey } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { typeRgb } from './data';
@@ -16,7 +15,7 @@ const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 /* ---------- radar hexagon ---------- */
 
-function RadarHex({ values, type }: { values: number[]; type: string }) {
+function RadarPoly({ values, type, labels }: { values: number[]; type: string; labels: string[] }) {
   const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-10% 0px' });
@@ -25,15 +24,15 @@ function RadarHex({ values, type }: { values: number[]; type: string }) {
   const cy = size / 2;
   const R = size / 2 - 26;
   const rgb = typeRgb(type);
+  const n = Math.max(3, values.length);
 
   const point = (i: number, r: number) => {
-    const angle = (Math.PI / 3) * i - Math.PI / 2;
+    const angle = ((2 * Math.PI) / n) * i - Math.PI / 2;
     return [cx + Math.cos(angle) * r, cy + Math.sin(angle) * r] as const;
   };
 
   const statPoints = values.map((v, i) => point(i, (Math.min(v, 180) / 180) * R));
   const polygon = statPoints.map(([x, y]) => `${x},${y}`).join(' ');
-  const labels = STAT_ORDER.map((k) => STAT_LABELS[k]);
 
   return (
     <div ref={ref} className="flex justify-center">
@@ -42,14 +41,14 @@ function RadarHex({ values, type }: { values: number[]; type: string }) {
         {[0.25, 0.5, 0.75, 1].map((f) => (
           <polygon
             key={f}
-            points={STAT_ORDER.map((_, i) => point(i, R * f).join(',')).join(' ')}
+            points={Array.from({ length: n }, (_, i) => point(i, R * f).join(',')).join(' ')}
             fill="none"
             stroke="rgba(255,255,255,0.06)"
             strokeWidth={1}
           />
         ))}
         {/* axes */}
-        {STAT_ORDER.map((_, i) => {
+        {Array.from({ length: n }, (_, i) => {
           const [x, y] = point(i, R);
           return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth={1} />;
         })}
@@ -176,22 +175,31 @@ export default function CombatPanel({
   legendary = false,
   stats,
   types: typesProp,
+  gen = 9,
+  vgId,
 }: {
   pokemon: Pokemon;
   legendary?: boolean;
   stats?: GenStatBlock;
   types?: PokemonType[];
+  gen?: number;
+  vgId?: string;
 }) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<'bars' | 'radar'>('bars');
   const types = typesProp ?? pokemon.types.map((t) => t.type.name);
   const primary = types[0] ?? 'normal';
   const block = stats ?? statsFromPokemon(pokemon);
-  const bst = STAT_ORDER.reduce((sum, k) => sum + block[k], 0);
-  const values = useMemo(() => STAT_ORDER.map((k: StatKey) => block[k]), [block]);
-  const evChips = pokemon.stats
-    .filter((s) => s.effort > 0)
-    .map((s) => `+${s.effort} ${STAT_LABELS[s.stat.name as StatKey] ?? s.stat.name.toUpperCase()}`);
+  const keys = statKeysForGen(gen);
+  const bst = bstOf(block, gen);
+  const values = useMemo(() => keys.map((k: StatKey) => block[k]), [block, keys]);
+  const labels = useMemo(() => keys.map((k) => statLabelForGen(k, gen)), [keys, gen]);
+  const showEvs = vgId ? genHasMechanics(vgId).evs : gen >= 3;
+  const evChips = showEvs
+    ? pokemon.stats
+        .filter((s) => s.effort > 0)
+        .map((s) => `+${s.effort} ${statLabelForGen(s.stat.name as StatKey, gen)}`)
+    : [];
 
   return (
     <div className="flex h-full flex-col gap-3 p-4 md:p-5">
@@ -213,12 +221,12 @@ export default function CombatPanel({
       <div className="min-h-[176px] flex-1">
         {mode === 'bars' ? (
           <div className="flex h-full flex-col justify-center gap-2.5">
-            {STAT_ORDER.map((k, i) => (
-              <StatBar key={`${pokemon.id}-${k}-${block[k]}`} label={STAT_LABELS[k]} value={block[k]} type={primary} delay={i * 90} />
+            {keys.map((k, i) => (
+              <StatBar key={`${pokemon.id}-${k}-${block[k]}`} label={statLabelForGen(k, gen)} value={block[k]} type={primary} delay={i * 90} />
             ))}
           </div>
         ) : (
-          <RadarHex key={`${pokemon.id}-${bst}`} values={values} type={primary} />
+          <RadarPoly key={`${pokemon.id}-${bst}`} values={values} type={primary} labels={labels} />
         )}
       </div>
 
