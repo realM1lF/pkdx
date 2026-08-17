@@ -4,8 +4,9 @@ import { describe, expect, it } from 'vitest';
 import { genSplitMatchupsForSide } from '@/lib/versus';
 import { VERSION_GROUPS as CANONICAL_VERSION_GROUPS } from '@/lib/version-groups';
 import { loadGermanData, nameOfLocation, nameOfMove, nameOfPokemon } from '@/lib/i18n-data';
-import type { EvolutionDetail, NamedAPIResource } from '@/lib/types';
-import { computeMatchups, defaultMatchupAbility, editionFromGameParam, evoCondition, flavorMatchesGames, genOfVersionGroup, newestMoveVersionGroup, pickAbilityShort, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
+import type { EvolutionDetail, NamedAPIResource, PokemonType } from '@/lib/types';
+import { genAbilityRows, genTypesOf } from '@/lib/gen-dex';
+import { clampMatchupAbility, computeMatchups, defaultMatchupAbility, editionFromGameParam, evoCondition, flavorMatchesGames, genOfVersionGroup, matchupAbilityOptions, newestMoveVersionGroup, pickAbilityShort, presentEditionIds, resolveMoveVersionGroup, VERSION_GROUPS } from './data';
 
 function allAttacking(m: ReturnType<typeof computeMatchups>): string[] {
   return [...m.quad, ...m.weak, ...m.resist, ...m.quarter, ...m.immune, ...m.extra.flatMap((e) => e.types)];
@@ -146,6 +147,166 @@ describe('defaultMatchupAbility — first non-hidden, edition-gated', () => {
   it('returns null when the edition has no abilities (RBY, Let\'s Go)', () => {
     expect(defaultMatchupAbility(bronzong, 'red-blue')).toBeNull();
     expect(defaultMatchupAbility(bronzong, 'lets-go-pikachu-eevee')).toBeNull();
+  });
+});
+
+describe('matchupAbilityOptions — switcher only for distinct defensive tables', () => {
+  const bulbasaur = [
+    { slug: 'overgrow', hidden: false },
+    { slug: 'chlorophyll', hidden: true },
+  ];
+  const snorlax = [
+    { slug: 'immunity', hidden: false },
+    { slug: 'thick-fat', hidden: false },
+  ];
+  const bronzong = [
+    { slug: 'levitate', hidden: false },
+    { slug: 'heatproof', hidden: false },
+    { slug: 'heavy-metal', hidden: true },
+  ];
+  const shedinja = [{ slug: 'wonder-guard', hidden: false }];
+  const rodStatic = [
+    { slug: 'lightning-rod', hidden: false },
+    { slug: 'static', hidden: false },
+  ];
+
+  it('returns [] when every ability matches the bare type chart (Bulbasaur)', () => {
+    expect(matchupAbilityOptions(bulbasaur, ['grass', 'poison'], 9, 'scarlet-violet')).toEqual([]);
+  });
+
+  it('lists Snorlax Immunity and Thick Fat, default Immunity', () => {
+    expect(matchupAbilityOptions(snorlax, ['normal'], 3, 'emerald')).toEqual(['immunity', 'thick-fat']);
+    expect(defaultMatchupAbility(snorlax, 'emerald')).toBe('immunity');
+  });
+
+  it('lists Bronzong Levitate / Heatproof / Heavy Metal; Heavy Metal equals bare types', () => {
+    const types = ['steel', 'psychic'];
+    expect(matchupAbilityOptions(bronzong, types, 4, 'diamond-pearl')).toEqual([
+      'levitate',
+      'heatproof',
+      'heavy-metal',
+    ]);
+    expect(defaultMatchupAbility(bronzong, 'diamond-pearl')).toBe('levitate');
+    expect(computeMatchups(types, 4, 'heavy-metal')).toEqual(computeMatchups(types, 4));
+  });
+
+  it('returns [] for Shedinja Wonder Guard (single table; chips still use the default)', () => {
+    expect(matchupAbilityOptions(shedinja, ['bug', 'ghost'], 3, 'emerald')).toEqual([]);
+    expect(defaultMatchupAbility(shedinja, 'emerald')).toBe('wonder-guard');
+  });
+
+  it('returns [] and default null in red-blue / Let\'s Go / Legends Arceus', () => {
+    expect(matchupAbilityOptions(bronzong, ['steel', 'psychic'], 1, 'red-blue')).toEqual([]);
+    expect(matchupAbilityOptions(bronzong, ['steel', 'psychic'], 7, 'lets-go-pikachu-eevee')).toEqual([]);
+    expect(matchupAbilityOptions(bronzong, ['steel', 'psychic'], 8, 'legends-arceus')).toEqual([]);
+    expect(defaultMatchupAbility(bronzong, 'red-blue')).toBeNull();
+    expect(defaultMatchupAbility(bronzong, 'lets-go-pikachu-eevee')).toBeNull();
+    expect(defaultMatchupAbility(bronzong, 'legends-arceus')).toBeNull();
+  });
+
+  it('Lightning Rod equals bare types in gen 4 and differs in gen 5', () => {
+    const types = ['water'];
+    expect(computeMatchups(types, 4, 'lightning-rod')).toEqual(computeMatchups(types, 4));
+    expect(computeMatchups(types, 5, 'lightning-rod')).not.toEqual(computeMatchups(types, 5));
+    expect(matchupAbilityOptions(rodStatic, ['electric'], 4, 'diamond-pearl')).toEqual([]);
+    expect(matchupAbilityOptions(rodStatic, ['electric'], 5, 'black-white')).toEqual([
+      'lightning-rod',
+      'static',
+    ]);
+  });
+});
+
+describe('clampMatchupAbility — invalid selection falls back to default', () => {
+  const bronzongOpts = ['levitate', 'heatproof', 'heavy-metal'];
+
+  it('keeps a selection that is still in the option list', () => {
+    expect(clampMatchupAbility('heatproof', bronzongOpts, 'levitate')).toBe('heatproof');
+  });
+
+  it('clamps onto the default after a version-group change drops the selection', () => {
+    expect(clampMatchupAbility('heatproof', [], null)).toBeNull();
+    expect(clampMatchupAbility('heatproof', ['immunity', 'thick-fat'], 'immunity')).toBe('immunity');
+  });
+
+  it('uses the default when there is no switcher (Shedinja)', () => {
+    expect(clampMatchupAbility('wonder-guard', [], 'wonder-guard')).toBe('wonder-guard');
+  });
+});
+
+function liveSwitcher(slug: string, vg: string, fallbackTypes: PokemonType[]) {
+  const types = genTypesOf(vg, slug, fallbackTypes);
+  const abilities = genAbilityRows(vg, slug);
+  const gen = genOfVersionGroup(vg);
+  const options = matchupAbilityOptions(abilities, types, gen, vg);
+  const fallback = defaultMatchupAbility(abilities, vg);
+  return { types, abilities, gen, options, fallback, picked: clampMatchupAbility(null, options, fallback) };
+}
+
+describe('matchupAbilityOptions — live genAbilityRows across editions', () => {
+  it('Bulbasaur / Charizard stay off: every ability is a no-op', () => {
+    expect(liveSwitcher('bulbasaur', 'scarlet-violet', ['grass', 'poison']).options).toEqual([]);
+    expect(liveSwitcher('charizard', 'emerald', ['fire', 'flying']).options).toEqual([]);
+    expect(liveSwitcher('charizard', 'black-white', ['fire', 'flying']).options).toEqual([]);
+  });
+
+  it('Snorlax keeps Immunity + Thick Fat after Gluttony appears', () => {
+    const e = liveSwitcher('snorlax', 'emerald', ['normal']);
+    expect(e.options).toEqual(['immunity', 'thick-fat']);
+    expect(e.fallback).toBe('immunity');
+    const bw = liveSwitcher('snorlax', 'black-white', ['normal']);
+    expect(bw.abilities.map((a) => a.slug)).toEqual(['immunity', 'thick-fat', 'gluttony']);
+    expect(bw.options).toEqual(['immunity', 'thick-fat']);
+  });
+
+  it('Bronzong: Heatproof + Levitate in DP; Heavy Metal joins from BW', () => {
+    const dp = liveSwitcher('bronzong', 'diamond-pearl', ['steel', 'psychic']);
+    expect(dp.abilities.map((a) => a.slug)).toEqual(['levitate', 'heatproof']);
+    expect(dp.options).toEqual(['levitate', 'heatproof']);
+    expect(dp.fallback).toBe('levitate');
+    const bw = liveSwitcher('bronzong', 'black-white', ['steel', 'psychic']);
+    expect(bw.options).toEqual(['levitate', 'heatproof', 'heavy-metal']);
+    expect(liveSwitcher('bronzong', 'legends-arceus', ['steel', 'psychic']).options).toEqual([]);
+    expect(liveSwitcher('bronzong', 'red-blue', ['steel', 'psychic']).fallback).toBeNull();
+  });
+
+  it('Shedinja / Flygon stay on the single defensive ability without a switcher', () => {
+    const shed = liveSwitcher('shedinja', 'emerald', ['bug', 'ghost']);
+    expect(shed.options).toEqual([]);
+    expect(shed.fallback).toBe('wonder-guard');
+    expect(JSON.stringify(computeMatchups(shed.types, shed.gen, 'wonder-guard'))).not.toBe(
+      JSON.stringify(computeMatchups(shed.types, shed.gen)),
+    );
+    const fly = liveSwitcher('flygon', 'emerald', ['ground', 'dragon']);
+    expect(fly.options).toEqual([]);
+    expect(fly.fallback).toBe('levitate');
+  });
+
+  it('Gengar never gets a switcher: one ability per era (Levitate, then Cursed Body)', () => {
+    const e = liveSwitcher('gengar', 'emerald', ['ghost', 'poison']);
+    expect(e.abilities.map((a) => a.slug)).toEqual(['levitate']);
+    expect(e.options).toEqual([]);
+    expect(e.fallback).toBe('levitate');
+    const bw = liveSwitcher('gengar', 'black-white', ['ghost', 'poison']);
+    expect(bw.options).toEqual([]);
+    expect(bw.fallback).toBe('levitate');
+    const sm = liveSwitcher('gengar', 'sun-moon', ['ghost', 'poison']);
+    expect(sm.options).toEqual([]);
+    expect(sm.fallback).toBe('cursed-body');
+  });
+
+  it('Manectric Lightning Rod is a no-op in Emerald and a second table from BW', () => {
+    const e = liveSwitcher('manectric', 'emerald', ['electric']);
+    expect(e.options).toEqual([]);
+    const bw = liveSwitcher('manectric', 'black-white', ['electric']);
+    expect(bw.options).toEqual(['static', 'lightning-rod']);
+    expect(bw.fallback).toBe('static');
+  });
+
+  it('clamps Heatproof onto null when the edition loses abilities', () => {
+    const dp = liveSwitcher('bronzong', 'diamond-pearl', ['steel', 'psychic']);
+    const la = liveSwitcher('bronzong', 'legends-arceus', ['steel', 'psychic']);
+    expect(clampMatchupAbility('heatproof', la.options, la.fallback)).toBeNull();
+    expect(clampMatchupAbility('heatproof', dp.options, dp.fallback)).toBe('heatproof');
   });
 });
 

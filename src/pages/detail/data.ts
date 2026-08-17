@@ -161,6 +161,41 @@ export function defaultMatchupAbility(
   return abilities.find((a) => !a.hidden)?.slug ?? null;
 }
 
+function matchupSignature(types: string[], gen: number, ability?: string | null): string {
+  return JSON.stringify(computeMatchups(types, gen, ability));
+}
+
+/** Distinct defensive tables among `abilities`. Empty → no switcher (all no-op, or a single table). */
+export function matchupAbilityOptions(
+  abilities: Array<{ slug: string; hidden?: boolean }>,
+  types: string[],
+  gen: number,
+  vgId?: string | null,
+): string[] {
+  if (gen < 3) return [];
+  if (vgId && !genHasMechanics(vgId).abilities) return [];
+  const seen = new Set<string>();
+  const slugs: string[] = [];
+  for (const a of abilities) {
+    const sig = matchupSignature(types, gen, a.slug);
+    if (seen.has(sig)) continue;
+    seen.add(sig);
+    slugs.push(a.slug);
+  }
+  return slugs.length >= 2 ? slugs : [];
+}
+
+/** Keep a valid switcher pick; otherwise the edition default (incl. no-switcher). */
+export function clampMatchupAbility(
+  selected: string | null | undefined,
+  options: readonly string[],
+  fallback: string | null,
+): string | null {
+  if (options.length < 2) return fallback;
+  if (selected && options.includes(selected)) return selected;
+  return fallback;
+}
+
 /* ---------- evolution condition formatting ---------- */
 
 const ITEMS_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items';

@@ -13,15 +13,18 @@ import { effMultLabel } from '@/lib/effectiveness';
 import type { Pokemon, PokemonSpecies } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
+  clampMatchupAbility,
   computeMatchups,
   defaultMatchupAbility,
   genOfVersionGroup,
   genderLabel,
   getAbilityShort,
+  matchupAbilityOptions,
   newestMoveVersionGroup,
   speciesExtras,
   typeRgb,
 } from './data';
+import { SegmentedControl } from './ui';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -171,12 +174,22 @@ export default function SideStack({
   const gen = genOfVersionGroup(vg);
   const types = typesProp ?? pokemonTypes(pokemon);
   const abilities = abilitiesProp ?? pokemon.abilities.map((a) => ({ slug: a.ability.name, hidden: a.is_hidden }));
-  const matchupAbility = defaultMatchupAbility(abilities, vg);
+  const fallbackAbility = defaultMatchupAbility(abilities, vg);
+  const abilityOptions = matchupAbilityOptions(abilities, types, gen, vg);
+  const listKey = `${pokemon.id}:${vg}`;
+  const [prevListKey, setPrevListKey] = useState(listKey);
+  const [selectedAbility, setSelectedAbility] = useState<string | null>(fallbackAbility);
+  if (prevListKey !== listKey) {
+    setPrevListKey(listKey);
+    setSelectedAbility(fallbackAbility);
+  }
+  const matchupAbility = clampMatchupAbility(selectedAbility, abilityOptions, fallbackAbility);
   const matchups = computeMatchups(types, gen, matchupAbility);
   const bare = matchupAbility ? computeMatchups(types, gen) : matchups;
   const abilityHint = Boolean(
     matchupAbility && JSON.stringify(matchups) !== JSON.stringify(bare),
   );
+  const showAbilitySwitch = abilityOptions.length >= 2;
   const extras = speciesExtras(species);
   const growth = extras.growth_rate ? nameOfGrowth(extras.growth_rate.name, lang) : '—';
 
@@ -204,13 +217,31 @@ export default function SideStack({
 
       <motion.div variants={{ off: { y: 20, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.35, ease: EASE }}>
         <MiniPanel eyebrow={t('detail.side.defenseEyebrow')} title={t('detail.side.matchupsTitle')}>
+          {showAbilitySwitch && (
+            <SegmentedControl
+              id="matchup-ability"
+              size="xs"
+              className="mb-2 max-w-full"
+              ariaLabel={t('tb.ability')}
+              value={matchupAbility ?? abilityOptions[0]}
+              onChange={setSelectedAbility}
+              options={abilityOptions.map((slug) => {
+                const label = nameOfAbility(slug, lang);
+                return {
+                  value: slug,
+                  title: label,
+                  label: <span className="block max-w-[4.75rem] truncate">{label}</span>,
+                };
+              })}
+            />
+          )}
           <p className="pixel-label mb-1 text-[8px] text-tx-muted">
             {t('detail.side.chartGen', { gen })}
-            {abilityHint && matchupAbility
+            {abilityHint && matchupAbility && !showAbilitySwitch
               ? ` · ${t('detail.side.abilityHint', { ability: nameOfAbility(matchupAbility, lang) })}`
               : ''}
           </p>
-          <HonestyHint show={Boolean(matchupAbility)} className="mb-1.5">
+          <HonestyHint show={abilityHint} className="mb-1.5">
             {t('honesty.defaultAbility', { ability: nameOfAbility(matchupAbility ?? '', lang) })}
           </HonestyHint>
           {matchups.quad.length > 0 && (
