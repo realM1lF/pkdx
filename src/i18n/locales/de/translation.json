@@ -3214,6 +3214,7 @@
     "locationsFrlgField": "Fundorte sind nur FRLG-Gelände, keine Läden oder Sevii-Eilande.",
     "eggFromPrevo": "Ei-Attacken der Vorentwicklung. Die API listet sie nur dort.",
     "defaultAbility": "Tabelle gilt für {{ability}}. Andere Fähigkeiten können die Matchups ändern.",
-    "dexFallback": "Keine editionsgenauen Werte für diese Form. Anzeige: aktuelle PokéAPI-Werte."
+    "dexFallback": "Keine editionsgenauen Werte für diese Form. Anzeige: aktuelle PokéAPI-Werte.",
+    "gen1Special": "Generation 1 hat einen Spezial-Wert. Andere Listen zeigen oft die spätere Trennung in Spezialangriff und Spezialverteidigung, sechs Werte und eine höhere Summe."
   }
 }

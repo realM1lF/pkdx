@@ -38,6 +38,7 @@ const HONESTY_KEYS = [
   'honesty.eggFromPrevo',
   'honesty.defaultAbility',
   'honesty.dexFallback',
+  'honesty.gen1Special',
   'maps.seoPartial',
   'versus.trainerEditionNote',
   'versus.trainerMovesFallback',

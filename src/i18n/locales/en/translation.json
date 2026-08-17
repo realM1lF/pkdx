@@ -3214,6 +3214,7 @@
     "locationsFrlgField": "Locations are FRLG field finds only, not shops or Sevii.",
     "eggFromPrevo": "Egg moves from the pre-evolution. The API only lists them there.",
     "defaultAbility": "Chart is for {{ability}}. Other abilities can change these matchups.",
-    "dexFallback": "No edition-accurate stats for this form. Showing current PokéAPI values."
+    "dexFallback": "No edition-accurate stats for this form. Showing current PokéAPI values.",
+    "gen1Special": "Generation 1 has one Special stat. Other lists often show the later Sp. Atk / Sp. Def split, six stats and a higher total."
   }
 }

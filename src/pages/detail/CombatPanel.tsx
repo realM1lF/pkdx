@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import HonestyHint from '@/components/HonestyHint';
 import StatBar from '@/components/StatBar';
 import type { GenStatBlock } from '@/lib/gen-dex';
 import { bstOf, genHasMechanics, statKeysForGen, statLabelForGen, statsFromPokemon } from '@/lib/gen-dex';
@@ -203,6 +204,9 @@ export default function CombatPanel({
 
   return (
     <div className="flex h-full flex-col gap-3 p-4 md:p-5">
+      <HonestyHint show={gen < 2}>
+        {t('honesty.gen1Special')}
+      </HonestyHint>
       <div className="flex items-center justify-between">
         <span className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.fillNote')}</span>
         <SegmentedControl

@@ -101,6 +101,17 @@ describe('bstOf / statKeysForGen — encyclopedia consensus (Serebii RBY, PokéW
     expect(bstOf(gs, 2)).toBe(680);
   });
 
+  it('Charizard RBY BST is 425 (Special 85 once); GS+ is 534 (SpA 109)', () => {
+    const rb = genStatsOf('red-blue', 'charizard', ZERO);
+    const gs = genStatsOf('gold-silver', 'charizard', ZERO);
+    expect(rb['special-attack']).toBe(85);
+    expect(rb['special-defense']).toBe(85);
+    expect(bstOf(rb, 1)).toBe(425);
+    expect(gs['special-attack']).toBe(109);
+    expect(gs['special-defense']).toBe(85);
+    expect(bstOf(gs, 2)).toBe(534);
+  });
+
   it('Alakazam Gen 1 Special 135 → BST 405; Gen 2 SpD 85 → BST 490; XY SpD 95 → BST 500', () => {
     const rb = genStatsOf('red-blue', 'alakazam', ZERO);
     const gs = genStatsOf('gold-silver', 'alakazam', ZERO);
