@@ -79,6 +79,21 @@ describe('computeMatchups — default ability immunities (Versus DefenseColumn /
     expect(m.immune).toContain('electric');
     expect(m.resist).not.toContain('electric');
   });
+
+  it('Snorlax + Immunity: Poison is immune (Bulbapedia / Showdown Immunity)', () => {
+    const bare = computeMatchups(['normal'], 3);
+    expect(bare.immune).not.toContain('poison');
+    const m = computeMatchups(['normal'], 3, 'immunity');
+    expect(m).toEqual(genSplitMatchupsForSide(['normal'], 3, 'immunity'));
+    expect(m.immune).toContain('poison');
+    expect(m.weak).not.toContain('poison');
+    expect(m.resist).not.toContain('poison');
+  });
+
+  it('Gen 1 ignores Immunity (no abilities)', () => {
+    const m = computeMatchups(['normal'], 1, 'immunity');
+    expect(m.immune).not.toContain('poison');
+  });
 });
 
 describe('computeMatchups — resist / wonder-guard abilities (Smogon, Serebii ability pages)', () => {
@@ -249,13 +264,13 @@ describe('matchupAbilityOptions — live genAbilityRows across editions', () => 
     expect(liveSwitcher('charizard', 'black-white', ['fire', 'flying']).options).toEqual([]);
   });
 
-  it('Snorlax keeps Immunity + Thick Fat after Gluttony appears', () => {
+  it('Snorlax keeps Immunity + Thick Fat; Gluttony is the bare-type path from BW', () => {
     const e = liveSwitcher('snorlax', 'emerald', ['normal']);
     expect(e.options).toEqual(['immunity', 'thick-fat']);
     expect(e.fallback).toBe('immunity');
     const bw = liveSwitcher('snorlax', 'black-white', ['normal']);
     expect(bw.abilities.map((a) => a.slug)).toEqual(['immunity', 'thick-fat', 'gluttony']);
-    expect(bw.options).toEqual(['immunity', 'thick-fat']);
+    expect(bw.options).toEqual(['immunity', 'thick-fat', 'gluttony']);
   });
 
   it('Bronzong: Heatproof + Levitate in DP; Heavy Metal joins from BW', () => {

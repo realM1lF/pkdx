@@ -428,6 +428,7 @@ const IMMUNE_ABILITIES: Record<string, PokemonType[]> = {
   'lightning-rod': ['electric'],
   'motor-drive': ['electric'],
   'sap-sipper': ['grass'],
+  immunity: ['poison'],
   'wonder-guard': [], // special-cased below
 };
 

@@ -55,6 +55,19 @@ describe('ability gate — gens/version groups without abilities', () => {
   });
 });
 
+describe('Immunity — Poison-type moves (Bulbapedia / Showdown)', () => {
+  it('Normal + Immunity: Poison is ×0 from Gen 3', () => {
+    expect(effectivenessVsMember('poison', member(['normal'], 'immunity'), 'emerald')).toBe(0);
+    expect(effectivenessVsMember('poison', member(['normal'], 'immunity'), 'scarlet-violet')).toBe(0);
+  });
+  it('without Immunity, Poison vs Normal stays ×1', () => {
+    expect(effectivenessVsMember('poison', member(['normal'], null), 'emerald')).toBe(1);
+  });
+  it('Gen 1 ignores Immunity', () => {
+    expect(effectivenessVsMember('poison', member(['normal'], 'immunity'), 'red-blue')).toBe(1);
+  });
+});
+
 describe('effLabel — exact glyphs for ability-modified multipliers', () => {
   it.each([
     [0, '0'],

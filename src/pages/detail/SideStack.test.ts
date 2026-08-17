@@ -91,8 +91,7 @@ describe('SideStack matchup ability switcher', () => {
     expect(out).toContain('aria-label="Ability"');
     expect(out).toContain('Immunity');
     expect(out).toContain('Thick Fat');
-    /* Default Immunity is a no-op in computeMatchups; hint only after Thick Fat. */
-    expect(out).not.toContain('Chart is for Immunity');
+    expect(out).toContain('Chart is for Immunity');
   });
 
   it('shows Bronzong segments including the Heavy Metal type-chart path', () => {

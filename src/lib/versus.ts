@@ -333,6 +333,7 @@ const ABILITY_TYPE_IMMUNITIES: Record<string, string[]> = {
   'motor-drive': ['electric'],
   'sap-sipper': ['grass'],
   bulbproof: ['grass'],
+  immunity: ['poison'],
 };
 
 /** abilities whose immunity only exists from gen 5 onward — in gen 3/4
