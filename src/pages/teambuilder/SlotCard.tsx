@@ -6,7 +6,7 @@ import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { AlertTriangle, ChevronDown, Copy, Plus, Sparkles, Swords, X } from 'lucide-react';
+import { AlertTriangle, Archive, ArrowUpRight, ChevronDown, Copy, Plus, Sparkles, Swords, X } from 'lucide-react';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
 import EntityDescModal, { ItemIcon, useEntityModal } from '@/components/EntityDescModal';
@@ -49,6 +49,7 @@ interface SlotCardProps {
   onPick: (slotId: string, pokemonSlug: string, pokemonId: number) => void;
   onRemove: (slotId: string) => void;
   onDuplicate: (slotId: string) => void;
+  onToBox?: (slotId: string) => void;
   onToggleExpand: (slotId: string) => void;
   onFocus: (slotId: string) => void;
 }
@@ -69,6 +70,7 @@ export default function SlotCard({
   onPick,
   onRemove,
   onDuplicate,
+  onToBox,
   onToggleExpand,
   onFocus,
 }: SlotCardProps) {
@@ -134,13 +136,19 @@ export default function SlotCard({
   const detailPath = pokemonHref(dexEntryPath({ id: slot.pokemonId, name: slot.pokemon }), { game: versionGroup });
   const vg = versionGroupById(versionGroup);
 
+  const handleCardClick = () => {
+    onFocus(slot.id);
+    if (!readOnly) onToggleExpand(slot.id);
+  };
+
   return (
     <>
     <motion.div
       layout
-      onClick={() => onFocus(slot.id)}
+      onClick={handleCardClick}
       className={cn(
         'tb-panel tb-slot-drag relative flex min-h-[172px] flex-col overflow-hidden p-2.5 transition-shadow',
+        !readOnly && 'cursor-pointer',
         focused && 'border-gold/40 shadow-[0_0_0_1px_rgba(246,201,69,0.25)]',
         /* the slot whose editor is open must be unmistakable (user feedback):
          * strong gold border + glow; subtle focus ring stays for click-focus */
@@ -163,6 +171,16 @@ export default function SlotCard({
       <div className="flex items-center justify-between gap-1">
         <span className="tb-micro !text-[8px]">{padNum(ident.speciesId)}</span>
         <div className="flex items-center gap-0.5">
+          <LocaleLink
+            to={detailPath}
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="rounded-sm p-0.5 text-tx-muted transition-all hover:text-gold"
+            aria-label={t8n('tb.slot.openDetail', { name: label })}
+            title={t8n('tb.slot.openDetail', { name: label })}
+          >
+            <ArrowUpRight size={12} />
+          </LocaleLink>
           {!legality.legal && (
             <span
               className="tb-illegal-flag tb-chip !border-gold/70 !bg-gold/10 !px-1.5 !py-0.5 !text-[7px] !text-gold"
@@ -174,6 +192,20 @@ export default function SlotCard({
           )}
           {!lockRoster && (
             <>
+              {onToBox && (
+                <button
+                  type="button"
+                  aria-label={t8n('tb.box.toBoxAria', { name: label })}
+                  title={t8n('tb.box.toBox')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToBox(slot.id);
+                  }}
+                  className="rounded-sm p-0.5 text-tx-muted transition-all hover:text-gold"
+                >
+                  <Archive size={12} />
+                </button>
+              )}
               <button
                 type="button"
                 aria-label={t8n('tb.slot.duplicateAria', { name: label })}
@@ -212,15 +244,8 @@ export default function SlotCard({
         </div>
       )}
 
-      {/* sprite on aura → detail page (stopPropagation so slot focus / drag stay intact) */}
-      <LocaleLink
-        to={detailPath}
-        onClick={(e) => e.stopPropagation()}
-        onPointerDown={(e) => e.stopPropagation()}
-        className="group/detail relative mx-auto my-0.5 block h-[64px] w-[64px] outline-none focus-visible:ring-2 focus-visible:ring-gold/70"
-        aria-label={t8n('tb.slot.openDetail', { name: label })}
-        title={t8n('tb.slot.openDetail', { name: label })}
-      >
+      {/* sprite on aura — card click opens editor; detail via top-right icon */}
+      <div className="group/detail relative mx-auto my-0.5 h-[64px] w-[64px]">
         <span
           aria-hidden
           className="absolute inset-[-8px] animate-breathe rounded-full transition-opacity group-hover/detail:opacity-100"
@@ -244,19 +269,16 @@ export default function SlotCard({
             <Sparkles size={9} />
           </span>
         )}
-      </LocaleLink>
+      </div>
 
-      {/* name + types — name also opens detail */}
+      {/* name + types */}
       <div className="text-center">
-        <LocaleLink
-          to={detailPath}
-          onClick={(e) => e.stopPropagation()}
-          onPointerDown={(e) => e.stopPropagation()}
-          className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary outline-none transition-colors hover:text-gold focus-visible:text-gold"
+        <span
+          className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary"
           title={label}
         >
           {label}
-        </LocaleLink>
+        </span>
         <div className="mt-1 flex justify-center gap-1">
           {types.map((t) => (
             <TypeBadge key={t} type={t} className="!gap-1 !px-1.5 !py-0 !text-[8px]" />

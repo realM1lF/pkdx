@@ -17,7 +17,7 @@ import {
   logEncounter,
   setEncounterParty,
 } from './nuzlocke-store';
-import { emptyTeam, listImportableRuns, loadTeams, saveTeam, teamVaultCountKey, type Team } from './teambuilder';
+import { emptyTeam, filledSlots, listImportableRuns, loadTeams, saveTeam, teamVaultCountKey, type Team } from './teambuilder';
 
 vi.mock('./auth', () => ({
   getAuthUser: () => ({ id: 'test-user' }),
@@ -164,13 +164,51 @@ describe('syncLinkedTeamRoster', () => {
     s = getRunState(s.run.id)!;
     await syncLinkedTeamRoster(s, playerId);
     team = findLinkedTeam(s.run.id, playerId)!;
-    expect(team.linkedSetBag?.[encId]?.ability).toBe('Torrent');
+    expect(team.box?.find((slot) => slot.encounterId === encId)?.ability).toBe('Torrent');
 
     setEncounterParty(s.run.id, encId, true);
     s = getRunState(s.run.id)!;
     await syncLinkedTeamRoster(s, playerId);
     team = findLinkedTeam(s.run.id, playerId)!;
     expect(team.slots[0].ability).toBe('Torrent');
+  });
+
+  it('projects boxed alive encounters into team.box', async () => {
+    const { state } = await createRun({
+      name: 'Box View',
+      region: 'kanto',
+      game: 'firered',
+      players: [{ name: 'ANN', color: '#FFD60A' }],
+      rules: { ...DEFAULT_RULES },
+      online: false,
+    });
+    const playerId = state.players[0].id;
+    const first = await logEncounter(state.run.id, {
+      playerId,
+      routeKey: 'route-1',
+      pokemonId: 7,
+      nickname: 'A',
+      level: 5,
+      status: 'caught',
+    });
+    const second = await logEncounter(state.run.id, {
+      playerId,
+      routeKey: 'route-2',
+      pokemonId: 1,
+      nickname: 'B',
+      level: 5,
+      status: 'caught',
+    });
+    expect(first.ok && second.ok).toBe(true);
+
+    let s = getRunState(state.run.id)!;
+    setEncounterParty(s.run.id, second.encounter!.id, false);
+    s = getRunState(state.run.id)!;
+    await syncLinkedTeamRoster(s, playerId);
+    const team = findLinkedTeam(s.run.id, playerId)!;
+    expect(filledSlots(team)).toHaveLength(1);
+    expect(team.box?.length).toBe(1);
+    expect(team.box?.[0].encounterId).toBe(second.encounter!.id);
   });
 
   it('seeds level-up moves once when a catch first enters the party', async () => {

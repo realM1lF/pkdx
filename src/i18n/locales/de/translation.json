@@ -160,6 +160,8 @@
       "full": "{{name}} ist voll (6/6) — wähle ein anderes Team.",
       "backToList": "Zurück zur Team-Auswahl",
       "added": "{{pokemon}} ist jetzt in „{{team}}“.",
+      "addedToBox": "{{pokemon}} wurde zur Box von „{{team}}“ hinzugefügt.",
+      "toBox": "→ Box",
       "openTeam": "Team öffnen"
     },
     "syncing": "LADE EINTRAG {{id}}",
@@ -1591,7 +1593,6 @@
       "saveCopy": "Kopie speichern",
       "saveCopyTip": "Editierbare Kopie in die eigenen Teams legen"
     },
-    "importFromRun": "Aus Run importieren",
     "share": "Teilen",
     "shareTip": "View-only-Seite kopieren. Empfänger sehen das Team, ändern nicht den Tresor.",
     "shareFailed": "Link konnte nicht kopiert werden",
@@ -1603,6 +1604,11 @@
     "linkCopied": "Link kopiert",
     "save": "Speichern",
     "saved": "Gespeichert ✓",
+    "autosave": {
+      "idle": "Auto-Speichern",
+      "pending": "Speichert…",
+      "saved": "Gespeichert"
+    },
     "myTeams": "Meine teams",
     "clearTeam": "Team leeren",
     "confirmClear": "Wirklich leeren?",
@@ -1644,6 +1650,21 @@
     "metaAria": "Meta-Schnappschuss",
     "defenseAria": "Defensiv-Synergie",
     "offenseAria": "Offensiv-Coverage",
+    "box": {
+      "title": "Box",
+      "note": "Reserve — zählt nicht zum aktiven Team",
+      "linkedNote": "Aus Nuzlocke-Run synchronisiert — Kader gesperrt",
+      "count": "{{count}} in der Box",
+      "empty": "Noch keine Pokémon in der Box",
+      "addPokemon": "Zur Box hinzufügen",
+      "addAria": "Pokémon zur Box hinzufügen",
+      "toTeam": "Ins Team",
+      "toTeamAria": "{{name}} ins Team verschieben",
+      "toBox": "In die Box",
+      "toBoxAria": "{{name}} in die Box verschieben",
+      "removeAria": "{{name}} aus der Box entfernen",
+      "aria": "Team-Box"
+    },
     "slot": {
       "remove": "Aus Team entfernen",
       "openVs": "In VS öffnen",
@@ -1692,7 +1713,10 @@
       "genLabel": "· GEN {{gen}}",
       "naThisGen": "· nicht in dieser Gen",
       "reset": "Reset",
-      "evAria": "{{stat}}-FP"
+      "evAria": "{{stat}}-FP",
+      "modalEyebrow": "Slot-Editor",
+      "modalTitle": "{{name}} bearbeiten",
+      "close": "Schließen"
     },
     "hub": {
       "title": "Meine Teams",
@@ -1715,28 +1739,10 @@
       "confirmDelete": "Wirklich löschen?",
       "confirmDeleteAria": "{{name}} wirklich löschen?"
     },
-    "import": {
-      "title": "Aus Run importieren",
-      "close": "Schließen",
-      "empty": "Keine Nuzlocke-Runs gefunden.",
-      "emptyCta": "Starte zuerst einen Run unter /Nuzlocke",
-      "import": "Importieren",
-      "players": "{{count}} Spieler",
-      "party": "Team von {{name}}",
-      "noAlive": "Keine lebendigen team-mitglieder in diesem Run",
-      "loadFail": "Run konnnte nicht geladen werden (offline?)",
-      "dialogAria": "Team aus Nuzlocke-Run importieren",
-      "loading": "LADE {{name}}…",
-      "ready": "Bereit",
-      "noMap": "Keine map",
-      "whoseTeam": "Wessen team?",
-      "alive": "{{count}} LEBENDIG"
-    },
     "toast": {
       "saved": "Team gespeichert",
       "linkCopied": "Share-link kopiert",
       "setApplied": "SET ÜBERNOMMEN — {{name}}",
-      "imported": "Team aus Run importiert",
       "openedLinked": "Verknüpftes Nuzlocke-Team geöffnet",
       "cleared": "Team geleert",
       "deleted": "Team gelöscht",
@@ -1790,39 +1796,7 @@
     },
     "empty": {
       "title": "Analyse startet mit dem ersten Pokémon",
-      "body": "Pokémon über die +-Slots hinzufügen, einen Nuzlocke-Run importieren oder ein Showdown-Team einfügen — Coverage-Matrix, Schwächen-Hinweise und Meta-Sets erscheinen hier.",
-      "ctaShowdown": "Showdown-team einfüGen"
-    },
-    "sd": {
-      "button": "Showdown",
-      "buttonTip": "Showdown-Textformat importieren/exportieren",
-      "title": "Showdown import · export",
-      "close": "Schließen",
-      "dialogAria": "Showdown-Format Import/Export",
-      "exportTab": "Export",
-      "importTab": "Import",
-      "exportHint": "In Pokémon Showdown oder PokéPaste einfügen",
-      "exportEmpty": "Team ist leer — Nichts zu exportieren",
-      "exportAria": "Team im Showdown-Textformat",
-      "copy": "Text kopieren",
-      "copied": "Kopiert ✓",
-      "pokepaste": "In pokÉpaste öffnen",
-      "pokepasteTitle": "MyPokePanion Team",
-      "copiedToast": "Showdown-text kopiert",
-      "importHint": "Team im Showdown-Textformat einfügen (Art, Item, Fähigkeit, Wesen, EVs, Level, Shiny, Attacken)",
-      "placeholder": "Glurak @ Schwerstiefel\nFähigkeit: Solarkraft\nEVs: 252 SpA / 4 SpV / 252 Ini\nFroh Wesen\n- Feuersturm\n…",
-      "importAria": "Showdown-Text einfügen",
-      "parse": "Prüfen",
-      "parsing": "Prüfe…",
-      "parseFailed": "Parsen fehlgeschlagen — Format prüfen",
-      "parsedOk": "{{count}} POKÉMON ERKANNT",
-      "apply": "{{count}} POKÉMON ÜBERNEHMEN",
-      "replaceNote": "Ersetzt die aktuellen slots — Teamname & spiel bleiben",
-      "warn": {
-        "empty": "Kein Pokémon gefunden — Format prüfen",
-        "noSpecies": "NICHT GEFUNDEN: {{name}}",
-        "tooMany": "NUR DIE ERSTEN 6 ÜBERNOMMEN ({{count}} GEFUNDEN)"
-      }
+      "body": "Pokémon über die +-Slots hinzufügen — Coverage-Matrix, Schwächen-Hinweise und Meta-Sets erscheinen hier."
     },
     "editing": "In bearbeitung"
   },

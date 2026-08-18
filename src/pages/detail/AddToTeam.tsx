@@ -1,8 +1,5 @@
 /* AddToTeam — "Zu Team hinzufügen" on the Pokémon detail page:
- * pick a saved team → the Pokémon lands in the first free slot with a
- * default moveset (wild → assumed, the same resolution the team builder
- * uses on pick). Full team → friendly error. No teams yet → offer to
- * create one ("Mein Team") and add directly. */
+ * pick a saved team → first free slot, or the reserve box when 6/6. */
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, FolderOpen, Plus, Users, X } from 'lucide-react';
@@ -12,9 +9,10 @@ import PokeballLoader from '@/components/PokeballLoader';
 import Sprite from '@/components/Sprite';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import {
-  addToFirstFreeSlot,
+  addToTeamOrBox,
   defaultMoveset,
   emptyTeam,
+  filledBoxSlots,
   filledSlots,
   loadTeams,
   onTeamsChange,
@@ -23,14 +21,13 @@ import {
   versionGroupById,
 } from '@/lib/teambuilder';
 import { addableTeams, teamEditPath } from '@/lib/team-routes';
-import type { Team } from '@/lib/teambuilder';
+import type { AddTeamTarget, Team } from '@/lib/teambuilder';
 import type { Pokemon } from '@/lib/types';
 
 type Phase =
   | { kind: 'pick' }
   | { kind: 'busy'; teamName: string }
-  | { kind: 'done'; team: Team }
-  | { kind: 'full'; teamName: string };
+  | { kind: 'done'; team: Team; target: AddTeamTarget };
 
 export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
   const { t: t8n } = useTranslation();
@@ -67,14 +64,10 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
     /* default moveset at the team's version group + slot level (50) —
      * resolution failures degrade gracefully to an empty set */
     const moves = await defaultMoveset(pokemon, 50, team.versionGroup).catch(() => []);
-    const updated = addToFirstFreeSlot(team, { pokemon: pokemon.name, pokemonId: pokemon.id, moves });
-    if (!updated) {
-      setPhase({ kind: 'full', teamName: team.name });
-      return;
-    }
-    saveTeam(updated);
+    const result = addToTeamOrBox(team, { pokemon: pokemon.name, pokemonId: pokemon.id, moves });
+    saveTeam(result.team);
     setTeams(addableTeams(loadTeams()));
-    setPhase({ kind: 'done', team: updated });
+    setPhase({ kind: 'done', team: result.team, target: result.target });
   };
 
   const createAndAdd = () => {
@@ -141,32 +134,20 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                   </div>
                 )}
 
-                {phase.kind === 'full' && (
-                  <div className="space-y-2.5">
-                    <div className="rounded-[8px] border border-gold/50 bg-gold/10 p-3 text-center">
-                      <span className="pixel-label text-[9px] text-gold">
-                        {t8n('detail.addToTeam.full', { name: phase.teamName })}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setPhase({ kind: 'pick' })}
-                      className="w-full rounded-[8px] border border-hairline bg-surface2 px-3 py-2 text-[12px] font-semibold text-tx-secondary transition-colors hover:border-gold/40 hover:text-gold"
-                    >
-                      {t8n('detail.addToTeam.backToList')}
-                    </button>
-                  </div>
-                )}
-
                 {phase.kind === 'done' && (
                   <div className="space-y-2.5">
                     <div className="flex items-center gap-2.5 rounded-[8px] border border-gold/50 bg-gold/10 p-3">
                       <Check size={14} className="shrink-0 text-gold" />
                       <span className="text-[12px] font-semibold text-tx-primary">
-                        {t8n('detail.addToTeam.added', {
-                          pokemon: nameOfPokemon(pokemon.name, lang),
-                          team: phase.team.name,
-                        })}
+                        {phase.target === 'box'
+                          ? t8n('detail.addToTeam.addedToBox', {
+                              pokemon: nameOfPokemon(pokemon.name, lang),
+                              team: phase.team.name,
+                            })
+                          : t8n('detail.addToTeam.added', {
+                              pokemon: nameOfPokemon(pokemon.name, lang),
+                              team: phase.team.name,
+                            })}
                       </span>
                     </div>
                     <LocaleLink
@@ -198,6 +179,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                       <ul className="space-y-1.5">
                         {teams.map((team) => {
                           const filled = filledSlots(team).length;
+                          const boxed = filledBoxSlots(team).length;
                           const full = filled >= 6;
                           return (
                             <li key={team.id}>
@@ -233,10 +215,11 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                                   </span>
                                   <span className="pixel-label text-[7px] text-tx-muted">
                                     {versionGroupById(team.versionGroup).short} · {filled}/6
+                                    {boxed > 0 ? ` · +${boxed}` : ''}
                                   </span>
                                 </span>
-                                <span className={`pixel-label shrink-0 text-[8px] ${full ? 'text-tx-muted' : 'text-gold'}`}>
-                                  {full ? '6/6' : <Plus size={12} />}
+                                <span className={`pixel-label shrink-0 text-[8px] ${full ? 'text-gold' : 'text-gold'}`}>
+                                  {full ? (boxed > 0 ? t8n('detail.addToTeam.toBox') : '6/6') : <Plus size={12} />}
                                 </span>
                               </button>
                             </li>

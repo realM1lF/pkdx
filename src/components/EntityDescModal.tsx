@@ -1,5 +1,5 @@
 /* EntityDescModal — Holo-Dex description dialog for moves / items / abilities
- * (Batch E, EP2). Dark/gold, z-[90], Esc + outside-click close (ShowdownDialog
+ * (Batch E, EP2). Dark/gold, z-[95], Esc + outside-click close (ShowdownDialog
  * pattern). Data comes from the lazy desc artifacts via useEntityDesc — the
  * JSON chunk loads on first open, so unknown slugs and slow networks degrade
  * to a gold "no description" fallback, never red.
@@ -123,10 +123,14 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
   useEffect(() => {
     if (!target) return undefined;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        e.stopImmediatePropagation();
+        onClose();
+      }
     };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    /* capture: nested inside other z-[90] dialogs (e.g. SlotEditorModal) */
+    document.addEventListener('keydown', onKey, true);
+    return () => document.removeEventListener('keydown', onKey, true);
   }, [target, onClose]);
 
   const raw = target?.kind === 'move' ? desc.move : target?.kind === 'item' ? desc.item : desc.ability;
@@ -158,7 +162,7 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[90] flex items-start justify-center bg-void/70 p-4 pt-[12vh] backdrop-blur-sm"
+          className="fixed inset-0 z-[95] flex items-start justify-center bg-void/70 p-4 pt-[12vh] backdrop-blur-sm"
           onClick={onClose}
           role="dialog"
           aria-modal="true"

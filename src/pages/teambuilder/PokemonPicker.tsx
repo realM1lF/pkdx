@@ -15,6 +15,8 @@ interface PokemonPickerProps {
   onPick: (entry: DexIndexEntry) => void;
   autoFocus?: boolean;
   placeholder?: string;
+  /** widen portaled dropdown (narrow box column) */
+  menuMinWidth?: number;
 }
 
 /** result row — hydrates its own type badges from the (cached) PokéAPI payload */
@@ -51,7 +53,7 @@ function PokemonRow({ entry }: { entry: DexIndexEntry }) {
   );
 }
 
-export default function PokemonPicker({ onPick, autoFocus = true, placeholder }: PokemonPickerProps) {
+export default function PokemonPicker({ onPick, autoFocus = true, placeholder, menuMinWidth }: PokemonPickerProps) {
   const { t } = useTranslation();
   const [index, setIndex] = useState<DexIndexEntry[]>([]);
 
@@ -83,6 +85,7 @@ export default function PokemonPicker({ onPick, autoFocus = true, placeholder }:
         placeholder={placeholder ?? t('tb.autocomplete.searchPokemon')}
         autoFocus={autoFocus}
         maxResults={10}
+        menuMinWidth={menuMinWidth}
         renderItem={(e) => <PokemonRow entry={e} />}
       />
     </div>

@@ -33,6 +33,8 @@ interface MiniAutocompleteProps<T> {
   className?: string;
   /** when false, the dropdown is forced closed (parent-controlled) */
   disabled?: boolean;
+  /** minimum menu width in px (defaults to input width; use in narrow columns) */
+  menuMinWidth?: number;
 }
 
 interface MenuPos {
@@ -57,6 +59,7 @@ export default function MiniAutocomplete<T>({
   maxResults = 40,
   className,
   disabled = false,
+  menuMinWidth,
 }: MiniAutocompleteProps<T>) {
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
@@ -80,14 +83,19 @@ export default function MiniAutocomplete<T>({
     const below = window.innerHeight - rect.bottom - VIEWPORT_GAP;
     const above = rect.top - VIEWPORT_GAP;
     const flip = below < MIN_MENU_H && above > below;
+    const width = Math.max(rect.width, menuMinWidth ?? rect.width);
+    let left = rect.left;
+    if (left + width > window.innerWidth - VIEWPORT_GAP) {
+      left = Math.max(VIEWPORT_GAP, window.innerWidth - width - VIEWPORT_GAP);
+    }
     setPos({
-      left: rect.left,
-      width: rect.width,
+      left,
+      width,
       ...(flip
         ? { bottom: window.innerHeight - rect.top + 6, maxHeight: Math.max(80, Math.min(MAX_MENU_H, above - 6)) }
         : { top: rect.bottom + 6, maxHeight: Math.max(80, Math.min(MAX_MENU_H, below - 6)) }),
     });
-  }, []);
+  }, [menuMinWidth]);
 
   /* close on outside click (list lives in a portal — check both refs) */
   useEffect(() => {

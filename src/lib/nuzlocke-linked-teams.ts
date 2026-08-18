@@ -39,6 +39,15 @@ function partyOf(state: RunState, playerId: string): NuzEncounterRow[] {
   if (!flagged) return alive.slice(-6);
   return alive.filter((e) => e.in_party === true);
 }
+
+function boxedOf(state: RunState, playerId: string): NuzEncounterRow[] {
+  const alive = state.encounters
+    .filter((e) => e.player_id === playerId && e.status === 'caught')
+    .sort((a, b) => a.created_at.localeCompare(b.created_at));
+  const flagged = state.encounters.some((e) => e.in_party === true || e.in_party === false);
+  if (!flagged) return alive.slice(0, Math.max(0, alive.length - 6)).reverse();
+  return alive.filter((e) => e.in_party !== true).reverse();
+}
 import {
   TEAM_SIZE,
   collapseLinkedTeamDuplicates,
@@ -155,12 +164,12 @@ export function ensureLinkedTeams(state: RunState): Team[] {
   return [upsertOwnedTeam(state, mine)];
 }
 
-function stashLeavingParty(team: Team, partyIds: Set<string>): Record<string, LinkedSetBagEntry> {
+function stashLeavingRoster(team: Team, activeIds: Set<string>): Record<string, LinkedSetBagEntry> {
   const bag = { ...(team.linkedSetBag ?? {}) };
-  for (const slot of team.slots) {
+  for (const slot of [...team.slots, ...(team.box ?? [])]) {
     const encId = slot.encounterId;
     if (!encId || !slot.pokemonId) continue;
-    if (partyIds.has(encId)) continue;
+    if (activeIds.has(encId)) continue;
     bag[encId] = extractLinkedSet(slot);
   }
   return bag;
@@ -193,32 +202,21 @@ async function seedCatchMoves(pokemonId: number, level: number, vgId: string): P
   }
 }
 
-async function projectPartySlots(
-  state: RunState,
-  playerId: string,
-  prior: Team | null,
-): Promise<{ slots: TeamSlot[]; bag: Record<string, LinkedSetBagEntry> }> {
-  const party = partyOf(state, playerId).slice(0, TEAM_SIZE);
-  const partyIds = new Set(party.map((e) => e.id));
-  const priorByEnc = new Map(
-    (prior?.slots ?? []).filter((s) => s.encounterId).map((s) => [s.encounterId!, s] as const),
-  );
-  let bag = prior ? stashLeavingParty(prior, partyIds) : {};
-  const livingIds = new Set(state.encounters.map((e) => e.id));
-  bag = Object.fromEntries(Object.entries(bag).filter(([id]) => livingIds.has(id)));
-  const vgId = versionGroupForGame(state.run.game) ?? prior?.versionGroup ?? 'scarlet-violet';
-
-  const slots: TeamSlot[] = Array.from({ length: TEAM_SIZE }, emptySlot);
-  for (let i = 0; i < party.length; i++) {
-    const enc = party[i];
-    const slug = await slugFor(enc.pokemon_id);
-    const saved = applyBagOrPrior(bag, priorByEnc, enc.id);
-    delete bag[enc.id];
-    const level = Math.min(100, Math.max(1, enc.level || 1));
-    const base = emptySlot();
-    /* first party insert only — later syncs keep the bag/prior set, even if empty */
-    const moves = saved ? saved.moves : await seedCatchMoves(enc.pokemon_id, level, vgId);
-    slots[i] = {
+async function encounterToSlot(
+  enc: NuzEncounterRow,
+  priorByEnc: Map<string, TeamSlot>,
+  bag: Record<string, LinkedSetBagEntry>,
+  vgId: string,
+): Promise<{ slot: TeamSlot; bag: Record<string, LinkedSetBagEntry> }> {
+  const slug = await slugFor(enc.pokemon_id);
+  const saved = applyBagOrPrior(bag, priorByEnc, enc.id);
+  const nextBag = { ...bag };
+  delete nextBag[enc.id];
+  const level = Math.min(100, Math.max(1, enc.level || 1));
+  const base = emptySlot();
+  const moves = saved ? saved.moves : await seedCatchMoves(enc.pokemon_id, level, vgId);
+  return {
+    slot: {
       ...base,
       id: priorByEnc.get(enc.id)?.id ?? base.id,
       pokemon: slug,
@@ -232,9 +230,43 @@ async function projectPartySlots(
       ability: saved?.ability ?? null,
       nature: saved?.nature ?? null,
       evs: saved?.evs ?? base.evs,
-    };
+    },
+    bag: nextBag,
+  };
+}
+
+async function projectLinkedTeam(
+  state: RunState,
+  playerId: string,
+  prior: Team | null,
+): Promise<{ slots: TeamSlot[]; box: TeamSlot[]; bag: Record<string, LinkedSetBagEntry> }> {
+  const party = partyOf(state, playerId).slice(0, TEAM_SIZE);
+  const boxed = boxedOf(state, playerId);
+  const activeIds = new Set([...party, ...boxed].map((e) => e.id));
+  const priorByEnc = new Map<string, TeamSlot>();
+  for (const slot of [...(prior?.slots ?? []), ...(prior?.box ?? [])]) {
+    if (slot.encounterId) priorByEnc.set(slot.encounterId, slot);
   }
-  return { slots, bag };
+  let bag = prior ? stashLeavingRoster(prior, activeIds) : {};
+  const livingIds = new Set(state.encounters.map((e) => e.id));
+  bag = Object.fromEntries(Object.entries(bag).filter(([id]) => livingIds.has(id)));
+  const vgId = versionGroupForGame(state.run.game) ?? prior?.versionGroup ?? 'scarlet-violet';
+
+  const slots: TeamSlot[] = Array.from({ length: TEAM_SIZE }, emptySlot);
+  for (let i = 0; i < party.length; i++) {
+    const projected = await encounterToSlot(party[i], priorByEnc, bag, vgId);
+    bag = projected.bag;
+    slots[i] = projected.slot;
+  }
+
+  const box: TeamSlot[] = [];
+  for (const enc of boxed) {
+    const projected = await encounterToSlot(enc, priorByEnc, bag, vgId);
+    bag = projected.bag;
+    box.push(projected.slot);
+  }
+
+  return { slots, box, bag };
 }
 
 /** Project owned party into the linked team. No-op for other players / archived. */
@@ -247,10 +279,11 @@ export async function syncLinkedTeamRoster(state: RunState, playerId: string): P
   const team = findLinkedTeam(state.run.id, playerId);
   if (!team) return null;
 
-  const { slots, bag } = await projectPartySlots(state, playerId, team);
+  const { slots, box, bag } = await projectLinkedTeam(state, playerId, team);
   const next: Team = {
     ...team,
     slots,
+    box,
     linkedSetBag: bag,
     versionGroup: versionGroupForGame(state.run.game) ?? team.versionGroup,
     name: linkedTeamName(
@@ -285,10 +318,11 @@ export async function syncLinkedTeamsForRun(state: RunState, playerId?: string):
 export async function buildViewTeamFromParty(state: RunState, playerId: string): Promise<Team | null> {
   if (!state.players.some((p) => p.id === playerId)) return null;
   const player = state.players.find((p) => p.id === playerId)!;
-  const { slots } = await projectPartySlots(state, playerId, null);
+  const { slots, box } = await projectLinkedTeam(state, playerId, null);
   const team = emptyTeam(linkedTeamName(state.run.name, player.name));
   team.versionGroup = versionGroupForGame(state.run.game) ?? team.versionGroup;
   team.slots = slots;
+  team.box = box;
   /* mark provenance without claiming vault ownership */
   team.linkedRunId = state.run.id;
   team.linkedPlayerId = playerId;
@@ -331,6 +365,10 @@ export function cloneLinkedTeamsForDuplicate(
     }
     team.linkedSetBag = bag;
     team.slots = src.slots.map((s) => {
+      const encId = s.encounterId ? (encounterMap.get(s.encounterId) ?? null) : null;
+      return { ...s, id: emptySlot().id, encounterId: encId };
+    });
+    team.box = (src.box ?? []).map((s) => {
       const encId = s.encounterId ? (encounterMap.get(s.encounterId) ?? null) : null;
       return { ...s, id: emptySlot().id, encounterId: encId };
     });
@@ -398,6 +436,11 @@ export function detachAsCopy(team: Team, name?: string): Team {
   const copy = emptyTeam(name ?? `${team.name}`);
   copy.versionGroup = team.versionGroup;
   copy.slots = team.slots.map((s) => ({
+    ...s,
+    id: emptySlot().id,
+    encounterId: null,
+  }));
+  copy.box = (team.box ?? []).map((s) => ({
     ...s,
     id: emptySlot().id,
     encounterId: null,

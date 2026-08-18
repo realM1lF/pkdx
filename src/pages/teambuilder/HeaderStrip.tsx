@@ -1,7 +1,7 @@
 /* HeaderStrip — team name · GAME selector · IMPORT FROM RUN · SHARE · SAVE · hub · CLEAR
  * (team-builder.md "Header-Strip", density-addendum §2 command-bar) */
 import { useEffect, useState } from 'react';
-import { ArrowLeftRight, Check, ChevronDown, CopyPlus, Download, ExternalLink, Eye, Gamepad2, Pencil, Save, Share2, Trash2, Users } from 'lucide-react';
+import { Check, ChevronDown, Cloud, CloudOff, CopyPlus, ExternalLink, Eye, Gamepad2, Pencil, Share2, Trash2, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import GameSelect from '@/components/GameSelect';
 import { LocaleLink } from '@/lib/locale-link';
@@ -11,17 +11,14 @@ import { cn } from '@/lib/utils';
 
 interface HeaderStripProps {
   team: Team;
-  saved: boolean;
+  saveStatus?: 'idle' | 'pending' | 'saved';
   shareState: 'idle' | 'copied';
   readOnly?: boolean;
   /** Shared / foreign party snapshot — not in the vault */
   viewOnly?: boolean;
   onName: (name: string) => void;
   onGameChange: (vgId: string) => void;
-  onImport: () => void;
-  onShowdown: () => void;
   onShare: () => void;
-  onSave: () => void;
   onSaveCopy?: () => void;
   onClear: () => void;
   onOpenHub: () => void;
@@ -30,16 +27,13 @@ interface HeaderStripProps {
 
 export default function HeaderStrip({
   team,
-  saved,
+  saveStatus = 'idle',
   shareState,
   readOnly = false,
   viewOnly = false,
   onName,
   onGameChange,
-  onImport,
-  onShowdown,
   onShare,
-  onSave,
   onSaveCopy,
   onClear,
   onOpenHub,
@@ -98,16 +92,6 @@ export default function HeaderStrip({
             </>
           )}
         />
-        {!linked && !viewOnly && (
-          <button type="button" onClick={onImport} className="tb-btn">
-            <Download size={13} />
-            {t('tb.importFromRun')}
-          </button>
-        )}
-        <button type="button" onClick={onShowdown} className="tb-btn" title={t('tb.sd.buttonTip')} disabled={readOnly && !viewOnly}>
-          <ArrowLeftRight size={13} />
-          {t('tb.sd.button')}
-        </button>
         {!viewOnly && (
           <button type="button" onClick={onShare} className="tb-btn" aria-live="polite" title={t('tb.shareTip')}>
             {shareState === 'copied' ? <Check size={13} className="text-gold" /> : <Share2 size={13} />}
@@ -120,10 +104,22 @@ export default function HeaderStrip({
             {t('tb.viewOnly.saveCopy')}
           </button>
         ) : (
-          <button type="button" onClick={onSave} className="tb-btn tb-btn-primary" disabled={readOnly}>
-            <Save size={13} />
-            {saved ? t('tb.saved') : t('tb.save')}
-          </button>
+          !viewOnly && !readOnly && saveStatus !== 'idle' && (
+            <span
+              className={cn(
+                'tb-btn pointer-events-none !cursor-default !border-transparent !bg-transparent !px-1.5',
+                saveStatus === 'saved' && '!text-gold',
+              )}
+              aria-live="polite"
+              aria-label={saveStatus === 'pending' ? t('tb.autosave.pending') : t('tb.autosave.saved')}
+              title={saveStatus === 'pending' ? t('tb.autosave.pending') : t('tb.autosave.saved')}
+            >
+              {saveStatus === 'pending' ? <CloudOff size={13} className="animate-pulse" /> : <Cloud size={13} />}
+              <span className="hidden sm:inline">
+                {saveStatus === 'pending' ? t('tb.autosave.pending') : t('tb.autosave.saved')}
+              </span>
+            </span>
+          )
         )}
         <button type="button" onClick={onOpenHub} className="tb-btn" aria-label={t('tb.myTeams')}>
           <Users size={13} />

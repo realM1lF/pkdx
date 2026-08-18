@@ -301,6 +301,8 @@ interface SlotEditorProps {
   onApplySet: (set: SmogonSet) => void;
 }
 
+export type { SlotEditorProps };
+
 export default function SlotEditor({
   slot,
   pokemon,
@@ -369,14 +371,8 @@ export default function SlotEditor({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      exit={{ opacity: 0, height: 0 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="overflow-hidden"
-    >
-      <div className="tb-panel mt-2 grid grid-cols-1 gap-4 p-4 md:grid-cols-12">
+    <>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
           {readOnly && (
             <div className="md:col-span-12">
               <span className="tb-micro-gold">{t('tb.linked.readOnly')}</span>
@@ -665,7 +661,7 @@ export default function SlotEditor({
           </div>
         </div>
       <EntityDescModal {...entityModal.props} />
-    </motion.div>
+    </>
   );
 }
 

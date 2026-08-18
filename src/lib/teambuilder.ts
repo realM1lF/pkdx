@@ -128,6 +128,8 @@ export interface Team {
   name: string;
   versionGroup: string;
   slots: TeamSlot[]; // 6
+  /** Reserve pool — not part of analysis or the active 6; synced from Nuzlocke when linked */
+  box?: TeamSlot[];
   updatedAt: number;
   /** When set with linkedPlayerId, roster is projected from that Nuzlocke party */
   linkedRunId?: string;
@@ -191,12 +193,47 @@ export function emptyTeam(name = 'Untitled Team'): Team {
     name,
     versionGroup: DEFAULT_VERSION_GROUP,
     slots: Array.from({ length: TEAM_SIZE }, emptySlot),
+    box: [],
     updatedAt: Date.now(),
   };
 }
 
 export function filledSlots(team: Team): TeamSlot[] {
   return team.slots.filter((s) => s.pokemon != null && s.pokemonId != null);
+}
+
+export function filledBoxSlots(team: Team): TeamSlot[] {
+  return (team.box ?? []).filter((s) => s.pokemon != null && s.pokemonId != null);
+}
+
+/** Vault autosave: linked teams always; free teams once roster or box has a member. */
+export function teamShouldPersist(team: Team): boolean {
+  if (isLinkedTeam(team)) return true;
+  return filledSlots(team).length > 0 || filledBoxSlots(team).length > 0;
+}
+
+/** True when local editor state is newer than the last vault write we acknowledged. */
+export function teamHasUnsavedEdits(team: Team, lastPersistedEditAt: number): boolean {
+  return team.updatedAt > lastPersistedEditAt;
+}
+
+export function normalizeTeam(raw: Team): Team | null {
+  if (!raw || !Array.isArray(raw.slots)) return null;
+  const slots = raw.slots.slice(0, TEAM_SIZE);
+  while (slots.length < TEAM_SIZE) slots.push(emptySlot());
+  return {
+    ...raw,
+    slots,
+    box: Array.isArray(raw.box) ? raw.box.filter((s) => s && typeof s === 'object') : [],
+  };
+}
+
+export function slotInBox(team: Team, slotId: string): boolean {
+  return (team.box ?? []).some((s) => s.id === slotId);
+}
+
+export function findTeamSlot(team: Team, slotId: string): TeamSlot | undefined {
+  return team.slots.find((s) => s.id === slotId) ?? (team.box ?? []).find((s) => s.id === slotId);
 }
 
 export function evTotal(slot: TeamSlot): number {
@@ -310,25 +347,99 @@ export async function defaultMoveset(p: Pokemon, level: number, vgId: string): P
  * Insert a Pokémon into the team's first free slot (level stays at the slot
  * default 50 unless given). Returns null when the team is full (6/6).
  */
+function slotFromEntry(
+  entry: { pokemon: string; pokemonId: number; level?: number; moves?: string[] },
+  levelFallback = 50,
+): TeamSlot {
+  const slot = emptySlot();
+  const moves: TeamSlot['moves'] = [null, null, null, null];
+  (entry.moves ?? []).slice(0, 4).forEach((m, i) => {
+    moves[i] = m;
+  });
+  slot.pokemon = entry.pokemon;
+  slot.pokemonId = entry.pokemonId;
+  slot.level = entry.level ?? levelFallback;
+  slot.moves = moves;
+  return slot;
+}
+
 export function addToFirstFreeSlot(
   team: Team,
   entry: { pokemon: string; pokemonId: number; level?: number; moves?: string[] },
 ): Team | null {
   const idx = team.slots.findIndex((s) => !s.pokemon);
   if (idx < 0) return null;
-  const moves: TeamSlot['moves'] = [null, null, null, null];
-  (entry.moves ?? []).slice(0, 4).forEach((m, i) => {
-    moves[i] = m;
-  });
   const slots = [...team.slots];
-  slots[idx] = {
-    ...slots[idx],
-    pokemon: entry.pokemon,
-    pokemonId: entry.pokemonId,
-    level: entry.level ?? slots[idx].level,
-    moves,
-  };
+  slots[idx] = { ...slotFromEntry(entry, slots[idx].level), id: slots[idx].id };
   return { ...team, slots, updatedAt: Date.now() };
+}
+
+export type AddTeamTarget = 'team' | 'box';
+
+/** First free team slot, otherwise append to the reserve box. */
+export function addToTeamOrBox(
+  team: Team,
+  entry: { pokemon: string; pokemonId: number; level?: number; moves?: string[] },
+): { team: Team; target: AddTeamTarget } {
+  const inTeam = addToFirstFreeSlot(team, entry);
+  if (inTeam) return { team: inTeam, target: 'team' };
+  return {
+    team: {
+      ...team,
+      box: [...(team.box ?? []), slotFromEntry(entry)],
+      updatedAt: Date.now(),
+    },
+    target: 'box',
+  };
+}
+
+export function addToBox(
+  team: Team,
+  entry: { pokemon: string; pokemonId: number; level?: number; moves?: string[] },
+): Team {
+  return {
+    ...team,
+    box: [...(team.box ?? []), slotFromEntry(entry)],
+    updatedAt: Date.now(),
+  };
+}
+
+/** Move a reserve slot into the first free team slot. */
+export function promoteFromBox(team: Team, boxSlotId: string): Team | null {
+  if (isLinkedTeam(team)) return null;
+  const teamIdx = team.slots.findIndex((s) => !s.pokemon);
+  if (teamIdx < 0) return null;
+  const box = [...(team.box ?? [])];
+  const boxIdx = box.findIndex((s) => s.id === boxSlotId);
+  if (boxIdx < 0 || !box[boxIdx].pokemon) return null;
+  const [picked] = box.splice(boxIdx, 1);
+  const slots = [...team.slots];
+  slots[teamIdx] = { ...picked, id: slots[teamIdx].id };
+  return { ...team, slots, box, updatedAt: Date.now() };
+}
+
+/** Move an active team slot into the reserve box. */
+export function demoteToBox(team: Team, teamSlotId: string): Team | null {
+  if (isLinkedTeam(team)) return null;
+  const slotIdx = team.slots.findIndex((s) => s.id === teamSlotId);
+  if (slotIdx < 0 || !team.slots[slotIdx].pokemon) return null;
+  const picked = team.slots[slotIdx];
+  const slots = [...team.slots];
+  slots[slotIdx] = { ...emptySlot(), id: picked.id };
+  return {
+    ...team,
+    slots,
+    box: [...(team.box ?? []), { ...picked, id: slotId() }],
+    updatedAt: Date.now(),
+  };
+}
+
+export function removeBoxSlot(team: Team, boxSlotId: string): Team {
+  return {
+    ...team,
+    box: (team.box ?? []).filter((s) => s.id !== boxSlotId),
+    updatedAt: Date.now(),
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -761,7 +872,9 @@ function writeIdSet(key: string, ids: Set<string>): void {
 
 export function loadTeams(): Team[] {
   const list = readJson<Team[]>(LS_TEAMS, []);
-  return Array.isArray(list) ? list.filter((t) => t && Array.isArray(t.slots)) : [];
+  return Array.isArray(list)
+    ? list.map((t) => normalizeTeam(t as Team)).filter((t): t is Team => t != null)
+    : [];
 }
 
 /** Write the vault without a cloud round-trip (hydrate apply). */
@@ -960,7 +1073,7 @@ export function deleteTeam(id: string): Team[] {
 
 export function loadDraft(): Team | null {
   const d = readJson<Team | null>(LS_DRAFT, null);
-  return d && Array.isArray(d.slots) ? d : null;
+  return d ? normalizeTeam(d) : null;
 }
 
 export function saveDraft(team: Team | null): void {
