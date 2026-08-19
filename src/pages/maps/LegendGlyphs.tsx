@@ -26,7 +26,7 @@ export function NodeKindGlyphs() {
           <svg width={16} height={16} viewBox="-8 -8 16 16" className="transition-transform duration-300 hover:scale-125">
             {g.el}
           </svg>
-          <span className="pixel-label text-[7px] text-tx-muted">{g.label}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{g.label}</span>
         </div>
       ))}
     </div>
@@ -46,7 +46,7 @@ export function LinkKindGlyphs() {
           <svg width={32} height={8} viewBox="0 0 32 8">
             <line x1={1} y1={4} x2={31} y2={4} stroke={l.color} strokeWidth={2} strokeLinecap="round" strokeDasharray={l.dash} />
           </svg>
-          <span className="pixel-label text-[7px] text-tx-muted">{l.label}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{l.label}</span>
         </div>
       ))}
     </div>

@@ -50,24 +50,24 @@ export default function Maps() {
     <div className="relative">
       {/* §1.1 header */}
       <header className="mx-auto flex max-w-content flex-wrap items-end justify-between gap-6 px-4 pb-10 pt-12 sm:px-8">
-        <div className="max-w-[600px]">
-          <motion.p {...reveal(0)} className="pixel-label text-[10px] text-gold">
+        <div className="max-w-[37.5rem]">
+          <motion.p {...reveal(0)} className="pixel-label text-[14px] text-gold">
             {t('maps.atlasEyebrow')}
           </motion.p>
           <motion.h1
             {...reveal(1)}
-            className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.1] text-tx-primary"
+            className="mt-3 font-display text-[clamp(2rem,4.5vw,52px)] font-extrabold leading-[1.1] text-tx-primary"
           >
             {t('maps.atlasTitle')}
           </motion.h1>
-          <motion.p {...reveal(2)} className="mt-3 max-w-[560px] text-[14px] font-medium leading-relaxed text-tx-secondary">
+          <motion.p {...reveal(2)} className="mt-3 max-w-[35rem] text-[0.875rem] font-medium leading-relaxed text-tx-secondary">
             {t('maps.atlasBlurb')}
           </motion.p>
         </div>
-        <motion.div {...reveal(3)} className="hidden items-center gap-2 text-[12px] font-medium text-tx-muted md:flex">
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{regions}</span> {t('maps.regions')}
+        <motion.div {...reveal(3)} className="hidden items-center gap-2 text-micro12 font-medium text-tx-muted md:flex">
+          <span className="font-display text-[0.875rem] font-bold tabular-nums text-tx-primary">{regions}</span> {t('maps.regions')}
           <span aria-hidden>·</span>
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{locations}</span> {t('maps.locations')}
+          <span className="font-display text-[0.875rem] font-bold tabular-nums text-tx-primary">{locations}</span> {t('maps.locations')}
           <span aria-hidden>·</span>
           <span className="inline-flex items-center gap-1.5">
             <span className="maps-scan-dot inline-block h-1.5 w-1.5 rounded-full bg-type-grass" />
@@ -92,7 +92,7 @@ export default function Maps() {
           {
             title: t('maps.howData'),
             body: (
-              <p className="text-[12px] font-medium leading-relaxed text-tx-secondary">
+              <p className="text-micro12 font-medium leading-relaxed text-tx-secondary">
                 {t('maps.howDataBody')}
               </p>
             ),
@@ -113,7 +113,7 @@ export default function Maps() {
       </section>
 
       {/* §1.4 footer note */}
-      <p className="mx-auto max-w-content px-4 py-8 text-center text-[12px] font-medium text-tx-muted sm:px-8">
+      <p className="mx-auto max-w-content px-4 py-8 text-center text-micro12 font-medium text-tx-muted sm:px-8">
         {t('maps.footerNote')}
       </p>
     </div>

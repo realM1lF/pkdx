@@ -240,7 +240,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
         aria-expanded={results.length > 0}
         aria-controls="pdx-search-listbox"
         aria-activedescendant={activeKey ? `pdx-search-opt-${activeKey}` : undefined}
-        className="h-full min-w-0 flex-1 bg-transparent font-sans text-lg font-medium text-tx-primary outline-none placeholder:font-pixel placeholder:text-[10px] placeholder:tracking-[0.08em] placeholder:text-tx-muted"
+        className="h-full min-w-0 flex-1 bg-transparent font-sans text-lg font-medium text-tx-primary outline-none placeholder:font-pixel placeholder:text-[14px] placeholder:tracking-[0.08em] placeholder:text-tx-muted"
       />
       {query ? (
         <button
@@ -319,7 +319,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
           role="listbox"
           id="pdx-search-listbox"
           data-lenis-prevent
-          className="max-h-[340px] overflow-y-auto py-1"
+          className="max-h-[21.25rem] overflow-y-auto py-1"
         >
           {results.map((r, i) => {
             const types = r.pokemonId != null ? (typesMap[r.pokemonId] ?? []) : [];
@@ -393,7 +393,7 @@ export default function SearchCommand({ variant = 'modal', open = false, onClose
             <motion.div
               role="dialog"
               aria-label={t('search.dialogAria')}
-              className="relative w-full max-w-[640px]"
+              className="relative w-full max-w-[40rem]"
               initial={{ y: -16, scale: 0.98, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
               exit={{ y: -16, scale: 0.98, opacity: 0 }}

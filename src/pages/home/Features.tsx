@@ -57,7 +57,7 @@ function FilterDemo({ live }: { live: boolean }) {
           );
         })}
       </div>
-      <motion.div layout className="grid min-h-[148px] grid-cols-3 content-start gap-2">
+      <motion.div layout className="grid min-h-[9.25rem] grid-cols-3 content-start gap-2">
         <AnimatePresence mode="popLayout">
           {shown.map((m) => (
             <motion.div
@@ -75,7 +75,7 @@ function FilterDemo({ live }: { live: boolean }) {
                 style={{ background: `rgba(${TYPE_COLORS[m.types[0]].rgb},0.25)` }}
               />
               <Sprite id={m.id} name={nameOfPokemon(m.id, lang)} era="gen5" skeleton={false} eager={live} className="relative h-14 w-14" />
-              <span className="font-sans text-[11px] font-semibold text-tx-secondary">{nameOfPokemon(m.id, lang)}</span>
+              <span className="font-sans text-micro11 font-semibold text-tx-secondary">{nameOfPokemon(m.id, lang)}</span>
             </motion.div>
           ))}
         </AnimatePresence>
@@ -121,7 +121,7 @@ function Radar({ values, prog }: { values: number[]; prog: number }) {
   }, [values, prog]);
   const rings = [0.33, 0.66, 1];
   return (
-    <svg viewBox="0 0 160 160" className="h-[160px] w-[160px]">
+    <svg viewBox="0 0 160 160" className="h-[10rem] w-[10rem]">
       {rings.map((r) => (
         <polygon
           key={r}
@@ -186,7 +186,7 @@ function StatsDemo({ live }: { live: boolean }) {
             aria-pressed={mode === m}
             onClick={() => setMode(m)}
             className={cn(
-              'relative rounded-pill px-3 py-1 font-sans text-[13px] font-semibold capitalize transition-colors',
+              'relative rounded-pill px-3 py-1 font-sans text-micro13 font-semibold capitalize transition-colors',
               mode === m ? 'text-gold' : 'text-tx-muted hover:text-tx-secondary',
             )}
           >
@@ -201,7 +201,7 @@ function StatsDemo({ live }: { live: boolean }) {
           </button>
         ))}
       </div>
-      <div className="grid min-h-[148px] place-items-center">
+      <div className="grid min-h-[9.25rem] place-items-center">
         <AnimatePresence mode="wait">
           {mode === 'bars' ? (
             <motion.div
@@ -260,7 +260,7 @@ function MuseumDemo() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative mx-auto grid h-[148px] w-[148px] place-items-center">
+      <div className="relative mx-auto grid h-[9.25rem] w-[9.25rem] place-items-center">
         {/* glowing plinth — hue shifts per era */}
         <div
           aria-hidden
@@ -346,8 +346,8 @@ export default function Features() {
   return (
     <section className="mx-auto max-w-content overflow-x-clip px-4 py-24 md:px-8">
       <div className="mb-12 flex flex-col gap-4">
-        <span className="pixel-label text-[10px] text-gold">{t('home.features.eyebrow')}</span>
-        <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
+        <span className="pixel-label text-[14px] text-gold">{t('home.features.eyebrow')}</span>
+        <h2 className="font-display text-[clamp(1.5rem,3vw,36px)] font-extrabold leading-[1.15]">
           {t('home.features.title')}
         </h2>
       </div>
@@ -360,25 +360,25 @@ export default function Features() {
 
       {/* feedback teaser — replaces the roadmap marquee: bugs & ideas wanted */}
       <div className="mt-10 flex flex-wrap items-center gap-5 rounded-lg border border-gold/35 bg-[linear-gradient(135deg,rgba(246,201,69,0.10),rgba(246,201,69,0.03))] px-6 py-6">
-        <div className="min-w-[220px] flex-1">
+        <div className="min-w-[13.75rem] flex-1">
           <p className="pixel-label text-[9px] text-gold">{t('home.feedbackTeaser.eyebrow')}</p>
           <h3 className="mt-1.5 font-display text-lg font-extrabold tracking-wide text-tx-primary">
             {t('home.feedbackTeaser.title')}
           </h3>
-          <p className="mt-1.5 max-w-[56ch] font-sans text-[13px] leading-relaxed text-tx-secondary">
+          <p className="mt-1.5 max-w-[56ch] font-sans text-micro13 leading-relaxed text-tx-secondary">
             {t('home.feedbackTeaser.text')}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <LocaleLink
             to="/feedback"
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-micro12 font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
           >
             {t('home.feedbackTeaser.bugCta')}
           </LocaleLink>
           <LocaleLink
             to="/feedback"
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-4 font-display text-[12px] font-bold tracking-wider text-tx-secondary transition-colors duration-200 hover:border-gold/50 hover:text-gold"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-4 font-display text-micro12 font-bold tracking-wider text-tx-secondary transition-colors duration-200 hover:border-gold/50 hover:text-gold"
           >
             {t('home.feedbackTeaser.featureCta')}
           </LocaleLink>

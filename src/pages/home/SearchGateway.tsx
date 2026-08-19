@@ -35,9 +35,9 @@ export default function SearchGateway() {
             'linear-gradient(90deg, transparent, rgba(255,122,69,0.3), rgba(69,200,255,0.3), rgba(255,214,10,0.3), transparent)',
         }}
       />
-      <Reveal className="mx-auto flex w-full max-w-[720px] flex-col items-center gap-6 px-4">
-        <span className="pixel-label text-[10px] text-gold">{t('home.gateway.eyebrow')}</span>
-        <h2 className="text-center font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
+      <Reveal className="mx-auto flex w-full max-w-[45rem] flex-col items-center gap-6 px-4">
+        <span className="pixel-label text-[14px] text-gold">{t('home.gateway.eyebrow')}</span>
+        <h2 className="text-center font-display text-[clamp(1.5rem,3vw,36px)] font-extrabold leading-[1.15]">
           {t('home.gateway.title')}
         </h2>
 

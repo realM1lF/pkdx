@@ -90,7 +90,7 @@ export function SegmentedControl({
             onClick={() => onChange(opt.value)}
             className={cn(
               'relative flex h-full items-center gap-1 rounded-pill px-2.5 font-sans font-semibold transition-colors duration-150',
-              size === 'xs' ? 'text-[10px]' : 'text-[11px]',
+              size === 'xs' ? 'text-[14px] leading-none' : 'text-[11px] leading-none',
               active ? 'text-tx-primary' : 'text-tx-muted hover:text-tx-secondary',
               opt.disabled && 'cursor-not-allowed opacity-35 hover:text-tx-muted',
             )}
@@ -136,7 +136,7 @@ export function MicroChip({
       data-active={active ? 'true' : undefined}
       className={cn(
         'inline-flex h-[22px] items-center gap-1 rounded-pill border border-hairline bg-surface2 px-2',
-        'font-sans text-[10px] font-semibold text-tx-secondary transition-all duration-150',
+        'font-sans text-[14px] font-semibold leading-none text-tx-secondary transition-all duration-150',
         onClick && 'hover:border-hairline2 hover:text-tx-primary',
         active && 'border-gold/60 bg-gold-soft text-gold',
         className,

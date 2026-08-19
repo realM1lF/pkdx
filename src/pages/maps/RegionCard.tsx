@@ -28,7 +28,7 @@ function CoverageChip({ region }: { region: RegionMap }) {
   if (tier === 'FULL') {
     return (
       <span
-        className="inline-flex items-center gap-1.5 rounded-pill border px-2 py-0.5 pixel-label text-[8px]"
+        className="inline-flex items-center gap-1.5 rounded-pill border px-2 py-0.5 pixel-label text-[8px] leading-none"
         style={{ borderColor: `rgba(${rgb},0.5)`, color: region.accent }}
       >
         <span className="h-2 w-2 rounded-full" style={{ background: region.accent, boxShadow: `0 0 6px rgba(${rgb},0.9)` }} />
@@ -38,14 +38,14 @@ function CoverageChip({ region }: { region: RegionMap }) {
   }
   if (tier === 'PARTIAL') {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-pill border border-gold/50 px-2 py-0.5 pixel-label text-[8px] text-gold">
+      <span className="inline-flex items-center gap-1.5 rounded-pill border border-gold/50 px-2 py-0.5 pixel-label text-[8px] leading-none text-gold">
         <span className="h-2 w-2 rounded-full bg-gold/70" />
         {t('maps.partial')}
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-pill border border-dashed border-hairline2 px-2 py-0.5 pixel-label text-[8px] text-tx-muted">
+    <span className="inline-flex items-center gap-1.5 rounded-pill border border-dashed border-hairline2 px-2 py-0.5 pixel-label text-[8px] leading-none text-tx-muted">
       <Lock size={10} />
       {t('maps.soon')}
     </span>
@@ -104,10 +104,10 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
         </div>
 
         {/* title + meta */}
-        <h2 className="mt-2 font-display text-[28px] font-extrabold leading-none tracking-wide text-tx-primary">
+        <h2 className="mt-2 font-display text-[1.75rem] font-extrabold leading-none tracking-wide text-tx-primary">
           {regionName(region, lang)}
         </h2>
-        <p className="mt-1.5 text-[12px] font-medium text-tx-secondary">
+        <p className="mt-1.5 text-micro12 font-medium text-tx-secondary">
           {t('maps.cardMeta', { locations: region.nodes.length, species: region.speciesCount })} · {ERA_LINE[region.region] ?? ''}
         </p>
 
@@ -122,7 +122,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
           ].map(([label, value]) => (
             <div key={label as string} className="px-3 first:pl-0">
               <div className="pixel-label text-[8px] text-tx-muted">{label}</div>
-              <div className="font-display text-[18px] font-bold tabular-nums" style={{ color: region.accent }}>
+              <div className="font-display text-[1.125rem] font-bold tabular-nums" style={{ color: region.accent }}>
                 {value}
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
             to={`/maps/${region.region}`}
             className={cn(
               'inline-flex h-9 items-center gap-1.5 rounded-md border px-4',
-              'font-display text-[12px] font-bold tracking-wider text-tx-primary',
+              'font-display text-micro12 font-bold tracking-wider text-tx-primary',
               'transition-all duration-200 hover:-translate-y-0.5',
             )}
             style={{
@@ -155,7 +155,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
                 site: interactive.site,
                 game: interactive.gameKey ? t(`maps.interactiveGame.${interactive.gameKey}`) : interactive.game,
               })}
-              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-micro12 font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
             >
               {t('maps.interactiveCta')}
               <span aria-hidden className="text-[11px] leading-none">
@@ -166,7 +166,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
           )}
           <LocaleLink
             to={`/nuzlocke/new?region=${region.region}`}
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-[12px] font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3.5 text-micro12 font-semibold text-tx-secondary transition-colors duration-200 hover:bg-surface3 hover:text-gold"
           >
             <Compass size={14} />
             {t('maps.nuzlockeHere')}
@@ -196,7 +196,7 @@ export function SoonCard({ index }: { index: number }) {
       </div>
       <div
         role="tooltip"
-        className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-hairline2 bg-surface2 px-2.5 py-1.5 text-[11px] text-tx-secondary opacity-0 shadow-elevate transition-opacity duration-200 group-hover:opacity-100"
+        className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-hairline2 bg-surface2 px-2.5 py-1.5 text-micro11 text-tx-secondary opacity-0 shadow-elevate transition-opacity duration-200 group-hover:opacity-100"
       >
         {t('maps.soonNote')}
       </div>

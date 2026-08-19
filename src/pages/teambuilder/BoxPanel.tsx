@@ -61,8 +61,8 @@ export default function BoxPanel({
     <section className="tb-panel mt-4 overflow-hidden" aria-label={t8n('tb.box.aria')}>
       <div className="tb-panel-head">
         <div className="min-w-0">
-          <h3 className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{t8n('tb.box.title')}</h3>
-          <p className="tb-micro mt-0.5 !text-[7px]">
+          <h3 className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{t8n('tb.box.title')}</h3>
+          <p className="tb-micro mt-0.5 !text-[8px]">
             {rosterLocked ? t8n('tb.box.linkedNote') : t8n('tb.box.note')}
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function BoxPanel({
                   }
                 }}
                 className={cn(
-                  'group/box relative flex w-[112px] shrink-0 flex-col items-center gap-1 rounded-[10px] border border-hairline bg-surface2/70 px-1.5 pb-1.5 pt-1 transition-all',
+                  'group/box relative flex w-[7rem] shrink-0 flex-col items-center gap-1 rounded-[0.625rem] border border-hairline bg-surface2/70 px-1.5 pb-1.5 pt-1 transition-all',
                   !readOnly && 'cursor-pointer',
                   focused && 'border-gold/40 shadow-[0_0_0_1px_rgba(246,201,69,0.25)]',
                   expanded && '!border-gold shadow-[0_0_20px_rgba(246,201,69,0.28)]',
@@ -154,13 +154,13 @@ export default function BoxPanel({
                 </div>
 
                 <div className="w-full min-w-0 text-center">
-                  <span className="block truncate px-0.5 font-display text-[10px] font-bold text-tx-primary">{label}</span>
-                  <span className="tb-chip mt-0.5 !text-[8px]">LV {slot.level}</span>
+                  <span className="block truncate px-0.5 font-display text-micro10 font-bold text-tx-primary">{label}</span>
+                  <span className="tb-chip mt-0.5 !text-micro8">LV {slot.level}</span>
                 </div>
 
                 <div className="flex justify-center gap-0.5">
                   {types.slice(0, 2).map((t) => (
-                    <TypeBadge key={t} type={t} className="!gap-0 !px-1 !py-0 !text-[7px]" />
+                    <TypeBadge key={t} type={t} className="!gap-0 !px-1 !py-0 !text-[0.4375rem]" />
                   ))}
                 </div>
 
@@ -172,7 +172,7 @@ export default function BoxPanel({
                         e.stopPropagation();
                         onPromote(slot.id);
                       }}
-                      className="tb-chip !px-1 !py-0.5 !text-[7px] transition-all hover:border-gold/60 hover:text-gold"
+                      className="tb-chip !px-1 !py-0.5 !text-[0.4375rem] transition-all hover:border-gold/60 hover:text-gold"
                       title={t8n('tb.box.toTeam')}
                       aria-label={t8n('tb.box.toTeamAria', { name: label })}
                     >
@@ -188,7 +188,7 @@ export default function BoxPanel({
                         onFocus(slot.id);
                         onToggleExpand(slot.id);
                       }}
-                      className="tb-chip !px-1 !py-0.5 !text-[7px] transition-all hover:border-gold/60 hover:text-gold"
+                      className="tb-chip !px-1 !py-0.5 !text-[0.4375rem] transition-all hover:border-gold/60 hover:text-gold"
                       aria-label={t8n('tb.slot.editAria', { name: label })}
                     >
                       {t8n('tb.slot.edit')}
@@ -201,10 +201,10 @@ export default function BoxPanel({
           })}
 
           {!lockRoster && (
-            <div className="flex w-[112px] shrink-0 flex-col">
+            <div className="flex w-[7rem] shrink-0 flex-col">
               {picking ? (
-                <div className="tb-panel flex min-h-[148px] flex-col gap-1.5 border-dashed p-2">
-                  <span className="tb-micro text-center !text-[7px]">{t8n('tb.box.addPokemon')}</span>
+                <div className="tb-panel flex min-h-[9.25rem] flex-col gap-1.5 border-dashed p-2">
+                  <span className="tb-micro text-center !text-[8px]">{t8n('tb.box.addPokemon')}</span>
                   <PokemonPicker
                     menuMinWidth={280}
                     onPick={(e) => {
@@ -220,7 +220,7 @@ export default function BoxPanel({
                 <button
                   type="button"
                   onClick={() => setPicking(true)}
-                  className="group flex min-h-[148px] flex-1 flex-col items-center justify-center gap-2 rounded-[10px] border border-dashed border-hairline bg-surface2/40 transition-colors hover:border-gold/40"
+                  className="group flex min-h-[9.25rem] flex-1 flex-col items-center justify-center gap-2 rounded-[0.625rem] border border-dashed border-hairline bg-surface2/40 transition-colors hover:border-gold/40"
                   aria-label={t8n('tb.box.addAria')}
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline2 text-tx-muted transition-all group-hover:border-gold/60 group-hover:text-gold">

@@ -50,7 +50,7 @@ export default function Versus() {
         <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('versus.pageTitle')}
         </h1>
-        <p className="mt-1 max-w-xl font-sans text-[13px] text-tx-secondary">{t('versus.pageHint')}</p>
+        <p className="mt-1 max-w-xl font-sans text-micro13 text-tx-secondary">{t('versus.pageHint')}</p>
       </header>
       <VersusPanel
         key={`${initialYou ?? ''}|${vsParam ?? ''}|${gameParam ?? ''}`}
@@ -69,7 +69,7 @@ export default function Versus() {
           <h2 className="mt-1 font-display text-lg font-bold tracking-wide text-tx-primary md:text-xl">
             {t('seo.versus.explainerTitle')}
           </h2>
-          <p className="mt-2.5 font-sans text-[13.5px] leading-relaxed text-tx-secondary">
+          <p className="mt-2.5 font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
             {t('seo.versus.explainerBody')}
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function Versus() {
           <h2 className="mt-1 font-display text-lg font-bold tracking-wide text-tx-primary md:text-xl">
             {t('seo.versus.matchupsTitle')}
           </h2>
-          <p className="mt-2 font-sans text-[12.5px] leading-relaxed text-tx-secondary">
+          <p className="mt-2 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
             {t('seo.versus.matchupsBody')}
           </p>
           <ul className="mt-3 flex flex-wrap gap-1.5">
@@ -104,7 +104,7 @@ export default function Versus() {
                 <li key={m.slugEn}>
                   <LocaleLink
                     to={matchupRest(m, lang)}
-                    className="inline-flex h-7 items-center rounded-pill border border-hairline bg-surface2 px-2.5 font-sans text-[11px] text-tx-secondary transition-colors hover:border-gold/50 hover:text-tx-primary"
+                    className="inline-flex h-7 items-center rounded-pill border border-hairline bg-surface2 px-2.5 font-sans text-[11px] leading-none text-tx-secondary transition-colors hover:border-gold/50 hover:text-tx-primary"
                   >
                     {n.a} vs. {n.b}
                   </LocaleLink>

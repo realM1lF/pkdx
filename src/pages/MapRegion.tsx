@@ -22,20 +22,8 @@ import { METHOD_BUCKETS, useRegionData } from '@/lib/mapdata';
 import { onLenisReady } from '@/lib/smooth';
 import MotionRoot from '@/components/MotionRoot';
 import { cn } from '@/lib/utils';
+import { useLayoutBreakpoint } from '@/lib/viewport';
 import './maps/maps.css';
-
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const fn = () => setMatches(mq.matches);
-    mq.addEventListener('change', fn);
-    return () => mq.removeEventListener('change', fn);
-  }, [query]);
-  return matches;
-}
-
-/* ---- 404: unknown region id (maps.md §2.7) ---- */
 
 function UnchartedSector() {
   const { t } = useTranslation();
@@ -50,16 +38,16 @@ function UnchartedSector() {
         </defs>
         <rect width="100%" height="100%" fill="url(#uncharted-grid)" />
       </svg>
-      <p className="pixel-label text-[10px] text-gold">ERROR — 404</p>
-      <h1 className="mt-4 font-display text-[clamp(28px,4vw,44px)] font-extrabold text-tx-primary">
+      <p className="pixel-label text-[14px] text-gold">ERROR — 404</p>
+      <h1 className="mt-4 font-display text-[clamp(1.75rem,4vw,44px)] font-extrabold text-tx-primary">
         {t('maps.uncharted')}
       </h1>
-      <p className="mt-3 max-w-[420px] text-[14px] font-medium text-tx-secondary">
+      <p className="mt-3 max-w-[26.25rem] text-[0.875rem] font-medium text-tx-secondary">
         {t('maps.unchartedBody')}
       </p>
       <LocaleLink
         to="/maps"
-        className="mt-6 inline-flex h-11 items-center rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-6 font-display text-[13px] font-bold tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(246,201,69,0.35)]"
+        className="mt-6 inline-flex h-11 items-center rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-6 font-display text-micro13 font-bold tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(246,201,69,0.35)]"
       >
         {t('maps.backToAtlas')}
       </LocaleLink>
@@ -73,7 +61,7 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const motionOk = !useReducedMotion();
-  const isMobile = !useMediaQuery('(min-width: 1024px)');
+  const isMobile = !useLayoutBreakpoint(1024);
   const byId = useMemo(() => nodeIndex(region), [region]);
 
   /* version state — ?v= deep link */
@@ -241,8 +229,8 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
           <div key={label} className="min-w-0 rounded-md border border-hairline bg-surface1 px-2 py-1.5">
-            <div className="pixel-label text-[7px] text-tx-muted">{label}</div>
-            <div className="font-display text-[15px] font-bold tabular-nums" style={{ color: region.accent }}>
+            <div className="pixel-label text-[8px] text-tx-muted">{label}</div>
+            <div className="font-display text-[0.9375rem] font-bold tabular-nums" style={{ color: region.accent }}>
               {value}
             </div>
           </div>
@@ -289,7 +277,7 @@ function MapRegionDeck({ region }: { region: NonNullable<ReturnType<typeof regio
             <div
               className={cn(
                 'absolute bottom-3 right-3 z-30 transition-[right] duration-300',
-                selectedNode && !isMobile && 'right-[412px]',
+                selectedNode && !isMobile && 'right-[25.75rem]',
               )}
             >
               <Minimap region={region} camera={camera} />

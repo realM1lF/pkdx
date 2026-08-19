@@ -35,7 +35,7 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
   const rgb = accentRgb(region.accent);
   return (
     <motion.div
-      className="pointer-events-none absolute z-30 w-[190px] rounded-sm border bg-surface2 px-3 py-2 shadow-elevate"
+      className="pointer-events-none absolute z-30 w-[11.875rem] rounded-sm border bg-surface2 px-3 py-2 shadow-elevate"
       style={{
         left: x,
         top: y,
@@ -50,16 +50,16 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
     >
       {/* line 1 — kind + label + order */}
       <div className="flex items-baseline justify-between gap-2">
-        <span className="truncate text-[13px] font-bold text-tx-primary">{nodeName(node, lang)}</span>
+        <span className="truncate text-micro13 font-bold text-tx-primary">{nodeName(node, lang)}</span>
         <span className="pixel-label shrink-0 text-[8px] text-tx-muted">{t('maps.order', { n: node.order })}</span>
       </div>
-      <div className="pixel-label mt-0.5 text-[7px]" style={{ color: region.accent }}>
+      <div className="pixel-label mt-0.5 text-[8px]" style={{ color: region.accent }}>
         {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}
         {node.postGame ? ` · ${t('maps.postGame')}` : ''}
       </div>
 
       {/* line 2 — scout readout */}
-      <div className="mt-1.5 font-display text-[12px] font-bold tabular-nums">
+      <div className="mt-1.5 font-display text-micro12 font-bold tabular-nums">
         {nd === undefined ? (
           <span className="maps-shimmer pixel-label text-[8px] text-tx-secondary">{t('maps.scanningShort')}</span>
         ) : nd.status === 'loaded' ? (
@@ -69,13 +69,13 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
             <span className={itemCount > 0 ? 'text-gold' : 'text-tx-muted/60'}>{itemCount} {t('maps.itemsUnit')}</span>
           </span>
         ) : (
-          <span className="pixel-label text-[7px] text-tx-muted">{t('maps.noWild', { version: versionLabel(version) })}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('maps.noWild', { version: versionLabel(version) })}</span>
         )}
       </div>
 
       {/* line 3 — method dots with top rates */}
       {nd?.status === 'loaded' && (
-        <div className="mt-1 flex items-center gap-2.5 text-[10px] font-medium text-tx-muted">
+        <div className="mt-1 flex items-center gap-2.5 text-micro10 font-medium text-tx-muted">
           {METHOD_META.filter((m) => nd.methodTop[m.bucket] !== undefined).map((m) => {
             const Icon = m.icon;
             return (
@@ -89,7 +89,7 @@ export default function ScoutTooltip({ node, region, nd, itemCount, version, x, 
       )}
 
       {/* hint */}
-      <div className="pixel-label mt-1.5 text-[7px] text-tx-primary/40">{t('maps.clickToOpen')}</div>
+      <div className="pixel-label mt-1.5 text-[8px] text-tx-primary/40">{t('maps.clickToOpen')}</div>
     </motion.div>
   );
 }

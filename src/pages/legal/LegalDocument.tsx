@@ -37,7 +37,7 @@ export default function LegalDocument({ page }: { page: LegalPageId }) {
   return (
     <article className="mx-auto max-w-content px-4 py-12 md:px-8 md:py-16">
       <header className="mb-10 border-b border-hairline pb-8">
-        <p className="pixel-label mb-3 text-[10px] text-gold">{t(`legal.${page}.eyebrow`)}</p>
+        <p className="pixel-label mb-3 text-[14px] text-gold">{t(`legal.${page}.eyebrow`)}</p>
         <h1 className="font-display text-3xl font-extrabold tracking-wide text-tx-primary md:text-4xl">
           {t(`legal.${page}.title`)}
         </h1>

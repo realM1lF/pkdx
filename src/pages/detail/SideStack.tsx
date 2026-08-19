@@ -43,7 +43,7 @@ function MiniPanel({
     <section className={cn('dx-panel', className)}>
       <header className="flex items-baseline gap-2 border-b border-hairline px-3.5 py-2">
         <span className="pixel-label text-[8px] text-gold">{eyebrow}</span>
-        <h3 className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{title}</h3>
+        <h3 className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{title}</h3>
       </header>
       <div className="p-3">{children}</div>
     </section>
@@ -77,12 +77,12 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
             onClick={() => entityModal.open('ability', name)}
             title={t('desc.openDesc', { name: nameOfAbility(name, lang) })}
             aria-label={t('desc.openDesc', { name: nameOfAbility(name, lang) })}
-            className="font-sans text-[13px] font-semibold text-tx-primary transition-colors hover:text-gold"
+            className="font-sans text-micro13 font-semibold text-tx-primary transition-colors hover:text-gold"
           >
             {nameOfAbility(name, lang)}
           </button>
           {hidden && (
-            <span className="rounded-pill border border-gold/50 bg-gold-soft px-1.5 font-sans text-[9px] font-bold uppercase text-gold">
+            <span className="rounded-pill border border-gold/50 bg-gold-soft px-1.5 font-sans text-[14px] leading-none font-bold uppercase text-gold">
               {t('detail.side.hidden')}
             </span>
           )}
@@ -91,11 +91,11 @@ function AbilityRow({ name, hidden, pokemonId }: { name: string; hidden: boolean
           <span className="dx-skel mt-1 block h-3 w-4/5" />
         ) : (
           <>
-            <p className="truncate font-sans text-[11px] leading-snug text-tx-muted" title={desc.text}>
+            <p className="truncate font-sans text-micro11 leading-snug text-tx-muted" title={desc.text}>
               {desc.text || t('detail.side.noDesc')}
             </p>
             {desc.enFallback && (
-              <p className="truncate font-sans text-[10px] italic text-gold/80">{t('desc.enFallback')}</p>
+              <p className="truncate font-sans text-micro10 italic text-gold/80">{t('desc.enFallback')}</p>
             )}
           </>
         )}
@@ -121,7 +121,7 @@ function MatchupRow({ label, mult, types, tint }: { label: string; mult: string;
             <span
               key={t}
               data-type={t}
-              className="inline-flex h-[22px] items-center gap-1 rounded-pill border px-1.5 font-sans text-[10px] font-bold uppercase"
+              className="inline-flex h-7 items-center gap-1 rounded-pill border px-1.5 font-sans text-[11px] leading-none font-bold uppercase"
               style={{
                 color: `rgb(${typeRgb(t)})`,
                 borderColor: `rgba(${typeRgb(t)},0.4)`,
@@ -134,7 +134,7 @@ function MatchupRow({ label, mult, types, tint }: { label: string; mult: string;
             </span>
           ))
         ) : (
-          <span className="font-sans text-[11px] text-tx-muted">—</span>
+          <span className="font-sans text-micro11 text-tx-muted">—</span>
         )}
       </div>
     </div>
@@ -147,7 +147,7 @@ function KV({ k, v }: { k: string; v: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-3 border-b border-hairline py-1 last:border-0 last:pb-0 first:pt-0">
       <span className="pixel-label text-[8px] text-tx-muted">{k}</span>
-      <span className="text-right font-sans text-[12px] font-semibold text-tx-primary">{v}</span>
+      <span className="text-right font-sans text-micro12 font-semibold text-tx-primary">{v}</span>
     </div>
   );
 }
@@ -210,7 +210,7 @@ export default function SideStack({
               ))}
             </ul>
           ) : (
-            <p className="font-sans text-[12px] font-semibold text-gold">{t('detail.side.noAbilities')}</p>
+            <p className="font-sans text-micro12 font-semibold text-gold">{t('detail.side.noAbilities')}</p>
           )}
         </MiniPanel>
       </motion.div>

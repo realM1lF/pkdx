@@ -112,11 +112,11 @@ export default function RunHeader({
             renameRun(state.run.id, draft);
             setRenaming(false);
           }}
-          className="h-9 rounded-md border border-gold/60 bg-surface2 px-2 font-display text-[20px] font-extrabold text-tx-primary outline-none"
+          className="h-9 rounded-md border border-gold/60 bg-surface2 px-2 font-display text-[1.25rem] font-extrabold text-tx-primary outline-none"
         />
       ) : (
         <h1
-          className={cn('font-display text-[clamp(18px,2.4vw,24px)] font-extrabold text-tx-primary', owner && 'cursor-text')}
+          className={cn('font-display text-[clamp(1.125rem,2.4vw,24px)] font-extrabold text-tx-primary', owner && 'cursor-text')}
           title={owner ? t('nuz.header.renameTip') : undefined}
           onClick={() => {
             if (!owner) return;
@@ -129,12 +129,12 @@ export default function RunHeader({
       )}
 
       <span
-        className="rounded-full border px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em]"
+        className="rounded-full border px-2 py-0.5 font-pixel text-[8px] tracking-[0.08em]"
         style={{ borderColor: `${region?.accent ?? '#F6C945'}66`, color: region?.accent ?? '#F6C945' }}
       >
         {versionChipLabel(state.run.game)}
       </span>
-      <span className="rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">
+      <span className="rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[8px] tracking-[0.08em] text-tx-muted">
         {region ? regionName(region, lang) : state.run.region}
       </span>
       <RunStatusChip status={state.run.status} />
@@ -177,7 +177,7 @@ export default function RunHeader({
                       if (e.key === 'Escape') setRenamingPlayerId(null);
                     }}
                     onBlur={commitPlayerRename}
-                    className="w-[7rem] bg-transparent text-[12px] font-semibold text-tx-primary outline-none"
+                    className="w-[7rem] bg-transparent text-micro12 font-semibold text-tx-primary outline-none"
                     aria-label={t('nuz.header.renamePlayerTip')}
                   />
                 </motion.span>
@@ -201,8 +201,8 @@ export default function RunHeader({
                 )}
               >
                 <span className={cn('h-2.5 w-2.5 rounded-full', online && 'nz-presence-ring')} style={{ background: p.color }} />
-                <span className="text-[12px] font-semibold text-tx-primary">{p.name}</span>
-                <span className="text-[10px] tabular-nums text-tx-muted">{alive}</span>
+                <span className="text-micro12 font-semibold text-tx-primary">{p.name}</span>
+                <span className="text-micro10 tabular-nums text-tx-muted">{alive}</span>
               </motion.span>
             );
           })}
@@ -210,7 +210,7 @@ export default function RunHeader({
         {/* team builder */}
         <LocaleLink
           to={`/team?fromRun=${state.run.id}`}
-          className="flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-[12px] font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"
+          className="flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-micro12 font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"
         >
           <Swords size={13} /> {t('nuz.openInBuilder')}
         </LocaleLink>
@@ -220,7 +220,7 @@ export default function RunHeader({
           <button
             type="button"
             onClick={copyInvite}
-            className="flex h-9 items-center gap-1.5 rounded-md border border-gold/60 px-3 text-[12px] font-semibold text-gold transition-colors hover:bg-gold/10"
+            className="flex h-9 items-center gap-1.5 rounded-md border border-gold/60 px-3 text-micro12 font-semibold text-gold transition-colors hover:bg-gold/10"
           >
             {copied ? <Check size={13} /> : <Link2 size={13} />}
             {copied ? state.run.invite_code : t('nuz.header.invite')}
@@ -234,17 +234,17 @@ export default function RunHeader({
               <button
                 type="button"
                 onClick={() => setInviteOpen((o) => !o)}
-                className="flex h-9 items-center gap-1.5 rounded-md border border-gold/60 px-3 text-[12px] font-semibold text-gold transition-colors hover:bg-gold/10"
+                className="flex h-9 items-center gap-1.5 rounded-md border border-gold/60 px-3 text-micro12 font-semibold text-gold transition-colors hover:bg-gold/10"
               >
                 <Link2 size={13} /> {t('nuz.header.invite')}
               </button>
             }
-            className="w-[240px] p-3"
+            className="w-[15rem] p-3"
           >
             <PixelLabel className="text-gold">{t('nuz.header.soloRun')}</PixelLabel>
             {!authReady || user ? (
               <>
-                <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.header.soloBody')}</p>
+                <p className="mt-1.5 text-micro12 leading-snug text-tx-secondary">{t('nuz.header.soloBody')}</p>
                 <button
                   type="button"
                   disabled={goingOnline || !authReady || !user}
@@ -255,14 +255,14 @@ export default function RunHeader({
                       if (ok) setInviteOpen(false);
                     });
                   }}
-                  className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-[11px] font-bold tracking-[0.06em] text-tx-primary disabled:opacity-50"
+                  className="nz-sheen mt-2.5 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-2 font-display text-micro11 font-bold tracking-[0.06em] text-tx-primary disabled:opacity-50"
                 >
                   {goingOnline ? t('nuz.header.goingOnline') : t('nuz.header.goOnline')}
                 </button>
               </>
             ) : (
               <>
-                <p className="mt-1.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.header.loginToGoOnline')}</p>
+                <p className="mt-1.5 text-micro12 leading-snug text-tx-secondary">{t('nuz.header.loginToGoOnline')}</p>
                 <LocaleLink
                   to="/account"
                   className="mt-2.5 block w-full rounded-md border border-gold/60 py-2 text-center font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:bg-gold/10"
@@ -292,7 +292,7 @@ export default function RunHeader({
               <MoreVertical size={15} />
             </button>
           }
-          className="w-[220px] py-1"
+          className="w-[13.75rem] py-1"
         >
           {owner && (
             <button
@@ -301,7 +301,7 @@ export default function RunHeader({
                 setMenuOpen(false);
                 setRulesOpen(true);
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <SlidersHorizontal size={13} /> {t('nuz.header.editRules')}
             </button>
@@ -309,7 +309,7 @@ export default function RunHeader({
           <button
             type="button"
             onClick={copySummary}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             <Share2 size={13} /> {t('nuz.exportSummary')}
           </button>
@@ -319,7 +319,7 @@ export default function RunHeader({
               setMenuOpen(false);
               navigate(localePath(`/team?fromRun=${state.run.id}`));
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             <Swords size={13} /> {t('nuz.importToTeam')}
           </button>
@@ -332,7 +332,7 @@ export default function RunHeader({
               }
               setMenuOpen(false);
             }}
-            className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3', owner ? 'text-tx-secondary hover:text-gold' : 'text-tx-muted/50')}
+            className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 transition-colors hover:bg-surface3', owner ? 'text-tx-secondary hover:text-gold' : 'text-tx-muted/50')}
           >
             <Pencil size={13} /> {t('nuz.header.rename')}
           </button>
@@ -344,7 +344,7 @@ export default function RunHeader({
                 pushToast('success', i18n.t('nuz.toast.complete'));
                 setMenuOpen(false);
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <Flag size={13} /> {t('nuz.header.markComplete')}
             </button>
@@ -356,7 +356,7 @@ export default function RunHeader({
                 setRunStatus(state.run.id, 'failed');
                 setMenuOpen(false);
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <Skull size={13} /> {t('nuz.header.markFailed')}
             </button>
@@ -368,7 +368,7 @@ export default function RunHeader({
                 setRunStatus(state.run.id, 'active');
                 setMenuOpen(false);
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <Flag size={13} /> {t('nuz.header.reactivate')}
             </button>
@@ -382,7 +382,7 @@ export default function RunHeader({
                 setMenuOpen(false);
                 setConfirm(null);
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <ArchiveRestore size={13} /> {t('nuz.header.restore')}
             </button>
@@ -401,7 +401,7 @@ export default function RunHeader({
                 navigate(localePath('/nuzlocke'));
               }}
               className={cn(
-                'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+                'flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 transition-colors hover:bg-surface3',
                 confirm === 'archive' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
               )}
             >
@@ -422,7 +422,7 @@ export default function RunHeader({
               navigate(localePath('/nuzlocke'));
             }}
             className={cn(
-              'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+              'flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 transition-colors hover:bg-surface3',
               confirm === 'delete' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
             )}
           >

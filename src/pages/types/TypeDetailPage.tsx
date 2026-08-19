@@ -48,7 +48,7 @@ function SectionCard({
 function MatrixRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5 border-b border-hairline/60 px-4 py-3 last:border-b-0 sm:flex-row sm:items-center sm:gap-3 sm:px-5">
-      <span className="pixel-label w-40 shrink-0 text-[7px] text-tx-muted">{label}</span>
+      <span className="pixel-label w-40 shrink-0 text-[8px] text-tx-muted">{label}</span>
       {children}
     </div>
   );
@@ -66,7 +66,7 @@ export default function TypeDetailPage() {
         <h1 className="font-display text-xl font-extrabold text-tx-primary">
           {t('seo.type.notFoundTitle')}
         </h1>
-        <p className="mt-3 text-[14px] text-tx-secondary">
+        <p className="mt-3 text-[0.875rem] text-tx-secondary">
           <LocaleLink to={typeOverviewPath(lang)} className="text-gold hover:underline">
             {t('seo.type.notFoundLink')}
           </LocaleLink>
@@ -150,7 +150,7 @@ export default function TypeDetailPage() {
       <div className="max-w-3xl">
         {/* breadcrumb — mirrored by the JSON-LD BreadcrumbList */}
         <nav aria-label="Breadcrumb" className="mb-4">
-          <ol className="flex flex-wrap items-center gap-1 font-sans text-[12px] font-semibold text-tx-muted">
+          <ol className="flex flex-wrap items-center gap-1 font-sans text-micro12 font-semibold text-tx-muted">
             <li>
               <LocaleLink to={typeOverviewPath(lang)} className="transition-colors hover:text-gold">
                 {t('seo.type.crumbTypes')}
@@ -173,7 +173,7 @@ export default function TypeDetailPage() {
           <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
             {t('seo.type.title', { name })}
           </h1>
-          <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">
+          <p className="mt-3 font-sans text-[0.875rem] leading-relaxed text-tx-secondary">
             {t('seo.type.intro1', {
               name,
               se: names(offense.superEffective),
@@ -217,7 +217,7 @@ export default function TypeDetailPage() {
               {counters.map((c) => (
                 <div key={c.type} className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                   <TypeChip type={c.type} lang={lang} mult={multLabel(c.hitsFor)} />
-                  <span className="text-[12px] leading-snug text-tx-secondary">{counterReason(c)}</span>
+                  <span className="text-micro12 leading-snug text-tx-secondary">{counterReason(c)}</span>
                 </div>
               ))}
             </div>
@@ -227,10 +227,10 @@ export default function TypeDetailPage() {
                   id={example.pokemonId}
                   name={exampleName}
                   era="gen5"
-                  className="h-[52px] w-[52px] transition-transform duration-150 group-hover:scale-110"
+                  className="h-[3.25rem] w-[3.25rem] transition-transform duration-150 group-hover:scale-110"
                 />
               </LocaleLink>
-              <p className="font-sans text-[13px] leading-relaxed text-tx-secondary">
+              <p className="font-sans text-micro13 leading-relaxed text-tx-secondary">
                 <strong className="font-semibold text-tx-primary">
                   {t('seo.type.exampleLead', { example: exampleName, mult: multLabel(exampleMult) })}
                 </strong>{' '}
@@ -249,14 +249,14 @@ export default function TypeDetailPage() {
             <span className="pixel-label mr-1 text-[8px] text-tx-muted">{t('seo.type.deepLinksEyebrow')}</span>
             <LocaleLink
               to={`/versus?you=${example.pokemonId}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gold/50 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/10"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gold/50 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/10"
             >
               <Swords size={12} />
               {t('seo.type.versusCta', { example: exampleName })}
             </LocaleLink>
             <LocaleLink
               to={`/pokedex?type=${slug}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-micro11 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <Crosshair size={12} />
               {t('seo.type.pokedexCta', { name })}

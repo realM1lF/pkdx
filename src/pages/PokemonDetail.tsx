@@ -231,21 +231,21 @@ export default function PokemonDetail() {
       <div className="mx-auto max-w-content px-4 pb-16 pt-6 md:px-8">
         <div className="dx-skel mb-4 h-6 w-44" />
         <div className="grid grid-cols-12 gap-4">
-          <div className="dx-panel col-span-12 flex h-[380px] items-center justify-center lg:col-span-7">
+          <div className="dx-panel col-span-12 flex h-[23.75rem] items-center justify-center lg:col-span-7">
             <div className="flex flex-col items-center gap-3">
               <PokeballLoader variant="inline" />
               <span className="pixel-label text-[9px] text-tx-muted">{t8n('detail.syncing', { id: param })}</span>
             </div>
           </div>
-          <div className="dx-panel col-span-12 h-[380px] p-5 lg:col-span-5">
+          <div className="dx-panel col-span-12 h-[23.75rem] p-5 lg:col-span-5">
             <div className="flex h-full flex-col justify-center gap-3">
               {[0, 1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="dx-skel h-2.5 w-full rounded-pill" style={{ animationDelay: `${i * 120}ms` }} />
               ))}
             </div>
           </div>
-          <div className="dx-panel col-span-12 h-[300px] lg:col-span-7" />
-          <div className="dx-panel col-span-12 h-[300px] lg:col-span-5" />
+          <div className="dx-panel col-span-12 h-[18.75rem] lg:col-span-7" />
+          <div className="dx-panel col-span-12 h-[18.75rem] lg:col-span-5" />
         </div>
         {/* SEO pilot content renders even while PokéAPI data is in flight —
             the static HTML always carries the Q&A + location tables */}
@@ -273,7 +273,7 @@ export default function PokemonDetail() {
       <div className="relative z-30 mb-3 flex items-center justify-between gap-3">
         <LocaleLink
           to={fromMaps ? `/maps/${fromMaps.region}?node=${fromMaps.nodeId}` : '/pokedex'}
-          className="group inline-flex items-center gap-1.5 font-sans text-[13px] font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
+          className="group inline-flex items-center gap-1.5 font-sans text-micro13 font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
         >
           <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
           {fromMaps ? t8n('detail.backToMap') : t8n('detail.backAll')}
@@ -316,7 +316,7 @@ export default function PokemonDetail() {
       {tab === 'versus' ? (
         <Suspense
           fallback={
-            <div className="dx-panel flex h-[520px] flex-col items-center justify-center gap-4" role="status">
+            <div className="dx-panel flex h-[32.5rem] flex-col items-center justify-center gap-4" role="status">
               <PokeballLoader variant="inline" />
               <span className="pixel-label text-[9px] text-tx-muted">{t8n('detail.loadingVersus')}</span>
               <div className="flex w-full max-w-md flex-col gap-3 px-6">
@@ -367,7 +367,7 @@ export default function PokemonDetail() {
               type="button"
               onClick={() => switchTab('versus')}
               title={t8n('detail.vsTitle')}
-              className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
+              className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[11px] leading-none font-bold tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
             >
               <Swords size={11} />
               VS
@@ -389,7 +389,7 @@ export default function PokemonDetail() {
           eyebrow={t8n('detail.panels.movesEyebrow')}
           title={t8n('detail.panels.movesTitle')}
           className="col-span-12 lg:col-span-7"
-          bodyClassName="flex min-h-[420px] flex-col"
+          bodyClassName="flex min-h-[26.25rem] flex-col"
         >
           <MovesPanel pokemon={pokemon} version={edition} ancestors={ancestors} />
         </Panel>
@@ -406,7 +406,7 @@ export default function PokemonDetail() {
 
         {/* ROW 3 — left stack: evolution + where to find (span 5) · museum (span 7) */}
         <div className="col-span-12 flex flex-col gap-4 lg:col-span-5">
-          <Panel eyebrow={t8n('detail.panels.evoEyebrow')} title={t8n('detail.panels.evoTitle')} bodyClassName="min-h-[140px]">
+          <Panel eyebrow={t8n('detail.panels.evoEyebrow')} title={t8n('detail.panels.evoTitle')} bodyClassName="min-h-[8.75rem]">
             <HonestyHint show className="border-b border-hairline px-4 py-1.5">
               {t8n('honesty.evoCurrent')}
             </HonestyHint>
@@ -433,8 +433,8 @@ export default function PokemonDetail() {
           id="sprite-museum"
           eyebrow={t8n('detail.panels.museumEyebrow')}
           title={t8n('detail.panels.museumTitle')}
-          className="col-span-12 lg:col-span-7"
-          bodyClassName="p-0"
+          className="col-span-12 flex h-full min-h-0 flex-col lg:col-span-7"
+          bodyClassName="flex min-h-0 flex-1 flex-col p-0"
         >
           <SpriteMuseum id={pokemon.id} name={pokemon.name} />
         </Panel>

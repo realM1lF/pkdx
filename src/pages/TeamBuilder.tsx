@@ -835,7 +835,7 @@ function TeamBuilder() {
   if (sharePayload && (shareInvalid || !team)) {
     return (
       <div className="mx-auto max-w-content px-4 pb-20 pt-8 md:px-8">
-        <div className="tb-panel mx-auto max-w-[480px] px-6 py-10 text-center">
+        <div className="tb-panel mx-auto max-w-[30rem] px-6 py-10 text-center">
           <span className="tb-micro-gold">{t8n(shareInvalid ? 'tb.sharePage.invalid' : 'tb.sharePage.loading')}</span>
           {shareInvalid && (
             <button
@@ -994,7 +994,7 @@ function TeamBuilder() {
       ) : (
         <div className="tb-panel mt-4 flex flex-col items-center gap-3 border-dashed px-6 py-10 text-center">
           <span className="tb-micro-gold">{t8n('tb.empty.title')}</span>
-          <p className="max-w-[420px] text-[12px] leading-relaxed text-tx-secondary">{t8n('tb.empty.body')}</p>
+          <p className="max-w-[26.25rem] text-micro12 leading-relaxed text-tx-secondary">{t8n('tb.empty.body')}</p>
           <HonestyHint show>{t8n('honesty.nationalPicker')}</HonestyHint>
         </div>
       )}

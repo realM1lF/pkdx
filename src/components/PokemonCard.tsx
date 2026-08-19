@@ -92,14 +92,13 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
         <div className="relative flex w-full items-start justify-between">
           <span
             className={cn(
-              'pixel-label transition-colors duration-200',
-              compact ? 'text-[9px]' : 'text-[10px]',
+              'pixel-label text-[14px] transition-colors duration-200',
               shiny ? 'text-gold' : 'text-tx-muted',
             )}
           >
             {padNum(dexId)}
           </span>
-          <span className={cn('flex min-w-0 items-center justify-end gap-1', compact ? 'text-[8px]' : 'text-[9px]')}>
+          <span className={cn('flex min-w-0 items-center justify-end gap-1', compact ? 'text-micro8' : 'text-micro9')}>
             <span className="pixel-label text-tx-muted/70">GEN {genRoman}</span>
             {s.form && (
               <span className="pixel-label min-w-0 truncate text-gold">{t(FORM_I18N_KEY[s.form])}</span>
@@ -161,8 +160,8 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
         <div className={cn('relative grid w-full grid-cols-3 gap-1.5', compact ? 'mt-1' : 'mt-2')}>
           {TRIAD.map((k) => (
             <div key={k} className="flex flex-col gap-0.5">
-              <span className="pixel-label text-[7px] text-tx-muted/80">{STAT_LABELS[k]}</span>
-              <div className="h-[3px] overflow-hidden rounded-pill bg-surface3">
+              <span className="pixel-label text-[8px] text-tx-muted/80">{STAT_LABELS[k]}</span>
+              <div className="h-[0.1875rem] overflow-hidden rounded-pill bg-surface3">
                 <div
                   className="pdx-triad-bar h-full rounded-pill"
                   style={{

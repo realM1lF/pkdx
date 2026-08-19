@@ -153,7 +153,7 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
         <div className="flex items-center justify-between">
           <span className="pixel-label text-[9px] text-tx-muted">{card.tag}</span>
           <span
-            className="inline-flex items-center gap-1.5 rounded-pill border px-2 py-0.5 pixel-label text-[8px]"
+            className="inline-flex items-center gap-1.5 rounded-pill border px-2 py-0.5 pixel-label text-[8px] leading-none"
             style={{ borderColor: `rgba(${rgb},0.5)`, color: card.accent }}
           >
             <span className="h-2 w-2 rounded-full" style={{ background: card.accent, boxShadow: `0 0 6px rgba(${rgb},0.9)` }} />
@@ -162,10 +162,10 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
         </div>
 
         {/* title + caption */}
-        <h3 className="mt-3 font-display text-[30px] font-extrabold leading-none tracking-wide text-tx-primary">
+        <h3 className="mt-3 font-display text-[1.875rem] font-extrabold leading-none tracking-wide text-tx-primary">
           {t(card.titleKey)}
         </h3>
-        <p className="mt-2 max-w-[46ch] text-[12.5px] font-medium leading-relaxed text-tx-secondary">
+        <p className="mt-2 max-w-[46ch] text-[0.7813rem] font-medium leading-relaxed text-tx-secondary">
           {t(card.captionKey)}
         </p>
 
@@ -176,7 +176,7 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
           {card.stats.map(([labelKey, value]) => (
             <div key={labelKey} className="px-3 first:pl-0">
               <div className="pixel-label text-[8px] text-tx-muted">{t(labelKey)}</div>
-              <div className="font-display text-[18px] font-bold tabular-nums" style={{ color: card.accent }}>
+              <div className="font-display text-[1.125rem] font-bold tabular-nums" style={{ color: card.accent }}>
                 {value}
               </div>
             </div>
@@ -187,7 +187,7 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
         <div className="mt-3.5">
           <LocaleLink
             to={card.to}
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-micro12 font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
             style={{
               borderColor: `rgba(${rgb},0.6)`,
               background: `linear-gradient(135deg, rgba(${rgb},0.25), rgba(${rgb},0.10))`,
@@ -209,7 +209,7 @@ export default function ToolkitSection() {
     <section className="relative bg-abyss pb-24">
       <div className="mx-auto max-w-content border-t border-hairline px-4 pt-16 md:px-8 md:pt-20">
         <div className="mb-8 flex items-center gap-3">
-          <span className="pixel-label text-[10px] text-gold">{t('home.features.toolkitEyebrow')}</span>
+          <span className="pixel-label text-[14px] text-gold">{t('home.features.toolkitEyebrow')}</span>
           <span className="h-px flex-1 bg-hairline" />
         </div>
         <div className="grid gap-5 lg:grid-cols-2">

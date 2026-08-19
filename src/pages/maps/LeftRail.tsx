@@ -54,12 +54,12 @@ function LeaderRow({
         <Sprite id={leader.pokemonId} name={leader.slug} era={leader.pokemonId <= 649 ? 'gen5' : 'default'} className="h-6 w-6" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[12px] font-medium leading-tight text-tx-primary transition-colors group-hover:text-gold">
+        <span className="block truncate text-micro12 font-medium leading-tight text-tx-primary transition-colors group-hover:text-gold">
           {nameOfPokemon(leader.pokemonId, lang)}
         </span>
-        <span className="block truncate text-[9px] text-tx-muted">{node ? nodeName(node, lang) : ''}</span>
+        <span className="block truncate text-micro9 text-tx-muted">{node ? nodeName(node, lang) : ''}</span>
       </span>
-      <span className="shrink-0 font-display text-[11px] font-bold tabular-nums" style={{ color: accent }}>
+      <span className="shrink-0 font-display text-micro11 font-bold tabular-nums" style={{ color: accent }}>
         {leader.rate}%
       </span>
     </button>
@@ -85,7 +85,7 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
   const progress = total > 0 ? scanned / total : 0;
 
   return (
-    <aside className="nz-slim-scroll flex w-[232px] shrink-0 flex-col gap-4 overflow-y-auto border-r border-hairline bg-surface1/90 px-4 py-4 backdrop-blur-md" data-lenis-prevent>
+    <aside className="nz-slim-scroll flex w-[14.5rem] shrink-0 flex-col gap-4 overflow-y-auto border-r border-hairline bg-surface1/90 px-4 py-4 backdrop-blur-md" data-lenis-prevent>
       {/* coverage ring */}
       <div className="flex items-center gap-3">
         <svg width={64} height={64} viewBox="0 0 64 64" className="shrink-0">
@@ -109,7 +109,7 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
         </svg>
         <div>
           <div className="pixel-label text-[8px] text-tx-muted">{t('maps.coverage')}</div>
-          <div className="mt-0.5 text-[11px] font-medium tabular-nums text-tx-secondary">
+          <div className="mt-0.5 text-micro11 font-medium tabular-nums text-tx-secondary">
             {t('maps.scanned', { scanned, total })}
           </div>
         </div>
@@ -126,8 +126,8 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
           <div key={label} className="rounded-md border border-hairline bg-surface1 px-2.5 py-2">
-            <div className="pixel-label text-[7px] text-tx-muted">{label}</div>
-            <div className="mt-0.5 font-display text-[16px] font-bold tabular-nums" style={{ color: region.accent }}>
+            <div className="pixel-label text-[8px] text-tx-muted">{label}</div>
+            <div className="mt-0.5 font-display text-[1rem] font-bold tabular-nums" style={{ color: region.accent }}>
               {value}
             </div>
           </div>
@@ -176,7 +176,7 @@ export default function LeftRail({ region, data, scanned, total, onPickNode }: L
         </section>
       )}
 
-      <p className="mt-auto text-[10px] font-medium leading-relaxed text-tx-muted">
+      <p className="mt-auto text-micro10 font-medium leading-relaxed text-tx-muted">
         {t('maps.ratesNote')}
       </p>
     </aside>

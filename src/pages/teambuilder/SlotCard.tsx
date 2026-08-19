@@ -84,16 +84,16 @@ export default function SlotCard({
   if (!slot.pokemon || slot.pokemonId == null) {
     if (lockRoster) {
       return (
-        <div className="tb-panel flex min-h-[172px] flex-col items-center justify-center gap-2 border-dashed p-3 opacity-60">
+        <div className="tb-panel flex min-h-[10.75rem] flex-col items-center justify-center gap-2 border-dashed p-3 opacity-60">
           <span className="tb-micro text-center">{t8n('tb.slot.empty')}</span>
-          <span className="tb-micro !text-[7px] text-tx-muted/80">{t8n('tb.linked.rosterLocked')}</span>
+          <span className="tb-micro !text-[8px] text-tx-muted/80">{t8n('tb.linked.rosterLocked')}</span>
         </div>
       );
     }
     return (
       <div
         className={cn(
-          'tb-panel flex min-h-[172px] flex-col items-stretch justify-center gap-2 border-dashed p-3 transition-colors',
+          'tb-panel flex min-h-[10.75rem] flex-col items-stretch justify-center gap-2 border-dashed p-3 transition-colors',
           picking ? '!border-solid border-gold/40' : 'hover:border-gold/30',
         )}
       >
@@ -147,7 +147,7 @@ export default function SlotCard({
       layout
       onClick={handleCardClick}
       className={cn(
-        'tb-panel tb-slot-drag relative flex min-h-[172px] flex-col overflow-hidden p-2.5 transition-shadow',
+        'tb-panel tb-slot-drag relative flex min-h-[10.75rem] flex-col overflow-hidden p-2.5 transition-shadow',
         !readOnly && 'cursor-pointer',
         focused && 'border-gold/40 shadow-[0_0_0_1px_rgba(246,201,69,0.25)]',
         /* the slot whose editor is open must be unmistakable (user feedback):
@@ -162,7 +162,7 @@ export default function SlotCard({
     >
       {/* editing badge — which slot the open editor belongs to */}
       {expanded && (
-        <span className="pixel-label absolute left-1/2 top-1 z-10 -translate-x-1/2 rounded-pill border border-gold/70 bg-void/90 px-2 py-0.5 text-[7px] text-gold shadow-[0_0_12px_rgba(246,201,69,0.4)]">
+        <span className="pixel-label absolute left-1/2 top-1 z-10 -translate-x-1/2 rounded-pill border border-gold/70 bg-void/90 px-2 py-0.5 text-[8px] leading-none text-gold shadow-[0_0_12px_rgba(246,201,69,0.4)]">
           {t8n('tb.editing')}
         </span>
       )}
@@ -183,7 +183,7 @@ export default function SlotCard({
           </LocaleLink>
           {!legality.legal && (
             <span
-              className="tb-illegal-flag tb-chip !border-gold/70 !bg-gold/10 !px-1.5 !py-0.5 !text-[7px] !text-gold"
+              className="tb-illegal-flag tb-chip !border-gold/70 !bg-gold/10 !px-1.5 !py-0.5 !text-[0.4375rem] !text-gold"
               title={legality.reasons.map((r) => legalityReasonText(r, lang)).join(' · ')}
             >
               <AlertTriangle size={9} />
@@ -238,14 +238,14 @@ export default function SlotCard({
 
       {/* legality reasons — always visible (native title-tooltip alone was too hidden) */}
       {!legality.legal && (
-        <div className="tb-micro mt-0.5 !text-[7px] leading-snug !text-gold/80">
+        <div className="tb-micro mt-0.5 !text-[8px] leading-snug !text-gold/80">
           {legality.reasons.slice(0, 2).map((r) => legalityReasonText(r, lang)).join(' · ')}
           {legality.reasons.length > 2 && ` +${legality.reasons.length - 2}`}
         </div>
       )}
 
       {/* sprite on aura — card click opens editor; detail via top-right icon */}
-      <div className="group/detail relative mx-auto my-0.5 h-[64px] w-[64px]">
+      <div className="group/detail relative mx-auto my-0.5 h-[4rem] w-[4rem]">
         <span
           aria-hidden
           className="absolute inset-[-8px] animate-breathe rounded-full transition-opacity group-hover/detail:opacity-100"
@@ -274,22 +274,22 @@ export default function SlotCard({
       {/* name + types */}
       <div className="text-center">
         <span
-          className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary"
+          className="block truncate font-display text-micro12 font-bold tracking-wide text-tx-primary"
           title={label}
         >
           {label}
         </span>
         <div className="mt-1 flex justify-center gap-1">
           {types.map((t) => (
-            <TypeBadge key={t} type={t} className="!gap-1 !px-1.5 !py-0 !text-[8px]" />
+            <TypeBadge key={t} type={t} className="!gap-1 !px-1.5 !py-0 !text-micro8" />
           ))}
         </div>
       </div>
 
       {/* item · ability (one glance, micro rows) */}
-      <div className="mt-1.5 space-y-0.5 text-[8px] leading-tight">
+      <div className="mt-1.5 space-y-0.5 text-micro8 leading-tight">
         <div className="flex items-baseline justify-between gap-1.5">
-          <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.item')}</span>
+          <span className="tb-micro shrink-0 !text-[0.4063rem]">{t8n('tb.item')}</span>
           {slot.item ? (
             <button
               type="button"
@@ -309,7 +309,7 @@ export default function SlotCard({
           )}
         </div>
         <div className="flex items-baseline justify-between gap-1.5">
-          <span className="tb-micro shrink-0 !text-[6.5px]">{t8n('tb.ability')}</span>
+          <span className="tb-micro shrink-0 !text-[0.4063rem]">{t8n('tb.ability')}</span>
           {slot.ability ? (
             <button
               type="button"
@@ -342,7 +342,7 @@ export default function SlotCard({
                 e.stopPropagation();
                 entityModal.open('move', m);
               }}
-              className="flex h-[16px] min-w-0 items-center gap-1 rounded-[5px] border border-hairline bg-surface2 px-1 text-[7.5px] font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"
+              className="flex h-[1rem] min-w-0 items-center gap-1 rounded-[0.3125rem] border border-hairline bg-surface2 px-1 text-[0.4688rem] font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"
               style={color ? ({ '--t': color.rgb } as CSSProperties) : undefined}
               title={nameOfMove(m, lang)}
               aria-label={t8n('desc.openDesc', { name: nameOfMove(m, lang) })}
@@ -360,7 +360,7 @@ export default function SlotCard({
           ) : (
             <span
               key={i}
-              className="flex h-[16px] min-w-0 items-center gap-1 rounded-[5px] border border-hairline/50 px-1 text-[7.5px] font-semibold text-tx-muted/40"
+              className="flex h-[1rem] min-w-0 items-center gap-1 rounded-[0.3125rem] border border-hairline/50 px-1 text-[0.4688rem] font-semibold text-tx-muted/40"
             >
               <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: '#2a3040' }} />
               <span className="truncate">—</span>
@@ -371,12 +371,12 @@ export default function SlotCard({
 
       {/* actions: level + VS link + expander toggle */}
       <div className="mt-auto flex items-center justify-between gap-1 border-t border-hairline pt-1.5">
-        <span className="tb-chip !text-[9px]">LV {slot.level}</span>
+        <span className="tb-chip !text-micro9">LV {slot.level}</span>
         <div className="flex items-center gap-1">
           <LocaleLink
             to={versusHref({ you: slot.pokemonId, vs: versusOpponentId ?? undefined, game: versionGroup })}
             onClick={(e) => e.stopPropagation()}
-            className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold"
+            className="tb-chip !px-1.5 !py-0.5 !text-micro8 transition-all hover:border-gold/60 hover:text-gold"
             aria-label={t8n('tb.slot.compare', { name: label })}
             title={t8n('tb.slot.openVs')}
           >
@@ -392,7 +392,7 @@ export default function SlotCard({
             }}
             disabled={readOnly}
             title={readOnly ? t8n('tb.linked.readOnly') : undefined}
-            className="tb-chip !px-1.5 !py-0.5 !text-[8px] transition-all hover:border-gold/60 hover:text-gold disabled:cursor-not-allowed disabled:opacity-40"
+            className="tb-chip !px-1.5 !py-0.5 !text-micro8 transition-all hover:border-gold/60 hover:text-gold disabled:cursor-not-allowed disabled:opacity-40"
             aria-expanded={expanded}
             aria-label={t8n('tb.slot.editAria', { name: label })}
           >

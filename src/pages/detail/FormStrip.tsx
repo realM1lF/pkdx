@@ -43,7 +43,7 @@ export default function FormStrip({ speciesId, currentSlug, edition }: FormStrip
           aria-current={onBase ? 'page' : undefined}
         >
           <Sprite id={speciesId} name={nameOfPokemon(speciesId, lang)} era="gen5" skeleton={false} className="h-6 w-6" />
-          <span className="max-w-[7rem] truncate font-sans text-[10px] font-semibold">{nameOfPokemon(speciesId, lang)}</span>
+          <span className="max-w-[7rem] truncate font-sans text-micro10 font-semibold">{nameOfPokemon(speciesId, lang)}</span>
         </LocaleLink>
         {forms.map((f) => {
           const active = f.slug === currentSlug;
@@ -60,8 +60,8 @@ export default function FormStrip({ speciesId, currentSlug, edition }: FormStrip
               aria-current={active ? 'page' : undefined}
             >
               <Sprite id={f.spriteId} name={nameOfPokemon(f.slug, lang)} era="default" skeleton={false} className="h-6 w-6" />
-              <span className="max-w-[9rem] truncate font-sans text-[10px] font-semibold">{nameOfPokemon(f.slug, lang)}</span>
-              <span className="pixel-label hidden text-[7px] sm:inline">{t(FORM_I18N_KEY[f.kind])}</span>
+              <span className="max-w-[9rem] truncate font-sans text-micro10 font-semibold">{nameOfPokemon(f.slug, lang)}</span>
+              <span className="pixel-label hidden text-[8px] sm:inline">{t(FORM_I18N_KEY[f.kind])}</span>
             </LocaleLink>
           );
         })}

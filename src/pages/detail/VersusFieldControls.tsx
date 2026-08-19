@@ -64,7 +64,7 @@ export default function VersusFieldControls({
     <div className={cn('flex flex-wrap items-center gap-2', className)}>
       {weatherOptions.length > 0 && (
         <div className="flex flex-wrap items-center gap-1">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('versus.weatherLabel')}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('versus.weatherLabel')}</span>
           {weatherOptions.map((w) => (
             <button
               key={w}
@@ -72,7 +72,7 @@ export default function VersusFieldControls({
               aria-pressed={weather === w}
               onClick={() => pickWeather(w)}
               className={cn(
-                'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
+                'rounded-pill border px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase transition-colors',
                 weather === w
                   ? 'border-gold/60 bg-gold/10 text-gold'
                   : 'border-hairline text-tx-muted hover:text-tx-secondary',
@@ -85,7 +85,7 @@ export default function VersusFieldControls({
       )}
       {terrainOptions.length > 0 && (
         <div className="flex flex-wrap items-center gap-1">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('versus.terrainLabel')}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('versus.terrainLabel')}</span>
           {terrainOptions.map((tr) => (
             <button
               key={tr}
@@ -93,7 +93,7 @@ export default function VersusFieldControls({
               aria-pressed={terrain === tr}
               onClick={() => pickTerrain(tr)}
               className={cn(
-                'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
+                'rounded-pill border px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase transition-colors',
                 terrain === tr
                   ? 'border-gold/60 bg-gold/10 text-gold'
                   : 'border-hairline text-tx-muted hover:text-tx-secondary',

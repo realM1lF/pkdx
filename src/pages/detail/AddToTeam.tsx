@@ -81,7 +81,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
         type="button"
         onClick={() => setOpen(true)}
         title={t8n('detail.addToTeam.button')}
-        className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[10px] font-bold tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
+        className="inline-flex h-7 items-center gap-1 rounded-pill border border-gold/60 bg-abyss/70 px-2.5 font-display text-[11px] leading-none font-bold tracking-[0.06em] text-gold backdrop-blur-sm transition-all duration-150 hover:shadow-glow-gold"
       >
         <Users size={11} />
         <span className="hidden sm:inline">{t8n('detail.addToTeam.button')}</span>
@@ -106,7 +106,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-              className="dx-panel w-full max-w-[440px] overflow-hidden !rounded-[16px] shadow-elevate"
+              className="dx-panel w-full max-w-[27.5rem] overflow-hidden !rounded-[1rem] shadow-elevate"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between border-b border-hairline px-4 py-2.5">
@@ -136,9 +136,9 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
 
                 {phase.kind === 'done' && (
                   <div className="space-y-2.5">
-                    <div className="flex items-center gap-2.5 rounded-[8px] border border-gold/50 bg-gold/10 p-3">
+                    <div className="flex items-center gap-2.5 rounded-[0.5rem] border border-gold/50 bg-gold/10 p-3">
                       <Check size={14} className="shrink-0 text-gold" />
-                      <span className="text-[12px] font-semibold text-tx-primary">
+                      <span className="text-micro12 font-semibold text-tx-primary">
                         {phase.target === 'box'
                           ? t8n('detail.addToTeam.addedToBox', {
                               pokemon: nameOfPokemon(pokemon.name, lang),
@@ -153,7 +153,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                     <LocaleLink
                       to={teamEditPath(phase.team.id)}
                       onClick={() => saveDraft(phase.team)}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[8px] border border-gold/60 bg-gold/15 px-3 py-2 font-display text-[11px] font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[0.5rem] border border-gold/60 bg-gold/15 px-3 py-2 font-display text-micro11 font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
                     >
                       <FolderOpen size={12} />
                       {t8n('detail.addToTeam.openTeam')}
@@ -165,11 +165,11 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                   <>
                     {teams.length === 0 ? (
                       <div className="py-4 text-center">
-                        <p className="text-[13px] font-semibold text-tx-secondary">{t8n('detail.addToTeam.empty')}</p>
+                        <p className="text-micro13 font-semibold text-tx-secondary">{t8n('detail.addToTeam.empty')}</p>
                         <button
                           type="button"
                           onClick={createAndAdd}
-                          className="mx-auto mt-3 inline-flex items-center gap-1.5 rounded-pill border border-gold/60 bg-gold/15 px-3.5 py-2 font-display text-[11px] font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
+                          className="mx-auto mt-3 inline-flex items-center gap-1.5 rounded-pill border border-gold/60 bg-gold/15 px-3.5 py-2 font-display text-[11px] leading-none font-bold tracking-[0.06em] text-gold transition-all hover:shadow-glow-gold"
                         >
                           <Plus size={12} />
                           {t8n('detail.addToTeam.createNew')}
@@ -186,7 +186,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                               <button
                                 type="button"
                                 onClick={() => void addTo(team)}
-                                className="flex w-full items-center gap-2.5 rounded-[10px] border border-hairline bg-surface2 px-3 py-2.5 text-left transition-colors hover:border-gold/40"
+                                className="flex w-full items-center gap-2.5 rounded-[0.625rem] border border-hairline bg-surface2 px-3 py-2.5 text-left transition-colors hover:border-gold/40"
                               >
                                 <span className="flex items-center gap-1">
                                   {team.slots.map((s) =>
@@ -202,7 +202,7 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                                     ) : (
                                       <span
                                         key={s.id}
-                                        className="flex h-7 w-7 items-center justify-center rounded-[6px] border border-hairline text-[9px] text-tx-muted"
+                                        className="flex h-7 w-7 items-center justify-center rounded-[0.375rem] border border-hairline text-micro9 text-tx-muted"
                                       >
                                         —
                                       </span>
@@ -210,10 +210,10 @@ export default function AddToTeam({ pokemon }: { pokemon: Pokemon }) {
                                   )}
                                 </span>
                                 <span className="min-w-0 flex-1">
-                                  <span className="block truncate font-display text-[12px] font-bold tracking-wide text-tx-primary">
+                                  <span className="block truncate font-display text-micro12 font-bold tracking-wide text-tx-primary">
                                     {team.name}
                                   </span>
-                                  <span className="pixel-label text-[7px] text-tx-muted">
+                                  <span className="pixel-label text-[8px] text-tx-muted">
                                     {versionGroupById(team.versionGroup).short} · {filled}/6
                                     {boxed > 0 ? ` · +${boxed}` : ''}
                                   </span>

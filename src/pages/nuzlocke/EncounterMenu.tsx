@@ -9,6 +9,7 @@ import { listEvolutionOptions, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { deleteEncounter, evolveEncounter, pushToast, setEncounterParty, updateEncounter } from '@/lib/nuzlocke-store';
 import type { NuzEncounterRow, RunState } from '@/lib/nuzlocke-store';
 import { effectiveLevelCap } from '@/lib/nuzlocke-rules';
+import { remPx } from '@/lib/viewport';
 import { cn } from '@/lib/utils';
 import { GoldHint, useShake } from './ui';
 
@@ -112,8 +113,10 @@ export default function EncounterMenu({
 
   if (!target) return null;
   const { enc } = target;
-  const x = Math.min(target.x, window.innerWidth - 240);
-  const y = Math.min(target.y, window.innerHeight - 320);
+  const menuW = remPx(15);
+  const menuH = remPx(20);
+  const x = Math.min(target.x, window.innerWidth - menuW);
+  const y = Math.min(target.y, window.innerHeight - menuH);
   const idle = sub === 'none';
 
   const markDead = () => {
@@ -161,20 +164,20 @@ export default function EncounterMenu({
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 420, damping: 30 }}
         className={cn(
-          'fixed z-[75] w-[220px] rounded-md border border-hairline2 bg-surface2 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
+          'fixed z-[75] w-[13.75rem] rounded-md border border-hairline2 bg-surface2 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
           shakeKey > 0 && 'nz-shake',
         )}
         style={{ left: x, top: y }}
         role="menu"
       >
         <div className="border-b border-hairline px-3 py-1.5">
-          <span className="text-[12px] font-semibold text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
-          <span className="ml-2 font-display text-[10px] font-bold text-tx-muted">LV {enc.level}</span>
+          <span className="text-micro12 font-semibold text-tx-primary">{enc.nickname ?? nameOf(enc.pokemon_id)}</span>
+          <span className="ml-2 font-display text-micro10 font-bold text-tx-muted">LV {enc.level}</span>
         </div>
 
         {enc.status === 'caught' && idle && (
           <>
-            <button type="button" onClick={() => setSub('note')} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
+            <button type="button" onClick={() => setSub('note')} className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
               <HeartCrack size={13} /> {t('nuz.menu.markDead')}
             </button>
             <button
@@ -183,7 +186,7 @@ export default function EncounterMenu({
                 updateEncounter(enc.run_id, enc.id, { status: 'missed' });
                 onClose();
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
               role="menuitem"
             >
               <Wind size={13} /> {t('nuz.menu.markMissed')}
@@ -191,7 +194,7 @@ export default function EncounterMenu({
             <button
               type="button"
               onClick={() => setSub('evolve')}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
               role="menuitem"
             >
               <ArrowUpRight size={13} /> {t('nuz.menu.evolve')}
@@ -202,7 +205,7 @@ export default function EncounterMenu({
                 setLevel(enc.level);
                 setSub('level');
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
               role="menuitem"
             >
               <Hash size={13} /> {t('nuz.menu.editLevel')}
@@ -216,7 +219,7 @@ export default function EncounterMenu({
                   if (res.ok) pushToast('info', t('nuz.dnd.movedBox', { name: enc.nickname ?? nameOf(enc.pokemon_id) }));
                   onClose();
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
                 role="menuitem"
               >
                 <Archive size={13} /> {t('nuz.dnd.toBox')}
@@ -231,7 +234,7 @@ export default function EncounterMenu({
               updateEncounter(enc.run_id, enc.id, { status: 'caught' });
               onClose();
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             role="menuitem"
           >
             <Check size={13} /> {t('nuz.menu.restoreCaught')}
@@ -240,7 +243,7 @@ export default function EncounterMenu({
 
         {sub === 'note' && (
           <div className="px-3 py-2">
-            <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.menu.deathNote')}</label>
+            <label className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t('nuz.menu.deathNote')}</label>
             <input
               autoFocus
               value={note}
@@ -248,28 +251,28 @@ export default function EncounterMenu({
               onKeyDown={(e) => e.key === 'Enter' && markDead()}
               placeholder={t('nuz.menu.deathPlaceholder')}
               maxLength={80}
-              className="mt-1.5 h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+              className="mt-1.5 h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-micro12 text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
             />
-            <button type="button" onClick={markDead} className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold text-gold transition-colors hover:bg-gold/20">
+            <button type="button" onClick={markDead} className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-micro11 font-bold text-gold transition-colors hover:bg-gold/20">
               {t('nuz.menu.confirmDead')}
             </button>
           </div>
         )}
 
         {sub === 'evolve' && (
-          <div className="max-h-[220px] overflow-y-auto px-1 py-1" data-lenis-prevent>
+          <div className="max-h-[13.75rem] overflow-y-auto px-1 py-1" data-lenis-prevent>
             {evoLoading && (
-              <span className="block px-2 py-2 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">…</span>
+              <span className="block px-2 py-2 font-pixel text-[8px] tracking-[0.08em] text-tx-muted">…</span>
             )}
             {!evoLoading && evoOpts.length === 0 && (
-              <span className="block px-2 py-2 text-[11px] text-tx-muted">{t('nuz.toast.evolveFailed')}</span>
+              <span className="block px-2 py-2 text-micro11 text-tx-muted">{t('nuz.toast.evolveFailed')}</span>
             )}
             {evoOpts.map((id) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => void pickEvolve(id)}
-                className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+                className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
                 role="menuitem"
               >
                 <ArrowUpRight size={12} className="shrink-0 text-gold/70" />
@@ -281,7 +284,7 @@ export default function EncounterMenu({
 
         {sub === 'level' && (
           <div className="relative px-3 py-2">
-            <label className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.menu.levelLabel')}</label>
+            <label className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t('nuz.menu.levelLabel')}</label>
             <input
               autoFocus
               type="number"
@@ -292,14 +295,14 @@ export default function EncounterMenu({
               onKeyDown={(e) => e.key === 'Enter' && commitLevel()}
               title={cap !== null ? t('nuz.rules.capTitle', { cap }) : undefined}
               className={cn(
-                'mt-1.5 h-8 w-full rounded-sm border bg-surface1 px-2 text-[12px] tabular-nums text-tx-primary outline-none focus:border-gold',
+                'mt-1.5 h-8 w-full rounded-sm border bg-surface1 px-2 text-micro12 tabular-nums text-tx-primary outline-none focus:border-gold',
                 cap !== null && Number(level) > cap ? 'border-gold/70' : 'border-hairline2',
               )}
             />
             <button
               type="button"
               onClick={commitLevel}
-              className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-[11px] font-bold text-gold transition-colors hover:bg-gold/20"
+              className="mt-2 w-full rounded-sm border border-gold/60 bg-gold/10 py-1.5 font-display text-micro11 font-bold text-gold transition-colors hover:bg-gold/20"
             >
               {t('nuz.menu.levelLabel')} {Math.max(1, Math.min(100, Math.round(level) || 1))}
             </button>
@@ -308,7 +311,7 @@ export default function EncounterMenu({
         )}
 
         {idle && (
-          <button type="button" onClick={() => setSub('nick')} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
+          <button type="button" onClick={() => setSub('nick')} className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold" role="menuitem">
             <Pencil size={13} /> {t('nuz.menu.editNick')}
           </button>
         )}
@@ -335,7 +338,7 @@ export default function EncounterMenu({
               }}
               placeholder={nameOf(enc.pokemon_id)}
               maxLength={18}
-              className="h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+              className="h-8 w-full rounded-sm border border-hairline2 bg-surface1 px-2 text-micro12 text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
             />
             <GoldHint text={nickHint} show={!!nickHint} />
           </div>
@@ -348,7 +351,7 @@ export default function EncounterMenu({
               deleteEncounter(enc.run_id, enc.id);
               onClose();
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
             role="menuitem"
           >
             <Trash2 size={13} /> {t('nuz.menu.remove')}

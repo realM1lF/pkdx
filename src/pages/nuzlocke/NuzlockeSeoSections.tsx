@@ -19,12 +19,12 @@ function LinkCard({ to, label, body }: { to: string; label: string; body: string
     <div className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
       <LocaleLink
         to={to}
-        className="inline-flex items-center gap-1.5 font-display text-[13px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+        className="inline-flex items-center gap-1.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
       >
         {label}
         <ArrowRight size={11} />
       </LocaleLink>
-      <p className="mt-1.5 text-[12.5px] leading-relaxed text-tx-secondary">{body}</p>
+      <p className="mt-1.5 text-[0.7813rem] leading-relaxed text-tx-secondary">{body}</p>
     </div>
   );
 }
@@ -40,8 +40,8 @@ export default function NuzlockeSeoSections() {
         <div className="grid gap-3 sm:grid-cols-3">
           {content.features.items.map((item) => (
             <div key={item.title} className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
-              <h3 className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{item.title}</h3>
-              <p className="mt-1.5 text-[12.5px] leading-relaxed text-tx-secondary">{item.body}</p>
+              <h3 className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{item.title}</h3>
+              <p className="mt-1.5 text-[0.7813rem] leading-relaxed text-tx-secondary">{item.body}</p>
             </div>
           ))}
         </div>
@@ -50,15 +50,15 @@ export default function NuzlockeSeoSections() {
       <section className="mt-12">
         <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
           <SectionHeader eyebrow={content.games.eyebrow} title={content.games.title} />
-          <p className="text-[13.5px] leading-relaxed text-tx-secondary">{content.games.body}</p>
-          <p className="mt-3 border-l-2 border-gold/60 pl-3 text-[12.5px] leading-relaxed text-tx-muted">{content.games.freeformNote}</p>
+          <p className="text-[0.8438rem] leading-relaxed text-tx-secondary">{content.games.body}</p>
+          <p className="mt-3 border-l-2 border-gold/60 pl-3 text-[0.7813rem] leading-relaxed text-tx-muted">{content.games.freeformNote}</p>
         </div>
       </section>
 
       <section className="mt-12">
         <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
           <SectionHeader eyebrow={content.multi.eyebrow} title={content.multi.title} />
-          <p className="text-[13.5px] leading-relaxed text-tx-secondary">{content.multi.body}</p>
+          <p className="text-[0.8438rem] leading-relaxed text-tx-secondary">{content.multi.body}</p>
         </div>
       </section>
 

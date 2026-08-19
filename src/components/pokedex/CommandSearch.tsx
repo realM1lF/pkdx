@@ -183,7 +183,7 @@ export default function CommandSearch({ value, onChange, className }: CommandSea
                       )}
                     >
                       <Sprite id={r.id} name={nameOfPokemon(r.id, lang)} era="gen5" skeleton={false} className="h-7 w-7 shrink-0" />
-                      <span className="min-w-0 flex-1 truncate font-sans text-[13px] font-semibold text-tx-primary">
+                      <span className="min-w-0 flex-1 truncate font-sans text-micro13 font-semibold text-tx-primary">
                         {nameOfPokemon(r.id, lang)}
                       </span>
                       <span className="pixel-label shrink-0 text-[8px] text-tx-muted">{r.num}</span>

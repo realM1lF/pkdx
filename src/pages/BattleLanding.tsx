@@ -201,13 +201,13 @@ function BattleArena() {
   );
 
   const sideLoading = (
-    <div className="flex min-h-[150px] flex-1 items-center justify-center p-6">
+    <div className="flex min-h-[9.375rem] flex-1 items-center justify-center p-6">
       <PokeballLoader variant="inline" />
     </div>
   );
   const sideError = (
-    <div className="flex min-h-[150px] flex-1 items-center justify-center p-6">
-      <p className="font-sans text-[12px] text-gold">{t('versus.errorUnavailable')}</p>
+    <div className="flex min-h-[9.375rem] flex-1 items-center justify-center p-6">
+      <p className="font-sans text-micro12 text-gold">{t('versus.errorUnavailable')}</p>
     </div>
   );
 
@@ -217,7 +217,7 @@ function BattleArena() {
       <div className="col-span-12 flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
         <div className="flex min-w-0 flex-col gap-0.5">
           <div className="flex items-center gap-1.5">
-            <span className="pixel-label text-[7px] text-tx-muted">{t('versus.gameSelect')}</span>
+            <span className="pixel-label text-[8px] text-tx-muted">{t('versus.gameSelect')}</span>
             <GameSelect
               value={ctx.game ?? ''}
               onChange={pickGame}
@@ -236,7 +236,7 @@ function BattleArena() {
           onClick={() => setBattleOpen(true)}
           disabled={!youPokemon || !foePokemon || battleOpen}
           title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : battleOpen ? t('versus.battle.runningHint') : undefined}
-          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[9px] font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto"
+          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[14px] leading-none font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto"
         >
           <Swords size={10} />
           {t('versus.battle.startButton')}
@@ -248,7 +248,7 @@ function BattleArena() {
         eyebrow={t('versus.you')}
         title={youPokemon ? nameOfPokemon(youPokemon.id, lang) : t('versus.pickYou')}
         className="col-span-12 lg:col-span-5"
-        bodyClassName="min-h-[150px] flex flex-col"
+        bodyClassName="min-h-[9.375rem] flex flex-col"
         right={
           <div className="w-36">
             <OpponentAutocomplete
@@ -287,7 +287,7 @@ function BattleArena() {
       <div className="col-span-12 flex items-center justify-center lg:col-span-2">
         <div className="flex flex-col items-center gap-1">
           <span
-            className="font-display text-[34px] font-black leading-none text-gold"
+            className="font-display text-[2.125rem] font-black leading-none text-gold"
             style={{ textShadow: '0 0 24px rgba(246,201,69,0.45)' }}
           >
             VS
@@ -301,7 +301,7 @@ function BattleArena() {
         eyebrow={t('versus.foe')}
         title={foePokemon ? nameOfPokemon(foePokemon.id, lang) : t('versus.pickOpponent')}
         className="col-span-12 lg:col-span-5"
-        bodyClassName="min-h-[150px] flex flex-col"
+        bodyClassName="min-h-[9.375rem] flex flex-col"
         right={
           <div className="w-36">
             <OpponentAutocomplete
@@ -392,7 +392,7 @@ export default function BattleLanding() {
         <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('battleLanding.h1')}
         </h1>
-        <p className="mt-2 max-w-2xl font-sans text-[13.5px] leading-relaxed text-tx-secondary">
+        <p className="mt-2 max-w-2xl font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
           {t('battleLanding.intro')}
         </p>
       </header>
@@ -411,11 +411,11 @@ export default function BattleLanding() {
             <li key={i} className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
               <p className="flex items-baseline gap-2">
                 <span className="pixel-label shrink-0 text-[8px] text-gold">{String(i + 1).padStart(2, '0')}</span>
-                <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">
+                <span className="font-display text-micro13 font-bold tracking-wide text-tx-primary">
                   {step.title}
                 </span>
               </p>
-              <p className="mt-1.5 font-sans text-[12.5px] leading-relaxed text-tx-secondary">{step.body}</p>
+              <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">{step.body}</p>
             </li>
           ))}
         </ol>
@@ -425,7 +425,7 @@ export default function BattleLanding() {
       <section className="mx-auto mt-12 max-w-3xl">
         <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
           <SectionHeader eyebrow={t('battleLanding.mechanicsEyebrow')} title={t('battleLanding.mechanicsTitle')} />
-          <p className="font-sans text-[13.5px] leading-relaxed text-tx-secondary">
+          <p className="font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
             {t('battleLanding.mechanicsBody')}
           </p>
         </div>
@@ -437,10 +437,10 @@ export default function BattleLanding() {
         <div className="grid gap-3 sm:grid-cols-3">
           {usecases.map((uc, i) => (
             <div key={i} className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
-              <p className="font-display text-[13px] font-bold tracking-wide text-tx-primary">
+              <p className="font-display text-micro13 font-bold tracking-wide text-tx-primary">
                 {uc.title}
               </p>
-              <p className="mt-1.5 font-sans text-[12.5px] leading-relaxed text-tx-secondary">{uc.body}</p>
+              <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">{uc.body}</p>
             </div>
           ))}
         </div>
@@ -465,7 +465,7 @@ export default function BattleLanding() {
           </p>
           <a
             href="#arena"
-            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
+            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] leading-none font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
           >
             <Swords size={11} />
             {t('battleLanding.ctaButton')}
@@ -484,24 +484,24 @@ export default function BattleLanding() {
           <div className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
             <LocaleLink
               to="/versus"
-              className="inline-flex items-center gap-1.5 font-display text-[13px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+              className="inline-flex items-center gap-1.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
             >
               {t('battleLanding.linksVersusLabel')}
               <ArrowRight size={11} />
             </LocaleLink>
-            <p className="mt-1.5 font-sans text-[12.5px] leading-relaxed text-tx-secondary">
+            <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
               {t('battleLanding.linksVersusText')}
             </p>
           </div>
           <div className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
             <LocaleLink
               to="/team"
-              className="inline-flex items-center gap-1.5 font-display text-[13px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+              className="inline-flex items-center gap-1.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
             >
               {t('battleLanding.linksTeamLabel')}
               <ArrowRight size={11} />
             </LocaleLink>
-            <p className="mt-1.5 font-sans text-[12.5px] leading-relaxed text-tx-secondary">
+            <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
               {t('battleLanding.linksTeamText')}
             </p>
           </div>

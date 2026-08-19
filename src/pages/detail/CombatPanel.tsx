@@ -126,8 +126,8 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
 
   return (
     <div ref={ref} className="flex items-center gap-3">
-      <div className="relative h-16 w-16">
-        <svg width={64} height={64} viewBox="0 0 64 64" className="-rotate-90">
+      <div className="relative h-[5.6rem] w-[5.6rem] shrink-0">
+        <svg viewBox="0 0 64 64" className="h-full w-full -rotate-90">
           <circle cx={32} cy={32} r={26} fill="none" stroke="var(--surface-3)" strokeWidth={5} />
           <motion.circle
             cx={32}
@@ -141,7 +141,7 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
             initial={{ strokeDashoffset: C }}
             animate={inView ? { strokeDashoffset: C * (1 - frac) } : undefined}
             transition={{ duration: 1, ease: EASE }}
-            style={legendary ? { filter: 'drop-shadow(0 0 6px rgba(246,201,69,0.6))' } : undefined}
+            style={legendary ? { filter: 'drop-shadow(0 0 6px rgba(246,201,69,0.6))' } : undefined }
           />
           <defs>
             <linearGradient id="bst-gold" x1="0" y1="0" x2="1" y2="1">
@@ -150,7 +150,7 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
             </linearGradient>
           </defs>
         </svg>
-        <motion.span className="absolute inset-0 grid place-items-center font-display text-[15px] font-extrabold text-gold tabular-nums">
+        <motion.span className="absolute inset-0 grid place-items-center font-display text-[21px] font-extrabold leading-none text-gold tabular-nums">
           {display}
         </motion.span>
       </div>
@@ -158,7 +158,7 @@ function BstRing({ bst, legendary }: { bst: number; legendary: boolean }) {
         <div className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.bst')}</div>
         <div
           className={cn(
-            'mt-1 inline-block rounded-pill border px-2 py-px font-sans text-[10px] font-bold tracking-wide',
+            'mt-1 inline-block rounded-pill border px-2 py-px font-sans text-[11px] leading-none font-bold tracking-wide',
             bst >= 500 ? 'border-gold/50 bg-gold-soft text-gold' : 'border-hairline text-tx-secondary',
           )}
         >
@@ -222,7 +222,7 @@ export default function CombatPanel({
         />
       </div>
 
-      <div className="min-h-[176px] flex-1">
+      <div className="min-h-[11rem] flex-1">
         {mode === 'bars' ? (
           <div className="flex h-full flex-col justify-center gap-2.5">
             {keys.map((k, i) => (
@@ -243,13 +243,13 @@ export default function CombatPanel({
               evChips.map((c) => (
                 <span
                   key={c}
-                  className="rounded-pill border border-hairline bg-surface2 px-1.5 py-px font-sans text-[10px] font-semibold text-tx-secondary"
+                  className="rounded-pill border border-hairline bg-surface2 px-1.5 py-px font-sans text-[11px] leading-none font-semibold text-tx-secondary"
                 >
                   {c}
                 </span>
               ))
             ) : (
-              <span className="font-sans text-[11px] text-tx-muted">—</span>
+              <span className="font-sans text-micro11 text-tx-muted">—</span>
             )}
           </div>
         </div>

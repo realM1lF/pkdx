@@ -103,14 +103,14 @@ function EncounterRow({
       to={pokemonHref(e.pokemonId, { game: version, from: `${region.region}:${node.id}`, v: version })}
       className="maps-row group flex h-10 items-center gap-2 border-b border-hairline/60 px-3 transition-colors hover:bg-surface3"
     >
-      <span className="maps-row-sprite h-[30px] w-[30px] shrink-0">
-        <Sprite id={e.pokemonId} name={nameOfPokemon(e.pokemonId, lang)} era={e.pokemonId <= 649 ? 'gen5' : 'default'} className="h-[30px] w-[30px]" />
+      <span className="maps-row-sprite h-[1.875rem] w-[1.875rem] shrink-0">
+        <Sprite id={e.pokemonId} name={nameOfPokemon(e.pokemonId, lang)} era={e.pokemonId <= 649 ? 'gen5' : 'default'} className="h-[1.875rem] w-[1.875rem]" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[13px] font-medium leading-tight text-tx-primary">
+        <span className="block truncate text-micro13 font-medium leading-tight text-tx-primary">
           {nameOfPokemon(e.pokemonId, lang)}
         </span>
-        <span className="pixel-label block text-[7px] text-tx-muted">{padNum(e.pokemonId)}</span>
+        <span className="pixel-label block text-[8px] text-tx-muted">{padNum(e.pokemonId)}</span>
       </span>
       <span className="flex shrink-0 items-center gap-1">
         {e.methods.map((m) => {
@@ -121,7 +121,7 @@ function EncounterRow({
             <span
               key={chip ?? m}
               title={t(chip ? `maps.${chip}` : `maps.${m.toLowerCase()}`)}
-              className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-sm border"
+              className="inline-flex h-[1.125rem] w-[1.125rem] items-center justify-center rounded-sm border"
               style={{
                 color: gold ? '#F6C945' : region.accent,
                 borderColor: gold ? 'rgba(246,201,69,0.4)' : `rgba(${rgb},0.35)`,
@@ -133,14 +133,14 @@ function EncounterRow({
           );
         })}
       </span>
-      <span className="w-[52px] shrink-0 text-right font-sans text-[10px] tabular-nums text-tx-muted">
+      <span className="w-[3.25rem] shrink-0 text-right font-sans text-micro10 tabular-nums text-tx-muted">
         {e.minLevel === e.maxLevel ? `Lv ${e.minLevel}` : `${e.minLevel}–${e.maxLevel}`}
       </span>
-      <span className="flex w-[64px] shrink-0 items-center justify-end gap-1.5">
-        <span className={cn('font-display text-[12px] font-bold tabular-nums', rare ? 'text-gold' : 'text-tx-primary')}>
+      <span className="flex w-[4rem] shrink-0 items-center justify-end gap-1.5">
+        <span className={cn('font-display text-micro12 font-bold tabular-nums', rare ? 'text-gold' : 'text-tx-primary')}>
           {Math.min(100, e.maxChance)}%
         </span>
-        <span className="h-[3px] w-10 overflow-hidden rounded-pill bg-surface3">
+        <span className="h-[0.1875rem] w-10 overflow-hidden rounded-pill bg-surface3">
           <span
             className="block h-full rounded-pill"
             style={{ width: `${Math.min(100, e.maxChance)}%`, background: rare ? '#F6C945' : region.accent }}
@@ -258,7 +258,7 @@ export default function DetailDrawer({
         'z-40 flex flex-col border-hairline bg-surface1 shadow-elevate',
         isMobile
           ? cn('fixed inset-x-0 bottom-0 rounded-t-2xl border-t', barBottom === 0 && 'h-[85dvh]')
-          : 'absolute bottom-0 right-0 top-0 w-[400px] border-l',
+          : 'absolute bottom-0 right-0 top-0 w-[25rem] border-l',
       )}
       style={isMobile && barBottom > 0 ? { top: barBottom } : undefined}
       role="dialog"
@@ -269,12 +269,12 @@ export default function DetailDrawer({
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
             <span
-              className="pixel-label rounded-sm border px-1.5 py-0.5 text-[7px]"
+              className="pixel-label rounded-sm border px-1.5 py-0.5 text-[8px]"
               style={{ color: region.accent, borderColor: `rgba(${rgb},0.4)` }}
             >
               {t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}
             </span>
-            <span className="pixel-label rounded-sm border border-hairline px-1.5 py-0.5 text-[7px] text-tx-muted">
+            <span className="pixel-label rounded-sm border border-hairline px-1.5 py-0.5 text-[8px] text-tx-muted">
               {t('maps.order', { n: node.order })}
             </span>
             <button
@@ -285,12 +285,12 @@ export default function DetailDrawer({
                 el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 el?.querySelector('button')?.focus();
               }}
-              className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[7px] text-gold transition-colors hover:bg-gold/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+              className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[8px] text-gold transition-colors hover:bg-gold/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
             >
               {t('maps.edition', { version: versionLabel(version) })}
             </button>
             {node.postGame && (
-              <span className="pixel-label rounded-sm border border-dashed border-gold/50 px-1.5 py-0.5 text-[7px] text-gold">
+              <span className="pixel-label rounded-sm border border-dashed border-gold/50 px-1.5 py-0.5 text-[8px] text-gold">
                 {t('maps.postGame')}
               </span>
             )}
@@ -304,10 +304,10 @@ export default function DetailDrawer({
             <X size={14} />
           </button>
         </div>
-        <h2 className="mt-2.5 font-display text-[22px] font-extrabold leading-none text-tx-primary">
+        <h2 className="mt-2.5 font-display text-[1.375rem] font-extrabold leading-none text-tx-primary">
           {nodeName(node, lang)}
         </h2>
-        <p className="mt-1 text-[11px] font-medium text-tx-muted">
+        <p className="mt-1 text-micro11 font-medium text-tx-muted">
           {regionName(region, lang)} — {caption}
         </p>
       </div>
@@ -323,10 +323,10 @@ export default function DetailDrawer({
           ] as Array<[string, string | number]>
         ).map(([label, value]) => (
           <div key={label} className="px-3 py-2">
-            <div className="pixel-label text-[7px] text-tx-muted">{label}</div>
+            <div className="pixel-label text-[8px] text-tx-muted">{label}</div>
             <div
               className={cn(
-                'mt-0.5 font-display text-[15px] font-bold tabular-nums text-tx-primary',
+                'mt-0.5 font-display text-[0.9375rem] font-bold tabular-nums text-tx-primary',
                 label === t('maps.itemsUnit') && items.length === 0 && 'text-tx-muted/50',
               )}
             >
@@ -357,7 +357,7 @@ export default function DetailDrawer({
             )}
           >
             {label}
-            {tab === key && <motion.span layoutId="maps-drawer-tab" className="absolute inset-x-0 bottom-0 h-[2px] bg-gold" />}
+            {tab === key && <motion.span layoutId="maps-drawer-tab" className="absolute inset-x-0 bottom-0 h-[0.125rem] bg-gold" />}
           </button>
         ))}
       </div>
@@ -380,7 +380,7 @@ export default function DetailDrawer({
                       onClick={() => onToggleMethod(m)}
                       title={t(`maps.${m.toLowerCase()}`)}
                       className={cn(
-                        'inline-flex h-6 items-center gap-1 rounded-pill border px-1.5 text-[9px] font-semibold transition-all',
+                        'inline-flex h-6 items-center gap-1 rounded-pill border px-1.5 text-[14px] leading-none font-semibold transition-all',
                         active ? 'border-current' : 'border-hairline text-tx-muted',
                       )}
                       style={active ? { color: region.accent, background: `rgba(${rgb},0.16)` } : undefined}
@@ -404,7 +404,7 @@ export default function DetailDrawer({
                     type="button"
                     onClick={() => setSort(key)}
                     className={cn(
-                      'pixel-label rounded-sm px-1.5 py-1 text-[7px] transition-colors',
+                      'pixel-label rounded-sm px-1.5 py-1 text-[8px] transition-colors',
                       sort === key ? 'bg-surface3 text-gold' : 'text-tx-muted hover:text-tx-secondary',
                     )}
                   >
@@ -423,7 +423,7 @@ export default function DetailDrawer({
             ) : nd.status !== 'loaded' ? (
               <div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
                 <span className="pixel-label text-[9px] text-tx-muted">{t('maps.noWild', { version: versionLabel(version) })}</span>
-                <p className="text-[11px] font-medium text-tx-muted">
+                <p className="text-micro11 font-medium text-tx-muted">
                   {t('maps.noWildBody')}
                 </p>
               </div>
@@ -435,7 +435,7 @@ export default function DetailDrawer({
                 <button
                   type="button"
                   onClick={onResetMethods}
-                  className="rounded-md border border-hairline2 px-3 py-1.5 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+                  className="rounded-md border border-hairline2 px-3 py-1.5 text-micro11 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
                 >
                   {t('maps.resetFilters')}
                 </button>
@@ -446,7 +446,7 @@ export default function DetailDrawer({
                   <section>
                     <div className="flex items-center justify-between border-b border-hairline bg-surface2/60 px-3 py-1.5">
                       <span className="pixel-label text-[8px] text-gold">{t('maps.special')}</span>
-                      <span className="font-sans text-[9px] tabular-nums text-tx-muted">{staticEntries.length}</span>
+                      <span className="font-sans text-micro9 tabular-nums text-tx-muted">{staticEntries.length}</span>
                     </div>
                     {staticEntries.map((e) => (
                       <EncounterRow key={`s-${e.pokemonId}-${e.methodChip ?? e.methods.join('-')}`} e={e} region={region} node={node} version={version} />
@@ -459,7 +459,7 @@ export default function DetailDrawer({
                       <span className="pixel-label text-[8px]" style={{ color: region.accent }}>
                         {g.areaLabel}
                       </span>
-                      <span className="font-sans text-[9px] tabular-nums text-tx-muted">{g.entries.length}</span>
+                      <span className="font-sans text-micro9 tabular-nums text-tx-muted">{g.entries.length}</span>
                     </div>
                     {g.entries.map((e) => (
                       <EncounterRow key={`${g.areaSlug}-${e.pokemonId}-${e.methods.join('-')}-${e.methodChip ?? ''}`} e={e} region={region} node={node} version={version} />
@@ -475,7 +475,7 @@ export default function DetailDrawer({
             {items.length === 0 ? (
               <div className="flex flex-col items-center gap-2.5 px-6 py-14 text-center">
                 <img src="/pokeball.svg" alt="" width={40} height={40} className="opacity-50" />
-                <p className="text-[12px] font-medium text-tx-muted">{t('maps.noItems')}</p>
+                <p className="text-micro12 font-medium text-tx-muted">{t('maps.noItems')}</p>
               </div>
             ) : (
               items.map((it: CuratedItem) => (
@@ -493,8 +493,8 @@ export default function DetailDrawer({
                   <span className="min-w-0 flex-1">
                     {/* TM/HM names derive from the i18n move data ("TM18 (Regentanz)"),
                         curation notes ship de/en with an EN fallback */}
-                    <span className="block truncate text-[13px] font-medium text-tx-primary">{displayNameOfItem(it, lang)}</span>
-                    <span className="block truncate text-[10px] text-tx-muted">{noteOfItem(it, lang)}</span>
+                    <span className="block truncate text-micro13 font-medium text-tx-primary">{displayNameOfItem(it, lang)}</span>
+                    <span className="block truncate text-micro10 text-tx-muted">{noteOfItem(it, lang)}</span>
                   </span>
                   <span className="flex shrink-0 items-center gap-1">
                     {it.hidden && (
@@ -515,14 +515,14 @@ export default function DetailDrawer({
           <div>
             {trainers.length === 0 ? (
               <div className="flex flex-col items-center gap-2.5 px-6 py-14 text-center">
-                <HonestyHint show className="max-w-[280px]">
+                <HonestyHint show className="max-w-[17.5rem]">
                   {t(mapsTrainerEmptyKey(region.region))}
                 </HonestyHint>
               </div>
             ) : (
               <>
               {trainerCoverage(region.region) === 'key-battles' && (
-                <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
+                <p className="border-b border-hairline px-3 py-2 font-sans text-micro10 leading-snug text-gold/90">
                   {t('maps.trainersKeyBattlesOnly')}
                 </p>
               )}
@@ -543,21 +543,21 @@ export default function DetailDrawer({
                     to={`/pokemon/${ace}?tab=versus&versusTrainer=${node.id}&region=${region.region}&game=${version}`}
                     className="group flex h-11 w-full items-center gap-2.5 border-b border-hairline/60 px-3 transition-colors hover:bg-surface2"
                   >
-                    <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center">
+                    <span className="flex h-[1.875rem] w-[1.875rem] shrink-0 items-center justify-center">
                       {aceId ? (
                         <Sprite
                           id={aceId}
                           name={nameOfPokemon(ace, lang)}
                           era={aceId <= 649 ? 'gen5' : 'default'}
-                          className="h-[30px] w-[30px]"
+                          className="h-[1.875rem] w-[1.875rem]"
                         />
                       ) : (
-                        <span className="h-[30px] w-[30px] rounded-sm bg-surface3" aria-hidden />
+                        <span className="h-[1.875rem] w-[1.875rem] rounded-sm bg-surface3" aria-hidden />
                       )}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[13px] font-medium text-tx-primary">{tr.name}</span>
-                      <span className="block truncate text-[10px] text-tx-muted">{tr.class}</span>
+                      <span className="block truncate text-micro13 font-medium text-tx-primary">{tr.name}</span>
+                      <span className="block truncate text-micro10 text-tx-muted">{tr.class}</span>
                     </span>
                     <span className="flex shrink-0 -space-x-1.5">
                       {tr.party.slice(0, 6).map((m, j) => (
@@ -578,7 +578,7 @@ export default function DetailDrawer({
         <div className="flex flex-wrap items-center gap-2">
           <LocaleLink
             to={`/nuzlocke/new?region=${region.region}&at=${node.id}`}
-            className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="inline-flex h-8 items-center gap-1 rounded-md border border-hairline2 px-3 text-micro11 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             {t('maps.addToNuzlocke')}
             <ChevronRight size={13} />
@@ -586,7 +586,7 @@ export default function DetailDrawer({
           {showVersusLink && (
             <LocaleLink
               to={`/pokemon/${versusAce}?tab=versus&versusTrainer=${node.id}&region=${region.region}&game=${version}`}
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/10"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/10"
             >
               <Swords size={12} />
               {t('maps.planVersus')}
@@ -597,7 +597,7 @@ export default function DetailDrawer({
           {region.region === 'kanto' && ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={routePagePath(lang, node.id)}
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />
               {t('maps.openAsPage')}
@@ -606,7 +606,7 @@ export default function DetailDrawer({
           {region.region === 'hoenn' && HOENN_ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={hoennRoutePagePath(lang, node.id)}
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />
               {t('maps.openAsPage')}
@@ -615,7 +615,7 @@ export default function DetailDrawer({
           {region.region === 'johto' && JOHTO_ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={johtoRoutePagePath(lang, node.id)}
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />
               {t('maps.openAsPage')}
@@ -624,14 +624,14 @@ export default function DetailDrawer({
           {region.region === 'sinnoh' && SINNOH_ROUTE_PAGES.has(node.id) && (
             <LocaleLink
               to={sinnohRoutePagePath(lang, node.id)}
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/20"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-gold/50 bg-gold/10 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/20"
             >
               <ExternalLink size={12} />
               {t('maps.openAsPage')}
             </LocaleLink>
           )}
         </div>
-        <span className="text-[9px] font-medium text-tx-muted">{t('maps.dataSource', { version: versionLabel(version) })}</span>
+        <span className="text-micro9 font-medium text-tx-muted">{t('maps.dataSource', { version: versionLabel(version) })}</span>
       </div>
       <EntityDescModal {...entityModal.props} />
     </motion.aside>

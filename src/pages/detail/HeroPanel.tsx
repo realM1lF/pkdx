@@ -73,7 +73,7 @@ function Fact({ label, children, span = 1 }: { label: string; children: React.Re
       )}
     >
       <div className="pixel-label text-[8px] leading-[1.4] text-tx-muted">{label}</div>
-      <div className="mt-0.5 truncate font-sans text-[13px] font-semibold text-tx-primary">{children}</div>
+      <div className="mt-0.5 truncate font-sans text-micro13 font-semibold text-tx-primary">{children}</div>
     </div>
   );
 }
@@ -209,7 +209,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
     <div className="grid gap-4 p-4 sm:grid-cols-[240px_1fr] md:p-5 lg:grid-cols-[250px_1fr]">
       {/* ---- artwork stage ---- */}
       <div
-        className="relative flex min-h-[240px] items-center justify-center"
+        className="relative flex min-h-[15rem] items-center justify-center"
         onPointerMove={(e) => {
           if (!window.matchMedia('(pointer: fine)').matches) return;
           const r = e.currentTarget.getBoundingClientRect();
@@ -246,7 +246,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
         {/* artwork (tilt outer, float inner) */}
         <motion.div
           style={{ rotateX: srx, rotateY: sry, transformPerspective: 600 }}
-          className="relative z-10 h-[220px] w-[220px] md:h-[240px] md:w-[240px]"
+          className="relative z-10 h-[13.75rem] w-[13.75rem] md:h-[15rem] md:w-[15rem]"
         >
           <motion.div
             key={hopKey}
@@ -351,12 +351,12 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
         >
           <motion.div variants={{ off: { y: 16, opacity: 0 }, on: { y: 0, opacity: 1 } }} transition={{ duration: 0.4, ease: EASE }}>
             <div className="flex items-baseline gap-3">
-              <span className="pixel-label text-[11px] text-gold">{padNum(ident.speciesId)}</span>
+              <span className="pixel-label text-[9px] text-gold">{padNum(ident.speciesId)}</span>
               <span className="pixel-label text-[8px] text-tx-muted">
                 {t(`regions.${genRegionKey(gen.region)}`)} · GEN {gen.roman}
               </span>
             </div>
-            <h1 className="mt-0.5 font-display text-[32px] font-black leading-[1.05] tracking-wide text-tx-primary md:text-[38px]">
+            <h1 className="mt-0.5 font-display text-[2rem] font-black leading-[1.05] tracking-wide text-tx-primary md:text-[2.375rem]">
               {name}
             </h1>
           </motion.div>
@@ -370,11 +370,11 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             {types.map((t) => (
               /* type badges deep-link to the type SEO pages (/typen/:type) */
               <LocaleLink key={t} to={typeDetailPath(lang, t)} aria-label={nameOfType(t, lang)}>
-                <TypeBadge type={t} glow className="!px-2.5 !py-0.5 !text-[11px]" />
+                <TypeBadge type={t} glow className="!px-2.5 !py-0.5 !text-micro11" />
               </LocaleLink>
             ))}
             {(species?.is_legendary || species?.is_mythical) && (
-              <span className="legendary-ring rounded-pill px-2.5 py-0.5 font-sans text-[10px] font-bold uppercase tracking-wider text-gold">
+              <span className="legendary-ring rounded-pill px-2.5 py-0.5 font-sans text-[11px] leading-none font-bold uppercase tracking-wider text-gold">
                 {species.is_mythical ? t('pokedex.mythical') : t('pokedex.legendary')}
               </span>
             )}
@@ -396,7 +396,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
                     type="button"
                     onClick={() => setVersion(f.version)}
                     className={cn(
-                      'rounded-pill border px-1.5 py-px font-sans text-[10px] font-semibold uppercase transition-all duration-150',
+                      'rounded-pill border px-1.5 py-px font-sans text-[11px] leading-none font-semibold uppercase transition-all duration-150',
                       activeFlavor?.version === f.version
                         ? 'border-gold/60 bg-gold-soft text-gold'
                         : 'border-hairline text-tx-muted hover:border-hairline2 hover:text-tx-secondary',
@@ -414,7 +414,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: EASE }}
-                className="line-clamp-3 font-sans text-[13px] leading-snug text-tx-secondary"
+                className="line-clamp-3 font-sans text-micro13 leading-snug text-tx-secondary"
               >
                 {activeFlavor?.text ?? t('detail.hero.noFlavor')}
               </motion.p>
@@ -435,7 +435,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             <Fact label={t('detail.hero.baseExp')}>{pokemon.base_experience ?? '—'}</Fact>
             <Fact label={t('detail.hero.abilities')} span={2}>
               {abilityNames.length ? (
-                <span className="text-[12px]" title={abilityNames.join(' · ')}>
+                <span className="text-micro12" title={abilityNames.join(' · ')}>
                   {abilityNames.map((n, i) => (
                     <span key={n}>
                       {i > 0 && <span className="text-tx-muted"> · </span>}
@@ -444,17 +444,17 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
                   ))}
                 </span>
               ) : (
-                <span className="text-[12px] text-gold">{t('detail.hero.noAbilities')}</span>
+                <span className="text-micro12 text-gold">{t('detail.hero.noAbilities')}</span>
               )}
             </Fact>
             <Fact label={t('detail.hero.eggGroups')} span={2}>
-              <span className="text-[12px]">{eggGroups}</span>
+              <span className="text-micro12">{eggGroups}</span>
             </Fact>
             <Fact label={t('detail.hero.genus')} span={2}>
-              <span className="text-[12px] italic">{genus || '—'}</span>
+              <span className="text-micro12 italic">{genus || '—'}</span>
             </Fact>
             <Fact label={t('detail.hero.growth')} span={2}>
-              <span className="text-[12px]">{growth}</span>
+              <span className="text-micro12">{growth}</span>
             </Fact>
             <HonestyHint show className="col-span-2 sm:col-span-4">
               {t('honesty.speciesCurrent')}
@@ -470,7 +470,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             <button
               type="button"
               onClick={scrollToMuseum}
-              className="group inline-flex h-8 items-center gap-2 rounded-md border px-3.5 font-display text-[11px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
+              className="group inline-flex h-8 items-center gap-2 rounded-md border px-3.5 font-display text-micro11 font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5"
               style={
                 {
                   borderColor: `rgba(${typeRgb(primary)},0.6)`,
@@ -485,7 +485,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             </button>
             <LocaleLink
               to="/pokedex"
-              className="inline-flex h-8 items-center rounded-md border border-hairline2 px-3.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-tx-secondary transition-all duration-200 hover:bg-surface3 hover:text-gold"
+              className="inline-flex h-8 items-center rounded-md border border-hairline2 px-3.5 font-sans text-micro11 font-semibold uppercase tracking-wider text-tx-secondary transition-all duration-200 hover:bg-surface3 hover:text-gold"
             >
               {t('detail.hero.backToGrid')}
             </LocaleLink>

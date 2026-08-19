@@ -16,7 +16,7 @@ function ExtLink({ href, label }: { href: string; label: string }) {
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-1 font-sans text-[12px] font-semibold text-tx-secondary transition-colors hover:text-gold',
+        'inline-flex items-center gap-1 font-sans text-micro12 font-semibold text-tx-secondary transition-colors hover:text-gold',
       )}
     >
       {label}
@@ -32,22 +32,22 @@ export default function WhatIsNuzlocke() {
   return (
     <section className="mt-10 max-w-3xl" aria-labelledby="nuz-what-is-heading">
       <div className="mb-4 flex items-baseline gap-3">
-        <h2 id="nuz-what-is-heading" className="font-display text-[18px] font-bold text-tx-primary">
+        <h2 id="nuz-what-is-heading" className="font-display text-[1.125rem] font-bold text-tx-primary">
           {t('nuz.whatIsSection.title')}
         </h2>
         <PixelLabel>{t('nuz.whatIsSection.eyebrow')}</PixelLabel>
       </div>
 
-      <p className="text-[13px] leading-relaxed text-tx-secondary">{t('nuz.whatIsSection.intro')}</p>
-      <p className="mt-3 text-[13px] leading-relaxed text-tx-muted">{t('nuz.whatIsSection.variants')}</p>
+      <p className="text-micro13 leading-relaxed text-tx-secondary">{t('nuz.whatIsSection.intro')}</p>
+      <p className="mt-3 text-micro13 leading-relaxed text-tx-muted">{t('nuz.whatIsSection.variants')}</p>
 
       <div className="mt-6">
         <PixelLabel className="text-gold/80">{t('nuz.whatIsSection.rulesHeading')}</PixelLabel>
         <ul className="mt-2 space-y-2">
           {Array.isArray(rules) &&
             rules.map((rule) => (
-              <li key={rule} className="flex gap-2 text-[13px] leading-snug text-tx-secondary">
-                <span className="mt-[6px] h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" aria-hidden />
+              <li key={rule} className="flex gap-2 text-micro13 leading-snug text-tx-secondary">
+                <span className="mt-[0.375rem] h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" aria-hidden />
                 <span>{rule}</span>
               </li>
             ))}
@@ -60,7 +60,7 @@ export default function WhatIsNuzlocke() {
           <ExtLink href={LINKS.rulesDe} label={t('nuz.whatIsSection.linkRulesDe')} />
           <ExtLink href={LINKS.rulesEn} label={t('nuz.whatIsSection.linkRulesEn')} />
         </div>
-        <p className="mt-2 font-pixel text-[7px] tracking-[0.06em] text-tx-muted/70">
+        <p className="mt-2 font-pixel text-[8px] tracking-[0.06em] text-tx-muted/70">
           {t('nuz.whatIsSection.externalHint')}
         </p>
       </div>

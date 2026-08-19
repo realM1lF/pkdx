@@ -40,10 +40,10 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
   const { user } = useAuth();
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   return (
-    <div className="mx-auto max-w-[960px]">
+    <div className="mx-auto max-w-[60rem]">
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-[26px] font-extrabold tracking-wide text-tx-primary">
+          <h1 className="font-display text-[1.625rem] font-extrabold tracking-wide text-tx-primary">
             {t8n('tb.page.title')}
           </h1>
           <p className="tb-micro mt-1.5">
@@ -65,8 +65,8 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="tb-panel group flex w-full flex-col items-center gap-3 border-dashed px-6 py-14 transition-colors hover:border-gold/40"
         >
-          <img src="/empty-dex.svg" alt="" className="h-[110px] w-auto opacity-70 transition-opacity group-hover:opacity-100" />
-          <span className="text-[14px] font-semibold text-tx-secondary">{t8n('tb.hub.emptyTitle')}</span>
+          <img src="/empty-dex.svg" alt="" className="h-[6.875rem] w-auto opacity-70 transition-opacity group-hover:opacity-100" />
+          <span className="text-[0.875rem] font-semibold text-tx-secondary">{t8n('tb.hub.emptyTitle')}</span>
           <span className="tb-micro-gold">{t8n('tb.hub.emptyCta')}</span>
         </motion.button>
       ) : (
@@ -85,29 +85,29 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                 <div className="mb-2.5 flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="flex min-w-0 items-center gap-1.5">
-                      <div className="truncate font-display text-[14px] font-bold tracking-wide text-tx-primary">
+                      <div className="truncate font-display text-[0.875rem] font-bold tracking-wide text-tx-primary">
                         {t.name}
                       </div>
                       {isLinkedTeam(t) && (
                         <span
-                          className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !px-1.5 !py-0 !text-[7px] !text-gold"
+                          className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !px-1.5 !py-0 !text-[0.4375rem] !text-gold"
                           title={t8n('tb.linked.fromRun')}
                         >
                           {t8n('tb.linked.badge')}
                         </span>
                       )}
                     </div>
-                    <div className="tb-micro mt-1 !text-[7px]">
+                    <div className="tb-micro mt-1 !text-[8px]">
                       {vg.short} · {filled.length}/6 · {formatWhen(t.updatedAt, lang)}
                     </div>
                   </div>
-                  <span className="tb-chip shrink-0 !text-[8px] text-gold">{vg.label}</span>
+                  <span className="tb-chip shrink-0 !text-micro8 text-gold">{vg.label}</span>
                 </div>
                 <div className="mb-3 flex items-center gap-1">
                   {t.slots.map((s) => (
                     <span
                       key={s.id}
-                      className="flex h-10 w-10 items-center justify-center rounded-[8px] border border-hairline bg-surface2"
+                      className="flex h-10 w-10 items-center justify-center rounded-[0.5rem] border border-hairline bg-surface2"
                     >
                       {s.pokemonId != null && s.pokemon ? (
                         <Sprite id={s.pokemonId} name={nameOfPokemon(s.pokemon, lang)} era="default" className="h-9 w-9" skeleton={false} />
@@ -162,7 +162,7 @@ export default function SavedTeamsHub({ teams, onNew, onLoad, onDelete }: SavedT
                   >
                     <Trash2 size={13} />
                     {pendingDeleteId === t.id && (
-                      <span className="max-w-[9rem] truncate text-[9px] font-semibold tracking-wide">
+                      <span className="max-w-[9rem] truncate text-micro9 font-semibold tracking-wide">
                         {t8n('tb.hub.confirmDelete')}
                       </span>
                     )}

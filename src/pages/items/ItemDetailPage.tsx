@@ -59,7 +59,7 @@ export default function ItemDetailPage() {
         <h1 className="font-display text-xl font-extrabold text-tx-primary">
           {t('seo.item.notFoundTitle')}
         </h1>
-        <p className="mt-3 text-[14px] text-tx-secondary">
+        <p className="mt-3 text-[0.875rem] text-tx-secondary">
           <LocaleLink to="/items" className="text-gold hover:underline">
             {t('seo.item.notFoundLink')}
           </LocaleLink>
@@ -122,7 +122,7 @@ export default function ItemDetailPage() {
       <div className="max-w-3xl">
         {/* breadcrumb — mirrored by the JSON-LD BreadcrumbList */}
         <nav aria-label="Breadcrumb" className="mb-4">
-          <ol className="flex flex-wrap items-center gap-1 font-sans text-[12px] font-semibold text-tx-muted">
+          <ol className="flex flex-wrap items-center gap-1 font-sans text-micro12 font-semibold text-tx-muted">
             <li>
               <LocaleLink to="/items" className="transition-colors hover:text-gold">
                 {t('nav.items')}
@@ -150,13 +150,13 @@ export default function ItemDetailPage() {
               <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
                 {name}
               </h1>
-              <p className="mt-0.5 font-sans text-[12px] font-semibold text-tx-muted">
+              <p className="mt-0.5 font-sans text-micro12 font-semibold text-tx-muted">
                 {t('seo.item.altName', { name: altName })}
                 {item.cost != null && <> · {t('seo.item.cost', { cost: item.cost })}</>}
               </p>
             </div>
           </div>
-          <p className="mt-4 font-sans text-[14px] leading-relaxed text-tx-secondary">
+          <p className="mt-4 font-sans text-[0.875rem] leading-relaxed text-tx-secondary">
             {intro}
           </p>
         </header>
@@ -165,7 +165,7 @@ export default function ItemDetailPage() {
           {/* effect */}
           <SectionCard eyebrow={t('seo.item.effectEyebrow')} title={t('seo.item.effectTitle')}>
             <div className="px-4 py-3.5 sm:px-5">
-              <p className="font-sans text-[13px] leading-relaxed text-tx-secondary">
+              <p className="font-sans text-micro13 leading-relaxed text-tx-secondary">
                 <strong className="font-semibold text-tx-primary">{effect}</strong> {flavor}
               </p>
               <HonestyHint show={itemEffectIsMixedGen(item)} className="mt-2">
@@ -185,16 +185,16 @@ export default function ItemDetailPage() {
                 >
                   <MapPin size={13} className="shrink-0 text-gold" />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+                    <span className="block truncate text-micro13 font-semibold text-tx-primary transition-colors group-hover:text-gold">
                       {lang === 'de' ? loc.nameDe : loc.nameEn}
                     </span>
                     {(loc.noteDe || loc.noteEn) && (
-                      <span className="block text-[11px] text-tx-muted">
+                      <span className="block text-micro11 text-tx-muted">
                         {(lang === 'de' ? loc.noteDe : loc.noteEn) ?? loc.noteEn}
                       </span>
                     )}
                   </span>
-                  <span className="pixel-label shrink-0 text-[7px] text-tx-muted">
+                  <span className="pixel-label shrink-0 text-[8px] text-tx-muted">
                     {t(`seo.item.${KIND_KEYS[loc.kind] ?? 'kindBall'}`)}
                   </span>
                 </LocaleLink>
@@ -202,7 +202,7 @@ export default function ItemDetailPage() {
               <HonestyHint show className="px-4 py-2 sm:px-5">
                 {t('honesty.locationsFrlgField')}
               </HonestyHint>
-              <p className="px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
+              <p className="px-4 py-2.5 text-micro10 font-medium text-tx-muted sm:px-5">
                 {t('seo.item.locationsSource')}
               </p>
             </SectionCard>
@@ -223,15 +223,15 @@ export default function ItemDetailPage() {
                       id={id}
                       name={nameOfPokemon(id, lang)}
                       era="gen5"
-                      className="h-[34px] w-[34px] transition-transform duration-150 group-hover:scale-110"
+                      className="h-[2.125rem] w-[2.125rem] transition-transform duration-150 group-hover:scale-110"
                     />
-                    <span className="text-[12.5px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+                    <span className="text-[0.7813rem] font-semibold text-tx-primary transition-colors group-hover:text-gold">
                       {nameOfPokemon(id, lang)}
                     </span>
                   </LocaleLink>
                 ))}
               </div>
-              <p className="border-t border-hairline/60 px-4 py-2.5 text-[11px] text-tx-muted sm:px-5">
+              <p className="border-t border-hairline/60 px-4 py-2.5 text-micro11 text-tx-muted sm:px-5">
                 {t(`seo.item.evoNote_${item.evolutionKind ?? 'stone'}`)}
               </p>
             </SectionCard>
@@ -242,14 +242,14 @@ export default function ItemDetailPage() {
             <span className="pixel-label mr-1 text-[8px] text-tx-muted">{t('seo.item.deepLinksEyebrow')}</span>
             <LocaleLink
               to="/versus"
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gold/50 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/10"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gold/50 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/10"
             >
               <Swords size={12} />
               {t('seo.item.versusCta')}
             </LocaleLink>
             <LocaleLink
               to="/pokedex"
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-micro11 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
             >
               <Crosshair size={12} />
               {t('seo.item.pokedexCta')}

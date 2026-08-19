@@ -69,7 +69,7 @@ export default function QaSection({ items, defaultOpen = 1, label, className }: 
                   onClick={() => toggle(i)}
                   className="group flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left transition-colors hover:bg-surface2/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/60 sm:px-5"
                 >
-                  <span className="font-sans text-[13px] font-semibold leading-snug text-tx-primary transition-colors group-hover:text-gold sm:text-[14px]">
+                  <span className="font-sans text-micro13 font-semibold leading-snug text-tx-primary transition-colors group-hover:text-gold sm:text-[0.875rem]">
                     {item.q}
                   </span>
                   <ChevronDown
@@ -93,7 +93,7 @@ export default function QaSection({ items, defaultOpen = 1, label, className }: 
                 )}
               >
                 <div className="overflow-hidden">
-                  <div className="px-4 pb-4 font-sans text-[13px] leading-relaxed text-tx-secondary sm:px-5">
+                  <div className="px-4 pb-4 font-sans text-micro13 leading-relaxed text-tx-secondary sm:px-5">
                     {item.a}
                   </div>
                 </div>

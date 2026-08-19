@@ -53,7 +53,7 @@ function NeighborButton({ id, dir }: { id: number; dir: 'prev' | 'next' }) {
       <span className="relative h-7 w-7 shrink-0">
         <Sprite id={id} name={name} era="default" skeleton={false} />
       </span>
-      <span className="min-w-0 truncate font-sans text-[12px] font-semibold text-tx-secondary transition-colors group-hover:text-tx-primary">
+      <span className="min-w-0 truncate font-sans text-micro12 font-semibold text-tx-secondary transition-colors group-hover:text-tx-primary">
         {name}
       </span>
       <span className="pixel-label hidden shrink-0 text-[8px] text-tx-muted sm:inline">{padNum(id)}</span>

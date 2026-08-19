@@ -74,10 +74,10 @@ export default function Nuzlocke() {
 
   return (
     <MotionRoot>
-    <div className="mx-auto max-w-[1440px] px-4 pb-24 pt-12 md:px-8">
+    <div className="mx-auto max-w-[90rem] px-4 pb-24 pt-12 md:px-8">
       {/* ---------- header (§1.1) ---------- */}
       <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="max-w-[640px]">
+        <div className="max-w-[40rem]">
           <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4 }}>
             <PixelLabel className="text-gold">{t('nuz.eyebrow')}</PixelLabel>
           </motion.div>
@@ -85,7 +85,7 @@ export default function Nuzlocke() {
             initial={{ y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.06 }}
-            className="mt-2 font-display text-[clamp(28px,4vw,44px)] font-extrabold leading-[1.1] text-tx-primary"
+            className="mt-2 font-display text-[clamp(1.75rem,4vw,44px)] font-extrabold leading-[1.1] text-tx-primary"
           >
             {t('nuz.title')}
           </motion.h1>
@@ -93,11 +93,11 @@ export default function Nuzlocke() {
             initial={{ y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.12 }}
-            className="mt-2 flex flex-wrap items-center gap-1.5 text-[14px] leading-relaxed text-tx-secondary"
+            className="mt-2 flex flex-wrap items-center gap-1.5 text-[0.875rem] leading-relaxed text-tx-secondary"
           >
             {t('nuz.blurb')}
             <InfoTip text={t('nuz.nuzTip')} iconSize={13} />
-            <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.whatIs')}</span>
+            <span className="font-pixel text-[8px] tracking-[0.08em] text-tx-muted">{t('nuz.whatIs')}</span>
           </motion.p>
         </div>
         <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, delay: 0.18 }} className="flex flex-wrap items-center gap-2">
@@ -107,19 +107,19 @@ export default function Nuzlocke() {
               setJoinPreset(null);
               setWizardOpen(true);
             }}
-            className="nz-sheen flex items-center gap-2 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 hover:border-gold"
+            className="nz-sheen flex items-center gap-2 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-micro13 font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 hover:border-gold"
           >
             <Plus size={15} /> {t('nuz.newRun')}
           </button>
           <a
             href="#join-code"
-            className="rounded-md border border-hairline2 px-5 py-3 text-[13px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="rounded-md border border-hairline2 px-5 py-3 text-micro13 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             {t('nuz.joinWithCode')}
           </a>
           <LocaleLink
             to="/orre"
-            className="rounded-md border border-hairline2 px-5 py-3 text-[13px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="rounded-md border border-hairline2 px-5 py-3 text-micro13 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             {t('nuz.orreTracker')}
           </LocaleLink>
@@ -137,12 +137,12 @@ export default function Nuzlocke() {
           {multi ? (
             <>
               <span className="nz-dot-live h-2 w-2 rounded-full bg-[#45C8FF]" />
-              <span className="text-[11px] tracking-wide text-tx-secondary">{t('nuz.online')}</span>
+              <span className="text-micro11 tracking-wide text-tx-secondary">{t('nuz.online')}</span>
             </>
           ) : (
             <>
               <span className="h-2 w-2 rounded-full bg-gold" />
-              <span className="text-[11px] tracking-wide text-tx-secondary">{t('nuz.solo')}</span>
+              <span className="text-micro11 tracking-wide text-tx-secondary">{t('nuz.solo')}</span>
               <InfoTip text={t('nuz.soloTip')} />
             </>
           )}
@@ -155,10 +155,10 @@ export default function Nuzlocke() {
       {/* ---------- account gate (§1.2) — no run starts or continues as guest ---------- */}
       {needsLogin && (
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md border border-gold/40 bg-gold/5 px-4 py-3">
-          <div className="min-w-0 max-w-[640px]">
+          <div className="min-w-0 max-w-[40rem]">
             <PixelLabel className="text-gold">{t('nuz.wizard.loginWallTitle')}</PixelLabel>
-            <p className="mt-1 text-[13px] font-semibold text-tx-primary">{t('nuz.hubLoginRequired')}</p>
-            <p className="mt-0.5 text-[12px] leading-snug text-tx-secondary">{t('nuz.hubLoginRequiredBody')}</p>
+            <p className="mt-1 text-micro13 font-semibold text-tx-primary">{t('nuz.hubLoginRequired')}</p>
+            <p className="mt-0.5 text-micro12 leading-snug text-tx-secondary">{t('nuz.hubLoginRequiredBody')}</p>
           </div>
           <LocaleLink
             to="/account"
@@ -180,11 +180,11 @@ export default function Nuzlocke() {
       {/* ---------- runs grid (§1.3) ---------- */}
       <section className="mt-8">
         <div className="mb-3 flex flex-wrap items-baseline gap-3">
-          <h2 className="font-display text-[18px] font-bold text-tx-primary">{t('nuz.activeOps')}</h2>
+          <h2 className="font-display text-[1.125rem] font-bold text-tx-primary">{t('nuz.activeOps')}</h2>
           <PixelLabel>{runs.length === 1 ? t('nuz.run', { count: runs.length }) : t('nuz.runs', { count: runs.length })}</PixelLabel>
           <a
             href="#archiv"
-            className="ml-auto text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold"
+            className="ml-auto text-micro12 font-semibold text-tx-muted transition-colors hover:text-gold"
           >
             {t('nuz.archiveJump', { count: archived.length })}
           </a>
@@ -194,18 +194,18 @@ export default function Nuzlocke() {
           /* empty state (§1.6) */
           <div className="grid place-items-center py-16 text-center">
             <div className="relative">
-              <img src="/empty-dex.svg" alt="" className="h-[140px] opacity-60" />
+              <img src="/empty-dex.svg" alt="" className="h-[8.75rem] opacity-60" />
               <span className="nz-dot-gold-pulse absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-gold/30" />
             </div>
-            <h3 className="mt-4 font-display text-[20px] font-bold text-tx-primary">{t('nuz.emptyTitle')}</h3>
-            <p className="mt-1 text-[13px] text-tx-secondary">{t('nuz.emptyBody')}</p>
+            <h3 className="mt-4 font-display text-[1.25rem] font-bold text-tx-primary">{t('nuz.emptyTitle')}</h3>
+            <p className="mt-1 text-micro13 text-tx-secondary">{t('nuz.emptyBody')}</p>
             <button
               type="button"
               onClick={() => {
                 setJoinPreset(null);
                 setWizardOpen(true);
               }}
-              className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+              className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-micro13 font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
             >
               {t('nuz.emptyCta')}
             </button>
@@ -223,7 +223,7 @@ export default function Nuzlocke() {
                   setJoinPreset(null);
                   setWizardOpen(true);
                 }}
-                className="group col-span-12 grid min-h-[150px] place-items-center rounded-lg border border-dashed border-hairline2 transition-colors hover:border-gold lg:col-span-6"
+                className="group col-span-12 grid min-h-[9.375rem] place-items-center rounded-lg border border-dashed border-hairline2 transition-colors hover:border-gold lg:col-span-6"
               >
                 <span className="flex flex-col items-center gap-2 py-6">
                   <span className="relative">
@@ -239,7 +239,7 @@ export default function Nuzlocke() {
               ))}
             </div>
             {runs.length > 6 && !showAll && (
-              <button type="button" onClick={() => setShowAll(true)} className="mt-4 text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold">
+              <button type="button" onClick={() => setShowAll(true)} className="mt-4 text-micro12 font-semibold text-tx-muted transition-colors hover:text-gold">
                 {t('nuz.showAll', { count: runs.length })}
               </button>
             )}
@@ -256,22 +256,22 @@ export default function Nuzlocke() {
         <div className="mb-2 flex flex-wrap items-baseline gap-3">
           <div>
             <PixelLabel className="text-gold">{t('nuz.archiveEyebrow')}</PixelLabel>
-            <h2 className="mt-1 font-display text-[18px] font-bold text-tx-primary">{t('nuz.archiveTitle')}</h2>
+            <h2 className="mt-1 font-display text-[1.125rem] font-bold text-tx-primary">{t('nuz.archiveTitle')}</h2>
           </div>
           <PixelLabel>{t('nuz.archiveCount', { count: archived.length })}</PixelLabel>
           {archived.length > 0 && (
             <button
               type="button"
               onClick={() => setShowArchive((o) => !o)}
-              className="ml-auto text-[12px] font-semibold text-tx-muted transition-colors hover:text-gold"
+              className="ml-auto text-micro12 font-semibold text-tx-muted transition-colors hover:text-gold"
             >
               {showArchive ? t('nuz.archiveHide') : t('nuz.archiveShow')}
             </button>
           )}
         </div>
-        <p className="max-w-[520px] text-[12px] leading-relaxed text-tx-secondary">{t('nuz.archiveHelp')}</p>
+        <p className="max-w-[32.5rem] text-micro12 leading-relaxed text-tx-secondary">{t('nuz.archiveHelp')}</p>
         {archived.length === 0 ? (
-          <p className="mt-3 text-[11px] text-tx-muted">{t('nuz.archiveEmpty')}</p>
+          <p className="mt-3 text-micro11 text-tx-muted">{t('nuz.archiveEmpty')}</p>
         ) : showArchive ? (
           <div className="mt-4 grid grid-cols-12 gap-4">
             {archived.map((s, i) => (
@@ -333,11 +333,11 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
   };
 
   return (
-    <div id="join-code" className="mt-4 flex min-h-[56px] flex-wrap items-center gap-3 rounded-md border border-hairline bg-surface1 px-4 py-2">
+    <div id="join-code" className="mt-4 flex min-h-[3.5rem] flex-wrap items-center gap-3 rounded-md border border-hairline bg-surface1 px-4 py-2">
       <PixelLabel>{t('nuz.haveInvite')}</PixelLabel>
       {authReady && !user ? (
         <>
-          <p className="max-w-md text-[12px] leading-snug text-tx-secondary">{t('nuz.joinLoginHint')}</p>
+          <p className="max-w-md text-micro12 leading-snug text-tx-secondary">{t('nuz.joinLoginHint')}</p>
           <LocaleLink
             to="/account"
             className="rounded-md border border-gold/60 px-3 py-2 font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:bg-gold/10"
@@ -359,7 +359,7 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
                 maxLength={16}
                 aria-label={t('nuz.inviteAria')}
                 className={cn(
-                  'h-9 w-[190px] rounded-md border bg-surface2 px-3 font-display text-[14px] font-bold tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
+                  'h-9 w-[11.875rem] rounded-md border bg-surface2 px-3 font-display text-[0.875rem] font-bold tracking-[0.10em] text-gold outline-none placeholder:text-tx-muted/50',
                   'border-hairline2 focus:border-gold',
                 )}
               />
@@ -370,18 +370,18 @@ function JoinRow({ onJoin }: { onJoin: (lookup: JoinLookup) => void }) {
             type="button"
             disabled={busy || !code.trim()}
             onClick={() => void submit()}
-            className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+            className="nz-sheen flex items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 py-2 font-display text-micro12 font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {t('nuz.join')} <ArrowRight size={13} />
           </button>
         </>
       )}
       {!isMultiCapable() && (
-        <span className="flex items-center gap-1 text-[11px] text-tx-muted">
+        <span className="flex items-center gap-1 text-micro11 text-tx-muted">
           <Info size={11} /> {t('nuz.joinOffline')}
         </span>
       )}
-      <span className="ml-auto hidden text-[10px] text-tx-muted/60 md:block">{t('nuz.codeFormat')}</span>
+      <span className="ml-auto hidden text-micro10 text-tx-muted/60 md:block">{t('nuz.codeFormat')}</span>
     </div>
   );
 }

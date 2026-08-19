@@ -100,7 +100,7 @@ function FrlgToggle({ value, onChange }: { value: Frlg; onChange: (v: Frlg) => v
           aria-pressed={value === v}
           onClick={() => onChange(v)}
           className={cn(
-            'pixel-label rounded-pill border px-2.5 py-1 text-[8px] transition-colors',
+            'pixel-label rounded-pill border px-2.5 py-1 text-[8px] leading-none transition-colors',
             value === v ? 'border-gold/60 bg-gold/10 text-gold' : 'border-hairline text-tx-muted hover:text-tx-secondary',
           )}
         >
@@ -263,31 +263,31 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
         </HonestyHint>
         {locations.length > 0 ? (
           <>
-            <p className="border-b border-hairline/60 px-4 py-2.5 font-sans text-[12px] text-tx-secondary sm:px-5">
+            <p className="border-b border-hairline/60 px-4 py-2.5 font-sans text-micro12 text-tx-secondary sm:px-5">
               {t('seo.pkmn.whereIntro', { name })}
             </p>
             <div className="flex items-center gap-2 border-b border-hairline px-4 py-2 sm:px-5">
-              <span className="pixel-label flex-1 text-[7px] text-tx-muted">{t('seo.pkmn.colLocation')}</span>
-              <span className="pixel-label hidden w-[72px] text-[7px] text-tx-muted sm:block">{t('seo.pkmn.colMethod')}</span>
-              <span className="pixel-label w-[58px] text-right text-[7px] text-tx-muted">{t('seo.pkmn.colLevel')}</span>
-              <span className="pixel-label w-[84px] text-right text-[7px] text-tx-muted">{t('seo.pkmn.colChance')}</span>
+              <span className="pixel-label flex-1 text-[8px] text-tx-muted">{t('seo.pkmn.colLocation')}</span>
+              <span className="pixel-label hidden w-[4.5rem] text-[8px] text-tx-muted sm:block">{t('seo.pkmn.colMethod')}</span>
+              <span className="pixel-label w-[3.625rem] text-right text-[8px] text-tx-muted">{t('seo.pkmn.colLevel')}</span>
+              <span className="pixel-label w-[5.25rem] text-right text-[8px] text-tx-muted">{t('seo.pkmn.colChance')}</span>
             </div>
             {locations.map((loc, i) => {
               const locName = (lang === 'de' ? loc.nodeDe : loc.nodeEn) ?? loc.area;
               const inner = (
                 <>
-                  <span className="flex-1 truncate text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+                  <span className="flex-1 truncate text-micro13 font-semibold text-tx-primary transition-colors group-hover:text-gold">
                     {locName}
                   </span>
-                  <span className="hidden w-[72px] shrink-0 text-[11px] font-medium text-tx-secondary sm:block">
+                  <span className="hidden w-[4.5rem] shrink-0 text-micro11 font-medium text-tx-secondary sm:block">
                     {t(METHOD_KEY[loc.method])}
                   </span>
-                  <span className="w-[58px] shrink-0 text-right font-sans text-[11px] tabular-nums text-tx-muted">
+                  <span className="w-[3.625rem] shrink-0 text-right font-sans text-micro11 tabular-nums text-tx-muted">
                     {loc.minLevel === loc.maxLevel ? `Lv ${loc.minLevel}` : `Lv ${loc.minLevel}–${loc.maxLevel}`}
                   </span>
-                  <span className="flex w-[84px] shrink-0 items-center justify-end gap-1.5">
-                    <span className="font-display text-[13px] font-bold tabular-nums text-tx-primary">{loc.chance}%</span>
-                    <span className="h-[3px] w-10 overflow-hidden rounded-pill bg-surface3">
+                  <span className="flex w-[5.25rem] shrink-0 items-center justify-end gap-1.5">
+                    <span className="font-display text-micro13 font-bold tabular-nums text-tx-primary">{loc.chance}%</span>
+                    <span className="h-[0.1875rem] w-10 overflow-hidden rounded-pill bg-surface3">
                       <span className="block h-full rounded-pill bg-gold" style={{ width: `${Math.min(100, loc.chance)}%` }} />
                     </span>
                   </span>
@@ -307,9 +307,9 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
             })}
           </>
         ) : (
-          <p className="px-4 py-3 font-sans text-[12px] text-tx-secondary sm:px-5">{whereNoneBody}</p>
+          <p className="px-4 py-3 font-sans text-micro12 text-tx-secondary sm:px-5">{whereNoneBody}</p>
         )}
-        <p className="px-4 py-2.5 text-[11px] font-medium text-tx-muted sm:px-5">
+        <p className="px-4 py-2.5 text-micro11 font-medium text-tx-muted sm:px-5">
           {t('seo.pkmn.whereNote')}{' '}
           <LocaleLink to="/maps" className="text-gold underline-offset-2 transition-colors hover:underline">
             {t('seo.pkmn.whereNoteLink')}
@@ -329,21 +329,21 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
             <Shield size={13} strokeWidth={1.75} />
           </span>
         </header>
-        <p className="border-b border-hairline/60 px-4 py-2.5 font-sans text-[12px] text-tx-secondary sm:px-5">
+        <p className="border-b border-hairline/60 px-4 py-2.5 font-sans text-micro12 text-tx-secondary sm:px-5">
           {t('seo.pkmn.weakIntro', { name, types: typeList(dex.types, lang) })}
         </p>
         <div className="grid gap-3 px-4 py-3 sm:grid-cols-3 sm:px-5">
           <div>
-            <p className="pixel-label mb-1.5 text-[7px]" style={{ color: '#FF8A6B' }}>{t('seo.pkmn.weakCol')}</p>
-            <p className="text-[12px] font-medium text-tx-primary">{weakText || '—'}</p>
+            <p className="pixel-label mb-1.5 text-[8px]" style={{ color: '#FF8A6B' }}>{t('seo.pkmn.weakCol')}</p>
+            <p className="text-micro12 font-medium text-tx-primary">{weakText || '—'}</p>
           </div>
           <div>
-            <p className="pixel-label mb-1.5 text-[7px] text-tx-muted">{t('seo.pkmn.resistCol')}</p>
-            <p className="text-[12px] font-medium text-tx-primary">{resistText || '—'}</p>
+            <p className="pixel-label mb-1.5 text-[8px] text-tx-muted">{t('seo.pkmn.resistCol')}</p>
+            <p className="text-micro12 font-medium text-tx-primary">{resistText || '—'}</p>
           </div>
           <div>
-            <p className="pixel-label mb-1.5 text-[7px] text-gold">{t('seo.pkmn.immuneCol')}</p>
-            <p className="text-[12px] font-medium text-tx-primary">
+            <p className="pixel-label mb-1.5 text-[8px] text-gold">{t('seo.pkmn.immuneCol')}</p>
+            <p className="text-micro12 font-medium text-tx-primary">
               {matchups.immune.length ? typeList(matchups.immune, lang) : '—'}
             </p>
           </div>
@@ -355,21 +355,21 @@ export default function PokemonSeoGeneric({ id }: { id: number }) {
         <span className="pixel-label mr-1 text-[8px] text-tx-muted">{t('seo.pkmn.deepLinksEyebrow')}</span>
         <LocaleLink
           to={`/versus?you=${id}`}
-          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gold/50 px-3 text-[11px] font-semibold text-gold transition-colors hover:bg-gold/10"
+          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gold/50 px-3 text-micro11 font-semibold text-gold transition-colors hover:bg-gold/10"
         >
           <Swords size={12} />
           {t('seo.pkmn.versusCta', { name })}
         </LocaleLink>
         <LocaleLink
           to="/team"
-          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-micro11 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
           <Users size={12} />
           {t('seo.pkmn.teamCta')}
         </LocaleLink>
         <LocaleLink
           to="/maps/kanto"
-          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-[11px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-micro11 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
         >
           <MapIcon size={12} />
           {t('seo.pkmn.mapsCta')}

@@ -40,20 +40,20 @@ export default function NuzlockeGuidePage() {
         <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {content.h1}
         </h1>
-        <p className="mt-2 font-sans text-[13.5px] leading-relaxed text-tx-secondary">{content.intro}</p>
+        <p className="mt-2 font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">{content.intro}</p>
       </header>
 
       <div className="mx-auto mt-12 max-w-3xl space-y-12">
         {content.sections.map((section) => (
           <section key={section.title}>
             <SectionHeader eyebrow={content.eyebrow} title={section.title} />
-            <p className="font-sans text-[13.5px] leading-relaxed text-tx-secondary">{section.body}</p>
+            <p className="font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">{section.body}</p>
           </section>
         ))}
 
         <section className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
           <SectionHeader eyebrow={content.eyebrow} title={content.example.title} />
-          <p className="font-sans text-[13.5px] leading-relaxed text-tx-secondary">{content.example.body}</p>
+          <p className="font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">{content.example.body}</p>
         </section>
 
         <QaSection
@@ -68,7 +68,7 @@ export default function NuzlockeGuidePage() {
             </p>
             <LocaleLink
               to={`/nuzlocke?${page.wizardQuery}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] leading-none font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
             >
               {content.cta.button}
               <ArrowRight size={11} />
@@ -86,14 +86,14 @@ export default function NuzlockeGuidePage() {
             {page.mapPath && (
               <LocaleLink
                 to={page.mapPath}
-                className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5 font-display text-[13px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+                className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
               >
                 {content.links.map}
               </LocaleLink>
             )}
             <LocaleLink
               to="/nuzlocke"
-              className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5 font-display text-[13px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+              className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
             >
               {content.links.backToHub}
             </LocaleLink>
@@ -101,7 +101,7 @@ export default function NuzlockeGuidePage() {
               <LocaleLink
                 key={sibling.slug}
                 to={nuzlockeSeoPath(sibling.slug)}
-                className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5 font-display text-[13px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+                className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
               >
                 {lang === 'de' ? sibling.primaryKeywordDe : sibling.primaryKeywordEn}
               </LocaleLink>

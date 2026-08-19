@@ -147,37 +147,37 @@ export default function Items() {
     <div className="relative">
       {/* header */}
       <header className="mx-auto flex max-w-content flex-wrap items-end justify-between gap-6 px-4 pb-8 pt-12 sm:px-8">
-        <div className="max-w-[600px]">
-          <motion.p {...reveal(0)} className="pixel-label text-[10px] text-gold">
+        <div className="max-w-[37.5rem]">
+          <motion.p {...reveal(0)} className="pixel-label text-[14px] text-gold">
             {t('items.eyebrow')}
           </motion.p>
           <motion.h1
             {...reveal(1)}
-            className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.1] text-tx-primary"
+            className="mt-3 font-display text-[clamp(2rem,4.5vw,52px)] font-extrabold leading-[1.1] text-tx-primary"
           >
             {t('items.title')}
           </motion.h1>
-          <motion.p {...reveal(2)} className="mt-3 max-w-[560px] text-[14px] font-medium leading-relaxed text-tx-secondary">
+          <motion.p {...reveal(2)} className="mt-3 max-w-[35rem] text-[0.875rem] font-medium leading-relaxed text-tx-secondary">
             {t('items.blurb')}
           </motion.p>
         </div>
-        <motion.div {...reveal(3)} className="hidden items-center gap-2 text-[12px] font-medium text-tx-muted md:flex">
+        <motion.div {...reveal(3)} className="hidden items-center gap-2 text-micro12 font-medium text-tx-muted md:flex">
           <Package size={13} className="text-gold" />
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{all.length}</span>
+          <span className="font-display text-[0.875rem] font-bold tabular-nums text-tx-primary">{all.length}</span>
           {t('items.total')}
         </motion.div>
       </header>
 
       {/* controls: search + group chips */}
       <div className="mx-auto max-w-content px-4 sm:px-8">
-        <div className="relative max-w-[420px]">
+        <div className="relative max-w-[26.25rem]">
           <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-tx-muted" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('items.searchPlaceholder')}
             aria-label={t('items.searchPlaceholder')}
-            className="w-full rounded-md border border-hairline bg-surface2 py-2 pl-9 pr-8 font-sans text-[13px] text-tx-primary outline-none transition-all placeholder:text-tx-muted focus:border-gold/60 focus:shadow-glow-gold"
+            className="w-full rounded-md border border-hairline bg-surface2 py-2 pl-9 pr-8 font-sans text-micro13 text-tx-primary outline-none transition-all placeholder:text-tx-muted focus:border-gold/60 focus:shadow-glow-gold"
           />
           {query && (
             <button
@@ -196,7 +196,7 @@ export default function Items() {
             onClick={() => setGroup(null)}
             aria-pressed={group === null}
             className={cn(
-              'rounded-pill border px-2.5 py-1 font-sans text-[11px] font-semibold transition-colors',
+              'rounded-pill border px-2.5 py-1 font-sans text-[11px] leading-none font-semibold transition-colors',
               group === null
                 ? 'border-gold/60 bg-gold/10 text-gold'
                 : 'border-hairline bg-surface2 text-tx-secondary hover:border-hairline2 hover:text-tx-primary',
@@ -211,7 +211,7 @@ export default function Items() {
               onClick={() => setGroup((cur) => (cur === g ? null : g))}
               aria-pressed={group === g}
               className={cn(
-                'rounded-pill border px-2.5 py-1 font-sans text-[11px] font-semibold transition-colors',
+                'rounded-pill border px-2.5 py-1 font-sans text-[11px] leading-none font-semibold transition-colors',
                 group === g
                   ? 'border-gold/60 bg-gold/10 text-gold'
                   : 'border-hairline bg-surface2 text-tx-secondary hover:border-hairline2 hover:text-tx-primary',
@@ -221,7 +221,7 @@ export default function Items() {
             </button>
           ))}
         </div>
-        <p className="mt-2 font-sans text-[11px] text-tx-muted" aria-live="polite">
+        <p className="mt-2 font-sans text-micro11 text-tx-muted" aria-live="polite">
           {t('items.count', { shown: shown.length, total: filtered.length })}
         </p>
       </div>
@@ -251,7 +251,7 @@ export default function Items() {
                     className="group flex flex-col items-center gap-1.5 rounded-md border border-hairline bg-surface1 px-1.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-glow-gold"
                   >
                     <ItemIcon slug={e.slug} name={nameOf(e)} size={32} />
-                    <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[10.5px] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
+                    <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[0.6563rem] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
                       {nameOf(e)}
                     </span>
                   </LocaleLink>
@@ -265,7 +265,7 @@ export default function Items() {
                     className="group flex flex-col items-center gap-1.5 rounded-md border border-hairline bg-surface1 px-1.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-glow-gold"
                   >
                     <ItemIcon slug={e.slug} name={nameOf(e)} size={32} />
-                    <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[10.5px] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
+                    <span className="line-clamp-2 min-h-[2.2em] text-center font-sans text-[0.6563rem] font-semibold leading-tight text-tx-secondary transition-colors group-hover:text-gold">
                       {nameOf(e)}
                     </span>
                   </button>
@@ -273,7 +273,7 @@ export default function Items() {
               )}
             </div>
             {filtered.length > shown.length && (
-              <p className="mt-4 text-center font-sans text-[12px] text-gold">
+              <p className="mt-4 text-center font-sans text-micro12 text-gold">
                 {t('items.more', { n: filtered.length - shown.length })}
               </p>
             )}

@@ -235,7 +235,7 @@ function LogLine({
     case 'raw':
     default:
       // unmapped engine line — generic muted fallback, engine text unchanged
-      return <p className="text-[10px] italic text-tx-muted">{e.text || e.raw}</p>;
+      return <p className="text-micro10 italic text-tx-muted">{e.text || e.raw}</p>;
   }
   return <p className="leading-snug text-tx-secondary">{text}</p>;
 }
@@ -371,17 +371,17 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
                 ) },
             ]}
           />
-          <p className="max-w-md text-center font-sans text-[11px] leading-relaxed text-tx-muted">
+          <p className="max-w-md text-center font-sans text-micro11 leading-relaxed text-tx-muted">
             {t(aiMode === 'random' ? 'versus.battle.modeRandomHint' : 'versus.battle.modeGreedyHint')}
           </p>
-          <p className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
+          <p className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase text-gold">
             {t('versus.battle.formatNote', { gen: ctx.gen, game: gameLabel })}
           </p>
           <button
             type="button"
             onClick={() => void start()}
             disabled={starting}
-            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)] disabled:cursor-wait disabled:opacity-60"
+            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] leading-none font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)] disabled:cursor-wait disabled:opacity-60"
           >
             {starting ? <PokeballLoader variant="inline" className="h-4 w-4" /> : <Play size={11} />}
             {t('versus.battle.start')}
@@ -408,7 +408,7 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
                   side.fainted && 'opacity-50',
                 )}
               >
-                <span className="pixel-label text-[7px] text-tx-muted">
+                <span className="pixel-label text-[8px] text-tx-muted">
                   {t(key === 'player' ? 'versus.you' : 'versus.foe')} · Lv. {side.level}
                 </span>
                 <Sprite
@@ -418,17 +418,17 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
                   back={key === 'player' && ctx.gen <= 5}
                   className="h-16 w-16"
                 />
-                <span className="max-w-full truncate font-display text-[11px] font-bold tracking-wide text-tx-primary">
+                <span className="max-w-full truncate font-display text-micro11 font-bold tracking-wide text-tx-primary">
                   {names[key]}
                 </span>
                 {side.status && (
-                  <span className="rounded-pill border border-ember/50 bg-ember/10 px-1.5 font-sans text-[8px] font-bold uppercase text-ember">
+                  <span className="rounded-pill border border-ember/50 bg-ember/10 px-1.5 font-sans text-[11px] leading-none font-bold uppercase text-ember">
                     {t(`versus.battle.status.${side.status}`)}
                   </span>
                 )}
                 <div className="w-full">
                   <HpBar hp={side.hp} max={side.maxHp} />
-                  <span className="mt-0.5 block text-right font-sans text-[9px] tabular-nums text-tx-muted">
+                  <span className="mt-0.5 block text-right font-sans text-micro9 tabular-nums text-tx-muted">
                     {side.hp}/{side.maxHp}
                   </span>
                 </div>
@@ -440,12 +440,12 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
           {(snap.weather || snap.terrain) && (
             <div className="flex flex-wrap items-center gap-1">
               {snap.weather && SIM_WEATHER_KEY[snap.weather] && (
-                <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
+                <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase text-gold">
                   {t(`versus.weather.${SIM_WEATHER_KEY[snap.weather]}`)}
                 </span>
               )}
               {snap.terrain && SIM_TERRAIN_KEY[snap.terrain] && (
-                <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
+                <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase text-gold">
                   {t(`versus.terrain.${SIM_TERRAIN_KEY[snap.terrain]}`)}
                 </span>
               )}
@@ -455,7 +455,7 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
           {/* ---------- battle log ---------- */}
           <div
             ref={logRef}
-            className="h-44 overflow-y-auto rounded-md border border-hairline bg-abyss/70 px-2.5 py-1.5 font-sans text-[11px]"
+            className="h-44 overflow-y-auto rounded-md border border-hairline bg-abyss/70 px-2.5 py-1.5 font-sans text-micro11"
             data-lenis-prevent
             data-lenis-prevent-wheel
           >
@@ -492,7 +492,7 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
                 <button
                   type="button"
                   onClick={rematch}
-                  className="inline-flex h-7 items-center gap-1.5 rounded-pill border border-gold bg-gold px-3 font-display text-[10px] font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_16px_rgba(246,201,69,0.45)]"
+                  className="inline-flex h-7 items-center gap-1.5 rounded-pill border border-gold bg-gold px-3 font-display text-[11px] leading-none font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_16px_rgba(246,201,69,0.45)]"
                 >
                   <RotateCcw size={10} />
                   {t('versus.battle.rematch')}
@@ -500,7 +500,7 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
                 <button
                   type="button"
                   onClick={onExit}
-                  className="inline-flex h-7 items-center gap-1.5 rounded-pill border border-hairline px-3 font-sans text-[10px] font-bold uppercase text-tx-secondary transition-colors hover:border-hairline2 hover:text-tx-primary"
+                  className="inline-flex h-7 items-center gap-1.5 rounded-pill border border-hairline px-3 font-sans text-[11px] leading-none font-bold uppercase text-tx-secondary transition-colors hover:border-hairline2 hover:text-tx-primary"
                 >
                   <Flag size={10} />
                   {t('versus.battle.back')}
@@ -515,7 +515,7 @@ export default function BattleView({ player, foe, ctx, field, onExit }: BattleVi
                   return (
                     <div
                       key={slot}
-                      className="flex h-9 items-center justify-center rounded-md border border-hairline/50 font-sans text-[10px] text-tx-muted/50"
+                      className="flex h-9 items-center justify-center rounded-md border border-hairline/50 font-sans text-micro10 text-tx-muted/50"
                     >
                       —
                     </div>

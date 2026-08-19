@@ -65,7 +65,7 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
   if (!trainers.length) {
     return (
       <div className="flex h-24 items-center justify-center px-4">
-        <p className="text-center font-sans text-[11px] text-tx-muted">{t('versus.noTrainersRegion')}</p>
+        <p className="text-center font-sans text-micro11 text-tx-muted">{t('versus.noTrainersRegion')}</p>
       </div>
     );
   }
@@ -75,7 +75,7 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
   return (
     <div>
       <div className="border-b border-hairline px-3 py-2">
-        <div className="vs-input vs-input--combo h-7 w-full text-[11px]">
+        <div className="vs-input vs-input--combo h-7 w-full text-micro11">
           <Search size={12} className="pointer-events-none shrink-0 text-tx-muted" />
           <input
             className="vs-input-field"
@@ -87,11 +87,11 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
         </div>
       </div>
       {keyBattlesOnly && (
-        <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
+        <p className="border-b border-hairline px-3 py-2 font-sans text-micro10 leading-snug text-gold/90">
           {t('versus.trainersKeyBattlesOnly')}
         </p>
       )}
-      <div className="nz-slim-scroll max-h-[300px] overflow-auto" data-lenis-prevent>
+      <div className="nz-slim-scroll max-h-[18.75rem] overflow-auto" data-lenis-prevent>
         {GROUPS.map((g) => {
           const rows = filtered.filter((tr) => trainerGroupKey(tr) === g.key);
           if (!rows.length) return null;
@@ -99,7 +99,7 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
             <div key={g.key}>
               <div className="flex items-center gap-1.5 border-b border-hairline px-3 py-1.5 text-gold">
                 {g.icon}
-                <span className="pixel-label text-[7px]">{t(g.labelKey)}</span>
+                <span className="pixel-label text-[8px]">{t(g.labelKey)}</span>
               </div>
               {rows.map((tr, i) => {
                 const key = `${tr.node}:${tr.name}:${i}`;
@@ -109,11 +109,11 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
                     <button
                       type="button"
                       onClick={() => setOpenKey(open ? null : key)}
-                      className="flex h-[36px] w-full items-center gap-2 border-b border-hairline/60 px-3 text-left transition-colors duration-150 hover:bg-surface2"
+                      className="flex h-[2.25rem] w-full items-center gap-2 border-b border-hairline/60 px-3 text-left transition-colors duration-150 hover:bg-surface2"
                     >
-                      <span className="min-w-0 flex-1 truncate font-sans text-[12px] font-semibold text-tx-primary">
+                      <span className="min-w-0 flex-1 truncate font-sans text-micro12 font-semibold text-tx-primary">
                         {tr.name}
-                        <span className="ml-2 font-sans text-[9px] font-normal uppercase text-tx-muted">{nodeLabel(tr.node, region)}</span>
+                        <span className="ml-2 font-sans text-micro9 font-normal uppercase text-tx-muted">{nodeLabel(tr.node, region)}</span>
                       </span>
                       <span className="flex shrink-0 -space-x-1.5">
                         {tr.party.slice(0, 6).map((m, j) => (
@@ -129,13 +129,13 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
                             key={j}
                             type="button"
                             onClick={() => onPick(tr, m)}
-                            className="flex h-[30px] items-center gap-1.5 rounded-md border border-hairline px-1.5 transition-colors duration-150 hover:border-gold/50 hover:bg-gold/15"
+                            className="flex h-[1.875rem] items-center gap-1.5 rounded-md border border-hairline px-1.5 transition-colors duration-150 hover:border-gold/50 hover:bg-gold/15"
                           >
                             <PartySprite id={idOf(m.species)} big />
-                            <span className="min-w-0 flex-1 truncate text-left font-sans text-[11px] font-semibold text-tx-primary">
+                            <span className="min-w-0 flex-1 truncate text-left font-sans text-micro11 font-semibold text-tx-primary">
                               {nameOfPokemon(m.species, lang)}
                             </span>
-                            <span className="pixel-label shrink-0 text-[7px] text-gold">LV{m.level}</span>
+                            <span className="pixel-label shrink-0 text-[8px] text-gold">LV{m.level}</span>
                           </button>
                         ))}
                       </div>
@@ -147,7 +147,7 @@ export default function TrainerPicker({ trainers, region, idOf, onPick }: Traine
           );
         })}
         {filtered.length === 0 && (
-          <div className="px-3 py-4 font-sans text-[11px] text-tx-muted">{t('versus.noMatches')}</div>
+          <div className="px-3 py-4 font-sans text-micro11 text-tx-muted">{t('versus.noMatches')}</div>
         )}
       </div>
     </div>

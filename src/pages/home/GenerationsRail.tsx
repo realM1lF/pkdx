@@ -51,8 +51,8 @@ export default function GenerationsRail() {
     <section className="overflow-x-clip py-24">
       <Reveal className="mx-auto mb-10 flex max-w-content flex-wrap items-end justify-between gap-6 px-4 md:px-8">
         <div className="flex flex-col gap-4">
-          <span className="pixel-label text-[10px] text-gold">1996 → 2022</span>
-          <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
+          <span className="pixel-label text-[14px] text-gold">1996 → 2022</span>
+          <h2 className="font-display text-[clamp(1.5rem,3vw,36px)] font-extrabold leading-[1.15]">
             {t('home.generations.title')}
           </h2>
         </div>
@@ -102,7 +102,7 @@ export default function GenerationsRail() {
                   to={`/pokedex?gen=${g.gen}`}
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
-                  className="group relative flex h-[360px] w-[260px] shrink-0 flex-col justify-between overflow-hidden rounded-lg border border-hairline bg-surface1 p-6 transition-transform duration-300 ease-out-expo hover:-translate-y-1.5 sm:w-[320px]"
+                  className="group relative flex h-[22.5rem] w-[16.25rem] shrink-0 flex-col justify-between overflow-hidden rounded-lg border border-hairline bg-surface1 p-6 transition-transform duration-300 ease-out-expo hover:-translate-y-1.5 sm:w-[20rem]"
                 >
                   {/* border glow cycling starter types */}
                   <motion.div
@@ -120,7 +120,7 @@ export default function GenerationsRail() {
                   </span>
 
                   <div className="flex items-baseline justify-between">
-                    <span className="pixel-label text-[10px] text-gold">GEN {g.roman}</span>
+                    <span className="pixel-label text-[14px] text-gold">GEN {g.roman}</span>
                     <span className="font-sans text-xs font-medium text-tx-muted">{g.year}</span>
                   </div>
 

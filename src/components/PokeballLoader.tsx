@@ -74,7 +74,7 @@ export default function PokeballLoader({ variant = 'inline', onDone, className }
             transition={{ duration: phase === 'drop' ? 0.3 : 0.5, ease: 'easeOut' }}
           />
         </div>
-        <p className="pixel-label text-[10px] text-tx-muted">
+        <p className="pixel-label text-[14px] text-tx-muted">
           LOADING NATIONAL DEX
           <span className="inline-block w-8 text-left after:animate-caret-blink after:content-['…']" />
         </p>

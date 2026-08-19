@@ -38,23 +38,23 @@ function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; 
         <h2 className="font-display text-lg font-extrabold tracking-wide text-tx-primary">
           {t('orre.pokeSpots.title')}
         </h2>
-        <span className="rounded-full border border-gold/50 px-1.5 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-gold">
+        <span className="rounded-full border border-gold/50 px-1.5 py-0.5 font-pixel text-[8px] tracking-[0.08em] text-gold">
           {t('orre.pokeSpots.bait')}
         </span>
-        <p className="w-full text-[12px] leading-relaxed text-tx-secondary">{t('orre.pokeSpots.intro')}</p>
+        <p className="w-full text-micro12 leading-relaxed text-tx-secondary">{t('orre.pokeSpots.intro')}</p>
       </div>
 
       <div className="grid gap-3 md:grid-cols-3">
         {pokeSpots().map((spot) => (
           <div key={spot.id} className="rounded-md border border-hairline bg-surface1 p-2.5">
-            <p className="font-display text-[13px] font-bold text-tx-primary">
+            <p className="font-display text-micro13 font-bold text-tx-primary">
               {lang === 'de' ? spot.nameDe : spot.label}
             </p>
             <ul className="mt-1.5 divide-y divide-hairline">
               {spot.encounters.map((e) => {
                 const entry = nameIdx.get(e.species)
                 return (
-                  <li key={e.species} className="flex min-h-[36px] items-center gap-2 py-1">
+                  <li key={e.species} className="flex min-h-[2.25rem] items-center gap-2 py-1">
                     {entry ? (
                       <LocaleLink
                         to={pokemonHref(entry.id, { game: 'xd' })}
@@ -63,29 +63,29 @@ function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; 
                         <span className="h-8 w-8 shrink-0">
                           <Sprite id={entry.id} name={monName(e.species)} era="default" className="h-8 w-8" />
                         </span>
-                        <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+                        <span className="min-w-0 flex-1 truncate text-micro12 font-semibold text-tx-primary">
                           {monName(e.species)}
                         </span>
                       </LocaleLink>
                     ) : (
                       <>
                         <span className="block h-8 w-8 shrink-0 rounded bg-surface2" />
-                        <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+                        <span className="min-w-0 flex-1 truncate text-micro12 font-semibold text-tx-primary">
                           {monName(e.species)}
                         </span>
                       </>
                     )}
-                    <span className="shrink-0 font-pixel text-[7px] text-tx-muted">
+                    <span className="shrink-0 font-pixel text-[8px] text-tx-muted">
                       {t('orre.pokeSpots.levelRange', { min: e.minLevel, max: e.maxLevel })}
                     </span>
-                    <span className="w-9 shrink-0 text-right text-[11px] tabular-nums text-gold/90">
+                    <span className="w-9 shrink-0 text-right text-micro11 tabular-nums text-gold/90">
                       {t('orre.pokeSpots.rate', { rate: e.rate })}
                     </span>
                   </li>
                 )
               })}
             </ul>
-            <p className="mt-1.5 text-[11px] leading-snug text-tx-muted">
+            <p className="mt-1.5 text-micro11 leading-snug text-tx-muted">
               {t('orre.pokeSpots.tradeHint', {
                 give: monName(spot.trade.give),
                 receive: monName(spot.trade.receive),
@@ -102,7 +102,7 @@ function PokeSpotDeck({ nameIdx, lang }: { nameIdx: Map<string, DexIndexEntry>; 
           <span
             key={v.species}
             title={t(v.species === 'bonsly' ? 'orre.pokeSpots.visitorHintBonsly' : 'orre.pokeSpots.visitorHintMunchlax')}
-            className="flex items-center gap-1.5 rounded-full border border-hairline2 px-2 py-0.5 text-[11px] text-tx-secondary"
+            className="flex items-center gap-1.5 rounded-full border border-hairline2 px-2 py-0.5 text-micro11 text-tx-secondary"
           >
             {monName(v.species)}
             <span className="tabular-nums text-tx-muted">{t('orre.pokeSpots.rate', { rate: v.chance })}</span>
@@ -173,7 +173,7 @@ export default function OrreTracker() {
         <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('orre.title')}
         </h1>
-        <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">
+        <p className="mt-3 font-sans text-[0.875rem] leading-relaxed text-tx-secondary">
           {t('orre.intro', { colo: ORRE_EXPECTED_COUNTS.colosseum, xd: ORRE_EXPECTED_COUNTS.xd })}
         </p>
         <p className="mt-2 font-pixel text-[9px] tracking-[0.08em] text-tx-muted">
@@ -238,7 +238,7 @@ export default function OrreTracker() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('orre.searchPlaceholder')}
-          className="h-10 w-full rounded-md border border-hairline bg-surface1 pl-9 pr-3 text-[13px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+          className="h-10 w-full rounded-md border border-hairline bg-surface1 pl-9 pr-3 text-micro13 text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
         />
       </div>
 
@@ -247,7 +247,7 @@ export default function OrreTracker() {
       </HonestyHint>
       <div className="pdx-nested-scroll max-h-[min(70vh,720px)] overflow-y-auto rounded-md border border-hairline bg-surface1">
         {rows.length === 0 ? (
-          <p className="px-4 py-8 text-center text-[13px] text-tx-muted">{t('orre.empty')}</p>
+          <p className="px-4 py-8 text-center text-micro13 text-tx-muted">{t('orre.empty')}</p>
         ) : (
           <ul className="divide-y divide-hairline">
             {rows.map((s) => {
@@ -258,7 +258,7 @@ export default function OrreTracker() {
               const loc = node && region ? nodeName(node, lang) : s.locationId
               const shown = shadowNotesToShow(s)
               return (
-                <li key={s.id} className="flex min-h-[44px] items-center gap-3 px-3 py-1.5">
+                <li key={s.id} className="flex min-h-[2.75rem] items-center gap-3 px-3 py-1.5">
                   {entry ? (
                     <LocaleLink to={pokemonHref(entry.id, { game })} className="h-9 w-9 shrink-0">
                       <Sprite id={entry.id} name={monName} era="default" className="h-9 w-9" />
@@ -271,12 +271,12 @@ export default function OrreTracker() {
                       {entry ? (
                         <LocaleLink
                           to={pokemonHref(entry.id, { game })}
-                          className="truncate font-display text-[13px] font-bold text-tx-primary hover:text-gold"
+                          className="truncate font-display text-micro13 font-bold text-tx-primary hover:text-gold"
                         >
                           {monName}
                         </LocaleLink>
                       ) : (
-                        <span className="truncate font-display text-[13px] font-bold text-tx-primary">{monName}</span>
+                        <span className="truncate font-display text-micro13 font-bold text-tx-primary">{monName}</span>
                       )}
                       <span className="shrink-0 font-pixel text-[8px] text-tx-muted">
                         {t('orre.level')}
@@ -287,7 +287,7 @@ export default function OrreTracker() {
                         return (
                           <span
                             key={tp}
-                            className="shrink-0 rounded-full px-1.5 text-[8px] font-bold uppercase leading-[14px]"
+                            className="shrink-0 rounded-full px-1.5 text-micro8 font-bold uppercase leading-[0.875rem]"
                             style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}
                           >
                             {nameOfType(tp, lang)}
@@ -295,7 +295,7 @@ export default function OrreTracker() {
                         )
                       })}
                     </div>
-                    <div className="truncate text-[11px] text-tx-secondary">
+                    <div className="truncate text-micro11 text-tx-secondary">
                       <span className="text-tx-muted">{t('orre.trainer')}: </span>
                       {s.trainer}
                       <span className="mx-1.5 text-tx-muted">·</span>
@@ -303,12 +303,12 @@ export default function OrreTracker() {
                       {loc}
                     </div>
                     {shown.notes && (
-                      <p className="mt-0.5 truncate text-[10px] text-tx-muted" title={shown.notes}>
+                      <p className="mt-0.5 truncate text-micro10 text-tx-muted" title={shown.notes}>
                         {shown.notes}
                       </p>
                     )}
                     {st === 'missed' && shown.reappearNote && (
-                      <p className="mt-0.5 truncate text-[11px] text-gold/90" title={shown.reappearNote}>
+                      <p className="mt-0.5 truncate text-micro11 text-gold/90" title={shown.reappearNote}>
                         {t('orre.reappears')}: {shown.reappearNote}
                       </p>
                     )}

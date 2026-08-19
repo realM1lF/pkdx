@@ -147,7 +147,7 @@ export default function Spotlight() {
               ref={stageRef}
               onPointerMove={onTilt}
               onPointerLeave={resetTilt}
-              className="relative mx-auto aspect-square w-full max-w-[400px]"
+              className="relative mx-auto aspect-square w-full max-w-[25rem]"
               initial={{ x: -40, opacity: 0, filter: 'blur(12px)' }}
               whileInView={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
               viewport={{ once: true, margin: '-25% 0px' }}
@@ -229,11 +229,11 @@ export default function Spotlight() {
                 className="flex flex-col gap-4"
               >
                 {[
-                  <span key="num" className="pixel-label text-[11px] text-gold">
+                  <span key="num" className="pixel-label text-[9px] text-gold">
                     {padNum(id)}
                   </span>,
                   <div key="name">
-                    <h2 className="font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.15]">
+                    <h2 className="font-display text-[clamp(1.5rem,3vw,36px)] font-extrabold leading-[1.15]">
                       {pokemon ? nameOfPokemon(id, lang) : '…'}
                     </h2>
                     <p className="mt-1 font-sans text-base italic text-tx-secondary">
@@ -248,7 +248,7 @@ export default function Spotlight() {
                   <p key="flavor" className="max-w-[62ch] font-sans text-base leading-[1.55] text-tx-secondary">
                     {species ? latestFlavor(species, lang) : t('home.spotlight.loadingFlavor')}
                   </p>,
-                  <div key="stats" className="flex max-w-[440px] flex-col gap-2.5">
+                  <div key="stats" className="flex max-w-[27.5rem] flex-col gap-2.5">
                     <StatBar label="HP" value={pokemon ? statOf(pokemon, 'hp') : 0} type={primary} />
                     <StatBar label="ATK" value={pokemon ? statOf(pokemon, 'attack') : 0} type={primary} delay={80} />
                     <StatBar label="DEF" value={pokemon ? statOf(pokemon, 'defense') : 0} type={primary} delay={160} />

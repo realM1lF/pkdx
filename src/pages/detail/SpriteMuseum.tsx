@@ -229,6 +229,7 @@ function Scrubber({
   };
 
   const pct = eras.length > 1 ? (active / (eras.length - 1)) * 100 : 0;
+  const beamTop = '0.75rem'; /* track centerline — thumb + ticks share this */
 
   return (
     <div
@@ -240,7 +241,7 @@ function Scrubber({
       aria-valuemax={eras.length - 1}
       aria-valuenow={active}
       aria-valuetext={era?.tab}
-      className="relative h-6 cursor-pointer touch-none select-none"
+      className="relative h-10 cursor-pointer touch-none select-none"
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);
         onChange(indexFromX(e.clientX));
@@ -253,9 +254,13 @@ function Scrubber({
         if (e.key === 'ArrowLeft') onChange(Math.max(0, active - 1));
       }}
     >
-      {/* track */}
-      <span className="absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-pill bg-surface3" />
-      {/* ticks */}
+      {/* beam */}
+      <span
+        className="pointer-events-none absolute inset-x-0 h-1 rounded-pill bg-surface3"
+        style={{ top: beamTop, transform: 'translateY(-50%)' }}
+        aria-hidden
+      />
+      {/* era ticks + year labels (labels sit below beam, not on the handle) */}
       {eras.map((e2, i) => {
         const p = eras.length > 1 ? (i / (eras.length - 1)) * 100 : 0;
         return (
@@ -268,27 +273,29 @@ function Scrubber({
               ev.stopPropagation();
               onChange(i);
             }}
-            className="group absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ left: `${p}%` }}
+            className="group absolute"
+            style={{ left: `${p}%`, top: beamTop, transform: 'translate(-50%, -50%)' }}
           >
             <span
               className={cn(
-                'block h-1.5 w-1.5 rounded-full transition-all duration-150',
-                i === active ? 'scale-150 bg-gold' : 'bg-tx-muted group-hover:bg-tx-secondary',
+                'block h-1.5 w-1.5 rounded-full transition-colors duration-150',
+                i === active ? 'bg-transparent' : 'bg-tx-muted group-hover:bg-tx-secondary',
               )}
             />
-            <span className="pixel-label absolute left-1/2 top-2.5 -translate-x-1/2 whitespace-nowrap text-[7px] text-tx-muted">
+            <span
+              className="pixel-label pointer-events-none absolute left-1/2 top-[0.625rem] -translate-x-1/2 whitespace-nowrap text-[8px] leading-none text-tx-muted"
+            >
               {e2.years}
             </span>
           </button>
         );
       })}
-      {/* thumb */}
+      {/* thumb — sole gold handle, centered on beam */}
       <motion.span
-        className="pointer-events-none absolute top-1/2 z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold bg-void shadow-glow-gold"
-        animate={{ left: `${pct}%`, scale: [1, 1.15, 1] }}
-        transition={{ left: { type: 'spring', stiffness: 300, damping: 26 }, scale: { duration: 0.15 } }}
-        key={active}
+        className="pointer-events-none absolute z-10 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-gold bg-void shadow-glow-gold"
+        style={{ top: beamTop }}
+        animate={{ left: `${pct}%` }}
+        transition={{ type: 'spring', stiffness: 300, damping: 26 }}
       />
     </div>
   );
@@ -319,13 +326,13 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
   const variant = (v: string) => t8n(`detail.museum.variants.${v}`, { defaultValue: v });
 
   return (
-    <div className="dx-museum relative flex h-full flex-col">
+    <div className="dx-museum relative flex min-h-[20rem] flex-1 flex-col">
       <span className="dx-museum-lights" aria-hidden />
 
-      {/* display case — integrated, compact */}
-      <div className="flex items-center gap-4 border-b border-hairline px-4 py-3">
+      {/* display case — sprite | meta + era tabs */}
+      <div className="grid shrink-0 grid-cols-1 gap-x-4 gap-y-3 border-b border-hairline px-4 py-3 md:grid-cols-[8.25rem_minmax(0,1fr)] md:items-start">
         <div
-          className="relative grid h-[132px] w-[132px] shrink-0 place-items-center rounded-xl border border-hairline"
+          className="relative mx-auto grid h-[8.25rem] w-[8.25rem] shrink-0 place-items-center rounded-xl border border-hairline md:mx-0"
           style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.05), transparent 40%)' }}
         >
           <span
@@ -341,43 +348,44 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: EASE }}
-                className="h-[112px] w-[112px]"
+                className="h-[7rem] w-[7rem]"
               >
                 <MuseumSprite tile={selected} name={dispName} className="h-full w-full" eager />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-        <div className="min-w-0">
-          <div className="pixel-label text-[9px]" style={{ color: `rgb(${era.hue})` }}>
-            {era.tab}
+
+        <div className="flex min-w-0 flex-col gap-3">
+          <div className="min-w-0">
+            <div className="pixel-label text-[9px]" style={{ color: `rgb(${era.hue})` }}>
+              {era.tab}
+            </div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`${era.key}-${selected?.key ?? 'x'}-meta`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="mt-1 font-display text-[0.9375rem] font-bold leading-snug text-tx-primary">
+                  {selected?.game ?? '—'}
+                </div>
+                <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
+                  <span className="rounded-pill border border-hairline bg-surface2 px-1.5 py-px font-sans text-[14px] leading-none font-bold uppercase text-tx-secondary">
+                    {selected ? variant(selected.variant) : '—'}
+                  </span>
+                  {selected?.shiny && <img src="/sparkle.svg" alt="shiny" className="h-3 w-3" />}
+                  <span className="pixel-label text-[8px] leading-none text-tx-muted">{era.years}</span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+            <p className="mt-2 font-sans text-micro11 leading-relaxed text-tx-muted">
+              {t8n('detail.museum.blurb', { name: dispName })}
+            </p>
           </div>
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={`${era.key}-${selected?.key ?? 'x'}-meta`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="mt-1 truncate font-display text-[15px] font-bold text-tx-primary">
-                {selected?.game ?? '—'}
-              </div>
-              <div className="mt-0.5 flex items-center gap-1.5">
-                <span className="rounded-pill border border-hairline bg-surface2 px-1.5 py-px font-sans text-[9px] font-bold uppercase text-tx-secondary">
-                  {selected ? variant(selected.variant) : '—'}
-                </span>
-                {selected?.shiny && <img src="/sparkle.svg" alt="shiny" className="h-3 w-3" />}
-                <span className="pixel-label text-[7px] text-tx-muted">{era.years}</span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          <p className="mt-1.5 hidden font-sans text-[11px] leading-snug text-tx-muted sm:block">
-            {t8n('detail.museum.blurb', { name: dispName })}
-          </p>
-        </div>
-        {/* era tabs */}
-        <div className="ml-auto hidden md:block">
+
           <SegmentedControl
             id="museum-era"
             size="xs"
@@ -385,37 +393,28 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
             value={era.key}
             onChange={(k) => setEraIdx(available.findIndex((e) => e.key === k))}
             options={available.map((e) => ({ value: e.key, label: e.tab }))}
+            className="max-w-full self-start overflow-x-auto"
           />
         </div>
       </div>
 
-      {/* mobile era tabs */}
-      <div className="px-4 pt-2 md:hidden">
-        <SegmentedControl
-          id="museum-era-m"
-          size="xs"
-          ariaLabel={t8n('detail.museum.eraAria')}
-          value={era.key}
-          onChange={(k) => setEraIdx(available.findIndex((e) => e.key === k))}
-          options={available.map((e) => ({ value: e.key, label: e.tab }))}
-          className="max-w-full overflow-x-auto"
-        />
-      </div>
-
       {/* timeline scrubber above tiles */}
-      <div className="px-5 pb-1 pt-1.5">
+      <div className="shrink-0 px-5 pb-1 pt-1.5">
         <Scrubber eras={available} active={available.indexOf(era)} onChange={setEraIdx} />
       </div>
 
-      {/* dense tile grid */}
-      <div className="dx-scroll grid max-h-[300px] flex-1 grid-cols-4 gap-1.5 overflow-y-auto px-4 pb-3 sm:grid-cols-6 xl:grid-cols-8">
+      {/* dense tile grid — grows to fill panel, rows stretch when few tiles */}
+      <div
+        className="dx-scroll grid min-h-0 flex-1 auto-rows-[minmax(4.5rem,1fr)] grid-cols-4 gap-1.5 overflow-y-auto px-4 pb-3 sm:grid-cols-6 xl:grid-cols-8"
+        data-lenis-prevent
+      >
         <AnimatePresence mode="popLayout" initial={false}>
           {tiles.map((t, i) => (
             <motion.button
               key={`${era.key}-${t.key}`}
               type="button"
               onClick={() => setSelKey(t.key)}
-              className="dx-tile"
+              className="dx-tile h-full min-h-[4.5rem]"
               data-active={selected?.key === t.key}
               style={{ '--eh': era.hue } as CSSProperties}
               initial={{ opacity: 0, y: 20 }}
@@ -426,7 +425,7 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
             >
               {t.shiny && <img src="/sparkle.svg" alt="" aria-hidden className="absolute right-1 top-1 h-2.5 w-2.5 opacity-80" />}
               {t.shiny && <span aria-hidden className="absolute inset-x-2 top-0 h-px bg-gold/50" />}
-              <span className="relative block h-[64px] w-[64px] sm:h-[72px] sm:w-[72px]">
+              <span className="relative flex min-h-[3rem] w-full max-w-[4.5rem] flex-1 items-center justify-center sm:max-w-[5rem]">
                 {era.key === 'gen89' && t.key === 'front' ? (
                   /* shared <Sprite> wrapper path for the modern default slot */
                   <Sprite id={id} name={dispName} era="default" className="h-full w-full" />
@@ -434,7 +433,7 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
                   <MuseumSprite tile={t} name={dispName} className="h-full w-full" />
                 )}
               </span>
-              <span className="max-w-full truncate text-center font-sans text-[9px] font-semibold text-tx-secondary">
+              <span className="max-w-full truncate text-center font-sans text-micro9 font-semibold text-tx-secondary">
                 {t.game}
               </span>
               <span className="pixel-label text-[6px] text-tx-muted">{variant(t.variant)}</span>

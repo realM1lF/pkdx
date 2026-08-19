@@ -24,7 +24,7 @@ export default function TypesOverviewPage() {
         <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('seo.types.title')}
         </h1>
-        <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">
+        <p className="mt-3 font-sans text-[0.875rem] leading-relaxed text-tx-secondary">
           {t('seo.types.intro')}
         </p>
       </header>
@@ -47,10 +47,10 @@ export default function TypesOverviewPage() {
                   <TypeGlyph type={type} size={18} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-display text-[15px] font-bold tracking-wide text-tx-primary transition-colors group-hover:text-[rgb(var(--t))]">
+                  <span className="block font-display text-[0.9375rem] font-bold tracking-wide text-tx-primary transition-colors group-hover:text-[rgb(var(--t))]">
                     {typeName(type, lang)}
                   </span>
-                  <span className="pixel-label block text-[7px] text-tx-muted">
+                  <span className="pixel-label block text-[8px] text-tx-muted">
                     {t('seo.types.cardOpen')}
                   </span>
                 </span>
@@ -59,7 +59,7 @@ export default function TypesOverviewPage() {
                   className="shrink-0 text-tx-muted transition-transform group-hover:translate-x-0.5 group-hover:text-[rgb(var(--t))]"
                 />
               </span>
-              <span className="mt-3 block border-t border-hairline/60 pt-2.5 text-[11.5px] leading-relaxed text-tx-secondary">
+              <span className="mt-3 block border-t border-hairline/60 pt-2.5 text-[0.7188rem] leading-relaxed text-tx-secondary">
                 <span className="font-semibold text-tx-primary">{t('seo.types.cardStrong')}</span>{' '}
                 {offense.superEffective.length > 0
                   ? offense.superEffective.map((x) => typeName(x, lang)).join(', ')
@@ -75,7 +75,7 @@ export default function TypesOverviewPage() {
         })}
       </div>
 
-      <p className="mt-6 font-sans text-[12px] leading-relaxed text-tx-muted">
+      <p className="mt-6 font-sans text-micro12 leading-relaxed text-tx-muted">
         {t('seo.types.footnote')}
       </p>
     </div>

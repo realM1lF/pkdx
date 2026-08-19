@@ -18,6 +18,7 @@ import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } 
 import { encounterOptionsForRoute, isOrreGame } from '@/lib/orre';
 import { padNum } from '@/lib/pokeapi';
 import type { DexIndexEntry } from '@/lib/types';
+import { isBelowBreakpoint } from '@/lib/viewport';
 import { cn } from '@/lib/utils';
 import { GoldHint, PixelLabel, Popover, useShake } from './ui';
 
@@ -324,7 +325,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             type="button"
             onClick={() => setPlayerOpen((o) => !o)}
             aria-label={t('nuz.player')}
-            className={cn('flex h-10 items-center gap-1.5 rounded-md border border-hairline2 bg-surface2 px-2.5 text-[12px] font-semibold text-tx-primary hover:border-gold/50', stacked ? 'w-full justify-between' : 'w-[140px] justify-between')}
+            className={cn('flex h-10 items-center gap-1.5 rounded-md border border-hairline2 bg-surface2 px-2.5 text-micro12 font-semibold text-tx-primary hover:border-gold/50', stacked ? 'w-full justify-between' : 'w-[8.75rem] justify-between')}
           >
             <span className="flex min-w-0 items-center gap-1.5">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: player?.color }} />
@@ -333,7 +334,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             <ChevronDown size={12} className="shrink-0 text-tx-muted" />
           </button>
         }
-        className="w-[180px] py-1"
+        className="w-[11.25rem] py-1"
       >
         {players.map((p) => (
           <button
@@ -348,7 +349,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               }
               setPlayerOpen(false);
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             <span className="h-2.5 w-2.5 rounded-full" style={{ background: p.color }} />
             {p.name}
@@ -366,13 +367,13 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             type="button"
             onClick={() => setRouteOpen((o) => !o)}
             aria-label={t('nuz.route')}
-            className={cn('flex h-10 items-center justify-between gap-1.5 rounded-md border bg-surface2 px-2.5 text-[12px] font-semibold hover:border-gold/50', routeKey ? 'border-hairline2 text-tx-primary' : 'border-dashed border-hairline2 text-tx-muted', stacked ? 'w-full' : 'w-[200px]')}
+            className={cn('flex h-10 items-center justify-between gap-1.5 rounded-md border bg-surface2 px-2.5 text-micro12 font-semibold hover:border-gold/50', routeKey ? 'border-hairline2 text-tx-primary' : 'border-dashed border-hairline2 text-tx-muted', stacked ? 'w-full' : 'w-[12.5rem]')}
           >
             <span className="truncate">{routeLabel}</span>
             <ChevronDown size={12} className="shrink-0 text-tx-muted" />
           </button>
         }
-        className="w-[260px]"
+        className="w-[16.25rem]"
       >
         <div className="border-b border-hairline p-2">
           <input
@@ -380,10 +381,10 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             value={routeFilter}
             onChange={(e) => setRouteFilter(e.target.value)}
             placeholder={t('nuz.filterRoutes')}
-            className="h-8 w-full rounded-sm border border-hairline bg-surface1 px-2 text-[12px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+            className="h-8 w-full rounded-sm border border-hairline bg-surface1 px-2 text-micro12 text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
           />
         </div>
-        <div className="nz-slim-scroll max-h-[300px] overflow-y-auto py-1" data-lenis-prevent role="listbox" aria-label={t('nuz.routesAria')}>
+        <div className="nz-slim-scroll max-h-[18.75rem] overflow-y-auto py-1" data-lenis-prevent role="listbox" aria-label={t('nuz.routesAria')}>
           {filteredNodes.map((n) => {
             const st = nodeState(n.id);
             const used = st !== 'pending';
@@ -394,9 +395,9 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 role="option"
                 aria-selected={n.id === routeKey}
                 onClick={() => pickRoute(n.id)}
-                className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-surface3', used ? 'text-tx-muted' : 'text-tx-secondary hover:text-gold')}
+                className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-left text-micro12 transition-colors hover:bg-surface3', used ? 'text-tx-muted' : 'text-tx-secondary hover:text-gold')}
               >
-                <span className="w-6 font-display text-[9px] font-bold tabular-nums text-tx-muted">{String(nodes.indexOf(n) + 1).padStart(2, '0')}</span>
+                <span className="w-6 font-display text-micro9 font-bold tabular-nums text-tx-muted">{String(nodes.indexOf(n) + 1).padStart(2, '0')}</span>
                 <span className="min-w-0 flex-1 truncate">{n.label}</span>
                 {isSpecialNode(n) && (
                   <span
@@ -407,7 +408,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                   </span>
                 )}
                 {used && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[6px] text-tx-muted">{t('nuz.chip.used')}</span>}
-                <span className="font-pixel text-[7px] text-tx-muted">
+                <span className="font-pixel text-[8px] text-tx-muted">
                   {st === 'caught' ? '✓' : st === 'dead' ? '✕' : st === 'pending' ? '○' : '—'}
                 </span>
               </button>
@@ -417,7 +418,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       </Popover>
 
       {/* POKÉMON autocomplete */}
-      <div ref={pokePickerRef} className={cn('relative', stacked ? 'w-full' : 'w-[240px]')}>
+      <div ref={pokePickerRef} className={cn('relative', stacked ? 'w-full' : 'w-[15rem]')}>
         <Search size={12} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-tx-muted" />
         <input
           ref={searchRef}
@@ -459,23 +460,23 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           aria-expanded={listOpen}
           role="combobox"
           className={cn(
-            'h-10 w-full rounded-md border bg-surface2 pl-7 pr-8 text-[12px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted disabled:opacity-50',
+            'h-10 w-full rounded-md border bg-surface2 pl-7 pr-8 text-micro12 font-semibold text-tx-primary outline-none placeholder:text-tx-muted disabled:opacity-50',
             species?.custom ? 'border-gold/60' : 'border-hairline2 focus:border-gold/60',
           )}
         />
         {species && (
           <span ref={previewRef} className="absolute right-1.5 top-1/2 -translate-y-1/2">
-            <Sprite id={species.id} name={species.label} className="h-[28px] w-[28px]" skeleton={false} />
+            <Sprite id={species.id} name={species.label} className="h-[1.75rem] w-[1.75rem]" skeleton={false} />
           </span>
         )}
         {listOpen && routeKey && !species && (
           <div
-            className="nz-slim-scroll absolute left-0 top-full z-[70] mt-1.5 max-h-[320px] w-full overflow-y-auto rounded-md border border-hairline2 bg-surface2 shadow-[0_8px_32px_rgba(0,0,0,0.45)]"
+            className="nz-slim-scroll absolute left-0 top-full z-[70] mt-1.5 max-h-[20rem] w-full overflow-y-auto rounded-md border border-hairline2 bg-surface2 shadow-[0_8px_32px_rgba(0,0,0,0.45)]"
             role="listbox"
             data-lenis-prevent
           >
             {options.length === 0 && (
-              <div className="px-3 py-2.5 text-[11px] text-tx-muted">
+              <div className="px-3 py-2.5 text-micro11 text-tx-muted">
                 {isOrreGame(state.run.game)
                   ? t('orre.noEncounterHere')
                   : useFullDex || mapData.data.get(routeKey)?.status === 'loaded'
@@ -484,7 +485,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               </div>
             )}
             {randomizer && (
-              <div className="border-b border-hairline px-3 py-1.5 font-pixel text-[7px] tracking-[0.08em] text-gold">
+              <div className="border-b border-hairline px-3 py-1.5 font-pixel text-[8px] tracking-[0.08em] text-gold">
                 {t('nuz.randomizerDexHint')}
               </div>
             )}
@@ -499,18 +500,18 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                 onClick={() => {
                   pickSpecies(o);
                 }}
-                className={cn('flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[12px]', i === activeIdx ? 'bg-surface3 text-tx-primary' : 'text-tx-secondary')}
+                className={cn('flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-micro12', i === activeIdx ? 'bg-surface3 text-tx-primary' : 'text-tx-secondary')}
               >
-                <Sprite id={o.id} name={o.label} className="h-[32px] w-[32px]" skeleton={false} />
+                <Sprite id={o.id} name={o.label} className="h-[2rem] w-[2rem]" skeleton={false} />
                 <span className="min-w-0 flex-1 truncate font-semibold">{o.label}</span>
                 {o.custom ? (
                   <span className="rounded-full border border-gold/60 px-1 font-pixel text-[6px] text-gold" title={t('nuz.customTip')}>
                     {t('nuz.customChip')}
                   </span>
                 ) : (
-                  o.rate !== undefined && <span className="text-[9px] tabular-nums text-tx-muted">{o.rate}%</span>
+                  o.rate !== undefined && <span className="text-micro9 tabular-nums text-tx-muted">{o.rate}%</span>
                 )}
-                <span className="font-pixel text-[7px] text-tx-muted">{padNum(o.id)}</span>
+                <span className="font-pixel text-[8px] text-tx-muted">{padNum(o.id)}</span>
               </button>
             ))}
             {!useFullDex && (
@@ -521,7 +522,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
                   setFullDex(true);
                   setActiveIdx(0);
                 }}
-                className="flex w-full items-center gap-2 border-t border-hairline px-3 py-2 text-left text-[11px] text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
+                className="flex w-full items-center gap-2 border-t border-hairline px-3 py-2 text-left text-micro11 text-tx-muted transition-colors hover:bg-surface3 hover:text-gold"
               >
                 <Search size={11} /> {t('nuz.searchFullDex')}
               </button>
@@ -536,7 +537,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           className={cn('flex h-10 items-center rounded-md border bg-surface2', overCap ? 'border-gold/70' : 'border-hairline2')}
           title={overCap && cap !== null ? t('nuz.rules.capTitle', { cap }) : t('nuz.levelTip')}
         >
-          <span className="pl-2 font-pixel text-[7px] tracking-[0.08em] text-tx-muted" aria-hidden>
+          <span className="pl-2 font-pixel text-[8px] tracking-[0.08em] text-tx-muted" aria-hidden>
             {t('nuz.levelShort')}
           </span>
           <button type="button" aria-label={t('nuz.levelDown')} onClick={() => setLevel((l) => Math.max(1, l - 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
@@ -549,7 +550,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
               if (Number.isFinite(v)) setLevel(Math.max(1, Math.min(100, v)));
             }}
             aria-label={t('nuz.level')}
-            className="w-[36px] bg-transparent text-center font-display text-[14px] font-bold tabular-nums text-tx-primary outline-none"
+            className="w-[2.25rem] bg-transparent text-center font-display text-[0.875rem] font-bold tabular-nums text-tx-primary outline-none"
           />
           <button type="button" aria-label={t('nuz.levelUp')} onClick={() => setLevel((l) => Math.min(100, l + 1))} className="grid h-full w-7 place-items-center text-tx-muted hover:text-gold">
             <Plus size={11} />
@@ -595,13 +596,13 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             onClick={() => setStatusOpen((o) => !o)}
             aria-label={t('nuz.status')}
             title={t('nuz.statusTip')}
-            className={cn('flex h-10 items-center justify-between gap-1 rounded-md border bg-surface2 px-2.5 font-pixel text-[8px] tracking-[0.08em]', STATUS_META[status].cls, stacked ? 'w-full' : 'w-[110px]')}
+            className={cn('flex h-10 items-center justify-between gap-1 rounded-md border bg-surface2 px-2.5 font-pixel text-[8px] tracking-[0.08em]', STATUS_META[status].cls, stacked ? 'w-full' : 'w-[6.875rem]')}
           >
             {t(STATUS_META[status].labelKey)}
             <ChevronDown size={12} />
           </button>
         }
-        className="w-[140px] py-1"
+        className="w-[8.75rem] py-1"
       >
         {LOGGABLE_STATUS.map((s) => (
           <button
@@ -630,9 +631,9 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
           aria-label={t('nuz.nickname')}
           required={needsNick}
           className={cn(
-            'h-10 rounded-md border bg-surface2 px-3 text-[12px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold/60',
+            'h-10 rounded-md border bg-surface2 px-3 text-micro12 font-semibold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold/60',
             needsNick && !nick.trim() ? 'border-gold/60' : 'border-hairline2',
-            stacked ? 'w-full' : 'w-[160px]',
+            stacked ? 'w-full' : 'w-[10rem]',
           )}
         />
       )}
@@ -647,7 +648,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
             aria-label={t('nuz.logEncounterEnter')}
             onClick={submit}
             className={cn(
-              'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-3.5 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
+              'nz-sheen flex h-10 items-center justify-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-3.5 font-display text-micro12 font-bold tracking-[0.06em] text-tx-primary transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0',
               stacked && 'w-full',
             )}
           >
@@ -674,7 +675,7 @@ export default function QuickEntry(props: QuickEntryProps) {
   const [prevPrefill, setPrevPrefill] = useState<Prefill | null>(null);
   if (props.prefill && props.prefill !== prevPrefill) {
     setPrevPrefill(props.prefill);
-    if (window.innerWidth < 768) {
+    if (isBelowBreakpoint(768)) {
       setSheetOpen(true);
     } else {
       setHighlight(true);
@@ -695,9 +696,9 @@ export default function QuickEntry(props: QuickEntryProps) {
       >
         <div className="mb-2 flex items-center gap-2">
           <PixelLabel className="text-gold">{t('nuz.quickEntry')}</PixelLabel>
-          <span className="text-[10px] text-tx-muted">{t('nuz.quickEntryHint')}</span>
+          <span className="text-micro10 text-tx-muted">{t('nuz.quickEntryHint')}</span>
         </div>
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-[90rem]">
           <EntryForm {...props} />
         </div>
       </div>

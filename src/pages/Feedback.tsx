@@ -52,7 +52,7 @@ export default function Feedback() {
         <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('feedback.title')}
         </h1>
-        <p className="mt-2 max-w-2xl font-sans text-[14px] leading-relaxed text-tx-secondary">
+        <p className="mt-2 max-w-2xl font-sans text-[0.875rem] leading-relaxed text-tx-secondary">
           {t('feedback.intro')}
         </p>
       </header>
@@ -97,11 +97,11 @@ export default function Feedback() {
                 <h2 className="mt-4 font-display text-xl font-extrabold tracking-wide text-tx-primary">
                   {t(titleKey)}
                 </h2>
-                <p className="mt-2 max-w-[52ch] font-sans text-[13px] leading-relaxed text-tx-secondary">
+                <p className="mt-2 max-w-[52ch] font-sans text-micro13 leading-relaxed text-tx-secondary">
                   {t(textKey)}
                 </p>
                 <span
-                  className="mt-5 inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-transform duration-200 group-hover:-translate-y-0.5"
+                  className="mt-5 inline-flex h-9 items-center gap-1.5 rounded-md border px-4 font-display text-micro12 font-bold tracking-wider text-tx-primary transition-transform duration-200 group-hover:-translate-y-0.5"
                   style={{
                     borderColor: `rgba(${rgb},0.6)`,
                     background: `linear-gradient(135deg, rgba(${rgb},0.25), rgba(${rgb},0.10))`,
@@ -116,7 +116,7 @@ export default function Feedback() {
         })}
       </div>
 
-      <p className="mt-8 flex flex-wrap items-center gap-2 font-sans text-[13px] text-tx-muted">
+      <p className="mt-8 flex flex-wrap items-center gap-2 font-sans text-micro13 text-tx-muted">
         <Github size={14} className="shrink-0" />
         {t('feedback.githubNote')}
         <a

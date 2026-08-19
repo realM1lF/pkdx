@@ -407,7 +407,7 @@ export function VsCombobox({
         data-lenis-prevent-wheel
       >
         {view.length === 0 ? (
-          <div className="px-3 py-2 font-sans text-[11px] font-semibold text-gold">{t('versus.noMatches')}</div>
+          <div className="px-3 py-2 font-sans text-micro11 font-semibold text-gold">{t('versus.noMatches')}</div>
         ) : (
           view.map((item, i) => (
             <button
@@ -432,7 +432,7 @@ export function VsCombobox({
                 </span>
               )}
               <span className="truncate">{item.label}</span>
-              {item.sub && <span className="pixel-label ml-auto shrink-0 text-[7px] text-tx-muted">{item.sub}</span>}
+              {item.sub && <span className="pixel-label ml-auto shrink-0 text-[8px] text-tx-muted">{item.sub}</span>}
             </button>
           ))
         )}
@@ -441,7 +441,7 @@ export function VsCombobox({
 
   return (
     <div ref={rootRef} className="relative min-w-0 flex-1">
-      <div className={cn('vs-input vs-input--combo w-full', compact ? 'h-[22px] text-[11px]' : 'h-7')}>
+      <div className={cn('vs-input vs-input--combo w-full', compact ? 'h-[1.375rem] text-micro11' : 'h-7')}>
         {icon && <span className="pointer-events-none shrink-0 text-tx-muted">{icon}</span>}
         <input
           ref={inputRef}
@@ -591,7 +591,7 @@ export function MoveSlots({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
-        <span className="pixel-label text-[7px] text-tx-muted">
+        <span className="pixel-label text-[8px] text-tx-muted">
           {t('versus.movesSource', { source: sourceLabel })}
         </span>
         {onReset && (
@@ -606,7 +606,7 @@ export function MoveSlots({
         )}
       </div>
       {source === 'shadow' && (
-        <p className="min-w-0 font-sans text-[10px] leading-snug text-tx-muted">{t('versus.shadowApproxNote')}</p>
+        <p className="min-w-0 font-sans text-micro10 leading-snug text-tx-muted">{t('versus.shadowApproxNote')}</p>
       )}
       <HonestyHint show={source === 'shadow'}>
         {t('honesty.calcNeutral')}
@@ -615,13 +615,13 @@ export function MoveSlots({
         {t('honesty.firstEncounterSet')}
       </HonestyHint>
       {source === 'shadow' && !slots.some(Boolean) && (
-        <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">{t('versus.shadowSetMissing')}</p>
+        <p className="min-w-0 font-sans text-micro10 leading-snug text-gold/90">{t('versus.shadowSetMissing')}</p>
       )}
       {showMovesFallback && (
-        <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">{t('versus.trainerMovesFallback')}</p>
+        <p className="min-w-0 font-sans text-micro10 leading-snug text-gold/90">{t('versus.trainerMovesFallback')}</p>
       )}
       {editionNote && (
-        <p className="min-w-0 font-sans text-[10px] leading-snug text-gold/90">
+        <p className="min-w-0 font-sans text-micro10 leading-snug text-gold/90">
           {t('versus.trainerEditionNote', editionNote)}
         </p>
       )}
@@ -664,8 +664,8 @@ export function MoveSlots({
                   setQ('');
                 }}
                 className={cn(
-                  'flex h-[22px] w-full items-center gap-1 truncate rounded-md border border-hairline bg-abyss/60 px-1.5 text-left',
-                  'font-sans text-[11px] font-semibold transition-colors duration-150 hover:border-hairline2',
+                  'flex h-[1.375rem] w-full items-center gap-1 truncate rounded-md border border-hairline bg-abyss/60 px-1.5 text-left',
+                  'font-sans text-micro11 font-semibold transition-colors duration-150 hover:border-hairline2',
                   slug ? 'pr-5 text-tx-primary' : 'text-tx-muted',
                 )}
                 title={slug ? nameOfMove(slug, lang) : t('versus.emptySlot')}
@@ -702,7 +702,7 @@ export function MoveSlots({
 /* ================================================================== */
 
 const PORTRAIT_LINK =
-  'relative z-20 grid shrink-0 place-items-center rounded-lg transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 [&_img]:pointer-events-none h-[76px] w-[76px] md:h-[104px] md:w-[104px] lg:h-[140px] lg:w-[140px]';
+  'relative z-20 grid shrink-0 place-items-center rounded-lg transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 [&_img]:pointer-events-none h-[4.75rem] w-[4.75rem] md:h-[6.5rem] md:w-[6.5rem] lg:h-[8.75rem] lg:w-[8.75rem]';
 
 function PokemonDexLink({
   pokemonId,
@@ -848,7 +848,7 @@ export function SideCard({
             id={pokemon.id}
             name={displayName}
             era={spriteEra}
-            className="relative z-10 h-[72px] w-[72px] md:h-[96px] md:w-[96px] lg:h-[132px] lg:w-[132px]"
+            className="relative z-10 h-[4.5rem] w-[4.5rem] md:h-[6rem] md:w-[6rem] lg:h-[8.25rem] lg:w-[8.25rem]"
             eager
           />
         </PokemonDexLink>
@@ -858,7 +858,7 @@ export function SideCard({
               <button
                 type="button"
                 onClick={onHostOverview}
-                className="truncate text-left font-display text-[15px] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
+                className="truncate text-left font-display text-[0.9375rem] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[1.0625rem]"
               >
                 {displayName}
               </button>
@@ -867,20 +867,20 @@ export function SideCard({
                 to={detailPath}
                 onMouseEnter={() => prefetchPokemon(pokemon.id)}
                 onFocus={() => prefetchPokemon(pokemon.id)}
-                className="truncate font-display text-[15px] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[17px]"
+                className="truncate font-display text-[0.9375rem] font-bold text-tx-primary transition-colors hover:text-gold lg:text-[1.0625rem]"
               >
                 {displayName}
               </LocaleLink>
             )}
-            <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(ident.speciesId)}</span>
+            <span className="pixel-label shrink-0 text-[8px] text-gold">{padNum(ident.speciesId)}</span>
           </div>
           <div className="mt-1 flex flex-wrap gap-1">
             {types.map((t) => (
-              <TypeBadge key={t} type={t} className="px-2 py-0.5 text-[9px]" />
+              <TypeBadge key={t} type={t} className="px-2 py-0.5 text-micro9" />
             ))}
           </div>
           <div className="mt-1.5 flex items-center gap-1.5">
-            <span className="pixel-label text-[7px] text-tx-muted">LV</span>
+            <span className="pixel-label text-[8px] text-tx-muted">LV</span>
             <input
               type="number"
               min={1}
@@ -895,7 +895,7 @@ export function SideCard({
               onClick={() => setTune((t) => !t)}
               aria-pressed={tune}
               className={cn(
-                'ml-auto inline-flex h-5 items-center gap-1 rounded-pill border px-2 font-sans text-[9px] font-bold uppercase transition-colors duration-150',
+                'ml-auto inline-flex h-5 items-center gap-1 rounded-pill border px-2 font-sans text-[14px] leading-none font-bold uppercase transition-colors duration-150',
                 tune ? 'border-gold/60 bg-gold/10 text-gold' : 'border-hairline text-tx-muted hover:text-tx-secondary',
               )}
             >
@@ -920,9 +920,9 @@ export function SideCard({
                 className={cn('flex items-center gap-2', !mech.natures && 'opacity-40')}
                 title={mech.natures ? undefined : t('versus.genLockedMechanic')}
               >
-                <span className="pixel-label w-12 text-[7px] text-tx-muted">{t('versus.nature')}</span>
+                <span className="pixel-label w-12 text-[8px] text-tx-muted">{t('versus.nature')}</span>
                 <select
-                  className="dx-select h-6 flex-1 text-[11px]"
+                  className="dx-select h-6 flex-1 text-micro11"
                   value={side.nature ?? ''}
                   onChange={(e) => onSide({ nature: e.target.value || null })}
                   aria-label={t('versus.natureAria')}
@@ -953,7 +953,7 @@ export function SideCard({
                         const v = Math.min(252, Math.max(0, Number(e.target.value) || 0));
                         onSide({ evs: { ...side.evs, [key]: v } });
                       }}
-                      className="vs-input w-full px-1 text-center text-[10px] tabular-nums"
+                      className="vs-input w-full px-1 text-center text-micro10 tabular-nums"
                       aria-label={t('versus.evsAria', { stat: STAT_LABELS[key] })}
                       disabled={!mech.evs}
                     />
@@ -962,9 +962,9 @@ export function SideCard({
               </div>
               {showAbilityItem && mech.abilities && (
                 <label className="flex items-center gap-2">
-                  <span className="pixel-label w-12 text-[7px] text-tx-muted">{t('tb.ability')}</span>
+                  <span className="pixel-label w-12 text-[8px] text-tx-muted">{t('tb.ability')}</span>
                   <select
-                    className="dx-select h-6 flex-1 text-[11px]"
+                    className="dx-select h-6 flex-1 text-micro11"
                     value={side.ability ?? ''}
                     onChange={(e) => onSide({ ability: e.target.value || null })}
                     aria-label={t('tb.ability')}
@@ -980,9 +980,9 @@ export function SideCard({
               )}
               {showAbilityItem && mech.items && (
                 <label className="flex items-center gap-2">
-                  <span className="pixel-label w-12 text-[7px] text-tx-muted">{t('tb.item')}</span>
+                  <span className="pixel-label w-12 text-[8px] text-tx-muted">{t('tb.item')}</span>
                   <select
-                    className="dx-select h-6 flex-1 text-[11px]"
+                    className="dx-select h-6 flex-1 text-micro11"
                     value={side.item ?? ''}
                     onChange={(e) => onSide({ item: e.target.value || null })}
                     aria-label={t('tb.item')}
@@ -998,7 +998,7 @@ export function SideCard({
               )}
               {showStatus && (
                 <div className="flex flex-wrap items-center gap-1">
-                  <span className="pixel-label w-12 text-[7px] text-tx-muted">{t('versus.statusLabel')}</span>
+                  <span className="pixel-label w-12 text-[8px] text-tx-muted">{t('versus.statusLabel')}</span>
                   {STATUS_OPTIONS.map((st) => (
                     <button
                       key={st ?? 'none'}
@@ -1006,7 +1006,7 @@ export function SideCard({
                       aria-pressed={(side.status ?? 'none') === st}
                       onClick={() => onSide({ status: st })}
                       className={cn(
-                        'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
+                        'rounded-pill border px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase transition-colors',
                         (side.status ?? 'none') === st
                           ? 'border-gold/60 bg-gold/10 text-gold'
                           : 'border-hairline text-tx-muted hover:text-tx-secondary',
@@ -1074,15 +1074,15 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
   return (
     <div>
       <div className="grid grid-cols-[20px_minmax(0,1fr)_18px_68px_30px_minmax(108px,1.1fr)] items-center gap-1.5 border-b border-hairline px-2 pb-1">
-        <span className="pixel-label text-[7px] text-tx-muted"> </span>
-        <span className="pixel-label text-[7px] text-tx-muted">{heading}</span>
+        <span className="pixel-label text-[8px] text-tx-muted"> </span>
+        <span className="pixel-label text-[8px] text-tx-muted">{heading}</span>
         <span className="pixel-label text-center text-[6px] text-tx-muted">{t('versus.catCol')}</span>
-        <span className="pixel-label text-[7px] text-tx-muted">{t('versus.rangeCol')}</span>
-        <span className="pixel-label text-center text-[7px] text-tx-muted">{t('versus.effCol')}</span>
-        <span className="pixel-label text-right text-[7px] text-tx-muted">{t('versus.koCol')}</span>
+        <span className="pixel-label text-[8px] text-tx-muted">{t('versus.rangeCol')}</span>
+        <span className="pixel-label text-center text-[8px] text-tx-muted">{t('versus.effCol')}</span>
+        <span className="pixel-label text-right text-[8px] text-tx-muted">{t('versus.koCol')}</span>
       </div>
       {rows.length === 0 && (
-        <div className="flex h-24 items-center justify-center font-sans text-[11px] text-tx-muted">{t('versus.noSet')}</div>
+        <div className="flex h-24 items-center justify-center font-sans text-micro11 text-tx-muted">{t('versus.noSet')}</div>
       )}
       {rows.map((row, ri) => {
         const mv = row.detail;
@@ -1130,7 +1130,7 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
             <span style={{ color: `rgb(${typeRgb(type)})` }}>
               <TypeGlyph type={type} size={14} />
             </span>
-            <span className="truncate font-sans text-[12px] font-semibold text-tx-primary" title={nameOfMove(row.slug, lang)}>
+            <span className="truncate font-sans text-micro12 font-semibold text-tx-primary" title={nameOfMove(row.slug, lang)}>
               {nameOfMove(row.slug, lang)}
             </span>
             <span
@@ -1150,21 +1150,21 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
                   <i style={{ width: `${Math.min(100, hi)}%` }} />
                   <b style={{ left: `${Math.min(100, lo)}%` }} />
                 </span>
-                <span className="font-sans text-[8px] font-semibold tabular-nums text-tx-muted" title={rangeTitle}>
+                <span className="font-sans text-micro8 font-semibold tabular-nums text-tx-muted" title={rangeTitle}>
                   {rangeText}
                 </span>
               </span>
             ) : isOhko ? (
               <span
-                className="font-sans text-[9px] font-semibold text-tx-secondary"
+                className="font-sans text-micro9 font-semibold text-tx-secondary"
                 title={t('versus.ohkoMove', { acc: cell!.ohko!.accuracy })}
               >
                 {t('versus.ohkoShort', { acc: cell!.ohko!.accuracy })}
               </span>
             ) : isImmune ? (
-              <span className="font-sans text-[9px] font-semibold text-tx-secondary">{t('versus.immune')}</span>
+              <span className="font-sans text-micro9 font-semibold text-tx-secondary">{t('versus.immune')}</span>
             ) : (
-              <span className="font-sans text-[9px] text-tx-muted">{mv ? (cell ? t('versus.statusMove') : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
+              <span className="font-sans text-micro9 text-tx-muted">{mv ? (cell ? t('versus.statusMove') : '…') : <span className="vs-skel inline-block h-2.5 w-12" />}</span>
             )}
             <span className="vs-eff" data-e={damaging || isOhko || isImmune ? String(eff) : '1'}>
               {damaging || isOhko || isImmune ? EFF_LABEL(eff) : '—'}
@@ -1201,18 +1201,18 @@ export function StatDelta({
         const d = a - b;
         return (
           <div key={key} className="vs-statpair">
-            <span className="pixel-label text-[7px] text-tx-muted">{STAT_LABELS[key]}</span>
-            <span className="text-right font-display text-[10px] font-bold tabular-nums text-gold">{a || '—'}</span>
+            <span className="pixel-label text-[8px] text-tx-muted">{STAT_LABELS[key]}</span>
+            <span className="text-right font-display text-micro10 font-bold tabular-nums text-gold">{a || '—'}</span>
             <span className="vs-statbar you">
               <i style={{ width: `${(a / max) * 100}%` }} />
             </span>
             <span className="vs-statbar foe">
               <i style={{ width: `${(b / max) * 100}%` }} />
             </span>
-            <span className="font-display text-[10px] font-bold tabular-nums text-[#45C8FF]">{b || '—'}</span>
+            <span className="font-display text-micro10 font-bold tabular-nums text-[#45C8FF]">{b || '—'}</span>
             <span
               className={cn(
-                'text-right font-sans text-[10px] font-bold tabular-nums',
+                'text-right font-sans text-micro10 font-bold tabular-nums',
                 d > 0 ? 'text-gold' : d < 0 ? 'text-tx-muted' : 'text-tx-muted/50',
               )}
             >
@@ -1244,14 +1244,14 @@ export function SpeedCheckBanner({ check, youName, foeName }: { check: SpeedChec
       )}
     >
       <span className={cn('pixel-label text-[8px]', youWin || tie ? 'text-gold' : 'text-tx-muted')}>{t('versus.speedCheck')}</span>
-      <span className={cn('font-display text-[12px] font-bold tracking-wide', youWin ? 'text-gold' : tie ? 'text-tx-primary' : 'text-tx-muted')}>
+      <span className={cn('font-display text-micro12 font-bold tracking-wide', youWin ? 'text-gold' : tie ? 'text-tx-primary' : 'text-tx-muted')}>
         {tie
           ? t('versus.speedTie', { speed: check.you })
           : youWin
             ? t('versus.speedWin', { name: youName, delta: check.delta })
             : t('versus.speedLose', { name: foeName, delta: -check.delta })}
       </span>
-      <span className="hidden font-sans text-[10px] font-semibold tabular-nums text-tx-muted sm:inline">
+      <span className="hidden font-sans text-micro10 font-semibold tabular-nums text-tx-muted sm:inline">
         {check.you} vs {check.foe}
       </span>
     </div>
@@ -1302,7 +1302,7 @@ function DefenseColumn({
   const m = genSplitMatchupsForSide(types, gen, ability);
   return (
     <div className="flex flex-col gap-1">
-      <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
+      <span className="pixel-label text-[8px] text-tx-muted">{title}</span>
       {/* dual-type extremes first: ×4 double weakness / ×¼ double resist */}
       {m.quad.length > 0 && <MatchupRow label={t('versus.weak')} types={m.quad} mult="×4" color="#FF8A6B" />}
       <MatchupRow label={t('versus.weak')} types={m.weak} mult="×2" color="#F6C945" />
@@ -1326,16 +1326,16 @@ function DefenseColumn({
 function MatchupRow({ label, types, mult, color }: { label: string; types: string[]; mult: string; color: string }) {
   const lang = useLanguage();
   return (
-    <div className="flex min-h-[20px] items-center gap-1.5">
-      <span className="w-10 shrink-0 font-sans text-[8px] font-bold uppercase" style={{ color }}>
+    <div className="flex min-h-[1.25rem] items-center gap-1.5">
+      <span className="w-10 shrink-0 font-sans text-micro8 font-bold uppercase" style={{ color }}>
         {label} {mult}
       </span>
       <div className="flex flex-wrap gap-1">
-        {types.length === 0 && <span className="font-sans text-[9px] text-tx-muted/50">—</span>}
+        {types.length === 0 && <span className="font-sans text-micro9 text-tx-muted/50">—</span>}
         {types.map((t) => (
           <span
             key={t}
-            className="inline-flex h-[18px] items-center gap-1 rounded-pill border px-1.5 font-sans text-[9px] font-bold uppercase"
+            className="inline-flex h-[1.125rem] items-center gap-1 rounded-pill border px-1.5 font-sans text-[14px] leading-none font-bold uppercase"
             style={{
               color: `rgb(${typeRgb(t)})`,
               borderColor: `rgba(${typeRgb(t)},0.4)`,
@@ -1381,7 +1381,7 @@ function SideEmpty({ message }: { message: string }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-2 p-6">
       <img src="/pokeball.svg" alt="" className="h-10 w-10 opacity-50" />
-      <p className="text-center font-sans text-[12px] text-gold">{message}</p>
+      <p className="text-center font-sans text-micro12 text-gold">{message}</p>
     </div>
   );
 }
@@ -1681,7 +1681,7 @@ export default function VersusPanel({
       {/* ---------- toolbar: game + field + calc badge ---------- */}
       <div className="col-span-12 flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
         <div className="flex items-center gap-1.5">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('versus.gameSelect')}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('versus.gameSelect')}</span>
           <GameSelect
             value={ctx.game ?? ''}
             onChange={pickGame}
@@ -1692,7 +1692,7 @@ export default function VersusPanel({
         </div>
         <VersusFieldControls ctx={ctx} field={field} onChange={setField} />
         {!isDefaultVersusCtx(ctx) && (
-          <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[9px] font-bold uppercase text-gold">
+          <span className="rounded-pill border border-gold/40 bg-gold/10 px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase text-gold">
             {t('versus.calcBadge', { gen: ctx.gen, label: ctxLabel(ctx, t) })}
           </span>
         )}
@@ -1701,7 +1701,7 @@ export default function VersusPanel({
           onClick={() => setBattleOpen(true)}
           disabled={!youPokemon || !foePokemon || battleOpen}
           title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : battleOpen ? t('versus.battle.runningHint') : undefined}
-          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[9px] font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[14px] leading-none font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Swords size={10} />
           {t('versus.battle.startButton')}
@@ -1710,7 +1710,7 @@ export default function VersusPanel({
           type="button"
           onClick={addToTeam}
           disabled={!youPokemon}
-          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold/50 bg-gold/10 px-2.5 font-sans text-[9px] font-bold uppercase text-gold transition-colors hover:bg-gold/20 disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto"
+          className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold/50 bg-gold/10 px-2.5 font-sans text-[14px] leading-none font-bold uppercase text-gold transition-colors hover:bg-gold/20 disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto"
         >
           <UserPlus size={10} />
           {t('versus.addToTeam')}
@@ -1722,7 +1722,7 @@ export default function VersusPanel({
         eyebrow={t('versus.you')}
         title={youPokemon ? youName : t('versus.pickYou')}
         className="col-span-12 lg:col-span-5"
-        bodyClassName="min-h-[150px] flex flex-col"
+        bodyClassName="min-h-[9.375rem] flex flex-col"
         right={
           <div className="w-36">
             <OpponentAutocomplete
@@ -1768,7 +1768,7 @@ export default function VersusPanel({
       <div className="col-span-12 flex items-center justify-center lg:col-span-2">
         <div className="flex flex-col items-center gap-1">
           <span
-            className="font-display text-[34px] font-black leading-none text-gold"
+            className="font-display text-[2.125rem] font-black leading-none text-gold"
             style={{ textShadow: '0 0 24px rgba(246,201,69,0.45)' }}
           >
             VS
@@ -1781,7 +1781,7 @@ export default function VersusPanel({
         eyebrow={t('versus.foe')}
         title={foePokemon ? foeName : trainerCtx || t('versus.pickOpponent')}
         className="col-span-12 lg:col-span-5"
-        bodyClassName="flex min-h-[150px] flex-col"
+        bodyClassName="flex min-h-[9.375rem] flex-col"
         right={
           <div className="flex flex-wrap items-center gap-2">
             <SegmentedControl
@@ -1811,7 +1811,7 @@ export default function VersusPanel({
         }
       >
         {foeMode === 'trainer' ? (
-          <div className="flex min-h-[150px] flex-col">
+          <div className="flex min-h-[9.375rem] flex-col">
             <div className="flex flex-wrap gap-1 border-b border-hairline px-3 py-2">
               {REGIONS.map((r) => (
                 <button
@@ -1820,7 +1820,7 @@ export default function VersusPanel({
                   aria-pressed={trainerRegion === r.region}
                   onClick={() => setTrainerRegion(r.region)}
                   className={cn(
-                    'rounded-pill border px-2 py-0.5 font-sans text-[9px] font-bold uppercase transition-colors',
+                    'rounded-pill border px-2 py-0.5 font-sans text-[14px] leading-none font-bold uppercase transition-colors',
                     trainerRegion === r.region
                       ? 'border-gold/60 bg-gold/10 text-gold'
                       : 'border-hairline text-tx-muted hover:text-tx-secondary',
@@ -1848,7 +1848,7 @@ export default function VersusPanel({
             )}
             {foeStatus === 'error' && (
               <div className="flex flex-1 items-center justify-center p-6">
-                <p className="font-sans text-[12px] text-gold">{t('versus.errorUnavailable')}</p>
+                <p className="font-sans text-micro12 text-gold">{t('versus.errorUnavailable')}</p>
               </div>
             )}
             {foeStatus === 'ready' && foePokemon && (
@@ -1928,7 +1928,7 @@ export default function VersusPanel({
       <div className="col-span-12 flex justify-center">
         <LocaleLink
           to={battleLandingPath(lang)}
-          className="font-sans text-[10px] font-semibold uppercase tracking-wide text-tx-muted transition-colors hover:text-gold"
+          className="font-sans text-micro10 font-semibold uppercase tracking-wide text-tx-muted transition-colors hover:text-gold"
         >
           {t('versus.battle.playOnSimulator')} →
         </LocaleLink>

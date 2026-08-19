@@ -45,7 +45,7 @@ export default function StatBar({ label, value, type, delay = 0, className }: St
 
   return (
     <div ref={ref} className={cn('flex items-center gap-3', className)}>
-      <span className="pixel-label w-16 shrink-0 text-[10px] text-tx-muted">{label}</span>
+      <span className="pixel-label w-16 shrink-0 text-[14px] text-tx-muted">{label}</span>
       <div className="h-1.5 flex-1 overflow-hidden rounded-pill bg-surface3">
         <motion.div
           className="relative h-full overflow-hidden rounded-pill"

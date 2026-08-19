@@ -27,7 +27,7 @@ const METHODS: Array<{ bucket: MethodBucket; labelKey: string; icon: typeof Foot
 
 /** Fixed height so the active pill (layoutId thumb) matches label bounds with leading-[0]. */
 const VIEW_TOGGLE_ITEM = 'relative inline-flex h-6 items-center justify-center rounded-pill px-2';
-const VIEW_TOGGLE_LABEL = 'pixel-label relative z-10 text-[7px] leading-[0]';
+const VIEW_TOGGLE_LABEL = 'pixel-label relative z-10 text-[8px] leading-[0]';
 
 interface CommandBarProps {
   region: RegionMap;
@@ -125,8 +125,8 @@ export default function CommandBar({
 
         <div className="flex shrink-0 items-center gap-2">
           <span className="h-2 w-2 rounded-full" style={{ background: region.accent, boxShadow: `0 0 8px rgba(${rgb},0.9)` }} />
-          <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{regionName(region, lang)}</span>
-          <span className="pixel-label hidden text-[7px] leading-none text-tx-muted sm:inline">{region.gen}</span>
+          <span className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{regionName(region, lang)}</span>
+          <span className="pixel-label hidden text-[8px] text-tx-muted sm:inline">{region.gen}</span>
         </div>
 
         <span className="h-5 w-px shrink-0 bg-hairline" aria-hidden />
@@ -158,7 +158,7 @@ export default function CommandBar({
                 )}
                 <span
                   className={cn(
-                    'pixel-label relative z-10 text-[8px] leading-none',
+                    'pixel-label relative z-10 text-[8px]',
                     version === v ? 'text-gold' : 'text-tx-muted hover:text-tx-secondary',
                   )}
                 >
@@ -232,7 +232,7 @@ export default function CommandBar({
               >
                 <span className={cn(VIEW_TOGGLE_LABEL, 'inline-flex items-center gap-0.5')}>
                   {t('maps.interactiveCta')}
-                  <span aria-hidden className="text-[8px] leading-[0] opacity-80">
+                  <span aria-hidden className="text-micro8 leading-[0] opacity-80">
                     ↗
                   </span>
                 </span>
@@ -253,7 +253,7 @@ export default function CommandBar({
                   aria-pressed={active}
                   onClick={() => onToggleMethod(m.bucket)}
                   className={cn(
-                    'inline-flex h-11 shrink-0 items-center gap-1 rounded-pill border px-2.5 text-[10px] font-semibold leading-none transition-all duration-150 sm:h-8 sm:px-2',
+                    'inline-flex h-11 shrink-0 items-center gap-1 rounded-pill border px-2.5 text-[11px] font-semibold leading-none transition-all duration-150 sm:h-8 sm:px-2',
                     active ? 'border-current' : 'border-hairline text-tx-muted hover:text-tx-secondary',
                   )}
                   style={
@@ -273,7 +273,7 @@ export default function CommandBar({
 
         {/* pinned right — search + status + actions (outside scroll so dropdown is not clipped) */}
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:ml-0 sm:gap-2.5">
-          <div className="relative w-[120px] sm:w-[150px]">
+          <div className="relative w-[7.5rem] sm:w-[9.375rem]">
             <div className="flex h-11 items-center gap-1.5 rounded-md border border-hairline bg-surface2 px-2 transition-colors focus-within:border-hairline2 sm:h-8">
               <Search size={13} className="shrink-0 text-tx-muted" />
               <input
@@ -298,7 +298,7 @@ export default function CommandBar({
                 }}
                 placeholder={t('maps.searchPlaceholder')}
                 aria-label={t('maps.searchAria')}
-                className="pixel-label w-full min-w-0 bg-transparent text-[8px] leading-none tracking-wider text-tx-primary outline-none placeholder:text-tx-muted"
+                className="pixel-label w-full min-w-0 bg-transparent text-[8px] tracking-wider text-tx-primary outline-none placeholder:text-tx-muted"
               />
               {q && (
                 <button type="button" aria-label={t('maps.clear')} onClick={() => setQ('')} className="text-tx-muted hover:text-tx-primary">
@@ -307,7 +307,7 @@ export default function CommandBar({
               )}
             </div>
             {open && results.length > 0 && (
-              <div className="absolute right-0 top-[calc(100%+4px)] z-[70] w-[240px] overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-elevate">
+              <div className="absolute right-0 top-[calc(100%+4px)] z-[70] w-[15rem] overflow-hidden rounded-md border border-hairline2 bg-surface2 shadow-elevate">
                 {results.map((n) => (
                   <button
                     key={n.id}
@@ -318,10 +318,10 @@ export default function CommandBar({
                       setQ('');
                       setOpen(false);
                     }}
-                    className="flex w-full items-center justify-between gap-2 px-2.5 py-2 text-left font-sans text-[13px] font-semibold text-tx-primary transition-colors hover:bg-surface3"
+                    className="flex w-full items-center justify-between gap-2 px-2.5 py-2 text-left font-sans text-micro13 font-semibold text-tx-primary transition-colors hover:bg-surface3"
                   >
                     <span className="truncate">{nodeName(n, lang)}</span>
-                    <span className="pixel-label shrink-0 text-[7px] text-tx-muted">
+                    <span className="pixel-label shrink-0 text-[8px] text-tx-muted">
                       #{n.order}{' '}
                       {t(`maps.kind${n.kind.charAt(0).toUpperCase() + n.kind.slice(1)}`, { defaultValue: n.kind })}
                     </span>
@@ -332,17 +332,17 @@ export default function CommandBar({
           </div>
 
           {offline ? (
-            <span className="pixel-label hidden shrink-0 items-center gap-1.5 text-[8px] leading-none text-gold md:inline-flex">
+            <span className="pixel-label hidden shrink-0 items-center gap-1.5 text-[8px] text-gold md:inline-flex">
               <span className="h-1.5 w-1.5 rounded-full bg-gold" />
               {t('maps.offline')}
             </span>
           ) : scanning ? (
-            <span className="pixel-label hidden shrink-0 items-center gap-1.5 text-[8px] leading-none text-tx-secondary md:inline-flex" aria-live="polite">
+            <span className="pixel-label hidden shrink-0 items-center gap-1.5 text-[8px] text-tx-secondary md:inline-flex" aria-live="polite">
               <Loader2 size={11} className="animate-spin" style={{ color: region.accent }} />
               {t('maps.scanning', { scanned, total })}
             </span>
           ) : (
-            <span className="pixel-label hidden shrink-0 items-center gap-1.5 text-[8px] leading-none text-tx-secondary md:inline-flex">
+            <span className="pixel-label hidden shrink-0 items-center gap-1.5 text-[8px] text-tx-secondary md:inline-flex">
               <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-[0_0_6px_rgba(246,201,69,0.9)]" />
               {t('maps.online')}
             </span>
@@ -366,12 +366,12 @@ export default function CommandBar({
                   className="fixed inset-0 z-40 cursor-default"
                   onClick={() => setLegend(false)}
                 />
-                <div className="absolute right-0 top-10 z-50 w-[240px] rounded-md border border-hairline2 bg-surface2 p-3.5 shadow-elevate">
+                <div className="absolute right-0 top-10 z-50 w-[15rem] rounded-md border border-hairline2 bg-surface2 p-3.5 shadow-elevate">
                   <div className="pixel-label mb-2.5 text-[8px] text-tx-muted">{t('maps.howNodeKinds')}</div>
                   <NodeKindGlyphs />
                   <div className="pixel-label mb-2.5 mt-4 text-[8px] text-tx-muted">{t('maps.howLinkKinds')}</div>
                   <LinkKindGlyphs />
-                  <p className="mt-4 border-t border-hairline pt-2.5 text-[10px] font-medium leading-relaxed text-tx-muted">
+                  <p className="mt-4 border-t border-hairline pt-2.5 text-micro10 font-medium leading-relaxed text-tx-muted">
                     {t('maps.legendNote')}
                     {interactive && <> {t('maps.legendInteractive', { site: interactive.site })}</>}
                   </p>

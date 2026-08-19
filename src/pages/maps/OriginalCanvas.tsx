@@ -489,7 +489,7 @@ export default function OriginalCanvas({
       <div
         className={cn(
           'absolute bottom-3 right-3 z-30 flex flex-col overflow-hidden rounded-md border border-hairline bg-surface1/90 shadow-elevate backdrop-blur transition-[right] duration-300',
-          selectedId && !isMobile && 'right-[412px]',
+          selectedId && !isMobile && 'right-[25.75rem]',
         )}
       >
         <button
@@ -519,18 +519,18 @@ export default function OriginalCanvas({
       </div>
 
       {/* live camera readout — ops-deck flavor */}
-      <div className="pointer-events-none absolute bottom-2 left-2.5 font-sans text-[9px] font-medium tabular-nums text-tx-muted">
+      <div className="pointer-events-none absolute bottom-2 left-2.5 font-sans text-micro9 font-medium tabular-nums text-tx-muted">
         ZOOM {camera.relZoom.toFixed(1)}× · X {Math.round(-camera.cam.x)} · Y {Math.round(-camera.cam.y)}
       </div>
 
       {/* source credit (see public/maps/CREDITS.txt) — clears the zoom stack */}
       <div className="pointer-events-none absolute bottom-2 right-14 flex flex-col items-end gap-1">
         {showArtworkEdition && artId && (
-          <span className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[7px] text-gold">
+          <span className="pixel-label rounded-sm border border-gold/40 px-1.5 py-0.5 text-[8px] text-gold">
             {t('maps.artworkEdition', { version: t(`maps.versionFull.${artId}`) })}
           </span>
         )}
-        <div className="pixel-label text-[7px] text-tx-muted/60">
+        <div className="pixel-label text-[8px] text-tx-muted/60">
           {SOURCE_CREDIT[region.region] ?? 'MAP © NINTENDO/GAME FREAK'}
         </div>
       </div>

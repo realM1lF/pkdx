@@ -77,7 +77,7 @@ function SpotlightPedestal({ started }: { started: boolean }) {
 
   return (
     <motion.div
-      className="relative mx-auto h-[300px] w-[300px] lg:h-[520px] lg:w-[520px]"
+      className="relative mx-auto h-[18.75rem] w-[18.75rem] lg:h-[32.5rem] lg:w-[32.5rem]"
       initial={started ? false : { scale: 0.8, opacity: 0 }}
       animate={started ? { scale: 1, opacity: 1 } : {}}
       transition={{ type: 'spring', stiffness: 180, damping: 22, delay: 0.5 }}
@@ -205,7 +205,7 @@ export default function Hero({ started }: { started: boolean }) {
       >
         {/* left — copy */}
         <div className="lg:col-span-7">
-          <h1 className="font-display text-[clamp(48px,8vw,96px)] font-black leading-[1.02] tracking-[0.01em]">
+          <h1 className="font-display text-[clamp(3rem,8vw,96px)] font-black leading-[1.02] tracking-[0.01em]">
             <SplitChars text={t('home.hero.titleA')} started={started} baseDelay={0.15} />
             <br />
             <SplitChars text={t('home.hero.titleB')} started={started} baseDelay={0.45} />
@@ -252,8 +252,8 @@ export default function Hero({ started }: { started: boolean }) {
                 to={`/nuzlocke/${latestRun.run.id}`}
                 className="inline-flex flex-col rounded-md border border-hairline2 px-5 py-3 text-left transition-colors hover:border-gold/50 hover:text-gold"
               >
-                <span className="font-display text-[11px] font-bold tracking-[0.06em] text-tx-primary">{t('nuz.continueRun')}</span>
-                <span className="mt-0.5 text-[11px] text-tx-muted">{t('nuz.continueRunHint', { name: latestRun.run.name })}</span>
+                <span className="font-display text-micro11 font-bold tracking-[0.06em] text-tx-primary">{t('nuz.continueRun')}</span>
+                <span className="mt-0.5 text-micro11 text-tx-muted">{t('nuz.continueRunHint', { name: latestRun.run.name })}</span>
               </LocaleLink>
             )}
           </motion.div>

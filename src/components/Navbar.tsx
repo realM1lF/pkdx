@@ -133,7 +133,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                   end={l.to === '/'}
                   className={({ isActive }) =>
                     cn(
-                      'group relative flex h-full shrink-0 items-center whitespace-nowrap font-sans text-[13px] font-semibold transition-colors duration-200 lg:text-sm',
+                      'group relative flex h-full shrink-0 items-center whitespace-nowrap font-sans text-micro13 font-semibold transition-colors duration-200 lg:text-sm',
                       isActive ? 'text-gold' : 'text-tx-secondary hover:text-tx-primary',
                     )
                   }
@@ -194,7 +194,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
           <div className="fixed inset-0 z-[80] flex flex-col bg-void/95 md:hidden">
             <div className="grain-overlay absolute inset-0" />
             <div className="relative flex h-16 items-center justify-between px-4">
-              <span className="pixel-label text-[10px] text-gold">{t('nav.menu')}</span>
+              <span className="pixel-label text-[14px] text-gold">{t('nav.menu')}</span>
               <button
                 type="button"
                 onClick={() => setDrawer(false)}

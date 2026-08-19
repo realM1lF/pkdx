@@ -54,7 +54,7 @@
   padding: 0 7px;
   border-radius: 999px;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 8px;
+  font-size: 0.5rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   white-space: nowrap;
@@ -87,7 +87,7 @@
 /* effectiveness icon chip */
 .vs-eff {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   text-align: center;
   white-space: nowrap;
@@ -141,7 +141,7 @@
   background: rgba(10, 12, 18, 0.6);
   padding: 0 6px;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #f4f6fc;
   outline: none;
@@ -228,7 +228,7 @@
   height: 34px;
   padding: 0 10px;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #a8b0c4;
   text-align: left;
@@ -267,7 +267,7 @@
   padding: 0 7px;
   border-radius: 6px;
   font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
+  font-size: 0.4375rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
 }

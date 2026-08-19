@@ -130,8 +130,8 @@ export default function GameSelect({
           buttonContent(current, open)
         ) : (
           <>
-            <span className="gs-chip !px-1.5 !py-0.5 !text-[8px]">{current.short}</span>
-            <span className="font-display text-[11px] font-bold tracking-wide text-tx-primary">{current.label}</span>
+            <span className="gs-chip !px-1.5 !py-0.5 !text-micro8">{current.short}</span>
+            <span className="font-display text-micro11 font-bold tracking-wide text-tx-primary">{current.label}</span>
             <ChevronDown size={12} className={cn('transition-transform duration-200', open && 'rotate-180')} />
           </>
         )}
@@ -156,7 +156,7 @@ export default function GameSelect({
                 if (!groups.length) return null;
                 return (
                   <div key={g.gen}>
-                    <div className="gs-micro px-3 pb-1 pt-2.5 !text-[8px]">
+                    <div className="gs-micro px-3 pb-1 pt-2.5 !text-micro8">
                       Gen {g.roman} · {t(`regions.${genRegionKey(g.region)}`)}
                     </div>
                     {groups.map(renderOption)}

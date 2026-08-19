@@ -53,10 +53,10 @@ export default function AccountTooltip() {
           >
             <X size={11} />
           </button>
-          <p className="font-sans text-[12.5px] font-semibold leading-snug text-tx-primary">
+          <p className="font-sans text-[0.7813rem] font-semibold leading-snug text-tx-primary">
             {t('account.tip.title')}
           </p>
-          <p className="mt-1.5 font-sans text-[11.5px] leading-relaxed text-tx-muted">
+          <p className="mt-1.5 font-sans text-[0.7188rem] leading-relaxed text-tx-muted">
             {t('account.tip.body')}
           </p>
           <button

@@ -40,14 +40,14 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
     return releaseOnDeath ? (
       <span
         title={t('nuz.box.badge.deadReleaseTip')}
-        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-gold"
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[8px] leading-[1.8] tracking-[0.05em] text-gold"
       >
         💀 {t('nuz.box.badge.deadRelease')}
       </span>
     ) : (
       <span
         title={t('nuz.box.badge.deadTip')}
-        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-tx-muted"
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[8px] leading-[1.8] tracking-[0.05em] text-tx-muted"
       >
         💀 {t('nuz.box.badge.dead')}
       </span>
@@ -55,14 +55,14 @@ function StatusBadge({ enc, releaseOnDeath }: { enc: NuzEncounterRow; releaseOnD
   }
   if (enc.status === 'lost') {
     return (
-      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-gold">
+      <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-gold/50 bg-gold/10 px-1 font-pixel text-[8px] leading-[1.8] tracking-[0.05em] text-gold">
         🔗 {t('nuz.box.badge.lost')}
       </span>
     );
   }
   /* missed vs duped — same muted chip, distinct label */
   return (
-    <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[7px] leading-[1.8] tracking-[0.05em] text-tx-muted">
+    <span className="inline-flex max-w-full items-center gap-0.5 rounded-sm border border-hairline2 bg-surface3/60 px-1 font-pixel text-[8px] leading-[1.8] tracking-[0.05em] text-tx-muted">
       🌫 {t(boxStatusBadgeKey(enc.status))}
     </span>
   );
@@ -135,28 +135,28 @@ function BoxCell({
       aria-label={t('nuz.box.openDexAria', { name: nick })}
       aria-disabled={locked}
       className={cn(
-        'group/box relative flex w-[104px] cursor-pointer flex-col items-center gap-0.5 overflow-hidden rounded-md border border-hairline bg-surface2/60 px-1.5 pb-1.5 pt-1 transition-all duration-150',
+        'group/box relative flex w-[6.5rem] cursor-pointer flex-col items-center gap-0.5 overflow-hidden rounded-md border border-hairline bg-surface2/60 px-1.5 pb-1.5 pt-1 transition-all duration-150',
         dragging && 'opacity-40',
         locked && 'cursor-default opacity-50',
       )}
     >
       <span className={cn('transition-transform duration-200 group-hover/box:-translate-y-[6%]', enc.status === 'dead' && 'grayscale')}>
-        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[64px] w-[64px]" skeleton={false} />
+        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[4rem] w-[4rem]" skeleton={false} />
       </span>
-      <span className={cn('max-w-full truncate text-[11px] font-semibold leading-tight text-tx-primary', locked && 'text-tx-muted', enc.status === 'dead' && 'line-through')}>{nick}</span>
-      <span className="font-display text-[9px] font-bold tabular-nums text-tx-muted">
+      <span className={cn('max-w-full truncate text-micro11 font-semibold leading-tight text-tx-primary', locked && 'text-tx-muted', enc.status === 'dead' && 'line-through')}>{nick}</span>
+      <span className="font-display text-micro9 font-bold tabular-nums text-tx-muted">
         LV {enc.level}
         {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} title={t('nuz.shinyCatch')} className="ml-0.5 inline h-2.5 w-2.5 align-[-1px]" />}
       </span>
       {hasEvolved(enc) && (
-        <span className="max-w-full truncate font-pixel text-[7px] tracking-[0.04em] text-tx-muted/70">
+        <span className="max-w-full truncate font-pixel text-[8px] tracking-[0.04em] text-tx-muted/70">
           {t('nuz.team.caughtAs', { name: nameOf(speciesIdFor(enc, 'caught')) })}
         </span>
       )}
       {locked ? (
         <StatusBadge enc={enc} releaseOnDeath={releaseOnDeath} />
       ) : (
-        <span className="max-w-full truncate font-pixel text-[7px] leading-[1.6] text-tx-muted/80">
+        <span className="max-w-full truncate font-pixel text-[8px] leading-[1.6] text-tx-muted/80">
           {routeLabel(enc.route_key)}
         </span>
       )}
@@ -204,9 +204,9 @@ export default function BoxSection({
   return (
     <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label={t('nuz.box.aria')}>
       <div className="flex flex-wrap items-baseline gap-3">
-        <h4 className="font-sans text-[15px] font-bold text-tx-primary">{t('nuz.box.title')}</h4>
+        <h4 className="font-sans text-[0.9375rem] font-bold text-tx-primary">{t('nuz.box.title')}</h4>
         <PixelLabel>{t('nuz.box.note')}</PixelLabel>
-        <span className="ml-auto font-display text-[12px] font-bold tabular-nums text-tx-muted">{t('nuz.box.count', { count: total })}</span>
+        <span className="ml-auto font-display text-micro12 font-bold tabular-nums text-tx-muted">{t('nuz.box.count', { count: total })}</span>
       </div>
       {/* filter chips */}
       <div className="mt-2 flex flex-wrap items-center gap-1" role="group" aria-label={t('nuz.box.aria')}>
@@ -217,7 +217,7 @@ export default function BoxSection({
             aria-pressed={filter === f}
             onClick={() => setFilter(f)}
             className={cn(
-              'rounded-full border px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.04em] transition-colors',
+              'rounded-full border px-2.5 py-1 font-display text-micro10 font-bold tracking-[0.04em] transition-colors',
               filter === f
                 ? 'border-gold/60 bg-gold/10 text-gold'
                 : 'border-hairline2 text-tx-muted hover:border-gold/40 hover:text-tx-secondary',
@@ -267,15 +267,15 @@ export default function BoxSection({
               }}
             >
               {/* identity cluster: color chip + name + boxed count */}
-              <div className="flex h-10 w-full shrink-0 items-center gap-1.5 sm:w-[140px]">
-                <span className="h-2.5 w-2.5 shrink-0 rounded-[3px]" style={{ background: p.color }} />
-                <span className="truncate font-display text-[12px] font-bold text-tx-primary">{p.name}</span>
-                <span className="ml-auto text-[10px] tabular-nums text-tx-muted">{boxed.length}</span>
+              <div className="flex h-10 w-full shrink-0 items-center gap-1.5 sm:w-[8.75rem]">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-[0.1875rem]" style={{ background: p.color }} />
+                <span className="truncate font-display text-micro12 font-bold text-tx-primary">{p.name}</span>
+                <span className="ml-auto text-micro10 tabular-nums text-tx-muted">{boxed.length}</span>
               </div>
               {boxed.length === 0 ? (
                 <div
                   className={cn(
-                    'grid min-h-[72px] flex-1 place-items-center rounded-md border border-dashed transition-colors',
+                    'grid min-h-[4.5rem] flex-1 place-items-center rounded-md border border-dashed transition-colors',
                     dropPlayer === p.id ? 'border-gold/50 opacity-100' : 'border-hairline2 opacity-50',
                   )}
                 >

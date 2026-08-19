@@ -67,7 +67,7 @@ function RowView({ row, highlight, filter }: { row: WhereRow; highlight: boolean
       {/* region accent chip */}
       <span
         className={cn(
-          'w-[32px] shrink-0 rounded-[3px] border px-0.5 text-center font-pixel text-[7px] leading-[14px]',
+          'w-[2rem] shrink-0 rounded-[0.1875rem] border px-0.5 text-center font-pixel text-[8px] leading-[0.875rem]',
           !accent && 'border-hairline2 text-tx-muted/70',
         )}
         style={
@@ -79,11 +79,11 @@ function RowView({ row, highlight, filter }: { row: WhereRow; highlight: boolean
         {abbr || '???'}
       </span>
       {/* route display name (+ uniform sub-area like 'PRIZE CORNER') */}
-      <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">
+      <span className="min-w-0 flex-1 truncate text-micro12 font-semibold text-tx-primary">
         {label}
         {row.sub && <span className="font-normal text-tx-muted"> · {row.sub}</span>}
         {highlight && (
-          <span className="ml-1 font-pixel text-[7px] uppercase tracking-[0.06em] text-gold">{t('detail.find.fromHere')}</span>
+          <span className="ml-1 font-pixel text-[8px] uppercase tracking-[0.06em] text-gold">{t('detail.find.fromHere')}</span>
         )}
       </span>
       {/* method chips (type-style, bucket-colored) */}
@@ -93,36 +93,36 @@ function RowView({ row, highlight, filter }: { row: WhereRow; highlight: boolean
           return (
             <span
               key={m}
-              className="rounded-full px-1.5 py-px text-[8px] font-bold uppercase leading-[14px]"
+              className="rounded-full px-1.5 py-px text-micro8 font-bold uppercase leading-[0.875rem]"
               style={{ color: `rgb(${rgb})`, background: `rgba(${rgb},0.14)` }}
             >
               {nameOfMethod(m, lang)}
             </span>
           );
         })}
-        {row.methods.length > 3 && <span className="text-[8px] font-bold text-tx-muted">+{row.methods.length - 3}</span>}
+        {row.methods.length > 3 && <span className="text-micro8 font-bold text-tx-muted">+{row.methods.length - 3}</span>}
       </span>
       {/* level range */}
-      <span className="shrink-0 font-display text-[9px] font-bold tabular-nums text-tx-muted">{lv}</span>
+      <span className="shrink-0 font-display text-micro9 font-bold tabular-nums text-tx-muted">{lv}</span>
       {row.special ? (
         /* gift/static: version chips instead of a misleading "100% rate" bar */
-        <span className="flex w-[76px] shrink-0 flex-wrap justify-end gap-0.5" title={versionTitle}>
+        <span className="flex w-[4.75rem] shrink-0 flex-wrap justify-end gap-0.5" title={versionTitle}>
           {row.versions.slice(0, 3).map((v) => (
             <span
               key={v}
-              className="rounded-[3px] border border-gold/40 bg-gold/10 px-1 font-pixel text-[7px] leading-[14px] text-gold"
+              className="rounded-[0.1875rem] border border-gold/40 bg-gold/10 px-1 font-pixel text-[8px] leading-[0.875rem] text-gold"
             >
               {versionChipLabel(v)}
             </span>
           ))}
           {row.versions.length > 3 && (
-            <span className="text-[8px] font-bold text-tx-muted">+{row.versions.length - 3}</span>
+            <span className="text-micro8 font-bold text-tx-muted">+{row.versions.length - 3}</span>
           )}
         </span>
       ) : (
         /* best rate: micro-bar + % */
-        <span className="flex w-[76px] shrink-0 items-center gap-1.5" title={versionTitle}>
-          <span className="h-[3px] flex-1 overflow-hidden rounded-full bg-surface3">
+        <span className="flex w-[4.75rem] shrink-0 items-center gap-1.5" title={versionTitle}>
+          <span className="h-[0.1875rem] flex-1 overflow-hidden rounded-full bg-surface3">
             <motion.span
               className="block h-full rounded-full bg-gold"
               initial={{ width: 0 }}
@@ -131,7 +131,7 @@ function RowView({ row, highlight, filter }: { row: WhereRow; highlight: boolean
               transition={{ duration: 0.6, ease: 'easeOut' }}
             />
           </span>
-          <span className="w-[28px] text-right font-display text-[10px] font-bold tabular-nums text-tx-primary">
+          <span className="w-[1.75rem] text-right font-display text-micro10 font-bold tabular-nums text-tx-primary">
             {Math.min(100, row.maxChance)}%
           </span>
         </span>
@@ -139,7 +139,7 @@ function RowView({ row, highlight, filter }: { row: WhereRow; highlight: boolean
       {linked && (
         <>
           <ArrowUpRight size={12} className="shrink-0 text-tx-muted transition-colors duration-150 group-hover/wtf:text-gold" />
-          <span className="pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 rounded-[3px] border border-gold/40 bg-surface2 px-1.5 py-0.5 font-pixel text-[7px] text-gold opacity-0 transition-opacity duration-150 group-hover/wtf:opacity-100">
+          <span className="pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 rounded-[0.1875rem] border border-gold/40 bg-surface2 px-1.5 py-0.5 font-pixel text-[8px] text-gold opacity-0 transition-opacity duration-150 group-hover/wtf:opacity-100">
             {t('detail.find.openInMap')}
           </span>
         </>
@@ -274,10 +274,10 @@ export default function WhereToFind({
   if (status === 'empty' || status === 'error' || (wild.length === 0 && special.length === 0)) {
     const nothingWild = status !== 'error';
     return (
-      <div className="grid h-[132px] place-items-center px-4">
+      <div className="grid h-[8.25rem] place-items-center px-4">
         <div className="flex flex-col items-center gap-2 text-center">
           <img src="/pokeball.svg" alt="" className="h-8 w-8 opacity-40" />
-          <p className={cn('max-w-[260px] text-[12px] font-semibold leading-snug', nothingWild ? 'text-gold' : 'text-tx-muted')}>
+          <p className={cn('max-w-[16.25rem] text-micro12 font-semibold leading-snug', nothingWild ? 'text-gold' : 'text-tx-muted')}>
             {nothingWild ? t('detail.find.empty') : t('detail.find.error')}
           </p>
         </div>
@@ -299,7 +299,7 @@ export default function WhereToFind({
             aria-pressed={active === null}
             onClick={() => setVersion(null)}
             className={cn(
-              'shrink-0 rounded-[3px] border px-1.5 font-pixel text-[8px] leading-[18px] uppercase',
+              'shrink-0 rounded-[0.1875rem] border px-1.5 font-pixel text-[8px] leading-[1.125rem] uppercase',
               active === null
                 ? 'border-gold/60 bg-gold/10 text-gold'
                 : 'border-hairline text-tx-muted hover:border-hairline2 hover:text-tx-secondary',
@@ -315,7 +315,7 @@ export default function WhereToFind({
               onClick={() => setVersion(v)}
               title={versionChipLabel(v)}
               className={cn(
-                'min-w-0 shrink-0 truncate rounded-[3px] border px-1.5 font-pixel text-[8px] leading-[18px] uppercase',
+                'min-w-0 shrink-0 truncate rounded-[0.1875rem] border px-1.5 font-pixel text-[8px] leading-[1.125rem] uppercase',
                 active === v
                   ? 'border-gold/60 bg-gold/10 text-gold'
                   : 'border-hairline text-tx-muted hover:border-hairline2 hover:text-tx-secondary',
@@ -329,10 +329,10 @@ export default function WhereToFind({
       <HonestyHint show={active === null && versions.length > 1} className="border-b border-hairline px-3 py-1.5" truncate>
         {t('honesty.siblingMix')}
       </HonestyHint>
-      <div className="dx-scroll max-h-[368px] overflow-y-auto" data-lenis-prevent>
+      <div className="dx-scroll max-h-[23rem] overflow-y-auto" data-lenis-prevent>
         {wild.length === 0 && (
           /* species exists only as gift/static/trade (e.g. starters) */
-          <p className="border-b border-hairline px-3 py-2 text-[11px] font-semibold leading-snug text-gold">
+          <p className="border-b border-hairline px-3 py-2 text-micro11 font-semibold leading-snug text-gold">
             {t('detail.find.empty')}
           </p>
         )}
@@ -341,7 +341,7 @@ export default function WhereToFind({
         ))}
         {special.length > 0 && (
           <>
-            <p className="border-b border-t border-hairline bg-surface2/60 px-3 py-1 font-pixel text-[7px] uppercase tracking-[0.08em] text-gold">
+            <p className="border-b border-t border-hairline bg-surface2/60 px-3 py-1 font-pixel text-[8px] uppercase tracking-[0.08em] text-gold">
               {t('detail.find.special')}
             </p>
             {special.map((row) => (

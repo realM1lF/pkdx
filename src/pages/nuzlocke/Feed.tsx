@@ -23,11 +23,11 @@ export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean 
   return (
     <aside className="rounded-lg border border-hairline bg-surface1 p-3" aria-label={t('nuz.feed.aria')}>
       <div className="flex items-center gap-2">
-        <h4 className="font-sans text-[14px] font-bold text-tx-primary">{t('nuz.feed.title')}</h4>
+        <h4 className="font-sans text-[0.875rem] font-bold text-tx-primary">{t('nuz.feed.title')}</h4>
         {live && <span className="nz-dot-live h-1.5 w-1.5 rounded-full bg-[#45C8FF]" />}
       </div>
-      <div className="nz-slim-scroll mt-2 max-h-[420px] space-y-px overflow-y-auto" data-lenis-prevent>
-        {feed.length === 0 && <p className="py-6 text-center text-[11px] text-tx-muted">{t('nuz.feed.empty')}</p>}
+      <div className="nz-slim-scroll mt-2 max-h-[26.25rem] space-y-px overflow-y-auto" data-lenis-prevent>
+        {feed.length === 0 && <p className="py-6 text-center text-micro11 text-tx-muted">{t('nuz.feed.empty')}</p>}
         {feed.map((ev) => (
           <motion.div
             key={ev.id}
@@ -35,7 +35,7 @@ export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean 
             animate={{ y: 0, opacity: ev.kind === 'presence' ? 0.4 : 1 }}
             transition={{ duration: 0.25 }}
             className={cn(
-              'flex min-h-[36px] items-center gap-2 rounded-sm border-l-2 px-2 py-1',
+              'flex min-h-[2.25rem] items-center gap-2 rounded-sm border-l-2 px-2 py-1',
               ev.kind === 'milestone' ? 'border-gold bg-gold/5' : 'border-transparent',
             )}
             style={ev.kind !== 'milestone' ? { borderLeftColor: ev.color ? `${ev.color}55` : 'transparent' } : undefined}
@@ -44,10 +44,10 @@ export default function Feed({ feed, live }: { feed: FeedEvent[]; live: boolean 
               <FeedGlyph ev={ev} />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-[11px] leading-tight text-tx-secondary">{ev.title}</span>
+              <span className="block truncate text-micro11 leading-tight text-tx-secondary">{ev.title}</span>
               {ev.meta && <span className="block font-pixel text-[6px] tracking-[0.06em] text-tx-muted">{ev.meta}</span>}
             </span>
-            <span className="shrink-0 text-[9px] tabular-nums text-tx-muted">{timeAgo(ev.t, true)}</span>
+            <span className="shrink-0 text-micro9 tabular-nums text-tx-muted">{timeAgo(ev.t, true)}</span>
           </motion.div>
         ))}
       </div>

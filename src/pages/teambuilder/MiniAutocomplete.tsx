@@ -192,7 +192,7 @@ export default function MiniAutocomplete<T>({
             }
           }}
           placeholder={placeholder}
-          className="tb-input !pl-7 !pr-7 !py-1.5 !text-[12px]"
+          className="tb-input !pl-7 !pr-7 !py-1.5 !text-micro12"
           role="combobox"
           aria-expanded={open}
           aria-autocomplete="list"

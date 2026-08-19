@@ -258,7 +258,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
               return (
                 <span key={s} className="flex items-center gap-1.5">
                   <span className={cn('h-1.5 w-1.5 rounded-full', active ? 'bg-gold' : done ? 'bg-gold/50' : 'bg-surface3')} />
-                  <span className={cn('font-pixel text-[7px] tracking-[0.08em]', active ? 'text-gold' : 'text-tx-muted')}>{s}</span>
+                  <span className={cn('font-pixel text-[8px] tracking-[0.08em]', active ? 'text-gold' : 'text-tx-muted')}>{s}</span>
                 </span>
               );
             })}
@@ -280,14 +280,14 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                   {copied ? <Check size={13} /> : <Copy size={13} />}
                 </button>
               </div>
-              <p className="mt-2 text-[12px] text-tx-muted">{t('nuz.wizard.anyoneCanJoin')}</p>
+              <p className="mt-2 text-micro12 text-tx-muted">{t('nuz.wizard.anyoneCanJoin')}</p>
               <button
                 type="button"
                 onClick={() => {
                   onClose();
                   if (createdId) navigate(localePath(`/nuzlocke/${createdId}`));
                 }}
-                className="nz-sheen mx-auto mt-5 block rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+                className="nz-sheen mx-auto mt-5 block rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-7 py-3 font-display text-micro13 font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
               >
                 {t('nuz.wizard.enterRun')}
               </button>
@@ -303,13 +303,13 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
           ) : joinMode && joinPreset ? (
             /* ---------- join flow ---------- */
             <motion.div key="join" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }}>
-              <div className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-[12px] text-tx-secondary">
+              <div className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-micro12 text-tx-secondary">
                 {t('nuz.wizard.joiningRun')} <span className="font-semibold text-tx-primary">“{joinPreset.run.name}”</span> — {joinPreset.players.length === 1 ? t('nuz.wizard.playersInside', { count: 1 }) : t('nuz.wizard.playersInsidePlural', { count: joinPreset.players.length })}
               </div>
               {joinFull ? (
                 <div className="relative">
                   <div key={shakeKey} className={shakeKey ? 'nz-shake' : undefined}>
-                    <p className="rounded-md border border-gold/40 bg-gold/5 px-3 py-3 text-[12px] text-tx-secondary">
+                    <p className="rounded-md border border-gold/40 bg-gold/5 px-3 py-3 text-micro12 text-tx-secondary">
                       {t('nuz.wizard.failJoinFull', { max: MAX_PLAYERS })}
                     </p>
                   </div>
@@ -325,7 +325,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                         onChange={(e) => setJoinName(e.target.value)}
                         placeholder={loginName || t('nuz.wizard.trainerName')}
                         maxLength={18}
-                        className="h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 text-[14px] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+                        className="h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 text-[0.875rem] text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
                       />
                     </div>
                     <GoldHint text={hint} show={!!hint} />
@@ -352,7 +352,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     type="button"
                     disabled={busy}
                     onClick={() => void doJoin()}
-                    className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+                    className="nz-sheen mt-6 w-full rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] py-3 font-display text-micro13 font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                   >
                     {busy ? t('nuz.wizard.joining') : t('nuz.wizard.joinRun')}
                   </button>
@@ -380,15 +380,15 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                         }
                       }}
                       className={cn(
-                        'h-[96px] rounded-md border p-1.5 text-left transition-all duration-200',
+                        'h-[6rem] rounded-md border p-1.5 text-left transition-all duration-200',
                         active ? 'border-gold bg-surface2 shadow-[0_0_16px_rgba(246,201,69,0.25)]' : 'border-hairline bg-surface1 hover:border-hairline2',
                       )}
                     >
-                      <div className="h-[52px] overflow-hidden rounded-sm bg-void/60 p-1">
+                      <div className="h-[3.25rem] overflow-hidden rounded-sm bg-void/60 p-1">
                         <RegionSchematic regionId={r.region} accent={r.accent} />
                       </div>
                       <div className="mt-1 flex items-center justify-between px-0.5">
-                        <span className="text-[11px] font-semibold text-tx-primary">{regionName(r, lang)}</span>
+                        <span className="text-micro11 font-semibold text-tx-primary">{regionName(r, lang)}</span>
                         <span className="font-pixel text-[6px] text-tx-muted">{coverageTier(r)}</span>
                       </div>
                     </button>
@@ -396,7 +396,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 })}
               </div>
               {/* EP5.3 — map-less Gen 6–9 regions: text-mode runs, no map */}
-              <PixelLabel className="mt-3 block !text-[7px] text-tx-muted">{t('nuz.wizard.freeformGroup')}</PixelLabel>
+              <PixelLabel className="mt-3 block !text-[8px] text-tx-muted">{t('nuz.wizard.freeformGroup')}</PixelLabel>
               <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
                 {FREEFORM_REGIONS.map((r) => {
                   const active = r.region === regionId;
@@ -418,13 +418,13 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                         active ? 'border-gold bg-surface2 shadow-[0_0_16px_rgba(246,201,69,0.25)]' : 'border-hairline bg-surface1 hover:border-hairline2',
                       )}
                     >
-                      <div className="flex h-[52px] items-center justify-center rounded-sm bg-void/60 p-1">
-                        <span className="font-pixel text-[7px] tracking-[0.12em]" style={{ color: r.accent }}>
+                      <div className="flex h-[3.25rem] items-center justify-center rounded-sm bg-void/60 p-1">
+                        <span className="font-pixel text-[8px] tracking-[0.12em]" style={{ color: r.accent }}>
                           {t('nuz.wizard.textMode')}
                         </span>
                       </div>
                       <div className="mt-1 flex items-center justify-between px-0.5">
-                        <span className="text-[11px] font-semibold text-tx-primary">{regionName(r, lang)}</span>
+                        <span className="text-micro11 font-semibold text-tx-primary">{regionName(r, lang)}</span>
                         <span className="font-pixel text-[6px] text-tx-muted">{r.gen}</span>
                       </div>
                     </button>
@@ -439,7 +439,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                     type="button"
                     onClick={() => setGame(v)}
                     className={cn(
-                      'rounded-full border px-2.5 py-1 font-pixel text-[7px] tracking-[0.08em] transition-all',
+                      'rounded-full border px-2.5 py-1 font-pixel text-[8px] tracking-[0.08em] transition-all',
                       game === v ? 'border-gold bg-gold/15 text-gold' : 'border-hairline2 text-tx-muted hover:border-gold/50 hover:text-tx-secondary',
                     )}
                   >
@@ -453,7 +453,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t('nuz.wizard.runNameSuggestion', { region: regionName(region, lang), n: runCount + 1 })}
                 maxLength={40}
-                className="mt-2 h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 font-display text-[14px] font-bold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
+                className="mt-2 h-10 w-full rounded-md border border-hairline2 bg-surface1 px-3 font-display text-[0.875rem] font-bold text-tx-primary outline-none placeholder:text-tx-muted focus:border-gold"
               />
               <WizardFooter back={null} next={() => setStep(1)} nextLabel={t('nuz.wizard.crewNext')} />
             </motion.div>
@@ -479,9 +479,9 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       onChange={(e) => setCrew((c) => c.map((x, xi) => (xi === i ? { ...x, name: e.target.value } : x)))}
                       placeholder={i === 0 ? hostFallbackName() : `PLAYER ${i + 1}`}
                       maxLength={18}
-                      className="h-full flex-1 bg-transparent text-[13px] font-semibold text-tx-primary outline-none placeholder:text-tx-muted"
+                      className="h-full flex-1 bg-transparent text-micro13 font-semibold text-tx-primary outline-none placeholder:text-tx-muted"
                     />
-                    <span className="font-pixel text-[7px] text-tx-muted">P{i + 1}</span>
+                    <span className="font-pixel text-[8px] text-tx-muted">P{i + 1}</span>
                     {i > 0 && (
                       <button
                         type="button"
@@ -505,27 +505,27 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 <button
                   type="button"
                   onClick={() => setCrew((c) => [...c, { name: '', color: PLAYER_COLORS[c.length] }])}
-                  className="mt-2 flex h-9 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-hairline2 text-[12px] text-tx-muted transition-colors hover:border-gold/60 hover:text-gold"
+                  className="mt-2 flex h-9 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-hairline2 text-micro12 text-tx-muted transition-colors hover:border-gold/60 hover:text-gold"
                 >
                   <Plus size={13} /> {t('nuz.wizard.addPlayer')}
                 </button>
               )}
               {onlineLobby && (
-                <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.onlineCrewHint')}</p>
+                <p className="mt-2 text-micro11 leading-snug text-tx-muted">{t('nuz.wizard.onlineCrewHint')}</p>
               )}
 
               {/* SoulLink — the signature switch */}
               <div className={cn('mt-4 rounded-md border p-3 transition-colors', soulLink ? 'border-gold/50 bg-gold/5' : 'border-hairline bg-surface1', !soulLinkOk && 'opacity-40')}>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
-                    <span className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{t('nuz.rules.soulLink')}</span>
+                    <span className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{t('nuz.rules.soulLink')}</span>
                     <InfoTip text={t('nuz.rules.soulLinkTip')} />
                   </span>
                   <GoldSwitch checked={soulLink} onChange={setSoulLink} disabled={!soulLinkOk} label={t(soulLink ? 'nuz.on' : 'nuz.off')} />
                 </div>
-                {!soulLinkOk && <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.needsTwo')}</p>}
+                {!soulLinkOk && <p className="mt-1 text-micro10 text-tx-muted">{t('nuz.wizard.needsTwo')}</p>}
                 {soulLink && onlineLobby && crew.length < 2 && (
-                  <p className="mt-1 text-[10px] text-tx-muted">{t('nuz.wizard.soulLinkWait')}</p>
+                  <p className="mt-1 text-micro10 text-tx-muted">{t('nuz.wizard.soulLinkWait')}</p>
                 )}
                 {soulLink && crew.length >= 2 && (
                   <svg viewBox="0 0 200 36" className="mt-2 h-9 w-full" aria-hidden>
@@ -555,7 +555,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                         type="button"
                         onClick={() => setModeOnline(o.v)}
                         className={cn(
-                          'rounded-md border px-2 py-2 font-pixel text-[7px] leading-relaxed tracking-[0.06em] transition-all',
+                          'rounded-md border px-2 py-2 font-pixel text-[8px] leading-relaxed tracking-[0.06em] transition-all',
                           online === o.v ? 'border-gold bg-gold/10 text-gold' : 'border-hairline2 text-tx-muted hover:border-gold/40',
                         )}
                       >
@@ -563,7 +563,7 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       </button>
                     ))}
                   </div>
-                  {online && <p className="mt-2 text-[11px] leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>}
+                  {online && <p className="mt-2 text-micro11 leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>}
                 </div>
               )}
               <WizardFooter back={() => setStep(0)} next={() => setStep(2)} nextLabel={t('nuz.wizard.rulesNext')} />
@@ -621,15 +621,15 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                           <BadgeStepper value={rules.badgesCleared} onChange={(v) => setRules((r) => ({ ...r, badgesCleared: v }))} />
                         </div>
                         {gymPreview && (
-                          <p className="mt-1.5 text-[10px] text-tx-muted">
+                          <p className="mt-1.5 text-micro10 text-tx-muted">
                             {t('nuz.wizard.autoCapStart', { cap: gymPreview.cap, badges: rules.badgesCleared })}
                           </p>
                         )}
-                        <p className="mt-1 text-[10px] leading-snug text-tx-muted">{t('nuz.wizard.autoCapExplain')}</p>
+                        <p className="mt-1 text-micro10 leading-snug text-tx-muted">{t('nuz.wizard.autoCapExplain')}</p>
                       </>
                     ) : (
                       <div className="mt-2 flex items-center justify-between gap-2">
-                        <span className="text-[10px] text-tx-muted">{t('nuz.wizard.manualCapHint')}</span>
+                        <span className="text-micro10 text-tx-muted">{t('nuz.wizard.manualCapHint')}</span>
                         <LevelCapStepper value={rules.levelCap} onChange={(v) => setRules((r) => ({ ...r, levelCap: v }))} disabled={rules.autoLevelCap} />
                       </div>
                     )}
@@ -638,14 +638,14 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                 <GoldHint text={hint} show={!!hint} />
               </div>
               <div className="mt-6 flex items-center justify-between">
-                <button type="button" onClick={() => setStep(1)} className="rounded-md border border-hairline2 px-4 py-2.5 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold">
+                <button type="button" onClick={() => setStep(1)} className="rounded-md border border-hairline2 px-4 py-2.5 text-micro12 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold">
                   {t('nuz.wizard.back')}
                 </button>
                 <button
                   type="button"
                   disabled={busy || !authReady || !loggedIn}
                   onClick={() => void startRun()}
-                  className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+                  className="nz-sheen rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-micro13 font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5 disabled:opacity-50"
                 >
                   {busy ? t('nuz.wizard.starting') : t('nuz.wizard.startRun')}
                 </button>
@@ -662,7 +662,7 @@ function LoginRequiredNote() {
   const { t } = useTranslation();
   return (
     <div className="rounded-md border border-gold/40 bg-gold/5 px-3 py-2.5">
-      <p className="text-[12px] leading-snug text-tx-secondary">{t('nuz.wizard.accountRequired')}</p>
+      <p className="text-micro12 leading-snug text-tx-secondary">{t('nuz.wizard.accountRequired')}</p>
       <LocaleLink
         to="/account"
         className="mt-2 inline-block font-pixel text-[8px] tracking-[0.08em] text-gold transition-colors hover:text-tx-primary"
@@ -679,7 +679,7 @@ function WizardFooter({ back, next, nextLabel }: { back: (() => void) | null; ne
   return (
     <div className="mt-6 flex items-center justify-between">
       {back ? (
-        <button type="button" onClick={back} className="rounded-md border border-hairline2 px-4 py-2.5 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold">
+        <button type="button" onClick={back} className="rounded-md border border-hairline2 px-4 py-2.5 text-micro12 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold">
           {backLabel}
         </button>
       ) : (
@@ -688,7 +688,7 @@ function WizardFooter({ back, next, nextLabel }: { back: (() => void) | null; ne
       <button
         type="button"
         onClick={next}
-        className="rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-[13px] font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
+        className="rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-2.5 font-display text-micro13 font-bold tracking-[0.06em] text-tx-primary transition-transform hover:-translate-y-0.5"
       >
         {nextLabel}
       </button>

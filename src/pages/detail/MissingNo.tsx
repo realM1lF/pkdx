@@ -8,7 +8,7 @@ export default function MissingNo({ query }: { query: string }) {
   const { t } = useTranslation();
   return (
     <div className="mx-auto flex max-w-content flex-col items-center px-4 py-24 text-center">
-      <span className="pixel-label text-[10px] text-gold">{t('missingno.error', { query })}</span>
+      <span className="pixel-label text-[14px] text-gold">{t('missingno.error', { query })}</span>
 
       {/* glitching silhouette */}
       <div className="relative mt-8 h-32 w-32" aria-hidden>
@@ -36,7 +36,7 @@ export default function MissingNo({ query }: { query: string }) {
       </p>
       <LocaleLink
         to="/pokedex"
-        className="mt-8 inline-flex h-10 items-center rounded-md border border-gold/60 bg-gold-soft px-6 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+        className="mt-8 inline-flex h-10 items-center rounded-md border border-gold/60 bg-gold-soft px-6 font-display text-micro12 font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
       >
         {t('missingno.cta')}
       </LocaleLink>

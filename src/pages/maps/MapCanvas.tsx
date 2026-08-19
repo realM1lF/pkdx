@@ -305,7 +305,7 @@ export default function MapCanvas({
       {/* edge tooltip */}
       {hoveredEdgeData && edgeTipPos && (
         <div
-          className="pointer-events-none absolute z-30 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-sm border border-hairline2 bg-surface2 px-2 py-1 text-[10px] font-semibold text-tx-secondary shadow-elevate"
+          className="pointer-events-none absolute z-30 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-sm border border-hairline2 bg-surface2 px-2 py-1 text-micro10 font-semibold text-tx-secondary shadow-elevate"
           style={{ left: edgeTipPos.x, top: edgeTipPos.y - 8 }}
         >
           {nodeName(hoveredEdgeData.a, lang)} ↔ {nodeName(hoveredEdgeData.b, lang)}
@@ -313,7 +313,7 @@ export default function MapCanvas({
       )}
 
       {/* live camera readout — ops-deck flavor */}
-      <div className="pointer-events-none absolute bottom-2 left-2.5 font-sans text-[9px] font-medium tabular-nums text-tx-muted">
+      <div className="pointer-events-none absolute bottom-2 left-2.5 font-sans text-micro9 font-medium tabular-nums text-tx-muted">
         ZOOM {camera.relZoom.toFixed(1)}× · X {Math.round(-camera.cam.x)} · Y {Math.round(-camera.cam.y)}
       </div>
     </div>

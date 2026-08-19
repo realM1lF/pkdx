@@ -21,7 +21,7 @@ export function HonestyHint({
   return (
     <p
       className={cn(
-        'min-w-0 font-sans text-[10px] leading-snug',
+        'min-w-0 font-sans text-micro10 leading-snug',
         tone === 'gold' ? 'text-gold/90' : 'text-tx-muted',
         truncate && 'truncate',
         className,

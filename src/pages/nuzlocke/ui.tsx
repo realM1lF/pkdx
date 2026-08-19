@@ -5,6 +5,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Info, X } from 'lucide-react';
+import { remPx } from '@/lib/viewport';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
@@ -25,12 +26,12 @@ export function InfoTip({ text, className, iconSize = 12 }: { text: string; clas
     const tip = tipRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    const tipW = tip?.offsetWidth ?? 220;
-    const tipH = tip?.offsetHeight ?? 72;
-    const gap = 8;
+    const tipW = tip?.offsetWidth ?? remPx(13.75);
+    const tipH = tip?.offsetHeight ?? remPx(4.5);
+    const gap = remPx(0.5);
     let left = r.left + r.width / 2;
-    left = Math.min(window.innerWidth - tipW / 2 - 8, Math.max(tipW / 2 + 8, left));
-    const preferAbove = r.top - tipH - gap >= 8;
+    left = Math.min(window.innerWidth - tipW / 2 - gap, Math.max(tipW / 2 + gap, left));
+    const preferAbove = r.top - tipH - gap >= gap;
     if (preferAbove) setCoords({ left, top: r.top - gap, place: 'above' });
     else setCoords({ left, top: r.bottom + gap, place: 'below' });
   };
@@ -82,7 +83,7 @@ export function InfoTip({ text, className, iconSize = 12 }: { text: string; clas
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{ type: 'spring', stiffness: 420, damping: 30 }}
                 className={cn(
-                  'pointer-events-none fixed z-[90] w-max max-w-[260px] -translate-x-1/2 rounded-sm border border-hairline2 border-l-2 border-l-gold bg-surface2 px-3 py-2 text-left text-[12px] leading-[1.5] text-tx-secondary shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
+                  'pointer-events-none fixed z-[90] w-max max-w-[16.25rem] -translate-x-1/2 rounded-sm border border-hairline2 border-l-2 border-l-gold bg-surface2 px-3 py-2 text-left text-micro12 leading-[1.5] text-tx-secondary shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
                   coords?.place === 'below' ? 'translate-y-0' : '-translate-y-full',
                 )}
                 style={
@@ -124,7 +125,7 @@ export function GoldHint({ text, show, className }: { text: string; show: boolea
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className={cn(
-            'pointer-events-none absolute left-0 top-full z-50 mt-1.5 w-max max-w-[280px] rounded-sm border border-gold/50 bg-surface2 px-2.5 py-1.5 text-[11px] leading-snug text-gold shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
+            'pointer-events-none absolute left-0 top-full z-50 mt-1.5 w-max max-w-[17.5rem] rounded-sm border border-gold/50 bg-surface2 px-2.5 py-1.5 text-micro11 leading-snug text-gold shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
             className,
           )}
           role="alert"
@@ -228,7 +229,7 @@ export function RunStatusChip({ status }: { status: 'active' | 'complete' | 'fai
       <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-2 py-0.5">
         <span className="h-1.5 w-1.5 rounded-full bg-gold" />
         <img src="/sparkle.svg" alt="" className="h-2.5 w-2.5" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.complete')}</span>
+        <span className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t('nuz.chip.complete')}</span>
       </span>
     );
   }
@@ -236,14 +237,14 @@ export function RunStatusChip({ status }: { status: 'active' | 'complete' | 'fai
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline2 px-2 py-0.5">
         <span className="h-1.5 w-1.5 rounded-full border border-tx-muted" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.chip.failed')}</span>
+        <span className="font-pixel text-[8px] tracking-[0.08em] text-tx-muted">{t('nuz.chip.failed')}</span>
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(99,217,107,0.4)] bg-[rgba(99,217,107,0.08)] px-2 py-0.5">
       <span className="h-1.5 w-1.5 rounded-full bg-[#63D96B]" />
-      <span className="font-pixel text-[7px] tracking-[0.08em] text-[#63D96B]">{t('nuz.chip.active')}</span>
+      <span className="font-pixel text-[8px] tracking-[0.08em] text-[#63D96B]">{t('nuz.chip.active')}</span>
     </span>
   );
 }
@@ -260,7 +261,7 @@ export function SyncBadge({
     return (
       <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.syncErrorTip')}>
         <span className="h-2 w-2 animate-pulse rounded-full bg-gold" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.syncError')}</span>
+        <span className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t('nuz.chip.syncError')}</span>
       </span>
     );
   }
@@ -268,7 +269,7 @@ export function SyncBadge({
     return (
       <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.liveTip')}>
         <span className="nz-dot-live h-2 w-2 rounded-full bg-[#45C8FF]" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-[#45C8FF]">{t('nuz.chip.live')}</span>
+        <span className="font-pixel text-[8px] tracking-[0.08em] text-[#45C8FF]">{t('nuz.chip.live')}</span>
       </span>
     );
   }
@@ -276,14 +277,14 @@ export function SyncBadge({
     return (
       <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.reconnectingTip')}>
         <span className="nz-orbit h-2.5 w-2.5" />
-        <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.reconnecting')}</span>
+        <span className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t('nuz.chip.reconnecting')}</span>
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1.5" title={t('nuz.chip.localTip')}>
       <span className="h-2 w-2 rounded-full bg-gold" />
-      <span className="font-pixel text-[7px] tracking-[0.08em] text-gold">{t('nuz.chip.local')}</span>
+      <span className="font-pixel text-[8px] tracking-[0.08em] text-gold">{t('nuz.chip.local')}</span>
     </span>
   );
 }
@@ -342,7 +343,7 @@ export function NuzModal({ open, onClose, children, wide }: { open: boolean; onC
             transition={{ type: 'spring', stiffness: 180, damping: 22 }}
             className={cn(
               'relative max-h-[88dvh] w-full overflow-y-auto rounded-xl border border-hairline2 bg-[rgba(13,15,22,0.92)] shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl nz-slim-scroll',
-              wide ? 'max-w-[640px]' : 'max-w-[560px]',
+              wide ? 'max-w-[40rem]' : 'max-w-[35rem]',
             )}
             data-lenis-prevent
             onClick={(e) => e.stopPropagation()}

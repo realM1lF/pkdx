@@ -316,12 +316,12 @@ export default function Pokedex() {
       {/* page header — compact per density addendum §1 */}
       <header className="mx-auto max-w-content px-4 pb-3 pt-6 md:px-8">
         <div>
-          <p className="pixel-label text-[10px] text-gold">{t8n('pokedex.eyebrow')}</p>
+          <p className="pixel-label text-[14px] text-gold">{t8n('pokedex.eyebrow')}</p>
           <div className="mt-1.5 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-            <h1 className="font-display text-[clamp(26px,3.5vw,40px)] font-extrabold leading-none tracking-wide">
+            <h1 className="font-display text-[clamp(1.625rem,3.5vw,40px)] font-extrabold leading-none tracking-wide">
               {t8n('pokedex.title')}
             </h1>
-            <p className="font-sans text-[13px] text-tx-secondary" aria-hidden>
+            <p className="font-sans text-micro13 text-tx-secondary" aria-hidden>
               {t8n('pokedex.showing')} <TweenNumber value={total} lang={lang} /> {t8n('pokedex.of')}{' '}
               <span className="font-bold tabular-nums text-tx-primary">{fmtNum(MAX_DEX_ID, lang)}</span>{' '}
               {t8n('pokedex.species')}
@@ -400,7 +400,7 @@ export default function Pokedex() {
               <button
                 type="button"
                 onClick={retryBoot}
-                className="mt-1 flex h-8 items-center gap-1.5 rounded-md border border-gold/60 bg-gold-soft px-3 font-sans text-[11px] font-bold text-gold transition-all duration-200 hover:shadow-glow-gold"
+                className="mt-1 flex h-8 items-center gap-1.5 rounded-md border border-gold/60 bg-gold-soft px-3 font-sans text-micro11 font-bold text-gold transition-all duration-200 hover:shadow-glow-gold"
               >
                 <RotateCcw size={11} strokeWidth={1.75} />
                 {t8n('pokedex.retry')}
@@ -430,7 +430,7 @@ export default function Pokedex() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-            className="flex h-[200px] flex-col items-center justify-center gap-2 text-center"
+            className="flex h-[12.5rem] flex-col items-center justify-center gap-2 text-center"
           >
             <img src="/empty-dex.svg" alt="" className="pdx-empty-glow h-16 w-auto opacity-60" />
             <h2 className="font-sans text-base font-bold text-tx-primary">{t8n('pokedex.emptyTitle')}</h2>
@@ -438,7 +438,7 @@ export default function Pokedex() {
             <button
               type="button"
               onClick={onResetAll}
-              className="mt-1 h-8 rounded-md border border-hairline2 px-3 font-sans text-[11px] font-semibold text-tx-secondary transition-all duration-200 hover:border-gold/60 hover:text-gold"
+              className="mt-1 h-8 rounded-md border border-hairline2 px-3 font-sans text-micro11 font-semibold text-tx-secondary transition-all duration-200 hover:border-gold/60 hover:text-gold"
             >
               {t8n('pokedex.resetAll')}
             </button>
@@ -472,7 +472,7 @@ export default function Pokedex() {
 
             {/* infinite-scroll sentinel + inline loader */}
             {hasMore && (
-              <div ref={sentinelRef} className="grid h-[120px] place-items-center">
+              <div ref={sentinelRef} className="grid h-[7.5rem] place-items-center">
                 <PokeballLoader variant="inline" />
               </div>
             )}

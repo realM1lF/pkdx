@@ -46,8 +46,8 @@ export default function HeaderStrip({
     setConfirmClear(false);
   }, [team.id]);
   return (
-    <div className="tb-panel mb-3 flex flex-wrap items-center gap-2 !rounded-[12px] px-3 py-2.5">
-      <div className="flex min-w-[180px] flex-1 items-center gap-2">
+    <div className="tb-panel mb-3 flex flex-wrap items-center gap-2 !rounded-[0.75rem] px-3 py-2.5">
+      <div className="flex min-w-[11.25rem] flex-1 items-center gap-2">
         <Pencil size={13} className="shrink-0 text-tx-muted" aria-hidden />
         <input
           value={team.name}
@@ -56,16 +56,16 @@ export default function HeaderStrip({
           maxLength={40}
           aria-label={t('tb.teamName')}
           disabled={readOnly || linked || viewOnly}
-          className="w-full bg-transparent font-display text-[15px] font-bold tracking-wide text-tx-primary outline-none transition-colors placeholder:text-tx-muted focus:text-gold disabled:opacity-70"
+          className="w-full bg-transparent font-display text-[0.9375rem] font-bold tracking-wide text-tx-primary outline-none transition-colors placeholder:text-tx-muted focus:text-gold disabled:opacity-70"
         />
         {viewOnly && (
-          <span className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !text-[8px] !text-gold" title={t('tb.viewOnly.tip')}>
+          <span className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !text-micro8 !text-gold" title={t('tb.viewOnly.tip')}>
             <Eye size={9} className="mr-0.5 inline" />
             {t('tb.viewOnly.badge')}
           </span>
         )}
         {linked && (
-          <span className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !text-[8px] !text-gold" title={t('tb.linked.fromRun')}>
+          <span className="tb-chip shrink-0 !border-gold/50 !bg-gold/10 !text-micro8 !text-gold" title={t('tb.linked.fromRun')}>
             {t('tb.linked.badge')}
           </span>
         )}
@@ -86,8 +86,8 @@ export default function HeaderStrip({
             <>
               <Gamepad2 size={14} className="text-gold" />
               <span className="tb-micro-gold !text-[8px]">{t('tb.game')}</span>
-              <span className="font-display text-[11px] font-bold tracking-wide text-tx-primary">{current.short}</span>
-              <span className="hidden text-[11px] text-tx-muted lg:inline">{current.label}</span>
+              <span className="font-display text-micro11 font-bold tracking-wide text-tx-primary">{current.short}</span>
+              <span className="hidden text-micro11 text-tx-muted lg:inline">{current.label}</span>
               <ChevronDown size={12} className={cn('transition-transform duration-200', open && 'rotate-180')} />
             </>
           )}
@@ -124,7 +124,7 @@ export default function HeaderStrip({
         <button type="button" onClick={onOpenHub} className="tb-btn" aria-label={t('tb.myTeams')}>
           <Users size={13} />
           <span className="hidden sm:inline">{t('tb.myTeams')}</span>
-          {savedCount > 0 && <span className="tb-chip !px-1.5 !py-0 !text-[9px] text-gold">{savedCount}</span>}
+          {savedCount > 0 && <span className="tb-chip !px-1.5 !py-0 !text-micro9 text-gold">{savedCount}</span>}
         </button>
         {!linked && !viewOnly && (
           <button
@@ -143,16 +143,16 @@ export default function HeaderStrip({
           >
             <Trash2 size={13} />
             {confirmClear && (
-              <span className="text-[9px] font-semibold tracking-wide">{t('tb.confirmClear')}</span>
+              <span className="text-micro9 font-semibold tracking-wide">{t('tb.confirmClear')}</span>
             )}
           </button>
         )}
       </div>
       {viewOnly && (
-        <p className="w-full text-[11px] text-tx-muted">{t('tb.viewOnly.help')}</p>
+        <p className="w-full text-micro11 text-tx-muted">{t('tb.viewOnly.help')}</p>
       )}
       {linked && !viewOnly && (
-        <p className="w-full text-[11px] text-tx-muted">
+        <p className="w-full text-micro11 text-tx-muted">
           {readOnly ? t('tb.linked.readOnly') : t('tb.linked.rosterLocked')}
         </p>
       )}

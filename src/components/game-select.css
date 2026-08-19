@@ -12,7 +12,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: #171b27;
   color: #a8b0c4;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 150ms, color 150ms;
@@ -85,7 +85,7 @@
 
 .gs-micro {
   font-family: 'Press Start 2P', monospace;
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 0.08em;
   color: #5e6680;
 }
@@ -98,7 +98,7 @@
   border: 1px solid rgba(255, 255, 255, 0.07);
   background: #171b27;
   padding: 2px 6px;
-  font-size: 8px;
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -112,7 +112,7 @@
   width: 100%;
   text-align: left;
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #a8b0c4;
   cursor: pointer;
   border-left: 2px solid transparent;

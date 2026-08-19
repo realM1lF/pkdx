@@ -72,7 +72,7 @@ function FixChip({ type, label }: { type: PokemonType; label?: string }) {
   const lang = useLanguage();
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[8px] font-bold uppercase tracking-wide"
+      className="inline-flex items-center gap-1 rounded-full px-1.5 py-px text-micro8 font-bold uppercase tracking-wide"
       style={{
         color: TYPE_COLORS[type].base,
         background: `rgba(${TYPE_COLORS[type].rgb},0.14)`,
@@ -94,19 +94,19 @@ function WorstCallout({ row, vgId }: { row: DefenseRow; vgId: string }) {
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-[8px] border border-gold/50 bg-gold/10 px-2 py-1.5"
+      className="rounded-[0.5rem] border border-gold/50 bg-gold/10 px-2 py-1.5"
     >
       <div className="flex items-center gap-2">
         <AlertTriangle size={10} className="shrink-0 text-gold" />
-        <span className="text-[11px] font-semibold text-gold">
+        <span className="text-micro11 font-semibold text-gold">
           {t('tb.worstLine', { weak: row.weak, type: nameOfType(row.type, lang), resist: row.resist + row.immune })}
         </span>
         <TypeGlyph type={row.type} size={12} className="ml-auto shrink-0" style={{ color: TYPE_COLORS[row.type].base }} />
       </div>
       {/* concrete fix hint: which types resist / are immune to the threat */}
-      <div className="mt-1 flex flex-wrap items-center gap-1 pl-[18px]">
+      <div className="mt-1 flex flex-wrap items-center gap-1 pl-[1.125rem]">
         <Wrench size={8} className="shrink-0 text-tx-muted" aria-hidden />
-        <span className="tb-micro !text-[7px]">{t('tb.fixWith')}</span>
+        <span className="tb-micro !text-[8px]">{t('tb.fixWith')}</span>
         {cover.resists.slice(0, 4).map((ty) => (
           <FixChip key={ty} type={ty} />
         ))}
@@ -134,7 +134,7 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
         </span>
       </div>
       <div className="p-3">
-        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t('tb.defenseHelp')}</p>
+        <p className="mb-2 text-micro11 leading-snug text-tx-secondary">{t('tb.defenseHelp')}</p>
 
         {/* top weaknesses with plain-language fix hints */}
         <div className="mb-2.5 space-y-1.5" aria-live="polite">
@@ -149,22 +149,22 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
         </div>
 
         {/* legend before the grid — read first, then scan numbers */}
-        <div className="mb-2 rounded-[8px] border border-hairline bg-surface2/60 px-2 py-1.5">
+        <div className="mb-2 rounded-[0.5rem] border border-hairline bg-surface2/60 px-2 py-1.5">
           <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
             <span className="tb-micro !text-[8px]">{t('tb.legend.weak')}</span>
             <span className="tb-micro !text-[8px]">{t('tb.legend.resist')}</span>
             <span className="tb-micro !text-[8px]">{t('tb.legend.immune')}</span>
             <span className="tb-micro w-full !text-[8px] sm:ml-auto sm:w-auto">{t('tb.legend.ability')}</span>
           </div>
-          <p className="mt-1.5 flex min-w-0 items-start gap-1.5 text-[10px] leading-snug text-gold/90">
-            <span className="mt-[3px] h-2.5 w-0.5 shrink-0 rounded-full bg-gold" aria-hidden />
+          <p className="mt-1.5 flex min-w-0 items-start gap-1.5 text-micro10 leading-snug text-gold/90">
+            <span className="mt-[0.1875rem] h-2.5 w-0.5 shrink-0 rounded-full bg-gold" aria-hidden />
             <span className="min-w-0">{t('tb.legend.hole')}</span>
           </p>
         </div>
 
         {/* one team header */}
-        <div className="mb-1 grid items-end gap-[3px] pl-1" style={{ gridTemplateColumns: gridCols }}>
-          <span className="tb-micro !text-[7px]">{t('tb.defenseColType')}</span>
+        <div className="mb-1 grid items-end gap-[0.1875rem] pl-1" style={{ gridTemplateColumns: gridCols }}>
+          <span className="tb-micro !text-[8px]">{t('tb.defenseColType')}</span>
           {members.map((m) => {
             const name = nameOfPokemon(m.slug, lang);
             return (
@@ -176,7 +176,7 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
                 aria-label={t('tb.slot.openDetail', { name })}
               >
                 <Sprite id={m.pokemonId} name={name} era="default" className="h-6 w-6" skeleton={false} />
-                <span className="w-full truncate text-center text-[8px] font-semibold uppercase tracking-wide text-tx-muted transition-colors group-hover/m:text-gold">
+                <span className="w-full truncate text-center text-micro8 font-semibold uppercase tracking-wide text-tx-muted transition-colors group-hover/m:text-gold">
                   {name}
                 </span>
               </LocaleLink>
@@ -190,7 +190,7 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
             <div
               key={r.type}
               className={cn(
-                'grid items-center gap-[3px] rounded-[4px] py-0.5 pl-1',
+                'grid items-center gap-[0.1875rem] rounded-[0.25rem] py-0.5 pl-1',
                 r.severity >= 2 && 'bg-gold/5 shadow-[inset_2px_0_0_rgba(246,201,69,0.7)]',
               )}
               style={{ gridTemplateColumns: gridCols }}
@@ -198,7 +198,7 @@ function DefensePanel({ rows, members, vgId }: { rows: DefenseRow[]; members: Ma
             >
               <span className="flex min-w-0 items-center gap-1.5">
                 <TypeGlyph type={r.type} size={12} className="shrink-0" style={{ color: TYPE_COLORS[r.type].base }} />
-                <span className="truncate text-[10px] font-semibold uppercase tracking-wide" style={{ color: TYPE_COLORS[r.type].base }}>
+                <span className="truncate text-micro10 font-semibold uppercase tracking-wide" style={{ color: TYPE_COLORS[r.type].base }}>
                   {nameOfType(r.type, lang)}
                 </span>
               </span>
@@ -247,7 +247,7 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
         </span>
       </div>
       <div className="p-3">
-        <p className="mb-2 text-[11px] leading-snug text-tx-secondary">{t8n('tb.offenseHelp')}</p>
+        <p className="mb-2 text-micro11 leading-snug text-tx-secondary">{t8n('tb.offenseHelp')}</p>
 
         {/* 18-type coverage strip — glyph + hitter count */}
         <div className="mb-2.5 grid grid-cols-3 gap-1.5 sm:grid-cols-6 lg:grid-cols-3">
@@ -258,7 +258,7 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
               <div
                 key={t}
                 className={cn(
-                  'flex min-h-[40px] flex-col items-center justify-center gap-0.5 rounded-[6px] border px-1 py-1 transition-all duration-150',
+                  'flex min-h-[2.5rem] flex-col items-center justify-center gap-0.5 rounded-[0.375rem] border px-1 py-1 transition-all duration-150',
                   isGap
                     ? 'border-gold/60 bg-gold/10 shadow-[0_0_8px_rgba(246,201,69,0.2)]'
                     : 'border-hairline bg-surface2 hover:border-[rgba(var(--t),0.5)]',
@@ -276,11 +276,11 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
                     size={11}
                     style={{ color: isGap ? '#F6C945' : TYPE_COLORS[t].base, opacity: isGap ? 1 : 0.85 }}
                   />
-                  <span className={cn('truncate text-[8px] font-bold uppercase', isGap ? 'text-gold' : 'text-tx-secondary')}>
+                  <span className={cn('truncate text-micro8 font-bold uppercase', isGap ? 'text-gold' : 'text-tx-secondary')}>
                     {nameOfType(t, lang)}
                   </span>
                 </span>
-                <span className={cn('text-[8px] font-bold tabular-nums', isGap ? 'text-gold' : 'text-tx-muted')}>
+                <span className={cn('text-micro8 font-bold tabular-nums', isGap ? 'text-gold' : 'text-tx-muted')}>
                   {isGap ? t8n('tb.gapMark') : t8n('tb.seHits', { count: hitters.length })}
                 </span>
               </div>
@@ -296,13 +296,13 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
             </div>
           ) : (
             coverage.gaps.slice(0, 3).map((g) => (
-              <div key={g} className="rounded-[6px] border border-gold/40 bg-gold/5 px-1.5 py-1">
+              <div key={g} className="rounded-[0.375rem] border border-gold/40 bg-gold/5 px-1.5 py-1">
                 <div className="tb-micro-gold flex items-center gap-1.5 !text-[8px]">
                   <AlertTriangle size={9} />
                   {t8n('tb.noAnswerFor', { type: nameOfType(g, lang) })}
                 </div>
-                <div className="mt-1 flex flex-wrap items-center gap-1 pl-[15px]">
-                  <span className="tb-micro !text-[7px]">{t8n('tb.seVia')}</span>
+                <div className="mt-1 flex flex-wrap items-center gap-1 pl-[0.9375rem]">
+                  <span className="tb-micro !text-[8px]">{t8n('tb.seVia')}</span>
                   {seTypesAgainst(g, vgId).slice(0, 4).map((ty) => (
                     <FixChip key={ty} type={ty} />
                   ))}
@@ -319,10 +319,10 @@ function CoveragePanel({ coverage, loading, vgId }: { coverage: CoverageResult; 
           <span className="tb-micro !text-[8px]">{t8n('tb.stabCoverage')}</span>
           <div className="mt-1 flex flex-wrap gap-1">
             {coverage.stabTypes.length === 0 ? (
-              <span className="text-[10px] text-tx-muted">{t8n('tb.addDamaging')}</span>
+              <span className="text-micro10 text-tx-muted">{t8n('tb.addDamaging')}</span>
             ) : (
               coverage.stabTypes.map((t) => (
-                <span key={t} className="tb-chip !text-[8px]" style={{ color: TYPE_COLORS[t].base }}>
+                <span key={t} className="tb-chip !text-micro8" style={{ color: TYPE_COLORS[t].base }}>
                   <TypeGlyph type={t} size={9} />
                   {nameOfType(t, lang)}
                 </span>
@@ -373,7 +373,7 @@ export default function AnalysisDeck({
           {mechChips.map((c) => (
             <span
               key={c.label}
-              className={cn('tb-chip !px-1.5 !py-0 !text-[7px]', c.on ? 'text-tx-secondary' : 'border-gold/40 text-gold/80')}
+              className={cn('tb-chip !px-1.5 !py-0 !text-[0.4375rem]', c.on ? 'text-tx-secondary' : 'border-gold/40 text-gold/80')}
               title={c.on ? undefined : t('tb.mech.naTip')}
             >
               {c.label}

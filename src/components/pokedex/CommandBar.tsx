@@ -196,9 +196,9 @@ function FilterPopover(p: FilterPopoverProps) {
         )}
       >
         <SlidersHorizontal size={14} strokeWidth={1.75} />
-        <span className="hidden font-sans text-[12px] font-semibold lg:inline">{t8n('pokedex.filters')}</span>
+        <span className="hidden font-sans text-micro12 font-semibold lg:inline">{t8n('pokedex.filters')}</span>
         {p.activeCount > 0 && (
-          <span className="grid h-4 min-w-4 place-items-center rounded-pill bg-gold px-1 font-sans text-[10px] font-bold text-abyss">
+          <span className="grid h-4 min-w-4 place-items-center rounded-pill bg-gold px-1 font-sans text-[11px] leading-none font-bold text-abyss">
             {p.activeCount}
           </span>
         )}
@@ -229,7 +229,7 @@ function FilterPopover(p: FilterPopoverProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -4, scale: 0.96 }}
               transition={{ duration: 0.2, ease: EASE_OUT }}
-              className="glass absolute right-0 top-full z-40 mt-2 max-h-[70dvh] w-[320px] overflow-y-auto rounded-md border border-hairline p-3 shadow-elevate max-sm:fixed max-sm:inset-x-3 max-sm:left-3 max-sm:top-[124px] max-sm:w-auto" data-lenis-prevent
+              className="glass absolute right-0 top-full z-40 mt-2 max-h-[70dvh] w-[20rem] overflow-y-auto rounded-md border border-hairline p-3 shadow-elevate max-sm:fixed max-sm:inset-x-3 max-sm:left-3 max-sm:top-[7.75rem] max-sm:w-auto" data-lenis-prevent
             >
               {/* sort */}
               <div className="mb-3">
@@ -244,7 +244,7 @@ function FilterPopover(p: FilterPopoverProps) {
                         aria-pressed={active}
                         onClick={() => p.onSort(o.key)}
                         className={cn(
-                          'flex h-8 items-center justify-between rounded-sm px-2 font-sans text-[12px] font-semibold transition-colors duration-150',
+                          'flex h-8 items-center justify-between rounded-sm px-2 font-sans text-micro12 font-semibold transition-colors duration-150',
                           active ? 'bg-gold-soft text-gold' : 'text-tx-secondary hover:bg-surface3 hover:text-tx-primary',
                         )}
                       >
@@ -311,7 +311,7 @@ function FilterPopover(p: FilterPopoverProps) {
                         aria-pressed={active}
                         onClick={() => p.onGen(active ? null : g.gen)}
                         className={cn(
-                          'h-7 truncate rounded-sm border px-1 font-sans text-[11px] font-semibold transition-all duration-150',
+                          'h-7 truncate rounded-sm border px-1 font-sans text-micro11 font-semibold transition-all duration-150',
                           active
                             ? 'border-gold/60 bg-gold-soft text-gold'
                             : 'border-hairline bg-surface2 text-tx-secondary hover:text-tx-primary',
@@ -333,7 +333,7 @@ function FilterPopover(p: FilterPopoverProps) {
                     aria-pressed={p.special.includes('legendary')}
                     onClick={() => p.onToggleSpecial('legendary')}
                     className={cn(
-                      'flex h-7 items-center gap-1.5 rounded-pill border px-2.5 font-sans text-[11px] font-bold transition-all duration-150',
+                      'flex h-7 items-center gap-1.5 rounded-pill border px-2.5 font-sans text-[11px] leading-none font-bold transition-all duration-150',
                       p.special.includes('legendary')
                         ? 'border-gold/70 bg-gold-soft text-gold shadow-glow-gold'
                         : 'border-hairline bg-surface2 text-tx-secondary hover:border-gold/40 hover:text-gold',
@@ -347,7 +347,7 @@ function FilterPopover(p: FilterPopoverProps) {
                     aria-pressed={p.special.includes('mythical')}
                     onClick={() => p.onToggleSpecial('mythical')}
                     className={cn(
-                      'flex h-7 items-center gap-1.5 rounded-pill border px-2.5 font-sans text-[11px] font-bold transition-all duration-150',
+                      'flex h-7 items-center gap-1.5 rounded-pill border px-2.5 font-sans text-[11px] leading-none font-bold transition-all duration-150',
                       p.special.includes('mythical')
                         ? 'border-type-psychic/70 bg-[rgba(255,92,168,0.14)] text-type-psychic shadow-[0_0_12px_rgba(255,92,168,0.35)]'
                         : 'border-hairline bg-surface2 text-tx-secondary hover:border-type-psychic/40 hover:text-type-psychic',
@@ -365,7 +365,7 @@ function FilterPopover(p: FilterPopoverProps) {
                   onClick={() => {
                     p.onClear();
                   }}
-                  className="flex items-center gap-1.5 font-sans text-[11px] font-semibold text-tx-muted transition-colors hover:text-gold"
+                  className="flex items-center gap-1.5 font-sans text-micro11 font-semibold text-tx-muted transition-colors hover:text-gold"
                 >
                   <RotateCcw size={11} strokeWidth={1.75} />
                   {t8n('pokedex.clearAll')}
@@ -402,7 +402,7 @@ function ChipsRow({ chips, onResetAll }: { chips: ChipSpec[]; onResetAll: () => 
             exit={{ scale: 0.6, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 420, damping: 30 }}
             className={cn(
-              'flex h-6 shrink-0 items-center gap-1 rounded-pill border px-2 font-sans text-[11px] font-semibold',
+              'flex h-6 shrink-0 items-center gap-1 rounded-pill border px-2 font-sans text-[11px] leading-none font-semibold',
               chip.type ? '' : 'border-hairline bg-surface2 text-tx-secondary',
             )}
             style={
@@ -532,7 +532,7 @@ export default function CommandBar(p: CommandBarProps) {
             <CommandSearch
               value={p.q}
               onChange={p.onQuery}
-              className="w-[150px] focus-within:w-[min(420px,60vw)] sm:w-[220px] sm:focus-within:w-[min(420px,46vw)]"
+              className="w-[9.375rem] focus-within:w-[min(420px,60vw)] sm:w-[13.75rem] sm:focus-within:w-[min(420px,46vw)]"
             />
             <TypeRail types={p.types} onToggleType={p.onToggleType} />
             <span className="hidden h-6 w-px shrink-0 bg-hairline sm:block" aria-hidden />
@@ -578,7 +578,7 @@ export default function CommandBar(p: CommandBarProps) {
                 className="overflow-hidden"
               >
                 <div className="flex h-8 items-center border-t border-gold/30 bg-gold-soft/40 px-1">
-                  <p className="font-sans text-[11px] font-semibold text-gold">
+                  <p className="font-sans text-micro11 font-semibold text-gold">
                     {t8n('pokedex.emptyBarHint')}
                   </p>
                 </div>

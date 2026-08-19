@@ -1,5 +1,5 @@
 /* Moves panel — density-addendum §3 Row 2 (span 7).
- * Dense table NAME|TYPE|CAT|PWR|ACC|PP (36px rows, sticky header, own scrollbar 480px),
+ * Dense table NAME|TYPE|CAT|PWR|ACC|PP (2.25rem rows, sticky header, own scrollbar 30rem),
  * one compact toolbar row: learn-method tabs + type filter (edition lives in page chrome).
  * Power/type/PP come from @pkmn for the selected edition; missing moves stay blank. */
 import { useMemo, useState } from 'react';
@@ -165,7 +165,7 @@ export default function MovesPanel({
             label: (
               <>
                 {t8n(m.labelKey)}
-                <span className="text-[9px] text-tx-muted">{byMethod.get(m.key)?.length ?? 0}</span>
+                <span className="text-[14px] leading-none text-tx-muted">{byMethod.get(m.key)?.length ?? 0}</span>
               </>
             ),
           }))}
@@ -194,7 +194,7 @@ export default function MovesPanel({
       </div>
 
       {/* dense table, own scrollbar */}
-      <div className="dx-scroll min-h-0 flex-1 overflow-auto border-t border-hairline" style={{ maxHeight: 480 }}>
+      <div className="dx-scroll min-h-0 max-h-[30rem] flex-1 overflow-auto border-t border-hairline" data-lenis-prevent>
         {view.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center gap-2">
             <img src="/pokeball.svg" alt="" className="h-10 w-10 opacity-50" />
@@ -238,7 +238,7 @@ export default function MovesPanel({
                         {machine && (
                           <span className="pixel-label w-10 shrink-0 text-[8px] text-gold">{machineLabel(machine, lang, activeVersion)}</span>
                         )}
-                        <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">
+                        <span className="truncate font-sans text-micro13 font-semibold text-tx-primary">
                           {nameOfMove(r.name, lang)}
                         </span>
                       </span>
@@ -247,10 +247,10 @@ export default function MovesPanel({
                       {meta.ready && t ? (
                         <span className="flex items-center gap-1" style={{ color: `rgb(${typeRgb(t)})` }}>
                           <TypeGlyph type={t} size={14} className={cn('dx-glyph', `dx-glyph-${t}`)} />
-                          <span className="hidden font-sans text-[10px] font-semibold uppercase xl:inline">{nameOfType(t, lang)}</span>
+                          <span className="hidden font-sans text-micro10 font-semibold uppercase xl:inline">{nameOfType(t, lang)}</span>
                         </span>
                       ) : (
-                        <span className="font-sans text-[11px] text-tx-muted">—</span>
+                        <span className="font-sans text-micro11 text-tx-muted">—</span>
                       )}
                     </td>
                     <td className="text-center">
@@ -267,7 +267,7 @@ export default function MovesPanel({
                           }}
                         />
                       ) : (
-                        <span className="font-sans text-[11px] text-tx-muted">—</span>
+                        <span className="font-sans text-micro11 text-tx-muted">—</span>
                       )}
                     </td>
                     <NumCell value={meta.power} ready={meta.ready} />
@@ -287,7 +287,7 @@ export default function MovesPanel({
 
 function NumCell({ value, ready, className }: { value: number | null; ready: boolean; className?: string }) {
   return (
-    <td className={cn('text-right font-display text-[12px] font-bold tabular-nums text-tx-secondary', className)}>
+    <td className={cn('text-right font-display text-micro12 font-bold tabular-nums text-tx-secondary', className)}>
       {ready ? (value ?? '—') : <span className="dx-skel ml-auto inline-block h-3 w-6" />}
     </td>
   );

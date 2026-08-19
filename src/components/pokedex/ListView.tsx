@@ -71,7 +71,7 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
         className={cn(COLS, 'pdx-row pointer-events-none relative h-11 border-b border-hairline px-2')}
         style={{ '--t': c1.rgb } as CSSProperties}
       >
-        <span className={cn('pixel-label text-[9px]', shiny ? 'text-gold' : 'text-tx-muted')}>
+        <span className={cn('pixel-label text-[14px]', shiny ? 'text-gold' : 'text-tx-muted')}>
           {padNum(dexId)}
         </span>
         <span className="relative grid h-7 w-7 place-items-center">
@@ -87,7 +87,7 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
           />
         </span>
         <span className="flex min-w-0 items-baseline gap-1.5">
-          <span className="truncate font-sans text-[13px] font-semibold text-tx-primary">{label}</span>
+          <span className="truncate font-sans text-micro13 font-semibold text-tx-primary">{label}</span>
           {s.form && (
             <span className="pixel-label min-w-0 max-w-[5.5rem] shrink truncate text-[8px] text-gold">
               {t(FORM_I18N_KEY[s.form])}
@@ -110,7 +110,7 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
           </span>
         ))}
         <span className="flex items-center justify-end gap-1.5">
-          <span className="h-[3px] w-10 overflow-hidden rounded-pill bg-surface3">
+          <span className="h-[0.1875rem] w-10 overflow-hidden rounded-pill bg-surface3">
             <span
               className="block h-full rounded-pill"
               style={{
@@ -214,7 +214,7 @@ interface ListViewProps {
 export default function ListView({ items, summaries, game }: ListViewProps) {
   return (
     <div className="overflow-x-auto rounded-lg border border-hairline bg-surface1/40">
-      <div className="min-w-[820px]">
+      <div className="min-w-[51.25rem]">
         <ListHeader />
         <AnimatePresence mode={dexPresenceMode()} initial={false}>
           {items.map((e, i) => {

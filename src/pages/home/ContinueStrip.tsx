@@ -89,7 +89,7 @@ export default function ContinueStrip() {
               <span className="pixel-label hidden shrink-0 text-[8px] text-tx-muted sm:inline">
                 {t(`home.continue.${target.kind}`)}
               </span>
-              <span className="min-w-0 truncate text-[12px] font-semibold text-tx-primary">{target.name}</span>
+              <span className="min-w-0 truncate text-micro12 font-semibold text-tx-primary">{target.name}</span>
               {target.partyIds.length > 0 && (
                 <span className="hidden shrink-0 items-center sm:flex">
                   {target.partyIds.slice(0, 6).map((id, i) => (

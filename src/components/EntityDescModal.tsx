@@ -71,8 +71,8 @@ export function ItemIcon({ slug, name, size = 40 }: { slug: string; name: string
 function StatCell({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col items-center gap-0.5 rounded-md border border-hairline bg-surface2/70 px-1 py-1.5">
-      <span className="font-sans text-[13px] font-bold text-tx-primary">{value}</span>
-      <span className="pixel-label text-[6.5px] text-tx-muted">{label}</span>
+      <span className="font-sans text-micro13 font-bold text-tx-primary">{value}</span>
+      <span className="pixel-label text-[0.4063rem] text-tx-muted">{label}</span>
     </div>
   );
 }
@@ -81,7 +81,7 @@ function Chip({ children, gold = false }: { children: React.ReactNode; gold?: bo
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-pill border px-2 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-wider',
+        'inline-flex items-center gap-1 rounded-pill border px-2 py-0.5 font-sans text-[11px] leading-none font-semibold uppercase tracking-wider',
         gold ? 'border-gold/40 bg-gold/10 text-gold' : 'border-hairline bg-surface2 text-tx-secondary',
       )}
     >
@@ -173,18 +173,18 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-            className="w-full max-w-[440px] overflow-hidden rounded-[16px] border border-hairline bg-surface1 shadow-elevate"
+            className="w-full max-w-[27.5rem] overflow-hidden rounded-[1rem] border border-hairline bg-surface1 shadow-elevate"
             onClick={(e) => e.stopPropagation()}
           >
             {/* head: icon + name + close */}
             <div className="flex items-center gap-3 border-b border-hairline px-4 py-3">
               {target.kind === 'item' && slug && <ItemIcon slug={slug} name={name} size={40} />}
               <div className="min-w-0 flex-1">
-                <div className="truncate font-display text-[15px] font-bold tracking-wide text-tx-primary">
+                <div className="truncate font-display text-[0.9375rem] font-bold tracking-wide text-tx-primary">
                   {name}
                 </div>
                 {nameEn && nameEn !== name && (
-                  <div className="pixel-label mt-1 text-[7px] text-tx-muted">{nameEn}</div>
+                  <div className="pixel-label mt-1 text-[8px] text-tx-muted">{nameEn}</div>
                 )}
               </div>
               <button
@@ -201,7 +201,7 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
               {/* chips row */}
               <div className="flex flex-wrap items-center gap-1.5">
                 <Chip gold>{t(`desc.kind.${target.kind}`)}</Chip>
-                {move?.t && <TypeBadge type={move.t as PokemonType} className="!text-[9px]" />}
+                {move?.t && <TypeBadge type={move.t as PokemonType} className="!text-micro9" />}
                 {move?.dc && <Chip>{t(`detail.moves.cat${move.dc.charAt(0).toUpperCase() + move.dc.slice(1)}`)}</Chip>}
                 {move?.target && <Chip>{t(`desc.targets.${move.target}`, { defaultValue: displayName(move.target) })}</Chip>}
                 {item && (
@@ -244,16 +244,16 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
                   </div>
                 ) : text ? (
                   <>
-                    <p className="font-sans text-[13px] leading-relaxed text-tx-secondary">{text}</p>
+                    <p className="font-sans text-micro13 leading-relaxed text-tx-secondary">{text}</p>
                     {viewLang === 'de' && !deText && enText && (
-                      <p className="mt-1.5 flex items-center gap-1 font-sans text-[10px] italic text-gold/80">
+                      <p className="mt-1.5 flex items-center gap-1 font-sans text-micro10 italic text-gold/80">
                         <AlertTriangle size={10} />
                         {t('desc.enFallback')}
                       </p>
                     )}
                   </>
                 ) : (
-                  <p className="flex items-center gap-1.5 font-sans text-[12px] italic text-gold">
+                  <p className="flex items-center gap-1.5 font-sans text-micro12 italic text-gold">
                     <Info size={12} />
                     {t('desc.noDesc')}
                   </p>
@@ -270,7 +270,7 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
                       onClick={() => setTextLang(l)}
                       aria-pressed={viewLang === l}
                       className={cn(
-                        'pixel-label rounded-sm border px-2 py-1 text-[7px] transition-colors',
+                        'pixel-label rounded-sm border px-2 py-1 text-[8px] transition-colors',
                         viewLang === l
                           ? 'border-gold/60 bg-gold/10 text-gold'
                           : 'border-hairline text-tx-muted hover:border-hairline2 hover:text-tx-secondary',

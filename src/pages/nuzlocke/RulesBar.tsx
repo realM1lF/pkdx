@@ -51,7 +51,7 @@ function Counter({ label, value, dot, gold }: { label: string; value: number; do
         {dot}
       </motion.span>
       <PixelLabel>{label}</PixelLabel>
-      <span className={cn('font-display text-[16px] font-bold tabular-nums', gold ? 'text-gold' : 'text-tx-primary')}>{shown}</span>
+      <span className={cn('font-display text-[1rem] font-bold tabular-nums', gold ? 'text-gold' : 'text-tx-primary')}>{shown}</span>
     </span>
   );
 }
@@ -71,7 +71,7 @@ export function LevelCapStepper({ value, onChange, disabled }: { value: number |
       >
         <Minus size={11} />
       </button>
-      <span className={cn('min-w-[52px] text-center font-display text-[12px] font-bold tabular-nums', value === null ? 'text-tx-muted' : 'text-gold')}>
+      <span className={cn('min-w-[3.25rem] text-center font-display text-micro12 font-bold tabular-nums', value === null ? 'text-tx-muted' : 'text-gold')}>
         {value === null ? t('nuz.rules.noCap') : `LV ${value}`}
       </span>
       <button
@@ -113,7 +113,7 @@ export function BadgeStepper({
       >
         <Minus size={11} />
       </button>
-      <span className="min-w-[40px] text-center font-display text-[12px] font-bold tabular-nums text-gold">
+      <span className="min-w-[2.5rem] text-center font-display text-micro12 font-bold tabular-nums text-gold">
         {value}/{total}
       </span>
       <button
@@ -150,7 +150,7 @@ export function RulePresetButtons({
           type="button"
           disabled={key === 'soulLink' && soulLinkDisabled}
           onClick={() => onApply(key)}
-          className="rounded-full border border-hairline2 px-2.5 py-1 font-pixel text-[7px] tracking-[0.06em] text-tx-muted transition-colors hover:border-gold/50 hover:text-gold disabled:cursor-not-allowed disabled:opacity-30"
+          className="rounded-full border border-hairline2 px-2.5 py-1 font-pixel text-[8px] tracking-[0.06em] text-tx-muted transition-colors hover:border-gold/50 hover:text-gold disabled:cursor-not-allowed disabled:opacity-30"
         >
           {t(`nuz.rules.preset.${key}`)}
         </button>
@@ -170,7 +170,7 @@ export function RulesEditor({ state }: { state: RunState }) {
   const region = gymInfo ? anyRegionById(state.run.region) : undefined;
   const gymNode = gymInfo && region ? nodeIndex(region).get(gymInfo.gymNodeId) : undefined;
   return (
-    <div className="w-[260px] space-y-2.5 p-3">
+    <div className="w-[16.25rem] space-y-2.5 p-3">
       <PixelLabel className="text-gold">{t('nuz.rules.houseRules')}</PixelLabel>
       <RulePresetButtons onApply={applyPreset} soulLinkDisabled={state.players.length < 2 && state.mode !== 'multi'} />
       <div />
@@ -209,7 +209,7 @@ export function RulesEditor({ state }: { state: RunState }) {
             <BadgeStepper value={r.badgesCleared} onChange={(v) => set({ badgesCleared: v })} />
           </span>
           {gymNode && (
-            <p className="text-[10px] leading-snug text-tx-muted">
+            <p className="text-micro10 leading-snug text-tx-muted">
               {t('nuz.rules.nextGymHint', { gym: nodeName(gymNode, lang), cap: gymInfo!.cap })}
             </p>
           )}
@@ -264,12 +264,12 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
 
   return (
     <div className="sticky top-16 md:top-[6.25rem] z-30 -mx-4 border-y border-hairline bg-[rgba(13,15,22,0.78)] px-4 backdrop-blur-xl md:-mx-8 md:px-8">
-      <div className="mx-auto flex min-h-[48px] max-w-[1440px] flex-wrap items-center gap-x-4 gap-y-1.5 py-1.5">
+      <div className="mx-auto flex min-h-[3rem] max-w-[90rem] flex-wrap items-center gap-x-4 gap-y-1.5 py-1.5">
         {/* counters */}
         <div className="flex items-center gap-4">
           <Counter label={t('nuz.rules.caught')} value={k.caught} dot={<span className="h-2 w-2 rounded-full bg-[#63D96B]" />} />
           <span className="h-4 w-px bg-hairline2" />
-          <Counter label={t('nuz.rules.boxed')} value={boxedTotal} dot={<span className="h-2 w-2 rounded-[3px] border border-tx-muted/80 bg-surface3" />} />
+          <Counter label={t('nuz.rules.boxed')} value={boxedTotal} dot={<span className="h-2 w-2 rounded-[0.1875rem] border border-tx-muted/80 bg-surface3" />} />
           <span className="h-4 w-px bg-hairline2" />
           <Counter label={t('nuz.rules.missed')} value={k.missed} dot={<span className="h-2 w-2 rounded-full border border-gold/70" />} />
           <span className="h-4 w-px bg-hairline2" />
@@ -298,11 +298,11 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
           </span>
           {cap !== null && (
             <span
-              className="flex max-w-[190px] items-center gap-1 rounded-full border border-gold/50 px-2 py-0.5"
+              className="flex max-w-[11.875rem] items-center gap-1 rounded-full border border-gold/50 px-2 py-0.5"
               title={gymLabel ? t('nuz.rules.capTitleGym', { gym: gymLabel, cap }) : t('nuz.rules.capTitle', { cap })}
             >
               <PixelLabel className="shrink-0 text-gold">{t('nuz.rules.levelCap')}</PixelLabel>
-              <span className="shrink-0 font-display text-[12px] font-bold tabular-nums text-gold">{cap}</span>
+              <span className="shrink-0 font-display text-micro12 font-bold tabular-nums text-gold">{cap}</span>
               {gymLabel && (
                 <span className="truncate font-pixel text-[6px] tracking-[0.05em] text-gold/70">
                   · {gymLabel}
@@ -313,8 +313,8 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
         </div>
 
         {/* route progress */}
-        <div className="ml-auto flex w-[150px] items-center gap-2">
-          <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-surface3">
+        <div className="ml-auto flex w-[9.375rem] items-center gap-2">
+          <div className="h-[0.1875rem] flex-1 overflow-hidden rounded-full bg-surface3">
             <motion.div
               className="relative h-full rounded-full bg-gold"
               initial={false}
@@ -332,7 +332,7 @@ export default function RulesBar({ state, owner }: { state: RunState; owner: boo
 
       {/* B4 — compact "active rules" line: only ON rules not already shown above */}
       {activeChips.length > 0 && (
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-1.5 border-t border-hairline/60 py-1">
+        <div className="mx-auto flex max-w-[90rem] flex-wrap items-center gap-1.5 border-t border-hairline/60 py-1">
           <PixelLabel className="shrink-0 text-tx-muted/70">{t('nuz.rules.activeLabel')}</PixelLabel>
           {activeChips.map((c) => (
             <span key={c} className="rounded-full border border-gold/30 bg-gold/5 px-1.5 py-0.5 font-pixel text-[6px] tracking-[0.05em] text-gold/80">

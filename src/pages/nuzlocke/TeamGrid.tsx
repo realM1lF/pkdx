@@ -46,7 +46,7 @@ function TypeChip({ type }: { type: string }) {
   const c = TYPE_COLORS[type as PokemonType];
   return (
     <span
-      className="min-w-0 max-w-[4.5rem] truncate rounded-full px-1.5 text-[9px] font-bold uppercase leading-[14px]"
+      className="min-w-0 max-w-[4.5rem] truncate rounded-full px-1.5 text-micro9 font-bold uppercase leading-[0.875rem]"
       style={{ background: `rgba(${c?.rgb ?? '168,176,181'},0.18)`, color: c?.base ?? '#A9B0B5' }}
     >
       {nameOfType(type, lang)}
@@ -133,7 +133,7 @@ function PartySlot({
       }}
       className={cn(
         /* full-width row: sprite left, info column right — never clipped */
-        'group/cell relative flex min-h-[120px] w-full min-w-0 cursor-pointer items-center gap-4 overflow-hidden rounded-md border border-hairline bg-surface2 px-4 py-3 transition-all',
+        'group/cell relative flex min-h-[7.5rem] w-full min-w-0 cursor-pointer items-center gap-4 overflow-hidden rounded-md border border-hairline bg-surface2 px-4 py-3 transition-all',
         dragging && 'opacity-40',
         swapTarget && 'border-gold/70 shadow-glow-gold',
       )}
@@ -146,13 +146,13 @@ function PartySlot({
       aria-label={t('nuz.team.openDexAria', { name: enc.nickname ?? nameOf(enc.pokemon_id) })}
     >
       <span className="shrink-0 self-center transition-transform duration-200 group-hover/cell:-translate-y-[6%]">
-        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[96px] w-[96px]" skeleton={false} />
+        <Sprite id={enc.pokemon_id} name={nameOf(enc.pokemon_id)} className="h-[6rem] w-[6rem]" skeleton={false} />
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
-        <span className="truncate pr-6 text-[15px] font-semibold leading-tight text-tx-primary">
+        <span className="truncate pr-6 text-[0.9375rem] font-semibold leading-tight text-tx-primary">
           {enc.nickname ?? nameOf(enc.pokemon_id)}
         </span>
-        <span className="font-display text-[11px] font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
+        <span className="font-display text-micro11 font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
         <span className="flex min-w-0 flex-nowrap items-center gap-1.5">
           {types.slice(0, 2).map((tp) => (
             <TypeChip key={tp} type={tp} />
@@ -211,7 +211,7 @@ export default function TeamGrid({
   return (
     <section className="rounded-lg border border-hairline bg-surface1 p-4" aria-label={t('nuz.team.aria')}>
       <div className="flex items-baseline gap-3">
-        <h4 className="font-sans text-[15px] font-bold text-tx-primary">{t('nuz.team.title')}</h4>
+        <h4 className="font-sans text-[0.9375rem] font-bold text-tx-primary">{t('nuz.team.title')}</h4>
         <PixelLabel>{t('nuz.team.note')}</PixelLabel>
       </div>
       <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
@@ -265,15 +265,15 @@ export default function TeamGrid({
             >
               <div className="flex h-8 items-center gap-1.5">
                 <span className={cn('h-2.5 w-2.5 rounded-full', online[p.id] && 'nz-presence-ring')} style={{ background: p.color }} />
-                <span className="min-w-0 truncate font-display text-[13px] font-bold text-tx-primary">{p.name}</span>
-                <span className="text-[10px] tabular-nums text-tx-muted">{party.length}/6</span>
+                <span className="min-w-0 truncate font-display text-micro13 font-bold text-tx-primary">{p.name}</span>
+                <span className="text-micro10 tabular-nums text-tx-muted">{party.length}/6</span>
                 <LocaleLink
                   to={
                     mine === p.id
                       ? `/team?fromRun=${state.run.id}`
                       : `/team?viewRun=${state.run.id}&player=${p.id}`
                   }
-                  className="ml-auto inline-flex items-center gap-1 rounded-sm border border-hairline px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-tx-muted transition-colors hover:border-gold/50 hover:text-gold"
+                  className="ml-auto inline-flex items-center gap-1 rounded-sm border border-hairline px-1.5 py-0.5 text-micro9 font-semibold uppercase tracking-wide text-tx-muted transition-colors hover:border-gold/50 hover:text-gold"
                   title={mine === p.id ? t('nuz.team.openMine') : t('nuz.team.openView')}
                   aria-label={mine === p.id ? t('nuz.team.openMine') : t('nuz.team.openView')}
                 >
@@ -305,7 +305,7 @@ export default function TeamGrid({
                   <div
                     key={`e${i}`}
                     className={cn(
-                      'grid min-h-[120px] place-items-center rounded-md border border-dashed transition-colors',
+                      'grid min-h-[7.5rem] place-items-center rounded-md border border-dashed transition-colors',
                       dropPlayer === p.id ? 'border-gold/50 bg-gold/5' : 'border-hairline2',
                     )}
                   >

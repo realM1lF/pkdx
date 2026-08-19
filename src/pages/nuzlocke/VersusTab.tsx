@@ -273,7 +273,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* ================= LEFT — own picker ================= */}
-      <Panel eyebrow={t('versus.yourSide')} title={t('versus.teamBox')} className="col-span-12 lg:col-span-3" bodyClassName="flex max-h-[640px] flex-col p-2">
+      <Panel eyebrow={t('versus.yourSide')} title={t('versus.teamBox')} className="col-span-12 lg:col-span-3" bodyClassName="flex max-h-[40rem] flex-col p-2">
         <HonestyHint show={Boolean(orreGame && (state.mode === 'multi' || isCloudRun(state)))} className="mb-1.5 px-1">
           {t('honesty.shadowIdOptional')}
         </HonestyHint>
@@ -293,7 +293,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
           {ownMons.length === 0 && (
             <div className="flex h-32 flex-col items-center justify-center gap-2">
               <img src="/pokeball.svg" alt="" className="h-8 w-8 opacity-50" />
-              <p className="px-4 text-center font-sans text-[11px] text-gold">{t('versus.noCatches')}</p>
+              <p className="px-4 text-center font-sans text-micro11 text-gold">{t('versus.noCatches')}</p>
             </div>
           )}
           {ownMons.map((m) => {
@@ -304,16 +304,16 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                 type="button"
                 onClick={() => setSelEncId(m.enc.id)}
                 className={cn(
-                  'flex h-[40px] w-full items-center gap-2 rounded-md border-b border-hairline px-1.5 text-left transition-colors duration-150',
+                  'flex h-[2.5rem] w-full items-center gap-2 rounded-md border-b border-hairline px-1.5 text-left transition-colors duration-150',
                   active ? 'bg-gold/10 shadow-[inset_2px_0_0_#F6C945]' : 'hover:bg-surface2',
                 )}
               >
                 <Sprite id={m.enc.pokemon_id} name={m.label} className="h-7 w-7 shrink-0" skeleton={false} />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-sans text-[12px] font-semibold text-tx-primary">{m.label}</span>
-                  <span className="block truncate font-sans text-[9px] text-tx-muted">{nameOf(m.enc.pokemon_id)}</span>
+                  <span className="block truncate font-sans text-micro12 font-semibold text-tx-primary">{m.label}</span>
+                  <span className="block truncate font-sans text-micro9 text-tx-muted">{nameOf(m.enc.pokemon_id)}</span>
                 </span>
-                <span className="pixel-label shrink-0 text-[7px] text-gold">LV{m.enc.level}</span>
+                <span className="pixel-label shrink-0 text-[8px] text-gold">LV{m.enc.level}</span>
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: m.playerColor }} title={m.playerName} />
               </button>
             );
@@ -324,7 +324,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
       {/* ================= RIGHT — foe + matchup + ranking ================= */}
       <div className="col-span-12 flex min-w-0 flex-col gap-4 lg:col-span-9">
         {!isDefaultVersusCtx(ctx) && (
-          <div className="rounded-lg border border-gold/40 bg-gold/10 px-3 py-1.5 text-center font-sans text-[10px] font-bold uppercase text-gold">
+          <div className="rounded-lg border border-gold/40 bg-gold/10 px-3 py-1.5 text-center font-sans text-micro10 font-bold uppercase text-gold">
             {t('versus.calcBadge', { gen: ctx.gen, label: ctx.game ?? ctx.versionGroup })}
           </div>
         )}
@@ -334,7 +334,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
         <Panel
           eyebrow={t('versus.opponent')}
           title={foeRef ? foeRef.context : t('versus.pickTarget')}
-          className="min-h-[150px]"
+          className="min-h-[9.375rem]"
           right={
             hasTrainers || orreGame ? (
               <SegmentedControl
@@ -353,14 +353,14 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
           }
         >
           {foeMode === 'shadow' && orreGame ? (
-            <div className="nz-slim-scroll max-h-[240px] overflow-auto p-2" data-lenis-prevent>
+            <div className="nz-slim-scroll max-h-[15rem] overflow-auto p-2" data-lenis-prevent>
               {([
                 ['here', orreShadows.here] as const,
                 ['elsewhere', orreShadows.elsewhere] as const,
               ]).map(([group, list]) =>
                 list.length === 0 ? null : (
                   <div key={group} className="mb-2 last:mb-0">
-                    <p className="px-1.5 pb-1 font-pixel text-[7px] uppercase text-tx-muted">
+                    <p className="px-1.5 pb-1 font-pixel text-[8px] uppercase text-tx-muted">
                       {t(group === 'here' ? 'versus.shadowsHere' : 'versus.shadowsElsewhere')}
                     </p>
                     {list.map((s: OrreShadow) => {
@@ -385,8 +385,8 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                           className="flex h-9 w-full items-center gap-2 rounded-md px-1.5 text-left hover:bg-surface2"
                         >
                           {pid ? <Sprite id={pid} name={label} className="h-7 w-7 shrink-0" skeleton={false} /> : null}
-                          <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-tx-primary">{label}</span>
-                          <span className="shrink-0 font-pixel text-[7px] text-tx-muted">LV{s.level}</span>
+                          <span className="min-w-0 flex-1 truncate text-micro12 font-semibold text-tx-primary">{label}</span>
+                          <span className="shrink-0 font-pixel text-[8px] text-tx-muted">LV{s.level}</span>
                         </button>
                       );
                     })}
@@ -411,7 +411,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                 }}
                 placeholder={t('versus.searchAny')}
               />
-              <p className="mt-2 font-sans text-[10px] text-tx-muted">
+              <p className="mt-2 font-sans text-micro10 text-tx-muted">
                 {t('versus.wildNote')}
               </p>
             </div>
@@ -441,12 +441,12 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
         {/* matchup zone */}
         {!sel && (
           <div className="flex h-24 items-center justify-center rounded-lg border border-hairline bg-surface1/60">
-            <span className="font-sans text-[12px] text-tx-muted">{t('versus.pickOneLeft')}</span>
+            <span className="font-sans text-micro12 text-tx-muted">{t('versus.pickOneLeft')}</span>
           </div>
         )}
         {sel && !foeRef && (
           <div className="flex h-24 items-center justify-center rounded-lg border border-hairline bg-surface1/60">
-            <span className="font-sans text-[12px] text-gold">{t('versus.pickOpponentHint')}</span>
+            <span className="font-sans text-micro12 text-gold">{t('versus.pickOpponentHint')}</span>
           </div>
         )}
 
@@ -607,7 +607,7 @@ function FilterChip({ active, onClick, children }: { active: boolean; onClick: (
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        'inline-flex h-[20px] items-center rounded-pill border px-2 font-sans text-[9px] font-bold uppercase transition-colors duration-150',
+        'inline-flex h-5 items-center rounded-pill border px-2 font-sans text-[14px] leading-none font-bold uppercase transition-colors duration-150',
         active ? 'border-gold/60 bg-gold/10 text-gold' : 'border-hairline text-tx-muted hover:text-tx-secondary',
       )}
     >
@@ -640,7 +640,7 @@ function SideHeader({
   const id = pokemon?.id ?? fallbackId ?? 0;
   return (
     <div className="flex items-center gap-3 rounded-lg border border-hairline bg-surface1 p-2.5">
-      <div className="relative grid h-[52px] w-[52px] shrink-0 place-items-center">
+      <div className="relative grid h-[3.25rem] w-[3.25rem] shrink-0 place-items-center">
         {types[0] && (
           <div
             aria-hidden
@@ -652,12 +652,12 @@ function SideHeader({
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-1.5">
-          <span className="pixel-label text-[7px] text-tx-muted">{title}</span>
-          <span className="truncate font-display text-[13px] font-bold text-tx-primary">{name}</span>
-          {id > 0 && <span className="pixel-label shrink-0 text-[7px] text-gold">{padNum(id)}</span>}
+          <span className="pixel-label text-[8px] text-tx-muted">{title}</span>
+          <span className="truncate font-display text-micro13 font-bold text-tx-primary">{name}</span>
+          {id > 0 && <span className="pixel-label shrink-0 text-[8px] text-gold">{padNum(id)}</span>}
         </div>
         <div className="mt-0.5 flex items-center gap-1.5">
-          <span className="pixel-label text-[7px] text-tx-muted">LV</span>
+          <span className="pixel-label text-[8px] text-tx-muted">LV</span>
           <input
             type="number"
             min={1}
@@ -667,7 +667,7 @@ function SideHeader({
             className="vs-input w-12 text-center tabular-nums"
             aria-label={`${title} level`}
           />
-          {loading && <span className="pixel-label text-[7px] text-tx-muted">{t('versus.syncShort')}</span>}
+          {loading && <span className="pixel-label text-[8px] text-tx-muted">{t('versus.syncShort')}</span>}
         </div>
       </div>
       <Swords size={12} className="shrink-0 text-gold/50" />
@@ -698,9 +698,9 @@ function OwnSideTune({
     <div className="flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-surface1/60 px-3 py-2">
       {mech.abilities && (
         <label className="flex items-center gap-1.5">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('tb.ability')}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('tb.ability')}</span>
           <select
-            className="dx-select h-6 text-[10px]"
+            className="dx-select h-6 text-micro10"
             value={side.ability ?? ''}
             onChange={(e) => onSide({ ability: e.target.value || null })}
           >
@@ -715,9 +715,9 @@ function OwnSideTune({
       )}
       {mech.items && (
         <label className="flex items-center gap-1.5">
-          <span className="pixel-label text-[7px] text-tx-muted">{t('tb.item')}</span>
+          <span className="pixel-label text-[8px] text-tx-muted">{t('tb.item')}</span>
           <select
-            className="dx-select h-6 text-[10px]"
+            className="dx-select h-6 text-micro10"
             value={side.item ?? ''}
             onChange={(e) => onSide({ item: e.target.value || null })}
           >
@@ -833,7 +833,7 @@ function BestAnswerRanking({
         </div>
       }
     >
-      <p className="border-b border-hairline px-3 py-2 font-sans text-[10px] leading-snug text-gold/90">
+      <p className="border-b border-hairline px-3 py-2 font-sans text-micro10 leading-snug text-gold/90">
         {t('versus.rankingHeuristic')}
       </p>
       {pending > 0 && (
@@ -844,11 +844,11 @@ function BestAnswerRanking({
       )}
       {pending === 0 && rows.length === 0 && (
         <div className="flex h-20 items-center justify-center">
-          <span className="font-sans text-[11px] text-tx-muted">{t('versus.noRanking')}</span>
+          <span className="font-sans text-micro11 text-tx-muted">{t('versus.noRanking')}</span>
         </div>
       )}
       {pending === 0 && rows.length > 0 && (
-        <div className="nz-slim-scroll max-h-[320px] overflow-auto">
+        <div className="nz-slim-scroll max-h-[20rem] overflow-auto">
           {rows.map((r, i) => (
             <motion.button
               key={r.mon.enc.id}
@@ -865,12 +865,12 @@ function BestAnswerRanking({
               </span>
               <Sprite id={r.mon.enc.pokemon_id} name={r.mon.label} className="h-7 w-7" skeleton={false} />
               <span className="min-w-0">
-                <span className="block truncate font-sans text-[12px] font-semibold text-tx-primary">{r.mon.label}</span>
-                <span className="block font-sans text-[9px] text-tx-muted">
+                <span className="block truncate font-sans text-micro12 font-semibold text-tx-primary">{r.mon.label}</span>
+                <span className="block font-sans text-micro9 text-tx-muted">
                   LV{r.mon.enc.level} · {r.mon.playerName}
                 </span>
               </span>
-              <span className="truncate font-sans text-[11px] text-tx-secondary" title={r.verdict.reason}>
+              <span className="truncate font-sans text-micro11 text-tx-secondary" title={r.verdict.reason}>
                 {r.verdict.reason}
               </span>
             </motion.button>

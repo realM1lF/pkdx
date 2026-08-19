@@ -54,7 +54,7 @@ function CursorSpotlight() {
   if (!enabled) return null;
   return (
     <div className="pointer-events-none fixed inset-0 z-[5] overflow-hidden mix-blend-screen" aria-hidden>
-      <div ref={dotRef} className="absolute h-[560px] w-[560px]">
+      <div ref={dotRef} className="absolute h-[35rem] w-[35rem]">
         <AnimatePresence mode="sync">
           <motion.div
             key={tint}

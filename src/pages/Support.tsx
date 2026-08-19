@@ -27,13 +27,13 @@ export default function Support() {
         <h1 className="mt-2 font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('support.title')}
         </h1>
-        <p className="mt-4 font-sans text-[14.5px] leading-relaxed text-tx-secondary">
+        <p className="mt-4 font-sans text-[0.9063rem] leading-relaxed text-tx-secondary">
           {t('support.p1')}
         </p>
-        <p className="mt-3 font-sans text-[14.5px] leading-relaxed text-tx-secondary">
+        <p className="mt-3 font-sans text-[0.9063rem] leading-relaxed text-tx-secondary">
           {t('support.p2')}
         </p>
-        <p className="mt-3 font-sans text-[14.5px] leading-relaxed text-tx-secondary">
+        <p className="mt-3 font-sans text-[0.9063rem] leading-relaxed text-tx-secondary">
           {t('support.p3')}
         </p>
 
@@ -60,16 +60,16 @@ export default function Support() {
         >
           <img src="/paypal-qr.svg" alt="PayPal QR-Code" className="w-full" loading="lazy" decoding="async" />
         </motion.figure>
-        <p className="mt-2.5 font-sans text-[12px] text-tx-muted">{t('support.qrCaption')}</p>
+        <p className="mt-2.5 font-sans text-micro12 text-tx-muted">{t('support.qrCaption')}</p>
 
-        <p className="mt-6 flex items-center justify-center gap-1.5 font-sans text-[12.5px] text-tx-muted">
+        <p className="mt-6 flex items-center justify-center gap-1.5 font-sans text-[0.7813rem] text-tx-muted">
           <Sparkles size={13} className="text-gold/70" />
           {t('support.note')}
         </p>
 
         <div className="mt-8 border-t border-hairline pt-6 text-left">
-          <p className="font-sans text-[11.5px] leading-relaxed text-tx-muted">{t('support.legal')}</p>
-          <p className="mt-2.5 font-sans text-[11.5px] text-tx-muted">
+          <p className="font-sans text-[0.7188rem] leading-relaxed text-tx-muted">{t('support.legal')}</p>
+          <p className="mt-2.5 font-sans text-[0.7188rem] text-tx-muted">
             {t('support.legalLinks')}{' '}
             <LocaleLink to="/impressum" className="text-gold underline-offset-2 hover:underline">
               {t('footer.impressum')}

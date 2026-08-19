@@ -83,7 +83,7 @@ export default function Footer() {
 
         {/* Features */}
         <div className="flex flex-col gap-3">
-          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.explore')}</h4>
+          <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.explore')}</h4>
           {featureLinks.map(({ to, key }) => (
             <LocaleLink key={to} to={to} className={linkCls}>
               {t(key)}
@@ -100,7 +100,7 @@ export default function Footer() {
 
         {/* Regions */}
         <div className="flex flex-col gap-3">
-          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.regions')}</h4>
+          <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.regions')}</h4>
           <LocaleLink to="/maps" className={linkCls}>
             {t('footer.mapsAtlas')}
           </LocaleLink>
@@ -113,7 +113,7 @@ export default function Footer() {
 
         {/* Site: about / feedback / support */}
         <div className="flex flex-col gap-3">
-          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.site')}</h4>
+          <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.site')}</h4>
           {siteLinks.map(({ to, key }) => (
             <LocaleLink key={to} to={to} className={linkCls}>
               {t(key)}
@@ -123,7 +123,7 @@ export default function Footer() {
 
         {/* Community wikis (external, DE + EN) */}
         <div className="flex flex-col gap-3">
-          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.community')}</h4>
+          <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.community')}</h4>
           <span className="pixel-label text-[8px] text-tx-muted/70">DE</span>
           {wikiLinksDe.map(({ href, label }) => (
             <a key={href} href={href} target="_blank" rel="noopener noreferrer" className={linkCls}>
@@ -140,7 +140,7 @@ export default function Footer() {
 
         {/* Legal */}
         <div className="flex flex-col gap-3">
-          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.legal')}</h4>
+          <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.legal')}</h4>
           {legalLinks.map(({ to, key }) => (
             <LocaleLink key={to} to={to} className={linkCls}>
               {t(key)}
@@ -150,7 +150,7 @@ export default function Footer() {
 
         {/* Data */}
         <div className="flex flex-col gap-3 sm:col-span-2 lg:col-span-1 xl:col-span-1">
-          <h4 className="pixel-label mb-1 text-[10px] text-tx-muted">{t('footer.data')}</h4>
+          <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.data')}</h4>
           <p className="font-sans text-sm text-tx-secondary">
             {t('footer.dataCredits')}{' '}
             <a
@@ -188,7 +188,7 @@ export default function Footer() {
             <LocaleLink to="/lizenzen" className="pixel-label text-[9px] text-tx-muted transition-colors hover:text-gold">
               {t('footer.licenses')}
             </LocaleLink>
-            <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] text-gold">
+            <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] leading-none text-gold">
               v1.0
             </span>
           </div>

@@ -17,14 +17,14 @@ import { youAreHereKey } from '@/lib/nuzlocke-store';
 import { isSlotConsuming } from '@/lib/nuzlocke-rules';
 import type { NuzEncounterRow, RunState, SoulLinkGroup } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
+import { remPx, useRemPx } from '@/lib/viewport';
 import { PixelLabel, StatusDot, timeAgo } from './ui';
 
-const CARD_W = 188;
-const GAP = 14;
-const STRIDE = CARD_W + GAP;
-const HEADER_H = 32;
-const SLOT_H = 58;
-const FOOTER_H = 24;
+const CARD_W_REM = 11.75; // 188px @ 100 %
+const GAP_REM = 0.875; // 14px
+const HEADER_REM = 2; // 32px
+const SLOT_REM = 3.625; // 58px
+const FOOTER_REM = 1.5; // 24px
 
 /* node-kind glyphs (§2.3 footer) */
 function KindGlyph({ kind }: { kind: MapNode['kind'] }) {
@@ -61,17 +61,19 @@ function SoulLinkPulse({
   lastSlot,
   broken,
   label,
+  slotH,
 }: {
   firstSlot: number;
   lastSlot: number;
   broken: boolean;
   label: string;
+  slotH: number;
 }) {
-  const top = firstSlot * SLOT_H;
-  const height = (lastSlot - firstSlot + 1) * SLOT_H;
+  const top = firstSlot * slotH;
+  const height = (lastSlot - firstSlot + 1) * slotH;
   return (
     <div
-      className="pointer-events-none absolute left-0 z-10 w-[2px]"
+      className="pointer-events-none absolute left-0 z-10 w-[0.125rem]"
       style={{ top, height }}
       title={label}
       aria-hidden
@@ -126,7 +128,7 @@ function PlayerSlot({
   return (
     <div
       className={cn(
-        'relative flex h-[58px] items-center gap-2 border-b border-hairline px-2 last:border-b-0',
+        'relative flex h-[3.625rem] items-center gap-2 border-b border-hairline px-2 last:border-b-0',
         cascade && 'nz-shake',
         linked && !linkBroken && 'nz-sl-border',
         linked && linkBroken && 'opacity-80',
@@ -145,7 +147,7 @@ function PlayerSlot({
           type="button"
           onClick={onPrefill}
           aria-label={t('nuz.timeline.logFor', { player: playerName })}
-          className="mx-auto h-[40px] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
+          className="mx-auto h-[2.5rem] w-full rounded-sm border border-dashed border-hairline2 transition-colors hover:border-gold/50 hover:bg-gold/[0.04]"
         />
       ) : enc.status === 'dead' || enc.status === 'lost' ? (
         <button
@@ -158,17 +160,17 @@ function PlayerSlot({
           aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? speciesName })}
         >
           <span data-slot-enc={enc.id} className="nz-dead-sprite inline-block shrink-0">
-            <Sprite id={speciesId} name={speciesName} className="h-[44px] w-[44px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[2.75rem] w-[2.75rem]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[12px] font-semibold leading-tight text-tx-muted line-through">
+            <span className="block truncate text-micro12 font-semibold leading-tight text-tx-muted line-through">
               {enc.nickname ?? speciesName}
               {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-3 w-3 align-[-1px]" />}
             </span>
-            <span className="mt-0.5 block font-display text-[10px] font-bold tabular-nums text-tx-muted/70">LV {enc.level}</span>
+            <span className="mt-0.5 block font-display text-micro10 font-bold tabular-nums text-tx-muted/70">LV {enc.level}</span>
           </span>
           {enc.status === 'lost' ? (
-            <span className="shrink-0 rounded-full border border-gold/60 px-1.5 font-pixel text-[7px] tracking-[0.06em] text-gold" aria-label={t('nuz.statusLost')}>
+            <span className="shrink-0 rounded-full border border-gold/60 px-1.5 font-pixel text-[8px] tracking-[0.06em] text-gold" aria-label={t('nuz.statusLost')}>
               🔗
             </span>
           ) : (
@@ -186,13 +188,13 @@ function PlayerSlot({
           aria-label={t('nuz.timeline.optionsAria', { name: speciesName })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 opacity-30">
-            <Sprite id={speciesId} name={speciesName} className="h-[44px] w-[44px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[2.75rem] w-[2.75rem]" skeleton={false} />
           </span>
-          <span className="min-w-0 flex-1 truncate text-[12px] text-tx-muted">
+          <span className="min-w-0 flex-1 truncate text-micro12 text-tx-muted">
             {speciesName}
             {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-3 w-3 align-[-1px]" />}
           </span>
-          <span className="shrink-0 rounded-full border border-gold/60 px-1.5 font-pixel text-[7px] tracking-[0.06em] text-gold">
+          <span className="shrink-0 rounded-full border border-gold/60 px-1.5 font-pixel text-[8px] tracking-[0.06em] text-gold">
             {t(enc.status === 'missed' ? 'nuz.statusMissed' : 'nuz.statusDuped')}
           </span>
         </button>
@@ -207,20 +209,20 @@ function PlayerSlot({
           aria-label={t('nuz.timeline.optionsAria', { name: enc.nickname ?? speciesName })}
         >
           <span data-slot-enc={enc.id} className="inline-block shrink-0 transition-transform duration-200 group-hover/slot:-translate-y-[6%]">
-            <Sprite id={speciesId} name={speciesName} className="h-[48px] w-[48px]" skeleton={false} />
+            <Sprite id={speciesId} name={speciesName} className="h-[3rem] w-[3rem]" skeleton={false} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[12px] font-semibold leading-tight text-tx-primary">
+            <span className="block truncate text-micro12 font-semibold leading-tight text-tx-primary">
               {enc.nickname ?? speciesName}
               {enc.is_shiny && <img src="/sparkle.svg" alt={t('nuz.shinyCatch')} className="ml-1 inline h-3 w-3 align-[-1px]" />}
             </span>
-            <span className="mt-0.5 block font-display text-[10px] font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
+            <span className="mt-0.5 block font-display text-micro10 font-bold tabular-nums text-tx-muted">LV {enc.level}</span>
           </span>
           {pendingSync && <span className="nz-orbit h-1.5 w-1.5 shrink-0" aria-label={t('nuz.timeline.pendingSync')} />}
         </button>
       )}
       {cascade && enc?.status === 'caught' && (
-        <span className="absolute -top-1.5 right-1 rounded-full border border-gold bg-surface2 px-1.5 font-pixel text-[7px] text-gold" title={t('nuz.timeline.boxCascade')}>
+        <span className="absolute -top-1.5 right-1 rounded-full border border-gold bg-surface2 px-1.5 font-pixel text-[8px] text-gold" title={t('nuz.timeline.boxCascade')}>
           BOX?
         </span>
       )}
@@ -252,7 +254,9 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
   const dragged = useRef(false);
   const [dragging, setDragging] = useState(false);
   const cardIndex = useMemo(() => new Map(nodes.map((n, i) => [n.id, i])), [nodes]);
-  const trackW = nodes.length * STRIDE - GAP;
+  const stridePx = useRemPx(CARD_W_REM + GAP_REM);
+  const gapPx = useRemPx(GAP_REM);
+  const trackW = nodes.length * stridePx - gapPx;
   const groupsByRoute = useMemo(() => new Map(groups.map((g) => [g.routeKey, g])), [groups]);
 
   const encBy = useMemo(() => {
@@ -274,11 +278,10 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
     const idx = cardIndex.get(hereKey);
     if (idx === undefined) return;
     const t = window.setTimeout(() => {
-      el.scrollTo({ left: Math.max(0, idx * STRIDE - 80), behavior: 'smooth' });
+      el.scrollTo({ left: Math.max(0, idx * stridePx - remPx(5)), behavior: 'smooth' });
     }, 350);
     return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hereKey, cardIndex, stridePx]);
 
   /* drag to scroll */
   const dragState = useRef({ x: 0, left: 0 });
@@ -314,7 +317,8 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
   } as CSSProperties;
 
   const empty = state.encounters.length === 0;
-  const cardH = HEADER_H + players.length * SLOT_H + FOOTER_H;
+  const slotH = useRemPx(SLOT_REM);
+  const cardH = useRemPx(HEADER_REM + players.length * SLOT_REM + FOOTER_REM);
 
   return (
     <section className="group/tl relative rounded-xl border border-hairline bg-[#07080D]" aria-label={t('nuz.timeline.aria')}>
@@ -373,7 +377,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.35, delay: i < 12 ? i * 0.02 : 0 }}
                     className={cn(
-                      'relative w-[188px] shrink-0 rounded-md border bg-surface1 transition-all duration-200 hover:-translate-y-1 hover:border-gold/30',
+                      'relative w-[11.75rem] shrink-0 rounded-md border bg-surface1 transition-all duration-200 hover:-translate-y-1 hover:border-gold/30',
                       node.postGame ? 'border-hairline opacity-60' : 'border-hairline',
                       isHere && 'border-gold/60 shadow-[inset_0_2px_0_0_var(--gold),0_0_18px_rgba(246,201,69,0.12)]',
                     )}
@@ -391,10 +395,10 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                       </span>
                     )}
                     {/* header */}
-                    <div className="flex h-[32px] items-center gap-1.5 border-b border-hairline px-2.5">
-                      <span className="font-display text-[10px] font-bold tabular-nums text-tx-muted">{String(i + 1).padStart(2, '0')}</span>
+                    <div className="flex h-[2rem] items-center gap-1.5 border-b border-hairline px-2.5">
+                      <span className="font-display text-micro10 font-bold tabular-nums text-tx-muted">{String(i + 1).padStart(2, '0')}</span>
                       <span className="min-w-0 flex-1 truncate font-pixel text-[8px] tracking-[0.05em] text-tx-secondary">{nodeName(node, lang)}</span>
-                      {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[7px] text-tx-muted">{t('nuz.timeline.post')}</span>}
+                      {node.postGame && <span className="rounded-full border border-hairline2 px-1 font-pixel text-[8px] text-tx-muted">{t('nuz.timeline.post')}</span>}
                       <span className="flex shrink-0 items-center gap-1">
                         {players.map((p) => {
                           const enc = encBy.get(`${p.id}:${node.id}`);
@@ -410,6 +414,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                           lastSlot={linkedSlots[linkedSlots.length - 1]}
                           broken={linkGroup.broken}
                           label={linkLabel}
+                          slotH={slotH}
                         />
                       )}
                       {players.map((p) => {
@@ -434,7 +439,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                       })}
                     </div>
                     {/* footer */}
-                    <div className="absolute inset-x-0 bottom-0 flex h-[24px] items-center gap-1.5 px-2.5">
+                    <div className="absolute inset-x-0 bottom-0 flex h-[1.5rem] items-center gap-1.5 px-2.5">
                       <KindGlyph kind={node.kind} />
                       <PixelLabel className="text-[8px]">{t(`maps.kind${node.kind.charAt(0).toUpperCase() + node.kind.slice(1)}`, { defaultValue: node.kind })}</PixelLabel>
                       {/* EP5.3 — map chip only for atlas regions; freeform
@@ -447,7 +452,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
                           aria-label={t('nuz.openInMaps', { label: nodeName(node, lang) })}
                           className="ml-auto flex items-center gap-0.5 text-tx-muted/50 transition-colors hover:text-gold"
                         >
-                          <span className="font-pixel text-[7px]">{t('nuz.mapsChip')}</span>
+                          <span className="font-pixel text-[8px]">{t('nuz.mapsChip')}</span>
                           <ExternalLink size={10} />
                         </LocaleLink>
                       )}
@@ -469,7 +474,7 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
           key={side}
           type="button"
           aria-label={side === 'left' ? t('nuz.timeline.scrollLeft') : t('nuz.timeline.scrollRight')}
-          onClick={() => scrollRef.current?.scrollBy({ left: dir * STRIDE * 3, behavior: 'smooth' })}
+          onClick={() => scrollRef.current?.scrollBy({ left: dir * stridePx * 3, behavior: 'smooth' })}
           className={cn(
             'absolute top-1/2 z-20 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full border border-hairline2 bg-[rgba(13,15,22,0.85)] text-tx-secondary opacity-0 backdrop-blur transition-all hover:border-gold hover:text-gold group-hover/tl:opacity-100',
             side === 'left' ? 'left-2' : 'right-2',

@@ -43,7 +43,7 @@ function MiniTimeline({ state, nameOf }: { state: RunState; nameOf: NameOf }) {
   }, [state.encounters]);
 
   return (
-    <div className="nz-strip-fade flex items-end gap-[6px] overflow-hidden py-1" aria-hidden>
+    <div className="nz-strip-fade flex items-end gap-[0.375rem] overflow-hidden py-1" aria-hidden>
       {nodes.map((n) => {
         const list = byRoute.get(n.id) ?? [];
         const dead = list.find((e) => e.status === 'dead');
@@ -64,13 +64,13 @@ function MiniTimeline({ state, nameOf }: { state: RunState; nameOf: NameOf }) {
                 <path d="M1 1l6 6M7 1l-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
             ) : caught ? (
-              <span className="h-[4px] w-[4px] rounded-full" style={{ background: playerColor(caught.player_id) }} />
+              <span className="h-[0.25rem] w-[0.25rem] rounded-full" style={{ background: playerColor(caught.player_id) }} />
             ) : missed ? (
-              <span className="h-[4px] w-[4px] rounded-full border border-gold/70" />
+              <span className="h-[0.25rem] w-[0.25rem] rounded-full border border-gold/70" />
             ) : (
-              <span className="h-[4px] w-[4px] rounded-full border border-tx-muted/30" />
+              <span className="h-[0.25rem] w-[0.25rem] rounded-full border border-tx-muted/30" />
             )}
-            {linkRoutes.has(n.id) && <span className="mt-[1px] h-[2px] w-[8px] rounded-full bg-gold/80" />}
+            {linkRoutes.has(n.id) && <span className="mt-[1px] h-[0.125rem] w-[0.5rem] rounded-full bg-gold/80" />}
           </span>
         );
       })}
@@ -148,20 +148,20 @@ export default function RunCard({
               renameRun(state.run.id, nameDraft);
               setRenaming(false);
             }}
-            className="h-7 flex-1 rounded-sm border border-gold/60 bg-surface2 px-2 font-display text-[15px] font-bold text-tx-primary outline-none"
+            className="h-7 flex-1 rounded-sm border border-gold/60 bg-surface2 px-2 font-display text-[0.9375rem] font-bold text-tx-primary outline-none"
           />
         ) : (
-          <h3 className="truncate font-display text-[16px] font-bold text-tx-primary">{state.run.name}</h3>
+          <h3 className="truncate font-display text-[1rem] font-bold text-tx-primary">{state.run.name}</h3>
         )}
         <span
-          className="shrink-0 rounded-full border px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em]"
+          className="shrink-0 rounded-full border px-2 py-0.5 font-pixel text-[8px] tracking-[0.08em]"
           style={{ borderColor: `${region?.accent ?? '#F6C945'}66`, color: region?.accent ?? '#F6C945' }}
         >
           {versionChipLabel(state.run.game)}
         </span>
         <RunStatusChip status={state.run.status} />
         {archived && (
-          <span className="shrink-0 rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[7px] tracking-[0.08em] text-tx-muted">
+          <span className="shrink-0 rounded-full border border-hairline2 px-2 py-0.5 font-pixel text-[8px] tracking-[0.08em] text-tx-muted">
             {t('nuz.card.archivedChip')}
           </span>
         )}
@@ -193,7 +193,7 @@ export default function RunCard({
                 <MoreVertical size={14} />
               </button>
             }
-            className="w-[210px] py-1"
+            className="w-[13.125rem] py-1"
           >
             {!archived &&
               [
@@ -216,7 +216,7 @@ export default function RunCard({
                   key={item.label}
                   type="button"
                   onClick={item.act}
-                  className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3', item.dim ? 'text-tx-muted/50' : 'text-tx-secondary hover:text-gold')}
+                  className={cn('flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 transition-colors hover:bg-surface3', item.dim ? 'text-tx-muted/50' : 'text-tx-secondary hover:text-gold')}
                 >
                   <item.icon size={13} /> {item.label}
                 </button>
@@ -230,7 +230,7 @@ export default function RunCard({
                   pushToast('success', i18n.t('nuz.toast.restored'));
                   setMenuOpen(false);
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
               >
                 <ArchiveRestore size={13} /> {t('nuz.card.restore')}
               </button>
@@ -248,7 +248,7 @@ export default function RunCard({
                   setConfirm(null);
                 }}
                 className={cn(
-                  'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+                  'flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 transition-colors hover:bg-surface3',
                   confirm === 'archive' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
                 )}
               >
@@ -269,7 +269,7 @@ export default function RunCard({
                 setConfirm(null);
               }}
               className={cn(
-                'flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] transition-colors hover:bg-surface3',
+                'flex w-full items-center gap-2 px-3 py-2 text-left text-micro12 transition-colors hover:bg-surface3',
                 confirm === 'delete' ? 'border border-gold/50 text-gold' : 'text-tx-secondary hover:text-gold',
               )}
             >
@@ -291,8 +291,8 @@ export default function RunCard({
             return (
               <span key={p.id} className="flex items-center gap-1.5" title={t('nuz.card.playerTip', { name: p.name, alive, total })}>
                 <span className={cn('h-2.5 w-2.5 rounded-full', online && 'nz-presence-ring')} style={{ background: p.color }} />
-                <span className="text-[12px] font-semibold text-tx-primary">{p.name}</span>
-                <span className="text-[10px] tabular-nums text-tx-muted">
+                <span className="text-micro12 font-semibold text-tx-primary">{p.name}</span>
+                <span className="text-micro10 tabular-nums text-tx-muted">
                   {alive}/{total}
                 </span>
               </span>
@@ -309,18 +309,18 @@ export default function RunCard({
       <div className="mt-2 flex items-center gap-4 border-t border-hairline pt-2">
         <span className="flex items-baseline gap-1.5">
           <PixelLabel>{t('nuz.card.caught')}</PixelLabel>
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{k.caught}</span>
+          <span className="font-display text-[0.875rem] font-bold tabular-nums text-tx-primary">{k.caught}</span>
         </span>
         <span className="flex items-baseline gap-1.5">
           <PixelLabel>{t('nuz.card.dead')}</PixelLabel>
-          <span className="font-display text-[14px] font-bold tabular-nums text-tx-primary">{k.dead}</span>
+          <span className="font-display text-[0.875rem] font-bold tabular-nums text-tx-primary">{k.dead}</span>
         </span>
         <span className="flex items-baseline gap-1.5" title={t('nuz.card.linksTip')}>
           <img src="/sparkle.svg" alt="" className="h-2.5 w-2.5 self-center" />
           <PixelLabel>{t('nuz.card.links')}</PixelLabel>
-          <span className="font-display text-[14px] font-bold tabular-nums text-gold">{k.links}</span>
+          <span className="font-display text-[0.875rem] font-bold tabular-nums text-gold">{k.links}</span>
         </span>
-        <span className="ml-auto font-pixel text-[7px] tracking-[0.08em] text-tx-muted">{t('nuz.card.lastMove', { time: timeAgo(last, true) })}</span>
+        <span className="ml-auto font-pixel text-[8px] tracking-[0.08em] text-tx-muted">{t('nuz.card.lastMove', { time: timeAgo(last, true) })}</span>
       </div>
     </motion.article>
   );

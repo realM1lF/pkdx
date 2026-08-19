@@ -29,7 +29,7 @@ export default function About() {
         <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {t('about.title')}
         </h1>
-        <p className="mt-3 font-sans text-[15px] leading-relaxed text-tx-secondary">
+        <p className="mt-3 font-sans text-[0.9375rem] leading-relaxed text-tx-secondary">
           {t('about.lede')}
         </p>
       </motion.header>
@@ -51,7 +51,7 @@ export default function About() {
               <h2 className="font-display text-base font-bold tracking-wide text-tx-primary">
                 {t(titleKey)}
               </h2>
-              <p className="mt-1.5 font-sans text-[13.5px] leading-relaxed text-tx-secondary">
+              <p className="mt-1.5 font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
                 {t(textKey)}
               </p>
             </div>
@@ -68,12 +68,12 @@ export default function About() {
         className="mt-8 flex max-w-4xl flex-wrap items-center gap-4 rounded-lg border border-gold/40 bg-[linear-gradient(135deg,rgba(246,201,69,0.12),rgba(246,201,69,0.04))] p-5 md:p-6"
       >
         <Heart size={22} className="shrink-0 text-gold" />
-        <p className="min-w-0 flex-1 font-sans text-[13.5px] leading-relaxed text-tx-primary">
+        <p className="min-w-0 flex-1 font-sans text-[0.8438rem] leading-relaxed text-tx-primary">
           {t('about.feedback.text')}
         </p>
         <LocaleLink
           to="/feedback"
-          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
+          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-4 font-display text-micro12 font-bold tracking-wider text-tx-primary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-gold"
         >
           {t('about.feedback.cta')}
           <ArrowRight size={14} />

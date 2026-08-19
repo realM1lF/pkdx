@@ -321,7 +321,7 @@ function VersionToggle({
           aria-pressed={value === v}
           onClick={() => onChange(v)}
           className={cn(
-            'pixel-label rounded-pill border px-2.5 py-1 text-[8px] transition-colors',
+            'pixel-label rounded-pill border px-2.5 py-1 text-[8px] leading-none transition-colors',
             value === v ? 'border-gold/60 bg-gold/10 text-gold' : 'border-hairline text-tx-muted hover:text-tx-secondary',
           )}
         >
@@ -361,10 +361,10 @@ function EncounterTable({ rows, lang, cfg, game }: { rows: EncounterRow[]; lang:
   return (
     <>
       <div className="flex items-center gap-2 border-b border-hairline px-4 py-2 sm:px-5">
-        <span className="pixel-label flex-1 text-[7px] text-tx-muted">{t(`${ns}.colPokemon`)}</span>
-        <span className="pixel-label hidden w-[72px] text-[7px] text-tx-muted sm:block">{t(`${ns}.colMethod`)}</span>
-        <span className="pixel-label w-[58px] text-right text-[7px] text-tx-muted">{t(`${ns}.colLevel`)}</span>
-        <span className="pixel-label w-[84px] text-right text-[7px] text-tx-muted">{t(`${ns}.colChance`)}</span>
+        <span className="pixel-label flex-1 text-[8px] text-tx-muted">{t(`${ns}.colPokemon`)}</span>
+        <span className="pixel-label hidden w-[4.5rem] text-[8px] text-tx-muted sm:block">{t(`${ns}.colMethod`)}</span>
+        <span className="pixel-label w-[3.625rem] text-right text-[8px] text-tx-muted">{t(`${ns}.colLevel`)}</span>
+        <span className="pixel-label w-[5.25rem] text-right text-[8px] text-tx-muted">{t(`${ns}.colChance`)}</span>
       </div>
       {rows.map((e) => (
         <LocaleLink
@@ -373,23 +373,23 @@ function EncounterTable({ rows, lang, cfg, game }: { rows: EncounterRow[]; lang:
           className="group flex h-12 items-center gap-2 border-b border-hairline/60 px-4 transition-colors last:border-b-0 hover:bg-surface2 sm:px-5"
         >
           <span className="flex min-w-0 flex-1 items-center gap-2.5">
-            <Sprite id={e.id} name={pokeName(e.id, lang, cfg.names)} era="gen5" className="h-[34px] w-[34px] shrink-0" />
+            <Sprite id={e.id} name={pokeName(e.id, lang, cfg.names)} era="gen5" className="h-[2.125rem] w-[2.125rem] shrink-0" />
             <span className="min-w-0">
-              <span className="block truncate text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+              <span className="block truncate text-micro13 font-semibold text-tx-primary transition-colors group-hover:text-gold">
                 {pokeName(e.id, lang, cfg.names)}
               </span>
-              <span className="pixel-label block text-[7px] text-tx-muted">{padNum(e.id)}</span>
+              <span className="pixel-label block text-[8px] text-tx-muted">{padNum(e.id)}</span>
             </span>
           </span>
-          <span className="hidden w-[72px] shrink-0 text-[11px] font-medium text-tx-secondary sm:block">
+          <span className="hidden w-[4.5rem] shrink-0 text-micro11 font-medium text-tx-secondary sm:block">
             {t(`${cfg.ns}.${METHOD_KEY[e.method]}`)}
           </span>
-          <span className="w-[58px] shrink-0 text-right font-sans text-[11px] tabular-nums text-tx-muted">
+          <span className="w-[3.625rem] shrink-0 text-right font-sans text-micro11 tabular-nums text-tx-muted">
             {e.minLevel === e.maxLevel ? `Lv ${e.minLevel}` : `Lv ${e.minLevel}–${e.maxLevel}`}
           </span>
-          <span className="flex w-[84px] shrink-0 items-center justify-end gap-1.5">
-            <span className="font-display text-[13px] font-bold tabular-nums text-tx-primary">{e.chance}%</span>
-            <span className="h-[3px] w-10 overflow-hidden rounded-pill bg-surface3">
+          <span className="flex w-[5.25rem] shrink-0 items-center justify-end gap-1.5">
+            <span className="font-display text-micro13 font-bold tabular-nums text-tx-primary">{e.chance}%</span>
+            <span className="h-[0.1875rem] w-10 overflow-hidden rounded-pill bg-surface3">
               <span className="block h-full rounded-pill bg-gold" style={{ width: `${Math.min(100, e.chance)}%` }} />
             </span>
           </span>
@@ -615,7 +615,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
         {/* breadcrumb (Maps › Kanto › name) — mirrored by the JSON-LD
             BreadcrumbList emitted from src/lib/structured-data.ts */}
         <nav aria-label="Breadcrumb" className="mb-4">
-          <ol className="flex flex-wrap items-center gap-1 font-sans text-[12px] font-semibold text-tx-muted">
+          <ol className="flex flex-wrap items-center gap-1 font-sans text-micro12 font-semibold text-tx-muted">
             <li>
               <LocaleLink to="/maps" className="transition-colors hover:text-gold">
                 {t(`${ns}.crumbMaps`)}
@@ -643,7 +643,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
           <h1 className="font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
             {t(`${ns}.title`, { name })}
           </h1>
-          <p className="mt-3 font-sans text-[14px] leading-relaxed text-tx-secondary">{intro}</p>
+          <p className="mt-3 font-sans text-[0.875rem] leading-relaxed text-tx-secondary">{intro}</p>
         </header>
 
         <div className="flex flex-col gap-4">
@@ -659,14 +659,14 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
             {groups.map((g) => (
               <div key={g.areaSlug}>
                 {multiArea && (
-                  <p className="pixel-label border-b border-hairline/60 bg-surface2/50 px-4 py-1.5 text-[7px] text-tx-muted sm:px-5">
+                  <p className="pixel-label border-b border-hairline/60 bg-surface2/50 px-4 py-1.5 text-[8px] text-tx-muted sm:px-5">
                     {g.label}
                   </p>
                 )}
                 <EncounterTable rows={g.rows} lang={lang} cfg={cfg} game={activeVersion} />
               </div>
             ))}
-            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-[10px] font-medium text-tx-muted sm:px-5">
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-micro10 font-medium text-tx-muted sm:px-5">
               {t(`${ns}.encounterSource`)}
               <LocaleLink
                 to={`/maps/${cfg.region}?node=${nodeId}&v=${activeVersion}`}
@@ -690,7 +690,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     <Gift size={16} strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13px] font-semibold text-tx-primary">{computed.itemNames[i]}</p>
+                    <p className="text-micro13 font-semibold text-tx-primary">{computed.itemNames[i]}</p>
                   </div>
                   <span className="pixel-label rounded-sm border border-hairline px-1 py-0.5 text-[6px] text-tx-muted">
                     {it.kind === 'hidden'
@@ -717,10 +717,10 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     <Users size={15} strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13px] font-semibold text-tx-primary">
+                    <p className="text-micro13 font-semibold text-tx-primary">
                       {tr.class} {tr.name}
                     </p>
-                    <p className="text-[11px] text-tx-muted">
+                    <p className="text-micro11 text-tx-muted">
                       {tr.party.map((p) => `${pokeNameBySlug(p.species, lang, cfg)} Lv ${p.level}`).join(', ')}
                     </p>
                   </div>
@@ -738,10 +738,10 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     id={bestCatchId}
                     name={pokeName(bestCatchId, lang, cfg.names)}
                     era="gen5"
-                    className="h-[56px] w-[56px] transition-transform duration-150 group-hover:scale-110"
+                    className="h-[3.5rem] w-[3.5rem] transition-transform duration-150 group-hover:scale-110"
                   />
                 </LocaleLink>
-                <p className="font-sans text-[13px] leading-relaxed text-tx-secondary">{bestCatchBody}</p>
+                <p className="font-sans text-micro13 leading-relaxed text-tx-secondary">{bestCatchBody}</p>
               </div>
             </SectionCard>
           )}
@@ -760,13 +760,13 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
               </div>
               <LocaleLink
                 to={`/nuzlocke/new?region=${cfg.region}&at=${nodeId}`}
-                className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-4 font-display text-[12px] font-bold tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-glow-gold"
+                className="inline-flex h-9 items-center gap-1.5 rounded-md border border-gold/60 bg-gradient-to-br from-gold/25 to-gold/10 px-4 font-display text-micro12 font-bold tracking-wider text-tx-primary transition-all hover:-translate-y-0.5 hover:shadow-glow-gold"
               >
                 {t(`${ns}.nuzlockeCta`)}
                 <ChevronRight size={14} />
               </LocaleLink>
             </div>
-            <p className="mt-3 font-sans text-[13px] leading-relaxed text-tx-secondary">
+            <p className="mt-3 font-sans text-micro13 leading-relaxed text-tx-secondary">
               {override?.nuzlockeBodyKey ? t(override.nuzlockeBodyKey) : t(`${ns}.nuzlockeBody`, { name })}
             </p>
           </section>
@@ -786,7 +786,7 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                 to={`/maps/${cfg.region}?node=${nodeId}`}
                 className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
               >
-                <span className="flex items-center gap-2.5 text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+                <span className="flex items-center gap-2.5 text-micro13 font-semibold text-tx-primary transition-colors group-hover:text-gold">
                   <MapIcon size={15} className="text-gold" />
                   {t(`${ns}.openMapCta`, { name })}
                 </span>
@@ -799,10 +799,10 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
                   >
                     <span className="min-w-0">
-                      <span className="block text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+                      <span className="block text-micro13 font-semibold text-tx-primary transition-colors group-hover:text-gold">
                         {t('seo.route1.route22Link')}
                       </span>
-                      <span className="block text-[11px] text-tx-muted">{t('seo.route1.route22Note')}</span>
+                      <span className="block text-micro11 text-tx-muted">{t('seo.route1.route22Note')}</span>
                     </span>
                     <ChevronRight size={15} className="shrink-0 text-tx-muted transition-transform group-hover:translate-x-0.5 group-hover:text-gold" />
                   </LocaleLink>
@@ -811,8 +811,8 @@ export default function RoutePage({ region = 'kanto' }: { region?: SeoRouteRegio
                     className="group flex items-center justify-between rounded-md border border-hairline bg-surface1 px-4 py-3 transition-colors hover:border-hairline2 hover:bg-surface2"
                   >
                     <span className="flex items-center gap-2.5">
-                      <Sprite id={25} name={pokeName(25, lang, cfg.names)} era="gen5" className="h-[26px] w-[26px]" />
-                      <span className="text-[13px] font-semibold text-tx-primary transition-colors group-hover:text-gold">
+                      <Sprite id={25} name={pokeName(25, lang, cfg.names)} era="gen5" className="h-[1.625rem] w-[1.625rem]" />
+                      <span className="text-micro13 font-semibold text-tx-primary transition-colors group-hover:text-gold">
                         {t('seo.route1.linkPikachu')}
                       </span>
                     </span>

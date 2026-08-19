@@ -53,7 +53,7 @@ export default function SlotEditorModal({ open, onClose, slot, pokemon, ...edito
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-            className="tb-panel tb-editor-modal flex max-h-[92dvh] w-full max-w-[920px] flex-col overflow-hidden !rounded-t-[16px] shadow-elevate sm:!rounded-[16px] sm:max-h-[85dvh]"
+            className="tb-panel tb-editor-modal flex max-h-[92dvh] w-full max-w-[57.5rem] flex-col overflow-hidden !rounded-t-[16px] shadow-elevate sm:!rounded-[1rem] sm:max-h-[85dvh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex shrink-0 items-center gap-3 border-b border-hairline px-4 py-3">
@@ -68,7 +68,7 @@ export default function SlotEditorModal({ open, onClose, slot, pokemon, ...edito
               )}
               <div className="min-w-0 flex-1">
                 <span className="pixel-label text-[8px] text-gold">{t('tb.editor.modalEyebrow')}</span>
-                <h2 className="truncate font-display text-[15px] font-bold tracking-wide text-tx-primary">{label}</h2>
+                <h2 className="truncate font-display text-[0.9375rem] font-bold tracking-wide text-tx-primary">{label}</h2>
               </div>
               <button
                 type="button"

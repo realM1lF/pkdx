@@ -38,7 +38,7 @@ function PokemonRow({ entry }: { entry: DexIndexEntry }) {
         <Sprite id={entry.id} name={entry.label} era="default" skeleton={false} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[12px] font-semibold text-tx-primary">{nameOfPokemon(entry.id, lang)}</span>
+        <span className="block truncate text-micro12 font-semibold text-tx-primary">{nameOfPokemon(entry.id, lang)}</span>
         <span className="tb-micro !text-[8px]">{entry.num}</span>
       </span>
       {/* type glyphs only — full type names caused layout squeezes (user feedback) */}

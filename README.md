@@ -68,8 +68,9 @@ with Nintendo (see [License & Legal](#license--legal)).
 - **Performance details** — listing sprites for all 1025 Pokémon (front +
   shiny) ship with the app instead of being fetched from a third-party CDN;
   heavy data artifacts load lazily on first use.
-- **Zoom control** — browser-style 50–150 % page zoom next to the language
-  switch (root font-size scaling, persisted).
+- **Zoom control** — browser-style 50–250 % page zoom next to the language
+  switch (root font-size scaling with breakpoint compensation, applied before paint via
+  `public/zoom-init.js`, persisted in localStorage).
 - **Bilingual UI (EN/DE)** — every route exists under `/en/…` and `/de/…`
   with hreflang annotations; official German game terminology.
 

@@ -79,7 +79,7 @@ function MoveSlotPicker({ value, options, onChange, disabled }: MoveSlotPickerPr
       renderItem={(m) => (
         <span className="flex w-full items-center justify-between gap-2">
           <span className="truncate">{nameOfMove(m.name, lang)}</span>
-          <span className="tb-chip shrink-0 !px-1.5 !py-0 !text-[8px]">
+          <span className="tb-chip shrink-0 !px-1.5 !py-0 !text-micro8">
             {m.method === 'level-up' ? `LV ${m.level}` : METHOD_CHIP[m.method]}
           </span>
         </span>
@@ -136,9 +136,9 @@ function SetCard({
         .join(' · ')
     : null;
   return (
-    <div className={cn('rounded-[10px] border p-2', primary ? 'border-gold/40 bg-gold/5' : 'border-hairline bg-surface2')}>
+    <div className={cn('rounded-[0.625rem] border p-2', primary ? 'border-gold/40 bg-gold/5' : 'border-hairline bg-surface2')}>
       <button type="button" onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between gap-2 text-left">
-        <span className="truncate text-[11px] font-bold uppercase tracking-wide text-tx-primary">{set.name}</span>
+        <span className="truncate text-micro11 font-bold uppercase tracking-wide text-tx-primary">{set.name}</span>
         <ChevronDown size={12} className={cn('shrink-0 text-tx-muted transition-transform duration-200', open && 'rotate-180')} />
       </button>
       <AnimatePresence initial={false}>
@@ -150,42 +150,42 @@ function SetCard({
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="space-y-1 pt-2 text-[10px] leading-relaxed text-tx-secondary">
+            <div className="space-y-1 pt-2 text-micro10 leading-relaxed text-tx-secondary">
               {set.items[0] && (
                 <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.item')}</span>
+                  <span className="tb-micro !text-[8px]">{t('tb.item')}</span>
                   <span className="truncate font-semibold">{nameOfItem(set.items[0].toLowerCase().replace(/ /g, '-'), lang)}</span>
                 </div>
               )}
               {set.abilities[0] && (
                 <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.ability')}</span>
+                  <span className="tb-micro !text-[8px]">{t('tb.ability')}</span>
                   <span className="truncate font-semibold">{set.abilities[0]}</span>
                 </div>
               )}
               {set.natures[0] && (
                 <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.nature')}</span>
+                  <span className="tb-micro !text-[8px]">{t('tb.nature')}</span>
                   <span className="font-semibold">{set.natures[0]}</span>
                 </div>
               )}
               {evText && (
                 <div className="flex justify-between gap-2">
-                  <span className="tb-micro !text-[7px]">{t('tb.evs')}</span>
+                  <span className="tb-micro !text-[8px]">{t('tb.evs')}</span>
                   <span className="text-right font-semibold tabular-nums">{evText}</span>
                 </div>
               )}
               <div className="border-t border-hairline pt-1">
                 {set.moves.slice(0, 4).map((mv, i) => (
                   <div key={i} className="flex items-center gap-1.5">
-                    <span className="tb-micro w-3 !text-[7px]">{i + 1}</span>
+                    <span className="tb-micro w-3 !text-[8px]">{i + 1}</span>
                     <span className="truncate font-semibold text-tx-primary">{mv[0] ?? '—'}</span>
                   </div>
                 ))}
               </div>
             </div>
             {!readOnly && (
-              <button type="button" onClick={onApply} className="tb-btn tb-btn-primary mt-2 w-full justify-center !py-1.5 !text-[9px]">
+              <button type="button" onClick={onApply} className="tb-btn tb-btn-primary mt-2 w-full justify-center !py-1.5 !text-micro9">
                 {applied ? (
                   <>
                     <Check size={10} /> {t('tb.applied')}
@@ -236,14 +236,14 @@ function SlotMetaSets({
           {t('team.meta.eyebrow', { format: sourceLabel })}
         </span>
         {appliedSetName && (
-          <span className="tb-chip !border-gold/60 !bg-gold/10 !text-[8px] !text-gold">{t('tb.setApplied')}</span>
+          <span className="tb-chip !border-gold/60 !bg-gold/10 !text-micro8 !text-gold">{t('tb.setApplied')}</span>
         )}
         {entry?.weight != null && (
-          <span className="tb-chip !text-[8px] text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
+          <span className="tb-chip !text-micro8 text-gold">{t('tb.usage', { pct: (entry.weight * 100).toFixed(1) })}</span>
         )}
       </div>
       {fallback && (
-        <p className="mb-1.5 text-[10px] leading-snug text-gold/90">{t('team.meta.fallback', { format: sourceLabel })}</p>
+        <p className="mb-1.5 text-micro10 leading-snug text-gold/90">{t('team.meta.fallback', { format: sourceLabel })}</p>
       )}
       {entry && (
         <HonestyHint show className="mb-1.5">
@@ -251,14 +251,14 @@ function SlotMetaSets({
         </HonestyHint>
       )}
       {state === 'unavailable' && (
-        <div className="flex items-center gap-1.5 text-[10px] text-gold/90">
+        <div className="flex items-center gap-1.5 text-micro10 text-gold/90">
           <CloudOff size={11} className="shrink-0" />
           {t('team.meta.unavailable')}
         </div>
       )}
       {state === 'loading' && <div className="tb-micro py-1">{t('team.meta.syncing')}</div>}
       {state !== 'unavailable' && state !== 'loading' && !entry && (
-        <p className="text-[10px] text-tx-muted">{t('team.meta.noSets', { name: nameOfPokemon(species, lang), format: sourceLabel })}</p>
+        <p className="text-micro10 text-tx-muted">{t('team.meta.noSets', { name: nameOfPokemon(species, lang), format: sourceLabel })}</p>
       )}
       {entry && (
         <div className="grid gap-2">
@@ -387,7 +387,7 @@ export default function SlotEditor({
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {slot.moves.map((m, i) => (
                 <div key={i} className="relative">
-                  <span className="tb-micro absolute -top-1.5 left-2 z-10 bg-surface1 px-1 !text-[7px]">{i + 1}</span>
+                  <span className="tb-micro absolute -top-1.5 left-2 z-10 bg-surface1 px-1 !text-[8px]">{i + 1}</span>
                   <MoveSlotPicker
                     value={m}
                     options={moveOptions}
@@ -402,7 +402,7 @@ export default function SlotEditor({
               <p className="tb-micro-gold mt-2">{t('tb.editor.noMoves')}</p>
             )}
             {!legality.legal && (
-              <div className="mt-3 rounded-[8px] border border-gold/50 bg-gold/10 p-2">
+              <div className="mt-3 rounded-[0.5rem] border border-gold/50 bg-gold/10 p-2">
                 <div className="tb-micro-gold tb-illegal-flag mb-1 flex items-center gap-1">
                   <AlertTriangle size={10} />
                   {t('tb.slot.illegalIn', { vg: vg.label })}
@@ -411,7 +411,7 @@ export default function SlotEditor({
                   {legality.reasons.map((r) => {
                     const text = legalityReasonText(r, lang);
                     return (
-                      <li key={text} className="text-[10px] font-semibold uppercase tracking-wide text-gold/90">
+                      <li key={text} className="text-micro10 font-semibold uppercase tracking-wide text-gold/90">
                         · {text}
                       </li>
                     );
@@ -445,7 +445,7 @@ export default function SlotEditor({
                 placeholder={slot.pokemon ? nameOfPokemon(slot.pokemon, lang) : ''}
                 maxLength={18}
                 disabled={readOnly}
-                className="tb-input mt-1 !py-1.5 !text-[12px] disabled:opacity-50"
+                className="tb-input mt-1 !py-1.5 !text-micro12 disabled:opacity-50"
               />
             </div>
             <div>
@@ -460,7 +460,7 @@ export default function SlotEditor({
                   const n = Number(e.target.value);
                   if (Number.isFinite(n)) patch({ level: Math.max(1, Math.min(100, Math.round(n))) });
                 }}
-                className="tb-input mt-1 !py-1.5 !text-[12px] tabular-nums disabled:opacity-50"
+                className="tb-input mt-1 !py-1.5 !text-micro12 tabular-nums disabled:opacity-50"
               />
             </div>
             <div>
@@ -498,7 +498,7 @@ export default function SlotEditor({
                         <ItemIcon slug={slug} name={it} size={20} />
                         <span className="min-w-0 flex-1">
                           <span className="block truncate">{localName(it, lang, nameOfItem)}</span>
-                          {line && <span className="block truncate text-[10px] font-normal text-tx-muted">{line}</span>}
+                          {line && <span className="block truncate text-micro10 font-normal text-tx-muted">{line}</span>}
                         </span>
                       </span>
                     );
@@ -559,7 +559,7 @@ export default function SlotEditor({
                     <span className="flex w-full items-center justify-between gap-2">
                       <span>{localName(n.name, lang, nameOfNature)}</span>
                       {n.plus && n.minus ? (
-                        <span className="tb-chip shrink-0 !px-1.5 !py-0 !text-[8px]">
+                        <span className="tb-chip shrink-0 !px-1.5 !py-0 !text-micro8">
                           +{STAT_LABELS[statKeyOf(n.plus)]} −{STAT_LABELS[statKeyOf(n.minus)]}
                         </span>
                       ) : (
@@ -595,14 +595,14 @@ export default function SlotEditor({
                 <span className="tb-micro">{t('tb.editor.noEvs')}</span>
               )}
             </div>
-            <p className="mb-2 text-[10px] leading-snug text-tx-muted">{t('tb.editor.statsAtLevel', { level: slot.level })}</p>
+            <p className="mb-2 text-micro10 leading-snug text-tx-muted">{t('tb.editor.statsAtLevel', { level: slot.level })}</p>
             {mech.evs ? (
               <>
                 <div className="tb-ev-row mb-1 !gap-2 opacity-70">
                   <span />
                   <span />
-                  <span className="tb-micro !text-[7px] text-right">{t('tb.editor.evCol')}</span>
-                  <span className="tb-micro !text-[7px] text-right text-gold">{t('tb.editor.statCol')}</span>
+                  <span className="tb-micro !text-[8px] text-right">{t('tb.editor.evCol')}</span>
+                  <span className="tb-micro !text-[8px] text-right text-gold">{t('tb.editor.statCol')}</span>
                 </div>
                 <div className="space-y-1.5">
                   {STAT_ORDER.map((k) => (
@@ -618,10 +618,10 @@ export default function SlotEditor({
                         onChange={(e) => setEv(k, Number(e.target.value))}
                         aria-label={t('tb.editor.evAria', { stat: STAT_LABELS[k] })}
                       />
-                      <span className="text-right font-display text-[11px] font-bold tabular-nums text-tx-muted">
+                      <span className="text-right font-display text-micro11 font-bold tabular-nums text-tx-muted">
                         {slot.evs[k] || 0}
                       </span>
-                      <span className="text-right font-display text-[12px] font-bold tabular-nums text-tx-primary">
+                      <span className="text-right font-display text-micro12 font-bold tabular-nums text-tx-primary">
                         {finalStats?.[k] ?? '—'}
                       </span>
                     </label>
@@ -651,7 +651,7 @@ export default function SlotEditor({
                 {STAT_ORDER.map((k) => (
                   <div key={k} className="flex items-baseline justify-between gap-2 border-b border-hairline pb-1">
                     <span className="tb-micro !text-[8px]">{STAT_LABELS[k]}</span>
-                    <span className="font-display text-[12px] font-bold tabular-nums text-tx-primary">
+                    <span className="font-display text-micro12 font-bold tabular-nums text-tx-primary">
                       {finalStats?.[k] ?? '—'}
                     </span>
                   </div>

@@ -61,7 +61,7 @@ function StageCard({
     <div className="relative flex flex-col items-center">
       {current && (
         <motion.span
-          className="pixel-label absolute -top-4 left-1/2 z-10 whitespace-nowrap rounded-pill border border-gold/40 bg-void/90 px-1.5 py-px text-[8px] text-gold"
+          className="pixel-label absolute -top-4 left-1/2 z-10 whitespace-nowrap rounded-pill border border-gold/40 bg-void/90 px-1.5 py-px text-[8px] leading-none text-gold"
           style={{ x: '-50%' }}
           animate={{ y: [0, -2, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
@@ -77,7 +77,7 @@ function StageCard({
         onFocus={() => prefetchPokemon(stage.id)}
         aria-label={current ? t('detail.evo.currentEntry', { name: label }) : t('detail.evo.openEntry', { name: label })}
         className={cn(
-          'group relative flex w-[96px] flex-col items-center gap-0.5 rounded-lg border px-1.5 py-1.5 transition-all duration-200',
+          'group relative flex w-[6rem] flex-col items-center gap-0.5 rounded-lg border px-1.5 py-1.5 transition-all duration-200',
           current
             ? 'border-gold/80 bg-gold-soft shadow-[0_0_0_1px_rgba(246,201,69,0.4),0_0_18px_rgba(246,201,69,0.2)]'
             : 'border-hairline bg-surface2 hover:-translate-y-0.5 hover:border-hairline2',
@@ -96,7 +96,7 @@ function StageCard({
             <Sprite id={stage.id} name={label} era={stage.id <= 649 ? 'gen5' : 'default'} />
           </span>
         </span>
-        <span className="max-w-full truncate font-display text-[11px] font-bold text-tx-primary">
+        <span className="max-w-full truncate font-display text-micro11 font-bold text-tx-primary">
           {label}
         </span>
         <span className="pixel-label text-[8px] text-tx-muted">{padNum(stage.id)}</span>
@@ -249,9 +249,9 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
   }
   if (!species || !root) {
     return (
-      <div className="flex h-[120px] items-center gap-4 p-4">
+      <div className="flex h-[7.5rem] items-center gap-4 p-4">
         {[0, 1, 2].map((i) => (
-          <div key={i} className="dx-skel h-[92px] w-[96px] !rounded-lg" />
+          <div key={i} className="dx-skel h-[5.75rem] w-[6rem] !rounded-lg" />
         ))}
       </div>
     );
@@ -295,7 +295,7 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
         {edges.map((e, i) => (
           <motion.span
             key={`chip-${e.key}`}
-            className="absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-pill border border-hairline bg-void/95 px-1.5 py-px font-sans text-[9px] font-semibold text-tx-secondary shadow-elevate"
+            className="absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-pill border border-hairline bg-void/95 px-1.5 py-px font-sans text-[14px] leading-none font-semibold text-tx-secondary shadow-elevate"
             style={{ left: e.midX, top: e.midY }}
             initial={{ scale: 0.6, opacity: 0 }}
             animate={inView ? { scale: 1, opacity: 1 } : undefined}
@@ -309,8 +309,8 @@ export default function EvolutionPanel({ species, currentId }: { species: Pokemo
         <EvoNode stage={root} currentId={currentId} registerRef={registerRef} />
 
         {noEvolution && (
-          <div className="ml-16 flex h-[92px] items-center rounded-lg border border-dashed border-hairline2 px-4">
-            <p className="max-w-[200px] font-sans text-[11px] leading-snug text-tx-muted">
+          <div className="ml-16 flex h-[5.75rem] items-center rounded-lg border border-dashed border-hairline2 px-4">
+            <p className="max-w-[12.5rem] font-sans text-micro11 leading-snug text-tx-muted">
               {t('detail.evo.noEvolution')}
             </p>
           </div>

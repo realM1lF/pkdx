@@ -45,16 +45,16 @@ function WinBar({ m, lang }: { m: MatchupEntry; lang: Lang }) {
     <div>
       <div className="flex h-7 overflow-hidden rounded-md border border-hairline" role="img"
         aria-label={`${a} ${pctA}% · ${b} ${pctB}%`}>
-        <div className="flex items-center justify-start bg-gold/85 pl-2 font-display text-[11px] font-extrabold text-abyss"
+        <div className="flex items-center justify-start bg-gold/85 pl-2 font-display text-micro11 font-extrabold text-abyss"
           style={{ width: `${Math.max(pctA, 6)}%` }}>
           {pctA}%
         </div>
-        <div className="flex flex-1 items-center justify-end bg-type-water/70 pr-2 font-display text-[11px] font-extrabold text-abyss"
+        <div className="flex flex-1 items-center justify-end bg-type-water/70 pr-2 font-display text-micro11 font-extrabold text-abyss"
           style={pctB === 0 ? { display: 'none' } : undefined}>
           {pctB}%
         </div>
       </div>
-      <div className="mt-1 flex justify-between font-sans text-[11px] text-tx-muted">
+      <div className="mt-1 flex justify-between font-sans text-micro11 text-tx-muted">
         <span>{a}</span>
         <span>{b}</span>
       </div>
@@ -81,7 +81,7 @@ function MoveRows({
         {t('matchup.movesVs', { attacker, defender })}
       </p>
       {moves.length === 0 && (
-        <p className="font-sans text-[12px] text-tx-secondary">{t('matchup.noDamageMoves')}</p>
+        <p className="font-sans text-micro12 text-tx-secondary">{t('matchup.noDamageMoves')}</p>
       )}
       <ul className="space-y-1">
         {moves.slice(0, 3).map((mv) => (
@@ -89,18 +89,18 @@ function MoveRows({
             key={mv.slug}
             className="flex h-9 items-center gap-2 rounded-md border border-hairline bg-surface1 px-2.5"
           >
-            <span className="min-w-0 flex-1 truncate font-sans text-[12px] font-semibold text-tx-primary">
+            <span className="min-w-0 flex-1 truncate font-sans text-micro12 font-semibold text-tx-primary">
               {nameOfMove(mv.slug, lang)}
             </span>
-            <span className="font-sans text-[11px] tabular-nums text-tx-secondary">
+            <span className="font-sans text-micro11 tabular-nums text-tx-secondary">
               {mv.range[0]}–{mv.range[1]} {t('matchup.hpUnit')}
             </span>
-            <span className="font-sans text-[11px] tabular-nums text-tx-muted">
+            <span className="font-sans text-micro11 tabular-nums text-tx-muted">
               {mv.pct[0]}–{mv.pct[1]}%
             </span>
             <span
               className={cn(
-                'rounded-pill border px-1.5 font-sans text-[10px] font-bold tabular-nums',
+                'rounded-pill border px-1.5 font-sans text-[11px] leading-none font-bold tabular-nums',
                 mv.eff >= 2
                   ? 'border-gold/50 text-gold'
                   : mv.eff === 0
@@ -130,8 +130,8 @@ export default function MatchupPage() {
   if (!entry) {
     return (
       <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
-        <p className="font-sans text-[13px] text-tx-secondary">{t('matchup.notFound')}</p>
-        <LocaleLink to="/versus" className="mt-2 inline-flex items-center gap-1.5 font-display text-[13px] font-bold text-gold">
+        <p className="font-sans text-micro13 text-tx-secondary">{t('matchup.notFound')}</p>
+        <LocaleLink to="/versus" className="mt-2 inline-flex items-center gap-1.5 font-display text-micro13 font-bold text-gold">
           {t('matchup.toVersus')}
           <ArrowRight size={11} />
         </LocaleLink>
@@ -158,7 +158,7 @@ export default function MatchupPage() {
         <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary md:text-3xl">
           {tt('matchup.h1')}
         </h1>
-        <p className="mt-3 max-w-2xl font-sans text-[14px] font-semibold leading-relaxed text-tx-primary">
+        <p className="mt-3 max-w-2xl font-sans text-[0.875rem] font-semibold leading-relaxed text-tx-primary">
           <strong className="font-bold text-gold">
             {tt('matchup.resultLead', {
               battles,
@@ -169,7 +169,7 @@ export default function MatchupPage() {
           </strong>{' '}
           {m.ties > 0 && tt('matchup.resultTies', { ties: m.ties })}
         </p>
-        <p className="mt-1.5 font-sans text-[11.5px] text-tx-muted">
+        <p className="mt-1.5 font-sans text-[0.7188rem] text-tx-muted">
           {tt('matchup.assumptions', { level })}
           {Math.min(m.winsA, m.winsB) >= 30 ? ` ${tt('matchup.varianceNote')}` : ''}
         </p>
@@ -180,19 +180,19 @@ export default function MatchupPage() {
         <div className="flex items-center justify-center gap-6 sm:gap-10">
           <div className="flex flex-col items-center gap-1">
             <Sprite id={m.dexA} name={a} era="default" eager className="h-20 w-20 sm:h-24 sm:w-24" skeleton={false} />
-            <p className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{a}</p>
+            <p className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{a}</p>
             <div className="flex gap-1">
               {m.typesA.map((ty) => (
                 <TypeBadge key={ty} type={ty as PokemonType} />
               ))}
             </div>
           </div>
-          <span className="font-display text-[26px] font-black text-gold" style={{ textShadow: '0 0 24px rgba(246,201,69,0.45)' }}>
+          <span className="font-display text-[1.625rem] font-black text-gold" style={{ textShadow: '0 0 24px rgba(246,201,69,0.45)' }}>
             VS
           </span>
           <div className="flex flex-col items-center gap-1">
             <Sprite id={m.dexB} name={b} era="default" eager className="h-20 w-20 sm:h-24 sm:w-24" skeleton={false} />
-            <p className="font-display text-[13px] font-bold tracking-wide text-tx-primary">{b}</p>
+            <p className="font-display text-micro13 font-bold tracking-wide text-tx-primary">{b}</p>
             <div className="flex gap-1">
               {m.typesB.map((ty) => (
                 <TypeBadge key={ty} type={ty as PokemonType} />
@@ -209,7 +209,7 @@ export default function MatchupPage() {
       {/* ---------- rule-based analysis (2–3 sentences, all values real) ---------- */}
       <section className="mx-auto mt-8 max-w-3xl">
         <p className="pixel-label text-[9px] text-gold">{t('matchup.analysisEyebrow')}</p>
-        <div className="mt-2 space-y-2 font-sans text-[13.5px] leading-relaxed text-tx-secondary">
+        <div className="mt-2 space-y-2 font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
           {faster ? (
             <p>
               {tt('matchup.anaSpeed', {
@@ -265,18 +265,18 @@ export default function MatchupPage() {
                 ] as const
               ).map(([name, spe, lead]) => (
                 <div key={name} className="flex items-center gap-2">
-                  <span className="w-24 truncate font-sans text-[12px] text-tx-primary">{name}</span>
+                  <span className="w-24 truncate font-sans text-micro12 text-tx-primary">{name}</span>
                   <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface2">
                     <div
                       className={cn('h-full rounded-full', lead ? 'bg-gold' : 'bg-tx-muted/50')}
                       style={{ width: `${Math.round((spe / Math.max(m.speedA, m.speedB)) * 100)}%` }}
                     />
                   </div>
-                  <span className="w-8 text-right font-sans text-[11px] tabular-nums text-tx-secondary">{spe}</span>
+                  <span className="w-8 text-right font-sans text-micro11 tabular-nums text-tx-secondary">{spe}</span>
                 </div>
               ))}
             </div>
-            <p className="mt-2 font-sans text-[11.5px] text-tx-muted">
+            <p className="mt-2 font-sans text-[0.7188rem] text-tx-muted">
               {faster
                 ? tt('matchup.speedFirst', {
                     name: faster === 'a' ? a : b,
@@ -291,11 +291,11 @@ export default function MatchupPage() {
             </p>
             <p className="mt-2 font-display text-2xl font-extrabold tabular-nums text-tx-primary">
               {m.medianTurns}
-              <span className="ml-1.5 font-sans text-[12px] font-normal text-tx-muted">
+              <span className="ml-1.5 font-sans text-micro12 font-normal text-tx-muted">
                 {t('matchup.medianTurnsUnit')}
               </span>
             </p>
-            <p className="mt-1.5 font-sans text-[11.5px] text-tx-muted">
+            <p className="mt-1.5 font-sans text-[0.7188rem] text-tx-muted">
               {tt('matchup.medianTurnsNote', { turns: m.medianTurns, battles })}
             </p>
           </div>
@@ -326,14 +326,14 @@ export default function MatchupPage() {
               ] as const
             ).map(([name, set]) => (
               <div key={name}>
-                <p className="font-sans text-[12px] font-semibold text-tx-primary">{name}</p>
-                <p className="mt-0.5 font-sans text-[12px] leading-relaxed text-tx-secondary">
+                <p className="font-sans text-micro12 font-semibold text-tx-primary">{name}</p>
+                <p className="mt-0.5 font-sans text-micro12 leading-relaxed text-tx-secondary">
                   {set.map((s) => nameOfMove(s, lang)).join(' · ')}
                 </p>
               </div>
             ))}
           </div>
-          <p className="mt-3 font-sans text-[11.5px] text-tx-muted">
+          <p className="mt-3 font-sans text-[0.7188rem] text-tx-muted">
             {tt('matchup.setsNote', { level, battles })}
           </p>
         </div>
@@ -345,12 +345,12 @@ export default function MatchupPage() {
           <p className="max-w-xl font-display text-base font-bold tracking-wide text-tx-primary md:text-lg">
             {tt('matchup.ctaTitle')}
           </p>
-          <p className="max-w-xl font-sans text-[12.5px] leading-relaxed text-tx-secondary">
+          <p className="max-w-xl font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
             {tt('matchup.ctaBody')}
           </p>
           <LocaleLink
             to={`${battleLandingPath(lang)}?a=${m.dexA}&b=${m.dexB}`}
-            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
+            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] leading-none font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
           >
             <Swords size={11} />
             {t('matchup.ctaButton')}
@@ -405,7 +405,7 @@ export default function MatchupPage() {
               <li key={x.slugEn}>
                 <LocaleLink
                   to={matchupRest(x, lang)}
-                  className="inline-flex h-7 items-center rounded-pill border border-hairline bg-surface1 px-2.5 font-sans text-[11px] text-tx-secondary transition-colors hover:border-gold/50 hover:text-tx-primary"
+                  className="inline-flex h-7 items-center rounded-pill border border-hairline bg-surface1 px-2.5 font-sans text-[11px] leading-none text-tx-secondary transition-colors hover:border-gold/50 hover:text-tx-primary"
                 >
                   {n.a} vs. {n.b}
                 </LocaleLink>
@@ -416,7 +416,7 @@ export default function MatchupPage() {
         <div className="mt-4">
           <LocaleLink
             to="/versus"
-            className="inline-flex items-center gap-1.5 font-display text-[12px] font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
+            className="inline-flex items-center gap-1.5 font-display text-micro12 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
           >
             {t('matchup.toVersus')}
             <ArrowRight size={11} />

@@ -151,11 +151,11 @@ export default function NuzlockeRun() {
 
   if (authReady && !user) {
     return (
-      <div className="mx-auto grid max-w-[1440px] place-items-center px-4 py-32 text-center md:px-8">
+      <div className="mx-auto grid max-w-[90rem] place-items-center px-4 py-32 text-center md:px-8">
         <img src="/pokeball.svg" alt="" className="h-14 w-14 opacity-60" />
         <PixelLabel className="mt-4 text-gold">{t('nuz.wizard.loginWallTitle')}</PixelLabel>
-        <h1 className="mt-2 font-display text-[22px] font-bold text-tx-primary">{t('nuz.runLoginRequired')}</h1>
-        <p className="mt-1 max-w-[420px] text-[13px] leading-relaxed text-tx-secondary">{t('nuz.runLoginRequiredBody')}</p>
+        <h1 className="mt-2 font-display text-[1.375rem] font-bold text-tx-primary">{t('nuz.runLoginRequired')}</h1>
+        <p className="mt-1 max-w-[26.25rem] text-micro13 leading-relaxed text-tx-secondary">{t('nuz.runLoginRequiredBody')}</p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
           <LocaleLink
             to="/account"
@@ -165,7 +165,7 @@ export default function NuzlockeRun() {
           </LocaleLink>
           <LocaleLink
             to="/nuzlocke"
-            className="rounded-md border border-hairline2 px-5 py-3 text-[12px] font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
+            className="rounded-md border border-hairline2 px-5 py-3 text-micro12 font-semibold text-tx-secondary transition-colors hover:bg-surface3 hover:text-gold"
           >
             ← {t('nuz.backToRuns')}
           </LocaleLink>
@@ -184,13 +184,13 @@ export default function NuzlockeRun() {
 
   if (entry.phase === 'missing' || !state) {
     return (
-      <div className="mx-auto grid max-w-[1440px] place-items-center px-4 py-32 text-center md:px-8">
-        <img src="/empty-dex.svg" alt="" className="h-[120px] opacity-60" />
-        <h1 className="mt-4 font-display text-[22px] font-bold text-tx-primary">{t('nuz.runNotFound')}</h1>
-        <p className="mt-1 max-w-[360px] text-[13px] text-tx-secondary">
+      <div className="mx-auto grid max-w-[90rem] place-items-center px-4 py-32 text-center md:px-8">
+        <img src="/empty-dex.svg" alt="" className="h-[7.5rem] opacity-60" />
+        <h1 className="mt-4 font-display text-[1.375rem] font-bold text-tx-primary">{t('nuz.runNotFound')}</h1>
+        <p className="mt-1 max-w-[22.5rem] text-micro13 text-tx-secondary">
           {t('nuz.runNotFoundBody')}
         </p>
-        <LocaleLink to="/nuzlocke" className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-[12px] font-bold tracking-[0.06em] text-tx-primary">
+        <LocaleLink to="/nuzlocke" className="nz-sheen mt-5 rounded-md border border-gold/60 bg-[linear-gradient(135deg,rgba(246,201,69,0.25),rgba(246,201,69,0.10))] px-6 py-3 font-display text-micro12 font-bold tracking-[0.06em] text-tx-primary">
           ← {t('nuz.backToRuns')}
         </LocaleLink>
       </div>
@@ -216,7 +216,7 @@ export default function NuzlockeRun() {
 
   return (
     <MotionRoot>
-    <div className="mx-auto max-w-[1440px] px-4 md:px-8">
+    <div className="mx-auto max-w-[90rem] px-4 md:px-8">
       <RunHeader entry={entry} nameOf={nameOf} routeLabel={routeLabel} />
       <RulesBar state={state} owner={owner} />
 
@@ -283,7 +283,7 @@ export default function NuzlockeRun() {
         {failed && (
           <div className="flex items-center justify-center gap-3 rounded-lg border border-hairline bg-surface1/60 px-4 py-3">
             <PixelLabel>{t('nuz.runFailed')}</PixelLabel>
-            <LocaleLink to="/nuzlocke" className="rounded-md border border-gold/60 px-4 py-1.5 font-display text-[11px] font-bold text-gold transition-colors hover:bg-gold/10">
+            <LocaleLink to="/nuzlocke" className="rounded-md border border-gold/60 px-4 py-1.5 font-display text-micro11 font-bold text-gold transition-colors hover:bg-gold/10">
               {t('nuz.startNew')}
             </LocaleLink>
           </div>

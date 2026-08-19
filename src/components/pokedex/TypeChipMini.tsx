@@ -24,7 +24,7 @@ export default function TypeChipMini({ type, iconOnly = false, className }: Type
       title={iconOnly ? label : undefined}
       className={cn(
         'inline-flex shrink-0 items-center gap-1 rounded-pill border px-1.5 py-px',
-        'font-sans text-[10px] font-bold uppercase leading-[1.5] tracking-wide',
+        'font-sans text-[14px] font-bold uppercase leading-none tracking-wide',
         className,
       )}
       style={

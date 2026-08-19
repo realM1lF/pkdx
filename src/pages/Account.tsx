@@ -28,7 +28,7 @@ function Field({ label, children, hint }: { label: string; children: React.React
     <label className="block">
       <span className="pixel-label mb-1.5 block text-[8px] text-tx-muted">{label}</span>
       {children}
-      {hint && <span className="mt-1 block font-sans text-[11px] text-tx-muted">{hint}</span>}
+      {hint && <span className="mt-1 block font-sans text-micro11 text-tx-muted">{hint}</span>}
     </label>
   );
 }
@@ -107,7 +107,7 @@ export default function Account() {
               </span>
               <div>
                 <div className="font-display text-base font-bold text-tx-primary">{profile.username}</div>
-                <div className="flex items-center gap-1.5 font-sans text-[12px] text-tx-muted">
+                <div className="flex items-center gap-1.5 font-sans text-micro12 text-tx-muted">
                   <ShieldCheck size={12} className="text-gold" />
                   {t('account.synced')}
                 </div>
@@ -122,7 +122,7 @@ export default function Account() {
               {t('account.logout')}
             </button>
           </div>
-          <p className="mt-4 font-sans text-[12px] leading-relaxed text-tx-muted">{t('account.dataNote')}</p>
+          <p className="mt-4 font-sans text-micro12 leading-relaxed text-tx-muted">{t('account.dataNote')}</p>
         </motion.div>
       </div>
       </MotionRoot>
@@ -137,7 +137,7 @@ export default function Account() {
         <h1 className="mt-1 font-display text-2xl font-extrabold tracking-wide text-tx-primary">
           {t('account.title')}
         </h1>
-        <p className="mt-2 font-sans text-[13.5px] leading-relaxed text-tx-secondary">{t('account.lede')}</p>
+        <p className="mt-2 font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">{t('account.lede')}</p>
 
         {/* tabs */}
         <div className="mt-6 grid grid-cols-3 gap-1 rounded-md border border-hairline bg-surface1 p-1">
@@ -224,7 +224,7 @@ export default function Account() {
           )}
 
           {msg && (
-            <p className={`flex items-center gap-1.5 font-sans text-[12.5px] ${msg.kind === 'ok' ? 'text-gold' : 'text-type-fire'}`}>
+            <p className={`flex items-center gap-1.5 font-sans text-[0.7813rem] ${msg.kind === 'ok' ? 'text-gold' : 'text-type-fire'}`}>
               {msg.kind === 'ok' && <Check size={13} />}
               {msg.text}
             </p>
@@ -241,7 +241,7 @@ export default function Account() {
           </button>
         </div>
 
-        <p className="mt-4 font-sans text-[12px] leading-relaxed text-tx-muted">
+        <p className="mt-4 font-sans text-micro12 leading-relaxed text-tx-muted">
           {t('account.guestNote')}{' '}
           <LocaleLink to="/datenschutz" className="text-gold underline-offset-2 hover:underline">
             {t('account.privacyLink')}

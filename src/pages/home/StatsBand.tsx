@@ -29,7 +29,7 @@ function Counter({ target, format, delay }: { target: number; format: (v: number
   }, [inView, target, delay, format]);
 
   return (
-    <span ref={ref} className="font-display text-[40px] font-extrabold leading-none text-gold tabular-nums">
+    <span ref={ref} className="font-display text-[2.5rem] font-extrabold leading-none text-gold tabular-nums">
       {text}
     </span>
   );
@@ -45,19 +45,19 @@ export default function StatsBand() {
       {/* faint aura blobs — water left, fire right */}
       <div
         aria-hidden
-        className="absolute left-[-10%] top-1/2 h-[240px] w-[420px] -translate-y-1/2 rounded-full blur-[80px]"
+        className="absolute left-[-10%] top-1/2 h-[15rem] w-[26.25rem] -translate-y-1/2 rounded-full blur-[80px]"
         style={{ background: 'radial-gradient(circle, rgba(69,200,255,0.10), transparent 70%)' }}
       />
       <div
         aria-hidden
-        className="absolute right-[-10%] top-1/2 h-[240px] w-[420px] -translate-y-1/2 rounded-full blur-[80px]"
+        className="absolute right-[-10%] top-1/2 h-[15rem] w-[26.25rem] -translate-y-1/2 rounded-full blur-[80px]"
         style={{ background: 'radial-gradient(circle, rgba(255,122,69,0.10), transparent 70%)' }}
       />
       <div className="relative mx-auto grid max-w-content grid-cols-2 gap-10 px-4 py-16 md:px-8 lg:grid-cols-4">
         {STATS.map((s, i) => (
           <div key={s.labelKey} className="flex flex-col items-center gap-3 text-center">
             <Counter target={s.target} format={(v) => fmt(v, s.suffix)} delay={i * 0.15} />
-            <span className="pixel-label text-[10px] text-tx-muted">{t(s.labelKey)}</span>
+            <span className="pixel-label text-[14px] text-tx-muted">{t(s.labelKey)}</span>
           </div>
         ))}
       </div>
