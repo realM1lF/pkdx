@@ -3,7 +3,7 @@
  * (Compact default, persisted) · infinite scroll (batch 96) · Framer layout re-flow. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Ref } from 'react';
-import { useSearchParams } from 'react-router';
+import { useLocation, useNavigationType, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, animate, motion, MotionConfig, useMotionValue } from 'framer-motion';
 import { RotateCcw, WifiOff } from 'lucide-react';
@@ -29,6 +29,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { MAX_DEX_ID } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { FIRST_GAME_BY_GEN } from '@/lib/edition-nav';
+import { clearPokedexScroll, commitPokedexScroll, peekPokedexScroll, restoreVisibleCount, scrollToPokedexAnchor } from '@/lib/pokedex-scroll';
 import { cn } from '@/lib/utils';
 import './pokedex.css';
 
@@ -123,11 +124,22 @@ function CardSkeleton({ id, ref }: { id: number; ref?: Ref<HTMLDivElement> }) {
 
 export default function Pokedex() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigationType = useNavigationType();
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   const deReady = useGermanDataReady();
   const { shiny, toggleShiny } = useShiny();
   const isMobile = useIsMobile();
+
+  const [restoreTarget] = useState(() => {
+    if (navigationType !== 'POP') {
+      clearPokedexScroll();
+      return null;
+    }
+    return peekPokedexScroll(location.search);
+  });
+  const restorePending = useRef(restoreTarget);
 
   /* filter state — initialized from the URL (shareable) */
   const [filters, setFilters] = useState<UrlFilters>(() => parseParams(searchParams));
@@ -223,19 +235,60 @@ export default function Pokedex() {
   const mode: 'comfort' | 'compact' | 'list' = effectiveDensity;
 
   /* infinite scroll — batch 96; small result sets render all at once */
-  const [visibleCount, setVisibleCount] = useState(BATCH);
+  const [visibleCount, setVisibleCount] = useState(() => restoreTarget?.visibleCount ?? BATCH);
+  const visibleCountRef = useRef(visibleCount);
+  visibleCountRef.current = visibleCount;
   const resetSig = `${debouncedQ}|${filters.types.join(',')}|${filters.gen}|${filters.special.join(',')}|${filters.sort}|${mode}`;
   const prevSig = useRef(resetSig);
   useEffect(() => {
     if (prevSig.current !== resetSig) {
       prevSig.current = resetSig;
       setVisibleCount(BATCH);
+      restorePending.current = null;
       if (window.scrollY > 240) window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     }
   }, [resetSig]);
 
+  const commitScroll = useCallback(
+    (anchorId: number) => {
+      commitPokedexScroll({
+        anchorId,
+        visibleCount: visibleCountRef.current,
+        search: location.search,
+      });
+    },
+    [location.search],
+  );
+
   const visibleLimit = total <= 120 ? total : Math.min(visibleCount, total);
   const visible = useMemo(() => sorted?.slice(0, visibleLimit) ?? [], [sorted, visibleLimit]);
+
+  /* POP back: load enough cards, then Lenis scrollTo(anchor) — few rAF retries only */
+  useEffect(() => {
+    const saved = restorePending.current;
+    if (!saved || !sorted?.length) return;
+
+    const indexById = new Map(sorted.map((e, i) => [e.id, i]));
+    const need = restoreVisibleCount(saved, total, indexById, BATCH);
+    if (visibleLimit < need) {
+      setVisibleCount(need);
+      return;
+    }
+
+    let attempts = 0;
+    let frame = 0;
+    const tryRestore = () => {
+      if (!restorePending.current) return;
+      if (scrollToPokedexAnchor(saved.anchorId)) {
+        clearPokedexScroll();
+        restorePending.current = null;
+        return;
+      }
+      if (++attempts < 12) frame = requestAnimationFrame(tryRestore);
+    };
+    frame = requestAnimationFrame(tryRestore);
+    return () => cancelAnimationFrame(frame);
+  }, [sorted, total, visibleLimit]);
 
   useEffect(() => {
     if (visible.length > 0) ensure(visible.map((e) => e.id));
@@ -449,7 +502,7 @@ export default function Pokedex() {
         {sorted !== null && total > 0 && (
           <>
             {mode === 'list' ? (
-              <ListView items={visible} summaries={summaries} game={editionGame} />
+              <ListView items={visible} summaries={summaries} game={editionGame} onBeforeOpen={commitScroll} />
             ) : (
               <div
                 className={cn(
@@ -462,7 +515,7 @@ export default function Pokedex() {
                 {visible.map((e, i) => {
                   const s = summaries.get(e.id);
                   return s ? (
-                    <PokemonCard key={e.id} summary={s} density={mode} index={i} game={editionGame} />
+                    <PokemonCard key={e.id} summary={s} density={mode} index={i} game={editionGame} onBeforeOpen={commitScroll} />
                   ) : (
                     <CardSkeleton key={e.id} id={e.id} />
                   );

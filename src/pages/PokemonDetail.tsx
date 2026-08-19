@@ -6,8 +6,8 @@
  *   Prev/Next 40px strip · MISSINGNO 404 · loading skeletons
  * Direct loads crossfade in (400ms — shared-element morph fallback, §6.2-3). */
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router';
-import { LocaleLink } from '@/lib/locale-link';
+import { useParams, useSearchParams, useNavigate } from 'react-router';
+import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import MotionRoot from '@/components/MotionRoot';
 import { ArrowLeft, Swords } from 'lucide-react';
@@ -32,6 +32,7 @@ import SideStack from './detail/SideStack';
 import SpriteMuseum from './detail/SpriteMuseum';
 import WhereToFind from './detail/WhereToFind';
 import { parseMapsFromParam } from './detail/from-param';
+import { readPokedexScroll } from '@/lib/pokedex-scroll';
 import type { RegionId } from '@/lib/regions';
 import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
 import { pokemonSeoMetaForParam } from '@/lib/seo';
@@ -53,6 +54,8 @@ type Status = 'loading' | 'ready' | 'notfound' | 'error';
 
 export default function PokemonDetail() {
   const { id: param = '' } = useParams();
+  const navigate = useNavigate();
+  const localePath = useLocalePath();
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
@@ -130,6 +133,7 @@ export default function PokemonDetail() {
   const regionParam = searchParams.get('region');
   const fromMaps = parseMapsFromParam(searchParams.get('from'));
   const trainerRegion = regionParam && REGION_IDS.has(regionParam as RegionId) ? (regionParam as RegionId) : null;
+  const pokedexReturn = readPokedexScroll();
 
   const editionOptions = useMemo(() => {
     if (!pokemon) return [];
@@ -271,13 +275,27 @@ export default function PokemonDetail() {
     >
       {/* top utility row — edition picker is page-global (types/stats/moves/encounters) */}
       <div className="relative z-30 mb-3 flex items-center justify-between gap-3">
-        <LocaleLink
-          to={fromMaps ? `/maps/${fromMaps.region}?node=${fromMaps.nodeId}` : '/pokedex'}
-          className="group inline-flex items-center gap-1.5 font-sans text-micro13 font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
-        >
-          <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
-          {fromMaps ? t8n('detail.backToMap') : t8n('detail.backAll')}
-        </LocaleLink>
+        {fromMaps ? (
+          <LocaleLink
+            to={`/maps/${fromMaps.region}?node=${fromMaps.nodeId}`}
+            className="group inline-flex items-center gap-1.5 font-sans text-micro13 font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
+          >
+            <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
+            {t8n('detail.backToMap')}
+          </LocaleLink>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              if (pokedexReturn) navigate(-1);
+              else navigate(localePath('/pokedex'));
+            }}
+            className="group inline-flex items-center gap-1.5 font-sans text-micro13 font-semibold text-tx-secondary transition-colors duration-150 hover:text-gold"
+          >
+            <ArrowLeft size={14} strokeWidth={2} className="transition-transform duration-150 group-hover:-translate-x-1" />
+            {t8n('detail.backAll')}
+          </button>
+        )}
         {editionOptions.length > 0 && (
           <div className="flex min-w-0 flex-col items-end gap-0.5">
             <EditionDock value={edition} onChange={setEdition} options={editionOptions} />
@@ -362,7 +380,7 @@ export default function PokemonDetail() {
           />
           {/* top-right actions: add to a saved team · VS shortcut (opens the VERSUS tab) */}
           <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5">
-            <AddToTeam pokemon={pokemon} />
+            <AddToTeam pokemonId={pokemon.id} pokemonSlug={pokemon.name} pokemon={pokemon} />
             <button
               type="button"
               onClick={() => switchTab('versus')}

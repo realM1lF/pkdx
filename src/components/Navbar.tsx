@@ -3,7 +3,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router';
 import { LocaleLink, useLocalePath, withTrailingSlash } from '@/lib/locale-link';
-import { Heart, Info, Menu, MessageSquarePlus, Search, X } from 'lucide-react';
+import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Map, Menu, MessageSquarePlus, Package, Search, Users, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
@@ -19,14 +19,14 @@ const UTILITY_LINKS = [
 ];
 
 const LINKS = [
-  { to: '/pokedex', key: 'nav.pokedex' },
-  { to: '/items', key: 'nav.items' },
-  { to: '/maps', key: 'nav.maps' },
-  { to: '/nuzlocke', key: 'nav.nuzlocke' },
-  { to: '/orre', key: 'nav.orre' },
-  { to: '/team', key: 'nav.team' },
-  { to: '/versus', key: 'nav.versus' },
-];
+  { to: '/pokedex', key: 'nav.pokedex', Icon: BookOpen },
+  { to: '/items', key: 'nav.items', Icon: Package },
+  { to: '/maps', key: 'nav.maps', Icon: Map },
+  { to: '/nuzlocke', key: 'nav.nuzlocke', Icon: Users },
+  { to: '/orre', key: 'nav.orre', Icon: Ghost },
+  { to: '/team', key: 'nav.team', Icon: LayoutGrid },
+  { to: '/versus', key: 'nav.versus', Icon: GitCompareArrows },
+] as const;
 
 interface NavbarProps {
   onSearchOpen: () => void;
@@ -64,7 +64,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200 md:h-[6.25rem]',
+          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200 md:h-[6.5rem]',
           scrolled ? 'glass border-b border-hairline' : 'border-b border-transparent bg-transparent',
         )}
       >
@@ -121,7 +121,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
         {/* second row: main nav left, about / feedback / support right.
             desktop/tablet only; mobile keeps the hamburger drawer */}
         <div className="hidden border-t border-hairline/60 md:block">
-          <div className="mx-auto flex h-9 max-w-content items-center gap-4 px-8">
+          <div className="mx-auto flex h-10 max-w-content items-center gap-4 px-8">
             <div
               className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto [scrollbar-width:none] lg:gap-6 xl:gap-8 [&::-webkit-scrollbar]:hidden"
               data-lenis-prevent
@@ -130,16 +130,21 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                 <NavLink
                   key={l.to}
                   to={withTrailingSlash(localePath(l.to))}
-                  end={l.to === '/'}
                   className={({ isActive }) =>
                     cn(
-                      'group relative flex h-full shrink-0 items-center whitespace-nowrap font-sans text-micro13 font-semibold transition-colors duration-200 lg:text-sm',
+                      'group relative flex h-full shrink-0 items-center gap-2 whitespace-nowrap font-sans text-base font-semibold transition-colors duration-200 lg:text-[18px]',
                       isActive ? 'text-gold' : 'text-tx-secondary hover:text-tx-primary',
                     )
                   }
                 >
                   {({ isActive }) => (
                     <>
+                      <l.Icon
+                        size={17}
+                        strokeWidth={2}
+                        className={cn('shrink-0', isActive ? 'text-gold' : 'text-tx-muted group-hover:text-tx-primary')}
+                        aria-hidden
+                      />
                       {t(l.key)}
                       <span
                         className={cn(
@@ -159,7 +164,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                   to={withTrailingSlash(localePath(l.to))}
                   className={({ isActive }) =>
                     cn(
-                      'pixel-label inline-flex items-center gap-1.5 text-[8px] tracking-[0.14em] transition-colors duration-200',
+                      'pixel-label inline-flex items-center gap-1.5 text-[10px] tracking-[0.14em] transition-colors duration-200',
                       l.key === 'nav.support'
                         ? 'rainbow-text'
                         : isActive
@@ -209,16 +214,25 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                 <div key={l.to}>
                   <NavLink
                     to={withTrailingSlash(localePath(l.to))}
-                    end={l.to === '/'}
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
                       cn(
-                        'font-display text-4xl font-extrabold tracking-wide transition-colors',
+                        'inline-flex items-center gap-3 font-display text-4xl font-extrabold tracking-wide transition-colors',
                         isActive ? 'text-gold' : 'text-tx-primary hover:text-gold',
                       )
                     }
                   >
-                    {t(l.key)}
+                    {({ isActive }) => (
+                      <>
+                        <l.Icon
+                          size={28}
+                          strokeWidth={2}
+                          className={cn('shrink-0', isActive ? 'text-gold' : 'text-tx-muted')}
+                          aria-hidden
+                        />
+                        {t(l.key)}
+                      </>
+                    )}
                   </NavLink>
                 </div>
               ))}

@@ -392,6 +392,8 @@
       "plus9": "9×+ für KO"
     },
     "noSet": "Kein Schadensset ermittelt.",
+    "noOffenseEmpty": "Kein Schadensset für {{edition}} (Gen {{gen}}).",
+    "noOffenseEditionHint": "{{name}} ist in dieser Edition nicht spielbar oder hat dort keine Attacken.",
     "statusMove": "Status",
     "speedCheck": "Initiative-check",
     "speedTie": "GLEICHSTAND BEI {{speed}}: Münzwurf",

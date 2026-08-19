@@ -22,12 +22,18 @@
 .pdx-card-wrap {
   content-visibility: auto;
   contain-intrinsic-size: auto 220px;
+  transition: z-index 0s;
 }
 .pdx-card-wrap--lcp {
   content-visibility: visible;
 }
 
 /* ---- card hover / focus-within: lift + type glow (design.md §6.2-2) ---- */
+.pdx-card-wrap:hover,
+.pdx-card-wrap:focus-within {
+  z-index: 5;
+  content-visibility: visible;
+}
 .pdx-card {
   transition:
     transform 250ms var(--ease-out),

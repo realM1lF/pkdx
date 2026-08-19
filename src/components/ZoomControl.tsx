@@ -42,7 +42,7 @@ export default function ZoomControl({ className }: { className?: string }) {
       >
         <Minus className="size-[0.8125rem]" strokeWidth={2} />
       </button>
-      <span className="pixel-label min-w-[2.375rem] text-center text-[9px] text-tx-primary" aria-live="polite">
+      <span className="pixel-label min-w-[2.375rem] text-center text-[10px] text-tx-primary" aria-live="polite">
         {zoom}%
       </span>
       <button

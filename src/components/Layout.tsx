@@ -4,7 +4,7 @@
  * Heavy chrome (Lenis, cloud-sync, framer spotlight) boots after first paint. */
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigationType } from 'react-router';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { isDeferredChromeAllowed, scheduleIdle } from '@/lib/idle-boot';
@@ -16,6 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [chromeReady, setChromeReady] = useState(false);
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
   const lenisReady = useRef(false);
 
   useEffect(() => {
@@ -41,16 +42,18 @@ export default function Layout({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  /* Scroll restoration: native first. Lenis only after it has booted —
-   * otherwise the idle import would pull Lenis into the first pathname effect. */
+  /* Scroll restoration: history back/forward keeps position; Pokédex re-applies
+   * its saved offset after mount. Forward navigations still jump to top. */
   useEffect(() => {
+    if (navigationType === 'POP') return;
+
     window.scrollTo(0, 0);
     if (lenisReady.current) {
       void import('@/lib/smooth').then((m) => {
         m.getLenis()?.scrollTo(0, { immediate: true });
       });
     }
-  }, [pathname]);
+  }, [pathname, navigationType]);
 
   /* Plausible: SPA route changes (initial pageview is sent by plausible.init in index.html). */
   const plausibleBoot = useRef(true);
@@ -80,7 +83,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-void text-tx-primary">
       <Navbar onSearchOpen={() => setSearchOpen(true)} />
-      <main className="relative pt-16 md:pt-[6.25rem]">
+      <main className="relative pt-16 md:pt-[6.5rem]">
         {children}
       </main>
       <Footer />

@@ -76,6 +76,7 @@ import SlotCard from './teambuilder/SlotCard';
 import SlotEditorModal from './teambuilder/SlotEditorModal';
 import type { MetaState } from './teambuilder/SlotEditor';
 import NuzToasts from './nuzlocke/Toasts';
+import { useCoarsePointer } from '@/lib/viewport';
 import './teambuilder/teambuilder.css';
 
 const VAULT_AUTOSAVE_MS = 800;
@@ -514,6 +515,8 @@ function TeamBuilder() {
   }, [team, lang]);
 
   const linked = !!team && isLinkedTeam(team);
+  const coarsePointer = useCoarsePointer();
+  const canReorderSlots = !linked && !coarsePointer;
   const linkedRunState = linked && team.linkedRunId ? getRunState(team.linkedRunId) : null;
   const linkedForeign =
     linked &&
@@ -814,6 +817,52 @@ function TeamBuilder() {
     return map;
   }, [team]);
 
+  const slotGridClass = 'grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6';
+  const slotCards = useMemo(() => {
+    if (!team) return [];
+    return team.slots.map((slot, i) => (
+      <SlotCard
+        key={slot.id}
+        slot={slot}
+        index={i}
+        pokemon={slot.pokemonId != null ? pokemonCache[slot.pokemonId] : undefined}
+        legality={legalities.get(slot.id) ?? { legal: true, reasons: [] }}
+        versionGroup={team.versionGroup}
+        versusOpponentId={versusOpponentBySlot.get(slot.id) ?? null}
+        moveDetails={moveDetails}
+        canDuplicate={canDuplicate}
+        rosterLocked={linked}
+        readOnly={linkedReadOnly}
+        expanded={expandedId === slot.id}
+        focused={focusSlot?.id === slot.id}
+        onPick={handlePick}
+        onRemove={handleRemove}
+        onDuplicate={handleDuplicate}
+        onToBox={!linked && !linkedReadOnly ? handleDemoteToBox : undefined}
+        onToggleExpand={(id) => {
+          setExpandedId((cur) => (cur === id ? null : id));
+          setFocusedId(id);
+        }}
+        onFocus={(id) => setFocusedId(id)}
+      />
+    ));
+  }, [
+    team,
+    pokemonCache,
+    legalities,
+    versusOpponentBySlot,
+    moveDetails,
+    canDuplicate,
+    linked,
+    linkedReadOnly,
+    expandedId,
+    focusSlot?.id,
+    handlePick,
+    handleRemove,
+    handleDuplicate,
+    handleDemoteToBox,
+  ]);
+
   useEffect(() => {
     if (!team) setTeams(loadTeams());
   }, [team]);
@@ -903,45 +952,32 @@ function TeamBuilder() {
         savedCount={teams.length}
       />
 
-      {/* 6-slot card row — framer drag & drop reorder (locked for linked teams) */}
-      <Reorder.Group
-        axis="x"
-        values={team.slots}
-        onReorder={(slots) => {
-          if (linked) return;
-          patchTeam((t) => ({ ...t, slots }));
-        }}
-        className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6"
-        as="div"
-      >
-        {team.slots.map((slot, i) => (
-          <Reorder.Item key={slot.id} value={slot} as="div" className="min-w-0" drag={!linked}>
-            <SlotCard
-              slot={slot}
-              index={i}
-              pokemon={slot.pokemonId != null ? pokemonCache[slot.pokemonId] : undefined}
-              legality={legalities.get(slot.id) ?? { legal: true, reasons: [] }}
-              versionGroup={team.versionGroup}
-              versusOpponentId={versusOpponentBySlot.get(slot.id) ?? null}
-              moveDetails={moveDetails}
-              canDuplicate={canDuplicate}
-              rosterLocked={linked}
-              readOnly={linkedReadOnly}
-              expanded={expandedId === slot.id}
-              focused={focusSlot?.id === slot.id}
-              onPick={handlePick}
-              onRemove={handleRemove}
-              onDuplicate={handleDuplicate}
-              onToBox={!linked && !linkedReadOnly ? handleDemoteToBox : undefined}
-              onToggleExpand={(id) => {
-                setExpandedId((cur) => (cur === id ? null : id));
-                setFocusedId(id);
-              }}
-              onFocus={(id) => setFocusedId(id)}
-            />
-          </Reorder.Item>
-        ))}
-      </Reorder.Group>
+      {/* 6-slot card row — desktop drag reorder; touch devices scroll normally */}
+      {canReorderSlots ? (
+        <Reorder.Group
+          axis="x"
+          values={team.slots}
+          onReorder={(slots) => {
+            patchTeam((t) => ({ ...t, slots }));
+          }}
+          className={slotGridClass}
+          as="div"
+        >
+          {team.slots.map((slot, i) => (
+            <Reorder.Item key={slot.id} value={slot} as="div" className="min-w-0">
+              {slotCards[i]}
+            </Reorder.Item>
+          ))}
+        </Reorder.Group>
+      ) : (
+        <div className={slotGridClass}>
+          {team.slots.map((slot, i) => (
+            <div key={slot.id} className="min-w-0">
+              {slotCards[i]}
+            </div>
+          ))}
+        </div>
+      )}
 
       <BoxPanel
         box={team.box ?? []}

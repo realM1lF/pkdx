@@ -71,7 +71,7 @@ export default function BoxPanel({
 
       <div className="p-3">
         <div
-          className="tb-scroll flex gap-2 overflow-x-auto pb-1"
+          className="tb-scroll tb-scroll-x flex gap-2 overflow-x-auto pb-1"
           data-lenis-prevent
         >
           {box.map((slot) => {

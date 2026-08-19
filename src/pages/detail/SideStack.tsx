@@ -111,8 +111,11 @@ function MatchupRow({ label, mult, types, tint }: { label: string; mult: string;
   const { t: t8n } = useTranslation();
   const lang = useLanguage();
   return (
-    <div className="flex items-start gap-2 py-1">
-      <span className="pixel-label w-14 shrink-0 pt-1 text-[8px]" style={{ color: tint }}>
+    <div className="flex items-start gap-4 py-1">
+      <span
+        className="pixel-label min-w-[5.75rem] shrink-0 pt-1 text-[10px] leading-snug"
+        style={{ color: tint }}
+      >
         {label}
       </span>
       <div className="flex min-w-0 flex-1 flex-wrap gap-1">

@@ -392,6 +392,8 @@
       "plus9": "9×+ for KO"
     },
     "noSet": "No damaging set resolved.",
+    "noOffenseEmpty": "No damage set for {{edition}} (Gen {{gen}}).",
+    "noOffenseEditionHint": "{{name}} is not available in this edition or has no moves there.",
     "statusMove": "status",
     "speedCheck": "Speed Check",
     "speedTie": "SPEED TIE AT {{speed}}: coin flip",

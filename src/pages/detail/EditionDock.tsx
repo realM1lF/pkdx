@@ -67,7 +67,7 @@ export default function EditionDock({
         {stuck ? <div className="h-8 w-44" aria-hidden /> : picker('rest')}
       </div>
       {stuck && (
-        <div className="pointer-events-none fixed inset-x-0 top-16 z-40 flex justify-center px-4 pt-2 md:top-[6.25rem]">
+        <div className="pointer-events-none fixed inset-x-0 top-16 z-40 flex justify-center px-4 pt-2 md:top-[6.5rem]">
           <div className="pointer-events-auto">{picker('stuck')}</div>
         </div>
       )}

@@ -42,6 +42,26 @@ export function useIsMobile(): boolean {
   return !useLayoutBreakpoint(768);
 }
 
+function coarsePointerActive(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(pointer: coarse)').matches;
+}
+
+/** Touch-first devices — disable drag reorder, grab cursors, etc. */
+export function useCoarsePointer(): boolean {
+  const [coarse, setCoarse] = React.useState(coarsePointerActive);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(pointer: coarse)');
+    const update = () => setCoarse(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return coarse;
+}
+
 /** Read root rem size in CSS pixels (respects page zoom). */
 export function rootFontPx(): number {
   if (typeof document === 'undefined') return 16;

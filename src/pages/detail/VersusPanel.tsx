@@ -27,6 +27,7 @@ import {
   nameOfType,
   useGermanDataReady,
   useLanguage,
+  type Lang,
 } from '@/lib/i18n-data';
 import type { DexIndexEntry, Move, Pokemon, PokemonType, StatKey } from '@/lib/types';
 import { MAX_DEX_ID, STAT_LABELS, STAT_ORDER } from '@/lib/types';
@@ -1068,7 +1069,15 @@ export interface MatrixRow {
   detail: Move | undefined;
 }
 
-export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: string }) {
+export function DamageMatrix({
+  rows,
+  heading,
+  emptyHint,
+}: {
+  rows: MatrixRow[];
+  heading: string;
+  emptyHint?: OffenseEmptyHint | null;
+}) {
   const { t } = useTranslation();
   const lang = useLanguage();
   return (
@@ -1082,7 +1091,20 @@ export function DamageMatrix({ rows, heading }: { rows: MatrixRow[]; heading: st
         <span className="pixel-label text-right text-[8px] text-tx-muted">{t('versus.koCol')}</span>
       </div>
       {rows.length === 0 && (
-        <div className="flex h-24 items-center justify-center font-sans text-micro11 text-tx-muted">{t('versus.noSet')}</div>
+        <div className="flex min-h-24 flex-col items-center justify-center gap-1.5 px-4 py-3 text-center">
+          {emptyHint ? (
+            <>
+              <p className="font-sans text-micro12 font-semibold text-tx-secondary">
+                {t('versus.noOffenseEmpty', { edition: emptyHint.editionShort, gen: emptyHint.gen })}
+              </p>
+              <p className="font-sans text-micro11 text-tx-muted">
+                {t('versus.noOffenseEditionHint', { name: emptyHint.pokemonName })}
+              </p>
+            </>
+          ) : (
+            <p className="font-sans text-micro11 text-tx-muted">{t('versus.noSet')}</p>
+          )}
+        </div>
       )}
       {rows.map((row, ri) => {
         const mv = row.detail;
@@ -1373,6 +1395,28 @@ export function computeMatrix(
     }));
 }
 
+export interface OffenseEmptyHint {
+  pokemonName: string;
+  gen: number;
+  editionShort: string;
+}
+
+/** Empty offense matrix because the attacker has no move pool in the selected edition. */
+export function offenseEmptyHint(
+  pokemon: Pokemon | null | undefined,
+  slots: string[],
+  ctx: VersusContext,
+  lang: Lang,
+): OffenseEmptyHint | null {
+  if (!pokemon || slots.some(Boolean)) return null;
+  if (legalMoveSlugs(pokemon, ctx.versionGroup, ctx).length > 0) return null;
+  return {
+    pokemonName: nameOfPokemon(pokemon.id, lang),
+    gen: ctx.gen,
+    editionShort: versionGroupById(ctx.versionGroup).short,
+  };
+}
+
 /* ================================================================== */
 /* VersusPanel — the /versus page + /pokemon/:id VERSUS tab                           */
 /* ================================================================== */
@@ -1553,6 +1597,14 @@ export default function VersusPanel({
 
   const youName = youPokemon ? nameOfPokemon(youPokemon.id, lang) : t('versus.pickYou');
   const foeName = foePokemon ? nameOfPokemon(foePokemon.id, lang) : trainerCtx || t('versus.foe');
+  const youOffenseEmptyHint = useMemo(
+    () => offenseEmptyHint(youPokemon, you.slots, ctx, lang),
+    [youPokemon, you.slots, ctx, lang],
+  );
+  const foeOffenseEmptyHint = useMemo(
+    () => offenseEmptyHint(foePokemon, foe.slots, ctx, lang),
+    [foePokemon, foe.slots, ctx, lang],
+  );
 
   const pickGame = (game: string) => {
     setCtx(game ? versusContextFromGame(game, trainerRegion) : { ...defaultVersusContext(), region: trainerRegion });
@@ -1943,10 +1995,10 @@ export default function VersusPanel({
         <>
           {/* ---------- damage matrices (primary — above stat/type panels) ---------- */}
           <Panel eyebrow={t('versus.yourOffense')} title={`${youName} → ${foeName}`} className="col-span-12 lg:col-span-6" bodyClassName="p-1">
-            <DamageMatrix rows={youRows} heading={t('versus.moveCol')} />
+            <DamageMatrix rows={youRows} heading={t('versus.moveCol')} emptyHint={youOffenseEmptyHint} />
           </Panel>
           <Panel eyebrow={t('versus.foeOffense')} title={`${foeName} → ${youName}`} className="col-span-12 lg:col-span-6" bodyClassName="p-1">
-            <DamageMatrix rows={foeRows} heading={t('versus.moveCol')} />
+            <DamageMatrix rows={foeRows} heading={t('versus.moveCol')} emptyHint={foeOffenseEmptyHint} />
           </Panel>
 
           {/* ---------- stat delta + defensive profiles ---------- */}

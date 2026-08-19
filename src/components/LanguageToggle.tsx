@@ -42,7 +42,7 @@ export default function LanguageToggle({ className }: LanguageToggleProps) {
             onClick={() => switchTo(lng)}
             aria-pressed={active === lng}
             className={cn(
-              'pixel-label inline-flex h-7 items-center justify-center px-1.5 text-[8px] leading-none transition-colors duration-200',
+              'pixel-label inline-flex h-7 items-center justify-center px-1.5 text-[10px] leading-none transition-colors duration-200',
               active === lng ? 'text-gold' : 'text-tx-muted hover:text-tx-primary',
             )}
           >
@@ -53,7 +53,7 @@ export default function LanguageToggle({ className }: LanguageToggleProps) {
         return (
           <span key={lng} className="inline-flex items-center">
             {i > 0 && (
-              <span className="mx-1 inline-flex h-7 items-center text-[8px] leading-none text-tx-muted/50" aria-hidden>
+              <span className="mx-1 inline-flex h-7 items-center text-[10px] leading-none text-tx-muted/50" aria-hidden>
                 |
               </span>
             )}

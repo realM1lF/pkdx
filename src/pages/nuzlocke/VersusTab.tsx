@@ -52,6 +52,7 @@ import {
   StatDelta,
   blankSide,
   computeMatrix,
+  offenseEmptyHint,
   resolveDefaultSet,
   sidePaddedWild,
   sideToVersus,
@@ -257,6 +258,14 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
     : foePokemon
       ? nameOfPokemon(foePokemon.id, lang)
       : t('versus.foe');
+  const youOffenseEmptyHint = useMemo(
+    () => offenseEmptyHint(youPokemon, you.slots, ctx, lang),
+    [youPokemon, you.slots, ctx, lang],
+  );
+  const foeOffenseEmptyHint = useMemo(
+    () => offenseEmptyHint(foePokemon, foe.slots, ctx, lang),
+    [foePokemon, foe.slots, ctx, lang],
+  );
 
   const trainerEditionVg = trainerArtifactVersionGroup(runRegion);
   const trainerEditionShort = trainerEditionVg ? versionGroupById(trainerEditionVg).short : undefined;
@@ -514,7 +523,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
               <>
                 <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                   <Panel eyebrow="YOUR OFFENSE" title={`${youName} → ${foeName}`} bodyClassName="p-1">
-                    <DamageMatrix rows={youRows} heading={t('versus.moveCol')} />
+                    <DamageMatrix rows={youRows} heading={t('versus.moveCol')} emptyHint={youOffenseEmptyHint} />
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={you.slots}
@@ -533,7 +542,7 @@ export default function VersusTab({ state, nameOf }: { state: RunState; nameOf: 
                     </div>
                   </Panel>
                   <Panel eyebrow="FOE OFFENSE" title={`${foeName} → ${youName}`} bodyClassName="p-1">
-                    <DamageMatrix rows={foeRows} heading={t('versus.moveCol')} />
+                    <DamageMatrix rows={foeRows} heading={t('versus.moveCol')} emptyHint={foeOffenseEmptyHint} />
                     <div className="border-t border-hairline p-2">
                       <MoveSlots
                         slots={foe.slots}

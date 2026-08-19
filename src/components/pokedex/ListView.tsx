@@ -48,10 +48,11 @@ interface ListRowProps {
   summary: DexSummary;
   index: number;
   game?: string | null;
+  onBeforeOpen?: (pokemonId: number) => void;
   ref?: Ref<HTMLDivElement>;
 }
 
-function ListRow({ summary: s, index, game, ref }: ListRowProps) {
+function ListRow({ summary: s, index, game, onBeforeOpen, ref }: ListRowProps) {
   const { t } = useTranslation();
   const { shiny: globalShiny } = useShiny();
   const lang = useLanguage();
@@ -144,6 +145,7 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
       <LocaleLink
         to={href}
         aria-label={`${label} — ${padNum(dexId)}`}
+        onClick={() => onBeforeOpen?.(s.id)}
         onMouseEnter={() => prefetchPokemon(s.id)}
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10"
@@ -153,7 +155,7 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
 
   if (!dexItemUsesMotion(index)) {
     return (
-      <div ref={ref} className="pdx-row-wrap group relative" data-type={t1}>
+      <div ref={ref} className="pdx-row-wrap group relative" data-type={t1} data-pdex-id={s.id}>
         {body}
       </div>
     );
@@ -173,6 +175,7 @@ function ListRow({ summary: s, index, game, ref }: ListRowProps) {
       }}
       className="pdx-row-wrap group relative"
       data-type={t1}
+      data-pdex-id={s.id}
     >
       {body}
     </motion.div>
@@ -209,9 +212,10 @@ interface ListViewProps {
   items: DexIndexEntry[];
   summaries: ReadonlyMap<number, DexSummary>;
   game?: string | null;
+  onBeforeOpen?: (pokemonId: number) => void;
 }
 
-export default function ListView({ items, summaries, game }: ListViewProps) {
+export default function ListView({ items, summaries, game, onBeforeOpen }: ListViewProps) {
   return (
     <div className="overflow-x-auto rounded-lg border border-hairline bg-surface1/40">
       <div className="min-w-[51.25rem]">
@@ -220,7 +224,7 @@ export default function ListView({ items, summaries, game }: ListViewProps) {
           {items.map((e, i) => {
             const s = summaries.get(e.id);
             return s ? (
-              <MemoListRow key={e.id} summary={s} index={i} game={game} />
+              <MemoListRow key={e.id} summary={s} index={i} game={game} onBeforeOpen={onBeforeOpen} />
             ) : (
               <ListRowSkeleton key={e.id} id={e.id} />
             );

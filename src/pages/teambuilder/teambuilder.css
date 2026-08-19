@@ -291,13 +291,21 @@
   border: none;
 }
 
-/* slot card drag affordance */
-.tb-slot-drag {
-  cursor: grab;
+/* slot card drag affordance — desktop only (touch uses static grid) */
+@media (pointer: fine) {
+  .tb-slot-drag {
+    cursor: grab;
+  }
+
+  .tb-slot-drag:active {
+    cursor: grabbing;
+  }
 }
 
-.tb-slot-drag:active {
-  cursor: grabbing;
+/* horizontal box rail: let vertical swipes pass through to page scroll */
+.tb-scroll-x {
+  touch-action: pan-x pinch-zoom;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* gold pulse for illegal flags */

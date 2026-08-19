@@ -21,6 +21,7 @@ import type { PokemonType, StatKey } from '@/lib/types';
 import { dexEntryPath } from '@/lib/dex-forms-catalog';
 import { pokemonHref } from '@/lib/edition-nav';
 import { FORM_I18N_KEY, type DexSummary } from './pokedex/dex-data';
+import AddToTeam from '@/pages/detail/AddToTeam';
 import { isAboveFoldDexItem } from '@/lib/img-priority';
 import { dexItemMotion, dexItemUsesMotion } from '@/lib/dex-motion';
 import { cn } from '@/lib/utils';
@@ -35,10 +36,12 @@ interface PokemonCardProps {
   index?: number;
   /** when the dex gen-filter is on, open detail on that generation's first game */
   game?: string | null;
+  /** Persist listing anchor before navigating to detail (POP restore). */
+  onBeforeOpen?: (pokemonId: number) => void;
   ref?: Ref<HTMLDivElement>;
 }
 
-function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardProps) {
+function PokemonCard({ summary: s, density, index = 0, game, onBeforeOpen, ref }: PokemonCardProps) {
   const compact = density === 'compact';
   const priority = isAboveFoldDexItem(index);
   const itemMotion = dexItemMotion(index);
@@ -74,6 +77,7 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
     : `linear-gradient(180deg, rgba(${c1.rgb},0.14) 0%, transparent 45%)`;
 
   const wrapClass = cn('pdx-card-wrap group relative', priority && 'pdx-card-wrap--lcp');
+  const wrapProps = { 'data-pdex-id': s.id, className: wrapClass, 'data-type': t1 } as const;
   const body = (
     <>
       <div
@@ -179,36 +183,53 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
       <LocaleLink
         to={href}
         aria-label={`${label} — ${padNum(dexId)}`}
+        onClick={() => onBeforeOpen?.(s.id)}
         onMouseEnter={schedulePrefetch}
         onMouseLeave={cancelPrefetch}
         onFocus={() => prefetchPokemon(s.id)}
         className="absolute inset-0 z-10 rounded-lg"
       />
 
-      {/* per-card shiny corner button (32px hit area) */}
-      <button
-        type="button"
-        aria-pressed={shiny}
-        aria-label={`Toggle shiny ${label}`}
-        onClick={() => {
-          setOverride(!shiny);
-          setBurst((b) => b + 1);
-        }}
+      {/* card actions — below header row so GEN tag stays clear */}
+      <div
         className={cn(
-          'absolute right-1 top-1 z-20 grid h-8 w-8 place-items-center rounded-md border transition-all duration-200',
-          shiny
-            ? 'border-gold/60 bg-gold-soft text-gold opacity-100 shadow-glow-gold'
-            : 'border-transparent text-tx-muted opacity-60 hover:border-hairline2 hover:bg-surface2 hover:text-gold md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100',
+          'absolute right-1.5 top-7 z-20 flex flex-col gap-1',
+          'md:opacity-0 md:transition-opacity md:duration-200',
+          'md:group-hover:opacity-100 md:group-focus-within:opacity-100',
         )}
       >
-        <Sparkles size={14} strokeWidth={1.75} />
-      </button>
+        <button
+          type="button"
+          aria-pressed={shiny}
+          aria-label={`Toggle shiny ${label}`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setOverride(!shiny);
+            setBurst((b) => b + 1);
+          }}
+          className={cn(
+            'grid h-8 w-8 place-items-center rounded-md border transition-all duration-200',
+            shiny
+              ? 'border-gold/60 bg-gold-soft text-gold opacity-100 shadow-glow-gold'
+              : 'border-transparent text-tx-muted opacity-60 hover:border-hairline2 hover:bg-surface2 hover:text-gold md:opacity-100',
+          )}
+        >
+          <Sparkles size={14} strokeWidth={1.75} />
+        </button>
+        <AddToTeam
+          pokemonId={s.id}
+          pokemonSlug={s.slug ?? s.label}
+          variant="icon"
+          className="opacity-60 md:opacity-100"
+        />
+      </div>
     </>
   );
 
   if (!dexItemUsesMotion(index)) {
     return (
-      <div ref={ref} className={wrapClass} data-type={t1}>
+      <div ref={ref} {...wrapProps}>
         {body}
       </div>
     );
@@ -226,8 +247,7 @@ function PokemonCard({ summary: s, density, index = 0, game, ref }: PokemonCardP
         ease: EASE_OUT,
         delay: Math.min(index % 24, 16) * 0.025,
       }}
-      className={wrapClass}
-      data-type={t1}
+      {...wrapProps}
     >
       {body}
     </motion.div>

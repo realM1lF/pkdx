@@ -519,7 +519,7 @@ export default function CommandBar(p: CommandBarProps) {
   const hasChips = chips.length > 0;
 
   return (
-    <motion.div animate={controls} className="sticky top-16 md:top-[6.25rem] z-40">
+    <motion.div animate={controls} className="sticky top-16 md:top-[6.5rem] z-40">
       <div
         className={cn(
           'glass border-b transition-all duration-200',
