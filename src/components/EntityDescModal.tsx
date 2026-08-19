@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import TypeBadge from '@/components/TypeBadge';
 import { useEntityDesc, entitySlug } from '@/lib/desc-data';
 import type { AbilityDesc, DescKind, ItemDesc, MoveDesc } from '@/lib/desc-data';
+import { moveMetaForDisplay } from '@/lib/gen-dex';
 import { useLanguage } from '@/lib/i18n-data';
 import type { Lang } from '@/lib/i18n-data';
 import { displayName } from '@/lib/pokeapi';
@@ -103,9 +104,11 @@ function langTexts(raw: MoveDesc | ItemDesc | AbilityDesc | null): { en: string 
 interface EntityDescModalProps {
   target: EntityModalTarget | null;
   onClose: () => void;
+  /** When set, move stats follow @pkmn for this edition (matches MovesPanel table). */
+  versionGroup?: string;
 }
 
-export default function EntityDescModal({ target, onClose }: EntityDescModalProps) {
+export default function EntityDescModal({ target, onClose, versionGroup }: EntityDescModalProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const slug = target ? entitySlug(target.slug) : null;
@@ -149,6 +152,26 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
 
   const move = target?.kind === 'move' ? (raw as MoveDesc | null) : null;
   const item = target?.kind === 'item' ? (raw as ItemDesc | null) : null;
+
+  const moveMeta =
+    move && slug
+      ? moveMetaForDisplay(
+          versionGroup,
+          slug,
+          {
+            type: { name: move.t },
+            damage_class: { name: move.dc },
+            power: move.power ?? null,
+            accuracy: move.acc ?? null,
+            pp: move.pp ?? null,
+          },
+        )
+      : null;
+  const moveType = moveMeta?.type || move?.t;
+  const moveCategory = moveMeta?.type ? moveMeta.category : move?.dc;
+  const movePower = moveMeta?.type ? moveMeta.power : move?.power;
+  const moveAcc = moveMeta?.type ? moveMeta.accuracy : move?.acc;
+  const movePp = moveMeta?.type ? moveMeta.pp : move?.pp;
 
   // Portal to <body>: several callers render this modal inside animated
   // (transformed) containers — e.g. the maps DetailDrawer motion.aside — where
@@ -201,8 +224,10 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
               {/* chips row */}
               <div className="flex flex-wrap items-center gap-1.5">
                 <Chip gold>{t(`desc.kind.${target.kind}`)}</Chip>
-                {move?.t && <TypeBadge type={move.t as PokemonType} className="!text-micro9" />}
-                {move?.dc && <Chip>{t(`detail.moves.cat${move.dc.charAt(0).toUpperCase() + move.dc.slice(1)}`)}</Chip>}
+                {moveType && <TypeBadge type={moveType as PokemonType} className="!text-micro9" />}
+                {moveCategory && (
+                  <Chip>{t(`detail.moves.cat${moveCategory.charAt(0).toUpperCase() + moveCategory.slice(1)}`)}</Chip>
+                )}
                 {move?.target && <Chip>{t(`desc.targets.${move.target}`, { defaultValue: displayName(move.target) })}</Chip>}
                 {item && (
                   <Chip>
@@ -220,9 +245,9 @@ export default function EntityDescModal({ target, onClose }: EntityDescModalProp
               {/* stats grid (moves) */}
               {move && (
                 <div className="grid grid-cols-3 gap-1.5">
-                  <StatCell label={t('desc.stats.power')} value={move.power != null ? String(move.power) : '—'} />
-                  <StatCell label={t('desc.stats.acc')} value={move.acc != null ? `${move.acc}%` : '—'} />
-                  <StatCell label={t('desc.stats.pp')} value={move.pp != null ? String(move.pp) : '—'} />
+                  <StatCell label={t('desc.stats.power')} value={movePower != null ? String(movePower) : '—'} />
+                  <StatCell label={t('desc.stats.acc')} value={moveAcc != null ? `${moveAcc}%` : '—'} />
+                  <StatCell label={t('desc.stats.pp')} value={movePp != null ? String(movePp) : '—'} />
                   <StatCell label={t('desc.stats.priority')} value={move.priority ? `+${move.priority}` : '0'} />
                   <StatCell
                     label={t('desc.stats.crit')}

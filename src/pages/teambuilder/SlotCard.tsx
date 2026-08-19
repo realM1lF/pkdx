@@ -402,7 +402,7 @@ export default function SlotCard({
         </div>
       </div>
     </motion.div>
-    <EntityDescModal {...entityModal.props} />
+    <EntityDescModal {...entityModal.props} versionGroup={versionGroup} />
     </>
   );
 }

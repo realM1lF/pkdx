@@ -42,6 +42,7 @@ describe('app-shell first-load imports', () => {
     'src/components/Footer.tsx',
     'src/components/LanguageToggle.tsx',
     'src/components/ZoomControl.tsx',
+    'src/components/AmbientAudioControl.tsx',
     'src/components/LangGate.tsx',
   ])('%s does not statically import heavy first-load modules', (file) => {
     const specs = staticImportSpecs(readSrc(file));

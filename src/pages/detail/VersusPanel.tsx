@@ -693,7 +693,7 @@ export function MoveSlots({
           );
         })}
       </div>
-      <EntityDescModal {...entityModal.props} />
+      <EntityDescModal {...entityModal.props} versionGroup={versionGroup} />
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { RULE_PRESETS, effectiveLevelCap, nextGymInfo } from '@/lib/nuzlocke-rul
 import type { RulePresetKey } from '@/lib/nuzlocke-rules';
 import { nodeIndex, nodeName } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
+import { isManualRouteRun } from '@/lib/nuzlocke-routes';
 import { useLanguage } from '@/lib/i18n-data';
 import { cn } from '@/lib/utils';
 import HonestyHint from '@/components/HonestyHint';
@@ -239,6 +240,7 @@ function useActiveRuleChips(rules: NuzRules): string[] {
   if (rules.nicknames) chips.push(t('nuz.rules.chipNicknames'));
   if (rules.releaseOnDeath) chips.push(t('nuz.rules.chipRelease'));
   if (rules.randomizer) chips.push(t('nuz.rules.chipRandomizer'));
+  if (isManualRouteRun(rules)) chips.push(t('nuz.rules.chipManualRoutes'));
   return chips;
 }
 

@@ -27,6 +27,7 @@ const HONESTY_KEYS = [
   'honesty.defaultEdition',
   'honesty.paddedWild',
   'honesty.capUsesRegion',
+  'honesty.manualRoutesOverview',
   'honesty.noStoredMoves',
   'honesty.snagLevelUp',
   'honesty.shadowIdOptional',

@@ -12,6 +12,8 @@ import { useAuth } from '@/lib/auth';
 import { REGIONS, coverageTier, regionName, versionLabel, viewBoxParts } from '@/lib/regions';
 import type { RegionId } from '@/lib/regions';
 import { FREEFORM_REGIONS, anyRegionById } from '@/lib/regions-freeform';
+import { templateRoutesFromRegion } from '@/lib/nuzlocke-routes';
+import type { RouteTrackingMode } from '@/lib/nuzlocke-routes';
 import {
   DEFAULT_RULES,
   MAX_PLAYERS,
@@ -27,6 +29,7 @@ import type { RulePresetKey } from '@/lib/nuzlocke-rules';
 import { isMultiCapable } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import { BadgeStepper, LevelCapStepper, RulePresetButtons } from './RulesBar';
+import ManualRoutesHints from './ManualRoutesHints';
 import { GoldHint, GoldSwitch, InfoTip, NuzModal, PixelLabel, SparkleBurst, useShake } from './ui';
 
 /* ---------- mini region schematic (compact re-render of /maps cards) ---------- */
@@ -90,6 +93,8 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
   const [soulLink, setSoulLink] = useState(false);
   const [online, setOnline] = useState(true);
   const [rules, setRules] = useState<NuzRules>({ ...DEFAULT_RULES });
+  const [routeTracking, setRouteTracking] = useState<RouteTrackingMode>('guided');
+  const [manualTemplate, setManualTemplate] = useState<'blank' | 'region'>('blank');
   const [joinName, setJoinName] = useState('');
   const [joinColor, setJoinColor] = useState<string>(PLAYER_COLORS[1]);
   const [busy, setBusy] = useState(false);
@@ -113,6 +118,8 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
     setSoulLink(false);
     setOnline(true);
     setRules({ ...DEFAULT_RULES });
+    setRouteTracking('guided');
+    setManualTemplate('blank');
     setJoinName(loginName);
     setInvite(null);
     setCreatedId(null);
@@ -165,7 +172,13 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
           name: p.name.trim() || (i === 0 ? hostFallbackName() : `PLAYER ${i + 1}`),
           color: p.color,
         })),
-        rules: { ...rules, soulLink },
+        rules: {
+          ...rules,
+          soulLink,
+          routeTracking,
+          customRoutes:
+            routeTracking === 'manual' && manualTemplate === 'region' ? templateRoutesFromRegion(region) : [],
+        },
         online: wantOnline,
       });
       if (res.inviteCode) {
@@ -447,6 +460,52 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                   </button>
                 ))}
               </div>
+              <PixelLabel className="mt-4 block text-gold">{t('nuz.wizard.routeTracking')}</PixelLabel>
+              <p className="mt-1 text-micro11 leading-snug text-tx-muted">{t('nuz.wizard.routeTrackingHint')}</p>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                {(['guided', 'manual'] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => setRouteTracking(mode)}
+                    className={cn(
+                      'rounded-md border px-3 py-2.5 text-left transition-all',
+                      routeTracking === mode
+                        ? 'border-gold bg-gold/10 shadow-[0_0_12px_rgba(246,201,69,0.15)]'
+                        : 'border-hairline bg-surface1 hover:border-hairline2',
+                    )}
+                  >
+                    <span className="block font-display text-micro12 font-bold text-tx-primary">
+                      {t(`nuz.wizard.routeMode.${mode}`)}
+                    </span>
+                    <span className="mt-0.5 block text-micro10 leading-snug text-tx-muted">{t(`nuz.wizard.routeMode.${mode}Tip`)}</span>
+                  </button>
+                ))}
+              </div>
+              {routeTracking === 'manual' && (
+                <div className="mt-2 rounded-md border border-hairline bg-surface1 px-3 py-2.5">
+                  <PixelLabel className="!text-[8px] text-tx-muted">{t('nuz.wizard.manualStart')}</PixelLabel>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {(['blank', 'region'] as const).map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setManualTemplate(opt)}
+                        className={cn(
+                          'rounded-full border px-2.5 py-1 font-pixel text-[8px] tracking-[0.06em] transition-all',
+                          manualTemplate === opt
+                            ? 'border-gold bg-gold/15 text-gold'
+                            : 'border-hairline2 text-tx-muted hover:border-gold/50',
+                        )}
+                      >
+                        {t(`nuz.wizard.manualTemplate.${opt}`)}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-micro10 leading-snug text-gold/85">{t('nuz.wizard.manualTemplateHint')}</p>
+                  <ManualRoutesHints rules={{ routeTracking: 'manual' }} className="mt-2" />
+                </div>
+              )}
               <PixelLabel className="mt-4 block text-gold">{t('nuz.wizard.runName')}</PixelLabel>
               <input
                 value={name}

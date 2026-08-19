@@ -14,10 +14,12 @@ import { routeOrder } from '@/lib/regions';
 import type { MapNode, RegionMap } from '@/lib/regions';
 import { speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { youAreHereKey } from '@/lib/nuzlocke-store';
+import { isManualRouteRun } from '@/lib/nuzlocke-routes';
 import { isSlotConsuming } from '@/lib/nuzlocke-rules';
 import type { NuzEncounterRow, RunState, SoulLinkGroup } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { remPx, useRemPx } from '@/lib/viewport';
+import ManualRoutesToolbar from './ManualRoutesToolbar';
 import { PixelLabel, StatusDot, timeAgo } from './ui';
 
 const CARD_W_REM = 11.75; // 188px @ 100 %
@@ -240,23 +242,25 @@ interface TimelineProps {
   flash: { route: string; playerId: string; key: number } | null;
   cascadeIds: Set<string>;
   pendingSync: Set<string>;
+  owner: boolean;
   onPrefill: (routeKey: string, playerId: string) => void;
   onOpenEncounter: (enc: NuzEncounterRow, x: number, y: number) => void;
 }
 
-export default function Timeline({ state, region, groups, nameOf, flash, cascadeIds, pendingSync, onPrefill, onOpenEncounter }: TimelineProps) {
+export default function Timeline({ state, region, groups, nameOf, flash, cascadeIds, pendingSync, owner, onPrefill, onOpenEncounter }: TimelineProps) {
   const { t } = useTranslation();
   const lang = useLanguage();
   const nodes = useMemo(() => routeOrder(region), [region]);
   const players = useMemo(() => [...state.players].sort((a, b) => a.slot - b.slot), [state.players]);
   const hereKey = youAreHereKey(state);
+  const manualRoutes = isManualRouteRun(state.run.rules);
   const scrollRef = useRef<HTMLDivElement>(null);
   const dragged = useRef(false);
   const [dragging, setDragging] = useState(false);
   const cardIndex = useMemo(() => new Map(nodes.map((n, i) => [n.id, i])), [nodes]);
   const stridePx = useRemPx(CARD_W_REM + GAP_REM);
   const gapPx = useRemPx(GAP_REM);
-  const trackW = nodes.length * stridePx - gapPx;
+  const trackW = Math.max(stridePx, nodes.length * stridePx - gapPx);
   const groupsByRoute = useMemo(() => new Map(groups.map((g) => [g.routeKey, g])), [groups]);
 
   const encBy = useMemo(() => {
@@ -270,6 +274,21 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
     }
     return m;
   }, [state.encounters]);
+
+  /* scroll newly added manual route into view */
+  const prevNodeCount = useRef(nodes.length);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !manualRoutes || nodes.length <= prevNodeCount.current) {
+      prevNodeCount.current = nodes.length;
+      return;
+    }
+    prevNodeCount.current = nodes.length;
+    const t = window.setTimeout(() => {
+      el.scrollTo({ left: Math.max(0, trackW - el.clientWidth), behavior: 'smooth' });
+    }, 120);
+    return () => window.clearTimeout(t);
+  }, [nodes.length, manualRoutes, trackW]);
 
   /* auto-scroll the YOU ARE HERE card into view on load (§2.3) */
   useEffect(() => {
@@ -322,7 +341,17 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
 
   return (
     <section className="group/tl relative rounded-xl border border-hairline bg-[#07080D]" aria-label={t('nuz.timeline.aria')}>
-      <div className="nz-player-hairline rounded-t-xl" style={hairlineVars} />
+      {manualRoutes && (
+        <ManualRoutesToolbar
+          state={state}
+          owner={owner}
+          onAdded={(routeId) => {
+            const playerId = state.players[0]?.id;
+            if (playerId) onPrefill(routeId, playerId);
+          }}
+        />
+      )}
+      <div className={cn('nz-player-hairline', !manualRoutes && 'rounded-t-xl')} style={hairlineVars} />
       <div
         className="pointer-events-none absolute inset-0 rounded-xl opacity-[0.04] mix-blend-overlay"
         style={{ backgroundImage: 'url(/grain.webp)' }}
@@ -352,6 +381,12 @@ export default function Timeline({ state, region, groups, nameOf, flash, cascade
         <div className="relative w-fit px-4 pb-3 pt-7" style={{ minWidth: '100%' }}>
           <div className="relative" style={{ width: trackW }}>
             <ol className="relative flex gap-3.5" role="list">
+              {nodes.length === 0 && manualRoutes && (
+                <li className="flex h-[8.75rem] w-full min-w-[14rem] flex-col items-center justify-center rounded-md border border-hairline bg-surface1/30 px-4 text-center">
+                  <PixelLabel className="text-gold">{t('nuz.manualRoutes.emptyTitle')}</PixelLabel>
+                  <p className="mt-1 max-w-[16rem] text-micro11 leading-snug text-tx-muted">{t('nuz.manualRoutes.emptyBody')}</p>
+                </li>
+              )}
               {nodes.map((node, i) => {
                 const isHere = node.id === hereKey;
                 const linkGroup = groupsByRoute.get(node.id);

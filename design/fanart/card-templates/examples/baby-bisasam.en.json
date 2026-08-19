@@ -1,0 +1,25 @@
+{
+  "slug": "baby-bulbasaur",
+  "lang": "en",
+  "name": "Baby Bulbasaur",
+  "hp": 40,
+  "type": "grass",
+  "stage": "basic",
+  "textPanel": false,
+  "artwork": "layers/artwork/baby-bisasam.png",
+  "attacks": [
+    {
+      "name": "Vine Whip",
+      "cost": ["grass"],
+      "damage": 20,
+      "effect": "Flip a coin. If tails, this attack does nothing."
+    }
+  ],
+  "weakness": "fire",
+  "retreat": 1,
+  "illustrator": "Mitsuhiro Arita",
+  "setNumber": "001/162 ★",
+  "flavor": "The plant on its back grows by soaking up the sun it basks in as a youngster.",
+  "outputDir": "../output",
+  "output": "baby-bulbasaur-en-assembled.png"
+}

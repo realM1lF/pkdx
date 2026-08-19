@@ -2,6 +2,7 @@
 import { fetchEvolutionFamilyIds, speciesIdFor } from '@/lib/nuzlocke-evolution';
 import { routeOrder } from '@/lib/regions';
 import { anyRegionById } from '@/lib/regions-freeform';
+import { hasRouteInRun, isManualRouteRun, normalizeCustomRoutes } from '@/lib/nuzlocke-routes';
 import type { MapNode, RegionId, RegionMap } from '@/lib/regions';
 import type { LogDraft, NuzEncounterRow, NuzRules, RunState } from '@/lib/nuzlocke-store';
 import type { NuzEncounterStatus } from '@/lib/supabase';
@@ -10,7 +11,8 @@ export type LogValidationError =
   | 'duplicate'
   | 'speciesDupe'
   | 'nicknameRequired'
-  | 'giftRoute';
+  | 'giftRoute'
+  | 'unknownRoute';
 
 export function normalizeRules(partial?: Partial<NuzRules>): NuzRules {
   return {
@@ -27,6 +29,8 @@ export function normalizeRules(partial?: Partial<NuzRules>): NuzRules {
     autoLevelCap: partial?.autoLevelCap ?? false,
     badgesCleared: Math.max(0, Math.min(8, Math.round(partial?.badgesCleared ?? 0))),
     randomizer: partial?.randomizer ?? false,
+    routeTracking: partial?.routeTracking === 'manual' ? 'manual' : 'guided',
+    customRoutes: normalizeCustomRoutes(partial?.customRoutes),
   };
 }
 
@@ -145,6 +149,11 @@ export async function validateLogDraft(
   /* shiny clause: shinies are always catchable — they bypass the route lock
    * AND the dupes clause (Bulbapedia). Requires the shiny rule to be on. */
   const shinyBypass = rules.shiny && !!draft.isShiny;
+
+  if (isManualRouteRun(rules)) {
+    const base = anyRegionById(state.run.region);
+    if (!hasRouteInRun(rules, draft.routeKey, base)) return 'unknownRoute';
+  }
 
   const slotTaken = state.encounters.some(
     (e) => e.player_id === draft.playerId && e.route_key === draft.routeKey && isSlotConsuming(e),

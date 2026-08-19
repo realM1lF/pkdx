@@ -23,6 +23,15 @@ import type {
 } from './supabase';
 import { nodeIndex, routeOrder } from './regions';
 import { regionForRun } from './orre';
+import {
+  buildCustomRoute,
+  effectiveRegionForRun,
+  isManualRouteRun,
+  moveCustomRouteIndex,
+  normalizeCustomRoutes,
+  validateAddRouteLabel,
+} from './nuzlocke-routes';
+import type { AddRouteError } from './nuzlocke-routes';
 import { orreGameFromRunGame, trackerStatusFromEncounter } from './orre-versus';
 import { padNum } from './pokeapi';
 import {
@@ -81,7 +90,15 @@ export const DEFAULT_RULES: NuzRules = {
   autoLevelCap: false,
   badgesCleared: 0,
   randomizer: false,
+  routeTracking: 'guided',
+  customRoutes: [],
 };
+
+/** Base region + manual-route overlay for Timeline/KPIs. */
+export function resolveRunRegion(state: RunState): ReturnType<typeof regionForRun> {
+  const base = regionForRun(state.run.region, state.run.game);
+  return effectiveRegionForRun(base, state.run.rules) ?? base;
+}
 
 const LS_INDEX = 'pdx2.nuz.runs';
 /** Archived run ids — payload stays under LS_RUN; excluded from the active hub. */
@@ -745,7 +762,7 @@ export function kpisOf(state: RunState): RunKpis {
   const linkGroups = soulLinkGroupsOf(state);
   /* duped/shiny rows don't resolve a route — only slot-consuming rows count */
   const routes = new Set(state.encounters.filter(isSlotConsuming).map((e) => e.route_key));
-  const region = regionForRun(state.run.region, state.run.game);
+  const region = resolveRunRegion(state);
   return {
     caught: state.encounters.filter((e) => e.status === 'caught').length,
     dead: state.encounters.filter((e) => e.status === 'dead').length,
@@ -758,7 +775,7 @@ export function kpisOf(state: RunState): RunKpis {
 
 /** First route in canonical order with any pending player slot (§2.3 marker). */
 export function youAreHereKey(state: RunState): string | null {
-  const region = regionForRun(state.run.region, state.run.game);
+  const region = resolveRunRegion(state);
   if (!region) return null;
   const used = new Set(state.encounters.filter(isSlotConsuming).map((e) => `${e.player_id}:${e.route_key}`));
   for (const node of routeOrder(region)) {
@@ -1716,7 +1733,7 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
     name: cfg.name.trim(),
     game: cfg.game,
     region: cfg.region,
-    rules: { ...cfg.rules },
+    rules: normalizeRules(cfg.rules),
     status: 'active',
     created_at: now,
   };
@@ -2412,7 +2429,63 @@ function rulesSummary(r: NuzRules): string {
   if (r.dupes && r.dupesEncounter) bits.push(i18n.t('nuz.feed.dupesEncounterOn'));
   if (r.soulLink) bits.push(i18n.t('nuz.feed.soulLinkOn'));
   if (r.randomizer) bits.push(i18n.t('nuz.feed.randomizerOn'));
+  if (isManualRouteRun(r)) bits.push(i18n.t('nuz.feed.manualRoutesOn'));
   return bits.join(' · ');
+}
+
+export type AddCustomRouteResult = { ok: true; routeId: string } | { ok: false; error: AddRouteError };
+
+/** Append a manual route to the run checklist (manual mode only). */
+export function addCustomRoute(runId: string, label: string): AddCustomRouteResult {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  if (!s) return { ok: false, error: 'empty' };
+  if (!isManualRouteRun(s.run.rules)) return { ok: false, error: 'empty' };
+
+  const existing = normalizeCustomRoutes(s.run.rules.customRoutes);
+  const check = validateAddRouteLabel(label, existing);
+  if (!check.ok) return check;
+
+  const node = buildCustomRoute(check.label, existing);
+  const customRoutes = [...existing, node];
+  const prev = s.run.rules;
+  const next = normalizeRules({ ...prev, customRoutes });
+  s.run.rules = next;
+  saveLocalRun(s);
+  pushFeed(entry, {
+    kind: 'rule',
+    color: '#F6C945',
+    title: i18n.t('nuz.feed.routeAdded', { label: check.label }),
+    meta: '',
+  });
+  if (isCloudRun(s)) {
+    persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ rules: s.run.rules }).eq('id', runId));
+  }
+  emit(entry);
+  return { ok: true, routeId: node.id };
+}
+
+/** Move one manual route up/down in the checklist (manual mode only). */
+export function reorderCustomRoute(runId: string, routeId: string, direction: 'up' | 'down'): boolean {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  if (!s || !isManualRouteRun(s.run.rules)) return false;
+
+  const existing = normalizeCustomRoutes(s.run.rules.customRoutes);
+  const before = existing.map((r) => r.id).join('\0');
+  const customRoutes = moveCustomRouteIndex(existing, routeId, direction);
+  const after = customRoutes.map((r) => r.id).join('\0');
+  if (before === after) return false;
+
+  const prev = s.run.rules;
+  const next = normalizeRules({ ...prev, customRoutes });
+  s.run.rules = next;
+  saveLocalRun(s);
+  if (isCloudRun(s)) {
+    persistWithRetry(entry, `run:${runId}`, () => nuzTables.runs().update({ rules: s.run.rules }).eq('id', runId));
+  }
+  emit(entry);
+  return true;
 }
 
 export function exportRunSummary(state: RunState, opts: Parameters<typeof formatRunSummary>[1]): string {

@@ -248,4 +248,34 @@ describe('genMoveOf — historical power / category', () => {
     expect(movePowerForDisplay(undefined, 'thunderbolt', 90)).toBe(90);
     expect(movePowerForDisplay('x-y', 'thunderbolt', 95)).toBe(90);
   });
+
+  it('leaf-storm power is 140 in Gen 5 and 130 from Gen 6 onward', () => {
+    const api = {
+      type: { name: 'grass' },
+      damage_class: { name: 'special' },
+      power: 130,
+      accuracy: 90,
+      pp: 5,
+    };
+    expect(moveMetaForDisplay('black-white', 'leaf-storm', api).power).toBe(140);
+    expect(moveMetaForDisplay('black-2-white-2', 'leaf-storm', api).power).toBe(140);
+    expect(moveMetaForDisplay('x-y', 'leaf-storm', api).power).toBe(130);
+    expect(moveMetaForDisplay('scarlet-violet', 'leaf-storm', api).power).toBe(130);
+  });
+
+  it('table and modal share the same gen-correct stats when a version group is set', () => {
+    const api = {
+      type: { name: 'grass' },
+      damage_class: { name: 'special' },
+      power: 130,
+      accuracy: 90,
+      pp: 5,
+    };
+    const table = moveMetaForDisplay('black-white', 'leaf-storm', api);
+    const modal = moveMetaForDisplay('black-white', 'leaf-storm', api);
+    expect(modal.power).toBe(table.power);
+    expect(modal.accuracy).toBe(table.accuracy);
+    expect(modal.pp).toBe(table.pp);
+    expect(modal.type).toBe(table.type);
+  });
 });

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
 import ZoomControl from './ZoomControl';
+import AmbientAudioControl from './AmbientAudioControl';
 import { isDeferredChromeAllowed, scheduleIdle } from '@/lib/idle-boot';
 
 const AccountButton = lazy(() => import('./AccountButton'));
@@ -98,6 +99,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
 
           {/* right cluster */}
           <div className="flex shrink-0 items-center gap-2">
+            <AmbientAudioControl className="hidden md:flex" />
             <ZoomControl className="hidden md:flex" />
             {accountReady ? (
               <Suspense fallback={<span className="inline-block h-10 w-10" aria-hidden />}>

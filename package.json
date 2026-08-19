@@ -18,6 +18,7 @@
     "check:csp": "node scripts/check-csp.mjs",
     "check:rls": "node scripts/check-rls.mjs",
     "check:headers": "node scripts/check-headers.mjs",
+    "audio:rb-routes1": "bash scripts/render-rb-routes1.sh",
     "postinstall": "node scripts/fix-lockfile-registry.mjs"
   },
   "dependencies": {

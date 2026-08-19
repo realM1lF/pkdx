@@ -105,6 +105,17 @@ export interface NuzRules {
   badgesCleared: number;
   /** randomized encounter table — Quick Entry searches the full dex by default */
   randomizer: boolean;
+  /** guided = region JSON route list; manual = owner-defined customRoutes */
+  routeTracking?: 'guided' | 'manual';
+  /** Manual-mode route checklist (English ids, localized labels). */
+  customRoutes?: Array<{
+    id: string;
+    label: string;
+    nameDe?: string;
+    kind: 'city' | 'route' | 'dungeon' | 'special';
+    order: number;
+    locationSlug?: string | null;
+  }>;
 }
 
 export interface NuzRunRow {

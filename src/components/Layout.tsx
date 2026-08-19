@@ -7,6 +7,7 @@ import type { ReactNode } from 'react';
 import { useLocation, useNavigationType } from 'react-router';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import RbAmbientPlayer from './RbAmbientPlayer';
 import { isDeferredChromeAllowed, scheduleIdle } from '@/lib/idle-boot';
 
 const SearchCommand = lazy(() => import('./SearchCommand'));
@@ -83,6 +84,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-[100dvh] overflow-x-clip bg-void text-tx-primary">
       <Navbar onSearchOpen={() => setSearchOpen(true)} />
+      <RbAmbientPlayer />
       <main className="relative pt-16 md:pt-[6.5rem]">
         {children}
       </main>

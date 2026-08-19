@@ -1,0 +1,53 @@
+{
+  "canvas": { "width": 1024, "height": 1536 },
+  "border": { "inset": 28 },
+  "regions": {
+    "badgeBasic": { "x": 24, "y": 28, "width": 96, "height": 34 },
+    "name": { "x": 132, "y": 34, "width": 620, "height": 44, "anchor": "left" },
+    "hp": { "marginRight": 68, "y": 34 },
+    "typeIcon": { "x": 948, "y": 36, "width": 36, "height": 36 },
+    "attackRow": { "x": 56, "y": 812, "width": 912, "height": 52, "marginRight": 56 },
+    "attackEffect": { "x": 132, "y": 868, "width": 760, "height": 40 },
+    "statsBar": { "x": 56, "y": 1110, "width": 912, "height": 36 },
+    "flavor": { "marginRight": 56, "y": 1188, "width": 448, "height": 72 },
+    "footerLeft": { "x": 56, "y": 1188, "width": 360, "height": 72 },
+    "copyright": { "x": 0, "y": 1496, "width": 1024, "height": 28, "anchor": "center" }
+  },
+  "textPanel": {
+    "x": 40,
+    "y": 780,
+    "width": 944,
+    "height": 420,
+    "radius": 12,
+    "fill": "rgba(255,255,255,0.55)"
+  },
+  "fonts": {
+    "name": { "family": "Adwaita-Sans-Bold", "size": 34, "weight": 700 },
+    "hp": { "family": "Adwaita-Sans-Bold", "size": 30, "weight": 700 },
+    "attack": { "family": "Adwaita-Sans-Bold", "size": 28, "weight": 700 },
+    "body": { "family": "Adwaita-Sans", "size": 18, "weight": 400 },
+    "micro": { "family": "Adwaita-Sans", "size": 14, "weight": 400 },
+    "badge": { "family": "Adwaita-Sans-Bold", "size": 16, "weight": 700 }
+  },
+  "colors": {
+    "text": "#1a1a1a",
+    "textShadow": "rgba(255,255,255,0.85)",
+    "hpLabel": "#1a1a1a"
+  },
+  "labels": {
+    "de": {
+      "basic": "BASIS",
+      "hp": "KP",
+      "weakness": "Schwäche",
+      "resistance": "Resistenz",
+      "retreat": "Rückzug"
+    },
+    "en": {
+      "basic": "BASIC",
+      "hp": "HP",
+      "weakness": "Weakness",
+      "resistance": "Resistance",
+      "retreat": "Retreat"
+    }
+  }
+}

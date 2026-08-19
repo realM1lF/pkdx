@@ -280,7 +280,7 @@ export default function MovesPanel({
           </table>
         )}
       </div>
-      <EntityDescModal {...entityModal.props} />
+      <EntityDescModal {...entityModal.props} versionGroup={activeVersion} />
     </div>
   );
 }

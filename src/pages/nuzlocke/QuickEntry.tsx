@@ -14,6 +14,7 @@ import { encounterAt, logEncounter } from '@/lib/nuzlocke-store';
 import type { LogResult, NuzEncounterStatus, RunState } from '@/lib/nuzlocke-store';
 import { effectiveLevelCap, isSpecialNode } from '@/lib/nuzlocke-rules';
 import type { LogValidationError } from '@/lib/nuzlocke-rules';
+import { isManualRouteRun } from '@/lib/nuzlocke-routes';
 import { germanAliasOfPokemon, nameOfPokemon, useGermanDataReady, useLanguage } from '@/lib/i18n-data';
 import { encounterOptionsForRoute, isOrreGame } from '@/lib/orre';
 import { padNum } from '@/lib/pokeapi';
@@ -89,7 +90,8 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
   const [routeFilter, setRouteFilter] = useState('');
   const [listOpen, setListOpen] = useState(false);
   const randomizer = !!state.run.rules.randomizer;
-  const [fullDex, setFullDex] = useState(randomizer);
+  const manualRoutes = isManualRouteRun(state.run.rules);
+  const [fullDex, setFullDex] = useState(randomizer || manualRoutes);
   const [isShiny, setIsShiny] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const [shakeKey, shake] = useShake();
@@ -103,10 +105,10 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
 
   const player = players.find((p) => p.id === playerId) ?? players[0];
 
-  /* randomizer rule → stay in full-dex mode by default */
+  /* randomizer / manual routes → full-dex mode by default */
   useEffect(() => {
-    if (randomizer) setFullDex(true);
-  }, [randomizer]);
+    if (randomizer || manualRoutes) setFullDex(true);
+  }, [randomizer, manualRoutes]);
 
   useEffect(() => {
     if (!listOpen) return;
@@ -169,7 +171,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       .sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0));
   }, [routeKey, mapData.data, nameIdx, lang, state.run.game]);
 
-  const useFullDex = randomizer || fullDex;
+  const useFullDex = randomizer || manualRoutes || fullDex;
 
   const options = useMemo<SpeciesOption[]>(() => {
     const q = query.trim().toLowerCase();
@@ -233,6 +235,7 @@ function EntryForm({ state, region, mapData, nameIdx, prefill, onLogged, stacked
       speciesDupe: t('nuz.err.speciesDupe'),
       nicknameRequired: t('nuz.err.nicknameRequired'),
       giftRoute: t('nuz.err.giftRoute'), /* legacy key — no longer raised */
+      unknownRoute: t('nuz.err.unknownRoute'),
     };
     fail(map[code]);
   };

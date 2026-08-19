@@ -1,0 +1,18 @@
+{
+  "name": "fanart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "card:extract": "node card-templates/scripts/extract-templates.mjs",
+    "card:build": "node card-templates/scripts/assemble-card.mjs card-templates/examples/baby-bisasam.de.json",
+    "card:final": "node card-templates/scripts/build-baby-bisasam-final.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "pngjs": "^7.0.0"
+  }
+}
