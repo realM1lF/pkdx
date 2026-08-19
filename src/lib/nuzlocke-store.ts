@@ -10,6 +10,7 @@ import {
   dropChannel,
   isMultiCapable,
   nuzTables,
+  purgeAccountWatchChannels,
   runChannel,
   supabase,
 } from './supabase';
@@ -2834,6 +2835,7 @@ let hubLoaded = false;
 const accountRunIds = new Set<string>();
 let accountWatchUserId: string | null = null;
 let accountChannel: RealtimeChannel | null = null;
+let accountWatchSettingUp = false;
 let accountSyncInFlight: Promise<void> | null = null;
 let accountSyncNeedsFollowUp = false;
 
@@ -2857,6 +2859,7 @@ export function getHubRunIds(): string[] {
 }
 
 function dropAccountWatch(): void {
+  accountWatchSettingUp = false;
   if (accountChannel) {
     dropChannel(accountChannel);
     accountChannel = null;
@@ -2973,37 +2976,47 @@ export function watchAccountRuns(userId: string): void {
   const user = getAuthUser();
   if (!user || user.id !== userId) return;
   if (accountWatchUserId === userId && accountChannel) return;
+  if (accountWatchSettingUp) return;
 
-  dropAccountWatch();
-  accountWatchUserId = userId;
+  accountWatchSettingUp = true;
+  try {
+    if (accountChannel && accountWatchUserId !== userId) {
+      dropChannel(accountChannel);
+      accountChannel = null;
+    }
+    accountWatchUserId = userId;
+    purgeAccountWatchChannels(userId);
 
-  const resync = (): void => {
-    void syncAccountRuns(userId);
-  };
+    const resync = (): void => {
+      void syncAccountRuns(userId);
+    };
 
-  const resyncIfAccountRun = (payload: {
-    eventType: string;
-    new?: unknown;
-    old?: Partial<{ id: string }>;
-  }): void => {
-    const id =
-      payload.eventType === 'DELETE'
-        ? payload.old?.id
-        : (payload.new as Partial<{ id: string }> | undefined)?.id;
-    if (!id || !accountRunIds.has(id)) return;
-    resync();
-  };
+    const resyncIfAccountRun = (payload: {
+      eventType: string;
+      new?: unknown;
+      old?: Partial<{ id: string }>;
+    }): void => {
+      const id =
+        payload.eventType === 'DELETE'
+          ? payload.old?.id
+          : (payload.new as Partial<{ id: string }> | undefined)?.id;
+      if (!id || !accountRunIds.has(id)) return;
+      resync();
+    };
 
-  const ch = supabase.channel(`account-runs:${userId}`);
-  accountChannel = ch;
-  ch.on(
-    'postgres_changes',
-    { event: '*', schema: 'public', table: 'nuz_run_members', filter: `user_id=eq.${userId}` },
-    resync,
-  );
-  ch.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
-  ch.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
-  ch.subscribe();
+    const ch = supabase.channel(`account-runs:${userId}`);
+    accountChannel = ch;
+    ch.on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'nuz_run_members', filter: `user_id=eq.${userId}` },
+      resync,
+    );
+    ch.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
+    ch.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'nuz_runs' }, resyncIfAccountRun);
+    ch.subscribe();
+  } finally {
+    accountWatchSettingUp = false;
+  }
 }
 
 function hubRefresh(): void {

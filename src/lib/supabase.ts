@@ -189,3 +189,11 @@ export function runChannel(runId: string, presenceKey: string): RealtimeChannel 
 export function dropChannel(channel: RealtimeChannel): void {
   void supabase.removeChannel(channel);
 }
+
+/** Drop leftover account-run channels (removeChannel is async — reuse would throw). */
+export function purgeAccountWatchChannels(userId: string): void {
+  const suffix = `account-runs:${userId}`;
+  for (const ch of supabase.getChannels()) {
+    if (ch.topic.endsWith(suffix)) dropChannel(ch);
+  }
+}

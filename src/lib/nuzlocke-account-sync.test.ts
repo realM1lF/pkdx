@@ -159,6 +159,7 @@ vi.mock('./supabase', async () => {
       from: fromMock,
       channel: channelMock,
       removeChannel: removeChannelMock,
+      getChannels: () => [],
     },
     nuzTables: {
       runs: () => fromMock('nuz_runs'),
