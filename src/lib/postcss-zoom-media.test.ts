@@ -6,7 +6,7 @@ import postcssZoomMedia, {
   ZOOM_MAX,
   ZOOM_MIN,
   ZOOM_STEP,
-} from './postcss-zoom-media';
+} from './postcss-zoom-media.mjs';
 
 async function run(input: string) {
   const result = await postcss([postcssZoomMedia()]).process(input, { from: undefined });

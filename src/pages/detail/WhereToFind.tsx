@@ -329,7 +329,7 @@ export default function WhereToFind({
       <HonestyHint show={active === null && versions.length > 1} className="border-b border-hairline px-3 py-1.5" truncate>
         {t('honesty.siblingMix')}
       </HonestyHint>
-      <div className="dx-scroll max-h-[23rem] overflow-y-auto" data-lenis-prevent>
+      <div className="dx-scroll max-h-[23rem] overflow-y-auto">
         {wild.length === 0 && (
           /* species exists only as gift/static/trade (e.g. starters) */
           <p className="border-b border-hairline px-3 py-2 text-micro11 font-semibold leading-snug text-gold">

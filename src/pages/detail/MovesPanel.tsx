@@ -194,7 +194,7 @@ export default function MovesPanel({
       </div>
 
       {/* dense table, own scrollbar */}
-      <div className="dx-scroll min-h-0 max-h-[30rem] flex-1 overflow-auto border-t border-hairline" data-lenis-prevent>
+      <div className="dx-scroll min-h-0 max-h-[30rem] flex-1 overflow-auto border-t border-hairline">
         {view.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center gap-2">
             <img src="/pokeball.svg" alt="" className="h-10 w-10 opacity-50" />

@@ -406,7 +406,6 @@ export default function SpriteMuseum({ id, name: _name }: { id: number; name: st
       {/* dense tile grid — grows to fill panel, rows stretch when few tiles */}
       <div
         className="dx-scroll grid min-h-0 flex-1 auto-rows-[minmax(4.5rem,1fr)] grid-cols-4 gap-1.5 overflow-y-auto px-4 pb-3 sm:grid-cols-6 xl:grid-cols-8"
-        data-lenis-prevent
       >
         <AnimatePresence mode="popLayout" initial={false}>
           {tiles.map((t, i) => (
