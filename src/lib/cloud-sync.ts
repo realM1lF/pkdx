@@ -26,6 +26,7 @@ import {
   isAccountManagedRun,
   loadLocalRun,
   markRunAccountLinked,
+  mintInviteCode,
   readRunIndex,
   saveLocalRunPublic,
   stopAccountRunsWatch,
@@ -35,6 +36,7 @@ import {
 import type { RunState } from './nuzlocke-store';
 
 const DEBOUNCE_MS = 900;
+const PG_UNIQUE_VIOLATION = '23505';
 
 /* ---------------- debounce helpers ---------------- */
 const teamTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -178,17 +180,18 @@ async function hydrateTeams(user: { id: string }): Promise<void> {
 
 /* ---------------- nuzlocke solo runs ---------------- */
 
-/** Immediate account upsert (no debounce) — used by login adopt + debounced push. */
-async function pushSoloRunToAccount(state: RunState): Promise<boolean> {
-  if (state.mode !== 'solo') return false;
-  const realUser = getAuthUser();
-  if (!realUser) return false;
-  const runRow = { ...state.run, invite_code: null };
-  const { error: runErr } = await supabase.from('nuz_runs').upsert(runRow, { onConflict: 'id' });
-  if (runErr) {
-    console.warn('[cloud-sync] run push failed', runErr.message);
-    return false;
-  }
+/** Writable run fields — never send invite_code (solo stays code-less until go-online). */
+function soloRunPatchForCloud(state: RunState) {
+  return {
+    name: state.run.name,
+    game: state.run.game,
+    region: state.run.region,
+    rules: state.run.rules,
+    status: state.run.status,
+  };
+}
+
+async function pushSoloPlayersEncounters(state: RunState): Promise<void> {
   if (state.players.length) {
     const { error: plErr } = await supabase.from('nuz_players').upsert(state.players, { onConflict: 'id' });
     if (plErr) console.warn('[cloud-sync] players push failed', plErr.message);
@@ -199,12 +202,62 @@ async function pushSoloRunToAccount(state: RunState): Promise<boolean> {
       .upsert(state.encounters, { onConflict: 'id' });
     if (encErr) console.warn('[cloud-sync] encounters push failed', encErr.message);
   }
-  /* owner membership comes from nuz_runs_grant_owner trigger */
-  return true;
+}
+
+function adoptInsertBenign(code: string | undefined): boolean {
+  return code === '42501';
+}
+
+/** Legacy localStorage solo → nuz_runs (login adopt only). Cloud runs skip via syncAccountRuns. */
+async function pushSoloRunToAccount(state: RunState): Promise<boolean> {
+  if (state.mode !== 'solo') return false;
+  if (isAccountManagedRun(state.run.id)) return true;
+  const realUser = getAuthUser();
+  if (!realUser) return false;
+
+  const runId = state.run.id;
+  const patch = soloRunPatchForCloud(state);
+
+  const { data: updated, error: updErr } = await supabase
+    .from('nuz_runs')
+    .update(patch)
+    .eq('id', runId)
+    .select('id');
+
+  if (!updErr && updated?.length) {
+    await pushSoloPlayersEncounters(state);
+    return true;
+  }
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const invite = mintInviteCode();
+    const { error: insErr } = await supabase
+      .from('nuz_runs')
+      .insert({ id: runId, ...patch, invite_code: invite });
+    if (!insErr) {
+      await pushSoloPlayersEncounters(state);
+      return true;
+    }
+    if (insErr.code === PG_UNIQUE_VIOLATION) {
+      const { data: retry, error: retryErr } = await supabase
+        .from('nuz_runs')
+        .update(patch)
+        .eq('id', runId)
+        .select('id');
+      if (!retryErr && retry?.length) await pushSoloPlayersEncounters(state);
+      return true;
+    }
+    if (adoptInsertBenign(insErr.code)) return true;
+    if (attempt === 4) console.warn('[cloud-sync] run push failed', insErr.message);
+  }
+
+  if (updErr) console.warn('[cloud-sync] run push failed', updErr.message);
+  return false;
 }
 
 export function cloudPushSoloRun(state: RunState): void {
   if (state.mode !== 'solo') return;
+  if (isAccountManagedRun(state.run.id)) return;
   const id = state.run.id;
   debounce(runTimers, id, () => {
     void (async () => {
@@ -276,7 +329,7 @@ async function adoptLocalSoloRuns(): Promise<void> {
   for (const id of readRunIndex()) {
     if (isAccountManagedRun(id)) continue;
     const local = loadLocalRun(id);
-    if (!local || local.mode !== 'solo') continue;
+    if (!local || local.mode !== 'solo' || local.run.invite_code) continue;
     const ok = await pushSoloRunToAccount(local);
     if (ok) markRunAccountLinked(id);
   }

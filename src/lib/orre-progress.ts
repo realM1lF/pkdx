@@ -12,6 +12,10 @@ import { supabase } from './supabase'
 const KEY = 'pdx2.orre.progress'
 const OWNER_KEY = 'pdx2.orre.owner'
 const DEBOUNCE_MS = 400
+/** PostgREST: table absent — migration 11 not applied on live DB yet. */
+const PG_MISSING_TABLE = 'PGRST205'
+
+let orreCloudSupported = true
 
 type ProgressStore = Record<OrreGame, Partial<Record<string, ShadowStatus>>>
 
@@ -79,7 +83,7 @@ function rowKey(game: OrreGame, id: string): string {
 
 function scheduleCloudWrite(game: OrreGame, id: string, status: ShadowStatus): void {
   const user = getAuthUser()
-  if (!user) return
+  if (!user || !orreCloudSupported) return
 
   const key = rowKey(game, id)
   const prev = pushTimers.get(key)
@@ -100,6 +104,7 @@ async function flushCloudWrite(
   id: string,
   status: ShadowStatus,
 ): Promise<void> {
+  if (!orreCloudSupported) return
   if (status === 'remaining') {
     const { error } = await supabase
       .from('orre_shadow_progress')
@@ -107,7 +112,10 @@ async function flushCloudWrite(
       .eq('user_id', userId)
       .eq('game', game)
       .eq('shadow_id', id)
-    if (error) console.warn('[orre-progress] delete failed', error.message)
+    if (error) {
+      if (error.code === PG_MISSING_TABLE) orreCloudSupported = false
+      else console.warn('[orre-progress] delete failed', error.message)
+    }
     return
   }
 
@@ -121,7 +129,10 @@ async function flushCloudWrite(
     },
     { onConflict: 'user_id,game,shadow_id' },
   )
-  if (error) console.warn('[orre-progress] upsert failed', error.message)
+  if (error) {
+    if (error.code === PG_MISSING_TABLE) orreCloudSupported = false
+    else console.warn('[orre-progress] upsert failed', error.message)
+  }
 }
 
 export function setStatus(game: OrreGame, id: string, status: ShadowStatus): void {
@@ -193,6 +204,10 @@ export async function hydrateOrreProgress(user: User): Promise<void> {
       .select('game, shadow_id, status, updated_at')
       .eq('user_id', user.id)
     if (res.error) {
+      if (res.error.code === PG_MISSING_TABLE) {
+        orreCloudSupported = false
+        return
+      }
       console.warn('[orre-progress] hydrate failed', res.error.message)
       return
     }
@@ -227,6 +242,7 @@ export async function hydrateOrreProgress(user: User): Promise<void> {
 /** Test helper — clear in-memory cache between cases. */
 export function __resetOrreProgressCacheForTests(): void {
   cache = null
+  orreCloudSupported = true
   for (const t of pushTimers.values()) clearTimeout(t)
   pushTimers.clear()
 }

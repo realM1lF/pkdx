@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Outlet } from 'react-router';
 import Layout from './components/Layout';
 import { LangGate, LangHomeRedirect, LangRedirect } from './components/LangGate';
 import { ShinyProvider } from './lib/shiny';
@@ -54,6 +54,8 @@ const Feedback = lazyWithReload(() => import('./pages/Feedback'));
 const Support = lazyWithReload(() => import('./pages/Support'));
 const Account = lazyWithReload(() => import('./pages/Account'));
 const OrreTracker = lazyWithReload(() => import('./pages/OrreTracker'));
+const OverlayShell = lazyWithReload(() => import('./components/OverlayShell'));
+const NuzlockeOverlay = lazyWithReload(() => import('./pages/overlay/NuzlockeOverlay'));
 
 function PageFallback() {
   /* full-screen pokeball gate while lazy chunks load — same look as the
@@ -74,6 +76,14 @@ function PageFallback() {
   );
 }
 
+function LayoutRoute() {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+}
+
 export default function App() {
   useEffect(() => {
     markFirstPaintDone();
@@ -81,13 +91,14 @@ export default function App() {
 
   return (
     <ShinyProvider>
-      <Layout>
-        <Suspense fallback={<PageFallback />}>
-          <Routes>
-              {/* every app route lives once under the /:lang prefix (WP7);
-                  unprefixed legacy URLs redirect to the detected language */}
-              <Route path="/:lang" element={<LangGate />}>
-                <Route index element={<Home />} />
+      <Suspense fallback={<PageFallback />}>
+        <Routes>
+          <Route path="/:lang" element={<LangGate />}>
+            <Route path="overlay/nuzlocke/:overlayToken" element={<OverlayShell />}>
+              <Route index element={<NuzlockeOverlay />} />
+            </Route>
+            <Route element={<LayoutRoute />}>
+              <Route index element={<Home />} />
                 <Route path="pokedex" element={<Pokedex />} />
                 <Route path="pokemon/:id" element={<PokemonDetail />} />
                 <Route path="maps" element={<Maps />} />
@@ -138,11 +149,11 @@ export default function App() {
                     deliberately NOT in seo-routes.mjs (no prerender/sitemap) */}
                 <Route path="lizenzen" element={<Licenses />} />
                 <Route path="*" element={<LangHomeRedirect />} />
-              </Route>
-              <Route path="*" element={<LangRedirect />} />
-            </Routes>
-          </Suspense>
-        </Layout>
-      </ShinyProvider>
+            </Route>
+          </Route>
+          <Route path="*" element={<LangRedirect />} />
+        </Routes>
+      </Suspense>
+    </ShinyProvider>
   );
 }

@@ -622,7 +622,11 @@ export default function Wizard({ open, onClose, joinPreset, runCount, presetRegi
                       </button>
                     ))}
                   </div>
-                  {online && <p className="mt-2 text-micro11 leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>}
+                  {online ? (
+                    <p className="mt-2 text-micro11 leading-snug text-tx-muted">{t('nuz.wizard.accountHint')}</p>
+                  ) : (
+                    <p className="mt-2 text-micro11 leading-snug text-tx-muted">{t('nuz.wizard.soloCloudHint')}</p>
+                  )}
                 </div>
               )}
               <WizardFooter back={() => setStep(0)} next={() => setStep(2)} nextLabel={t('nuz.wizard.rulesNext')} />

@@ -12,6 +12,8 @@ let mockUser: { id: string } | null = null;
 let authCb: ((user: User | null) => void) | null = null;
 
 const runsUpserts: unknown[] = [];
+const runsInserts: unknown[] = [];
+const runsUpdates: unknown[] = [];
 const teamUpserts: unknown[] = [];
 const playersUpserts: unknown[] = [];
 const encounterUpserts: unknown[] = [];
@@ -69,6 +71,19 @@ vi.mock('./supabase', async () => {
   fromMock.mockImplementation((table: string) => {
     if (table === 'nuz_runs') {
       return {
+        insert: (row: unknown) => {
+          runsInserts.push(row);
+          return Promise.resolve({ data: row, error: null });
+        },
+        update: (patch: unknown) => {
+          runsUpdates.push(patch);
+          const api: Record<string, unknown> = {
+            eq: () => ({
+              select: () => Promise.resolve({ data: [], error: null }),
+            }),
+          };
+          return api;
+        },
         upsert: (row: unknown) => {
           runsUpserts.push(row);
           return Promise.resolve({ data: row, error: null });
@@ -242,6 +257,6 @@ describe('cloud-sync migration', () => {
     await vi.advanceTimersByTimeAsync(1200);
 
     expect(offers.filter(Boolean)).toHaveLength(0);
-    expect(runsUpserts.some((r) => (r as { id?: string }).id === LOCAL_SOLO)).toBe(true);
+    expect(runsInserts.some((r) => (r as { id?: string }).id === LOCAL_SOLO)).toBe(true);
   });
 });

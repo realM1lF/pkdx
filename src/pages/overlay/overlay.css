@@ -1,0 +1,33 @@
+/* OBS overlay — transparent background, compact typography. */
+html.overlay-mode,
+body.overlay-mode {
+  background: transparent !important;
+  overflow: hidden;
+}
+
+.overlay-root {
+  background: transparent;
+  color: var(--tx-primary, #e8eaef);
+}
+
+.overlay-panel {
+  background: rgba(13, 15, 22, 0.82);
+  border: 1px solid rgba(246, 201, 69, 0.22);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+}
+
+.overlay-slot {
+  min-width: 3rem;
+  min-height: 3.5rem;
+}
+
+.overlay-slot-dead {
+  filter: grayscale(0.55);
+  opacity: 0.72;
+}
+
+.overlay-preview-hint {
+  color: rgba(246, 201, 69, 0.65);
+  font-size: 10px;
+}

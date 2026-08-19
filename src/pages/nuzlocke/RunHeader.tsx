@@ -30,6 +30,7 @@ import type { RunEntry } from '@/lib/nuzlocke-store';
 import { cn } from '@/lib/utils';
 import { PixelLabel, Popover, RunStatusChip, SyncBadge } from './ui';
 import { RulesEditor } from './RulesBar';
+import OverlayPanel from './OverlayPanel';
 
 export default function RunHeader({
   entry,
@@ -208,6 +209,7 @@ export default function RunHeader({
           })}
 
         {/* team builder */}
+        <OverlayPanel entry={entry} />
         <LocaleLink
           to={`/team?fromRun=${state.run.id}`}
           className="flex h-9 items-center gap-1.5 rounded-md border border-hairline2 px-3 text-micro12 font-semibold text-tx-secondary transition-colors hover:border-gold/50 hover:text-gold"

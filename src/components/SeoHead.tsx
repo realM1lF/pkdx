@@ -64,6 +64,9 @@ export default function SeoHead({ lang }: { lang: Lang }) {
     if (/^\/team\/.+/.test(rest)) {
       upsertMeta('name', 'robots', 'noindex, nofollow', managed);
     }
+    if (/^\/overlay\//.test(rest)) {
+      upsertMeta('name', 'robots', 'noindex, nofollow', managed);
+    }
 
     /* title + description + Open Graph */
     document.title = meta.title[lang];

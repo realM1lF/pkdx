@@ -212,9 +212,9 @@ describe('solo cloud persistence', () => {
     expect(runsUpserts).toHaveLength(1);
     expect(runsUpserts[0]).toMatchObject({
       id: state.run.id,
-      invite_code: null,
       name: 'Account Solo',
     });
+    expect(runsUpserts[0]).not.toHaveProperty('invite_code');
     /* role='owner' is rejected by RLS for REST clients (migration 10) — the
      * nuz_runs_grant_owner trigger writes that row instead */
     expect(membersUpserts).not.toContainEqual(

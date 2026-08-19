@@ -128,12 +128,16 @@ for (const t of ['profiles', 'teams', 'nuz_solo_runs', 'orre_shadow_progress']) 
 
 /* ---------- 6. migration state ---------- */
 console.log('\n6. Migration state (stage-1 RPCs present?):');
-const rpcs = ['nuz_join_by_code', 'nuz_claim_access'];
+const rpcs = ['nuz_join_by_code', 'nuz_claim_access', 'nuz_overlay_snapshot'];
 let rpcMissing = 0;
 for (const fn of rpcs) {
+  const body =
+    fn === 'nuz_overlay_snapshot'
+      ? JSON.stringify({ p_token: 'OVERLAY-INVALID1' })
+      : JSON.stringify({ p_code: 'SOUL-CHECKONLY' });
   const r = await req(`/rest/v1/rpc/${fn}`, {
     method: 'POST',
-    body: JSON.stringify({ p_code: 'SOUL-CHECKONLY' }),
+    body,
   });
   if (r.body?.code === 'PGRST202' || r.status === 404) {
     rpcMissing++;
@@ -143,8 +147,28 @@ for (const fn of rpcs) {
   }
 }
 
-/* ---------- 7. auth surface ---------- */
-console.log('\n7. Auth configuration:');
+/* ---------- 7. overlay token must not leak via table listing ---------- */
+console.log('\n7. Overlay token exposure (must not list via REST):');
+const overlayLeak = await req('/rest/v1/nuz_runs?select=overlay_token&overlay_token=not.is.null&limit=3');
+if (Array.isArray(overlayLeak.body) && overlayLeak.body.length > 0) {
+  note('crit', 'overlay_token readable via anonymous REST — snapshot RPC only');
+} else {
+  note('ok', 'overlay_token not listable anonymously');
+}
+const snapInvalid = await req('/rest/v1/rpc/nuz_overlay_snapshot', {
+  method: 'POST',
+  body: JSON.stringify({ p_token: 'OVERLAY-INVALID1' }),
+});
+if (snapInvalid.body === null || snapInvalid.body === 'null') {
+  note('ok', 'nuz_overlay_snapshot rejects invalid token (null)');
+} else if (snapInvalid.body?.code === 'PGRST202') {
+  note('warn', 'nuz_overlay_snapshot not deployed — skip invalid-token probe');
+} else {
+  note('warn', `nuz_overlay_snapshot invalid token: ${JSON.stringify(snapInvalid.body).slice(0, 80)}`);
+}
+
+/* ---------- 8. auth surface ---------- */
+console.log('\n8. Auth configuration:');
 const settings = await req('/auth/v1/settings');
 if (settings.status === 200 && settings.body) {
   const s = settings.body;

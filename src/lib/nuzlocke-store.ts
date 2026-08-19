@@ -316,12 +316,14 @@ export function loadLocalRun(id: string): RunState | null {
 function saveLocalRun(state: RunState): void {
   if (!writeJson(LS_RUN(state.run.id), state)) notifyStorageFailure();
   else if (!isRunArchived(state.run.id)) addToIndex(state.run.id);
-  /* guest blob mirror only — cloud-backed solos persist row-by-row */
-  if (!isCloudRun(state)) {
+  /* Guest solo blob mirror only. Logged-in cloud runs use nuzlocke-store outbox;
+   * one-shot local→account adopt runs on login (adoptLocalSoloRuns). */
+  if (!getAuthUser() && !isCloudRun(state)) {
     void import('./cloud-sync')
       .then((m) => m.cloudPushSoloRun(state))
       .catch((err) => console.warn('[nuzlocke] cloud push failed', err));
   }
+  scheduleOverlayBroadcast(state);
 }
 
 /** public persistence entry for cloud hydration (cloud-sync) */
@@ -522,7 +524,7 @@ function syncLocalArchivedFromServer(archivedIds: Set<string>, activeIds: Set<st
 const INVITE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const INVITE_LENGTH = 8;
 
-function mintInviteCode(): string {
+export function mintInviteCode(): string {
   const n = INVITE_ALPHABET.length;
   /* largest multiple of n that fits in a byte — values above it are rejected
    * so every symbol stays equally likely (no modulo bias) */
@@ -960,7 +962,13 @@ async function fetchRemoteRun(runId: string): Promise<RunState | null> {
   ]);
   const row = run as NuzRunRow;
   return {
-    run: { ...row, rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) } },
+    run: {
+      ...row,
+      rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) },
+      overlay_enabled: row.overlay_enabled ?? false,
+      overlay_token: row.overlay_token ?? null,
+      overlay_config: row.overlay_config ?? {},
+    },
     mode: row.invite_code ? 'multi' : 'solo',
     players: (players ?? []) as NuzPlayerRow[],
     encounters: normalizeEncounters((encounters ?? []) as NuzEncounterRow[]),
@@ -1206,7 +1214,13 @@ function goLive(entry: RunEntry): void {
       const st = entry.state;
       if (!st) return;
       const row = payload.new as NuzRunRow;
-      st.run = { ...row, rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) } };
+      st.run = {
+        ...row,
+        rules: { ...DEFAULT_RULES, ...(row.rules as Partial<NuzRules>) },
+        overlay_enabled: row.overlay_enabled ?? false,
+        overlay_token: row.overlay_token ?? null,
+        overlay_config: row.overlay_config ?? {},
+      };
       saveLocalRun(st);
       emit(entry);
     },
@@ -1761,7 +1775,19 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
       pushToast('sync', i18n.t('nuz.toast.offlineSaved'));
     }
   } else if (getAuthUser() && isMultiCapable()) {
-    const { error: runErr } = await nuzTables.runs().insert({ ...baseRun, invite_code: null });
+    /* Solo / shared-screen: still cloud-backed on the account — no invite until
+     * the owner upgrades to online multiplayer. */
+    await ensureRunIdentity();
+    const { id, name, game, region, rules, status, created_at } = baseRun;
+    let runErr: { code?: string; message: string } | null = (
+      await nuzTables.runs().insert({ id, name, game, region, rules, status, created_at })
+    ).error;
+    /* Some DBs still enforce NOT NULL on invite_code — mint one but keep mode solo. */
+    if (runErr?.code === '23502' && /invite_code/i.test(runErr.message ?? '')) {
+      const inserted = await insertRunWithFreshInvite(baseRun);
+      runErr = inserted.error;
+      if (!inserted.error && inserted.invite) baseRun.invite_code = inserted.invite;
+    }
     if (!runErr) {
       const { error: plErr } = await nuzTables.players().insert(players);
       if (!plErr) {
@@ -1770,8 +1796,13 @@ export async function createRun(cfg: NewRunConfig): Promise<CreatedRun> {
         cloudBacked = true;
       } else {
         await nuzTables.runs().delete().eq('id', id);
+        offlineFallback = true;
         pushToast('sync', i18n.t('nuz.toast.cloudPlayerFailed'));
       }
+    } else {
+      offlineFallback = true;
+      console.warn('[nuzlocke] solo run insert failed', runErr.message);
+      pushToast('sync', i18n.t('nuz.toast.cloudRunFailed'));
     }
   }
 
@@ -2492,6 +2523,136 @@ export function exportRunSummary(state: RunState, opts: Parameters<typeof format
   return formatRunSummary(state, opts);
 }
 
+/* ---------- OBS overlay (cloud runs only) ---------- */
+
+const overlayBroadcastTimers = new Map<string, number>();
+
+function scheduleOverlayBroadcast(state: RunState): void {
+  if (!state.run.overlay_enabled || !state.run.overlay_token) return;
+  const runId = state.run.id;
+  const token = state.run.overlay_token;
+  const existing = overlayBroadcastTimers.get(runId);
+  if (existing) window.clearTimeout(existing);
+  overlayBroadcastTimers.set(
+    runId,
+    window.setTimeout(() => {
+      overlayBroadcastTimers.delete(runId);
+      void import('./nuzlocke-overlay')
+        .then((m) => m.sendOverlayBroadcast(token, new Date().toISOString()))
+        .catch(() => undefined);
+    }, 80),
+  );
+}
+
+function overlayCloudGate(state: RunState): boolean {
+  if (isCloudRun(state)) return true;
+  pushToast('info', i18n.t('nuz.overlay.cloudRequired'));
+  return false;
+}
+
+export async function enableOverlay(runId: string, config?: Partial<import('./nuzlocke-overlay').OverlayConfig>): Promise<boolean> {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  if (!s || !isRunOwner(runId)) return false;
+  if (!overlayCloudGate(s)) return false;
+  const { mintOverlayToken, normalizeOverlayConfig } = await import('./nuzlocke-overlay');
+  const prev = normalizeOverlayConfig(s.run.overlay_config);
+  const nextConfig = normalizeOverlayConfig({ ...prev, ...config });
+  let token = s.run.overlay_token ?? mintOverlayToken();
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const { error } = await nuzTables
+      .runs()
+      .update({
+        overlay_enabled: true,
+        overlay_token: token,
+        overlay_config: nextConfig,
+      })
+      .eq('id', runId);
+    if (!error) {
+      s.run.overlay_enabled = true;
+      s.run.overlay_token = token;
+      s.run.overlay_config = nextConfig as unknown as Record<string, unknown>;
+      saveLocalRun(s);
+      emit(entry);
+      pushToast('success', i18n.t('nuz.overlay.enabled'));
+      return true;
+    }
+    if (error.code !== PG_UNIQUE_VIOLATION) {
+      pushToast(
+        'sync',
+        error.code === PG_MISSING_COLUMN
+          ? i18n.t('nuz.overlay.migrationRequired')
+          : i18n.t('nuz.overlay.enableFailed'),
+      );
+      return false;
+    }
+    token = mintOverlayToken();
+  }
+  pushToast('sync', i18n.t('nuz.overlay.enableFailed'));
+  return false;
+}
+
+export async function disableOverlay(runId: string): Promise<boolean> {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  if (!s || !isRunOwner(runId)) return false;
+  if (!overlayCloudGate(s)) return false;
+  const { error } = await nuzTables.runs().update({ overlay_enabled: false }).eq('id', runId);
+  if (error) {
+    pushToast('sync', i18n.t('nuz.toast.retryingSync'));
+    return false;
+  }
+  s.run.overlay_enabled = false;
+  saveLocalRun(s);
+  emit(entry);
+  pushToast('success', i18n.t('nuz.overlay.disabled'));
+  return true;
+}
+
+export async function rotateOverlayToken(runId: string): Promise<boolean> {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  if (!s || !isRunOwner(runId) || !s.run.overlay_enabled) return false;
+  if (!overlayCloudGate(s)) return false;
+  const { mintOverlayToken } = await import('./nuzlocke-overlay');
+  let token = mintOverlayToken();
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const { error } = await nuzTables.runs().update({ overlay_token: token }).eq('id', runId);
+    if (!error) {
+      s.run.overlay_token = token;
+      saveLocalRun(s);
+      emit(entry);
+      pushToast('success', i18n.t('nuz.overlay.rotated'));
+      return true;
+    }
+    if (error.code !== PG_UNIQUE_VIOLATION) break;
+    token = mintOverlayToken();
+  }
+  pushToast('sync', i18n.t('nuz.toast.retryingSync'));
+  return false;
+}
+
+export async function updateOverlayConfig(
+  runId: string,
+  patch: Partial<import('./nuzlocke-overlay').OverlayConfig>,
+): Promise<boolean> {
+  const entry = ensureEntry(runId);
+  const s = entry.state;
+  if (!s || !isRunOwner(runId)) return false;
+  if (!overlayCloudGate(s)) return false;
+  const { normalizeOverlayConfig } = await import('./nuzlocke-overlay');
+  const next = normalizeOverlayConfig({ ...normalizeOverlayConfig(s.run.overlay_config), ...patch });
+  s.run.overlay_config = next as unknown as Record<string, unknown>;
+  const { error } = await nuzTables.runs().update({ overlay_config: next }).eq('id', runId);
+  if (error) {
+    pushToast('sync', i18n.t('nuz.toast.retryingSync'));
+    return false;
+  }
+  saveLocalRun(s);
+  emit(entry);
+  return true;
+}
+
 export function setRunStatus(runId: string, status: NuzRunStatus): void {
   const entry = ensureEntry(runId);
   const s = entry.state;
@@ -2634,7 +2795,8 @@ export async function duplicateAsSolo(runId: string): Promise<string | null> {
   setRunOwner(id);
   if (players[0]) setMembership(id, players[0].id);
   if (getAuthUser() && isMultiCapable()) {
-    const { error: runErr } = await nuzTables.runs().insert({ ...state.run, invite_code: null });
+    const { id: runId, name, game, region, rules, status, created_at } = state.run;
+    const { error: runErr } = await nuzTables.runs().insert({ id: runId, name, game, region, rules, status, created_at });
     if (!runErr) {
       const { error: plErr } = await nuzTables.players().insert(players);
       if (plErr) {

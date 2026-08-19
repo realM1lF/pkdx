@@ -127,6 +127,10 @@ export interface NuzRunRow {
   rules: NuzRules;
   status: NuzRunStatus;
   created_at: string;
+  /** OBS browser-source overlay (migration 16) */
+  overlay_enabled?: boolean;
+  overlay_token?: string | null;
+  overlay_config?: Record<string, unknown>;
 }
 
 export interface NuzPlayerRow {
