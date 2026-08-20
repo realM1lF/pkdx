@@ -2,7 +2,7 @@
  * Empty → "+" autocomplete add · Filled → sprite aura, types, level,
  * item/ability line, 4 move chips with type dots, VS link, duplicate/remove.
  * Gold ILLEGAL flag (never red). */
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -16,12 +16,14 @@ import { LocaleLink } from '@/lib/locale-link';
 import { formIdentity, dexEntryPath } from '@/lib/dex-forms-catalog';
 import { pokemonHref, versusHref } from '@/lib/edition-nav';
 import { genTypesOf, legalityReasonText, versionGroupById } from '@/lib/teambuilder';
+import { bstOf, genStatsOf, statKeysForGen, statLabelForGen, statsFromPokemon } from '@/lib/gen-dex';
 import type { SlotLegality, TeamSlot } from '@/lib/teambuilder';
 import type { Move, Pokemon } from '@/lib/types';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import PokemonPicker from './PokemonPicker';
+import { MiniBstRing, MiniRadar } from './StatViz';
 
 /** 'Swords Dance' → 'swords-dance' (items/abilities are stored as EN display names) */
 function slugify(name: string): string {
@@ -79,6 +81,16 @@ export default function SlotCard({
   const [picking, setPicking] = useState(false);
   const entityModal = useEntityModal();
   const lockRoster = rosterLocked || readOnly;
+  const vg = versionGroupById(versionGroup);
+  const statBlock = useMemo(() => {
+    if (!pokemon || !slot.pokemon) return null;
+    return genStatsOf(versionGroup, slot.pokemon, statsFromPokemon(pokemon));
+  }, [pokemon, slot.pokemon, versionGroup]);
+  const statKeys = statKeysForGen(vg.gen);
+  const statValues = statBlock ? statKeys.map((k) => statBlock[k]) : [];
+  const statLabels = statKeys.map((k) => statLabelForGen(k, vg.gen));
+  const bst = statBlock ? bstOf(statBlock, vg.gen) : null;
+  const statLine = statBlock ? statKeys.map((_, i) => `${statLabels[i]} ${statValues[i]}`).join(' · ') : '';
 
   /* ---------- empty slot ---------- */
   if (!slot.pokemon || slot.pokemonId == null) {
@@ -134,7 +146,6 @@ export default function SlotCard({
   const label = slot.nickname || nameOfPokemon(slot.pokemon, lang);
   const ident = formIdentity(slot.pokemon, slot.pokemonId);
   const detailPath = pokemonHref(dexEntryPath({ id: slot.pokemonId, name: slot.pokemon }), { game: versionGroup });
-  const vg = versionGroupById(versionGroup);
 
   const handleCardClick = () => {
     onFocus(slot.id);
@@ -147,7 +158,7 @@ export default function SlotCard({
       layout
       onClick={handleCardClick}
       className={cn(
-        'tb-panel tb-slot-drag relative flex min-h-[10.75rem] flex-col overflow-hidden p-2.5 transition-shadow',
+        'group/slot tb-panel tb-slot-drag relative flex min-h-[11.5rem] flex-col overflow-hidden p-2.5 transition-shadow',
         !readOnly && 'cursor-pointer',
         focused && 'border-gold/40 shadow-[0_0_0_1px_rgba(246,201,69,0.25)]',
         /* the slot whose editor is open must be unmistakable (user feedback):
@@ -244,30 +255,36 @@ export default function SlotCard({
         </div>
       )}
 
-      {/* sprite on aura — card click opens editor; detail via top-right icon */}
-      <div className="group/detail relative mx-auto my-0.5 h-[4rem] w-[4rem]">
-        <span
-          aria-hidden
-          className="absolute inset-[-8px] animate-breathe rounded-full transition-opacity group-hover/detail:opacity-100"
-          style={{
-            background: `radial-gradient(circle at 50% 55%, rgba(${primary.rgb},0.38) 0%, rgba(${primary.rgb},0.12) 42%, transparent 70%)`,
-            filter: 'blur(10px)',
-          }}
-        />
-        <Sprite
-          id={slot.pokemonId}
-          name={nameOfPokemon(slot.pokemon, lang)}
-          era={slot.pokemonId <= 649 ? 'gen5' : 'default'}
-          shiny={slot.shiny}
-          className="relative h-full w-full transition-transform duration-150 group-hover/detail:scale-105"
-        />
-        {slot.shiny && (
+      {/* sprite + BST ring + stat radar */}
+      <div className="relative mx-auto my-1 flex items-center justify-center gap-2.5 px-0.5" title={statLine || undefined}>
+        {bst != null && <MiniBstRing bst={bst} />}
+        <div className="group/detail relative mx-1 h-[3.75rem] w-[3.75rem] shrink-0">
           <span
-            className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-gold/60 bg-void text-gold shadow-[0_0_8px_rgba(246,201,69,0.5)]"
-            title={t8n('tb.slot.shiny')}
-          >
-            <Sparkles size={9} />
-          </span>
+            aria-hidden
+            className="absolute inset-[-6px] animate-breathe rounded-full transition-opacity group-hover/detail:opacity-100"
+            style={{
+              background: `radial-gradient(circle at 50% 55%, rgba(${primary.rgb},0.38) 0%, rgba(${primary.rgb},0.12) 42%, transparent 70%)`,
+              filter: 'blur(8px)',
+            }}
+          />
+          <Sprite
+            id={slot.pokemonId}
+            name={nameOfPokemon(slot.pokemon, lang)}
+            era={slot.pokemonId <= 649 ? 'gen5' : 'default'}
+            shiny={slot.shiny}
+            className="relative h-full w-full transition-transform duration-150 group-hover/detail:scale-105"
+          />
+          {slot.shiny && (
+            <span
+              className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gold/60 bg-void text-gold shadow-[0_0_8px_rgba(246,201,69,0.5)]"
+              title={t8n('tb.slot.shiny')}
+            >
+              <Sparkles size={8} />
+            </span>
+          )}
+        </div>
+        {statValues.length > 0 && (
+          <MiniRadar values={statValues} rgb={primary.rgb} labels={statLabels} />
         )}
       </div>
 

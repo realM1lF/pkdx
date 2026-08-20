@@ -1081,7 +1081,8 @@ export function DamageMatrix({
   const { t } = useTranslation();
   const lang = useLanguage();
   return (
-    <div>
+    <div className="vs-matrix-scroll overflow-x-auto" data-lenis-prevent>
+      <div className="vs-matrix-inner">
       <div className="grid grid-cols-[20px_minmax(0,1fr)_18px_68px_30px_minmax(108px,1.1fr)] items-center gap-1.5 border-b border-hairline px-2 pb-1">
         <span className="pixel-label text-[8px] text-tx-muted"> </span>
         <span className="pixel-label text-[8px] text-tx-muted">{heading}</span>
@@ -1199,6 +1200,7 @@ export function DamageMatrix({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

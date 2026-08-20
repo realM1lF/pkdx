@@ -32,6 +32,7 @@ function TypeRail({ types, onToggleType }: { types: PokemonType[]; onToggleType:
       role="group"
       aria-label={t8n('pokedex.filterByType')}
       className="pdx-rail flex min-w-0 flex-1 items-center gap-1 overflow-x-auto px-0.5 py-1"
+      data-lenis-prevent
     >
       {POKEMON_TYPES.map((t) => {
         const active = types.includes(t);
@@ -162,6 +163,8 @@ interface FilterPopoverProps {
   onToggleSpecial: (s: Special) => void;
   sort: SortKey;
   onSort: (s: SortKey) => void;
+  density: Density;
+  onDensity: (d: Density) => void;
   activeCount: number;
   onClear: () => void;
 }
@@ -359,6 +362,36 @@ function FilterPopover(p: FilterPopoverProps) {
                 </div>
               </div>
 
+              {/* density (mobile — bar toggle is md+ only) */}
+              <div className="mb-3 md:hidden">
+                <span className={sectionLabel}>{t8n('pokedex.density')}</span>
+                <div className="flex gap-1">
+                  {DENSITIES.map(({ key, labelKey, icon: Icon }) => {
+                    const active = p.density === key;
+                    const label = t8n(labelKey);
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        aria-pressed={active}
+                        aria-label={label}
+                        title={label}
+                        onClick={() => p.onDensity(key)}
+                        className={cn(
+                          'flex flex-1 items-center justify-center gap-1.5 rounded-sm border py-2 font-sans text-micro11 font-semibold transition-all duration-150',
+                          active
+                            ? 'border-gold/60 bg-gold-soft text-gold'
+                            : 'border-hairline bg-surface2 text-tx-secondary hover:text-tx-primary',
+                        )}
+                      >
+                        <Icon size={13} strokeWidth={1.75} />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="flex items-center border-t border-hairline pt-2.5">
                 <button
                   type="button"
@@ -543,6 +576,8 @@ export default function CommandBar(p: CommandBarProps) {
               onToggleSpecial={p.onToggleSpecial}
               sort={p.sort}
               onSort={p.onSort}
+              density={p.density}
+              onDensity={p.onDensity}
               activeCount={popoverCount}
               onClear={p.onResetAll}
             />

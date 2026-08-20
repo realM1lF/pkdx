@@ -212,7 +212,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                 <X size={18} strokeWidth={1.75} />
               </button>
             </div>
-            <nav className="relative flex flex-1 flex-col items-start justify-center gap-6 px-8">
+            <nav className="relative flex flex-1 flex-col items-start justify-start gap-6 overflow-y-auto px-8 py-6" data-lenis-prevent>
               {LINKS.map((l) => (
                 <div key={l.to}>
                   <NavLink

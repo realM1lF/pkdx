@@ -80,7 +80,7 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
           y: ((e.clientY - r.top) / r.height - 0.5) * -12,
         });
       }}
-      className="group relative h-60 overflow-hidden rounded-lg border border-hairline bg-surface1 p-4 transition-[border-color,box-shadow] duration-200"
+      className="group relative min-h-60 overflow-hidden rounded-lg border border-hairline bg-surface1 p-4 transition-[border-color,box-shadow] duration-200"
       style={{
         borderColor: hover ? `rgba(${rgb},0.55)` : undefined,
         boxShadow: hover ? `0 8px 40px rgba(${rgb},0.25)` : undefined,
@@ -129,8 +129,8 @@ export default function RegionCard({ region, index }: { region: RegionMap; index
           ))}
         </div>
 
-        {/* CTAs */}
-        <div className="mt-3 flex flex-wrap items-center gap-2.5">
+        {/* CTAs — stack on narrow viewports so nothing clips below the stat strip */}
+        <div className="mt-3 flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2.5">
           <LocaleLink
             to={`/maps/${region.region}`}
             className={cn(

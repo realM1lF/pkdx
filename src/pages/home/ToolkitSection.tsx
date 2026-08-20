@@ -129,7 +129,7 @@ function ToolkitTeaser({ card, index }: { card: ToolkitCard; index: number }) {
           y: ((e.clientY - r.top) / r.height - 0.5) * -12,
         });
       }}
-      className="group relative h-72 overflow-hidden rounded-lg border border-hairline bg-surface1 p-5 transition-[border-color,box-shadow] duration-200"
+      className="group relative min-h-72 overflow-hidden rounded-lg border border-hairline bg-surface1 p-5 transition-[border-color,box-shadow] duration-200"
       style={{
         borderColor: hover ? `rgba(${rgb},0.55)` : undefined,
         boxShadow: hover ? `0 8px 40px rgba(${rgb},0.22)` : undefined,

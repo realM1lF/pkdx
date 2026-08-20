@@ -190,10 +190,10 @@ function PokemonCard({ summary: s, density, index = 0, game, onBeforeOpen, ref }
         className="absolute inset-0 z-10 rounded-lg"
       />
 
-      {/* card actions — below header row so GEN tag stays clear */}
+      {/* card actions — below header row so GEN tag stays clear; larger tap targets on touch */}
       <div
         className={cn(
-          'absolute right-1.5 top-7 z-20 flex flex-col gap-1',
+          'absolute right-1 top-7 z-20 flex flex-col gap-1',
           'md:opacity-0 md:transition-opacity md:duration-200',
           'md:group-hover:opacity-100 md:group-focus-within:opacity-100',
         )}
@@ -209,10 +209,10 @@ function PokemonCard({ summary: s, density, index = 0, game, onBeforeOpen, ref }
             setBurst((b) => b + 1);
           }}
           className={cn(
-            'grid h-8 w-8 place-items-center rounded-md border transition-all duration-200',
+            'grid h-9 w-9 place-items-center rounded-md border transition-all duration-200 md:h-8 md:w-8',
             shiny
               ? 'border-gold/60 bg-gold-soft text-gold opacity-100 shadow-glow-gold'
-              : 'border-transparent text-tx-muted opacity-60 hover:border-hairline2 hover:bg-surface2 hover:text-gold md:opacity-100',
+              : 'border-hairline2 bg-surface2/90 text-tx-muted opacity-100 hover:border-hairline2 hover:bg-surface2 hover:text-gold md:border-transparent md:bg-transparent md:opacity-100',
           )}
         >
           <Sparkles size={14} strokeWidth={1.75} />
@@ -221,7 +221,7 @@ function PokemonCard({ summary: s, density, index = 0, game, onBeforeOpen, ref }
           pokemonId={s.id}
           pokemonSlug={s.slug ?? s.label}
           variant="icon"
-          className="opacity-60 md:opacity-100"
+          className="h-9 w-9 opacity-100 md:h-8 md:w-8"
         />
       </div>
     </>

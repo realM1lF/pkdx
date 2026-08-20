@@ -25,7 +25,6 @@ import type { Density, SortKey, Special } from '@/components/pokedex/dex-data';
 import { padNum } from '@/lib/pokeapi';
 import { useShiny } from '@/lib/shiny';
 import { fmtNum, useGermanDataReady, useLanguage, nameOfType } from '@/lib/i18n-data';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { MAX_DEX_ID } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { FIRST_GAME_BY_GEN } from '@/lib/edition-nav';
@@ -78,7 +77,7 @@ function loadDensity(): Density {
   } catch {
     /* ignore */
   }
-  return 'compact'; // density addendum §2: Compact is the default
+  return 'comfort'; // fewer, larger cards by default
 }
 
 /* ---------- animated count ---------- */
@@ -130,7 +129,6 @@ export default function Pokedex() {
   const lang = useLanguage();
   const deReady = useGermanDataReady();
   const { shiny, toggleShiny } = useShiny();
-  const isMobile = useIsMobile();
 
   const [restoreTarget] = useState(() => {
     if (navigationType !== 'POP') {
@@ -230,9 +228,8 @@ export default function Pokedex() {
     filters.gen !== null ||
     filters.special.length > 0;
 
-  /* density — mobile forces cozy cards (pokedex.md §7) */
-  const effectiveDensity: Density = isMobile ? 'comfort' : density;
-  const mode: 'comfort' | 'compact' | 'list' = effectiveDensity;
+  /* density — user choice (mobile: via filter popover; desktop: bar toggle too) */
+  const mode: 'comfort' | 'compact' | 'list' = density;
 
   /* infinite scroll — batch 96; small result sets render all at once */
   const [visibleCount, setVisibleCount] = useState(() => restoreTarget?.visibleCount ?? BATCH);

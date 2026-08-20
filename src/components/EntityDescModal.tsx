@@ -185,22 +185,23 @@ export default function EntityDescModal({ target, onClose, versionGroup }: Entit
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[95] flex items-start justify-center bg-void/70 p-4 pt-[12vh] backdrop-blur-sm"
+          className="fixed inset-0 z-[95] flex items-start justify-center overflow-y-auto bg-void/70 p-4 pt-[8vh] backdrop-blur-sm"
           onClick={onClose}
           role="dialog"
           aria-modal="true"
           aria-label={name}
+          data-lenis-prevent
         >
           <motion.div
             initial={{ opacity: 0, y: -16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-            className="w-full max-w-[27.5rem] overflow-hidden rounded-[1rem] border border-hairline bg-surface1 shadow-elevate"
+            className="mb-8 flex w-full max-w-[27.5rem] max-h-[85dvh] flex-col overflow-hidden rounded-[1rem] border border-hairline bg-surface1 shadow-elevate"
             onClick={(e) => e.stopPropagation()}
           >
             {/* head: icon + name + close */}
-            <div className="flex items-center gap-3 border-b border-hairline px-4 py-3">
+            <div className="flex shrink-0 items-center gap-3 border-b border-hairline px-4 py-3">
               {target.kind === 'item' && slug && <ItemIcon slug={slug} name={name} size={40} />}
               <div className="min-w-0 flex-1">
                 <div className="truncate font-display text-[0.9375rem] font-bold tracking-wide text-tx-primary">
@@ -220,7 +221,7 @@ export default function EntityDescModal({ target, onClose, versionGroup }: Entit
               </button>
             </div>
 
-            <div className="space-y-3 px-4 py-3">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3" data-lenis-prevent>
               {/* chips row */}
               <div className="flex flex-wrap items-center gap-1.5">
                 <Chip gold>{t(`desc.kind.${target.kind}`)}</Chip>
