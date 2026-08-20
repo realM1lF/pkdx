@@ -129,6 +129,20 @@ export default function BoxPanel({
                     >
                       <ArrowUpRight size={11} />
                     </LocaleLink>
+                    {canPromote && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onPromote(slot.id);
+                        }}
+                        aria-label={t8n('tb.box.toTeamAria', { name: label })}
+                        title={t8n('tb.box.toTeam')}
+                        className="rounded-sm p-0.5 text-tx-muted opacity-0 transition-all hover:text-gold group-hover/box:opacity-100"
+                      >
+                        <ArrowUp size={11} />
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={(e) => {
