@@ -83,7 +83,7 @@
     #   worker/blob CompressionStream + lazy @pkmn/sim vendor bundle
     # NOTE: if VITE_SUPABASE_URL is ever pointed at another project, its host
     # must be added to connect-src or all multiplayer calls will be blocked.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://raw.githubusercontent.com; media-src 'self' https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com https://data.pkmn.cc https://pkmn.github.io https://plausible.io https://iqsdojzyqznmcirypdnk.supabase.co wss://iqsdojzyqznmcirypdnk.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://raw.githubusercontent.com https://assets.tcgdex.net https://images.pokemontcg.io; media-src 'self' https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com https://data.pkmn.cc https://pkmn.github.io https://plausible.io https://iqsdojzyqznmcirypdnk.supabase.co wss://iqsdojzyqznmcirypdnk.supabase.co https://api.tcgdex.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 
 # --- Cache-Control overrides (must stay AFTER the catch-all, see note above)
 # Content-addressed or immutable-by-nature files only.

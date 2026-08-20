@@ -23,6 +23,7 @@ npm run dev          # dev server
 npm run build        # production build — MUST pass before every commit
 npx tsc -b           # type check — must stay at 0 errors
 npm run i18n:data    # regenerate German entity-name artifacts (rare)
+npm run tcg:data     # refresh TCG catalog index (src/data/tcg/index.{en,de}.json)
 ```
 
 ## 2. Repository map

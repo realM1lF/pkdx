@@ -10,7 +10,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router';
 import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { motion } from 'framer-motion';
 import MotionRoot from '@/components/MotionRoot';
-import { ArrowLeft, Swords } from 'lucide-react';
+import { ArrowLeft, Layers, Swords } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PokeballLoader from '@/components/PokeballLoader';
 import { genAbilityRows, genStatsOf, genTypesOf, statsFromPokemon, usedApiStatFallback } from '@/lib/gen-dex';
@@ -47,6 +47,7 @@ import './detail/detail.css';
 /* VERSUS matchup lab is heavy (@pkmn/dex + @smogon/calc, ~2.4MB) and hidden
  * behind a non-default tab — load it on demand, never on the overview path. */
 const VersusPanel = lazy(() => import('./detail/VersusPanel'));
+const TcgPanel = lazy(() => import('./detail/TcgPanel'));
 
 const REGION_IDS = new Set<RegionId>(['kanto', 'johto', 'hoenn', 'sinnoh', 'unova']);
 
@@ -187,30 +188,37 @@ export default function PokemonDetail() {
   const setEdition = (vgId: string) => {
     writeGame(versionGroupById(vgId).games[0] ?? null);
   };
-  const [tab, setTab] = useState<'overview' | 'versus'>(vsParam || tabParam === 'versus' ? 'versus' : 'overview');
+  const [tab, setTab] = useState<'overview' | 'versus' | 'tcg'>(() => {
+    if (vsParam || tabParam === 'versus') return 'versus';
+    if (tabParam === 'tcg') return 'tcg';
+    return 'overview';
+  });
 
   /* external ?vs= / ?tab= changes (shared link, back-forward, sprite navigation) */
   const [prevVs, setPrevVs] = useState(vsParam);
   if (vsParam !== prevVs) {
     setPrevVs(vsParam);
     if (vsParam) setTab('versus');
+    else if (tabParam === 'tcg') setTab('tcg');
     else if (tabParam !== 'versus') setTab('overview');
   }
   const [prevTabParam, setPrevTabParam] = useState(tabParam);
   if (tabParam !== prevTabParam) {
     setPrevTabParam(tabParam);
     if (tabParam === 'versus') setTab('versus');
+    else if (tabParam === 'tcg') setTab('tcg');
     else setTab('overview');
   }
 
-  const switchTab = (t: 'overview' | 'versus') => {
+  const switchTab = (t: 'overview' | 'versus' | 'tcg') => {
     setTab(t);
     const next = new URLSearchParams(searchParams);
     if (t === 'overview') {
       next.delete('vs');
       next.delete('tab');
     } else {
-      next.set('tab', 'versus');
+      next.set('tab', t);
+      if (t !== 'versus') next.delete('vs');
     }
     setSearchParams(next, { replace: true });
   };
@@ -311,7 +319,7 @@ export default function PokemonDetail() {
 
       {/* tab strip — OVERVIEW dashboard / VERSUS matchup lab (versus.md) */}
       <div className="mb-3 flex items-center gap-1 border-b border-hairline" role="tablist" aria-label={t8n('detail.tabAria')}>
-        {(['overview', 'versus'] as const).map((t) => (
+        {(['overview', 'versus', 'tcg'] as const).map((t) => (
           <button
             key={t}
             type="button"
@@ -323,7 +331,10 @@ export default function PokemonDetail() {
             }`}
           >
             {t === 'versus' && <Swords size={11} />}
-            <span className="pixel-label text-[9px]">{t === 'overview' ? t8n('detail.overview') : t8n('detail.versus')}</span>
+            {t === 'tcg' && <Layers size={11} />}
+            <span className="pixel-label text-[9px]">
+              {t === 'overview' ? t8n('detail.overview') : t === 'versus' ? t8n('detail.versus') : t8n('detail.tcg')}
+            </span>
             {tab === t && (
               <motion.span layoutId="detail-tab" className="absolute inset-x-2 -bottom-px h-0.5 bg-gold" transition={{ type: 'spring', stiffness: 420, damping: 30 }} />
             )}
@@ -356,6 +367,17 @@ export default function PokemonDetail() {
             hostPokemonId={pokemon.id}
             onHostOverview={() => switchTab('overview')}
           />
+        </Suspense>
+      ) : tab === 'tcg' ? (
+        <Suspense
+          fallback={
+            <div className="dx-panel flex h-[32.5rem] flex-col items-center justify-center gap-4" role="status">
+              <PokeballLoader variant="inline" />
+              <span className="pixel-label text-[9px] text-tx-muted">{t8n('detail.loadingTcg')}</span>
+            </div>
+          }
+        >
+          <TcgPanel dexId={pokemon.id} pokemonName={nameOfPokemon(pokemon.name, lang)} />
         </Suspense>
       ) : (
       <>

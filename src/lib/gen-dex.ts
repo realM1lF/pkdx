@@ -84,6 +84,12 @@ export function statLabelForGen(key: StatKey, gen: number): string {
   return STAT_LABELS[key];
 }
 
+/** i18n key under detail.combat.statTip.* for hover tooltips on stat labels. */
+export function statTipKeyForGen(key: StatKey, gen: number): string {
+  if (gen < 2 && key === 'special-attack') return 'detail.combat.statTip.special';
+  return `detail.combat.statTip.${key}`;
+}
+
 /** Display BST: Gen 1 sums five stats; Gen 2+ sums all six. */
 export function bstOf(block: GenStatBlock, gen: number): number {
   return statKeysForGen(gen).reduce((sum, k) => sum + block[k], 0);

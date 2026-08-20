@@ -41,6 +41,7 @@ const NuzlockeGuidePage = lazyWithReload(() => import('./pages/nuzlocke/Nuzlocke
 const TeamBuilder = lazyWithReload(() => import('./pages/TeamBuilder'));
 const Items = lazyWithReload(() => import('./pages/Items'));
 const ItemDetailPage = lazyWithReload(() => import('./pages/items/ItemDetailPage'));
+const TcgCatalogPage = lazyWithReload(() => import('./pages/tcg/TcgCatalogPage'));
 const TypesOverviewPage = lazyWithReload(() => import('./pages/types/TypesOverviewPage'));
 const TypeDetailPage = lazyWithReload(() => import('./pages/types/TypeDetailPage'));
 const Versus = lazyWithReload(() => import('./pages/Versus'));
@@ -127,6 +128,7 @@ export default function App() {
                 <Route path="team/:teamId" element={<TeamBuilder />} />
                 <Route path="items" element={<Items />} />
                 <Route path="items/:slug" element={<ItemDetailPage />} />
+                <Route path="tcg" element={<TcgCatalogPage />} />
                 {/* type SEO pages use localized paths: /de/typen/* · /en/types/* */}
                 <Route path="typen" element={<TypesOverviewPage />} />
                 <Route path="typen/:type" element={<TypeDetailPage />} />

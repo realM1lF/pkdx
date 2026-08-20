@@ -5,8 +5,10 @@ import { animate, motion, useInView, useMotionValue, useTransform } from 'framer
 import { useTranslation } from 'react-i18next';
 import HonestyHint from '@/components/HonestyHint';
 import StatBar from '@/components/StatBar';
+import StatLabelTip from '@/components/StatLabelTip';
+import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
 import type { GenStatBlock } from '@/lib/gen-dex';
-import { bstOf, genHasMechanics, statKeysForGen, statLabelForGen, statsFromPokemon } from '@/lib/gen-dex';
+import { bstOf, genHasMechanics, statKeysForGen, statLabelForGen, statTipKeyForGen, statsFromPokemon } from '@/lib/gen-dex';
 import type { Pokemon, PokemonType, StatKey } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { typeRgb } from './data';
@@ -16,7 +18,7 @@ const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 /* ---------- radar hexagon ---------- */
 
-function RadarPoly({ values, type, labels }: { values: number[]; type: string; labels: string[] }) {
+function RadarPoly({ values, type, labels, tips }: { values: number[]; type: string; labels: string[]; tips: string[] }) {
   const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-10% 0px' });
@@ -80,17 +82,13 @@ function RadarPoly({ values, type, labels }: { values: number[]; type: string; l
         {labels.map((l, i) => {
           const [x, y] = point(i, R + 15);
           return (
-            <text
-              key={l}
-              x={x}
-              y={y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="fill-tx-muted"
-              style={{ fontFamily: '"Press Start 2P", monospace', fontSize: 7, letterSpacing: '0.08em' }}
-            >
-              {l}
-            </text>
+            <foreignObject key={l} x={x - 22} y={y - 7} width={44} height={14} className="overflow-visible">
+              <StatLabelTip
+                label={l}
+                tip={tips[i] ?? ''}
+                className="pixel-label w-full justify-center text-[7px] tracking-[0.08em] text-tx-muted"
+              />
+            </foreignObject>
           );
         })}
       </svg>
@@ -187,6 +185,8 @@ export default function CombatPanel({
   vgId?: string;
 }) {
   const { t } = useTranslation();
+  const lang = useLanguage();
+  const speciesName = nameOfPokemon(pokemon.name, lang);
   const [mode, setMode] = useState<'bars' | 'radar'>('bars');
   const types = typesProp ?? pokemon.types.map((t) => t.type.name);
   const primary = types[0] ?? 'normal';
@@ -195,6 +195,7 @@ export default function CombatPanel({
   const bst = bstOf(block, gen);
   const values = useMemo(() => keys.map((k: StatKey) => block[k]), [block, keys]);
   const labels = useMemo(() => keys.map((k) => statLabelForGen(k, gen)), [keys, gen]);
+  const statTips = useMemo(() => keys.map((k) => t(statTipKeyForGen(k, gen))), [keys, gen, t]);
   const showEvs = vgId ? genHasMechanics(vgId).evs : gen >= 3;
   const evChips = showEvs
     ? pokemon.stats
@@ -226,18 +227,29 @@ export default function CombatPanel({
         {mode === 'bars' ? (
           <div className="flex h-full flex-col justify-center gap-2.5">
             {keys.map((k, i) => (
-              <StatBar key={`${pokemon.id}-${k}-${block[k]}`} label={statLabelForGen(k, gen)} value={block[k]} type={primary} delay={i * 90} />
+              <StatBar
+                key={`${pokemon.id}-${k}-${block[k]}`}
+                label={statLabelForGen(k, gen)}
+                tip={statTips[i]}
+                value={block[k]}
+                type={primary}
+                delay={i * 90}
+              />
             ))}
           </div>
         ) : (
-          <RadarPoly key={`${pokemon.id}-${bst}`} values={values} type={primary} labels={labels} />
+          <RadarPoly key={`${pokemon.id}-${bst}`} values={values} type={primary} labels={labels} tips={statTips} />
         )}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3">
         <BstRing key={`${pokemon.id}-${bst}`} bst={bst} legendary={legendary} />
         <div className="flex flex-col items-end gap-1">
-          <span className="pixel-label text-[8px] text-tx-muted">{t('detail.combat.evYield')}</span>
+          <StatLabelTip
+            label={t('detail.combat.evYield')}
+            tip={t('detail.combat.evYieldTip', { name: speciesName })}
+            className="pixel-label text-[8px] text-tx-muted"
+          />
           <div className="flex gap-1">
             {evChips.length ? (
               evChips.map((c) => (

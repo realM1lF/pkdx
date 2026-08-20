@@ -3,7 +3,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router';
 import { LocaleLink, useLocalePath, withTrailingSlash } from '@/lib/locale-link';
-import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Map, Menu, MessageSquarePlus, Package, Search, Users, X } from 'lucide-react';
+import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Layers, Map, Menu, MessageSquarePlus, Package, Search, Users, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
@@ -27,6 +27,7 @@ const LINKS = [
   { to: '/orre', key: 'nav.orre', Icon: Ghost },
   { to: '/team', key: 'nav.team', Icon: LayoutGrid },
   { to: '/versus', key: 'nav.versus', Icon: GitCompareArrows },
+  { to: '/tcg', key: 'nav.tcg', Icon: Layers },
 ] as const;
 
 interface NavbarProps {

@@ -1,0 +1,79 @@
+/* tcg.css — TCG card grid (Holo-Dex density, mirrors pokedex compact). */
+.tcg-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .tcg-grid-compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .tcg-grid-compact {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .tcg-grid-compact {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .tcg-grid-compact {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.tcg-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tcg-card-wrap {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tcg-card-wrap:hover {
+  transform: scale(1.02);
+}
+
+.tcg-card-wrap:focus-visible {
+  outline: 2px solid rgb(246 201 69 / 0.6);
+  outline-offset: 2px;
+}
+
+.tcg-card-art {
+  aspect-ratio: 5 / 7;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 0.375rem;
+  background: rgb(255 255 255 / 0.04);
+}
+
+.tcg-list-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--hairline);
+  background: var(--surface-2);
+}
+
+.tcg-list-row .tcg-card-art {
+  aspect-ratio: 5 / 7;
+  width: 3.5rem;
+  height: auto;
+}
+
+.tcg-filter-drawer {
+  max-height: min(70vh, 32rem);
+}

@@ -2,6 +2,7 @@
  * Fill 0→value/180 over 900ms ease-out, synced count-up, white sheen sweep. */
 import { useEffect, useRef } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
+import StatLabelTip from '@/components/StatLabelTip';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -11,6 +12,8 @@ const MAX = 180;
 interface StatBarProps {
   label: string;
   value: number;
+  /** localized stat explanation for hover tooltip */
+  tip?: string;
   /** primary type — fills ≥90 with the type gradient */
   type?: PokemonType | string;
   /** stagger delay in ms */
@@ -25,7 +28,7 @@ function tierGradient(value: number, type?: PokemonType | string): [string, stri
   return ['#FF8A6B', '#E85A3C'];
 }
 
-export default function StatBar({ label, value, type, delay = 0, className }: StatBarProps) {
+export default function StatBar({ label, value, tip, type, delay = 0, className }: StatBarProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-15% 0px' });
   const mv = useMotionValue(0);
@@ -45,7 +48,11 @@ export default function StatBar({ label, value, type, delay = 0, className }: St
 
   return (
     <div ref={ref} className={cn('flex items-center gap-3', className)}>
-      <span className="pixel-label w-16 shrink-0 text-[14px] text-tx-muted">{label}</span>
+      {tip ? (
+        <StatLabelTip label={label} tip={tip} className="pixel-label w-16 shrink-0 text-[14px] text-tx-muted" />
+      ) : (
+        <span className="pixel-label w-16 shrink-0 text-[14px] text-tx-muted">{label}</span>
+      )}
       <div className="h-1.5 flex-1 overflow-hidden rounded-pill bg-surface3">
         <motion.div
           className="relative h-full overflow-hidden rounded-pill"
