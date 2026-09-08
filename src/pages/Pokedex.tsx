@@ -377,6 +377,9 @@ export default function Pokedex() {
               {t8n('pokedex.species')}
             </p>
           </div>
+          <p className="mt-3 max-w-[60ch] font-sans text-micro13 leading-relaxed text-tx-secondary">
+            {t8n('pokedex.lead')}
+          </p>
         </div>
       </header>
 

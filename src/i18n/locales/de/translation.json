@@ -36,6 +36,7 @@
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
     "title": "Der Pokédex",
+    "lead": "Der Nationaldex listet alle 1.025 Spezies der Generationen I bis IX. Filter nach Typ, Generation oder Name; der Eintrag zeigt Werte, Attacken und Sprites.",
     "showing": "Zeige",
     "of": "von",
     "species": "Pokémon",
@@ -979,7 +980,7 @@
   "nuz": {
     "eyebrow": "ÜBERLEBENSPROTOKOLL",
     "title": "Nuzlocke-Tracker",
-    "blurb": "Eine Begegnung pro Route. Kampfunfähig ist für immer. Tracke deinen Run als lebendige Timeline — allein oder SoulLinked mit einem Partner.",
+    "blurb": "Eine Begegnung pro Route. Kampfunfähig ist für immer. Den Run als Timeline festhalten, solo oder als Soul Link mit einem Partner.",
     "nuzTip": "Eine selbstauferlegte Challenge: Fange nur das erste Pokémon pro Route; wird es kampfunfähig, ist es für immer weg. Gib allem Spitznamen.",
     "soloTip": "Erstelle trotzdem einen Run — du kannst später auf Multiplayer aufrüsten.",
     "whatIs": "WAS IST EINE NUZLOCKE?",
@@ -993,14 +994,14 @@
     "whatIsSection": {
       "title": "Was ist Nuzlocke?",
       "eyebrow": "CHALLENGE-RUN",
-      "intro": "Eine Nuzlocke ist eine selbst gewählte Hardcore-Regel für Pokémon-Spiele: weniger Puffer, mehr Bindung ans Team — und jede Route zählt. Die Regeln sind freiwillig und nicht im Spiel eingebaut; du entscheidest, wie streng der Run wird.",
+      "intro": "Eine Nuzlocke ist eine selbst gewählte Hardcore-Regel für Pokémon-Spiele. Weniger Puffer, mehr Bindung ans Team, und jede Route zählt. Die Regeln sind freiwillig und nicht im Spiel eingebaut. Die Strenge legt die Spielgruppe fest.",
       "rulesHeading": "Kernregeln",
       "rules": [
-        "Pro Route oder Area nur das erste wilde Pokémon fangen — kein zweiter Versuch, wenn es flieht oder kampfunfähig wird.",
+        "Pro Route oder Gebiet nur das erste wilde Pokémon fangen. Kein zweiter Versuch, wenn es flieht oder kampfunfähig wird.",
         "Wird ein Team-Pokémon kampfunfähig, gilt es als tot (Release oder dauerhaft in die Box).",
-        "Jedes gefangene Pokémon bekommt einen Spitznamen — so entsteht echte Bindung ans Team."
+        "Jedes gefangene Pokémon bekommt einen Spitznamen. Die Bindung ans Team gehört zur Challenge."
       ],
-      "variants": "Allein spielbar, zu zweit als Soul Link, mit Randomizer, Hardcore (kein Boxen), Dupes- oder Shiny-Klausel — viele Spieler passen die Regeln an. Dieser Tracker unterstützt Solo- und Multiplayer-Runs inkl. Soul Link.",
+      "variants": "Typische Varianten: Soul Link, Randomizer, Hardcore (kein Boxen), dazu Dupes- und Shiny-Klausel. Die Klauseln stehen vor der ersten Route fest.",
       "linksHeading": "Offizielle Quellen",
       "linkRulesDe": "Regeln (DE)",
       "linkRulesEn": "Regeln (EN)",
@@ -1854,6 +1855,49 @@
       "slotsAria": "Team-Slots",
       "statEyebrow": "WERTE-DELTA",
       "statTitle": "Level-angepasst"
+    },
+    "seo": {
+      "what": {
+        "eyebrow": "SO FUNKTIONIERT ES",
+        "title": "Ein legales Sechser-Team bauen",
+        "body": "Der Builder hat sechs Team-Slots. Pro Slot: Spezies, Attacken, Fähigkeit, Wesen, Item und FP. Typabdeckung und Schwächen aktualisieren sich mit der Party. Teams bleiben im Browser, bis ein Share-Link kopiert wird.",
+        "slots": {
+          "title": "Sechs Slots",
+          "body": "Sechs Plätze für die aktive Party. Weitere Pokémon liegen in der Box und lassen sich später ins Team holen."
+        },
+        "legality": {
+          "title": "Legalität pro Versionsgruppe",
+          "body": "Eine Spielversion festlegen. Attacken, Items, Fähigkeiten und Wesen werden gegen diese Versionsgruppe geprüft, von Rot und Blau bis Karmesin und Purpur."
+        },
+        "coverage": {
+          "title": "Typabdeckung",
+          "body": "Die Offensive zeigt, welche Typen sehr effektiv getroffen werden. Die Defensive zeigt gemeinsame Schwächen."
+        },
+        "export": {
+          "title": "Teilen und Export",
+          "body": "Ein View-only-Share-Link kopiert das Team. Slot-Felder entsprechen einem Showdown-Set: Item, Fähigkeit, Wesen, FP und vier Attacken. Ein fertiges Team geht so in den Kampf-Simulator."
+        }
+      },
+      "links": {
+        "eyebrow": "WEITERE WERKZEUGE",
+        "title": "Team im Kampf oder im Run nutzen",
+        "battle": {
+          "label": "Pokémon-Kampf-Simulator",
+          "body": "Ein fertiges Set laden und einen 1v1-Kampf von Generation 1 bis 9 führen."
+        },
+        "dex": {
+          "label": "Nationaldex",
+          "body": "Werte, Typen, Attacken und Sprites prüfen, bevor ein Slot gefüllt wird."
+        },
+        "versus": {
+          "label": "Versus-Schadensrechner",
+          "body": "Zwei Pokémon vor einem schweren Kampf auf Schaden und Initiative vergleichen."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke-Tracker",
+          "body": "Routen-Begegnungen festhalten und die Run-Party im Builder öffnen."
+        }
+      }
     },
     "autocomplete": {
       "clear": "Löschen",

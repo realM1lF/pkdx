@@ -118,7 +118,8 @@ function SpotlightPedestal({ started }: { started: boolean }) {
             alt={t('home.hero.artworkAlt', { name: nameOfPokemon(current.id, lang) })}
             width={475}
             height={475}
-            decoding="async"
+            fetchPriority="high"
+            decoding="sync"
             draggable={false}
             className="absolute inset-0 h-full w-full object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.5)]"
             initial={started ? false : { opacity: 0 }}
@@ -183,7 +184,11 @@ export default function Hero({ started }: { started: boolean }) {
   useEffect(() => {
     if (!isDeferredChromeAllowed()) return;
     return scheduleIdle(() => {
-      setParticlesReady(true);
+      /* Three.js particles stay off coarse pointers — PSI mobile flagged the
+       * unused three chunk, and GSAP parallax is already skipped there. */
+      if (!window.matchMedia('(pointer: coarse)').matches) {
+        setParticlesReady(true);
+      }
       void import('@/lib/nuzlocke-store').then((m) => {
         setLatestRun(m.loadLocalRun(m.getLatestRunId() ?? ''));
       });

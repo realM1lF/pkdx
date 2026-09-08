@@ -6,17 +6,18 @@
  * only rule-based sentences whose values are all read from the snapshot.
  * Fully prerender-safe: no fetches, no hooks beyond i18n/routing. */
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router';
+import { Navigate, useLocation, useParams } from 'react-router';
 import { ArrowRight, Gauge, Swords, Timer } from 'lucide-react';
 import QaSection from '@/components/QaSection';
 import Sprite from '@/components/Sprite';
 import TypeBadge from '@/components/TypeBadge';
-import { LocaleLink } from '@/lib/locale-link';
+import { isSupportedLang, localePath, LocaleLink, withTrailingSlash } from '@/lib/locale-link';
 import { nameOfMove, useLanguage } from '@/lib/i18n-data';
 import type { Lang } from '@/lib/i18n-data';
 import {
   MATCHUPS,
   MATCHUPS_META,
+  isMatchupSlugForLang,
   matchupNames,
   matchupRest,
   resolveMatchupParam,
@@ -124,8 +125,21 @@ function MoveRows({
 export default function MatchupPage() {
   const { t } = useTranslation();
   const lang = useLanguage();
-  const { slug } = useParams();
+  const location = useLocation();
+  const { slug, lang: langParam } = useParams();
   const entry = slug ? resolveMatchupParam(slug) : null;
+
+  /* Cross-locale slug (DE `-gegen-` under /en/, EN `-vs-` under /de/) →
+   * replace onto matchupRest(entry, :lang). Use the URL param, not i18n,
+   * so a stale language does not bounce a correct slug. */
+  if (entry && slug && isSupportedLang(langParam) && !isMatchupSlugForLang(slug, langParam)) {
+    return (
+      <Navigate
+        to={withTrailingSlash(`${localePath(langParam, matchupRest(entry, langParam))}${location.search}${location.hash}`)}
+        replace
+      />
+    );
+  }
 
   if (!entry) {
     return (

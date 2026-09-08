@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ABOVE_FOLD_DEX_COUNT, heroArtworkSrc, isAboveFoldDexItem, spritePaintVisible, spriteImgAttrs } from './img-priority';
+import { ABOVE_FOLD_DEX_COUNT, HERO_NEBULA_BACKGROUND, heroArtworkSrc, isAboveFoldDexItem, spritePaintVisible, spriteImgAttrs } from './img-priority';
 
 describe('spriteImgAttrs', () => {
   it('lazy-loads below-the-fold sprites', () => {
@@ -48,5 +48,13 @@ describe('heroArtworkSrc', () => {
     expect(heroArtworkSrc(25)).toBe(
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
     );
+  });
+});
+
+describe('HERO_NEBULA_BACKGROUND', () => {
+  it('uses CSS image-set so the decorative nebula cannot become LCP', () => {
+    expect(HERO_NEBULA_BACKGROUND.startsWith('image-set(')).toBe(true);
+    expect(HERO_NEBULA_BACKGROUND).toContain('/hero-nebula.avif');
+    expect(HERO_NEBULA_BACKGROUND).toContain('/hero-nebula.webp');
   });
 });

@@ -2,14 +2,14 @@
 /* generate-sitemap — writes public/sitemap.xml (runs as npm prebuild).
  *
  * One <url> per localized static route (de + en), each carrying
- * hreflang alternates (de / en / x-default) and lastmod = build date. */
+ * hreflang alternates (de / en / x-default). No lastmod: a build-date
+ * stamp is not a real change date (Search Central: omit unless true). */
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { SITE_URL, STATIC_ROUTES, localePath, restFor } from './seo-routes.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const lastmod = new Date().toISOString().slice(0, 10);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -27,7 +27,6 @@ function urlEntry(lang, entry) {
     .join('\n');
   return `  <url>
     <loc>${esc(loc)}</loc>
-    <lastmod>${lastmod}</lastmod>
 ${alternates}
   </url>`;
 }
@@ -48,4 +47,4 @@ ${urls.join('\n')}
 
 const out = path.join(root, 'public', 'sitemap.xml');
 writeFileSync(out, xml);
-console.log(`[sitemap] wrote ${path.relative(root, out)} (${urls.length} urls, lastmod ${lastmod})`);
+console.log(`[sitemap] wrote ${path.relative(root, out)} (${urls.length} urls)`);

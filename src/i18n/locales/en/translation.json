@@ -36,6 +36,7 @@
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
     "title": "The Pokédex",
+    "lead": "The National Dex lists all 1,025 species from Generation I to IX. Filter by type, generation or name, then open an entry for stats, learnsets and sprites.",
     "showing": "Showing",
     "of": "of",
     "species": "Pokémon",
@@ -979,7 +980,7 @@
   "nuz": {
     "eyebrow": "SURVIVAL PROTOCOL",
     "title": "Nuzlocke Tracker",
-    "blurb": "One encounter per route. Fainting is forever. Track your run as a living timeline — alone, or SoulLinked with a partner.",
+    "blurb": "One encounter per route. Fainting is forever. Track the run as a living timeline, solo or Soul Link with a partner.",
     "nuzTip": "A self-imposed challenge: catch only the first Pokémon you meet on each route; if it faints, it's gone for good. Nickname everything.",
     "soloTip": "Create a run anyway — you can upgrade it to multiplayer later.",
     "whatIs": "WHAT IS A NUZLOCKE?",
@@ -993,14 +994,14 @@
     "whatIsSection": {
       "title": "What is a Nuzlocke?",
       "eyebrow": "CHALLENGE RUN",
-      "intro": "A Nuzlocke is a self-imposed hardcore ruleset for Pokémon games: less safety net, more attachment to your team — and every route matters. The rules are voluntary and not built into the games; you choose how strict the run is.",
+      "intro": "A Nuzlocke is a self-imposed hardcore ruleset for Pokémon games. Less safety net, more attachment to the team, and every route matters. The rules are voluntary and not built into the games. The group sets how strict the run is.",
       "rulesHeading": "Core rules",
       "rules": [
-        "Catch only the first wild Pokémon on each route or area — no second chance if it faints or flees.",
+        "Catch only the first wild Pokémon on each route or area. No second chance if it faints or flees.",
         "If a team Pokémon faints, it is dead (release or permanently boxed).",
-        "Nickname every Pokémon you catch — that bond is part of the challenge."
+        "Nickname every Pokémon you catch. That bond is part of the challenge."
       ],
-      "variants": "Play solo, pair up in a Soul Link, add a randomizer, run Hardcore (no boxing), or use dupes/shiny clauses — most players customize. This tracker supports solo and multiplayer runs including Soul Link.",
+      "variants": "Common variants include Soul Link, randomizer, Hardcore (no boxing), plus dupes and shiny clauses. Groups pick the clauses before the first route.",
       "linksHeading": "Verified references",
       "linkRulesDe": "Rules (DE)",
       "linkRulesEn": "Rules (EN)",
@@ -1854,6 +1855,49 @@
       "slotsAria": "Team slots",
       "statEyebrow": "STAT DELTA",
       "statTitle": "Level-Adjusted"
+    },
+    "seo": {
+      "what": {
+        "eyebrow": "HOW IT WORKS",
+        "title": "Build a legal six-Pokémon team",
+        "body": "The builder holds six party slots. Each slot stores species, moves, ability, nature, item and EVs. Coverage and weaknesses update as the party changes. Teams stay in the browser until a share link is copied.",
+        "slots": {
+          "title": "Six slots",
+          "body": "Fill an active party of six. Extra Pokémon sit in the box and can move into the party later."
+        },
+        "legality": {
+          "title": "Version-group legality",
+          "body": "Set a game version. Moves, items, abilities and natures are checked against that version group, from Red and Blue through Scarlet and Violet."
+        },
+        "coverage": {
+          "title": "Type coverage",
+          "body": "Offense shows which types the party hits super-effectively. Defense shows shared weaknesses."
+        },
+        "export": {
+          "title": "Share and export",
+          "body": "Copy a view-only share link. Slot fields match a Showdown set: item, ability, nature, EVs and four moves, so a finished team can move into the battle simulator."
+        }
+      },
+      "links": {
+        "eyebrow": "NEXT TOOLS",
+        "title": "Use the team in a fight or a run",
+        "battle": {
+          "label": "Pokémon battle simulator",
+          "body": "Load a finished set and run a 1v1 fight from Generation 1 to 9."
+        },
+        "dex": {
+          "label": "National Pokédex",
+          "body": "Look up stats, types, learnsets and sprites before filling a slot."
+        },
+        "versus": {
+          "label": "Versus damage calculator",
+          "body": "Compare two Pokémon for damage ranges and speed before a hard fight."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke tracker",
+          "body": "Record route encounters, then open the run party in the builder."
+        }
+      }
     },
     "autocomplete": {
       "clear": "Clear",

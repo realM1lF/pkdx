@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import TypeGlyph from '@/components/TypeGlyph';
 import { isDeferredChromeAllowed } from '@/lib/idle-boot';
+import { HERO_NEBULA_BACKGROUND } from '@/lib/img-priority';
 import { TYPE_COLORS } from '@/lib/types';
 import type { PokemonType } from '@/lib/types';
 
@@ -85,20 +86,11 @@ export default function HeroBackdrop() {
   return (
     <div ref={scope} className="absolute inset-0" aria-hidden>
       {/* layer 1 — nebula */}
-      <div data-layer="nebula" className="absolute -inset-y-24 inset-x-0 min-h-[100svh]">
-        <picture>
-          <source type="image/avif" srcSet="/hero-nebula.avif" />
-          <source type="image/webp" srcSet="/hero-nebula.webp" />
-          <img
-            src="/hero-nebula.png"
-            alt=""
-            width={1600}
-            height={900}
-            fetchPriority="high"
-            decoding="async"
-            className="h-[100svh] w-full min-h-[100svh] object-cover"
-          />
-        </picture>
+      <div
+        data-layer="nebula"
+        className="absolute -inset-y-24 inset-x-0 min-h-[100svh] bg-cover bg-center"
+        style={{ backgroundImage: HERO_NEBULA_BACKGROUND }}
+      >
         <div className="absolute inset-0 bg-gradient-to-b from-void/40 via-transparent to-void" />
       </div>
       {/* layer 3 — floating type glyphs */}

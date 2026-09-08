@@ -67,8 +67,8 @@ const BATTLE_LANDING_META: RouteMeta = {
 
 const DEFAULT_META: RouteMeta = {
   title: {
-    de: 'MyPokePanion · Interaktiver Pokédex, Teambuilder & Nuzlocke-Tracker',
-    en: 'MyPokePanion · Interactive Pokédex, Team Builder & Nuzlocke Tracker',
+    de: 'MyPokePanion · Pokédex, Teambuilder & Nuzlocke-Tracker',
+    en: 'MyPokePanion · Pokédex, Team Builder & Nuzlocke Tracker',
   },
   description: {
     de: 'Interaktiver Pokédex: alle 1.025 Pokémon, 18 Typen, 9 Generationen, dazu Teambuilder, Nuzlocke-Tracker, Versus-Calc und Karten.',
@@ -136,8 +136,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Nuzlocke Tracker · plan runs, track encounters & deaths',
     },
     description: {
-      de: 'Kostenloser Nuzlocke-Tracker im Browser: Begegnungen pro Route, Team und Tode verwalten, mit Regionskarten für Kanto bis Einall. Run starten.',
-      en: 'Free Nuzlocke tracker in your browser: record route encounters, manage teams and log deaths, with regional maps from Kanto to Unova. Start a run.',
+      de: 'Erste Begegnung pro Route, Team und Tode festhalten. Geführte Karten von Kanto bis Einall, freie Runs für spätere Spiele. Tracker im Browser, ohne Installation.',
+      en: 'Record the first catch per route, the party and every death. Guided maps for Kanto through Unova, freeform for later games. Start a run in the browser.',
     },
   },
   '/nuzlocke/soul-link': {
@@ -212,8 +212,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Pokémon Team Builder · build teams & check type coverage',
     },
     description: {
-      de: 'Baue dein Pokémon-Team: Typabdeckung, Schwächen und Resistenzen im Blick, Movesets planen und das Team exportieren, für alle 9 Generationen.',
-      en: 'Build your Pokémon team: keep type coverage, weaknesses and resistances in view, plan movesets and export your team, for all 9 generations.',
+      de: 'Sechs Team-Slots mit Legalität pro Spielversion, von Rot und Blau bis Karmesin und Purpur. Typabdeckung und Schwächen im Blick. Share-Link kopieren, ohne Konto.',
+      en: 'Six party slots with version-group legality from Red and Blue through Scarlet and Violet. Live type coverage and weaknesses. Copy a share link, no account.',
     },
   },
   '/versus': {
@@ -472,9 +472,28 @@ export function pokemonSeoMetaForParam(param: string): RouteMeta | null {
   return null;
 }
 
+/**
+ * Drop query/hash so facet URLs (?type=, ?q=, Versus ?you=, Nuzlocke wizard)
+ * never fork title or canonical. Type pages (/types/:slug, /typen/:slug) are
+ * real paths and stay untouched.
+ */
+export function pathWithoutSearch(rest: string): string {
+  const raw = rest.split(/[?#]/)[0] ?? rest;
+  return raw === '' ? '/' : raw;
+}
+
+/** noindex,nofollow for account + user vault / overlay; impressum stays indexable. */
+export function robotsForPath(rest: string): 'noindex, nofollow' | null {
+  const path = pathWithoutSearch(rest);
+  if (/^\/account\/?$/.test(path)) return 'noindex, nofollow';
+  if (/^\/team\/.+/.test(path)) return 'noindex, nofollow';
+  if (/^\/overlay\//.test(path)) return 'noindex, nofollow';
+  return null;
+}
+
 /** Registry lookup for a locale-stripped app path; falls back to the default. */
 export function metaForPath(rest: string): RouteMeta {
-  const key = rest === '' ? '/' : rest;
+  const key = pathWithoutSearch(rest);
   if (ROUTE_META[key]) return ROUTE_META[key];
   if (key.startsWith('/team/s/')) {
     return {
@@ -540,14 +559,15 @@ export function metaForPath(rest: string): RouteMeta {
  * so canonical + hreflang URLs must translate the rest path per locale.
  */
 export function restForLang(rest: string, lang: Lang): string {
+  const clean = pathWithoutSearch(rest);
   /* matchup pages: localized slugs ('/versus/glurak-gegen-turtok' ↔
    * '/versus/charizard-vs-blastoise') */
-  const matchup = localizeMatchupRest(rest, lang);
+  const matchup = localizeMatchupRest(clean, lang);
   if (matchup) return matchup;
   const localized = localizeSinnohRoutePath(
     localizeJohtoRoutePath(
       localizeHoennRoutePath(
-        localizeRoutePath(localizeItemPath(localizeTypePath(rest, lang), lang), lang),
+        localizeRoutePath(localizeItemPath(localizeTypePath(clean, lang), lang), lang),
         lang,
       ),
       lang,
@@ -565,7 +585,7 @@ export function restForLang(rest: string, lang: Lang): string {
  * canonical URL form site-wide, because Netlify's CDN normalizes every
  * prerendered page to the slash form via 301). */
 export function canonicalUrl(lang: Lang, rest: string): string {
-  return withTrailingSlash(`${SITE_URL}${localePath(lang, rest)}`);
+  return withTrailingSlash(`${SITE_URL}${localePath(lang, pathWithoutSearch(rest))}`);
 }
 
 export { stripLocalePrefix, withTrailingSlash };
