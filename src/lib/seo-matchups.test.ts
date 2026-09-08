@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   MATCHUPS,
   MATCHUPS_META,
+  isMatchupSlugForLang,
   localizeMatchupRest,
   matchupMeta,
   matchupRest,
@@ -62,6 +63,16 @@ describe('seo-matchups registry', () => {
     expect(localizeMatchupRest(`/versus/${first.slugEn}`, 'de')).toBe(`/versus/${first.slugDe}`);
     expect(localizeMatchupRest('/versus', 'de')).toBeNull();
     expect(matchupRest(first, 'de')).toBe(`/versus/${first.slugDe}`);
+  });
+
+  it('treats a DE slug under en as foreign and yields the EN rest', () => {
+    const glurak = resolveMatchupParam('glurak-gegen-turtok');
+    expect(glurak?.slugEn).toBe('charizard-vs-blastoise');
+    expect(isMatchupSlugForLang('glurak-gegen-turtok', 'en')).toBe(false);
+    expect(isMatchupSlugForLang('glurak-gegen-turtok', 'de')).toBe(true);
+    expect(isMatchupSlugForLang('charizard-vs-blastoise', 'en')).toBe(true);
+    expect(isMatchupSlugForLang('charizard-vs-blastoise', 'de')).toBe(false);
+    expect(matchupRest(glurak!, 'en')).toBe('/versus/charizard-vs-blastoise');
   });
 
   it('meta descriptions stay ≤160 chars and carry the result numbers', () => {
