@@ -9,3 +9,5 @@ Audits plus Dateninventar. `maps.md` / `nuzlocke.md` Findings zu Raten und Unova
 | [security.md](./security.md) | CSP, RLS, Auth, XSS, Headers | Außenhaut dicht; Signup-Dashboard und Edge Functions offen |
 | [nuzlocke.md](./nuzlocke.md) | Solo + Multiplayer | Baseline; Unova-8./Ace-Fixes und SoulLink-Undo danach gelandet |
 | [improvements.md](./improvements.md) | APIs, Quellen, Spiele inkl. GO | Tiefe der Hauptspiele vor neuen Marken; GO schmal, kein Live-Spawn |
+
+SEO-Lage (GSC 2026-09, Guidelines, Fix/Ausbau): [docs/seo/](../seo/README.md).
