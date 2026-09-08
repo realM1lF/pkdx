@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { schemasForRoute, faqPageSchema, websiteSchema } from './structured-data';
 import { nuzlockeGuideContent } from './nuzlocke-guide-content';
+import { nuzlockeSeoContent } from './nuzlocke-seo-content';
 import { SITE_URL } from './seo';
 
 describe('faqPageSchema', () => {
@@ -57,5 +58,18 @@ describe('Nuzlocke guide FAQ schema', () => {
     const faq = blocks.find((block) => block.id === 'faq-page');
 
     expect(faq?.data).toEqual(faqPageSchema(nuzlockeGuideContent('en', 'firered').faq));
+  });
+});
+
+describe('hub FAQPage schema stays 1:1 with visible copy', () => {
+  it('emits the Nuzlocke hub FAQ from nuzlockeSeoContent', () => {
+    const blocks = schemasForRoute('/nuzlocke', 'en');
+    const faq = blocks.find((block) => block.id === 'faq-page');
+    expect(faq?.data).toEqual(faqPageSchema(nuzlockeSeoContent('en').faq.items));
+  });
+
+  it('does not emit FAQPage on the Team hub', () => {
+    const blocks = schemasForRoute('/team', 'en');
+    expect(blocks.some((block) => block.id === 'faq-page')).toBe(false);
   });
 });
