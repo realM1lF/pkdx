@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { stripLocalePrefix } from '@/lib/locale-link';
 import type { Lang } from '@/lib/i18n-data';
-import { SITE_NAME, DEFAULT_OG_IMAGE, metaForPath, canonicalUrl, restForLang } from '@/lib/seo';
+import { SITE_NAME, DEFAULT_OG_IMAGE, metaForPath, canonicalUrl, restForLang, robotsForPath } from '@/lib/seo';
 import { schemasForRoute } from '@/lib/structured-data';
 
 function upsertMeta(
@@ -60,12 +60,12 @@ export default function SeoHead({ lang }: { lang: Lang }) {
     const meta = metaForPath(rest);
     const managed: Element[] = [];
 
-    /* user vault + share pages are not indexable (no unique editorial content) */
-    if (/^\/team\/.+/.test(rest)) {
-      upsertMeta('name', 'robots', 'noindex, nofollow', managed);
-    }
-    if (/^\/overlay\//.test(rest)) {
-      upsertMeta('name', 'robots', 'noindex, nofollow', managed);
+    /* account login, user vault/share and overlay are not indexable.
+     * Impressum stays crawlable. Facet query (?type=, ?q=, Versus ?you=,
+     * Nuzlocke wizard) is ignored: rest comes from pathname only. */
+    const robots = robotsForPath(rest);
+    if (robots) {
+      upsertMeta('name', 'robots', robots, managed);
     }
 
     /* title + description + Open Graph */

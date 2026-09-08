@@ -48,8 +48,8 @@ export function organizationSchema(): JsonLd {
   };
 }
 
-/** Site-wide WebSite — emitted on every page (SearchAction targets /pokedex?q=). */
-export function websiteSchema(): JsonLd {
+/** Site-wide WebSite — SearchAction targets the locale Pokédex (`/:lang/pokedex?q=`). */
+export function websiteSchema(lang: Lang): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -60,7 +60,7 @@ export function websiteSchema(): JsonLd {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}${localePath('en', '/pokedex')}?q={search_term_string}`,
+        urlTemplate: `${SITE_URL}${localePath(lang, '/pokedex')}?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -122,7 +122,7 @@ export function schemasForRoute(rest: string, lang: Lang): Array<{ id: string; d
   const meta = metaForPath(rest);
   const blocks: Array<{ id: string; data: JsonLd }> = [
     { id: 'organization', data: organizationSchema() },
-    { id: 'website', data: websiteSchema() },
+    { id: 'website', data: websiteSchema(lang) },
   ];
   if (rest !== '/') {
     const homeName = lang === 'de' ? 'Startseite' : 'Home';

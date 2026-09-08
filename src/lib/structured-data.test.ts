@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { schemasForRoute, faqPageSchema } from './structured-data';
+import { schemasForRoute, faqPageSchema, websiteSchema } from './structured-data';
 import { nuzlockeGuideContent } from './nuzlocke-guide-content';
+import { SITE_URL } from './seo';
 
 describe('faqPageSchema', () => {
   it('creates an FAQPage with one Question for each answer', () => {
@@ -29,6 +30,24 @@ describe('faqPageSchema', () => {
         },
       },
     ]);
+  });
+});
+
+describe('websiteSchema SearchAction', () => {
+  it('points the search target at the locale Pokédex', () => {
+    const de = websiteSchema('de').potentialAction as { target: { urlTemplate: string } };
+    const en = websiteSchema('en').potentialAction as { target: { urlTemplate: string } };
+    expect(de.target.urlTemplate).toBe(`${SITE_URL}/de/pokedex?q={search_term_string}`);
+    expect(en.target.urlTemplate).toBe(`${SITE_URL}/en/pokedex?q={search_term_string}`);
+  });
+
+  it('emits the locale SearchAction on every route block', () => {
+    const de = schemasForRoute('/pokedex', 'de').find((block) => block.id === 'website');
+    const en = schemasForRoute('/', 'en').find((block) => block.id === 'website');
+    const deAction = de?.data.potentialAction as { target: { urlTemplate: string } };
+    const enAction = en?.data.potentialAction as { target: { urlTemplate: string } };
+    expect(deAction.target.urlTemplate).toBe(`${SITE_URL}/de/pokedex?q={search_term_string}`);
+    expect(enAction.target.urlTemplate).toBe(`${SITE_URL}/en/pokedex?q={search_term_string}`);
   });
 });
 
