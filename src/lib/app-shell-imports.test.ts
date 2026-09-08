@@ -88,6 +88,17 @@ describe('app-shell first-load imports', () => {
     expect(specs.some((s) => s === 'gsap' || s.startsWith('gsap/') || s === '@gsap/react')).toBe(false);
   });
 
+  it('paints the decorative nebula as CSS background, not an LCP img', () => {
+    const src = readSrc('src/pages/home/HeroBackdrop.tsx');
+    expect(src).toContain('HERO_NEBULA_BACKGROUND');
+    expect(src).not.toMatch(/<img[\s\S]*hero-nebula/);
+    expect(src).not.toContain('<picture>');
+  });
+
+  it('keeps Three.js particles off coarse pointers', () => {
+    expect(readSrc('src/pages/home/Hero.tsx')).toContain("(pointer: coarse)");
+  });
+
   it('idles Three, auth and fuse so they miss the LCP window', () => {
     expect(readSrc('src/pages/home/Hero.tsx')).toContain('scheduleIdle');
     expect(readSrc('src/pages/home/SearchGateway.tsx')).toContain('scheduleIdle');

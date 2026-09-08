@@ -32,3 +32,13 @@ export function heroArtworkSrc(id: number): string {
   if (LOCAL_HERO_ART.has(id)) return `/hero/artwork-${id}.webp`;
   return sprites.artwork(id);
 }
+
+/** Decorative full-bleed nebula as CSS background so it cannot become LCP.
+ *  Chrome counts `<img>` / `<picture>` for LCP, not `background-image`. */
+export const HERO_NEBULA_BACKGROUND = [
+  'image-set(',
+  'url("/hero-nebula.avif") type("image/avif"),',
+  'url("/hero-nebula.webp") type("image/webp"),',
+  'url("/hero-nebula.png") type("image/png")',
+  ')',
+].join('');
