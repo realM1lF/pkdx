@@ -55,12 +55,12 @@ export function battleLandingPath(lang: Lang): string {
 
 const BATTLE_LANDING_META: RouteMeta = {
   title: {
-    de: 'Pokémon Kampf-Simulator: 1v1-Kämpfe online simulieren',
-    en: 'Pokémon Battle Simulator: Fight 1v1 Battles Online',
+    de: 'Pokémon 1v1-Kampf-Simulator | Echte Kämpfe, Gen 1-9',
+    en: 'Pokémon 1v1 Battle Simulator | Real fights, Gen 1-9',
   },
   description: {
-    de: 'Konfiguriere zwei Pokémon mit Level, Item, Fähigkeit und Attacken und lass sie mit echter Kampfmechanik von Gen 1 bis 9 kämpfen. Kostenlos im Browser.',
-    en: 'Build two Pokémon with custom level, item, ability and moves, then simulate a full battle with real mechanics from Gen 1 to 9. Free, right in your browser.',
+    de: 'Zwei Pokémon mit Level, Item, Fähigkeit und Attacken festlegen, dann 1v1. @pkmn/sim mit Regeln von Gen 1-9. Kostenlos im Browser, ohne Konto.',
+    en: 'Set two Pokémon (level, item, ability, four moves) and run a real 1v1. @pkmn/sim applies Gen 1-9 rules. Free in the browser, no account.',
   },
   ogType: 'article',
 };
@@ -80,12 +80,12 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   '/': DEFAULT_META,
   '/pokedex': {
     title: {
-      de: 'Pokédex · alle 1.025 Pokémon mit Stats, Moves & Sprites',
-      en: 'Pokédex · all 1,025 Pokémon with stats, moves & sprites',
+      de: 'Interaktiver Nationaldex | Filtern, Suche, Sprites',
+      en: 'Interactive National Pokédex | Filter, search, sprites',
     },
     description: {
-      de: 'Der komplette Pokédex: 1.025 Pokémon filtern & durchsuchen: Stats, Typen, Fähigkeiten, Attacken, Entwicklungen und jede Sprite-Ära seit 1996.',
-      en: 'The complete Pokédex: filter and search 1,025 Pokémon across 9 generations: stats, types, abilities, moves and every sprite era since 1996.',
+      de: 'Nationaldex auf Deutsch und Englisch durchsuchen. Nach Typ und Generation filtern, dann Werte, Attacken und Sprites öffnen. Zum Finden einer Spezies, kein Wiki.',
+      en: 'Search the National Dex in English or German. Filter by type and generation, then open stats, learnsets and sprites. Built to pick a species, not a wiki.',
     },
   },
   '/items': {
@@ -218,12 +218,12 @@ export const ROUTE_META: Record<string, RouteMeta> = {
   },
   '/versus': {
     title: {
-      de: 'Versus-Calc · Pokémon Damage Calculator & 1v1-Vergleich',
-      en: 'Versus Calc · Pokémon damage calculator & 1v1 comparison',
+      de: 'Versus-Calc · Schadensrechner, Spannen und Initiative',
+      en: 'Versus Calc · Pokémon damage calculator, ranges and speed',
     },
     description: {
-      de: 'Wer gewinnt das Duell? Der Versus-Calc vergleicht zwei Pokémon: Damage-Calculator, Typ-Matchups, Speed-Tiers und Bulk, generationengenau.',
-      en: 'Who wins the duel? The Versus calculator compares two Pokémon: damage calculator, type matchups, speed tiers and bulk, accurate per generation.',
+      de: 'Versus zeigt Min-Max-Schaden und Initiative für zwei Pokémon. Offizielle Formel pro Generation, Gen 1 bis 9. Das echte 1v1 liegt auf der Kampf-Simulator-Seite.',
+      en: 'Versus shows min-max damage and who is faster for two Pokémon. Official formula per generation, Gen 1 to 9. The live 1v1 fight sits on the battle simulator.',
     },
   },
   /* battle-simulator landing — localized slugs (/de/kampf-simulator ↔
@@ -479,7 +479,8 @@ export function pokemonSeoMetaForParam(param: string): RouteMeta | null {
  */
 export function pathWithoutSearch(rest: string): string {
   const raw = rest.split(/[?#]/)[0] ?? rest;
-  return raw === '' ? '/' : raw;
+  if (raw === '' || raw === '/') return '/';
+  return raw.replace(/\/+$/, '') || '/';
 }
 
 /** noindex,nofollow for account + user vault / overlay; impressum stays indexable. */

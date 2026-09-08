@@ -8,13 +8,12 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
-import { ArrowRight, Swords } from 'lucide-react';
+import { Swords } from 'lucide-react';
 import HonestyHint from '@/components/HonestyHint';
 import GameSelect from '@/components/GameSelect';
 import PokeballLoader from '@/components/PokeballLoader';
-import QaSection from '@/components/QaSection';
-import { LocaleLink } from '@/lib/locale-link';
 import { nameOfPokemon, useLanguage } from '@/lib/i18n-data';
+import BattleSeoSections from './battle/BattleSeoSections';
 import { versionGroupById } from '@/lib/teambuilder';
 import {
   defaultVersusContext,
@@ -56,16 +55,6 @@ function dexParam(value: string | null): number | null {
   return Number.isInteger(n) && n >= 1 && n <= MAX_DEX ? n : null;
 }
 
-interface TextPair {
-  title: string;
-  body: string;
-}
-
-interface QaRaw {
-  q: string;
-  a: string;
-}
-
 /* ================================================================== */
 /* standalone arena — two pickers + side config + lazy BattleView      */
 /* ================================================================== */
@@ -74,8 +63,12 @@ function BattleArena() {
   const { t } = useTranslation();
   const lang = useLanguage();
   const index = useDexIndex();
+  const [searchParams] = useSearchParams();
 
-  const [ctx, setCtx] = useState<VersusContext>(() => defaultVersusContext());
+  const [ctx, setCtx] = useState<VersusContext>(() => {
+    const game = searchParams.get('game');
+    return game ? versusContextFromGame(game, null) : defaultVersusContext();
+  });
   const [field, setField] = useState<VersusField>(() => defaultVersusField());
   useEffect(() => {
     setField((prev) => fieldForContext(prev, ctx));
@@ -83,7 +76,6 @@ function BattleArena() {
 
   /* ----- side selection (defaults: two popular fighters, ready to start;
    *       ?a=/?b= preselect from the matchup-page replay CTA) ----- */
-  const [searchParams] = useSearchParams();
   const [youId, setYouId] = useState<number>(() => dexParam(searchParams.get('a')) ?? DEFAULT_YOU_ID);
   const [foeId, setFoeId] = useState<number>(() => dexParam(searchParams.get('b')) ?? DEFAULT_FOE_ID);
   const { pokemon: youPokemon, status: youStatus } = usePokemonById(youId);
@@ -380,9 +372,6 @@ function SectionHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
 
 export default function BattleLanding() {
   const { t } = useTranslation();
-  const steps = t('battleLanding.howSteps', { returnObjects: true }) as TextPair[];
-  const usecases = t('battleLanding.usecases', { returnObjects: true }) as TextPair[];
-  const qa = t('battleLanding.qa', { returnObjects: true }) as QaRaw[];
 
   return (
     <div className="mx-auto max-w-content px-4 pb-20 pt-6 md:px-8">
@@ -403,110 +392,7 @@ export default function BattleLanding() {
         <BattleArena />
       </section>
 
-      {/* ---------- how it works ---------- */}
-      <section className="mx-auto mt-12 max-w-3xl">
-        <SectionHeader eyebrow={t('battleLanding.howEyebrow')} title={t('battleLanding.howTitle')} />
-        <ol className="grid gap-3 sm:grid-cols-2">
-          {steps.map((step, i) => (
-            <li key={i} className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
-              <p className="flex items-baseline gap-2">
-                <span className="pixel-label shrink-0 text-[8px] text-gold">{String(i + 1).padStart(2, '0')}</span>
-                <span className="font-display text-micro13 font-bold tracking-wide text-tx-primary">
-                  {step.title}
-                </span>
-              </p>
-              <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">{step.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* ---------- real battle mechanics ---------- */}
-      <section className="mx-auto mt-12 max-w-3xl">
-        <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
-          <SectionHeader eyebrow={t('battleLanding.mechanicsEyebrow')} title={t('battleLanding.mechanicsTitle')} />
-          <p className="font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
-            {t('battleLanding.mechanicsBody')}
-          </p>
-        </div>
-      </section>
-
-      {/* ---------- use cases ---------- */}
-      <section className="mx-auto mt-12 max-w-3xl">
-        <SectionHeader eyebrow={t('battleLanding.usecasesEyebrow')} title={t('battleLanding.usecasesTitle')} />
-        <div className="grid gap-3 sm:grid-cols-3">
-          {usecases.map((uc, i) => (
-            <div key={i} className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
-              <p className="font-display text-micro13 font-bold tracking-wide text-tx-primary">
-                {uc.title}
-              </p>
-              <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">{uc.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------- Q&A ---------- */}
-      <div className="mx-auto mt-12 max-w-3xl">
-        <QaSection
-          defaultOpen={1}
-          items={qa.map((item) => ({
-            q: item.q,
-            a: <p>{item.a}</p>,
-          }))}
-        />
-      </div>
-
-      {/* ---------- CTA ---------- */}
-      <section className="mx-auto mt-12 max-w-3xl">
-        <div className="flex flex-col items-center gap-3 rounded-lg border border-gold/30 bg-gold/5 px-4 py-8 text-center">
-          <p className="max-w-xl font-display text-base font-bold tracking-wide text-tx-primary md:text-lg">
-            {t('battleLanding.ctaTitle')}
-          </p>
-          <a
-            href="#arena"
-            className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-gold bg-gold px-4 font-display text-[11px] leading-none font-extrabold tracking-wider text-abyss transition-all hover:shadow-[0_0_18px_rgba(246,201,69,0.45)]"
-          >
-            <Swords size={11} />
-            {t('battleLanding.ctaButton')}
-          </a>
-        </div>
-      </section>
-
-      {/* ---------- cross-links: Versus + Team Builder ---------- */}
-      <section className="mx-auto mt-12 max-w-3xl">
-        <div className="mb-4 flex items-center gap-3">
-          <span className="h-px flex-1 bg-hairline" aria-hidden />
-          <span className="pixel-label text-[9px] text-gold">{t('battleLanding.linksEyebrow')}</span>
-          <span className="h-px flex-1 bg-hairline" aria-hidden />
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
-            <LocaleLink
-              to="/versus"
-              className="inline-flex items-center gap-1.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
-            >
-              {t('battleLanding.linksVersusLabel')}
-              <ArrowRight size={11} />
-            </LocaleLink>
-            <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
-              {t('battleLanding.linksVersusText')}
-            </p>
-          </div>
-          <div className="rounded-lg border border-hairline bg-surface1 px-4 py-3.5">
-            <LocaleLink
-              to="/team"
-              className="inline-flex items-center gap-1.5 font-display text-micro13 font-bold tracking-wide text-gold transition-colors hover:text-tx-primary"
-            >
-              {t('battleLanding.linksTeamLabel')}
-              <ArrowRight size={11} />
-            </LocaleLink>
-            <p className="mt-1.5 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
-              {t('battleLanding.linksTeamText')}
-            </p>
-          </div>
-        </div>
-      </section>
+      <BattleSeoSections />
     </div>
   );
 }

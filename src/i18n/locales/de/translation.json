@@ -5,6 +5,7 @@
     "nuzlocke": "Nuzlocke",
     "team": "Team",
     "versus": "Versus",
+    "battleSim": "Kampf-Sim",
     "search": "Suchen…",
     "searchDrawer": "Pokédex durchsuchen…",
     "openSearch": "Suche öffnen",
@@ -35,8 +36,8 @@
   },
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
-    "title": "Der Pokédex",
-    "lead": "Der Nationaldex listet alle 1.025 Spezies der Generationen I bis IX. Filter nach Typ, Generation oder Name; der Eintrag zeigt Werte, Attacken und Sprites.",
+    "title": "Nationaldex",
+    "lead": "Nationaldex nach Name, Typ oder Generation filtern. Der Eintrag zeigt Werte, Attacken und Sprite-Eras. Deutsche und englische Namen treffen dieselbe Spezies.",
     "showing": "Zeige",
     "of": "von",
     "species": "Pokémon",
@@ -106,6 +107,78 @@
       "height": "Größe",
       "weight": "Gewicht",
       "bst": "Basiswertsumme"
+    },
+    "seo": {
+      "eyebrow": "SO FUNKTIONIERT DIESER DEX",
+      "title": "Nationaldex filtern, dann den Eintrag öffnen",
+      "body": "Name, Typ oder Generation setzen. Das Raster aktualisiert sich sofort. Werte, Attacken oder Sprites braucht man für einen Slot, einen Run oder einen Kampf, dann den Eintrag öffnen.",
+      "body2": "Deutsche und englische Schreibweisen treffen dieselbe Spezies. Slugs bleiben englisch. Die Zahl über dem Raster ist der aktuelle Filter, 81 von 1.025 heißt, der Stapel greift.",
+      "spectrumLabel": "ACHTZEHN TYPEN",
+      "spectrumHint": "Typ antippen, Raster filtern.",
+      "how": {
+        "eyebrow": "DAS RASTER",
+        "title": "So wird das Raster enger",
+        "body": "Filter addieren sich. Ein Typ-Chip plus eine Generation plus ein Suchbegriff verengen dieselbe Liste. Reset leert den Stapel und bleibt auf dieser Seite.",
+        "search": {
+          "title": "Zweisprachige Suche",
+          "body": "Name oder Dex-Nummer funktionieren beide. Deutsche und englische Schreibweisen treffen dieselbe ID, also öffnen Glurak und Charizard einen Eintrag."
+        },
+        "stack": {
+          "title": "Typ und Generation stapeln",
+          "body": "Typ-Chips und die Generationen-Leiste addieren sich. Zwei Typen bedeuten: beide müssen passen. Sonderfilter wie Legendär oder regionale Formen liegen auf demselben Stapel."
+        },
+        "density": {
+          "title": "Komfort, kompakt, Liste",
+          "body": "Komfort zeigt größere Karten. Kompakt packt mehr Spezies auf den Schirm. Liste ist eine 44px-Zeile zum Scannen von Namen und Typen. Die Wahl bleibt im Browser."
+        },
+        "sort": {
+          "title": "Gefilterte Menge sortieren",
+          "body": "Sortierung nach Dex-Nummer, Name, Größe, Gewicht oder Basiswertsumme. Die Reihenfolge gilt für den aktuellen Filter, nicht für den ganzen Nationaldex dahinter."
+        }
+      },
+      "species": {
+        "eyebrow": "DER EINTRAG",
+        "title": "Werte, Attacken und Sprites stehen im Eintrag",
+        "body": "Die Karte ist nur der Index. Im Eintrag stehen Typisierung, die sechs Basiswerte, Fähigkeiten, Attacken und Sprite-Eras von den frühen Spielen bis zur 3D-Ära.",
+        "stats": {
+          "title": "Typen, Werte, Fähigkeiten",
+          "body": "Die Übersicht zeigt Typisierung, die sechs Basiswerte und die Fähigkeiten. Das ist der erste Check vor einem Slot oder einem Matchup."
+        },
+        "learnset": {
+          "title": "Attacken nach Spiel",
+          "body": "Level-up, Ei, Tutor und TM/VM stehen im Eintrag. So ist sichtbar, was eine Spezies lernen kann, bevor der Teambuilder die Versionsgruppe prüft."
+        },
+        "sprites": {
+          "title": "Sprite-Eras",
+          "body": "Das Museum hält Pixel- und 3D-Sprites auf einer Zeitachse. Damit eine Spezies über Sprite-Eras hinweg erkennbar bleibt."
+        }
+      },
+      "limits": {
+        "eyebrow": "GRENZEN",
+        "title": "Keine Flavor-Texte, keine Set-Essays",
+        "callout": "Eintrag nutzen, dann ins Tool springen",
+        "body": "Regionale Pokédex-Essays und Competitive-Texte liegen woanders. Ist die Spezies gewählt, geht es in den Teambuilder, Versus oder den 1v1-Simulator."
+      },
+      "linksEyebrow": "WEITERE WERKZEUGE",
+      "linksTitle": "Ins Team, in den Run oder ins 1v1 legen",
+      "links": {
+        "team": {
+          "label": "Pokémon-Teambuilder",
+          "body": "Die Spezies in ein legales Sechser-Team setzen und die Typabdeckung live sehen."
+        },
+        "battle": {
+          "label": "1v1-Kampf-Simulator",
+          "body": "Nach festem Set einen Kampf Runde für Runde führen. Keine Ladder."
+        },
+        "versus": {
+          "label": "Versus-Schadensrechner",
+          "body": "Zwei Pokémon auf Schadensspannen und Initiative vergleichen, ohne vollen Kampf."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke-Tracker",
+          "body": "Die erste Begegnung auf einer Route festhalten, dann die Spezies im Raster prüfen."
+        }
+      }
     }
   },
   "regions": {
@@ -363,7 +436,7 @@
     "pickOpponent": "Gegner wählen",
     "pickOpponentPlaceholder": "Gegner wählen…",
     "opponentSearch": "Gegnersuche",
-    "emptyTitle": "Wähle oben ein Pokémon oder öffne einen geteilten ?vs=-Link.",
+    "emptyTitle": "Oben ein Pokémon setzen oder einen geteilten ?vs=-Link öffnen.",
     "emptySelf": "Ein Eintrag kann nicht gegen sich selbst kämpfen.",
     "errorUnavailable": "Gegnerdaten nicht verfügbar: andere Wahl versuchen.",
     "noMatches": "Keine Treffer. Schreibweise prüfen.",
@@ -466,12 +539,12 @@
     "gameSelect": "Spiel",
     "gameDefault": "Gen 9 (Standard)",
     "pageEyebrow": "KAMPFLABOR",
-    "pageTitle": "Versus",
-    "pageHint": "Wähle links und rechts je ein Pokémon, dann siehst du Schaden, KO-Chancen und Initiative.",
+    "pageTitle": "Versus-Schadensrechner",
+    "pageHint": "Links und rechts je ein Pokémon setzen. Die Matrix zeigt Schadensspannen, K.O.-Chancen und Initiative.",
     "pickYou": "Dein Pokémon",
     "pickYouPlaceholder": "Pokémon wählen…",
-    "pickYouHint": "Wähle oben dein Pokémon aus dem Dex.",
-    "pickOpponentDexHint": "Wähle oben einen Gegner aus dem Dex.",
+    "pickYouHint": "Oben das eigene Pokémon im Dex-Feld setzen.",
+    "pickOpponentDexHint": "Oben einen Gegner im Dex-Feld setzen.",
     "openDexEntry": "{{name}}: Dex-Eintrag öffnen",
     "openOverview": "{{name}}: Übersicht anzeigen",
     "games": {
@@ -703,19 +776,19 @@
   "battleLanding": {
     "h1": "Pokémon Kampf-Simulator",
     "eyebrow": "ONLINE-TOOL · 1V1-ARENA",
-    "intro": "Der Pokémon Kampf-Simulator lässt zwei frei konfigurierte Pokémon direkt im Browser gegeneinander antreten. Du stellst Level, Item, Fähigkeit und vier Attacken ein, wählst Wetter und Terrain und startest den Kampf. Die Engine rechnet mit den offiziellen Formeln, von Generation 1 bis 9. Kostenlos, ohne Anmeldung, auf Deutsch und Englisch.",
+    "intro": "Der Pokémon-Kampf-Simulator führt ein echtes 1v1 im Browser. Level, Item, Fähigkeit und vier Attacken pro Seite, plus Wetter und Terrain. Die Engine nutzt die offiziellen Schadensformeln von Generation 1 bis 9. Kostenlos, ohne Anmeldung, Deutsch und Englisch.",
     "arenaEyebrow": "ARENA",
     "arenaTitle": "Jetzt kämpfen",
     "howEyebrow": "ANLEITUNG",
-    "howTitle": "So funktioniert's",
+    "howTitle": "Beide Seiten setzen, dann den Kampf starten",
     "howSteps": [
       {
         "title": "Pokémon konfigurieren",
-        "body": "Wähle beide Kämpfer und lege Level, Item, Fähigkeit und bis zu vier Attacken pro Seite fest."
+        "body": "Beide Kämpfer festlegen. Level, Item, Fähigkeit und bis zu vier Attacken pro Seite einstellen."
       },
       {
         "title": "Kampfbedingungen setzen",
-        "body": "Wetter und Terrain sind frei wählbar. Das Regelwerk richtet sich nach der Generation, die du einstellst, von der Roten und Blauen Edition bis Karmesin und Purpur."
+        "body": "Wetter und Terrain sind frei wählbar. Das Regelwerk folgt der gewählten Generation, von der Roten und Blauen Edition bis Karmesin und Purpur."
       },
       {
         "title": "KI-Modus wählen",
@@ -727,49 +800,97 @@
       }
     ],
     "mechanicsEyebrow": "ENGINE",
-    "mechanicsTitle": "Echte Kampfmechanik",
-    "mechanicsBody": "Der Simulator rechnet nicht mit groben Tabellen, sondern mit der echten Kampf-Engine der Competitive-Szene: @pkmn/sim, dem Code hinter Pokémon Showdown. Jede Runde läuft mit der originalen Schadensformel der gewählten Generation. Typbonus, Stat-Stufen, Statusveränderungen, Volltreffer und AP fließen genau so ein wie in den Konsolenspielen. Items und Fähigkeiten wirken wie im Original, Wetter und Terrain verändern Schaden und Ablauf spürbar. Auch die Initiative entscheidet nach den echten Werten, welche Seite zuerst angreift. Sogar die Regelunterschiede zwischen den neun Generationen sind abgebildet, von den ersten Editionen bis zu Karmesin und Purpur. Viele Browser-Sims würfeln nur einen Sieger aus oder schätzen den Schaden grob. Hier siehst du im Kampf-Log Runde für Runde, welche Attacke wie viel Schaden gemacht hat und warum am Ende ein Pokémon gewinnt.",
+    "mechanicsTitle": "Wie @pkmn/sim eine Runde auflöst",
+    "mechanicsBody": "Die Engine ist @pkmn/sim, derselbe Kampfcode wie bei Pokémon Showdown. Jede Runde nutzt die offizielle Schadensformel der gewählten Generation, von Rot und Blau bis Karmesin und Purpur.",
     "usecasesEyebrow": "PRAXIS",
-    "usecasesTitle": "Wofür Spieler das nutzen",
+    "usecasesTitle": "Arenen, Forum-Sets, Wetterchecks",
     "usecases": [
       {
         "title": "Nuzlocke-Vorbereitung",
-        "body": "Die entscheidende Frage vor jedem Arenakampf: Überlebt mein Pokémon den stärksten Angriff des Gegners? Set nachbauen, Treffer durchrechnen lassen, Ergebnis im Log prüfen, bevor du den Run riskierst."
+        "body": "Das Arenen-Ass nachbauen, den Kampf starten und prüfen, ob der Partner den härtesten Treffer überlebt. Das vor dem Run erledigen."
       },
       {
         "title": "Matchups klären",
-        "body": "Wer gewinnt: dein Set oder das Set aus dem Forum-Thread? Statt ewig zu diskutieren, konfigurierst du beide Seiten und lässt sie kämpfen. Für schnelle Zahlen vorab gibt es den Versus-Vergleich mit Schadens-Matrix und Initiative-Check."
+        "body": "Beide Sets festziehen und kämpfen lassen. Für Spannen ohne vollen Kampf Versus auf dieser Seite öffnen."
       },
       {
         "title": "Mechanik lernen",
-        "body": "Wie viel bringt Wetter wirklich? Was bewirkt eine Stat-Stufe mehr oder weniger? Wer solche Effekte in einem echten Kampf sieht, lernt sie schneller als aus jeder Formel-Seite."
+        "body": "Eine Statuswerte-Stufe oder ein Wetterwechsel ist im Live-Log leichter zu sehen als auf einer Formel-Seite."
       }
     ],
     "qa": [
       {
         "q": "Ist der Pokémon Kampf-Simulator kostenlos?",
-        "a": "Ja, komplett. Du brauchst weder einen Account noch einen Download, und es gibt kein Abo dahinter. Der Kampf läuft lokal in deinem Browser, ohne Server-Login und ohne Wartezeit. Alle KI-Modi und alle Generations-Regelwerke von 1 bis 9 sind frei nutzbar."
+        "a": "Ja, komplett. Es gibt weder Konto noch Download noch Abo. Der Kampf läuft lokal im Browser, ohne Server-Login und ohne Warteschlange. Alle KI-Modi und alle Generations-Regelwerke von 1 bis 9 sind frei nutzbar."
       },
       {
         "q": "Mit welchen Pokémon-Editionen funktioniert der Simulator?",
-        "a": "Du wählst das Regelwerk von Generation 1 bis 9, also von der Roten und Blauen Edition bis Karmesin und Purpur. Die Mechanik passt sich deiner Wahl an. Ein Beispiel: Unter dem Regelwerk von Feuerrot und Blattgrün existiert kein Terrain, und Wetter folgt den Regeln von Generation 3. Attacken, Statuswerte und Kampfablauf richten sich immer nach der eingestellten Generation."
-      },
-      {
-        "q": "Wie berechnet der Simulator den Schaden?",
-        "a": "Mit der offiziellen Schadensformel der eingestellten Generation. Zuerst gehen Level, Angriffs- und Verteidigungswerte sowie die Stärke der Attacke in die Rechnung, dann Typ-Effektivität, Typbonus und ein Zufallsfaktor zwischen 85 und 100 Prozent. Darüber liegen Wetter, Item, Fähigkeit und Stat-Stufen. Genauigkeit und Volltreffer werden pro Runde neu ausgewürfelt. Das Ergebnis ist kein Schätzwert, sondern dasselbe Verfahren wie in den Konsolenspielen."
+        "a": "Das Regelwerk gilt für Generation 1 bis 9, von der Roten und Blauen Edition bis Karmesin und Purpur. Die Mechanik folgt der Wahl. Ein Beispiel: Unter Feuerrot und Blattgrün existiert kein Terrain, und Wetter folgt den Regeln von Generation 3. Attacken, Statuswerte und Kampfablauf richten sich immer nach der eingestellten Generation."
       },
       {
         "q": "Kann ich gegen einen Freund kämpfen?",
-        "a": "Direkt aktuell nicht. Der Simulator kämpft immer gegen die KI, einen PvP-Modus gegen andere Spieler gibt es noch nicht. Du kannst dir aber behelfen: Konfiguriere das Set deines Freundes als Gegner nach und teste dagegen. Wenn ihr Sets vergleichen wollt, stellt der Versus-Vergleich auf mypokepanion Schaden und Initiative beider Seiten direkt nebeneinander."
+        "a": "Direkt noch nicht. Der Simulator kämpft immer gegen die KI, einen Spieler-gegen-Spieler-Modus gibt es nicht. Workaround: das Set der anderen Person als Gegner nachbauen. Wer Sets nebeneinander vergleichen will, nutzt den Versus-Rechner für Schaden und Initiative beider Seiten."
       }
     ],
-    "ctaTitle": "Stell deine zwei Kämpfer zusammen und starte den ersten Kampf.",
-    "ctaButton": "Kampf starten",
+    "limitsEyebrow": "GRENZEN",
+    "limitsTitle": "Keine Ladder, kein 6v6, kein PvP",
+    "limitsBody": "Diese Seite ist ein 1v1 gegen die eingebaute KI. Keine Ladder, kein Spieler-gegen-Spieler, kein Sechser-Teamkampf. Ein Set als Gegner nachbauen, oder Versus für Schadensspannen ohne Kampf öffnen.",
     "linksEyebrow": "WEITERE TOOLS",
-    "linksVersusLabel": "Versus-Calc",
-    "linksVersusText": "Für schnelle Schadenszahlen ohne Kampf: Schadens-Matrix und Initiative-Check.",
-    "linksTeamLabel": "Team-Builder",
-    "linksTeamText": "Ein ganzes Team statt nur ein Duell planen, mit Typabdeckung."
+    "howLead": "Zwei Pokémon wählen, Set festziehen, Wetter setzen wenn es zählt, dann starten. Das Log schreibt jede Runde. Versus zeigt nur Spannen. Diese Seite spielt das 1v1.",
+    "logLabel": "BEISPIEL-LOG",
+    "logLines": [
+      {
+        "turn": "RUNDE 1",
+        "move": "Flammenwurf",
+        "dmg": "42-49"
+      },
+      {
+        "turn": "RUNDE 2",
+        "move": "Hydropumpe",
+        "dmg": "61-72"
+      },
+      {
+        "turn": "RUNDE 3",
+        "move": "Erdbeben",
+        "dmg": "K.O."
+      }
+    ],
+    "engine": {
+      "formula": {
+        "title": "Schaden, STAB und Stufen",
+        "body": "Typbonus, Statuswerte-Stufen, Status, Volltreffer und AP folgen den Konsolenregeln. Items und Fähigkeiten greifen so, wie es die Generation vorsieht."
+      },
+      "gen": {
+        "title": "Neun Generations-Regelwerke",
+        "body": "In Feuerrot gibt es kein Terrain. Wetter folgt dort den Gen-3-Regeln. Ab Gen 4 gilt der physische und spezielle Split pro Attacke. Zuerst das Spiel wählen, dann das Log lesen."
+      },
+      "log": {
+        "title": "Jede Runde steht im Log",
+        "body": "Jede Runde nennt die Attacke, den Schaden und warum ein Pokémon stehen bleibt. Die Initiative nutzt die echten Werte. Nur bei Gleichstand entscheidet der Zufall."
+      }
+    },
+    "limitsCallout": "Versus für Spannen, diese Seite für den Kampf",
+    "qaEyebrow": "FRAGEN",
+    "qaTitle": "Kostenlos, Gen 1 bis 9, nur KI",
+    "linksTitle": "Schadensrechner, Team, Run, Dex",
+    "links": {
+      "versus": {
+        "label": "Versus-Schadensrechner",
+        "body": "Für schnelle Schadenszahlen ohne Kampf: Schadens-Matrix und Initiative-Check."
+      },
+      "team": {
+        "label": "Teambuilder",
+        "body": "Ein ganzes Team statt nur ein Duell planen, mit Typabdeckung."
+      },
+      "nuzlocke": {
+        "label": "Nuzlocke-Tracker",
+        "body": "Routen-Begegnungen und Verluste festhalten, dann den Arenakampf hier zuerst prüfen."
+      },
+      "dex": {
+        "label": "Nationaldex",
+        "body": "Werte, Typen und Attacken nachschlagen, bevor ein Set feststeht."
+      }
+    }
   },
   "matchup": {
     "eyebrow": "MATCHUP · SIMULATOR-ERGEBNIS",
@@ -1613,8 +1734,8 @@
           "caption": "Sechs Slots, volle Attacken-Legalität pro Spielversion, Coverage- & Schwächen-Analyse, Share-Links."
         },
         "versus": {
-          "title": "Versus — 1v1-Matchups",
-          "caption": "Wähle zwei Pokémon und erhalte die komplette Schadensrechnung: beste Attacken, KO-Bereiche, Initiative. Auf jeder Dex-Seite."
+          "title": "Versus-Schadensrechner",
+          "caption": "Zwei Pokémon vergleichen: Schadenszahlen, KO-Bereiche und Initiative. Auf jeder Dex-Seite."
         },
         "items": {
           "title": "Item-Lexikon",
@@ -1661,6 +1782,80 @@
       "text": "MyPokePanion ist ein Hobby-Projekt, das laufend wächst — und das Beste daran sind Bug-Meldungen und Feature-Ideen von echten Spielern.",
       "bugCta": "Bug melden",
       "featureCta": "Feature wünschen"
+    },
+    "seo": {
+      "eyebrow": "DER WERKZEUGKASTEN",
+      "title": "Dex, Karten, Teambuilder und 1v1 auf einer Seite",
+      "body": "MyPokePanion läuft auf Deutsch und Englisch auf denselben URLs. Nationaldex, Regionskarten, Teambuilder, Nuzlocke-Tracker, Versus-Rechner und Kampf-Simulator teilen eine Seite. Offizielle Spielbegriffe bleiben offiziell. Slugs bleiben englisch, ein geteilter Link öffnet nach dem Sprachwechsel weiter.",
+      "body2": "Die Startseite ist der Index. Filter, Routentabelle und legaler Slot sitzen auf den Seiten dahinter.",
+      "tools": {
+        "eyebrow": "WAS HIER LIEGT",
+        "title": "Nationaldex, Karten, Nuzlocke, Teambuilder",
+        "body": "Die Blöcke oben sind Demos. Die Seiten darunter sind die Arbeitskopien. Versus rechnet nur Schaden. Der Kampf-Simulator ist ein eigenes 1v1 gegen die eingebaute KI.",
+        "dex": {
+          "title": "Nationaldex",
+          "body": "1.025 Spezies nach Name, Typ oder Generation filtern. Ein Eintrag zeigt Werte, Fähigkeiten, Attacken und Sprite-Eras."
+        },
+        "maps": {
+          "title": "Regionskarten",
+          "body": "Linienkarten und Encounter-Tabellen für die geführten Regionen. Derselbe Atlas, den der Nuzlocke-Run nutzt."
+        },
+        "nuzlocke": {
+          "title": "Nuzlocke-Tracker",
+          "body": "Erste Begegnung, Team und jeden Tod festhalten. Geführte Karten von Kanto bis Einall. Freie Runs für spätere Spiele."
+        },
+        "team": {
+          "title": "Teambuilder",
+          "body": "Sechs Slots mit Legalität pro Versionsgruppe und live Typabdeckung. View-only-Link teilen. Kein Konto nötig."
+        }
+      },
+      "connect": {
+        "eyebrow": "EIN ABLAUF",
+        "title": "Ein üblicher Prep-Lauf",
+        "body": "Zuerst die Spezies nachschlagen, dann eine Route prüfen, eine Party füllen und den Kampf testen, der wirklich nervt. Die Schritte liegen auf den Seiten darunter.",
+        "look": {
+          "title": "Spezies nachschlagen",
+          "body": "Das Pokémon im Nationaldex finden. Typ, Werte und Attacken für das Zielspiel prüfen."
+        },
+        "plan": {
+          "title": "Route prüfen",
+          "body": "Die Regionskarte für Wildtabellen öffnen, oder einen Nuzlocke-Run starten, wenn der Playthrough diese Regeln nutzt."
+        },
+        "build": {
+          "title": "Sechs legale Slots füllen",
+          "body": "Die Spezies in den Teambuilder holen. Typabdeckung und gemeinsame Schwächen aktualisieren sich mit der Party."
+        },
+        "fight": {
+          "title": "Schweren Kampf testen",
+          "body": "Versus zeigt Schadensspannen und Initiative. Der Kampf-Simulator spielt das 1v1 Runde für Runde gegen die KI."
+        }
+      },
+      "limit": {
+        "eyebrow": "DIESE SEITE",
+        "title": "Legalität und Kampfmath liegen woanders",
+        "callout": "Diese Seite nennt nur die URLs",
+        "body": "Attacken-Checks liegen im Teambuilder. Encounter-Tabellen auf den Karten. Run-Protokolle im Nuzlocke-Tracker. Schadensspannen in Versus, der Kampf Runde für Runde im Simulator."
+      },
+      "linksEyebrow": "EIN TOOL ÖFFNEN",
+      "linksTitle": "Nationaldex, Tracker, Team oder 1v1",
+      "links": {
+        "dex": {
+          "label": "Nationaldex",
+          "body": "Spezies nach Name, Typ oder Generation filtern, dann den Eintrag öffnen."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke-Tracker",
+          "body": "Erste Begegnungen, Team und Tode festhalten."
+        },
+        "team": {
+          "label": "Teambuilder",
+          "body": "Ein legales Sechser-Team mit live Typabdeckung bauen."
+        },
+        "battle": {
+          "label": "1v1-Kampf-Simulator",
+          "body": "Ein echtes 1v1 führen, sobald ein Set steht. Keine Ladder."
+        }
+      }
     }
   },
   "team": {
@@ -1860,9 +2055,11 @@
       "what": {
         "eyebrow": "SO FUNKTIONIERT ES",
         "title": "Ein legales Sechser-Team bauen",
-        "body": "Der Builder hat sechs Team-Slots. Pro Slot: Spezies, Attacken, Fähigkeit, Wesen, Item und FP. Typabdeckung und Schwächen aktualisieren sich mit der Party. Teams bleiben im Browser, bis ein Share-Link kopiert wird.",
+        "body": "Sechs Team-Slots. Pro Slot: Spezies, Attacken, Fähigkeit, Wesen, Item und FP. Typabdeckung und Schwächen aktualisieren sich mit der Party. Teams bleiben in diesem Browser, bis ein Share-Link kopiert wird.",
+        "body2": "Zuerst das Spiel wählen. Attacken, Items, Fähigkeiten und Wesen werden gegen diese Versionsgruppe geprüft, von Rot und Blau bis Karmesin und Purpur. Ein Set, das in Karmesin legal ist, kann in Feuerrot illegal sein.",
+        "partyLabel": "AKTIVES TEAM",
         "slots": {
-          "title": "Sechs Slots",
+          "title": "Die aktiven sechs",
           "body": "Sechs Plätze für die aktive Party. Weitere Pokémon liegen in der Box und lassen sich später ins Team holen."
         },
         "legality": {
@@ -1876,11 +2073,49 @@
         "export": {
           "title": "Teilen und Export",
           "body": "Ein View-only-Share-Link kopiert das Team. Slot-Felder entsprechen einem Showdown-Set: Item, Fähigkeit, Wesen, FP und vier Attacken. Ein fertiges Team geht so in den Kampf-Simulator."
+        },
+        "limits": {
+          "title": "Kein Kampf, keine Ladder",
+          "body": "Der Builder prüft Attacken und Items gegen die gewählte Versionsgruppe. Er simuliert keinen vollen Kampf und holt keine Live-Ladder-Daten. Für Schadensspannen Versus. Für ein 1v1 den Kampf-Simulator."
+        }
+      },
+      "how": {
+        "eyebrow": "EIN TEAM FÜLLEN",
+        "title": "Einen Slot nach dem anderen füllen",
+        "body": "Der Hub listet gespeicherte Teams. Ein neues Team öffnet sechs leere Slots und eine Box. Slot für Slot arbeiten, dann das Coverage-Raster lesen, bevor geteilt wird.",
+        "game": {
+          "title": "Spiel festlegen",
+          "body": "Die Versionsgruppe entscheidet, welche Spezies existieren, welche Attacken ein Pokémon lernen kann, und ob Items, Fähigkeiten, Wesen und FP gelten."
+        },
+        "slot": {
+          "title": "Spezies wählen",
+          "body": "Im Dex suchen, eine Spezies in einen Slot legen, den Rest in die Box. Die aktive Party bleibt bei sechs oder weniger."
+        },
+        "set": {
+          "title": "Set festziehen",
+          "body": "Fähigkeit, Wesen, Item, FP und bis zu vier Attacken wählen. Illegale Picks bleiben als goldene Hinweise sichtbar, nicht als roter Fehler."
+        },
+        "review": {
+          "title": "Coverage lesen, dann teilen",
+          "body": "Offensive und Defensive aktualisieren sich live. Ein View-only-Link kopiert die Showdown-Felder, damit ein fertiges Set in Versus oder den 1v1-Simulator geht."
+        }
+      },
+      "coverageRead": {
+        "eyebrow": "DAS RASTER",
+        "title": "Typabdeckung lesen",
+        "body": "Die Analyse gilt für das gewählte Spiel, nicht für eine Live-Ladder. Die Offensive fragt, welche Typen sehr effektiv getroffen werden. Die Defensive fragt, welche Angriffstypen mehr als einen Slot treffen.",
+        "offense": {
+          "title": "Offensive",
+          "body": "Ein goldenes Loch ist ein Typ, den die Party schlecht trifft. Vor Arena oder 1v1 mit einer Attacke oder einer Spezies schließen."
+        },
+        "defense": {
+          "title": "Defensive",
+          "body": "Jede Zeile ist ein Angriffstyp. Gemeinsame 2×- oder 4×-Schwächen entscheiden einen Wipe. Immunitäten und Resistenzen in derselben Zeile sind die Antwort."
         }
       },
       "links": {
         "eyebrow": "WEITERE WERKZEUGE",
-        "title": "Team im Kampf oder im Run nutzen",
+        "title": "Fertiges Set in Versus oder einen Run holen",
         "battle": {
           "label": "Pokémon-Kampf-Simulator",
           "body": "Ein fertiges Set laden und einen 1v1-Kampf von Generation 1 bis 9 führen."
@@ -2109,7 +2344,7 @@
             {
               "heading": "PayPal (freiwillige Unterstützung)",
               "paragraphs": [
-                "Wenn du über /support freiwillig einen Beitrag leistest, wirst du zu PayPal weitergeleitet oder scannst einen PayPal-QR-Code. Die Zahlung erfolgt ausschließlich bei PayPal — nicht auf unseren Servern.",
+                "Wenn du über /support freiwillig einen Beitrag leistest, wirst du zu PayPal weitergeleitet oder scannst einen PayPal-QR-Code. Die Zahlung erfolgt ausschließlich bei PayPal, nicht auf unseren Servern.",
                 "Verantwortlich für die Zahlungsabwicklung ist PayPal (PayPal Pte. Ltd.). Dabei können personenbezogene Daten verarbeitet werden (z. B. PayPal-Kontoinformationen, Transaktionsdaten). Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Verarbeitung zur Durchführung der von dir ausdrücklich angeforderten Zahlung) bzw. lit. f DSGVO, soweit technische Verbindungsdaten anfallen, bevor du PayPal erreichst.",
                 "Weitere Informationen: https://www.paypal.com/de/webapps/mpp/ua/privacy-full"
               ]
@@ -2377,14 +2612,14 @@
   "support": {
     "eyebrow": "SPENDE",
     "title": "MyPokePanion unterstützen.",
-    "p1": "MyPokePanion ist ein reines Hobby-Projekt — gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
-    "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag , komplett freiwillig, ohne jede Verpflichtung.",
+    "p1": "MyPokePanion ist ein reines Hobby-Projekt, gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
+    "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag, komplett freiwillig, ohne jede Verpflichtung.",
     "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Für anonyme Nutzungsstatistik nutze ich Plausible (cookieless, ohne Werbeprofile). Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
     "cta": "VIA PAYPAL UNTERSTÜTZEN",
     "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt.",
     "legal": "Das ist eine freiwillige Unterstützung für ein kostenloses Hobby-Projekt, kein Kauf und keine Gegenleistung (keine Premium-Funktionen, keine Spendenquittung). Unterstützungen sind für Spender steuerlich nicht absetzbar. Beim Klick auf PayPal oder beim Scan des QR-Codes verlässt du MyPokePanion; die Zahlung wird ausschließlich von PayPal verarbeitet.",
     "legalLinks": "Weitere Angaben:",
-    "qrCaption": "QR-Code scannen — geht auch direkt im Handy"
+    "qrCaption": "QR-Code scannen. Geht auch direkt im Handy."
   },
   "feedback": {
     "eyebrow": "FEEDBACK & IDEEN",
@@ -2577,33 +2812,98 @@
     },
     "versus": {
       "explainerEyebrow": "SO FUNKTIONIERT'S",
-      "explainerTitle": "Wer gewinnt? So funktioniert der Versus-Calc",
-      "explainerBody": "Der Versus-Calc stellt zwei Pokémon im direkten Duell gegenüber, mit echter Schadensrechnung statt Bauchgefühl. Für jede Attacke beider Seiten siehst du die Schadensspanne: Typ-Effektivität, STAB und der physische/spezielle Split werden generationengenau berücksichtigt. Dazu vergleichen Stat-Delta und Speed-Check die Basiswerte. Wer zuerst angreift, entscheidet viele Duelle. Stell oben beide Pokémon ein und lies das Matchup direkt ab.",
+      "explainerTitle": "So wird die Schadensmatrix gelesen",
+      "explainerBody": "Versus vergleicht zwei Pokémon mit der offiziellen Schadensformel. Jede Attacke beider Seiten bekommt eine Min-Max-Spanne. Typ-Effektivität, STAB und der physische/spezielle Split folgen der gewählten Generation. Die Initiative steht neben der Matrix, weil der Erstschlag oft den ersten K.O. entscheidet.",
       "qa": [
         {
           "q": "Wer gewinnt: Pikachu vs. Glurak?",
-          "aLead": "Kommt auf Level und Attacken an – genau das rechnet der Calc.",
-          "aBody": "Die Fakten: Pikachus Elektro-Attacken treffen Glurak sehr effektiv (2× über die Flug-Schwäche), aber Glurak ist mit Basis 100 Initiative schneller als Pikachu (90) und greift zuerst an. Stell beide oben ein und vergleiche die Schadensspannen pro Attacke samt Speed-Check."
+          "aLead": "Kommt auf Level und Attacken an, genau das rechnet der Calc.",
+          "aBody": "Pikachus Elektro-Attacken treffen Glurak sehr effektiv (2x über die Flug-Schwäche), aber Glurak ist mit Basis 100 Initiative schneller als Pikachu (90) und greift zuerst an. Beide oben einstellen und die Schadensspannen pro Attacke samt Initiative-Check vergleichen."
         },
         {
           "q": "Was ist effektiv gegen Wasser?",
-          "aLead": "Elektro und Pflanze – je 2× Schaden.",
-          "aBody": "Wasser-Pokémon resistieren Feuer, Wasser, Eis und Stahl (je 0,5×). Achtung bei Doppeltypen: Wasser/Boden (z. B. Sumpex) kassiert 4× von Pflanze, ist aber immun gegen Elektro. Die genaue Effektivität pro Matchup zeigt der Calc direkt in der Schadensmatrix."
+          "aLead": "Elektro und Pflanze, je 2x Schaden.",
+          "aBody": "Wasser-Pokémon resistieren Feuer, Wasser, Eis und Stahl (je 0,5x). Bei Doppeltypen aufpassen: Wasser/Boden (zum Beispiel Sumpex) kassiert 4x von Pflanze, ist aber immun gegen Elektro. Die genaue Effektivität zeigt der Calc in der Schadensmatrix."
         },
         {
           "q": "Wie wird Schaden im Versus-Calc berechnet?",
-          "aLead": "Pro Attacke, mit der offiziellen Schadensformel – generationengenau.",
-          "aBody": "Basis sind Level, Angriffs- und Verteidigungswerte sowie die Stärke der Attacke; dazu kommen STAB (gleicher Typ = 1,5×) und die Typ-Effektivität gegen alle Typen des Ziels. Der physische/spezielle Split folgt der gewählten Generation (bis Gen 3 nach Typ, ab Gen 4 pro Attacke). Das Ergebnis ist die Schadensspanne, die du in der Matrix siehst."
+          "aLead": "Pro Attacke, mit der offiziellen Schadensformel, generationengenau.",
+          "aBody": "Basis sind Level, Angriffs- und Verteidigungswerte sowie die Stärke der Attacke. Dazu kommen STAB (gleicher Typ = 1,5x) und die Typ-Effektivität gegen alle Typen des Ziels. Der physische/spezielle Split folgt der gewählten Generation (bis Gen 3 nach Typ, ab Gen 4 pro Attacke). Das Ergebnis ist die Schadensspanne in der Matrix."
         },
         {
           "q": "Stapeln sich Schwächen bei Doppeltypen (4×)?",
-          "aLead": "Ja – multiplikativ, bis zu 4×.",
-          "aBody": "Treffen beide Typen des Ziels eine Schwäche, multiplizieren sich die Faktoren: 2× · 2× = 4× (z. B. Pflanze gegen Wasser/Boden). Umgekehrt können sich Schwäche und Resistenz gegenseitig aufheben (2× · 0,5× = 1×)."
+          "aLead": "Ja, multiplikativ, bis zu 4x.",
+          "aBody": "Treffen beide Typen des Ziels eine Schwäche, multiplizieren sich die Faktoren: 2x mal 2x = 4x (zum Beispiel Pflanze gegen Wasser/Boden). Schwäche und Resistenz können sich aufheben (2x mal 0,5x = 1x)."
         }
       ],
       "matchupsEyebrow": "SIMULIERTE MATCHUPS",
-      "matchupsTitle": "Beliebte Matchups — mit echten Ergebnissen",
-      "matchupsBody": "Kein Bauchgefühl: Jedes dieser Paare wurde 100-mal auf der echten Kampf-Engine simuliert (Level 50, Standard-Sets). Die Seiten zeigen Siegquote, Schadensranges und Initiative."
+      "matchupsTitle": "Kuratierte Matchups mit 100 simulierten Kämpfen",
+      "matchupsBody": "Jedes Paar lief 100-mal auf der Kampf-Engine, Level 50, Standard-Sets. Die Seiten zeigen Siegquote, Schadensspannen und Initiative. Der Hub selbst bleibt der Rechner.",
+      "rangeLabel": "SCHADENSSPANNE",
+      "rangeLo": "MIN 18%",
+      "rangeHi": "MAX 67%",
+      "how": {
+        "eyebrow": "DER RECHNER",
+        "title": "Spiel festlegen, dann beide Seiten füllen",
+        "body": "Die Versionsgruppe entscheidet, welche Attacken, Items und Fähigkeiten existieren. Ein Set, das in Karmesin legal ist, kann in Feuerrot illegal sein.",
+        "game": {
+          "title": "Spiel wählen",
+          "body": "Der Rechner folgt dieser Versionsgruppe. Terrain, Wetter und der physische/spezielle Split ändern sich mit der Generation."
+        },
+        "sides": {
+          "title": "Spezies, Attacken und Items festziehen",
+          "body": "Beide Seiten suchen, dann Level, Fähigkeit, Wesen, Item und bis zu vier Attacken setzen. Leere Slots fallen auf ein Standard-Set zurück, damit die Matrix trotzdem füllt."
+        },
+        "read": {
+          "title": "Spanne, Initiative, dann K.O.",
+          "body": "Jede Zelle ist ein Schadensfenster, keine Einzelzahl. Der Initiative-Check sitzt daneben. Ein sicherer K.O. erscheint nur, wenn der Low-Roll schon besiegt."
+        }
+      },
+      "matrix": {
+        "eyebrow": "DIE MATRIX",
+        "title": "Was in einer Zelle steht",
+        "body": "Die Matrix läuft mit @smogon/calc. Der 1v1-Simulator auf dieser Seite nutzt @pkmn/sim. Beide sind sich beim Schaden einig, nur der Simulator spielt Runden.",
+        "range": {
+          "title": "Min- und Max-Schaden",
+          "body": "Eine Zelle zeigt das Würfelfenster nach Typ, STAB, Wetter und Item. Mehrfach-Attacken zeigen Treffer und Summe. Steigende Attacken wie Walzer wachsen über aufeinanderfolgende Treffer."
+        },
+        "speed": {
+          "title": "Wer zuerst angreift",
+          "body": "Der Initiative-Check nutzt die echten Werte beider Seiten, inklusive Stufen, Items und Paralyse. Gleichstand ist pro Runde ein Münzwurf."
+        },
+        "ko": {
+          "title": "xK.O. und Fokusgurt",
+          "body": "Das Label ist die Zahl der Treffer beim Low- und High-Roll. Fokusgurt und Robustheit verhindern ein sicheres OHKO-Label auf der Verteidigung."
+        }
+      },
+      "split": {
+        "eyebrow": "ZWEI WERKZEUGE",
+        "title": "Versus rechnet, der Simulator kämpft",
+        "callout": "Das 1v1 öffnen, wenn die Spanne nicht reicht",
+        "body": "Versus beantwortet, wie viel eine Attacke trifft und wer schneller ist. Der Kampf-Simulator spielt dieselben Sets Runde für Runde gegen die KI. Eine Seite, zwei URLs."
+      },
+      "qaEyebrow": "FRAGEN",
+      "qaTitle": "Pikachu gegen Glurak, Wasser, 4x, die Formel",
+      "links": {
+        "eyebrow": "WEITERE WERKZEUGE",
+        "title": "1v1-Kampf, Team, Dex, Nuzlocke",
+        "battle": {
+          "label": "1v1-Kampf-Simulator",
+          "body": "Dieselben Sets Runde für Runde gegen die KI spielen, sobald die Spanne klar ist."
+        },
+        "team": {
+          "label": "Teambuilder",
+          "body": "Sechs legale Slots füllen, dann ein Pokémon hier für den schweren Kampf prüfen."
+        },
+        "dex": {
+          "label": "Nationaldex",
+          "body": "Typen, Werte und Attacken prüfen, bevor eine Seite feststeht."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke-Tracker",
+          "body": "Die Route festhalten, dann das Arenen-Ass als Calc oder als 1v1 testen."
+        }
+      }
     },
     "types": {
       "eyebrow": "TYPEN-DEX · ALLE 18 TYPEN",

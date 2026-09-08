@@ -3,8 +3,10 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router';
 import { LocaleLink, useLocalePath, withTrailingSlash } from '@/lib/locale-link';
-import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Layers, Map, Menu, MessageSquarePlus, Package, Search, Users, X } from 'lucide-react';
+import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Layers, Map, Menu, MessageSquarePlus, Package, Search, Swords, Users, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { currentLang } from '@/lib/i18n-data';
+import { battleLandingPath } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import LanguageToggle from './LanguageToggle';
 import ZoomControl from './ZoomControl';
@@ -24,10 +26,11 @@ const LINKS = [
   { to: '/items', key: 'nav.items', Icon: Package },
   { to: '/maps', key: 'nav.maps', Icon: Map },
   { to: '/nuzlocke', key: 'nav.nuzlocke', Icon: Users },
-  { to: '/orre', key: 'nav.orre', Icon: Ghost },
   { to: '/team', key: 'nav.team', Icon: LayoutGrid },
   { to: '/versus', key: 'nav.versus', Icon: GitCompareArrows },
+  { to: '/battle-simulator', key: 'nav.battleSim', Icon: Swords, battle: true },
   { to: '/tcg', key: 'nav.tcg', Icon: Layers },
+  { to: '/orre', key: 'nav.orre', Icon: Ghost },
 ] as const;
 
 interface NavbarProps {
@@ -38,8 +41,12 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [accountReady, setAccountReady] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const localePath = useLocalePath();
+  const lang = currentLang(i18n.language);
+
+  const navTo = (item: (typeof LINKS)[number]) =>
+    'battle' in item && item.battle ? battleLandingPath(lang) : item.to;
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,8 +73,8 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-50 h-16 transition-all duration-200 md:h-[6.5rem]',
-          scrolled ? 'glass border-b border-hairline' : 'border-b border-transparent bg-transparent',
+          'fixed inset-x-0 top-0 z-50 h-16 border-b border-hairline transition-all duration-200 md:h-[6.5rem]',
+          scrolled ? 'glass' : 'bg-transparent',
         )}
       >
         <nav className="mx-auto flex h-16 max-w-content items-center gap-3 px-4 md:gap-4 md:px-8">
@@ -124,18 +131,18 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
         {/* second row: main nav left, about / feedback / support right.
             desktop/tablet only; mobile keeps the hamburger drawer */}
         <div className="hidden border-t border-hairline/60 md:block">
-          <div className="mx-auto flex h-10 max-w-content items-center gap-4 px-8">
+          <div className="mx-auto flex h-10 max-w-content items-center px-8">
             <div
-              className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto [scrollbar-width:none] lg:gap-6 xl:gap-8 [&::-webkit-scrollbar]:hidden"
+              className="flex min-w-0 flex-1 items-center gap-3 overflow-x-auto [scrollbar-width:none] lg:gap-4 xl:gap-6 [&::-webkit-scrollbar]:hidden"
               data-lenis-prevent
             >
               {LINKS.map((l) => (
                 <NavLink
-                  key={l.to}
-                  to={withTrailingSlash(localePath(l.to))}
+                  key={l.key}
+                  to={withTrailingSlash(localePath(navTo(l)))}
                   className={({ isActive }) =>
                     cn(
-                      'group relative flex h-full shrink-0 items-center gap-2 whitespace-nowrap font-sans text-base font-semibold transition-colors duration-200 lg:text-[18px]',
+                      'group relative flex h-full shrink-0 items-center gap-1.5 whitespace-nowrap font-sans text-[16px] font-semibold transition-colors duration-200 xl:gap-2',
                       isActive ? 'text-gold' : 'text-tx-secondary hover:text-tx-primary',
                     )
                   }
@@ -143,7 +150,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                   {({ isActive }) => (
                     <>
                       <l.Icon
-                        size={17}
+                        size={15}
                         strokeWidth={2}
                         className={cn('shrink-0', isActive ? 'text-gold' : 'text-tx-muted group-hover:text-tx-primary')}
                         aria-hidden
@@ -157,32 +164,6 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
                       />
                     </>
                   )}
-                </NavLink>
-              ))}
-            </div>
-            <div className="flex shrink-0 items-center gap-4 lg:gap-6">
-              {UTILITY_LINKS.map((l) => (
-                <NavLink
-                  key={l.to}
-                  to={withTrailingSlash(localePath(l.to))}
-                  className={({ isActive }) =>
-                    cn(
-                      'pixel-label inline-flex items-center gap-1.5 text-[10px] tracking-[0.14em] transition-colors duration-200',
-                      l.key === 'nav.support'
-                        ? 'rainbow-text'
-                        : isActive
-                          ? 'text-gold'
-                          : 'text-tx-muted hover:text-tx-primary',
-                    )
-                  }
-                >
-                  <l.Icon
-                    size={11}
-                    strokeWidth={2}
-                    className={l.key === 'nav.support' ? 'text-gold' : undefined}
-                    aria-hidden
-                  />
-                  {t(l.key)}
                 </NavLink>
               ))}
             </div>
@@ -214,9 +195,9 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
             </div>
             <nav className="relative flex flex-1 flex-col items-start justify-start gap-6 overflow-y-auto px-8 py-6" data-lenis-prevent>
               {LINKS.map((l) => (
-                <div key={l.to}>
+                <div key={l.key}>
                   <NavLink
-                    to={withTrailingSlash(localePath(l.to))}
+                    to={withTrailingSlash(localePath(navTo(l)))}
                     onClick={() => setDrawer(false)}
                     className={({ isActive }) =>
                       cn(

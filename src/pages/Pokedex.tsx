@@ -30,6 +30,7 @@ import type { PokemonType } from '@/lib/types';
 import { FIRST_GAME_BY_GEN } from '@/lib/edition-nav';
 import { clearPokedexScroll, commitPokedexScroll, peekPokedexScroll, restoreVisibleCount, scrollToPokedexAnchor } from '@/lib/pokedex-scroll';
 import { cn } from '@/lib/utils';
+import PokedexSeoSections from './pokedex/PokedexSeoSections';
 import './pokedex.css';
 
 const BATCH = 96;
@@ -431,7 +432,7 @@ export default function Pokedex() {
       </AnimatePresence>
 
       {/* main content */}
-      <main className="mx-auto min-h-[60dvh] max-w-content px-4 pb-24 pt-3 md:px-8">
+      <main id="pokedex-grid" className="mx-auto min-h-[60dvh] max-w-content px-4 pb-24 pt-3 md:px-8">
         {/* boot states */}
         {!index && !bootFailed && (
           <div className="grid min-h-[40dvh] place-items-center">
@@ -552,6 +553,8 @@ export default function Pokedex() {
           </>
         )}
       </main>
+
+      <PokedexSeoSections />
 
       {/* live region — announces result counts + shiny mode */}
       <span role="status" aria-live="polite" className="sr-only">

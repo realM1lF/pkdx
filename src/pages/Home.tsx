@@ -13,6 +13,7 @@ import TypeSpectrum from './home/TypeSpectrum';
 import GenerationsRail from './home/GenerationsRail';
 import Features from './home/Features';
 import StatsBand from './home/StatsBand';
+import HomeSeoSections from './home/HomeSeoSections';
 
 const SESSION_KEY = 'pdx:preloader-done';
 
@@ -65,6 +66,7 @@ export default function Home() {
       <GenerationsRail />
       <Features />
       <StatsBand />
+      <HomeSeoSections />
     </MotionConfig>
   );
 }

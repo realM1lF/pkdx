@@ -5,6 +5,7 @@
     "nuzlocke": "Nuzlocke",
     "team": "Team",
     "versus": "Versus",
+    "battleSim": "Battle",
     "search": "Search…",
     "searchDrawer": "Search the dex…",
     "openSearch": "Open search",
@@ -35,8 +36,8 @@
   },
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
-    "title": "The Pokédex",
-    "lead": "The National Dex lists all 1,025 species from Generation I to IX. Filter by type, generation or name, then open an entry for stats, learnsets and sprites.",
+    "title": "National Pokédex",
+    "lead": "Filter the National Dex by name, type or generation, then open an entry for stats, learnsets and sprite eras. English and German names both find the same species.",
     "showing": "Showing",
     "of": "of",
     "species": "Pokémon",
@@ -106,6 +107,78 @@
       "height": "Height",
       "weight": "Weight",
       "bst": "Base Stat Total"
+    },
+    "seo": {
+      "eyebrow": "HOW THIS DEX WORKS",
+      "title": "Filter the National Dex, then open an entry",
+      "body": "Type a name, pin a type or a generation. The grid updates immediately. Open the card when stats, learnsets or sprites are needed for a slot, a run or a fight.",
+      "body2": "German and English spellings hit the same species. Slugs stay English. The number above the grid is the current filter, so 81 of 1,025 means the stack is working.",
+      "spectrumLabel": "EIGHTEEN TYPES",
+      "spectrumHint": "Tap a type to filter the grid.",
+      "how": {
+        "eyebrow": "THE GRID",
+        "title": "How the grid gets smaller",
+        "body": "Filters add up. A type chip plus a generation plus a search term cut the same list. Reset empties the stack and stays on this page.",
+        "search": {
+          "title": "Bilingual search",
+          "body": "A name or a dex number both work. German and English spellings resolve to the same id, so Glurak and Charizard open one entry."
+        },
+        "stack": {
+          "title": "Type and generation stack",
+          "body": "Type chips and the generation rail add together. Two types mean both must match. Special tokens such as Legendary or regional forms sit on the same stack."
+        },
+        "density": {
+          "title": "Comfort, compact, list",
+          "body": "Comfort shows larger cards. Compact packs more species on screen. List is a 44px row for scanning names and types. The choice persists in the browser."
+        },
+        "sort": {
+          "title": "Sort the filtered set",
+          "body": "Sort by dex number, name, height, weight or base stat total. The order applies to the current filter, not to the whole National Dex behind it."
+        }
+      },
+      "species": {
+        "eyebrow": "THE ENTRY",
+        "title": "Stats, learnsets and sprites live on the entry",
+        "body": "The card is just the index. The entry holds typing, the six base stats, abilities, learnsets and sprite eras from the early games through 3D.",
+        "stats": {
+          "title": "Types, stats, abilities",
+          "body": "The overview shows the typing, the six base stats and the abilities for the species. That is the first check before a slot or a matchup."
+        },
+        "learnset": {
+          "title": "Learnsets by game",
+          "body": "Level-up, egg, tutor and machine moves sit on the entry. Use them to see what a species can learn before the team builder checks the version group."
+        },
+        "sprites": {
+          "title": "Sprite eras",
+          "body": "The museum keeps pixel and 3D-era sprites on one timeline. Use it to recognize a species across sprite eras."
+        }
+      },
+      "limits": {
+        "eyebrow": "LIMITS",
+        "title": "No flavor text, no set essays",
+        "callout": "Use the entry, then jump to a tool",
+        "body": "Regional Pokédex essays and competitive write-ups sit elsewhere. Once the species is chosen, the team builder, Versus or the 1v1 simulator is the next click."
+      },
+      "linksEyebrow": "NEXT TOOLS",
+      "linksTitle": "Park it in a team, a run or a 1v1",
+      "links": {
+        "team": {
+          "label": "Pokémon team builder",
+          "body": "Park the species in a legal six-slot party and watch coverage update."
+        },
+        "battle": {
+          "label": "1v1 battle simulator",
+          "body": "Run a turn-by-turn fight after the set is locked. Not a ladder."
+        },
+        "versus": {
+          "label": "Versus damage calculator",
+          "body": "Compare two Pokémon for damage ranges and speed without a full fight."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke tracker",
+          "body": "Record the first encounter on a route, then check the species on this grid."
+        }
+      }
     }
   },
   "regions": {
@@ -466,8 +539,8 @@
     "gameSelect": "Game",
     "gameDefault": "Gen 9 (default)",
     "pageEyebrow": "BATTLE LAB",
-    "pageTitle": "Versus",
-    "pageHint": "Pick a Pokémon on each side to see damage ranges, KO odds, and speed.",
+    "pageTitle": "Versus damage calculator",
+    "pageHint": "Set a Pokémon on each side. The matrix shows damage ranges, KO chances and speed.",
     "pickYou": "Your Pokémon",
     "pickYouPlaceholder": "Pick Pokémon…",
     "pickYouHint": "Choose your Pokémon from the dex search above.",
@@ -703,11 +776,11 @@
   "battleLanding": {
     "h1": "Pokémon Battle Simulator",
     "eyebrow": "ONLINE TOOL · 1V1 ARENA",
-    "intro": "This Pokémon battle simulator lets two fully customized Pokémon fight a real 1v1 battle right in your browser. Set the level, held item, ability and four moves for each side, pick weather and terrain, and hit start. The engine runs the official damage formulas across Gen 1 to 9. Free to use, no signup, in English and German.",
+    "intro": "This Pokémon battle simulator runs a real 1v1 in the browser. Set level, held item, ability and four moves on each side, pick weather and terrain, then start. The engine uses official damage formulas from Generation 1 to 9. Free, no signup, English and German.",
     "arenaEyebrow": "ARENA",
     "arenaTitle": "Fight now",
     "howEyebrow": "HOW IT WORKS",
-    "howTitle": "How it works",
+    "howTitle": "Set both sides, then start the fight",
     "howSteps": [
       {
         "title": "Configure your Pokémon",
@@ -727,22 +800,22 @@
       }
     ],
     "mechanicsEyebrow": "ENGINE",
-    "mechanicsTitle": "Real battle mechanics",
-    "mechanicsBody": "This simulator doesn't estimate. It runs @pkmn/sim, the battle engine behind Pokémon Showdown, the same mechanics the competitive scene treats as its reference. Every round resolves with the official damage formula of the selected generation. Same-type attack bonus, stat stages, status conditions, critical hits and PP all behave exactly as they do in the console games. Held items and abilities work the way they should, weather and terrain change damage and battle flow in ways you can actually see, and speed decides who moves first using the real stats. Even the rule differences between all nine generations are modeled, from Red and Blue up to Scarlet and Violet. Plenty of browser sims just roll a random winner or guess at damage numbers. Here the battle log shows you round by round which move dealt how much damage and why one Pokémon was still standing at the end.",
+    "mechanicsTitle": "How @pkmn/sim resolves a round",
+    "mechanicsBody": "The engine is @pkmn/sim, the same battle code Pokémon Showdown uses. Each round uses the official damage formula of the selected generation, from Red and Blue through Scarlet and Violet.",
     "usecasesEyebrow": "IN PRACTICE",
-    "usecasesTitle": "What players use it for",
+    "usecasesTitle": "Nuzlocke gyms, forum sets, weather checks",
     "usecases": [
       {
         "title": "Nuzlocke prep",
-        "body": "The question that ends runs: does my Pokémon survive the boss's hardest-hitting move? Recreate the matchup, let the attack play out, and check the log before you risk the run."
+        "body": "Rebuild the gym ace, start the fight, then read whether the partner lives the hardest hit. Do that before the run spends the faint."
       },
       {
         "title": "Settling matchup debates",
-        "body": "Who wins, your set or the one from that forum thread? Configure both sides and let them fight instead of arguing. For quick numbers first, the Versus tool on this site gives you a damage matrix and a speed check."
+        "body": "Lock both sets and let them fight. For ranges without a full fight, open Versus on this site."
       },
       {
         "title": "Learning the mechanics",
-        "body": "How much does weather actually matter? What does one extra stat stage buy you? Watching those effects play out in a real battle teaches faster than any formula page."
+        "body": "One extra stat stage or a weather shift is easier to see in a live log than on a formula page."
       }
     ],
     "qa": [
@@ -755,21 +828,69 @@
         "a": "You choose the ruleset for generations 1 through 9, from Red and Blue up to Scarlet and Violet, and the mechanics adapt to your pick. One example: under FireRed and LeafGreen rules, terrain doesn't exist and weather follows the Gen 3 rules. Moves, stats and turn resolution always match the generation you've selected."
       },
       {
-        "q": "How does the simulator calculate damage?",
-        "a": "It uses the official damage formula of the selected generation. Level, the attacker's and defender's stats and the move's power go in first, followed by type effectiveness, same-type attack bonus and a random roll between 85 and 100 percent. Weather, items, abilities and stat stages apply on top. Accuracy and critical hits are rolled fresh every round. The result is the same procedure the console games use, not a ballpark figure."
-      },
-      {
         "q": "Can I battle against a friend?",
         "a": "Not directly, at least not yet. The simulator always pairs you against the AI, and there's no player-versus-player mode right now. The workaround: rebuild your friend's set as the opponent and test against it. If you want to compare sets head to head, the Versus tool on mypokepanion puts damage numbers and speed for both Pokémon side by side."
       }
     ],
-    "ctaTitle": "Set up your two fighters and start your first battle.",
-    "ctaButton": "Start battle",
+    "limitsEyebrow": "LIMITS",
+    "limitsTitle": "No ladder, no 6v6, no PvP",
+    "limitsBody": "This page is a 1v1 against the built-in AI. No ladder, no player-versus-player, no six-Pokémon team battle. Rebuild a friend set as the foe, or open Versus for damage ranges without starting a fight.",
     "linksEyebrow": "MORE TOOLS",
-    "linksVersusLabel": "Versus calc",
-    "linksVersusText": "Quick damage numbers without a full battle: damage matrix and speed check.",
-    "linksTeamLabel": "Team builder",
-    "linksTeamText": "Plan a whole team instead of a single duel, with type coverage."
+    "howLead": "Pick two Pokémon, lock a set, choose weather if it matters, then start. The log writes every round. Versus only shows ranges. This page plays the 1v1.",
+    "logLabel": "SAMPLE LOG",
+    "logLines": [
+      {
+        "turn": "TURN 1",
+        "move": "Flamethrower",
+        "dmg": "42-49"
+      },
+      {
+        "turn": "TURN 2",
+        "move": "Hydro Pump",
+        "dmg": "61-72"
+      },
+      {
+        "turn": "TURN 3",
+        "move": "Earthquake",
+        "dmg": "KO"
+      }
+    ],
+    "engine": {
+      "formula": {
+        "title": "Damage, STAB and stages",
+        "body": "Same-type attack bonus, stat stages, status, critical hits and PP follow the console rules. Held items and abilities apply the way they do in that generation."
+      },
+      "gen": {
+        "title": "Nine generation rulesets",
+        "body": "Terrain is absent in FireRed. Weather follows Gen 3 rules there. From Gen 4 the physical and special split is per move. Pick the game first, then read the log."
+      },
+      "log": {
+        "title": "The log names every hit",
+        "body": "Each round names the move, the damage and why a Pokémon is still standing. Speed uses the real stats, so the first mover is not a coin flip unless the speeds tie."
+      }
+    },
+    "limitsCallout": "Versus for ranges, this page for the fight",
+    "qaEyebrow": "QUESTIONS",
+    "qaTitle": "Free, Gen 1 to 9, AI only",
+    "linksTitle": "Damage calc, team, run, dex",
+    "links": {
+      "versus": {
+        "label": "Versus damage calculator",
+        "body": "Quick damage numbers without a full battle: damage matrix and speed check."
+      },
+      "team": {
+        "label": "Team builder",
+        "body": "Plan a whole team instead of a single duel, with type coverage."
+      },
+      "nuzlocke": {
+        "label": "Nuzlocke tracker",
+        "body": "Log route encounters and losses, then test a gym fight here first."
+      },
+      "dex": {
+        "label": "National Pokédex",
+        "body": "Look up stats, types and learnsets before locking a set."
+      }
+    }
   },
   "matchup": {
     "eyebrow": "MATCHUP · SIMULATOR RESULT",
@@ -1613,8 +1734,8 @@
           "caption": "Six slots, full move legality per game version, coverage & weakness analysis, share links."
         },
         "versus": {
-          "title": "Versus — 1v1 Matchups",
-          "caption": "Pick two Pokémon, get the full damage math: best moves, KO ranges, speed tiers. On every dex page."
+          "title": "Versus Damage Calculator",
+          "caption": "Pick two Pokémon, get the damage math: best moves, KO ranges, speed tiers. On every dex page."
         },
         "items": {
           "title": "Item Lexicon",
@@ -1661,6 +1782,80 @@
       "text": "MyPokePanion is a hobby project that keeps growing — and the best part is bug reports and feature ideas from real players.",
       "bugCta": "Report A Bug",
       "featureCta": "Request A Feature"
+    },
+    "seo": {
+      "eyebrow": "THE TOOLKIT",
+      "title": "Dex, maps, team builder and a 1v1 on one site",
+      "body": "MyPokePanion is English and German on the same URLs. National Dex, region maps, team builder, Nuzlocke tracker, Versus calculator and the battle simulator share one site. Official game terms stay official. Slugs stay English, so a shared link still opens after the language switch.",
+      "body2": "This homepage is the index. The filter, the route table and the legal slot sit on the pages you click into.",
+      "tools": {
+        "eyebrow": "WHAT LIVES HERE",
+        "title": "National Dex, maps, Nuzlocke, team builder",
+        "body": "The blocks above are demos. The pages below are the working copies. Versus only calculates damage. The battle simulator is a separate 1v1 against the built-in AI.",
+        "dex": {
+          "title": "National Pokédex",
+          "body": "Filter 1,025 species by name, type or generation. Open an entry for stats, abilities, learnsets and sprite eras."
+        },
+        "maps": {
+          "title": "Region maps",
+          "body": "Transit-style charts and encounter tables for the tracked regions. Same atlas the Nuzlocke run uses."
+        },
+        "nuzlocke": {
+          "title": "Nuzlocke tracker",
+          "body": "Log the first encounter, the party and every death. Guided maps for Kanto through Unova. Freeform for later games."
+        },
+        "team": {
+          "title": "Team builder",
+          "body": "Six slots with version-group legality and live type coverage. Share a view-only link. No account required."
+        }
+      },
+      "connect": {
+        "eyebrow": "ONE FLOW",
+        "title": "A usual prep loop",
+        "body": "Look the species up first, check a route, fill a party, then test the fight that actually worries you. Those steps sit on the pages below.",
+        "look": {
+          "title": "Look up the species",
+          "body": "Find the Pokémon in the National Dex. Confirm typing, stats and what it can learn in the target game."
+        },
+        "plan": {
+          "title": "Check the route",
+          "body": "Open the region map for wild tables, or start a Nuzlocke run if the playthrough uses those rules."
+        },
+        "build": {
+          "title": "Fill six legal slots",
+          "body": "Move the species into the team builder. Coverage and shared weaknesses update as the party changes."
+        },
+        "fight": {
+          "title": "Test the hard fight",
+          "body": "Versus shows damage ranges and speed. The battle simulator plays the 1v1 turn by turn against the AI."
+        }
+      },
+      "limit": {
+        "eyebrow": "THIS PAGE",
+        "title": "Legal checks and battle math sit elsewhere",
+        "callout": "This page only names the URLs",
+        "body": "Learnset checks live on the team builder. Encounter tables live on the maps. Run logs live on Nuzlocke. Damage ranges live on Versus, the turn-by-turn fight on the battle simulator."
+      },
+      "linksEyebrow": "OPEN A TOOL",
+      "linksTitle": "National Dex, tracker, team or 1v1",
+      "links": {
+        "dex": {
+          "label": "National Pokédex",
+          "body": "Filter species by name, type or generation, then open an entry."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke tracker",
+          "body": "Log first encounters, the party and every death."
+        },
+        "team": {
+          "label": "Team builder",
+          "body": "Build a legal six-Pokémon party with live type coverage."
+        },
+        "battle": {
+          "label": "1v1 battle simulator",
+          "body": "Run a real 1v1 after a set is ready. Not a ladder."
+        }
+      }
     }
   },
   "team": {
@@ -1860,9 +2055,11 @@
       "what": {
         "eyebrow": "HOW IT WORKS",
         "title": "Build a legal six-Pokémon team",
-        "body": "The builder holds six party slots. Each slot stores species, moves, ability, nature, item and EVs. Coverage and weaknesses update as the party changes. Teams stay in the browser until a share link is copied.",
+        "body": "Six party slots. Each one stores species, moves, ability, nature, item and EVs. Coverage and weaknesses update while the party changes. Teams stay in this browser until a share link is copied.",
+        "body2": "Pick a game first. Learnsets, items, abilities and natures are checked against that version group, from Red and Blue through Scarlet and Violet. A set that is legal in Scarlet can still be illegal in FireRed.",
+        "partyLabel": "ACTIVE PARTY",
         "slots": {
-          "title": "Six slots",
+          "title": "The active six",
           "body": "Fill an active party of six. Extra Pokémon sit in the box and can move into the party later."
         },
         "legality": {
@@ -1876,11 +2073,49 @@
         "export": {
           "title": "Share and export",
           "body": "Copy a view-only share link. Slot fields match a Showdown set: item, ability, nature, EVs and four moves, so a finished team can move into the battle simulator."
+        },
+        "limits": {
+          "title": "No battle, no ladder feed",
+          "body": "Learnsets and items are checked against the chosen version group. Damage ranges belong in Versus. A turn-by-turn 1v1 belongs in the battle simulator. Ladder usage is not fetched here."
+        }
+      },
+      "how": {
+        "eyebrow": "FILL A TEAM",
+        "title": "Fill one slot at a time",
+        "body": "The hub lists saved teams. A new team opens six empty slots and a box. Work one slot at a time, then read the coverage grid before sharing.",
+        "game": {
+          "title": "Set the game",
+          "body": "The version group decides which species exist, which moves a Pokémon can learn, and whether items, abilities, natures and EVs apply."
+        },
+        "slot": {
+          "title": "Pick the species",
+          "body": "Search the dex, drop a species into a slot, then move extras to the box. The active party is always six or fewer."
+        },
+        "set": {
+          "title": "Lock the set",
+          "body": "Choose ability, nature, item, EVs and up to four moves. Illegal picks stay visible as gold hints, not as a red error."
+        },
+        "review": {
+          "title": "Read coverage, then share",
+          "body": "Offense and defense update live. A view-only link copies the Showdown-shaped fields so a finished set can move into Versus or the 1v1 simulator."
+        }
+      },
+      "coverageRead": {
+        "eyebrow": "COVERAGE GRID",
+        "title": "How to read type coverage",
+        "body": "The analysis is for the selected game, not for a live ladder. Offense asks which types the party hits super-effectively. Defense asks which attacking types hurt more than one slot.",
+        "offense": {
+          "title": "Offense coverage",
+          "body": "A gold hole is a type the party cannot hit well. Fill it with a move or a species before taking the team into a gym or a 1v1."
+        },
+        "defense": {
+          "title": "Defense coverage",
+          "body": "Each row is an attacking type. Shared 2× or 4× weaknesses are the rows that decide a wipe. Immunities and resists on the same row are the answer."
         }
       },
       "links": {
         "eyebrow": "NEXT TOOLS",
-        "title": "Use the team in a fight or a run",
+        "title": "Take the finished set into Versus or a run",
         "battle": {
           "label": "Pokémon battle simulator",
           "body": "Load a finished set and run a 1v1 fight from Generation 1 to 9."
@@ -2109,7 +2344,7 @@
             {
               "heading": "PayPal (voluntary support)",
               "paragraphs": [
-                "If you voluntarily contribute via /support, you are redirected to PayPal or scan a PayPal QR code. Payment takes place exclusively on PayPal — not on our servers.",
+                "If you voluntarily contribute via /support, you are redirected to PayPal or scan a PayPal QR code. Payment takes place exclusively on PayPal, not on our servers.",
                 "PayPal (PayPal Pte. Ltd.) is responsible for payment processing. Personal data may be processed (e.g. PayPal account information, transaction data). Legal basis: Art. 6(1)(b) GDPR (processing to carry out the payment you explicitly initiate) and, where applicable, Art. 6(1)(f) GDPR for technical connection data before you reach PayPal.",
                 "Further information: https://www.paypal.com/us/webapps/mpp/ua/privacy-full"
               ]
@@ -2377,14 +2612,14 @@
   "support": {
     "eyebrow": "DONATE",
     "title": "Support MyPokePanion.",
-    "p1": "MyPokePanion is a pure hobby project — built across countless evenings and weekends, with a lot of love for detail and the goal that it genuinely feels good to use.",
-    "p2": "The site is and stays free. If it makes your runs easier and you'd still like to support development, I'd be thrilled about a small contribution — completely voluntary, no strings attached.",
-    "p3": "Ads? No. I deliberately keep the site free of ad banners, ad trackers, and pop-ups. For anonymous usage statistics I use Plausible (cookieless, no ad profiles) — see the privacy policy for details. Donations help keep it that way without ever running ads.",
+    "p1": "MyPokePanion is a pure hobby project, built across countless evenings and weekends, with a lot of love for detail and the goal that it genuinely feels good to use.",
+    "p2": "The site is and stays free. If it makes your runs easier and you'd still like to support development, I'd be thrilled about a small contribution, completely voluntary, no strings attached.",
+    "p3": "Ads? No. I deliberately keep the site free of ad banners, ad trackers, and pop-ups. For anonymous usage statistics I use Plausible (cookieless, no ad profiles). See the privacy policy for details. Donations help keep it that way without ever running ads.",
     "cta": "SUPPORT VIA PAYPAL",
     "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project.",
-    "legal": "This is voluntary support for a free hobby project — not a purchase and not consideration (no premium features, no donation receipt). Contributions are not tax-deductible for supporters. When you click PayPal or scan the QR code, you leave MyPokePanion; payment is processed exclusively by PayPal.",
+    "legal": "This is voluntary support for a free hobby project, not a purchase and not consideration (no premium features, no donation receipt). Contributions are not tax-deductible for supporters. When you click PayPal or scan the QR code, you leave MyPokePanion; payment is processed exclusively by PayPal.",
     "legalLinks": "Further details:",
-    "qrCaption": "Scan the QR code — works right from your phone"
+    "qrCaption": "Scan the QR code. Works right from your phone"
   },
   "feedback": {
     "eyebrow": "FEEDBACK & IDEAS",
@@ -2577,33 +2812,98 @@
     },
     "versus": {
       "explainerEyebrow": "HOW IT WORKS",
-      "explainerTitle": "Who wins? How the Versus Calc works",
-      "explainerBody": "The Versus Calc pits two Pokémon against each other in a direct duel, with real damage math instead of gut feeling. For every move on both sides you see the damage range: type effectiveness, STAB and the physical/special split are applied accurately per generation. On top of that, the stat delta and speed check compare base stats. Moving first decides many duels. Set both Pokémon above and read the matchup straight off.",
+      "explainerTitle": "How the damage matrix is read",
+      "explainerBody": "Versus compares two Pokémon with the official damage formula. Every move on both sides gets a min-max range. Type effectiveness, STAB and the physical/special split follow the selected generation. Speed sits next to the matrix, because moving first often decides the first KO.",
       "qa": [
         {
           "q": "Who wins: Pikachu vs. Charizard?",
-          "aLead": "It depends on levels and moves – exactly what the calc computes.",
+          "aLead": "It depends on levels and moves, exactly what the calc computes.",
           "aBody": "The facts: Pikachu's Electric moves hit Charizard super effectively (2× via the Flying weakness), but Charizard with base 100 Speed is faster than Pikachu (90) and attacks first. Set both above and compare the damage ranges per move together with the speed check."
         },
         {
           "q": "What is super effective against Water?",
-          "aLead": "Electric and Grass – 2× damage each.",
+          "aLead": "Electric and Grass, 2x damage each.",
           "aBody": "Water Pokémon resist Fire, Water, Ice and Steel (0.5× each). Watch out for dual types: Water/Ground (e.g. Swampert) takes 4× from Grass but is immune to Electric. The exact effectiveness per matchup is shown by the calc right in the damage matrix."
         },
         {
           "q": "How is damage calculated in the Versus Calc?",
-          "aLead": "Per move, using the official damage formula – accurate per generation.",
+          "aLead": "Per move, using the official damage formula, accurate per generation.",
           "aBody": "The base is level, attack and defense stats and the move's power; on top come STAB (same type = 1.5×) and type effectiveness against all of the target's types. The physical/special split follows the selected generation (by type up to Gen 3, per move from Gen 4). The result is the damage range you see in the matrix."
         },
         {
           "q": "Do dual-type weaknesses stack (4×)?",
-          "aLead": "Yes – multiplicatively, up to 4×.",
+          "aLead": "Yes, multiplicatively, up to 4x.",
           "aBody": "If both of the target's types share a weakness, the factors multiply: 2× · 2× = 4× (e.g. Grass against Water/Ground). Conversely, a weakness and a resistance can cancel out (2× · 0.5× = 1×)."
         }
       ],
       "matchupsEyebrow": "SIMULATED MATCHUPS",
-      "matchupsTitle": "Popular matchups — with real results",
-      "matchupsBody": "No gut feeling: each of these pairings was simulated 100 times on the real battle engine (level 50, standard sets). The pages show win rate, damage ranges and speed."
+      "matchupsTitle": "Curated matchups with 100 simulated fights",
+      "matchupsBody": "Each pairing ran 100 times on the battle engine at level 50 with standard sets. The pages show win rate, damage ranges and speed. The hub itself stays the calculator.",
+      "rangeLabel": "DAMAGE RANGE",
+      "rangeLo": "MIN 18%",
+      "rangeHi": "MAX 67%",
+      "how": {
+        "eyebrow": "THE CALC",
+        "title": "Set a game, then fill both sides",
+        "body": "The version group decides which moves, items and abilities exist. A set that is legal in Scarlet can still be illegal in FireRed.",
+        "game": {
+          "title": "Pick the game",
+          "body": "The calc follows that version group. Terrain, weather and the physical/special split change with the generation."
+        },
+        "sides": {
+          "title": "Lock species, moves and items",
+          "body": "Search both sides, then set level, ability, nature, item and up to four moves. Empty slots fall back to a default set so the matrix still fills."
+        },
+        "read": {
+          "title": "Read range, speed, then KO",
+          "body": "Each cell is a damage window, not a single number. The speed check sits beside it. A guaranteed KO only appears when the low roll still faints."
+        }
+      },
+      "matrix": {
+        "eyebrow": "THE MATRIX",
+        "title": "What each cell means",
+        "body": "The matrix is @smogon/calc. The 1v1 simulator on this site uses @pkmn/sim. Both agree on damage, but only the simulator plays turns.",
+        "range": {
+          "title": "Min and max damage",
+          "body": "A cell shows the roll window after type, STAB, weather and items. Multi-hit moves show per-hit and the total. Ramping moves such as Rollout grow across consecutive hits."
+        },
+        "speed": {
+          "title": "Who moves first",
+          "body": "The speed check uses the real stats of both sides, including stages, items and paralysis. A tie is a coin flip each turn."
+        },
+        "ko": {
+          "title": "xHKO and Focus Sash",
+          "body": "The label is the hits needed at the low and high roll. Focus Sash and Sturdy stop a guaranteed-OHKO label on the defender."
+        }
+      },
+      "split": {
+        "eyebrow": "TWO TOOLS",
+        "title": "Versus calculates, the simulator fights",
+        "callout": "Open the 1v1 when the range is not enough",
+        "body": "Versus answers how much a move deals and who is faster. The battle simulator plays the same sets turn by turn against the AI. Same site, two URLs."
+      },
+      "qaEyebrow": "QUESTIONS",
+      "qaTitle": "Pikachu vs Charizard, Water, 4x, the formula",
+      "links": {
+        "eyebrow": "NEXT TOOLS",
+        "title": "1v1 fight, team, dex, Nuzlocke",
+        "battle": {
+          "label": "1v1 battle simulator",
+          "body": "Play the same sets turn by turn against the AI after the range is clear."
+        },
+        "team": {
+          "label": "Team builder",
+          "body": "Fill six legal slots, then bring one Pokémon back here for a hard fight."
+        },
+        "dex": {
+          "label": "National Pokédex",
+          "body": "Check types, stats and learnsets before locking a side."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke tracker",
+          "body": "Log the route, then test the gym ace as a calc or a 1v1."
+        }
+      }
     },
     "types": {
       "eyebrow": "TYPE DEX · ALL 18 TYPES",

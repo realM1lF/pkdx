@@ -2,14 +2,14 @@
  * Shared matchup components reused by Nuzlocke VersusTab.
  * Head-to-head · STAT DELTA · SPEED CHECK · damage matrix · defensive profiles.
  * Gen-aware math from @/lib/versus. */
-import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Info, RotateCcw, Search, SlidersHorizontal, Swords, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { LocaleLink, useLocalePath } from '@/lib/locale-link';
+import { LocaleLink, useLocalePath, withTrailingSlash } from '@/lib/locale-link';
 import HonestyHint from '@/components/HonestyHint';
 import Sprite from '@/components/Sprite';
 import GameSelect from '@/components/GameSelect';
@@ -85,7 +85,6 @@ import { Panel, SegmentedControl } from './ui';
 import './versus.css';
 
 /* lazy battle arena — keeps @pkmn/sim out of the main bundle (async chunk) */
-const BattleView = lazy(() => import('./BattleView'));
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const CAT_COLORS: Record<string, string> = { physical: '#FB923C', special: '#38BDF8', status: '#A8B3C7' };
@@ -1686,49 +1685,13 @@ export default function VersusPanel({
       : null;
   const foeSourceEdition = foeSource === 'trainer' || foeTrainerFallback ? trainerEditionShort : undefined;
 
-  /* ----- 1:1 micro-battle (lazy arena, takes over the current versus state) ----- */
-  const [battleOpen, setBattleOpen] = useState(false);
-  const arenaRef = useRef<HTMLDivElement>(null);
-
-  /* mobile: the arena mounts below the fold — bring it into view */
-  useEffect(() => {
-    if (!battleOpen) return;
-    const timer = window.setTimeout(() => {
-      arenaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 60);
-    return () => window.clearTimeout(timer);
-  }, [battleOpen]);
-
-  const battleInputOf = useCallback(
-    (pokemon: Pokemon, side: SideState) => {
-      const chosen = side.slots.filter(Boolean);
-      return {
-        pokemonId: pokemon.id,
-        displayName: nameOfPokemon(pokemon.name, lang),
-        setup: {
-          species: pokemon.name,
-          level: side.level,
-          // same defaults the versus view resolves when slots are empty
-          moves: chosen.length ? chosen : resolveDefaultSet(pokemon, side.level, details, ctx).moves,
-          item: side.item ?? null,
-          ability: side.ability ?? null,
-          nature: side.nature ?? null,
-          evs: side.evs,
-          status: side.status && side.status !== 'none' ? side.status : null,
-        },
-      };
-    },
-    [lang, details, ctx],
-  );
-
-  const battleYou = useMemo(
-    () => (youPokemon ? battleInputOf(youPokemon, you) : null),
-    [youPokemon, you, battleInputOf],
-  );
-  const battleFoe = useMemo(
-    () => (foePokemon ? battleInputOf(foePokemon, foe) : null),
-    [foePokemon, foe, battleInputOf],
-  );
+  /* Start Battle → battle-simulator landing with both dex ids (+ game). */
+  const openBattleLanding = () => {
+    if (!youPokemon || !foePokemon) return;
+    const q = new URLSearchParams({ a: String(youPokemon.id), b: String(foePokemon.id) });
+    if (ctx.game) q.set('game', ctx.game);
+    navigate(`${withTrailingSlash(localePath(battleLandingPath(lang)))}?${q.toString()}#arena`);
+  };
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -1752,9 +1715,9 @@ export default function VersusPanel({
         )}
         <button
           type="button"
-          onClick={() => setBattleOpen(true)}
-          disabled={!youPokemon || !foePokemon || battleOpen}
-          title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : battleOpen ? t('versus.battle.runningHint') : undefined}
+          onClick={openBattleLanding}
+          disabled={!youPokemon || !foePokemon}
+          title={!youPokemon || !foePokemon ? t('versus.battle.startHint') : undefined}
           className="inline-flex h-6 items-center gap-1 rounded-pill border border-gold bg-gold px-2.5 font-sans text-[14px] leading-none font-bold uppercase text-abyss transition-all hover:shadow-[0_0_14px_rgba(246,201,69,0.45)] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Swords size={10} />
@@ -1956,27 +1919,6 @@ export default function VersusPanel({
           />
         )}
       </Panel>
-
-      {/* ---------- 1:1 battle arena (lazy — engine loads on demand) ---------- */}
-      {battleOpen && battleYou && battleFoe && (
-        <div ref={arenaRef} className="col-span-12 scroll-mt-24">
-          <Suspense
-            fallback={
-              <div className="dx-panel flex items-center justify-center p-8">
-                <PokeballLoader variant="inline" />
-              </div>
-            }
-          >
-            <BattleView
-              player={battleYou}
-              foe={battleFoe}
-              ctx={ctx}
-              field={fieldForContext(field, ctx)}
-              onExit={() => setBattleOpen(false)}
-            />
-          </Suspense>
-        </div>
-      )}
 
       {/* ---------- discreet cross-link to the standalone simulator page ---------- */}
       <div className="col-span-12 flex justify-center">

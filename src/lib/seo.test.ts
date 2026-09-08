@@ -97,6 +97,8 @@ describe('facet canonical + title stay on the hub', () => {
     expect(pathWithoutSearch('/pokedex?q=pika')).toBe('/pokedex');
     expect(pathWithoutSearch('/versus?you=6&vs=9')).toBe('/versus');
     expect(pathWithoutSearch('/nuzlocke?wizard=1&region=kanto')).toBe('/nuzlocke');
+    expect(pathWithoutSearch('/kampf-simulator/')).toBe('/kampf-simulator');
+    expect(pathWithoutSearch('/versus/')).toBe('/versus');
   });
 
   it('reuses hub title and canonical for filter / wizard query strings', () => {

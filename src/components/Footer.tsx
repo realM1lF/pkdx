@@ -69,6 +69,23 @@ export default function Footer() {
   return (
     <footer className="relative mt-0">
       <div className="h-px w-full" style={{ background: HAIRLINE }} />
+      <div className="border-b border-hairline bg-surface1/70">
+        <div className="mx-auto flex max-w-content flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-3 md:px-8">
+          {siteLinks.map(({ to, key }) => (
+            <LocaleLink
+              key={to}
+              to={to}
+              className={
+                key === 'footer.support'
+                  ? 'pixel-label rainbow-text text-[11px] tracking-[0.14em] transition-colors'
+                  : 'pixel-label text-[11px] tracking-[0.14em] text-tx-muted transition-colors hover:text-gold'
+              }
+            >
+              {t(key)}
+            </LocaleLink>
+          ))}
+        </div>
+      </div>
       <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 md:px-8">
         {/* Brand */}
         <div className="flex flex-col items-start gap-4 sm:col-span-2 lg:col-span-1 xl:col-span-1">
@@ -189,7 +206,7 @@ export default function Footer() {
               {t('footer.licenses')}
             </LocaleLink>
             <span className="pixel-label rounded-pill border border-hairline bg-surface2 px-3 py-1.5 text-[9px] leading-none text-gold">
-              v1.0
+              v1.1
             </span>
           </div>
         </div>

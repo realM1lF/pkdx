@@ -5,23 +5,12 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import VersusPanel from './detail/VersusPanel';
-import QaSection from '@/components/QaSection';
-import { LocaleLink } from '@/lib/locale-link';
-import { useLanguage } from '@/lib/i18n-data';
-import { MATCHUPS, matchupNames, matchupRest } from '@/lib/seo-matchups';
+import VersusSeoSections from './versus/VersusSeoSections';
 import { versusContextFromGame, DEFAULT_VERSUS_PAGE_GAME } from '@/lib/versus-context';
-
-interface QaRaw {
-  q: string;
-  aLead: string;
-  aBody: string;
-}
 
 export default function Versus() {
   const { t } = useTranslation();
-  const lang = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
-  const qa = t('seo.versus.qa', { returnObjects: true }) as QaRaw[];
 
   const youParam = Number(searchParams.get('you'));
   const initialYou = Number.isInteger(youParam) && youParam >= 1 ? youParam : null;
@@ -62,58 +51,7 @@ export default function Versus() {
         onGameChange={(game) => patchParams({ game: game || null })}
       />
 
-      {/* question-driven SEO content below the tool (SEO pilot) */}
-      <section className="mx-auto mt-12 max-w-3xl">
-        <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
-          <p className="pixel-label text-[9px] text-gold">{t('seo.versus.explainerEyebrow')}</p>
-          <h2 className="mt-1 font-display text-lg font-bold tracking-wide text-tx-primary md:text-xl">
-            {t('seo.versus.explainerTitle')}
-          </h2>
-          <p className="mt-2.5 font-sans text-[0.8438rem] leading-relaxed text-tx-secondary">
-            {t('seo.versus.explainerBody')}
-          </p>
-        </div>
-        <QaSection
-          className="mt-6"
-          defaultOpen={1}
-          items={qa.map((item) => ({
-            q: item.q,
-            a: (
-              <p>
-                <strong className="font-semibold text-tx-primary">{item.aLead}</strong> {item.aBody}
-              </p>
-            ),
-          }))}
-        />
-      </section>
-
-      {/* popular matchups with real simulation results (internal linking) */}
-      <section className="mx-auto mt-10 max-w-3xl">
-        <div className="rounded-lg border border-hairline bg-surface1 px-4 py-5 sm:px-6">
-          <p className="pixel-label text-[9px] text-gold">{t('seo.versus.matchupsEyebrow')}</p>
-          <h2 className="mt-1 font-display text-lg font-bold tracking-wide text-tx-primary md:text-xl">
-            {t('seo.versus.matchupsTitle')}
-          </h2>
-          <p className="mt-2 font-sans text-[0.7813rem] leading-relaxed text-tx-secondary">
-            {t('seo.versus.matchupsBody')}
-          </p>
-          <ul className="mt-3 flex flex-wrap gap-1.5">
-            {MATCHUPS.map((m) => {
-              const n = matchupNames(m, lang);
-              return (
-                <li key={m.slugEn}>
-                  <LocaleLink
-                    to={matchupRest(m, lang)}
-                    className="inline-flex h-7 items-center rounded-pill border border-hairline bg-surface2 px-2.5 font-sans text-[11px] leading-none text-tx-secondary transition-colors hover:border-gold/50 hover:text-tx-primary"
-                  >
-                    {n.a} vs. {n.b}
-                  </LocaleLink>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
+      <VersusSeoSections />
     </div>
   );
 }
