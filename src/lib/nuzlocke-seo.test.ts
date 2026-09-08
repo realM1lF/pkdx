@@ -7,6 +7,9 @@ import {
   nuzlockeSeoPath,
 } from './nuzlocke-seo';
 import { nuzlockeGuideContent } from './nuzlocke-guide-content';
+import { nuzlockeSeoContent } from './nuzlocke-seo-content';
+import de from '@/i18n/locales/de/translation.json';
+import en from '@/i18n/locales/en/translation.json';
 
 describe('nuzlocke SEO registry', () => {
   it('contains the six curated satellite pages', () => {
@@ -81,5 +84,55 @@ describe('nuzlocke SEO registry', () => {
         expect(guide.links.backToHub).not.toBe('');
       }
     }
+  });
+});
+
+describe('Nuzlocke hub on-page copy', () => {
+  function collectStrings(value: unknown): string[] {
+    if (typeof value === 'string') return [value];
+    if (Array.isArray(value)) return value.flatMap(collectStrings);
+    if (value && typeof value === 'object') {
+      return Object.values(value as Record<string, unknown>).flatMap(collectStrings);
+    }
+    return [];
+  }
+
+  it('keeps WhatIs copy free of em-dashes and German du-form', () => {
+    const enText = [en.nuz.blurb, ...collectStrings(en.nuz.whatIsSection)].join(' ');
+    const deText = [de.nuz.blurb, ...collectStrings(de.nuz.whatIsSection)].join(' ');
+    expect(enText).not.toMatch(/ — /);
+    expect(deText).not.toMatch(/ — /);
+    expect(deText).not.toMatch(/\b[Dd]u\b/);
+    expect(deText).not.toMatch(/\b[Dd]ein/);
+  });
+
+  it('does not pitch the tracker inside the WhatIs variants paragraph', () => {
+    expect(en.nuz.whatIsSection.variants).not.toMatch(/this tracker supports/i);
+    expect(de.nuz.whatIsSection.variants).not.toMatch(/Dieser Tracker unterstützt/);
+  });
+
+  it('gives FAQ answers facts that the games/multi blocks do not already state', () => {
+    for (const lang of ['en', 'de'] as const) {
+      const content = nuzlockeSeoContent(lang);
+      const gamesText = `${content.games.body} ${content.games.freeformNote}`;
+      const multiText = content.multi.body;
+      expect(content.faq.items.length).toBeGreaterThanOrEqual(6);
+      for (const item of content.faq.items) {
+        expect(item.a).not.toBe(content.games.body);
+        expect(item.a).not.toBe(content.games.freeformNote);
+        expect(item.a).not.toBe(multiText);
+        expect(gamesText.includes(item.a)).toBe(false);
+        expect(multiText.includes(item.a)).toBe(false);
+      }
+    }
+    expect(nuzlockeSeoContent('en').faq.items[0].a).toMatch(/FireRed/);
+    expect(nuzlockeSeoContent('de').faq.items[0].a).toMatch(/Feuerrot/);
+  });
+
+  it('keeps German FAQ answers free of du-form and em-dashes', () => {
+    const deText = collectStrings(nuzlockeSeoContent('de').faq).join(' ');
+    expect(deText).not.toMatch(/ — /);
+    expect(deText).not.toMatch(/\b[Dd]u\b/);
+    expect(deText).not.toMatch(/\b[Dd]ein/);
   });
 });

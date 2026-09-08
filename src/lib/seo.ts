@@ -136,8 +136,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Nuzlocke Tracker · plan runs, track encounters & deaths',
     },
     description: {
-      de: 'Kostenloser Nuzlocke-Tracker im Browser: Begegnungen pro Route, Team und Tode verwalten, mit Regionskarten für Kanto bis Einall. Run starten.',
-      en: 'Free Nuzlocke tracker in your browser: record route encounters, manage teams and log deaths, with regional maps from Kanto to Unova. Start a run.',
+      de: 'Erste Begegnung pro Route, Team und Tode festhalten. Geführte Karten von Kanto bis Einall, freie Runs für spätere Spiele. Tracker im Browser, ohne Installation.',
+      en: 'Record the first catch per route, the party and every death. Guided maps for Kanto through Unova, freeform for later games. Start a run in the browser.',
     },
   },
   '/nuzlocke/soul-link': {
@@ -212,8 +212,8 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Pokémon Team Builder · build teams & check type coverage',
     },
     description: {
-      de: 'Baue dein Pokémon-Team: Typabdeckung, Schwächen und Resistenzen im Blick, Movesets planen und das Team exportieren, für alle 9 Generationen.',
-      en: 'Build your Pokémon team: keep type coverage, weaknesses and resistances in view, plan movesets and export your team, for all 9 generations.',
+      de: 'Sechs Team-Slots mit Legalität pro Spielversion, von Rot und Blau bis Karmesin und Purpur. Typabdeckung und Schwächen im Blick. Share-Link kopieren, ohne Konto.',
+      en: 'Six party slots with version-group legality from Red and Blue through Scarlet and Violet. Live type coverage and weaknesses. Copy a share link, no account.',
     },
   },
   '/versus': {
