@@ -73,6 +73,12 @@ export function resolveMatchupParam(param: string): MatchupEntry | null {
   return MATCHUPS.find((m) => m.slugDe === param || m.slugEn === param) ?? null;
 }
 
+/** true when `slug` is the locale-correct versus slug (DE `-gegen-`, EN `-vs-`). */
+export function isMatchupSlugForLang(slug: string, lang: Lang): boolean {
+  const entry = resolveMatchupParam(slug);
+  return !!entry && matchupSlug(entry, lang) === slug;
+}
+
 /**
  * Translate a /versus/<slug> rest path into the target locale's slug.
  * Returns null when the rest is not a known matchup (caller keeps the rest).

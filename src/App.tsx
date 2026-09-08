@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, Outlet } from 'react-router';
+import { Routes, Route, Outlet, Navigate, useLocation, useParams } from 'react-router';
 import Layout from './components/Layout';
 import { LangGate, LangHomeRedirect, LangRedirect } from './components/LangGate';
+import { battleLandingRedirectTo } from './lib/battle-landing-redirect';
 import { ShinyProvider } from './lib/shiny';
 import { isFirstPaintPrerender, markFirstPaintDone, shouldCoverPaintWithFallback } from './lib/cwv-paint';
 
@@ -85,6 +86,15 @@ function LayoutRoute() {
   );
 }
 
+/** Wrong battle slug under this locale → replace onto the locale-correct rest. */
+function BattleLandingGate() {
+  const { lang } = useParams();
+  const location = useLocation();
+  const to = battleLandingRedirectTo(lang, location.pathname, location.search, location.hash);
+  if (to) return <Navigate to={to} replace />;
+  return <BattleLanding />;
+}
+
 export default function App() {
   useEffect(() => {
     markFirstPaintDone();
@@ -138,9 +148,10 @@ export default function App() {
                 {/* curated matchup pages with simulated results — localized
                     slugs (/de/versus/glurak-gegen-turtok ↔ /en/versus/charizard-vs-blastoise) */}
                 <Route path="versus/:slug" element={<MatchupPage />} />
-                {/* battle-simulator landing — localized slugs, one page component */}
-                <Route path="kampf-simulator" element={<BattleLanding />} />
-                <Route path="battle-simulator" element={<BattleLanding />} />
+                {/* battle-simulator landing — localized slugs, one page component.
+                    Wrong-locale slug replace-navigates (Netlify 301 is the prod path). */}
+                <Route path="kampf-simulator" element={<BattleLandingGate />} />
+                <Route path="battle-simulator" element={<BattleLandingGate />} />
                 <Route path="about" element={<About />} />
                 <Route path="feedback" element={<Feedback />} />
                 <Route path="support" element={<Support />} />

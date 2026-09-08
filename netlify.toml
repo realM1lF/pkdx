@@ -36,6 +36,61 @@
   status = 302
   force = true
 
+# Unprefixed team hub — GSC indexed https://mypokepanion.com/team as 200.
+# Same Language-302 as `/` (Accept-Language). Client LangRedirect is the
+# non-Netlify fallback. force = true so the SPA rewrite cannot win.
+[[redirects]]
+  from = "/team"
+  to = "/de/team/"
+  status = 302
+  force = true
+  conditions = { Language = ["de"] }
+
+[[redirects]]
+  from = "/team"
+  to = "/en/team/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/team/"
+  to = "/de/team/"
+  status = 302
+  force = true
+  conditions = { Language = ["de"] }
+
+[[redirects]]
+  from = "/team/"
+  to = "/en/team/"
+  status = 302
+  force = true
+
+# Cross-locale battle slugs — one host per locale. Versus cross-locale 301s
+# are generated into public/_redirects from matchups.json (do not hardcode).
+[[redirects]]
+  from = "/en/kampf-simulator"
+  to = "/en/battle-simulator/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/en/kampf-simulator/"
+  to = "/en/battle-simulator/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/de/battle-simulator"
+  to = "/de/kampf-simulator/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/de/battle-simulator/"
+  to = "/de/kampf-simulator/"
+  status = 301
+  force = true
+
 # ORDER MATTERS — do not move the "/*" block back below the specific ones.
 #
 # Netlify merges the headers of every matching rule, but when two rules set
