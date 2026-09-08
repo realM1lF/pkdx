@@ -72,6 +72,7 @@ import AnalysisDeck from './teambuilder/AnalysisDeck';
 import type { MatrixMember } from './teambuilder/AnalysisDeck';
 import HeaderStrip from './teambuilder/HeaderStrip';
 import SavedTeamsHub from './teambuilder/SavedTeamsHub';
+import TeamSeoSections from './teambuilder/TeamSeoSections';
 import SlotCard from './teambuilder/SlotCard';
 import SlotEditorModal from './teambuilder/SlotEditorModal';
 import type { MetaState } from './teambuilder/SlotEditor';
@@ -918,6 +919,7 @@ function TeamBuilder() {
           }}
           onDelete={(id) => setTeams(deleteTeam(id))}
         />
+        <TeamSeoSections />
         <NuzToasts />
       </div>
     );

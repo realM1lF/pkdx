@@ -36,6 +36,7 @@
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
     "title": "Der Pokédex",
+    "lead": "Der Nationaldex listet alle 1.025 Spezies der Generationen I bis IX. Filter nach Typ, Generation oder Name; der Eintrag zeigt Werte, Attacken und Sprites.",
     "showing": "Zeige",
     "of": "von",
     "species": "Pokémon",
@@ -1854,6 +1855,49 @@
       "slotsAria": "Team-Slots",
       "statEyebrow": "WERTE-DELTA",
       "statTitle": "Level-angepasst"
+    },
+    "seo": {
+      "what": {
+        "eyebrow": "SO FUNKTIONIERT ES",
+        "title": "Ein legales Sechser-Team bauen",
+        "body": "Der Builder hat sechs Team-Slots. Pro Slot: Spezies, Attacken, Fähigkeit, Wesen, Item und FP. Typabdeckung und Schwächen aktualisieren sich mit der Party. Teams bleiben im Browser, bis ein Share-Link kopiert wird.",
+        "slots": {
+          "title": "Sechs Slots",
+          "body": "Sechs Plätze für die aktive Party. Weitere Pokémon liegen in der Box und lassen sich später ins Team holen."
+        },
+        "legality": {
+          "title": "Legalität pro Versionsgruppe",
+          "body": "Eine Spielversion festlegen. Attacken, Items, Fähigkeiten und Wesen werden gegen diese Versionsgruppe geprüft, von Rot und Blau bis Karmesin und Purpur."
+        },
+        "coverage": {
+          "title": "Typabdeckung",
+          "body": "Die Offensive zeigt, welche Typen sehr effektiv getroffen werden. Die Defensive zeigt gemeinsame Schwächen."
+        },
+        "export": {
+          "title": "Teilen und Export",
+          "body": "Ein View-only-Share-Link kopiert das Team. Slot-Felder entsprechen einem Showdown-Set: Item, Fähigkeit, Wesen, FP und vier Attacken. Ein fertiges Team geht so in den Kampf-Simulator."
+        }
+      },
+      "links": {
+        "eyebrow": "WEITERE WERKZEUGE",
+        "title": "Team im Kampf oder im Run nutzen",
+        "battle": {
+          "label": "Pokémon-Kampf-Simulator",
+          "body": "Ein fertiges Set laden und einen 1v1-Kampf von Generation 1 bis 9 führen."
+        },
+        "dex": {
+          "label": "Nationaldex",
+          "body": "Werte, Typen, Attacken und Sprites prüfen, bevor ein Slot gefüllt wird."
+        },
+        "versus": {
+          "label": "Versus-Schadensrechner",
+          "body": "Zwei Pokémon vor einem schweren Kampf auf Schaden und Initiative vergleichen."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke-Tracker",
+          "body": "Routen-Begegnungen festhalten und die Run-Party im Builder öffnen."
+        }
+      }
     },
     "autocomplete": {
       "clear": "Löschen",

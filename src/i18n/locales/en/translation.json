@@ -36,6 +36,7 @@
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
     "title": "The Pokédex",
+    "lead": "The National Dex lists all 1,025 species from Generation I to IX. Filter by type, generation or name, then open an entry for stats, learnsets and sprites.",
     "showing": "Showing",
     "of": "of",
     "species": "Pokémon",
@@ -1854,6 +1855,49 @@
       "slotsAria": "Team slots",
       "statEyebrow": "STAT DELTA",
       "statTitle": "Level-Adjusted"
+    },
+    "seo": {
+      "what": {
+        "eyebrow": "HOW IT WORKS",
+        "title": "Build a legal six-Pokémon team",
+        "body": "The builder holds six party slots. Each slot stores species, moves, ability, nature, item and EVs. Coverage and weaknesses update as the party changes. Teams stay in the browser until a share link is copied.",
+        "slots": {
+          "title": "Six slots",
+          "body": "Fill an active party of six. Extra Pokémon sit in the box and can move into the party later."
+        },
+        "legality": {
+          "title": "Version-group legality",
+          "body": "Set a game version. Moves, items, abilities and natures are checked against that version group, from Red and Blue through Scarlet and Violet."
+        },
+        "coverage": {
+          "title": "Type coverage",
+          "body": "Offense shows which types the party hits super-effectively. Defense shows shared weaknesses."
+        },
+        "export": {
+          "title": "Share and export",
+          "body": "Copy a view-only share link. Slot fields match a Showdown set: item, ability, nature, EVs and four moves, so a finished team can move into the battle simulator."
+        }
+      },
+      "links": {
+        "eyebrow": "NEXT TOOLS",
+        "title": "Use the team in a fight or a run",
+        "battle": {
+          "label": "Pokémon battle simulator",
+          "body": "Load a finished set and run a 1v1 fight from Generation 1 to 9."
+        },
+        "dex": {
+          "label": "National Pokédex",
+          "body": "Look up stats, types, learnsets and sprites before filling a slot."
+        },
+        "versus": {
+          "label": "Versus damage calculator",
+          "body": "Compare two Pokémon for damage ranges and speed before a hard fight."
+        },
+        "nuzlocke": {
+          "label": "Nuzlocke tracker",
+          "body": "Record route encounters, then open the run party in the builder."
+        }
+      }
     },
     "autocomplete": {
       "clear": "Clear",
