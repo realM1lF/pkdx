@@ -73,7 +73,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-50 h-16 border-b border-hairline transition-all duration-200 md:h-[6.5rem]',
+          'fixed inset-x-0 top-[var(--announce-h)] z-50 h-16 border-b border-hairline transition-all duration-200 md:h-[6.5rem]',
           scrolled ? 'glass' : 'bg-transparent',
         )}
       >

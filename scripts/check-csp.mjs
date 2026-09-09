@@ -199,16 +199,17 @@ for (const route of ROUTES) {
 
   const violations = await page.evaluate(() => window.__cspViolations ?? []);
   const rendered = await page.evaluate(() => document.getElementById('root')?.childElementCount ?? 0);
-  const plausibleOk = await page.evaluate(() => typeof window.plausible === 'function');
+  const plausibleGone = await page.evaluate(() => typeof window.plausible !== 'function');
+  if (!plausibleGone) totalErrors += 1;
 
   totalViolations += violations.length;
   totalErrors += pageErrors.length + consoleErrors.length;
-  results.push({ route, violations, pageErrors, consoleErrors, status, rendered, plausibleOk, externalHosts });
+  results.push({ route, violations, pageErrors, consoleErrors, status, rendered, plausibleGone, externalHosts });
 
   const badge = violations.length === 0 && pageErrors.length === 0 && status === 'ok' ? 'PASS' : 'FAIL';
   console.log(
     `[${badge}] ${route.path.padEnd(34)} nodes=${String(rendered).padStart(3)} ` +
-      `csp=${violations.length} err=${pageErrors.length + consoleErrors.length} plausible=${plausibleOk ? 'y' : 'n'}  (${route.why})`,
+      `csp=${violations.length} err=${pageErrors.length + consoleErrors.length} plausible=${plausibleGone ? 'off' : 'LEAK'}  (${route.why})`,
   );
   for (const v of violations) console.log(`         ✗ ${v.directive} blocked ${v.blocked} @ ${v.source}:${v.line}`);
   for (const e of pageErrors) console.log(`         ✗ pageerror: ${e.split('\n')[0]}`);

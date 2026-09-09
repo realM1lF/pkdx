@@ -124,21 +124,21 @@
 
     # CSP — every source below is actually used; verified against the built
     # bundle (see the source map of allowances):
-    #   script      self (app chunks + /plausible-init.js) + plausible.io tracker
+    #   script      self only (app chunks + /announce-init.js + /zoom-init.js)
     #   style       'unsafe-inline' is REQUIRED: framer-motion/GSAP animate via
     #               inline style attributes on almost every element
     #   img         raw.githubusercontent.com = PokeAPI/sprites fallback chain
     #               (src/lib/sprites.ts); data:/blob: for generated canvases
     #   media       raw.githubusercontent.com = PokeAPI/cries .ogg (HeroPanel)
     #   connect     pokeapi.co, data.pkmn.cc (Smogon sets), Supabase REST +
-    #               Realtime websocket, plausible event endpoint.
+    #               Realtime websocket.
     #               pkmn.github.io is required too: data.pkmn.cc answers with a
     #               301 there and CSP validates the redirect target, not just
     #               the initial host (verified via scripts/check-csp.mjs).
     #   worker/blob CompressionStream + lazy @pkmn/sim vendor bundle
     # NOTE: if VITE_SUPABASE_URL is ever pointed at another project, its host
     # must be added to connect-src or all multiplayer calls will be blocked.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://raw.githubusercontent.com https://assets.tcgdex.net https://images.pokemontcg.io; media-src 'self' https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com https://data.pkmn.cc https://pkmn.github.io https://plausible.io https://iqsdojzyqznmcirypdnk.supabase.co wss://iqsdojzyqznmcirypdnk.supabase.co https://api.tcgdex.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://raw.githubusercontent.com https://assets.tcgdex.net https://images.pokemontcg.io; media-src 'self' https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com https://data.pkmn.cc https://pkmn.github.io https://iqsdojzyqznmcirypdnk.supabase.co wss://iqsdojzyqznmcirypdnk.supabase.co https://api.tcgdex.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 
 # --- Cache-Control overrides (must stay AFTER the catch-all, see note above)
 # Content-addressed or immutable-by-nature files only.

@@ -1,10 +1,11 @@
 /* Layout — shared page furniture (design.md §7, §8, §9.14).
  * Routing pattern A: Layout renders {children}; App wraps <Routes> in <Layout>.
- * Owns the fixed-navbar offset (pt-16) so pages never compensate.
+ * Owns the fixed-navbar offset (pt + announce height) so pages never compensate.
  * Heavy chrome (Lenis, cloud-sync, framer spotlight) boots after first paint. */
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useLocation, useNavigationType } from 'react-router';
+import AnnounceBar from './AnnounceBar';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import RbAmbientPlayer from './RbAmbientPlayer';
@@ -56,16 +57,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     }
   }, [pathname, navigationType]);
 
-  /* Plausible: SPA route changes (initial pageview is sent by plausible.init in index.html). */
-  const plausibleBoot = useRef(true);
-  useEffect(() => {
-    if (plausibleBoot.current) {
-      plausibleBoot.current = false;
-      return;
-    }
-    window.plausible?.('pageview');
-  }, [pathname]);
-
   /* "/" hotkey opens global search */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -82,10 +73,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="relative min-h-[100dvh] overflow-x-clip bg-void text-tx-primary">
+    <div className="relative min-h-[100dvh] overflow-x-clip bg-void text-tx-primary [--nav-h:4rem] md:[--nav-h:6.5rem]">
+      <AnnounceBar />
       <Navbar onSearchOpen={() => setSearchOpen(true)} />
       <RbAmbientPlayer />
-      <main className="relative pt-16 md:pt-[6.5rem]">
+      <main className="relative pt-[calc(var(--nav-h)+var(--announce-h))]">
         {children}
       </main>
       <Footer />

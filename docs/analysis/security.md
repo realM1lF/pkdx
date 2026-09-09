@@ -107,12 +107,6 @@ Kein `service_role`-Key im Repository. Der Publishable-Key in `src/lib/supabase.
 - **Risiko:** App ist Vite-SPA mit `BrowserRouter` (`src/App.tsx`), kein React-Server-Components-Mode. Advisory hier sehr wahrscheinlich **nicht ausnutzbar**.
 - **Härten:** Auf ≥ 7.18.2 anheben, sobald verfügbar; Advisory im Changelog gegen den tatsächlichen Router-Modus halten.
 
-### LOW — Plausible sieht Run-Pfade
-
-- **Ort:** `index.html` + `public/plausible-init.js`; SPA-Pageviews in `src/components/Layout.tsx` bei jedem `pathname`.
-- **Risiko:** Cookieloses Plausible (gut, in den Legal-Texten verlinkt). Pfade wie `/de/nuzlocke/{uuid}` landen beim Analytics-Host. Keine Usernamen, aber Run-IDs für alle mit Dashboard-Zugang.
-- **Härten:** Run-/Account-Pfade von Pageviews ausnehmen oder IDs aggregieren. Keine Custom-Props mit Spieler-/Teamnamen.
-
 ### NIT — `rel="noreferrer"` ohne `noopener`
 
 - **Ort:** `src/pages/legal/LegalDocument.tsx`, zwei Footer-Links in `src/components/Footer.tsx`.
@@ -137,13 +131,13 @@ Kein `service_role`-Key im Repository. Der Publishable-Key in `src/lib/supabase.
 - **Invite als Credential im Happy Path:** Minting per CSPRNG, Unique Index, Join über `nuz_join_by_code` statt `select … eq invite_code` (Client fällt nur bei fehlender RPC auf den Legacy-Pfad zurück). Join-Input `maxLength={16}` in `src/pages/Nuzlocke.tsx` (≥ 16).
 - **Rollen-Eskalation auf `nuz_run_members` erkannt und teilweise geschlossen:** Migration 10 (kein Self-Insert `role=owner`), Migration 09 (nur Spalte `archived` + Freeze-Trigger).
 - **`isRealUser()`** filtert anonyme Sessions aus Account-UI und Cloud-Sync (`src/lib/auth.ts`). Nicht entfernen.
-- **CSP:** kein `unsafe-inline`/`unsafe-eval` in `script-src`; `object-src`/`frame-src`/`frame-ancestors` none; `base-uri`/`form-action` self; Plausible-Stub extern (`public/plausible-init.js`). Live-Header und `check-csp.mjs` grün. `style-src 'unsafe-inline'` ist für GSAP/framer-motion dokumentiert und akzeptabel, solange HTML nicht injiziert wird.
+- **CSP:** kein `unsafe-inline`/`unsafe-eval` in `script-src`; `object-src`/`frame-src`/`frame-ancestors` none; `base-uri`/`form-action` self; Init-Stubs extern (`public/zoom-init.js`, `public/announce-init.js`). Live-Header und `check-csp.mjs` grün. `style-src 'unsafe-inline'` ist für GSAP/framer-motion dokumentiert und akzeptabel, solange HTML nicht injiziert wird.
 - **Header-Reihenfolge:** `/*` zuerst, Cache-Overrides danach. Live: HTML `max-age=0,must-revalidate`, Assets/Sprites/Fonts `immutable`. HSTS, `X-Frame-Options: DENY`, `COOP: same-origin`, `CORP: same-site`, `Referrer-Policy: strict-origin-when-cross-origin`, `nosniff`.
 - **XSS:** kein `dangerouslySetInnerHTML`, kein `innerHTML`/`eval`/`document.write` in `src/`. JSON-LD über `textContent` (`SeoHead.tsx`). Player-Farben per CHECK `^#[0-9A-Fa-f]{6}$`. Textlängen-CHECKs in Migration 01. User-Strings in React-Textknoten.
 - **Open Redirects:** `LangGate` / `LangRedirect` / `localePath` prefixen interne Pfade mit `/de|en`. Ungültige Lang-Segmente werden nicht zu protokollrelativen URLs. `LocaleLink` fasst App-Pfade an; externe `target=_blank` mit `noopener noreferrer` (bis auf den Nit oben).
 - **Secrets:** kein `service_role` im Tree, keine `.env`-Dateien. Anon-Key nur als Publishable.
 - **Presence-Key:** Kommentar und Code nutzen Player-Id, nicht Run-Id (`src/lib/supabase.ts`).
-- **Privacy-Analytics:** Plausible ohne Cookies; DPA in den Legal-Texten verlinkt.
+- **Privacy-Analytics:** Kein Browser-Tracker. Google Search Console nur betreiberseitig (Meta-Verifikation, kein Visitor-Skript).
 
 ## Nicht geprüft / Blind spots
 
@@ -170,6 +164,6 @@ Kein `service_role`-Key im Repository. Der Publishable-Key in `src/lib/supabase.
 6. **`inspectAttr` aus Production-Builds** nehmen; Lockfile-Mirror (`npmmirror`) in den Fix-Script aufnehmen; Live-HTML ohne `code-path` verifizieren.
 7. **Anon vs. Account in RLS** für `profiles` / `teams` / `nuz_solo_runs` / (nach Deploy) `orre_shadow_progress`.
 8. Realtime private channels; Encounter-Writes player-scoped + Cascade-RPC.
-9. Hygiene: `.env` gitignoren, PIN-autocomplete, Passwort-Maxlänge, `react-router` patchen, Plausible-Pfade filtern.
+9. Hygiene: `.env` gitignoren, PIN-autocomplete, Passwort-Maxlänge, `react-router` patchen.
 
 Nach jedem RLS-Schritt: `node scripts/check-rls.mjs` (muss 0 critical bleiben) und die bestehenden UI-Flows Create-Online-Run / Join-by-Code / Reload auf `/de` und `/en` smoke-testen. Nach Header/CSP/index.html: `npm run build && node scripts/check-csp.mjs && node scripts/check-headers.mjs`.

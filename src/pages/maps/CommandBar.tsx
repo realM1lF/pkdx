@@ -108,7 +108,7 @@ export default function CommandBar({
       key={shakeKey}
       id="maps-command-bar"
       className={cn(
-        'sticky top-0 z-50 shrink-0 border-b border-hairline',
+        'sticky top-[calc(var(--nav-h)+var(--announce-h))] z-50 shrink-0 border-b border-hairline',
         shakeKey > 0 && 'maps-shake',
       )}
       style={{ background: 'rgba(13,15,22,0.72)', backdropFilter: 'blur(16px) saturate(1.4)' }}

@@ -1,4 +1,4 @@
-/* Hero — "THE LIVING DEX" (home.md §1). 100svh, bleeds under fixed nav (-mt-16). */
+/* Hero — "THE LIVING DEX" (home.md §1). 100svh, bleeds under fixed nav (--nav-h). */
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -196,7 +196,7 @@ export default function Hero({ started }: { started: boolean }) {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative -mt-16 flex min-h-[100svh] items-center overflow-hidden md:-mt-[6.5rem]">
+    <section ref={heroRef} className="relative -mt-[var(--nav-h)] flex min-h-[100svh] items-center overflow-hidden">
       <HeroBackdrop />
       {particlesReady && (
         <Suspense fallback={null}>

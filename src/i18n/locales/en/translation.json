@@ -34,6 +34,17 @@
     "more": "More",
     "orre": "Orre"
   },
+  "announce": {
+    "label": "Site news",
+    "tooltip": "News and Thoughts",
+    "dismiss": "Dismiss notice",
+    "items": {
+      "emailLogin": "Accounts will get a real email login in the coming weeks",
+      "kalos": "KALOS map in the works",
+      "discord": "Thinking about a Discord channel",
+      "ux": "UX improvements planned"
+    }
+  },
   "pokedex": {
     "eyebrow": "NATIONAL DEX — GEN I–IX",
     "title": "National Pokédex",
@@ -2265,7 +2276,7 @@
             {
               "heading": "Web analytics",
               "paragraphs": [
-                "We use Plausible Analytics — cookieless, no ad trackers, no Google Analytics. No cookies are set for statistics."
+                "This site does not run reach measurement in the browser. No Google Analytics and no other analytics scripts. Google Search Console is used only by the operator for indexing; it does not set cookies in visitors' browsers."
               ]
             }
           ]
@@ -2333,12 +2344,12 @@
           "heading": "5. External services",
           "subsections": [
             {
-              "heading": "Plausible Analytics (web analytics)",
+              "heading": "Google Search Console (indexing)",
               "paragraphs": [
-                "We use Plausible Analytics (Plausible Insights OÜ, Estonia) to measure anonymized trends in website usage — e.g. which pages are visited, where visitors come from, and broad browser/device types.",
-                "Plausible does not set cookies and does not create persistent user profiles. IP addresses are not stored; processing takes place in the EU. No ad trackers or marketing profiles are created.",
-                "Legal basis: Art. 6(1)(f) GDPR (legitimate interest in privacy-friendly reach measurement to improve the service). You can limit collection via browser tracking protection or similar extensions.",
-                "Further information: https://plausible.io/data-policy · Data processing agreement: https://plausible.io/dpa"
+                "The site is registered in Google Search Console. The operator uses it to see which pages Google indexes and which search queries lead to visits.",
+                "Search Console does not load a script in visitors' browsers and does not set cookies. Verification uses a meta tag in the HTML.",
+                "Google crawls publicly reachable pages as a search engine (Googlebot). That follows Google's normal search processes and is independent of analytics or ads products. Legal basis for providing the pages: Art. 6(1)(f) GDPR.",
+                "Further information: https://policies.google.com/privacy"
               ]
             },
             {
@@ -2395,7 +2406,7 @@
         {
           "heading": "8. Cookies and local storage (TDDDG)",
           "paragraphs": [
-            "This website does not set tracking cookies. Plausible Analytics works without cookies. LocalStorage and SessionStorage only store functional data (language, zoom, teams, solo runs, search, view settings). That is technically necessary under § 25 (2) TDDDG; no cookie-banner consent is required for it."
+            "This website does not set tracking cookies and does not load analytics scripts. LocalStorage and SessionStorage only store functional data (language, zoom, teams, solo runs, search, view settings, notice bar). That is technically necessary under § 25 (2) TDDDG. No cookie-banner consent is required. Google Search Console runs on the operator side and does not set cookies for visitors."
           ]
         },
         {
@@ -2614,7 +2625,7 @@
     "title": "Support MyPokePanion.",
     "p1": "MyPokePanion is a pure hobby project, built across countless evenings and weekends, with a lot of love for detail and the goal that it genuinely feels good to use.",
     "p2": "The site is and stays free. If it makes your runs easier and you'd still like to support development, I'd be thrilled about a small contribution, completely voluntary, no strings attached.",
-    "p3": "Ads? No. I deliberately keep the site free of ad banners, ad trackers, and pop-ups. For anonymous usage statistics I use Plausible (cookieless, no ad profiles). See the privacy policy for details. Donations help keep it that way without ever running ads.",
+    "p3": "Ads? No. I deliberately keep the site free of ad banners, ad trackers, and pop-ups. There is no in-browser usage analytics. See the privacy policy for details. Donations help keep it that way without ever running ads.",
     "cta": "SUPPORT VIA PAYPAL",
     "note": "Every contribution goes straight into motivation, server costs, and even more evenings with this project.",
     "legal": "This is voluntary support for a free hobby project, not a purchase and not consideration (no premium features, no donation receipt). Contributions are not tax-deductible for supporters. When you click PayPal or scan the QR code, you leave MyPokePanion; payment is processed exclusively by PayPal.",

@@ -34,6 +34,17 @@
     "more": "Mehr",
     "orre": "Orre"
   },
+  "announce": {
+    "label": "Neuigkeiten",
+    "tooltip": "Neuigkeiten und Gedanken",
+    "dismiss": "Hinweis schließen",
+    "items": {
+      "emailLogin": "Accounts werden in den kommenden Wochen mit echtem E-Mail-Login möglich sein",
+      "kalos": "KALOS Map in Planung",
+      "discord": "Ich denke über einen Discord Channel nach",
+      "ux": "UX-Verbesserungen geplant"
+    }
+  },
   "pokedex": {
     "eyebrow": "NATIONALDEX — GEN I–IX",
     "title": "Nationaldex",
@@ -2265,7 +2276,7 @@
             {
               "heading": "Webanalyse",
               "paragraphs": [
-                "Wir nutzen Plausible Analytics — cookieless, ohne Werbe-Tracker, ohne Google Analytics. Für die Statistik werden keine Cookies gesetzt."
+                "Es gibt keine Reichweitenmessung im Browser. Weder Google Analytics noch andere Analyse-Skripte. Die Google Search Console nutzt nur der Betreiber zur Indexierung; bei Besuchenden werden dafür keine Cookies gesetzt."
               ]
             }
           ]
@@ -2333,12 +2344,12 @@
           "heading": "5. Externe Dienste",
           "subsections": [
             {
-              "heading": "Plausible Analytics (Webanalyse)",
+              "heading": "Google Search Console (Indexierung)",
               "paragraphs": [
-                "Wir nutzen Plausible Analytics (Plausible Insights OÜ, Estland), um anonymisierte Trends in der Website-Nutzung zu messen — z. B. welche Seiten besucht werden, von welcher Quelle Besucher kommen und welche Browser- bzw. Gerätetypen grob genutzt werden.",
-                "Plausible setzt keine Cookies und erstellt keine dauerhaften Nutzerprofile. IP-Adressen werden nicht gespeichert; die Verarbeitung erfolgt in der EU. Es werden keine Werbe-Tracker oder Marketing-Profile erstellt.",
-                "Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datenschutzfreundlichen Reichweitenmessung zur Verbesserung des Angebots). Du kannst die Erfassung durch Browser-Tracking-Schutz oder entsprechende Erweiterungen einschränken.",
-                "Weitere Informationen: https://plausible.io/data-policy · Auftragsverarbeitung: https://plausible.io/dpa"
+                "Die Website ist in der Google Search Console hinterlegt. Darüber sieht der Betreiber, welche Seiten Google indexiert und welche Suchanfragen zu Aufrufen führen.",
+                "Im Browser der Besuchenden lädt die Search Console kein Skript und setzt keine Cookies. Die Verifikation erfolgt über ein Meta-Tag im HTML.",
+                "Google crawlt die öffentlich erreichbaren Seiten als Suchmaschine (Googlebot). Das folgt den allgemeinen Prozessen von Google und ist unabhängig von Analyse- oder Werbeprodukten. Rechtsgrundlage für das Bereitstellen der Seiten ist Art. 6 Abs. 1 lit. f DSGVO.",
+                "Weitere Informationen: https://policies.google.com/privacy"
               ]
             },
             {
@@ -2395,7 +2406,7 @@
         {
           "heading": "8. Cookies und lokale Speicherung (TDDDG)",
           "paragraphs": [
-            "Diese Website setzt keine Tracking-Cookies. Plausible Analytics arbeitet ohne Cookies. LocalStorage und SessionStorage speichern nur Funktionsdaten (Sprache, Zoom, Teams, Solo-Runs, Suche, Ansicht). Das ist nach § 25 Abs. 2 TDDDG technisch erforderlich; eine Einwilligung über ein Cookie-Banner ist dafür nicht nötig."
+            "Diese Website setzt keine Tracking-Cookies und keine Analyse-Skripte. LocalStorage und SessionStorage speichern nur Funktionsdaten (Sprache, Zoom, Teams, Solo-Runs, Suche, Ansicht, Hinweisleiste). Das ist nach § 25 Abs. 2 TDDDG technisch erforderlich. Ein Cookie-Banner ist dafür nicht nötig. Die Google Search Console läuft auf Betreiberseite und setzt bei Besuchenden keine Cookies."
           ]
         },
         {
@@ -2614,7 +2625,7 @@
     "title": "MyPokePanion unterstützen.",
     "p1": "MyPokePanion ist ein reines Hobby-Projekt, gebaut in unzähligen Abenden und Wochenenden, mit viel Liebe zum Detail und dem Anspruch, dass es sich wirklich gut anfühlt.",
     "p2": "Die Seite ist und bleibt kostenlos. Wenn sie dir deine Runs erleichtert und du die Entwicklung trotzdem unterstützen magst, freue ich mich riesig über einen kleinen Beitrag, komplett freiwillig, ohne jede Verpflichtung.",
-    "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Für anonyme Nutzungsstatistik nutze ich Plausible (cookieless, ohne Werbeprofile). Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
+    "p3": "Werbung? Nein. Ich halte die Seite bewusst frei von Werbe-Bannern, Werbe-Trackern und Pop-ups. Es gibt keine Nutzungsstatistik im Browser. Details in der Datenschutzerklärung. Spenden helfen dabei, das so beizubehalten, ohne Werbung schalten zu müssen.",
     "cta": "VIA PAYPAL UNTERSTÜTZEN",
     "note": "Jeder Beitrag fließt direkt in Motivation, Serverkosten und noch mehr Abende mit diesem Projekt.",
     "legal": "Das ist eine freiwillige Unterstützung für ein kostenloses Hobby-Projekt, kein Kauf und keine Gegenleistung (keine Premium-Funktionen, keine Spendenquittung). Unterstützungen sind für Spender steuerlich nicht absetzbar. Beim Klick auf PayPal oder beim Scan des QR-Codes verlässt du MyPokePanion; die Zahlung wird ausschließlich von PayPal verarbeitet.",

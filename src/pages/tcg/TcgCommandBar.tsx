@@ -92,7 +92,7 @@ export default function TcgCommandBar({
   );
 
   return (
-    <div className="sticky top-16 z-30 mb-4 space-y-2 border-b border-hairline bg-void/95 py-3 backdrop-blur-md md:top-[6.5rem]">
+    <div className="sticky top-[calc(var(--nav-h)+var(--announce-h))] z-30 mb-4 space-y-2 border-b border-hairline bg-void/95 py-3 backdrop-blur-md">
       <div className="flex flex-wrap items-center gap-2">
         <div className="relative min-w-[12rem] flex-1">
           <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-tx-muted" />

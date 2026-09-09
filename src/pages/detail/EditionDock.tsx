@@ -27,7 +27,10 @@ export default function EditionDock({
     const bind = () => {
       io?.disconnect();
       const header = document.querySelector('header');
-      const top = Math.round(header?.getBoundingClientRect().height ?? 64);
+      const announce = document.querySelector('[data-announce-bar]');
+      const top = Math.round(
+        (announce?.getBoundingClientRect().height ?? 0) + (header?.getBoundingClientRect().height ?? 64),
+      );
       io = new IntersectionObserver(([entry]) => setStuck(!entry.isIntersecting), {
         threshold: 0,
         rootMargin: `-${top}px 0px 0px 0px`,
@@ -67,7 +70,7 @@ export default function EditionDock({
         {stuck ? <div className="h-8 w-44" aria-hidden /> : picker('rest')}
       </div>
       {stuck && (
-        <div className="pointer-events-none fixed inset-x-0 top-16 z-40 flex justify-center px-4 pt-2 md:top-[6.5rem]">
+        <div className="pointer-events-none fixed inset-x-0 top-[calc(var(--nav-h)+var(--announce-h))] z-40 flex justify-center px-4 pt-2">
           <div className="pointer-events-auto">{picker('stuck')}</div>
         </div>
       )}

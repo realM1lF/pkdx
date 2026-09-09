@@ -52,7 +52,7 @@ describe('app-shell first-load imports', () => {
   it('does not force a viewport-tall main on short legal pages', () => {
     const main = readSrc('src/components/Layout.tsx').match(/<main className="[^"]+"/)?.[0] ?? '';
     expect(main).not.toMatch(/min-h-\[100dvh\]/);
-    expect(main).toMatch(/pt-16/);
+    expect(main).toMatch(/pt-\[calc\(var\(--nav-h\)\+var\(--announce-h\)\)\]/);
   });
 
   it('reserves the same height as the inline search so the gateway does not jump', () => {

@@ -54,6 +54,9 @@
     /* design.md §2.3 accents */
     --gold: #f6c945;
     --gold-soft: rgba(246, 201, 69, 0.14);
+    /* slim site notice above the navbar; 0 when html[data-announce=off] */
+    --announce-h: 1.2rem;
+    --nav-h: 4rem; /* Layout overrides via md:[--nav-h:6.5rem] (zoom-safe) */
     --danger-soft: #ff8a6b;
 
     /* design.md §2.4 — 18 type energies (base + glow rgba + dim) */
@@ -128,6 +131,15 @@
     overscroll-behavior: auto;
   }
 
+  html[data-announce='off'] {
+    --announce-h: 0px;
+  }
+
+  html[data-announce='off'] [data-announce-bar],
+  html.overlay-mode [data-announce-bar] {
+    display: none;
+  }
+
   ::selection {
     background: rgba(246, 201, 69, 0.28);
     color: var(--text-primary);
@@ -171,6 +183,50 @@
     background: rgba(13, 15, 22, 0.72);
     backdrop-filter: blur(16px) saturate(1.4);
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  }
+
+  /* Site news ticker — duplicated track, -50% loop, pause on hover/focus */
+  .announce-track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    align-items: center;
+    animation: announce-marquee 80s linear infinite;
+    will-change: transform;
+  }
+
+  [data-announce-bar]:hover .announce-track,
+  [data-announce-bar]:focus-within .announce-track {
+    animation-play-state: paused;
+  }
+
+  @media (hover: hover) {
+    [data-announce-bar] [data-announce-dismiss] {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    [data-announce-bar]:hover [data-announce-dismiss],
+    [data-announce-bar]:focus-within [data-announce-dismiss] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .announce-track {
+      animation: none !important;
+    }
+
+    .announce-track-dup {
+      display: none;
+    }
+  }
+
+  @keyframes announce-marquee {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
   }
 
   /* Pixel micro-label (§3) — Press Start 2P, texture not reading font */

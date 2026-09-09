@@ -229,7 +229,7 @@ a fresh $HOME clone is more reliable than on /mnt).
    use `Math.random()`, and keep the join input's `maxLength` ≥ 16.
 5. **The CSP in `netlify.toml` has no `unsafe-inline` for scripts.** Any new
    inline `<script>` breaks silently — put it in a file under `public/`
-   instead (see `public/plausible-init.js`). A new external data source
+   instead (see `public/zoom-init.js`). A new external data source
    needs its host in the matching directive, and CSP validates *redirect
    targets* (`data.pkmn.cc` → `pkmn.github.io` is why both are listed).
    After touching `index.html`, `netlify.toml` or adding an external

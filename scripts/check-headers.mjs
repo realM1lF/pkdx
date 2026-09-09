@@ -58,7 +58,6 @@ for (const [name, valid] of Object.entries(REQUIRED)) {
 console.log('\n2. CSP allows every origin the app needs:');
 const csp = root.h['content-security-policy'] ?? '';
 for (const origin of [
-  'https://plausible.io',
   'https://pokeapi.co',
   'https://raw.githubusercontent.com',
   'https://data.pkmn.cc',
@@ -66,6 +65,11 @@ for (const origin of [
   'wss://iqsdojzyqznmcirypdnk.supabase.co',
 ]) {
   csp.includes(origin) ? ok(`allows ${origin}`) : bad(`CSP is missing ${origin}`);
+}
+if (csp.includes('plausible.io')) {
+  bad('CSP still allows plausible.io (analytics removed)');
+} else {
+  ok('does not allow plausible.io');
 }
 
 console.log('\n3. Caching (Netlify: last matching rule wins):');
