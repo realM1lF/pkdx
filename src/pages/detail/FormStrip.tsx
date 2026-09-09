@@ -42,7 +42,7 @@ export default function FormStrip({ speciesId, currentSlug, edition }: FormStrip
           )}
           aria-current={onBase ? 'page' : undefined}
         >
-          <Sprite id={speciesId} name={nameOfPokemon(speciesId, lang)} era="gen5" skeleton={false} className="h-6 w-6" />
+          <Sprite id={speciesId} name={nameOfPokemon(speciesId, lang)} era="default" skeleton={false} className="h-6 w-6" />
           <span className="max-w-[7rem] truncate font-sans text-micro10 font-semibold">{nameOfPokemon(speciesId, lang)}</span>
         </LocaleLink>
         {forms.map((f) => {

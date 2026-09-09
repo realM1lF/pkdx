@@ -1,5 +1,5 @@
 /* Hero panel — density-addendum §3 Row 1 (span 7).
- * Artwork 220–260px + breathing type aura + shiny toggle/sparkle burst + cry button,
+ * Animated sprite (same era as EvolutionPanel) + type aura + shiny/cry,
  * identity column: # / name / TypeBadges / flavor+version chips / quick-facts 2×4. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
@@ -17,6 +17,7 @@ import { sprites } from '@/lib/sprites';
 import { genOf, GENERATIONS } from '@/lib/types';
 import { formIdentity } from '@/lib/dex-forms-catalog';
 import HonestyHint from '@/components/HonestyHint';
+import Sprite from '@/components/Sprite';
 import FormStrip from './FormStrip';
 import type { Pokemon, PokemonSpecies, PokemonType } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -243,7 +244,7 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
         )}
         <span aria-hidden className="dx-plinth" />
 
-        {/* artwork (tilt outer, float inner) */}
+        {/* sprite (tilt outer, float inner) — Gen-V GIF for id ≤ 649, same as evo */}
         <motion.div
           style={{ rotateX: srx, rotateY: sry, transformPerspective: 600 }}
           className="relative z-10 h-[13.75rem] w-[13.75rem] md:h-[15rem] md:w-[15rem]"
@@ -254,19 +255,25 @@ export default function HeroPanel({ pokemon, species, types: typesProp, abilitie
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className="h-full w-full"
           >
-            <div className="h-full w-full animate-bob">
+            <div className="h-full w-full animate-bob drop-shadow-[0_16px_32px_rgba(0,0,0,0.5)]">
               <AnimatePresence mode="wait" initial={false}>
-                <motion.img
+                <motion.div
                   key={shiny ? 'shiny' : 'normal'}
-                  src={shiny ? sprites.artworkShiny(pokemon.id) : sprites.artwork(pokemon.id)}
-                  alt={`${t('detail.hero.artworkAlt', { name })}${shiny ? t('detail.hero.shinySuffix') : ''}`}
-                  className="h-full w-full object-contain drop-shadow-[0_16px_32px_rgba(0,0,0,0.5)]"
-                  draggable={false}
+                  className="h-full w-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                />
+                >
+                  <Sprite
+                    id={pokemon.id}
+                    name={name}
+                    era={pokemon.id <= 649 ? 'gen5' : 'default'}
+                    shiny={shiny}
+                    priority
+                    className="h-full w-full"
+                  />
+                </motion.div>
               </AnimatePresence>
             </div>
           </motion.div>
