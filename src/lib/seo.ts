@@ -486,7 +486,7 @@ export function pathWithoutSearch(rest: string): string {
 /** noindex,nofollow for account + user vault / overlay; impressum stays indexable. */
 export function robotsForPath(rest: string): 'noindex, nofollow' | null {
   const path = pathWithoutSearch(rest);
-  if (/^\/account\/?$/.test(path)) return 'noindex, nofollow';
+  if (/^\/account(\/|$)/.test(path)) return 'noindex, nofollow';
   if (/^\/team\/.+/.test(path)) return 'noindex, nofollow';
   if (/^\/overlay\//.test(path)) return 'noindex, nofollow';
   return null;

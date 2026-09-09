@@ -12,6 +12,8 @@ describe('robotsForPath', () => {
   it('noindexes the account login and existing vault / overlay surfaces', () => {
     expect(robotsForPath('/account')).toBe('noindex, nofollow');
     expect(robotsForPath('/account/')).toBe('noindex, nofollow');
+    expect(robotsForPath('/account/reset')).toBe('noindex, nofollow');
+    expect(robotsForPath('/account/confirm')).toBe('noindex, nofollow');
     expect(robotsForPath('/team/abc-1')).toBe('noindex, nofollow');
     expect(robotsForPath('/team/s/zPAYLOAD')).toBe('noindex, nofollow');
     expect(robotsForPath('/overlay/nuzlocke/TOKEN')).toBe('noindex, nofollow');

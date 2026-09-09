@@ -49,6 +49,7 @@ Feature Integration Contracts · Enriched-Data Pipeline (pret)
   against the partial index).
 - `getRunTeam(runId)` is the integration hook for Team Builder / Versus.
 - Do not change table names/columns casually — live runs depend on them.
+- Email+password accounts (branch `feat/email-password-auth`): dashboard runbook in [`docs/auth-email-setup.md`](../auth-email-setup.md). Do not apply until that branch is being shipped.
 
 ## 4. Routing & SEO shell
 

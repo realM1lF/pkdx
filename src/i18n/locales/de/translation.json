@@ -2404,13 +2404,13 @@
             {
               "heading": "Registrierung und Anmeldung",
               "paragraphs": [
-                "Sie können freiwillig ein Konto anlegen, um Teams und Nuzlocke-Runs geräteübergreifend zu synchronisieren. Gespeichert werden: gewählter Nutzername, ein kryptografischer Hash des Passworts (Supabase Auth/bcrypt, das Passwort selbst liegt nicht bei uns), ein Hash des 6-stelligen Recovery-Codes sowie Spielstand-Daten (Teams, Nuzlocke-Runs). Eine E-Mail-Adresse wird nicht erhoben. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO."
+                "Sie können freiwillig ein Konto anlegen, um Teams und Nuzlocke-Runs geräteübergreifend zu synchronisieren. Gespeichert werden: gewählter Nutzername, eine E-Mail-Adresse (Bestätigungspflicht bei neuen Konten), ein kryptografischer Hash des Passworts (Supabase Auth/bcrypt, das Passwort selbst liegt nicht bei uns) sowie Spielstand-Daten (Teams, Nuzlocke-Runs). Ältere Konten ohne E-Mail nutzen weiterhin Nutzername, Passwort und optional einen 6-stelligen Recovery-Code. Die E-Mail dient Anmeldung, Passwort-Reset und Bestätigung. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO."
               ]
             },
             {
               "heading": "Speicherort und Löschung",
               "paragraphs": [
-                "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Sie können Konto und alle verbundenen Daten jederzeit per Nachricht an den Betreiber löschen lassen. Ohne Konto bleiben alle Daten ausschließlich lokal im Browser."
+                "Die Daten liegen in einer Supabase-Datenbank (EU-Region). Konten können in den Account-Einstellungen selbst gelöscht werden. Alternativ reicht eine Nachricht an die Impressums-Adresse. Ohne Konto bleiben alle Daten ausschließlich lokal im Browser."
               ]
             }
           ]
@@ -2641,7 +2641,7 @@
   "account": {
     "eyebrow": "ACCOUNT",
     "title": "Dein Trainer-Konto.",
-    "lede": "Mit einem Account sind deine Teams und Nuzlocke-Runs sicher in der Datenbank — und von jedem Gerät aus erreichbar. Ohne E-Mail, nur Name und Passwort.",
+    "lede": "Mit einem Account liegen Teams und Nuzlocke-Runs in der Datenbank und sind von jedem Gerät erreichbar. Neue Konten: E-Mail, Passwort und Nutzername. Bestehende Konten funktionieren weiter mit Nutzername und Passwort.",
     "hi": "Moin, {{name}}.",
     "synced": "Teams & Runs werden synchronisiert",
     "dataNote": "Deine Setups liegen jetzt in der Datenbank und sind auf jedem Gerät verfügbar. Gast-Daten bleiben lokal in dem Browser, in dem sie erstellt wurden.",
@@ -2653,35 +2653,65 @@
     },
     "username": "NUTZERNAME",
     "usernameHint": "3–20 Zeichen: a–z, 0–9, - und _",
+    "identifier": "E-MAIL ODER NUTZERNAME",
+    "email": "E-MAIL",
+    "emailHint": "Wird bestätigt. Dient Login und Passwort-Reset.",
     "password": "PASSWORT",
     "passwordHint": "mind. 8 Zeichen",
     "newPassword": "NEUES PASSWORT",
     "passwordConfirm": "PASSWORT BESTÄTIGEN",
     "pin": "RECOVERY-CODE (6-STELLIG)",
-    "pinHint": "Gut aufschreiben! Damit setzt du dein Passwort zurück, falls du es vergisst.",
+    "pinHint": "Nur für ältere Konten ohne E-Mail.",
     "pinConfirm": "RECOVERY-CODE BESTÄTIGEN",
-    "pinResetHint": "Dein 6-stelliger Code aus der Registrierung",
+    "pinResetHint": "6-stelliger Code aus der alten Registrierung",
+    "legacyPinToggle": "Mit Recovery-Code (altes Konto)",
     "submit": {
       "login": "ANMELDEN",
       "register": "KONTO ERSTELLEN",
-      "reset": "PASSWORT ZURÜCKSETZEN"
+      "reset": "RESET-MAIL SENDEN",
+      "resetPin": "PASSWORT ZURÜCKSETZEN",
+      "recovery": "NEUES PASSWORT SPEICHERN"
     },
     "reset": {
-      "done": "Passwort zurückgesetzt — du kannst dich jetzt anmelden."
+      "done": "Passwort zurückgesetzt. Jetzt anmelden.",
+      "emailSent": "Wenn die Adresse existiert, ist eine Mail unterwegs."
     },
     "register": {
-      "done": "Account erstellt — willkommen, {{name}}! Du wirst eingeloggt …"
+      "done": "Account erstellt. Bitte die Bestätigungsmail öffnen, dann anmelden.",
+      "confirmInbox": "Bestätigungslink ist unterwegs. Erst danach ist Login möglich."
+    },
+    "recovery": {
+      "title": "Neues Passwort setzen",
+      "lede": "Reset-Link erkannt. Hier das neue Passwort wählen."
     },
     "guestNote": "Auch ohne Account funktioniert alles — Daten bleiben dann nur in diesem Browser.",
     "privacyLink": "Mehr im Datenschutz.",
     "errors": {
       "username_taken": "Dieser Name ist schon vergeben.",
-      "invalid_credentials": "Nutzername, Passwort oder Recovery-Code stimmen nicht.",
-      "rate_limited": "Zu viele Versuche — bitte in einer Stunde erneut probieren.",
-      "invalid_input": "Eingaben ungültig (Name 3–20 Zeichen, Passwort min. 8, Code 6-stellig).",
+      "email_taken": "Diese E-Mail ist schon vergeben.",
+      "invalid_credentials": "Anmeldung fehlgeschlagen.",
+      "rate_limited": "Zu viele Versuche. In einer Stunde erneut versuchen.",
+      "invalid_input": "Eingaben ungültig (Name 3–20 Zeichen, gültige E-Mail, Passwort min. 8).",
       "password_mismatch": "Passwörter stimmen nicht überein.",
       "pin_mismatch": "Recovery-Codes stimmen nicht überein.",
-      "unknown": "Etwas ist schiefgelaufen — bitte erneut versuchen."
+      "email_unconfirmed": "E-Mail ist noch nicht bestätigt.",
+      "unknown": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
+      "delete_confirm": "Nutzername zur Bestätigung stimmt nicht."
+    },
+    "settings": {
+      "emailBound": "E-Mail bestätigt",
+      "emailPending": "E-Mail hinterlegen, dann Bestätigungslink öffnen. Danach Login auch per E-Mail.",
+      "emailSave": "E-MAIL SPEICHERN",
+      "emailSaved": "Bestätigungslink ist unterwegs.",
+      "usernameSave": "NAMEN SPEICHERN",
+      "usernameSaved": "Nutzername geändert.",
+      "passwordSave": "PASSWORT ÄNDERN",
+      "passwordSaved": "Passwort geändert.",
+      "logoutAll": "ÜBERALL ABMELDEN",
+      "export": "DATEN EXPORTIEREN",
+      "delete": "KONTO LÖSCHEN",
+      "deleteHint": "Unwiderruflich. Zum Bestätigen den Nutzernamen tippen.",
+      "deleteConfirm": "LÖSCHEN"
     },
     "tip": {
       "title": "Mit einem Account sind deine Setups sicher und von überall erreichbar.",
