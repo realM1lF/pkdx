@@ -1,5 +1,8 @@
 # Machbarkeitsanalyse: Rundenbasierte 1v1-Kampfsimulation im Versus-Bereich
 
+> Visuelle Schicht (Showdown-Sprites, Attacken-FX, Vendor vs. Eigenbau):
+> `docs/battle-anims-feasibility.md`. Diese Datei bleibt die Engine-Analyse.
+
 **Ergebnis: GO mit Einschränkungen.** Echte, mechanisch valide 1-gegen-1-Kämpfe sind client-seitig
 mit `@pkmn/sim` (der extrahierte Simulator-Kern von Pokémon Showdown) machbar — ohne Server, MIT-lizenziert,
 Gen 1–9. Der Preis ist ein lazy-geladener Bundle-Chunk von **~6,6 MB min / ~1,06 MB gzip**. Keine eigene
