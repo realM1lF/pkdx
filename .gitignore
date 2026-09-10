@@ -7,3 +7,4 @@ scripts/.cache/
 .env.*
 !.env.example
 .worktrees/
+/promo/
