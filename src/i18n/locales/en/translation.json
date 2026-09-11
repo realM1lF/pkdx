@@ -32,7 +32,8 @@
     "feedback": "Feedback",
     "support": "Donate",
     "more": "More",
-    "orre": "Orre"
+    "orre": "Orre",
+    "voiceDemo": "Voice"
   },
   "announce": {
     "label": "Site news",
@@ -3798,5 +3799,33 @@
     "defaultAbility": "Chart is for {{ability}}. Other abilities can change these matchups.",
     "dexFallback": "No edition-accurate stats for this form. Showing current PokéAPI values.",
     "gen1Special": "Generation 1 has one Special stat. Other lists often show the later Sp. Atk / Sp. Def split, six stats and a higher total."
+  },
+  "voiceDemo": {
+    "eyebrow": "LOCAL DEMO",
+    "title": "GPT-Live voice",
+    "intro": "Ask Dex stats with the microphone. Answers come from a local tool, not from model memory. Grant mic access when the browser asks.",
+    "localOnly": "Local only. The production build hides this route.",
+    "example": "Try: “How much Attack Speed does Charizard have in Red?”",
+    "hintSpeed": "There is no Attack Speed stat. That phrase means Speed (initiative). Gen I also has one Special, not Sp. Atk / Sp. Def.",
+    "start": "Start conversation",
+    "stop": "End",
+    "listening": "Listening",
+    "statusLabel": "STATUS",
+    "status": {
+      "idle": "Idle",
+      "connecting": "Connecting…",
+      "live": "Connected — ask a question",
+      "finishing": "Ending…",
+      "ended": "Conversation ended",
+      "error": "Connection failed"
+    },
+    "noKey": "The local session server has no API key. Add it to .env.local.",
+    "transcript": "TRANSCRIPT",
+    "transcriptEmpty": "Spoken lines appear here after the session starts.",
+    "you": "YOU",
+    "assistant": "ASSISTANT",
+    "toolLabel": "LAST TOOL HIT",
+    "toolEmpty": "No tool result yet.",
+    "paywallNote": "A paywall can wrap this later. Access is the VITE_GPT_LIVE_DEMO flag for now."
   }
 }

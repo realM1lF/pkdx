@@ -285,6 +285,17 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       en: 'Privacy policy of MyPokePanion: which data is stored and which is not.',
     },
   },
+  /* local GPT-Live demo — no prerender, no sitemap, noindex */
+  '/voice-demo': {
+    title: {
+      de: 'GPT-Live Stimme (lokal) · MyPokePanion',
+      en: 'GPT-Live voice (local) · MyPokePanion',
+    },
+    description: {
+      de: 'Lokale Stimmdemo: Dex-Werte per Mikrofon, Antworten nur aus Tools. Nicht öffentlich, Paywall folgt.',
+      en: 'Local voice demo: Dex stats by microphone, answers from tools only. Not public; a paywall comes later.',
+    },
+  },
   /* deliberately NOT in scripts/seo-routes.mjs — no prerender, no sitemap */
   '/lizenzen': {
     title: { de: 'Lizenzen & Credits · MyPokePanion', en: 'Licenses & credits · MyPokePanion' },
@@ -489,6 +500,7 @@ export function robotsForPath(rest: string): 'noindex, nofollow' | null {
   if (/^\/account\/?$/.test(path)) return 'noindex, nofollow';
   if (/^\/team\/.+/.test(path)) return 'noindex, nofollow';
   if (/^\/overlay\//.test(path)) return 'noindex, nofollow';
+  if (/^\/voice-demo\/?$/.test(path)) return 'noindex, nofollow';
   return null;
 }
 

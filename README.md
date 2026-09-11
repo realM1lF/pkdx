@@ -114,9 +114,30 @@ VITE_SUPABASE_ANON_KEY    # publishable/anon key
 Both are **optional**: if unset, the app falls back to a baked-in
 publishable key for the project's shared instance (public by design, gated
 by row-level security). Set them only if you want to run multiplayer against
-your own Supabase project. There is no `.env.example` in the repo — create a
-`.env.local` with the two variables above if you need the override. Without
-any Supabase reachability, solo mode continues to work (localStorage-only).
+your own Supabase project. See `.env.example`. Without any Supabase
+reachability, solo mode continues to work (localStorage-only).
+
+### Optional: local GPT-Live voice demo
+
+A developer-only voice path for Dex stats Q&A (WebRTC + a trusted local
+session server). **Off by default.** Production builds never register the
+route (`import.meta.env.DEV` + `VITE_GPT_LIVE_DEMO=true`). The OpenAI key
+stays on the Vite Node process and is never sent to the browser.
+
+```bash
+cp .env.example .env.local   # then set OPENAI_API_KEY
+npm run dev:gpt-live         # same as VITE_GPT_LIVE_DEMO=true npm run dev
+```
+
+Open `http://localhost:3000/de/voice-demo` or `/en/voice-demo`. Grant
+microphone permission. Ask something like:
+
+> Wie viel Attack Speed hat Glurak in der roten Edition?
+
+The voice layer must call `get_species_stats`. Gen I answers use Speed
+(initiative — there is no Attack Speed stat) and the single Special stat
+from `@pkmn/data`, not modern Sp. Atk. A paywall can wrap
+`canUseGptLive()` later; this ship is the flag + route only.
 
 ## Project Structure
 
@@ -128,6 +149,7 @@ src/
                         About, Feedback, Support, legal pages
   components/           Layout, Navbar, SearchCommand, Sprite, LangGate, ui/
   lib/
+    gpt-live/           local GPT-Live voice demo (flag + stats tool + WebRTC)
     pokeapi.ts          PokéAPI client with SWR cache
     sprites.ts          sprite/cry URL builders (PokeAPI sprite & cries repos)
     regions.ts          shared region contract (Maps ↔ Nuzlocke route keys)

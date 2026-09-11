@@ -3,6 +3,7 @@ import { Routes, Route, Outlet, Navigate, useLocation, useParams } from 'react-r
 import Layout from './components/Layout';
 import { LangGate, LangHomeRedirect, LangRedirect } from './components/LangGate';
 import { battleLandingRedirectTo } from './lib/battle-landing-redirect';
+import { canUseGptLive } from './lib/gpt-live/enabled';
 import { ShinyProvider } from './lib/shiny';
 import { isFirstPaintPrerender, markFirstPaintDone, shouldCoverPaintWithFallback } from './lib/cwv-paint';
 
@@ -58,6 +59,9 @@ const Account = lazyWithReload(() => import('./pages/Account'));
 const OrreTracker = lazyWithReload(() => import('./pages/OrreTracker'));
 const OverlayShell = lazyWithReload(() => import('./components/OverlayShell'));
 const NuzlockeOverlay = lazyWithReload(() => import('./pages/overlay/NuzlockeOverlay'));
+const GptLiveDemo = import.meta.env.DEV
+  ? lazyWithReload(() => import('./pages/GptLiveDemo'))
+  : null;
 
 function PageFallback() {
   /* full-screen pokeball gate while lazy chunks load — same look as the
@@ -156,6 +160,9 @@ export default function App() {
                 <Route path="feedback" element={<Feedback />} />
                 <Route path="support" element={<Support />} />
                 <Route path="account" element={<Account />} />
+                {canUseGptLive() && GptLiveDemo ? (
+                  <Route path="voice-demo" element={<GptLiveDemo />} />
+                ) : null}
                 <Route path="impressum" element={<Impressum />} />
                 <Route path="datenschutz" element={<Privacy />} />
                 {/* licenses/credits page — same path in both locales,
