@@ -51,6 +51,7 @@ export default function GptLiveDemo() {
   }, []);
 
   const live = status === 'live' || status === 'connecting' || status === 'finishing';
+  const startBlocked = live || health?.hasKey !== true;
   const sprite = useMemo(() => speciesFromTool(tool), [tool]);
 
   if (!canUseGptLive()) return null;
@@ -131,10 +132,10 @@ export default function GptLiveDemo() {
             <button
               type="button"
               onClick={() => void start()}
-              disabled={live || health?.hasKey === false}
+              disabled={startBlocked}
               className={cn(
                 'inline-flex h-11 items-center gap-2 rounded-md border border-gold/60 bg-gold-soft px-4 font-display text-sm font-bold tracking-wide text-tx-primary transition-shadow',
-                live ? 'opacity-50' : 'hover:shadow-glow-gold',
+                startBlocked ? 'opacity-50' : 'hover:shadow-glow-gold',
               )}
             >
               <Mic size={16} strokeWidth={1.75} />
