@@ -1,6 +1,7 @@
 /* Browser WebRTC client for GPT-Live.
  * Mic + speakers on media tracks; JSON events on the `oai-events` data channel.
  * Custom tools run on our local server; results go back through the channel. */
+import type { GptLiveVoice } from './voices';
 
 export type VoiceStatus = 'idle' | 'connecting' | 'live' | 'finishing' | 'ended' | 'error';
 
@@ -93,7 +94,7 @@ export class GptLiveSession {
     this.hooks = hooks;
   }
 
-  async start(): Promise<void> {
+  async start(voice: GptLiveVoice): Promise<void> {
     this.cleanup();
     this.hooks.onStatus('connecting');
     this.finalized = false;
@@ -139,7 +140,7 @@ export class GptLiveSession {
     const response = await fetch('/api/gpt-live/session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sdp }),
+      body: JSON.stringify({ sdp, voice }),
     });
     const result = (await response.json().catch(() => ({}))) as {
       error?: string;

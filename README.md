@@ -129,8 +129,9 @@ cp .env.example .env.local   # then set OPENAI_API_KEY
 npm run dev:gpt-live         # same as VITE_GPT_LIVE_DEMO=true npm run dev
 ```
 
-Open `http://localhost:3000/de/voice-demo` or `/en/voice-demo`. Grant
-microphone permission. Ask something like:
+Open `http://localhost:3000/de/voice-demo` or `/en/voice-demo`. Pick a
+built-in voice (default Marin), grant microphone permission, then ask
+something like:
 
 > Wie viel Attack Speed hat Glurak in der roten Edition?
 

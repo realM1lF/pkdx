@@ -111,7 +111,7 @@ export function gptLiveDevPlugin() {
                 sendJson(res, 400, { error: 'An SDP offer is required.' });
                 return;
               }
-              const result = await api.createGptLiveSession(body.sdp);
+              const result = await api.createGptLiveSession(body.sdp, body.voice);
               sendJson(res, result.status, result.body);
               return;
             }

@@ -1,5 +1,6 @@
 /** Session + Responses-delegation config for the local GPT-Live demo.
  * Used by the trusted Vite middleware. Do not import from the browser page. */
+import { DEFAULT_GPT_LIVE_VOICE, type GptLiveVoice } from './voices';
 
 export const GPT_LIVE_MODEL = 'gpt-live-1';
 export const GPT_LIVE_BACKEND_MODEL = 'gpt-5.6-terra';
@@ -48,10 +49,11 @@ export const GET_SPECIES_STATS_TOOL = {
   },
 };
 
-export function liveSessionBody() {
+export function liveSessionBody(voice: GptLiveVoice = DEFAULT_GPT_LIVE_VOICE) {
   return {
     model: GPT_LIVE_MODEL,
     instructions: LIVE_INSTRUCTIONS,
+    audio: { output: { voice } },
     delegation: {
       type: 'responses' as const,
       responses: {

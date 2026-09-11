@@ -3826,6 +3826,24 @@
     "assistant": "ASSISTENT",
     "toolLabel": "LETZTER TOOL-TREFFER",
     "toolEmpty": "Noch kein Tool-Ergebnis.",
-    "paywallNote": "Eine Paywall kann das später umschließen. Zugriff läuft vorerst über VITE_GPT_LIVE_DEMO."
+    "paywallNote": "Eine Paywall kann das später umschließen. Zugriff läuft vorerst über VITE_GPT_LIVE_DEMO.",
+    "voiceLabel": "STIMME",
+    "voiceHint": "Regionsangaben sind Stil, keine Sprachbindung. Die Demo spricht weiter Deutsch oder Englisch. Stimme wechseln startet eine neue Session.",
+    "voiceLocked": "Zum Wechseln zuerst beenden.",
+    "voices": {
+      "marin": "Marin · Standard",
+      "quartz": "Quartz · australisch, feminin",
+      "ripple": "Ripple · australisch, maskulin",
+      "vesper": "Vesper · britisch, maskulin",
+      "willow": "Willow · irisch, feminin",
+      "stone": "Stone · irisch, maskulin",
+      "gleam": "Gleam · nordamerikanisch, feminin",
+      "meridian": "Meridian · nordamerikanisch, maskulin",
+      "bossa": "Bossa · brasilianisch, feminin",
+      "tempo": "Tempo · brasilianisch, maskulin",
+      "beacon": "Beacon · philippinisch, maskulin",
+      "delta": "Delta · US-Südstaaten, feminin",
+      "cinder": "Cinder · US-Südstaaten, maskulin"
+    }
   }
 }

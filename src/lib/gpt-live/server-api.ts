@@ -5,6 +5,7 @@
  */
 import { GET_SPECIES_STATS, liveSessionBody } from './session-config';
 import { getSpeciesStatsFromArgs } from './species-stats';
+import { resolveSessionVoice } from './voices';
 
 const OPENAI_LIVE_SESSIONS = 'https://api.openai.com/v1/live/sessions';
 
@@ -21,13 +22,20 @@ export function gptLiveHealth(): { ok: true; demo: true; hasKey: boolean } {
   return { ok: true, demo: true, hasKey: Boolean(openaiApiKey()) };
 }
 
-export async function createGptLiveSession(sdp: string): Promise<{ status: number; body: unknown }> {
+export async function createGptLiveSession(
+  sdp: string,
+  voiceRaw?: unknown,
+): Promise<{ status: number; body: unknown }> {
+  if (!sdp.trim()) {
+    return { status: 400, body: { error: 'An SDP offer is required.' } };
+  }
+  const voice = resolveSessionVoice(voiceRaw);
+  if (!voice) {
+    return { status: 400, body: { error: 'Unknown voice.' } };
+  }
   const key = openaiApiKey();
   if (!key) {
     return { status: 503, body: { error: 'Set OPENAI_API_KEY on the local server.' } };
-  }
-  if (!sdp.trim()) {
-    return { status: 400, body: { error: 'An SDP offer is required.' } };
   }
 
   const response = await fetch(OPENAI_LIVE_SESSIONS, {
@@ -37,7 +45,7 @@ export async function createGptLiveSession(sdp: string): Promise<{ status: numbe
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      session: liveSessionBody(),
+      session: liveSessionBody(voice),
       transport: { type: 'webrtc', sdp },
     }),
   });

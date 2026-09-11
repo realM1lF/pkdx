@@ -7,6 +7,14 @@ import { Mic, MicOff, Radio } from 'lucide-react';
 import MotionRoot from '@/components/MotionRoot';
 import Sprite from '@/components/Sprite';
 import { canUseGptLive } from '@/lib/gpt-live/enabled';
+import {
+  DEFAULT_GPT_LIVE_VOICE,
+  GPT_LIVE_VOICES,
+  loadStoredVoice,
+  parseGptLiveVoice,
+  storeVoice,
+  type GptLiveVoice,
+} from '@/lib/gpt-live/voices';
 import { GptLiveSession, type ToolTrace, type TranscriptLine, type VoiceStatus } from '@/lib/gpt-live/webrtc';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +39,12 @@ export default function GptLiveDemo() {
   const [tool, setTool] = useState<ToolTrace | null>(null);
   const [health, setHealth] = useState<Health | null>(null);
   const [shake, setShake] = useState(0);
+  const [voice, setVoice] = useState<GptLiveVoice>(DEFAULT_GPT_LIVE_VOICE);
   const sessionRef = useRef<GptLiveSession | null>(null);
+
+  useEffect(() => {
+    setVoice(loadStoredVoice());
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -77,7 +90,7 @@ export default function GptLiveDemo() {
     });
     sessionRef.current = session;
     try {
-      await session.start();
+      await session.start(voice);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       setStatus('error');
@@ -127,6 +140,31 @@ export default function GptLiveDemo() {
 
           <p className="mt-3 font-sans text-[0.8125rem] text-tx-secondary">{t('voiceDemo.example')}</p>
           <p className="mt-1 font-sans text-[0.75rem] text-tx-muted">{t('voiceDemo.hintSpeed')}</p>
+
+          <label className="mt-5 block max-w-md">
+            <span className="pixel-label text-[8px] text-gold">{t('voiceDemo.voiceLabel')}</span>
+            <select
+              value={voice}
+              disabled={live}
+              onChange={(e) => {
+                const next = parseGptLiveVoice(e.target.value);
+                if (!next) return;
+                setVoice(next);
+                storeVoice(next);
+              }}
+              aria-label={t('voiceDemo.voiceLabel')}
+              className="mt-1 h-10 w-full rounded-md border border-hairline bg-surface2 px-2 font-sans text-sm text-tx-primary disabled:opacity-40"
+            >
+              {GPT_LIVE_VOICES.map((id) => (
+                <option key={id} value={id}>
+                  {t(`voiceDemo.voices.${id}`)}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 font-sans text-[0.75rem] text-tx-muted">
+              {live ? t('voiceDemo.voiceLocked') : t('voiceDemo.voiceHint')}
+            </p>
+          </label>
 
           <div className="mt-5 flex flex-wrap items-center gap-3">
             <button
