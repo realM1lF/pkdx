@@ -4,6 +4,8 @@ import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import { inspectAttr } from 'plugin-inspect-react-code'
 import { ensureSimBundle } from './scripts/bundle-sim.mjs'
+// @ts-expect-error local ESM plugin — loaded as JS from Vite config
+import { gptLiveDevPlugin } from './scripts/gpt-live-dev-plugin.mjs'
 
 /* @pkmn/sim ships ~24 MB across 140 ESM modules — too heavy for rollup on
  * small CI boxes. We pre-bundle it once into a static vendor asset
@@ -15,7 +17,7 @@ ensureSimBundle()
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [{ ...inspectAttr(), apply: 'serve' }, react()],
+  plugins: [{ ...inspectAttr(), apply: 'serve' }, react(), gptLiveDevPlugin()],
   server: {
     port: 3000,
   },

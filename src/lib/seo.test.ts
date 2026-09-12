@@ -15,6 +15,8 @@ describe('robotsForPath', () => {
     expect(robotsForPath('/team/abc-1')).toBe('noindex, nofollow');
     expect(robotsForPath('/team/s/zPAYLOAD')).toBe('noindex, nofollow');
     expect(robotsForPath('/overlay/nuzlocke/TOKEN')).toBe('noindex, nofollow');
+    expect(robotsForPath('/voice-demo')).toBe('noindex, nofollow');
+    expect(robotsForPath('/voice-demo/')).toBe('noindex, nofollow');
   });
 
   it('keeps impressum and public hubs indexable', () => {

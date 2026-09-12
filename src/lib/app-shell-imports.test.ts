@@ -76,6 +76,7 @@ describe('app-shell first-load imports', () => {
       'src/pages/Feedback.tsx',
       'src/pages/Support.tsx',
       'src/pages/Account.tsx',
+      'src/pages/GptLiveDemo.tsx',
       'src/components/ShellChrome.tsx',
       'src/components/SearchCommand.tsx',
     ]) {

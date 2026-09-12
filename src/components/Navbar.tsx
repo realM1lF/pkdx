@@ -3,7 +3,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router';
 import { LocaleLink, useLocalePath, withTrailingSlash } from '@/lib/locale-link';
-import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Layers, Map, Menu, MessageSquarePlus, Package, Search, Swords, Users, X } from 'lucide-react';
+import { BookOpen, Ghost, GitCompareArrows, Heart, Info, LayoutGrid, Layers, Map, Menu, MessageSquarePlus, Mic, Package, Search, Swords, Users, X } from 'lucide-react';
+import { canUseGptLive, GPT_LIVE_PATH } from '@/lib/gpt-live/enabled';
 import { useTranslation } from 'react-i18next';
 import { currentLang } from '@/lib/i18n-data';
 import { battleLandingPath } from '@/lib/seo';
@@ -33,6 +34,8 @@ const LINKS = [
   { to: '/orre', key: 'nav.orre', Icon: Ghost },
 ] as const;
 
+const VOICE_LINK = { to: GPT_LIVE_PATH, key: 'nav.voiceDemo', Icon: Mic } as const;
+
 interface NavbarProps {
   onSearchOpen: () => void;
 }
@@ -45,7 +48,8 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
   const localePath = useLocalePath();
   const lang = currentLang(i18n.language);
 
-  const navTo = (item: (typeof LINKS)[number]) =>
+  const links = canUseGptLive() ? [...LINKS, VOICE_LINK] : LINKS;
+  const navTo = (item: (typeof LINKS)[number] | typeof VOICE_LINK) =>
     'battle' in item && item.battle ? battleLandingPath(lang) : item.to;
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -136,7 +140,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               className="flex min-w-0 flex-1 items-center gap-3 overflow-x-auto [scrollbar-width:none] lg:gap-4 xl:gap-6 [&::-webkit-scrollbar]:hidden"
               data-lenis-prevent
             >
-              {LINKS.map((l) => (
+              {links.map((l) => (
                 <NavLink
                   key={l.key}
                   to={withTrailingSlash(localePath(navTo(l)))}
@@ -194,7 +198,7 @@ export default function Navbar({ onSearchOpen }: NavbarProps) {
               </button>
             </div>
             <nav className="relative flex flex-1 flex-col items-start justify-start gap-6 overflow-y-auto px-8 py-6" data-lenis-prevent>
-              {LINKS.map((l) => (
+              {links.map((l) => (
                 <div key={l.key}>
                   <NavLink
                     to={withTrailingSlash(localePath(navTo(l)))}

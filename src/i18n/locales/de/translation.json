@@ -32,7 +32,8 @@
     "feedback": "Feedback",
     "support": "Spende",
     "more": "Mehr",
-    "orre": "Orre"
+    "orre": "Orre",
+    "voiceDemo": "Stimme"
   },
   "announce": {
     "label": "Neuigkeiten",
@@ -3798,5 +3799,52 @@
     "defaultAbility": "Tabelle gilt für {{ability}}. Andere Fähigkeiten können die Matchups ändern.",
     "dexFallback": "Keine editionsgenauen Werte für diese Form. Anzeige: aktuelle PokéAPI-Werte.",
     "gen1Special": "Generation 1 hat einen Spezial-Wert. Andere Listen zeigen oft die spätere Trennung in Spezialangriff und Spezialverteidigung, sechs Werte und eine höhere Summe."
+  },
+  "voiceDemo": {
+    "eyebrow": "LOKALE DEMO",
+    "title": "GPT-Live Stimme",
+    "intro": "Dex-Werte per Mikrofon abfragen. Antworten kommen aus einem lokalen Tool, nicht aus dem Modellgedächtnis. Mikrofonzugriff im Browser erlauben.",
+    "localOnly": "Nur lokal. Der Production-Build blendet die Route aus.",
+    "example": "Beispiel: „Wie viel Attack Speed hat Glurak in der roten Edition?“",
+    "hintSpeed": "Es gibt keinen Attack-Speed-Wert. Gemeint ist Initiative (Speed). Gen I hat außerdem einen Spezial-Wert, nicht Sp. Angr. / Sp. Vert.",
+    "start": "Gespräch starten",
+    "stop": "Beenden",
+    "listening": "Hört zu",
+    "statusLabel": "STATUS",
+    "status": {
+      "idle": "Bereit",
+      "connecting": "Verbinden…",
+      "live": "Verbunden — einfach fragen",
+      "finishing": "Beenden…",
+      "ended": "Gespräch beendet",
+      "error": "Verbindung fehlgeschlagen"
+    },
+    "noKey": "Dem lokalen Session-Server fehlt der API-Schlüssel. In .env.local setzen.",
+    "transcript": "TRANSKRIPT",
+    "transcriptEmpty": "Gesprochene Zeilen erscheinen nach dem Start.",
+    "you": "NUTZER",
+    "assistant": "ASSISTENT",
+    "toolLabel": "LETZTER TOOL-TREFFER",
+    "toolEmpty": "Noch kein Tool-Ergebnis.",
+    "statsGame": "{{label}} · Gen {{gen}}",
+    "paywallNote": "Eine Paywall kann das später umschließen. Zugriff läuft vorerst über VITE_GPT_LIVE_DEMO.",
+    "voiceLabel": "STIMME",
+    "voiceHint": "Regionsangaben sind Stil, keine Sprachbindung. Die Demo spricht weiter Deutsch oder Englisch. Stimme wechseln startet eine neue Session.",
+    "voiceLocked": "Zum Wechseln zuerst beenden.",
+    "voices": {
+      "marin": "Marin · Standard",
+      "quartz": "Quartz · australisch, feminin",
+      "ripple": "Ripple · australisch, maskulin",
+      "vesper": "Vesper · britisch, maskulin",
+      "willow": "Willow · irisch, feminin",
+      "stone": "Stone · irisch, maskulin",
+      "gleam": "Gleam · nordamerikanisch, feminin",
+      "meridian": "Meridian · nordamerikanisch, maskulin",
+      "bossa": "Bossa · brasilianisch, feminin",
+      "tempo": "Tempo · brasilianisch, maskulin",
+      "beacon": "Beacon · philippinisch, maskulin",
+      "delta": "Delta · US-Südstaaten, feminin",
+      "cinder": "Cinder · US-Südstaaten, maskulin"
+    }
   }
 }

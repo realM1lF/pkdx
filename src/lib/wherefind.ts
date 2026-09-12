@@ -13,7 +13,7 @@
 import { displayName } from './pokeapi';
 import { REGIONS } from './regions';
 import type { MapNode, RegionMap } from './regions';
-import { areaShortLabel, methodBucket, STATIC_METHODS } from './mapdata';
+import { areaShortLabel, isJunkEncounterMethod, methodBucket, STATIC_METHODS } from './mapdata';
 import type { MethodBucket } from './mapdata';
 
 /* ---------- PokéAPI encounter payload (local shapes — lib types untouched) ---------- */
@@ -156,6 +156,7 @@ export function aggregate(areas: EncounterAreaEntry[], version?: string | readon
       const byMethod = new Map<string, number>();
       row.versionSet.add(vd.version.name);
       for (const det of vd.encounter_details) {
+        if (isJunkEncounterMethod(det.method.name)) continue;
         byMethod.set(det.method.name, (byMethod.get(det.method.name) ?? 0) + det.chance);
         row.methodSet.add(det.method.name);
         row.minLevel = Math.min(row.minLevel, det.min_level);
@@ -181,4 +182,16 @@ export function aggregate(areas: EncounterAreaEntry[], version?: string | readon
       };
     })
     .sort((a, b) => b.maxChance - a.maxChance || a.label.localeCompare(b.label));
+}
+
+/** Wild rows eligible for “best spot” voice hints — excludes gift/static, unmapped nodes, promo junk. */
+export function isRankableWildRow(row: WhereRow): boolean {
+  if (row.special) return false;
+  if (row.nodeId == null) return false;
+  if (row.methods.length > 0 && row.methods.every(isJunkEncounterMethod)) return false;
+  return true;
+}
+
+export function rankableWildRows(rows: WhereRow[]): WhereRow[] {
+  return rows.filter(isRankableWildRow).sort((a, b) => b.maxChance - a.maxChance || a.label.localeCompare(b.label));
 }
