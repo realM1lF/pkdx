@@ -4,6 +4,11 @@ import { LocaleLink, useLocalePath } from '@/lib/locale-link';
 import { useTranslation } from 'react-i18next';
 import { currentLang } from '@/lib/i18n-data';
 import { battleLandingPath } from '@/lib/seo';
+import {
+  FOOTER_FEATURE_LINKS,
+  FOOTER_LEGAL_LINKS,
+  FOOTER_SITE_LINKS,
+} from '@/lib/site-pages';
 import { MAX_DEX_ID } from '@/lib/types';
 
 /* Lightweight region link metadata — the full region geometry (src/lib/regions.ts,
@@ -30,28 +35,9 @@ export default function Footer() {
   const linkCls =
     'inline-block font-sans text-sm text-tx-secondary transition-all duration-200 hover:translate-x-1 hover:text-gold';
 
-  const featureLinks = [
-    { to: '/', key: 'footer.home' },
-    { to: '/pokedex', key: 'footer.pokedex' },
-    { to: '/maps', key: 'footer.maps' },
-    { to: '/nuzlocke', key: 'footer.nuzlocke' },
-    { to: '/team', key: 'footer.team' },
-    { to: '/versus', key: 'footer.versus' },
-    { to: '/items', key: 'footer.items' },
-    { to: '/orre', key: 'footer.orre' },
-  ] as const;
-
-  const legalLinks = [
-    { to: '/impressum', key: 'footer.impressum' },
-    { to: '/datenschutz', key: 'footer.privacy' },
-    { to: '/lizenzen', key: 'footer.licenses' },
-  ] as const;
-
-  const siteLinks = [
-    { to: '/about', key: 'footer.about' },
-    { to: '/feedback', key: 'footer.feedback' },
-    { to: '/support', key: 'footer.support' },
-  ] as const;
+  const featureLinks = FOOTER_FEATURE_LINKS;
+  const legalLinks = FOOTER_LEGAL_LINKS;
+  const siteLinks = FOOTER_SITE_LINKS;
 
   /* external community wikis — grouped DE/EN (user-curated) */
   const wikiLinksDe = [
@@ -71,17 +57,17 @@ export default function Footer() {
       <div className="h-px w-full" style={{ background: HAIRLINE }} />
       <div className="border-b border-hairline bg-surface1/70">
         <div className="mx-auto flex max-w-content flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-3 md:px-8">
-          {siteLinks.map(({ to, key }) => (
+          {siteLinks.map(({ path, i18nKey }) => (
             <LocaleLink
-              key={to}
-              to={to}
+              key={path}
+              to={path}
               className={
-                key === 'footer.support'
+                i18nKey === 'footer.support'
                   ? 'pixel-label rainbow-text text-[11px] tracking-[0.14em] transition-colors'
                   : 'pixel-label text-[11px] tracking-[0.14em] text-tx-muted transition-colors hover:text-gold'
               }
             >
-              {t(key)}
+              {t(i18nKey)}
             </LocaleLink>
           ))}
         </div>
@@ -101,9 +87,9 @@ export default function Footer() {
         {/* Features */}
         <div className="flex flex-col gap-3">
           <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.explore')}</h4>
-          {featureLinks.map(({ to, key }) => (
-            <LocaleLink key={to} to={to} className={linkCls}>
-              {t(key)}
+          {featureLinks.map(({ path, i18nKey }) => (
+            <LocaleLink key={path} to={path} className={linkCls}>
+              {t(i18nKey)}
             </LocaleLink>
           ))}
           {/* battle-simulator landing — localized slug per locale */}
@@ -131,9 +117,9 @@ export default function Footer() {
         {/* Site: about / feedback / support */}
         <div className="flex flex-col gap-3">
           <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.site')}</h4>
-          {siteLinks.map(({ to, key }) => (
-            <LocaleLink key={to} to={to} className={linkCls}>
-              {t(key)}
+          {siteLinks.map(({ path, i18nKey }) => (
+            <LocaleLink key={path} to={path} className={linkCls}>
+              {t(i18nKey)}
             </LocaleLink>
           ))}
         </div>
@@ -158,9 +144,9 @@ export default function Footer() {
         {/* Legal */}
         <div className="flex flex-col gap-3">
           <h4 className="pixel-label mb-1 text-[14px] text-tx-muted">{t('footer.legal')}</h4>
-          {legalLinks.map(({ to, key }) => (
-            <LocaleLink key={to} to={to} className={linkCls}>
-              {t(key)}
+          {legalLinks.map(({ path, i18nKey }) => (
+            <LocaleLink key={path} to={path} className={linkCls}>
+              {t(i18nKey)}
             </LocaleLink>
           ))}
         </div>

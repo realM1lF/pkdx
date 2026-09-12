@@ -7,6 +7,8 @@ import { Mic, MicOff, Radio } from 'lucide-react';
 import MotionRoot from '@/components/MotionRoot';
 import Sprite from '@/components/Sprite';
 import { canUseGptLive } from '@/lib/gpt-live/enabled';
+import SpeciesStatsCard from '@/lib/gpt-live/SpeciesStatsCard';
+import { speciesStatsViewFromTool } from '@/lib/gpt-live/species-stats-view';
 import {
   DEFAULT_GPT_LIVE_VOICE,
   GPT_LIVE_VOICES,
@@ -16,12 +18,26 @@ import {
   type GptLiveVoice,
 } from '@/lib/gpt-live/voices';
 import { GptLiveSession, type ToolTrace, type TranscriptLine, type VoiceStatus } from '@/lib/gpt-live/webrtc';
+import { getLatestRunId, getRunState, loadLocalRun } from '@/lib/nuzlocke-store';
+import { filledSlots, loadDraft, loadTeams } from '@/lib/teambuilder';
 import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 interface Health {
   hasKey: boolean;
+}
+
+function currentTeamSnapshot() {
+  const draft = loadDraft();
+  if (draft && filledSlots(draft).length > 0) return draft;
+  return loadTeams().find((team) => filledSlots(team).length > 0) ?? null;
+}
+
+function currentRunSnapshot() {
+  const id = getLatestRunId();
+  if (!id) return null;
+  return getRunState(id) ?? loadLocalRun(id);
 }
 
 function speciesFromTool(trace: ToolTrace | null): { id: number; name: string } | null {
@@ -66,6 +82,7 @@ export default function GptLiveDemo() {
   const live = status === 'live' || status === 'connecting' || status === 'finishing';
   const startBlocked = live || health?.hasKey !== true;
   const sprite = useMemo(() => speciesFromTool(tool), [tool]);
+  const statsView = useMemo(() => speciesStatsViewFromTool(tool?.result), [tool]);
 
   if (!canUseGptLive()) return null;
 
@@ -86,8 +103,17 @@ export default function GptLiveDemo() {
           return next;
         });
       },
-      onTool: (trace) => setTool(trace),
+      onTool: (trace) => {
+        const row = trace.result as { ok?: boolean; error?: string } | null;
+        console.log(
+          `[gpt-live] ui tool ${trace.name} ${row?.ok ? 'ok' : row?.error ?? 'done'}`,
+          trace.result,
+        );
+        setTool(trace);
+      },
     });
+    session.setTeamSnapshotProvider(() => currentTeamSnapshot());
+    session.setRunSnapshotProvider(() => currentRunSnapshot());
     sessionRef.current = session;
     try {
       await session.start(voice);
@@ -221,7 +247,9 @@ export default function GptLiveDemo() {
 
           <section className="rounded-lg border border-hairline bg-surface1 p-4">
             <p className="pixel-label text-[8px] text-gold">{t('voiceDemo.toolLabel')}</p>
-            {sprite ? (
+            {statsView ? (
+              <SpeciesStatsCard view={statsView} />
+            ) : sprite ? (
               <div className="mt-3 flex items-center gap-3">
                 <Sprite id={sprite.id} name={sprite.name} era="gen5" className="h-16 w-16" />
                 <p className="min-w-0 truncate font-display text-sm font-bold tracking-wide text-tx-primary">
@@ -229,12 +257,14 @@ export default function GptLiveDemo() {
                 </p>
               </div>
             ) : null}
-            <pre
-              className="dx-scroll mt-3 max-h-72 overflow-auto rounded-md border border-hairline2 bg-void/80 p-3 font-mono text-[11px] leading-relaxed text-tx-secondary"
-              data-lenis-prevent
-            >
-              {tool ? JSON.stringify(tool.result, null, 2) : t('voiceDemo.toolEmpty')}
-            </pre>
+            {statsView ? null : (
+              <pre
+                className="dx-scroll mt-3 max-h-72 overflow-auto rounded-md border border-hairline2 bg-void/80 p-3 font-mono text-[11px] leading-relaxed text-tx-secondary"
+                data-lenis-prevent
+              >
+                {tool ? JSON.stringify(tool.result, null, 2) : t('voiceDemo.toolEmpty')}
+              </pre>
+            )}
           </section>
         </div>
 

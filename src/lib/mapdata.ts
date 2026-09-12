@@ -89,6 +89,11 @@ export const STATIC_METHODS = new Set([
   'squirt-bottle', 'devon-scope', 'feebas-tile-fishing',
 ]);
 
+/** PokéAPI promo/junk methods (e.g. colosseum-bonus-disc-jpn) — not real wild spawns. */
+export function isJunkEncounterMethod(method: string): boolean {
+  return method.includes('colosseum') || method.includes('bonus-disc');
+}
+
 export function methodBucket(method: string): MethodBucket {
   if (SURF_METHODS.has(method)) return 'SURF';
   if (FISH_METHODS.has(method)) return 'FISH';
@@ -402,6 +407,7 @@ export function aggregateArea(
     >();
     for (const d of vd.encounter_details) {
       const method = d.method.name;
+      if (isJunkEncounterMethod(method)) continue;
       const names = conditionNames(d);
       const key = exclusiveGroupKey(method, names);
       const prev = groups.get(key);

@@ -9,6 +9,33 @@ import { bstOf, genSpecies, genStatsOf, genTypesOf, statKeysForGen } from '@/lib
 import { displayName } from '@/lib/pokeapi';
 import { VERSION_GROUPS, versionGroupById } from '@/lib/version-groups';
 import type { StatKey } from '@/lib/types';
+import type { GptLiveSessionContext } from './session-context';
+
+export const GET_SPECIES_STATS = 'get_species_stats';
+
+export const GET_SPECIES_STATS_TOOL = {
+  type: 'function' as const,
+  name: GET_SPECIES_STATS,
+  description:
+    'Resolve a German or English Pokémon name and return generation-correct base stats for a named game. Use this for every factual Dex stats question.',
+  strict: true as const,
+  parameters: {
+    type: 'object' as const,
+    properties: {
+      species_query: {
+        type: 'string',
+        description: 'Species name or dex number as spoken, e.g. Glurak, Charizard, 6.',
+      },
+      game: {
+        type: ['string', 'null'],
+        description:
+          'Game or edition, e.g. red, rote edition, yellow, firered, scarlet. Null when the session already has a game.',
+      },
+    },
+    required: ['species_query', 'game'],
+    additionalProperties: false as const,
+  },
+};
 
 const SLUGS = slugsJson as string[];
 const POKEMON_DE = pokemonDeJson as Record<string, { slug: string; name: string; genus: string }>;
@@ -36,6 +63,7 @@ export type SpeciesStatsOk = {
   types: string[];
   bst: number;
   stats: Record<string, number>;
+  spoken_hint: string;
   semantics: {
     generation: number;
     special_is_unified: boolean;
@@ -87,20 +115,24 @@ const GAME_ALIASES: Record<string, string> = {
   kanto: 'red-blue',
   blue: 'red-blue',
   blau: 'red-blue',
+  blaue: 'red-blue',
   'blaue edition': 'red-blue',
   'blue edition': 'red-blue',
   yellow: 'yellow',
   gelb: 'yellow',
+  gelbe: 'yellow',
   'gelbe edition': 'yellow',
   'yellow edition': 'yellow',
   gold: 'gold-silver',
   goldene: 'gold-silver',
   silver: 'gold-silver',
   silber: 'gold-silver',
+  silberne: 'gold-silver',
   gs: 'gold-silver',
   gsc: 'gold-silver',
   crystal: 'crystal',
   kristall: 'crystal',
+  kristalline: 'crystal',
   ruby: 'ruby-sapphire',
   rubin: 'ruby-sapphire',
   sapphire: 'ruby-sapphire',
@@ -110,11 +142,15 @@ const GAME_ALIASES: Record<string, string> = {
   emerald: 'emerald',
   smaragd: 'emerald',
   firered: 'firered-leafgreen',
+  'fire red': 'firered-leafgreen',
   feuerrot: 'firered-leafgreen',
+  feuerrote: 'firered-leafgreen',
   'feuerrote edition': 'firered-leafgreen',
   leafgreen: 'firered-leafgreen',
+  'leaf green': 'firered-leafgreen',
   'blattgrun': 'firered-leafgreen',
   blattgruen: 'firered-leafgreen',
+  blattgrune: 'firered-leafgreen',
   frlg: 'firered-leafgreen',
   colosseum: 'colosseum',
   xd: 'xd',
@@ -126,12 +162,17 @@ const GAME_ALIASES: Record<string, string> = {
   platinum: 'platinum',
   platin: 'platinum',
   heartgold: 'heartgold-soulsilver',
+  'heart gold': 'heartgold-soulsilver',
   soulsilver: 'heartgold-soulsilver',
+  'soul silver': 'heartgold-soulsilver',
+  seelensilber: 'heartgold-soulsilver',
   hgss: 'heartgold-soulsilver',
   black: 'black-white',
   schwarz: 'black-white',
+  schwarze: 'black-white',
   white: 'black-white',
   weiss: 'black-white',
+  weisse: 'black-white',
   bw: 'black-white',
   'black 2': 'black-2-white-2',
   'white 2': 'black-2-white-2',
@@ -293,6 +334,19 @@ function modernNote(): string {
   ].join(' ');
 }
 
+function spokenHint(input: {
+  species: SpeciesHit;
+  game: GameHit;
+  types: string[];
+  bst: number;
+  stats: Record<string, number>;
+}): string {
+  const stats = Object.entries(input.stats)
+    .map(([key, value]) => `${key} ${value}`)
+    .join(', ');
+  return `${input.species.nameEn} / ${input.species.nameDe}, ${input.game.label} Gen ${input.game.gen}: ${stats}, BST ${input.bst}, ${input.types.join('/')}.`;
+}
+
 export function getSpeciesStats(speciesQuery: string, gameQuery: string): SpeciesStatsResult {
   const species = resolveSpecies(speciesQuery);
   if (!species) {
@@ -327,13 +381,16 @@ export function getSpeciesStats(speciesQuery: string, gameQuery: string): Specie
   const types = genTypesOf(game.versionGroup, species.slug, []);
   const gen = game.gen;
 
+  const stats = publicStats(block, gen);
+  const bst = bstOf(block, gen);
   return {
     ok: true,
     species,
     game,
     types,
-    bst: bstOf(block, gen),
-    stats: publicStats(block, gen),
+    bst,
+    stats,
+    spoken_hint: spokenHint({ species, game, types, bst, stats }),
     semantics: {
       generation: gen,
       special_is_unified: gen < 2,
@@ -343,15 +400,26 @@ export function getSpeciesStats(speciesQuery: string, gameQuery: string): Specie
   };
 }
 
-export function getSpeciesStatsFromArgs(args: unknown): SpeciesStatsResult {
+function stringArg(value: unknown): string {
+  return typeof value === 'string' ? value : '';
+}
+
+export function getSpeciesStatsFromArgs(
+  args: unknown,
+  ctx: Pick<GptLiveSessionContext, 'gameQuery'> = {},
+): SpeciesStatsResult {
   if (!args || typeof args !== 'object') {
     return { ok: false, error: 'invalid_arguments', message: 'Expected an object with species_query and game.' };
   }
   const rec = args as Record<string, unknown>;
-  const speciesQuery = typeof rec.species_query === 'string' ? rec.species_query : '';
-  const gameQuery = typeof rec.game === 'string' ? rec.game : '';
+  const speciesQuery = stringArg(rec.species_query);
+  const gameQuery = stringArg(rec.game) || ctx.gameQuery || '';
   if (!speciesQuery.trim() || !gameQuery.trim()) {
-    return { ok: false, error: 'invalid_arguments', message: 'species_query and game are required strings.' };
+    return {
+      ok: false,
+      error: 'invalid_arguments',
+      message: 'species_query is required. game is required unless the session already has a game.',
+    };
   }
   return getSpeciesStats(speciesQuery, gameQuery);
 }

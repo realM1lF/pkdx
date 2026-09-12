@@ -6,6 +6,16 @@
 import { loadEnv } from 'vite';
 
 const PREFIX = '/api/gpt-live';
+const TOOL_TIMEOUT_MS = 25_000;
+
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`${label}_timeout`)), ms);
+    }),
+  ]);
+}
 
 function isLocalOrigin(origin) {
   if (!origin) return false;
@@ -78,6 +88,11 @@ export function gptLiveDevPlugin() {
         apiPromise = undefined;
       });
 
+      const loadApiFresh = () => {
+        apiPromise = server.ssrLoadModule('/src/lib/gpt-live/server-api.ts');
+        return apiPromise;
+      };
+
       console.log('[gpt-live] local demo routes on /api/gpt-live/*');
 
       server.middlewares.use((req, res, next) => {
@@ -98,7 +113,14 @@ export function gptLiveDevPlugin() {
               return;
             }
 
-            const api = await loadApi();
+            let api;
+            try {
+              api = await loadApi();
+            } catch (err) {
+              console.error('[gpt-live] server module load failed, retrying once', err);
+              apiPromise = undefined;
+              api = await loadApiFresh();
+            }
 
             if (req.method === 'GET' && url === `${PREFIX}/health`) {
               sendJson(res, 200, api.gptLiveHealth());
@@ -117,13 +139,44 @@ export function gptLiveDevPlugin() {
             }
 
             if (req.method === 'POST' && url === `${PREFIX}/tools`) {
-              const body = await readJsonBody(req);
+              const body = await readJsonBody(req, 512 * 1024);
               if (typeof body?.name !== 'string' || !body.name.trim()) {
                 sendJson(res, 400, { error: 'Tool name is required.' });
                 return;
               }
-              const result = api.executeGptLiveTool(body.name, body.arguments);
-              sendJson(res, 200, result);
+              const toolName = body.name.trim();
+              const started = Date.now();
+              console.log(`[gpt-live] tool ${toolName} start`);
+              try {
+                const result = await withTimeout(
+                  api.executeGptLiveTool(
+                    toolName,
+                    body.arguments,
+                    typeof body.contextId === 'string' ? body.contextId : undefined,
+                    {
+                      teamSnapshot: body.teamSnapshot,
+                      run: body.run,
+                    },
+                  ),
+                  TOOL_TIMEOUT_MS,
+                  toolName,
+                );
+                console.log(`[gpt-live] tool ${toolName} ok ${Date.now() - started}ms`);
+                sendJson(res, 200, result);
+              } catch (err) {
+                const timedOut = err instanceof Error && err.message === `${toolName}_timeout`;
+                console.error(`[gpt-live] tool ${toolName} fail ${Date.now() - started}ms`, err);
+                sendJson(res, 200, {
+                  ok: false,
+                  error: timedOut ? 'tool_timeout' : 'tool_server_error',
+                  message: timedOut
+                    ? `Tool "${toolName}" timed out after ${TOOL_TIMEOUT_MS}ms.`
+                    : `Tool "${toolName}" failed on the local server.`,
+                  spoken_hint: timedOut
+                    ? 'Sorry, that lookup took too long. I could not finish it.'
+                    : 'Sorry, the local lookup failed. Try again in a moment.',
+                });
+              }
               return;
             }
 

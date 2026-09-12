@@ -3,8 +3,11 @@
  * Server-only — never import this module from pages or components.
  * The Vite middleware loads it via ssrLoadModule so OPENAI_API_KEY stays in Node.
  */
-import { GET_SPECIES_STATS, liveSessionBody } from './session-config';
-import { getSpeciesStatsFromArgs } from './species-stats';
+import { parseRunSnapshot } from './nuzlocke-run-context';
+import { executeRegisteredTool } from './registry';
+import { liveSessionBody } from './session-config';
+import { createSessionContext, getSessionContext } from './session-context';
+import { parseTeamSnapshot } from './team-snapshot';
 import { resolveSessionVoice } from './voices';
 
 const OPENAI_LIVE_SESSIONS = 'https://api.openai.com/v1/live/sessions';
@@ -63,12 +66,28 @@ export async function createGptLiveSession(
     return { status, body: { error: 'Live session creation failed.' } };
   }
 
-  return { status: 201, body: parsed };
+  const contextId = createSessionContext();
+  const body =
+    parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? { ...(parsed as Record<string, unknown>), contextId }
+      : { result: parsed, contextId };
+  return { status: 201, body };
 }
 
-export function executeGptLiveTool(name: string, args: unknown): unknown {
-  if (name !== GET_SPECIES_STATS) {
-    return { ok: false, error: 'unknown_tool', message: `Unsupported tool "${name}".` };
+export async function executeGptLiveTool(
+  name: string,
+  args: unknown,
+  contextId?: string,
+  snapshots?: { teamSnapshot?: unknown; run?: unknown },
+): Promise<unknown> {
+  const ctx = getSessionContext(contextId);
+  if (snapshots?.teamSnapshot !== undefined) {
+    const parsed = parseTeamSnapshot(snapshots.teamSnapshot);
+    if (parsed) ctx.teamSnapshot = parsed;
+    else delete ctx.teamSnapshot;
   }
-  return getSpeciesStatsFromArgs(args);
+  if (snapshots?.run !== undefined) {
+    ctx.run = parseRunSnapshot(snapshots.run);
+  }
+  return executeRegisteredTool(name, args, ctx);
 }

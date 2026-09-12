@@ -31,7 +31,19 @@ describe('resolveGame', () => {
 
   it('maps later editions', () => {
     expect(resolveGame('feuerrot')).toMatchObject({ versionGroup: 'firered-leafgreen', gen: 3 });
+    expect(resolveGame('feuerrote Edition')).toMatchObject({ versionGroup: 'firered-leafgreen', gen: 3 });
     expect(resolveGame('karmesin')).toMatchObject({ versionGroup: 'scarlet-violet', gen: 9 });
+  });
+
+  it('maps fold-stripped DE/EN edition phrases', () => {
+    expect(resolveGame('blattgrüne Edition')).toMatchObject({ versionGroup: 'firered-leafgreen', gen: 3 });
+    expect(resolveGame('silberne Edition')).toMatchObject({ versionGroup: 'gold-silver', gen: 2 });
+    expect(resolveGame('kristalline Edition')).toMatchObject({ versionGroup: 'crystal', gen: 2 });
+    expect(resolveGame('seelensilber Edition')).toMatchObject({ versionGroup: 'heartgold-soulsilver', gen: 4 });
+    expect(resolveGame('fire red edition')).toMatchObject({ versionGroup: 'firered-leafgreen', gen: 3 });
+    expect(resolveGame('leaf green edition')).toMatchObject({ versionGroup: 'firered-leafgreen', gen: 3 });
+    expect(resolveGame('schwarze Edition')).toMatchObject({ versionGroup: 'black-white', gen: 5 });
+    expect(resolveGame('weiße Edition')).toMatchObject({ versionGroup: 'black-white', gen: 5 });
   });
 });
 
@@ -49,6 +61,7 @@ describe('getSpeciesStats', () => {
     });
     expect(result.stats).not.toHaveProperty('special_attack');
     expect(result.bst).toBe(425);
+    expect(result.spoken_hint).toMatch(/Speed 100|speed 100/);
     expect(result.semantics.special_is_unified).toBe(true);
     expect(result.semantics.attack_speed_means).toBe('speed');
     expect(result.types).toEqual(['fire', 'flying']);
@@ -80,6 +93,11 @@ describe('getSpeciesStats', () => {
     const result = getSpeciesStatsFromArgs({ species_query: 'Glurak', game: 'red' });
     expect(result.ok).toBe(true);
     expect(getSpeciesStatsFromArgs({})).toMatchObject({ ok: false, error: 'invalid_arguments' });
+  });
+
+  it('reuses a session game when game is null', () => {
+    const result = getSpeciesStatsFromArgs({ species_query: 'Glurak', game: null }, { gameQuery: 'red' });
+    expect(result).toMatchObject({ ok: true, species: { slug: 'charizard' }, game: { gen: 1 } });
   });
 });
 

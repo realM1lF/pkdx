@@ -35,6 +35,7 @@ void i18n
   });
 
 function syncHtmlLang(lng: string) {
+  if (typeof document === 'undefined') return;
   document.documentElement.lang = lng.startsWith('de') ? 'de' : 'en';
 }
 

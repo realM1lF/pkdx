@@ -3826,6 +3826,7 @@
     "assistant": "ASSISTENT",
     "toolLabel": "LETZTER TOOL-TREFFER",
     "toolEmpty": "Noch kein Tool-Ergebnis.",
+    "statsGame": "{{label}} · Gen {{gen}}",
     "paywallNote": "Eine Paywall kann das später umschließen. Zugriff läuft vorerst über VITE_GPT_LIVE_DEMO.",
     "voiceLabel": "STIMME",
     "voiceHint": "Regionsangaben sind Stil, keine Sprachbindung. Die Demo spricht weiter Deutsch oder Englisch. Stimme wechseln startet eine neue Session.",
